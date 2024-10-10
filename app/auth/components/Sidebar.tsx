@@ -8,7 +8,7 @@ import { GlobeAlt, Square2x2 } from "@/public/icons";
 
 const Sidebar = () => {
   return (
-    <aside className="fixed top-0 w-48 h-screen transition-transform -translate-x-full sm:translate-x-0 bg-white">
+    <aside className="fixed top-0 z-20 w-48 h-screen transition-transform -translate-x-full sm:translate-x-0 bg-white">
       <div className="h-full overflow-y-auto">
         <div className="size-auto my-10 pr-10">
           <Image
@@ -17,6 +17,7 @@ const Sidebar = () => {
             width={100}
             height={100}
             className="size-full"
+            priority
           />
         </div>
         <ul className="space-y-2">

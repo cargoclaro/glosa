@@ -1,3 +1,4 @@
+import AuthComponent from "./AuthComponent";
 import { ThemeComponent } from "./ThemeComponent";
 
-export { ThemeComponent };
+export { AuthComponent, ThemeComponent };

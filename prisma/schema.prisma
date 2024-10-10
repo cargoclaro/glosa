@@ -15,22 +15,160 @@ datasource db {
 }
 
 model User {
-  id       String @id @default(uuid())
-  email    String @unique
-  password String
-  name     String
-  lastName String
-  position String
-  image    String @default("/profilepic.webp")
+  id           String @id @default(uuid())
+  name         String
+  email        String @unique
+  image        String @default("/profilepic.webp")
+  password     String
+  lastName     String
+  patentNumber Int    @unique
+
+  customs UserOnCustom[]
+  glosses CustomGloss[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
-// model CustomGloss {
-//   id              String @id @default(uuid())
-//   client          String
-//   operationStatus String
-//   xCoordinate     Float
-//   yCoordinate     Float
-// }
+model UserOnCustom {
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId   String
+  custom   Custom @relation(fields: [customId], references: [id], onDelete: Cascade)
+  customId String
+
+  @@id([userId, customId])
+}
+
+model Custom {
+  id          String @id @default(uuid())
+  city        String
+  xCoordinate Float
+  yCoordinate Float
+
+  users         UserOnCustom[]
+  customGlosses CustomGloss[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum OperationStatus {
+  IN_PROGRESS
+  DONE
+}
+
+enum AnalysisType {
+  REGULATION
+}
+
+model CustomGloss {
+  id              String          @id @default(uuid())
+  timeSaved       Float
+  moneySaved      Float
+  isVerified      Boolean
+  importerName    String
+  analysisType    AnalysisType
+  operationStatus OperationStatus @default(IN_PROGRESS)
+
+  user                                        User                                         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId                                      String
+  custom                                      Custom                                       @relation(fields: [customId], references: [id], onDelete: Cascade)
+  customId                                    String
+  files                                       CustomGlossFile[]
+  alerts                                      CustomGlossAlert[]
+  report                                      CustomGlossReport?
+  customGlossTaxes                            CustomGlossTax[]
+  customGlossNonTariffRestrictionNRegulations CustomGlossNonTariffRestrictionNRegulation[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum CustomGlossType {
+  LOW
+  HIGH
+}
+
+model CustomGlossAlert {
+  id          String          @id @default(uuid())
+  type        CustomGlossType
+  description String
+
+  customGloss   CustomGloss @relation(fields: [customGlossId], references: [id], onDelete: Cascade)
+  customGlossId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model CustomGlossFile {
+  id  String @id @default(uuid())
+  url String
+
+  customGloss                                        CustomGloss                                      @relation(fields: [customGlossId], references: [id], onDelete: Cascade)
+  customGlossId                                      String
+  customGlossNonTariffRestrictionNRegulationDetail   CustomGlossNonTariffRestrictionNRegulationDetail @relation(fields: [customGlossNonTariffRestrictionNRegulationDetailId], references: [id], onDelete: Cascade)
+  customGlossNonTariffRestrictionNRegulationDetailId String                                           @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum CustomGlossTaxType {
+  TARIFF
+  IVA
+  IEPS
+  OTHER
+}
+
+model CustomGlossTax {
+  id      String             @id @default(uuid())
+  tax     Float
+  type    CustomGlossTaxType
+  isCheck Boolean
+
+  customGloss   CustomGloss @relation(fields: [customGlossId], references: [id], onDelete: Cascade)
+  customGlossId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model CustomGlossNonTariffRestrictionNRegulation {
+  id             String @id @default(uuid())
+  law            String
+  lawDescription String
+
+  details       CustomGlossNonTariffRestrictionNRegulationDetail[]
+  customGloss   CustomGloss                                        @relation(fields: [customGlossId], references: [id])
+  customGlossId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model CustomGlossNonTariffRestrictionNRegulationDetail {
+  id               String  @id @default(uuid())
+  field            String
+  isCheck          Boolean
+  operation        String
+  checkDescription String?
+
+  file                                         CustomGlossFile?
+  customGlossNonTariffRestrictionNRegulation   CustomGlossNonTariffRestrictionNRegulation @relation(fields: [customGlossNonTariffRestrictionNRegulationId], references: [id], onDelete: Cascade)
+  customGlossNonTariffRestrictionNRegulationId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model CustomGlossReport {
+  id          String @id @default(uuid())
+  description String
+
+  customGloss   CustomGloss @relation(fields: [customGlossId], references: [id], onDelete: Cascade)
+  customGlossId String      @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

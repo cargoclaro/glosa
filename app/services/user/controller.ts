@@ -1,10 +1,12 @@
 "use server";
 
 import bcrypt from "bcrypt";
+import { cookies } from "next/headers";
 import { create, read } from "./model";
 import { validateSchema } from "./schema";
-// import { redirect } from "next/navigation";
-import { createUserSession } from "../auth";
+import { redirect } from "next/navigation";
+import { createUserSession, isAuthenticated } from "../auth";
+import { revalidatePath } from "next/cache";
 import type { IUser } from "@/app/interfaces";
 
 export async function login(formData: FormData) {
@@ -54,7 +56,7 @@ export async function register(formData: FormData) {
     email: formData.get("email") as string,
     password: formData.get("password") as string,
     lastName: formData.get("lastName") as string,
-    position: formData.get("position") as string,
+    patentNumber: formData.get("patentNumber") as string,
     confirmPassword: formData.get("confirmPassword") as string,
   };
 
@@ -83,6 +85,8 @@ export async function register(formData: FormData) {
       };
     }
 
+    // CHECK THEIR patentNumber IF IT EXISTS FROM THE DATABASE
+
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { confirmPassword, ...data } = dataToValidate;
 
@@ -97,5 +101,21 @@ export async function register(formData: FormData) {
       success: false,
       message: "Ocurrió un error interno",
     };
+  }
+}
+
+export async function logout() {
+  cookies().set("session", "", { expires: new Date(0) });
+  revalidatePath("/");
+  redirect("/");
+}
+
+export async function getMe() {
+  try {
+    const session = await isAuthenticated();
+    return await read({ id: session.userId as string });
+  } catch (error) {
+    console.error(error);
+    return null;
   }
 }

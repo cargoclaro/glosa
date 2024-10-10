@@ -7,10 +7,10 @@ export const metadata: Metadata = {
 
 const SignInPage = () => {
   return (
-    <article className="h-screen flex">
+    <main className="h-screen flex">
       <Form />
       <SideSection />
-    </article>
+    </main>
   );
 };
 

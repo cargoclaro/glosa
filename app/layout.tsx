@@ -1,7 +1,7 @@
 import "./globals.css";
 import { cn } from "@/app/utils/cn";
 import { GeistSans } from "geist/font/sans";
-import { ThemeComponent } from "@/app/components";
+import { AuthComponent, ThemeComponent } from "@/app/components";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -20,16 +20,20 @@ export default function RootLayout({
   return (
     // suppressHydrationWarning is used to prevent a warning in the console, delete after
     <html lang="en" suppressHydrationWarning>
-      <body suppressHydrationWarning className={cn(GeistSans.className)}>
+      <body
+        suppressHydrationWarning
+        className={cn(
+          "bg-[#f8f9fd] w-full min-h-screen max-w-[1440px] mx-auto",
+          GeistSans.className
+        )}
+      >
         <ThemeComponent
           attribute="class"
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
         >
-          <main className="w-full min-h-screen max-w-[1440px] mx-auto">
-            {children}
-          </main>
+          <AuthComponent>{children}</AuthComponent>
         </ThemeComponent>
       </body>
     </html>

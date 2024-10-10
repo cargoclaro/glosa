@@ -25,8 +25,8 @@ const registerSchema = baseSchema.extend({
   lastName: z.string().min(1, {
     message: "El apellido es requerido",
   }),
-  position: z.string().min(1, {
-    message: "La posición es requerida",
+  patentNumber: z.number().int().min(1, {
+    message: "El número de patente es requerido",
   }),
 });
 

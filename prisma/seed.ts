@@ -6,11 +6,11 @@ const prisma = new PrismaClient();
 async function main() {
   await prisma.user.create({
     data: {
+      name: "user",
       email: "user@cargoclaro.com",
       password: await hashPassword("secretpass"),
-      name: "user",
       lastName: "name",
-      position: "CEO",
+      patentNumber: 123456,
     },
   });
 }

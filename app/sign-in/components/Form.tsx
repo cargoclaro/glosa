@@ -29,8 +29,8 @@ const Form = () => {
   };
 
   return (
-    <section className="w-full md:w-1/2 flex justify-center items-center p-4">
-      <div className="flex flex-col items-center gap-4 max-h-full overflow-y-auto py-5 md:py-10 md:px-14 px-7 rounded-2xl shadow-2xl">
+    <article className="bg-white w-full md:w-1/2 flex justify-center items-center p-4">
+      <section className="flex flex-col items-center gap-4 max-h-full overflow-y-auto py-5 md:py-10 md:px-14 px-7 rounded-2xl shadow-2xl">
         <Link href="/" className="w-40 md:w-64 h-auto">
           <Image
             src="/logo.webp"
@@ -38,6 +38,7 @@ const Form = () => {
             width={100}
             height={100}
             className="size-full"
+            priority
           />
         </Link>
         <div className="flex flex-col items-center gap-2 mt-2">
@@ -90,8 +91,8 @@ const Form = () => {
             </Link>
           </span>
         </p>
-      </div>
-    </section>
+      </section>
+    </article>
   );
 };
 
