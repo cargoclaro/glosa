@@ -1,5 +1,11 @@
+// import { GenericCard } from "@/app/components";
+
 const DashboardPage = () => {
-  return <div className="h-[2000px]">DashboardPage</div>;
+  return (
+    <article>
+      <h1 className="text-2xl font-bold">Dashboard de Glosa Aduanal</h1>
+    </article>
+  );
 };
 
 export default DashboardPage;
