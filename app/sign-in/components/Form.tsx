@@ -21,7 +21,7 @@ const Form = () => {
     const formData = new FormData(event.currentTarget);
     const res = await login(formData);
     if (res && res.success) {
-      console.log("Success");
+      window.location.href = "/auth/dashboard";
     } else {
       setResponse(res);
     }

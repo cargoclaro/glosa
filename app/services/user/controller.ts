@@ -3,7 +3,7 @@
 import bcrypt from "bcrypt";
 import { create, read } from "./model";
 import { validateSchema } from "./schema";
-import { redirect } from "next/navigation";
+// import { redirect } from "next/navigation";
 import { createUserSession } from "../auth";
 import type { IUser } from "@/app/interfaces";
 
@@ -36,6 +36,9 @@ export async function login(formData: FormData) {
     }
 
     await createUserSession(user.id);
+    return {
+      success: true,
+    };
   } catch (error) {
     console.error(error);
     return {
@@ -43,7 +46,6 @@ export async function login(formData: FormData) {
       message: "Ocurrió un error interno",
     };
   }
-  redirect("/auth/dashboard");
 }
 
 export async function register(formData: FormData) {
@@ -86,6 +88,9 @@ export async function register(formData: FormData) {
 
     const newUser = await create({ data });
     await createUserSession(newUser.id);
+    return {
+      success: true,
+    };
   } catch (error) {
     console.error(error);
     return {
@@ -93,5 +98,4 @@ export async function register(formData: FormData) {
       message: "Ocurrió un error interno",
     };
   }
-  redirect("/auth/dashboard");
 }
