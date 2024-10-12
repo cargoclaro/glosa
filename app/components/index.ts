@@ -3,7 +3,7 @@ import Loading from "./Loading";
 import { CardSkeleton } from "./skeletons";
 import { Card404, GenericCard } from "./cards";
 import { ThemeComponent, AuthComponent } from "./providers";
-import { GenericInput, SubmitButton, GenericSearchInput } from "./form";
+import { GenericInput, SubmitButton, GenericSearchInput } from "./Form";
 
 export {
   Button,
