@@ -1,9 +1,9 @@
 import { Button } from "./ui";
 import Loading from "./Loading";
-import { CardSkeleton } from "./skeletons";
-import { Card404, GenericCard } from "./cards";
-import { ThemeComponent, AuthComponent } from "./providers";
-import { GenericInput, SubmitButton, GenericSearchInput } from "./form";
+import { CardSkeleton } from "./Skeletons";
+import { Card404, GenericCard } from "./Cards";
+import { ThemeComponent, AuthComponent } from "./Providers";
+import { GenericInput, SubmitButton, GenericSearchInput } from "./Form";
 
 export {
   Button,
