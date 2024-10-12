@@ -22,10 +22,10 @@ const Sidebar = () => {
         </div>
         <ul className="space-y-2">
           <li>
-            <LinkComp to="/auth/dashboard" span="Administración" icon="home" />
+            <LinkComp to="/home" span="Administración" icon="home" />
           </li>
           <li>
-            <LinkComp to="/auth/gloss" span="Operaciones" icon="globe" />
+            <LinkComp to="/gloss" span="Operaciones" icon="globe" />
           </li>
         </ul>
       </div>

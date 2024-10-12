@@ -5,10 +5,10 @@ const options = {
   day: "numeric" as const,
 };
 
-const todayIs = (date: Date, locale?: string) => {
-  const capitalizer = (word: string) =>
-    word.charAt(0).toUpperCase() + word.slice(1);
+const capitalizer = (word: string) =>
+  word.charAt(0).toUpperCase() + word.slice(1);
 
+const todayIs = (date: Date, locale?: string) => {
   const formattedDate = date.toLocaleDateString(locale ?? "es-ES", options);
 
   const finalDate = formattedDate

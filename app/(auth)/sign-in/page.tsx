@@ -1,4 +1,4 @@
-import { Form, SideSection } from "./components";
+import { Form } from "./components";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -6,12 +6,7 @@ export const metadata: Metadata = {
 };
 
 const SignInPage = () => {
-  return (
-    <main className="h-screen flex">
-      <Form />
-      <SideSection />
-    </main>
-  );
+  return <Form />;
 };
 
 export default SignInPage;

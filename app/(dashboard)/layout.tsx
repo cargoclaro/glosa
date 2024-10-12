@@ -24,7 +24,7 @@ const AuthLayout = async ({ children }: { children: React.ReactNode }) => {
         user={me}
         // notifications={myNotifications}
       />
-      <main className="md:ml-48 p-4">{children}</main>
+      <main className="sm:ml-48 p-4">{children}</main>
     </>
   );
 };

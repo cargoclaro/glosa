@@ -40,10 +40,10 @@ model UserOnCustom {
 }
 
 model Custom {
-  id          String @id @default(uuid())
-  city        String
-  xCoordinate Float
-  yCoordinate Float
+  id        String @id @default(uuid())
+  city      String
+  latitude  Float
+  longitude Float
 
   users         UserOnCustom[]
   customGlosses CustomGloss[]
