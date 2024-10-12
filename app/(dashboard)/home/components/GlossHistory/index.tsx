@@ -5,6 +5,7 @@ import { useAuth } from "@/app/hooks";
 
 const GlossHistory = () => {
   const { user } = useAuth();
+  console.log(user);
 
   // THIS WILL BE REPLACED BY THE REAL DATA FROM THE USER
   const dumpGloses = [
