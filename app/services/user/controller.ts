@@ -5,8 +5,8 @@ import { cookies } from "next/headers";
 import { create, read } from "./model";
 import { validateSchema } from "./schema";
 import { redirect } from "next/navigation";
-import { createUserSession, isAuthenticated } from "../auth";
 import { revalidatePath } from "next/cache";
+import { createUserSession, isAuthenticated } from "../auth";
 import type { IUser } from "@/app/interfaces";
 
 export async function login(formData: FormData) {
@@ -25,7 +25,9 @@ export async function login(formData: FormData) {
   }
 
   try {
-    const user = (await read({ email: dataToValidate.email })) as IUser;
+    const user = (await read({
+      email: dataToValidate.email,
+    })) as unknown as IUser;
 
     if (
       !user ||
@@ -56,7 +58,7 @@ export async function register(formData: FormData) {
     email: formData.get("email") as string,
     password: formData.get("password") as string,
     lastName: formData.get("lastName") as string,
-    patentNumber: formData.get("patentNumber") as string,
+    patentNumber: Number(formData.get("patentNumber")),
     confirmPassword: formData.get("confirmPassword") as string,
   };
 
@@ -106,8 +108,8 @@ export async function register(formData: FormData) {
 
 export async function logout() {
   cookies().set("session", "", { expires: new Date(0) });
-  revalidatePath("/");
-  redirect("/");
+  revalidatePath("/sign-in");
+  redirect("/sign-in");
 }
 
 export async function getMe() {

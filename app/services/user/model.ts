@@ -21,24 +21,30 @@ interface IRead {
 }
 
 export async function read({ id, email }: IRead) {
-  //   const globalInclude = {};
+  const globalInclude = {
+    customs: {
+      include: {
+        custom: true,
+      },
+    },
+  };
 
   if (id) {
     return await prisma.user.findUnique({
       where: { id },
-      //   include: globalInclude,
+      include: globalInclude,
     });
   }
 
   if (email) {
     return await prisma.user.findUnique({
       where: { email },
-      //   include: globalInclude,
+      include: globalInclude,
     });
   }
 
   return await prisma.user.findMany({
-    // include: globalInclude,
+    include: globalInclude,
   });
 }
 

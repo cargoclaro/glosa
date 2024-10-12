@@ -16,6 +16,7 @@ const NotFoundPage = () => {
           width={100}
           height={100}
           className="size-full"
+          priority
         />
       </div>
       <div className="p-2 text-center">

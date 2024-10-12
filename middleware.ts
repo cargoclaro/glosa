@@ -7,7 +7,7 @@ export function middleware(request: NextRequest) {
   if (pathname === "/")
     return NextResponse.redirect(new URL("/sign-in", request.url));
 
-  const protectedRoutes = ["/auth"];
+  const protectedRoutes = ["/home", "/gloss"];
 
   if (!session && protectedRoutes.some((route) => pathname.startsWith(route))) {
     return NextResponse.redirect(new URL("/sign-in", request.url));
@@ -15,10 +15,7 @@ export function middleware(request: NextRequest) {
 
   if (session) {
     if (pathname === "/sign-in" || pathname === "/sign-up")
-      return NextResponse.redirect(new URL("/auth/dashboard", request.url));
-    if (pathname === "/auth") {
-      return NextResponse.redirect(new URL("/auth/dashboard", request.url));
-    }
+      return NextResponse.redirect(new URL("/home", request.url));
   }
 
   return NextResponse.next();
@@ -27,9 +24,10 @@ export function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     "/",
+    "/home",
+    "/gloss",
     "/sign-in",
     "/sign-up",
-    "/auth/:path*",
     "/((?!api|_next/static|_next/image|favicon.ico|profilepic.webp|robots.txt|sitemap.xml|sw.js|site.webmanifest|fonts|images|assets|icons).*)",
   ],
 };

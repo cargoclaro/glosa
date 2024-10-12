@@ -1,8 +1,20 @@
-import type { User } from "@prisma/client";
+import type { User, Custom } from "@prisma/client";
 
-// export interface IUser extends User {}
+export interface IUser extends User {
+  customs: {
+    userId: string;
+    customId: string;
+    custom: ICustom;
+  }[];
+}
 
-export type IUser = User;
+export interface ICustom extends Custom {
+  users: {
+    userId: string;
+    customId: string;
+    user: IUser;
+  }[];
+}
 
 export interface ISharedState {
   success: boolean;
@@ -13,6 +25,17 @@ export interface ILoginState extends ISharedState {
   errors?: {
     email?: string;
     password?: string;
+  };
+}
+
+export interface IRegisterState extends ISharedState {
+  errors?: {
+    name?: string;
+    email?: string;
+    password?: string;
+    lastName?: string;
+    patentNumber?: string;
+    confirmPassword?: string;
   };
 }
 

@@ -21,7 +21,7 @@ const Form = () => {
     const formData = new FormData(event.currentTarget);
     const res = await login(formData);
     if (res && res.success) {
-      window.location.href = "/auth/dashboard";
+      window.location.href = "/home";
     } else {
       setResponse(res);
     }
@@ -30,7 +30,7 @@ const Form = () => {
 
   return (
     <article className="bg-white w-full md:w-1/2 flex justify-center items-center p-4">
-      <section className="flex flex-col items-center gap-4 max-h-full overflow-y-auto py-5 md:py-10 md:px-14 px-7 rounded-2xl shadow-2xl">
+      <section className="flex flex-col items-center gap-4 max-h-full overflow-y-auto py-5 md:py-10 md:px-14 px-7 rounded-2xl shadow-2xl animate-fade-down">
         <Link href="/" className="w-40 md:w-64 h-auto">
           <Image
             src="/logo.webp"
