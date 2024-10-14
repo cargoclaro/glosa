@@ -107,8 +107,8 @@ async function main() {
     },
     {
       city: "Guanajuato",
-      latitude: 20.3190145,
-      longitude: -102.2673586,
+      latitude: 20.5190145,
+      longitude: -102.0673586,
       users: {
         create: [
           {

@@ -1,7 +1,7 @@
 "use client";
 
-import { useAuth } from "@/app/hooks";
 import { cn } from "@/app/utils/cn";
+import { useAuth } from "@/app/hooks";
 import latLonToSvgCoords from "@/app/utils/lat-lon-to-svg";
 
 const MexMap = () => {

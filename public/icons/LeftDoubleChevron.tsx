@@ -1,7 +1,7 @@
 import { cn } from "@/app/utils/cn";
 import type { IGenericIcon } from "@/app/interfaces";
 
-const RightArrow = ({
+const LeftDoubleChevron = ({
   size = "size-6",
   customClass = "",
   strokeWidth = 1.5,
@@ -18,10 +18,10 @@ const RightArrow = ({
       <path
         strokeLinecap="round"
         strokeLinejoin="round"
-        d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
+        d="m18.75 4.5-7.5 7.5 7.5 7.5m-6-15L5.25 12l7.5 7.5"
       />
     </svg>
   );
 };
 
-export default RightArrow;
+export default LeftDoubleChevron;

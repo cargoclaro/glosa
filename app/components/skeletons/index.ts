@@ -1,3 +1,5 @@
-import CardSkeleton from "./CardSkeleton";
+import ProfileCardSkeleton from "./ProfileCardSkeleton";
+import SummaryCardSkeleton from "./SummaryCardSkeleton";
+import GlossHistorySkeleton from "./GlossHistorySkeleton";
 
-export { CardSkeleton };
+export { ProfileCardSkeleton, SummaryCardSkeleton, GlossHistorySkeleton };
