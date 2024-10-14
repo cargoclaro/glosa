@@ -1,7 +1,7 @@
 import { cn } from "@/app/utils/cn";
 import type { IGenericIcon } from "@/app/interfaces";
 
-const RightArrow = ({
+const ArrowsUpDown = ({
   size = "size-6",
   customClass = "",
   strokeWidth = 1.5,
@@ -18,10 +18,10 @@ const RightArrow = ({
       <path
         strokeLinecap="round"
         strokeLinejoin="round"
-        d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
+        d="M3 7.5 7.5 3m0 0L12 7.5M7.5 3v13.5m13.5 0L16.5 21m0 0L12 16.5m4.5 4.5V7.5"
       />
     </svg>
   );
 };
 
-export default RightArrow;
+export default ArrowsUpDown;

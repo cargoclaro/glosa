@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useAuth } from "@/app/hooks";
-import { CardSkeleton, GenericCard } from "@/app/components";
+import { ProfileCardSkeleton, GenericCard } from "@/app/components";
 
 const MyInfo = () => {
   const { user } = useAuth();
@@ -27,19 +27,20 @@ const MyInfo = () => {
           <h1 className="font-extrabold text-2xl">
             {user.name + " " + user.lastName}
           </h1>
-          <div className="flex justify-start mt-2">
-            <p className="font-semibold text-xl text-left">Aduanas:</p>
-            <ul className="mt-0.5 ml-5">
-              {user.customs.map((custom) => (
-                <li key={custom.customId} className=" list-disc">
+          <div className="flex justify-start mt-2 text-xl">
+            <p className="font-semibold text-left mr-2">Aduanas:</p>
+            <ul className="flex gap-1">
+              {user.customs.map((custom, index) => (
+                <li key={custom.customId}>
                   {custom.custom.city}
+                  {index !== user.customs.length - 1 ? "," : ""}
                 </li>
               ))}
             </ul>
           </div>
         </GenericCard>
       ) : (
-        <CardSkeleton />
+        <ProfileCardSkeleton />
       )}
     </>
   );

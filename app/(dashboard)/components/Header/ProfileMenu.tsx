@@ -1,17 +1,13 @@
 "use client";
 
-// import Link from "next/link";
+import Link from "next/link";
 import Image from "next/image";
 import { useEffect } from "react";
-// import { cn } from "@/app/utils/cn";
+import { cn } from "@/app/utils/cn";
 import { useAuth, useToggleMenu } from "@/app/hooks";
-import {
-  // Cog8,
-  // UserIcon
-  DoorArrowRight,
-} from "@/public/icons";
-import type { IUser } from "@/app/interfaces";
 import { logout } from "@/app/services/user/controller";
+import { GlobeAlt, Square2x2, DoorArrowRight } from "@/public/icons";
+import type { IUser } from "@/app/interfaces";
 
 interface IProfileMenu {
   user: IUser;
@@ -51,22 +47,22 @@ const ProfileMenu = ({ user }: IProfileMenu) => {
           className="bg-white z-20 origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow"
         >
           <ul>
-            {/* <li>
+            <li className="block sm:hidden">
               <ProfileLink
-                text="Perfil"
-                to="/auth/profile"
+                text="Administración"
+                to="/home"
                 onClick={toggleMenu}
-                icon={<UserIcon isFilled />}
+                icon={<Square2x2 />}
               />
             </li>
-            <li>
+            <li className="block sm:hidden">
               <ProfileLink
-                to="/auth/settings"
-                text="Configuración"
+                to="/gloss"
+                text="Operaciones"
                 onClick={toggleMenu}
-                icon={<Cog8 strokeWidth={2} />}
+                icon={<GlobeAlt />}
               />
-            </li> */}
+            </li>
             <li>
               <form action={logout}>
                 <button
@@ -87,32 +83,32 @@ const ProfileMenu = ({ user }: IProfileMenu) => {
 
 export default ProfileMenu;
 
-// interface IProfileLink {
-//   to: string;
-//   text: string;
-//   onClick: () => void;
-//   customClass?: string;
-//   icon: React.ReactNode;
-// }
+interface IProfileLink {
+  to: string;
+  text: string;
+  onClick: () => void;
+  customClass?: string;
+  icon: React.ReactNode;
+}
 
-// const ProfileLink = ({
-//   to,
-//   onClick,
-//   text,
-//   customClass,
-//   icon,
-// }: IProfileLink) => {
-//   return (
-//     <Link
-//       href={to}
-//       className={cn(
-//         "flex gap-2 items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100",
-//         customClass
-//       )}
-//       onClick={onClick}
-//     >
-//       {icon}
-//       {text}
-//     </Link>
-//   );
-// };
+const ProfileLink = ({
+  to,
+  onClick,
+  text,
+  customClass,
+  icon,
+}: IProfileLink) => {
+  return (
+    <Link
+      href={to}
+      className={cn(
+        "flex gap-2 items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100",
+        customClass
+      )}
+      onClick={onClick}
+    >
+      {icon}
+      {text}
+    </Link>
+  );
+};

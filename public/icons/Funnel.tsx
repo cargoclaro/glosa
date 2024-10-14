@@ -1,7 +1,7 @@
 import { cn } from "@/app/utils/cn";
 import type { IGenericIcon } from "@/app/interfaces";
 
-const RightArrow = ({
+const Funnel = ({
   size = "size-6",
   customClass = "",
   strokeWidth = 1.5,
@@ -18,10 +18,10 @@ const RightArrow = ({
       <path
         strokeLinecap="round"
         strokeLinejoin="round"
-        d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
+        d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 0 1-.659 1.591l-5.432 5.432a2.25 2.25 0 0 0-.659 1.591v2.927a2.25 2.25 0 0 1-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 0 0-.659-1.591L3.659 7.409A2.25 2.25 0 0 1 3 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0 1 12 3Z"
       />
     </svg>
   );
 };
 
-export default RightArrow;
+export default Funnel;

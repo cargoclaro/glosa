@@ -1,3 +1,4 @@
+import { LayoutHeader } from "./components";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -5,7 +6,12 @@ export const metadata: Metadata = {
 };
 
 const GlossLayout = ({ children }: { children: React.ReactNode }) => {
-  return <>{children}</>;
+  return (
+    <>
+      <LayoutHeader />
+      {children}
+    </>
+  );
 };
 
 export default GlossLayout;
