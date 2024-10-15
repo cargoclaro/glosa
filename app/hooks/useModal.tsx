@@ -2,17 +2,13 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 
-const useToggleMenu = (initialState = false) => {
-  const [isOpen, setIsOpen] = useState(initialState);
+const useModal = (initialState = false) => {
   const menuRef = useRef(null);
+  const [isOpen, setIsOpen] = useState(initialState);
 
-  const toggleMenu = () => {
-    setIsOpen((prev) => !prev);
-  };
-
-  const closeMenu = () => {
-    setIsOpen(false);
-  };
+  const openMenu = () => setIsOpen(true);
+  const closeMenu = () => setIsOpen(false);
+  const toggleMenu = () => setIsOpen((prev) => !prev);
 
   const handleClickOutside = useCallback((event: MouseEvent) => {
     if (
@@ -30,7 +26,7 @@ const useToggleMenu = (initialState = false) => {
     };
   }, [handleClickOutside]);
 
-  return { isOpen, toggleMenu, closeMenu, menuRef };
+  return { isOpen, toggleMenu, openMenu, closeMenu, menuRef };
 };
 
-export default useToggleMenu;
+export default useModal;

@@ -1,3 +1,4 @@
+import Modal from "./Modal";
 import { Button } from "./ui";
 import Loading from "./Loading";
 import { Card404, GenericCard } from "./cards";
@@ -10,6 +11,7 @@ import {
 } from "./skeletons";
 
 export {
+  Modal,
   Button,
   Loading,
   Card404,

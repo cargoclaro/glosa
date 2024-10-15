@@ -1,8 +1,10 @@
 import Bell from "./Bell";
 import Cog8 from "./Cog8";
 import Clock from "./Clock";
+import XMark from "./XMark";
 import Funnel from "./Funnel";
 import Search from "./Search";
+import Upload from "./Upload";
 import UserIcon from "./User";
 import XBoxIcon from "./XBox";
 import TrashIcon from "./Trash";
@@ -25,8 +27,10 @@ export {
   Bell,
   Cog8,
   Clock,
+  XMark,
   Funnel,
   Search,
+  Upload,
   UserIcon,
   XBoxIcon,
   GlobeAlt,

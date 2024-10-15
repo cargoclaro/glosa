@@ -1,5 +1,5 @@
 import { useAuth } from "./useAuth";
-import useToggleMenu from "./useToggleMenu";
+import useModal from "./useModal";
 import useServerAction from "./useServerAction";
 
-export { useAuth, useToggleMenu, useServerAction };
+export { useAuth, useModal, useServerAction };
