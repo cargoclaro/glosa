@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useEffect } from "react";
 import { cn } from "@/app/utils/cn";
-import { useAuth, useToggleMenu } from "@/app/hooks";
+import { useAuth, useModal } from "@/app/hooks";
 import { logout } from "@/app/services/user/controller";
 import { GlobeAlt, Square2x2, DoorArrowRight } from "@/public/icons";
 import type { IUser } from "@/app/interfaces";
@@ -20,7 +20,7 @@ const ProfileMenu = ({ user }: IProfileMenu) => {
     toggleMenu,
     // closeMenu,
     menuRef,
-  } = useToggleMenu();
+  } = useModal();
 
   useEffect(() => {
     setUser(user);

@@ -1,7 +1,7 @@
 "use client";
 
 import Bell from "@/public/icons/Bell";
-import { useToggleMenu } from "@/app/hooks";
+import { useModal } from "@/app/hooks";
 
 interface INotificationsMenu {
   notifications: object;
@@ -9,7 +9,7 @@ interface INotificationsMenu {
 
 const NotificationsMenu = ({ notifications }: INotificationsMenu) => {
   console.log(notifications);
-  const { isOpen, toggleMenu, menuRef } = useToggleMenu();
+  const { isOpen, toggleMenu, menuRef } = useModal();
 
   return (
     <div className="relative inline-block text-left" ref={menuRef}>
