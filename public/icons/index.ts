@@ -9,6 +9,7 @@ import UserIcon from "./User";
 import XBoxIcon from "./XBox";
 import TrashIcon from "./Trash";
 import GlobeAlt from "./GlobeAlt";
+import Document from "./Document";
 import Square2x2 from "./Square2x2";
 import LeftArrow from "./LeftArrow";
 import RightArrow from "./RightArrow";
@@ -34,6 +35,7 @@ export {
   UserIcon,
   XBoxIcon,
   GlobeAlt,
+  Document,
   TrashIcon,
   Square2x2,
   LeftArrow,
