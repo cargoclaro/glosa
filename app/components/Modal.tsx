@@ -6,7 +6,7 @@ interface IModal {
   isOpen: boolean;
   onClose: () => void;
   children: React.ReactNode;
-  menuRef: React.RefObject<HTMLDivElement>;
+  menuRef: React.RefObject<HTMLDivElement> | null;
 }
 
 const Modal = ({ isOpen, onClose, children, menuRef }: IModal) => {

@@ -39,6 +39,13 @@ export interface IRegisterState extends ISharedState {
   };
 }
 
+export interface IGlossAnalysisState extends ISharedState {
+  glossId?: string;
+  errors?: {
+    documents?: string;
+  };
+}
+
 export interface IGenericIcon {
   size?: string;
   customClass?: string;

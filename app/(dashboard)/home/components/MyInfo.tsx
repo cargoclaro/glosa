@@ -29,7 +29,13 @@ const MyInfo = () => {
           </h1>
           <div className="flex justify-start mt-2 text-xl">
             <p className="font-semibold text-left mr-2">Aduanas:</p>
-            <ul className="flex gap-1">
+            <ul
+              title={
+                user.customs &&
+                user.customs.map((custom) => custom.custom.city).join(", ")
+              }
+              className="flex flex-col sm:flex-row gap-1 truncate"
+            >
               {user.customs.map((custom, index) => (
                 <li key={custom.customId}>
                   {custom.custom.city}

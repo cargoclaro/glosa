@@ -1,78 +1,202 @@
 "use client";
 
+import { useState } from "react";
 import { cn } from "@/app/utils/cn";
-import { Upload } from "@/public/icons";
+import { Loading, Modal } from "@/app/components";
+import { Document, Upload } from "@/public/icons";
+import { useModal, useServerAction } from "@/app/hooks";
+import { INITIAL_STATE_RESPONSE } from "@/app/constants";
+import type { IGlossAnalysisState } from "@/app/interfaces";
 
 const GlossForm = () => {
+  const [files, setFiles] = useState<FileList | null>(null);
+  const [errorDisplaying, setErrorDisplaying] = useState(false);
+  const { isOpen, openMenu, closeMenu, menuRef } = useModal(false);
+  const { response, isLoading, setResponse, setIsLoading } =
+    useServerAction<IGlossAnalysisState>(INITIAL_STATE_RESPONSE);
+
+  const handlerAction = async () => {
+    setIsLoading(true);
+
+    // REAL
+    // const res = await glosar(files)
+    // if (res && res.success) {
+    //   window.location.href = `/gloss/${res.glossId}/analysis`;
+    // } else {
+    //   setResponse(res);
+    //   closeMenu();
+    // }
+
+    // DUMMY
+    await new Promise((resolve) => setTimeout(resolve, 4000));
+    setResponse({
+      success: true,
+      message: "¡Documentos cargados con éxito!",
+    });
+    setIsLoading(false);
+    window.location.reload();
+  };
+
+  console.log(errorDisplaying);
+
   return (
     <>
       <h1 className="text-center font-semibold text-xl">
         ¡Carga tu Expediente!
       </h1>
-      <small className="text-center text-base">
+      <p className="text-center text-base">
         Recuerda incluir todos los documentos relevantes a la operación <br />{" "}
-        (BL, Carta 3.1.8, etc.).
-      </small>
-      <form encType="multipart/form-data" className="mt-4">
-        <fieldset>
-          <label
-            htmlFor="documents"
-            className={cn(
-              "flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer mb-4"
-              // file
-              //   ? badResponse.errors &&
-              //     Object.keys(badResponse.errors as object).length > 0
-              //     ? "bg-red-50 dark:bg-red-700 dark:border-red-600 border-red-500"
-              //     : "bg-green-50 dark:bg-green-700 dark:border-green-600 border-green-500"
-              //   : "bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500"
-            )}
-          >
-            <div className="flex flex-col items-center justify-center p-5">
-              <Upload
-                size="size-10"
-                //   color={
-                //     file
-                //       ? badResponse.errors &&
-                //         Object.keys(badResponse.errors as object).length > 0
-                //         ? "red"
-                //         : "green"
-                //       : ""
-                //   }
-              />
-              <p
-                className={cn(
-                  "mb-2 text-sm text-center"
-                  // file
-                  //   ? badResponse.errors &&
-                  //     Object.keys(badResponse.errors as object).length > 0
-                  //     ? "text-red-500 dark:text-red-400"
-                  //     : "text-green-500 dark:text-green-400"
-                  //   : "text-gray-500 dark:text-gray-400"
-                )}
-              >
-                <span className="font-semibold">Click para subir</span>
-                <br />o arrastra los archivos aquí
-              </p>
-            </div>
-            <input
-              multiple
-              type="file"
-              accept=".pdf"
-              id="documents"
-              name="documents"
-              className="hidden"
-              // onChange={(event) => {
-              //   setFile(event.target.files?.[0] || null);
-              // }}
+        <span>(BL, Carta 3.1.8, etc.).</span>
+      </p>
+      {response.message && <p className="text-red-500">{response.message}</p>}
+      <div className="mt-4">
+        <label
+          htmlFor="documents"
+          className={cn(
+            "flex flex-col items-center justify-center w-full h-64 border-2 border-dashed rounded-lg cursor-pointer mb-4",
+            files
+              ? response.errors && response.errors.documents
+                ? "bg-red-50 border-red-500"
+                : "bg-green-50 border-green-500"
+              : "bg-gray-50 hover:bg-gray-100 border-gray-300"
+          )}
+        >
+          <div className="flex flex-col items-center justify-center p-5">
+            <Upload
+              size="size-10"
+              color={
+                files
+                  ? response.errors && response.errors.documents
+                    ? "red"
+                    : "green"
+                  : ""
+              }
             />
-          </label>
-          <div className="text-center">
-            <button className="px-12 py-2 rounded-md shadow-black/50 shadow-md text-white bg-cargoClaroOrange hover:bg-cargoClaroOrange-hover border border-white text-sm">
+            <p
+              className={cn(
+                "mb-2 text-sm text-center",
+                files
+                  ? response.errors && response.errors.documents
+                    ? "text-red-500"
+                    : "text-green-500"
+                  : "text-gray-500"
+              )}
+            >
+              <span className="font-semibold">Click para subir</span>
+              <br />o arrastra los archivos aquí
+            </p>
+          </div>
+          <input
+            multiple
+            type="file"
+            accept=".pdf"
+            id="documents"
+            name="documents"
+            className="hidden"
+            onChange={(event) => {
+              setFiles(event.target.files);
+            }}
+          />
+        </label>
+        <div className="text-center">
+          {files && (
+            <p className="font-semibold">
+              {"Archivos cargados: " + files?.length}
+            </p>
+          )}
+          <p className="block text-red-500 text-sm mb-2">
+            {response.errors && response.errors.documents}
+          </p>
+          <div className="flex gap-2 justify-center">
+            <button
+              disabled={!files}
+              onClick={() => openMenu()}
+              className={cn(
+                "px-12 py-2 rounded-md shadow-black/50 shadow-md border border-white text-sm transition-colors duration-300",
+                files
+                  ? "bg-cargoClaroOrange hover:bg-cargoClaroOrange-hover text-white"
+                  : "bg-gray-300 text-gray-500 cursor-not-allowed"
+              )}
+            >
               Glosar
             </button>
+            {/* {files && (
+              <button
+                onClick={() => setFiles(null)}
+                // className="underline text-gray-600"
+                className="px-12 py-2 rounded-md shadow-black/50 shadow-md border border-white text-sm bg-gray-400 hover:bg-gray-500 text-white"
+              >
+                Borrar selección
+              </button>
+            )} */}
           </div>
-        </fieldset>
-      </form>
+        </div>
+      </div>
+      <Modal
+        isOpen={isOpen}
+        menuRef={isLoading ? null : menuRef}
+        onClose={isLoading ? () => {} : closeMenu}
+      >
+        <div className="flex flex-col gap-2 items-center justify-center">
+          {isLoading ? (
+            <>
+              <Loading color="cargoClaro" size="size-20" />
+              <p className="text-xl text-center font-semibold">
+                Analizando los documentos... <br />
+                <small>
+                  No actualice ni cierre la página, por favor, espere.
+                </small>
+              </p>
+            </>
+          ) : (
+            <>
+              <h2 className="text-center font-bold text-xl">
+                ¿Deseas continuar con la carga de estos archivos?
+              </h2>
+              <ul className="flex gap-2 overflow-x-auto items-start w-full max-w-min">
+                {files &&
+                  Array.from(files).map((file, index) => (
+                    <li
+                      key={index}
+                      className="flex flex-col gap-2 w-[260px] h-[260px]"
+                    >
+                      {errorDisplaying ? (
+                        <Document />
+                      ) : (
+                        <iframe
+                          width="260px"
+                          height="260px"
+                          src={URL.createObjectURL(file)}
+                          onError={() => setErrorDisplaying(true)}
+                        />
+                      )}
+                      <p
+                        title={file.name}
+                        className="text-center truncate px-2"
+                      >
+                        {file.name}
+                      </p>
+                    </li>
+                  ))}
+              </ul>
+              <div className="flex flex-col sm:flex-row gap-2 justify-center">
+                <button
+                  onClick={() => handlerAction()}
+                  className="px-12 py-2 rounded-md shadow-black/50 shadow-md border border-white text-sm bg-cargoClaroOrange hover:bg-cargoClaroOrange-hover text-white"
+                >
+                  Continuar
+                </button>
+                <button
+                  onClick={() => closeMenu()}
+                  className="px-12 py-2 rounded-md shadow-black/50 shadow-md border border-white text-sm bg-gray-400 hover:bg-gray-500 text-white"
+                >
+                  Cancelar
+                </button>
+              </div>
+            </>
+          )}
+        </div>
+      </Modal>
     </>
   );
 };
