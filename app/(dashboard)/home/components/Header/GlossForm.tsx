@@ -37,8 +37,6 @@ const GlossForm = () => {
     window.location.reload();
   };
 
-  console.log(errorDisplaying);
-
   return (
     <>
       <h1 className="text-center font-semibold text-xl">
