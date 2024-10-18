@@ -2,6 +2,7 @@ import Bell from "./Bell";
 import Cog8 from "./Cog8";
 import Clock from "./Clock";
 import XMark from "./XMark";
+import Check from "./Check";
 import Funnel from "./Funnel";
 import Search from "./Search";
 import Upload from "./Upload";
@@ -12,6 +13,7 @@ import GlobeAlt from "./GlobeAlt";
 import Document from "./Document";
 import Square2x2 from "./Square2x2";
 import LeftArrow from "./LeftArrow";
+import BellAlert from "./BellAlert";
 import RightArrow from "./RightArrow";
 import DownChevron from "./DownChevron";
 import LeftChevron from "./LeftChevron";
@@ -29,6 +31,7 @@ export {
   Cog8,
   Clock,
   XMark,
+  Check,
   Funnel,
   Search,
   Upload,
@@ -39,6 +42,7 @@ export {
   TrashIcon,
   Square2x2,
   LeftArrow,
+  BellAlert,
   RightArrow,
   DownChevron,
   LeftChevron,
