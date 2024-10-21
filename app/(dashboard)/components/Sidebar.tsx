@@ -7,8 +7,16 @@ import { usePathname } from "next/navigation";
 import { GlobeAlt, Square2x2 } from "@/public/icons";
 
 const Sidebar = () => {
+  const pathname = usePathname();
+  const isAnalysisPage = pathname.endsWith("analysis");
+
   return (
-    <aside className="fixed top-0 z-20 w-48 h-screen transition-transform -translate-x-full sm:translate-x-0 bg-white">
+    <aside
+      className={cn(
+        "fixed top-0 z-20 w-48 h-screen transition-transform -translate-x-full sm:translate-x-0 bg-white",
+        isAnalysisPage && "hidden"
+      )}
+    >
       <div className="h-full overflow-y-auto">
         <div className="size-auto my-10 pr-10">
           <Image

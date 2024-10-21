@@ -3,7 +3,7 @@ import { GlossDataTable, GlossDataTableColumns } from "./components";
 
 const GlossPage = () => {
   return (
-    <article className="mt-2">
+    <article>
       <GlossDataTable data={DUMP_GLOSSES} columns={GlossDataTableColumns} />
     </article>
   );

@@ -7,25 +7,22 @@ import { usePathname } from "next/navigation";
 
 const LayoutHeader = () => {
   const pathname = usePathname();
+  const isAnalysis = pathname.endsWith("/analysis");
+
   return (
-    <>
-      <h1 className="text-2xl font-bold">
-        <Link
-          href="/gloss"
-          className={cn(
-            pathname !== "/gloss" && "inline-flex items-center gap-2"
-          )}
-        >
-          <span>
-            <LeftArrow
-              strokeWidth={3}
-              customClass={cn(pathname === "/gloss" && "hidden")}
-            />
-          </span>
-          Mis Operaciones
-        </Link>
-      </h1>
-    </>
+    <h1
+      className={cn(
+        "text-2xl font-bold",
+        (pathname === "/gloss" || isAnalysis) && "hidden"
+      )}
+    >
+      <Link className="inline-flex items-center gap-2" href="/gloss">
+        <span>
+          <LeftArrow strokeWidth={3} />
+        </span>
+        Mis Operaciones
+      </Link>
+    </h1>
   );
 };
 

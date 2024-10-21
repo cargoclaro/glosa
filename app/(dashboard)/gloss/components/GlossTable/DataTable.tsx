@@ -62,7 +62,7 @@ export default function GlossDataTable<TData, TValue>({
 
   return (
     <section>
-      <h2 className="text-xl font-semibold pt-4">Busca tus Expedientes</h2>
+      <h2 className="text-xl font-semibold">Busca tus Expedientes</h2>
       <div className="flex flex-col md:flex-row gap-2 py-2">
         <div className="relative">
           <label

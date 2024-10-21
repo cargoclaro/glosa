@@ -1,8 +1,10 @@
+import Link from "next/link";
 import { GenericCard } from "@/app/components";
 import formatCurrency from "@/app/utils/format-currency";
 import { CurrencyDollar, RightArrow } from "@/public/icons";
 
 const SavedNFinish = () => {
+  const glossId = 28;
   return (
     <div className="flex flex-col gap-4">
       <GenericCard>
@@ -20,12 +22,15 @@ const SavedNFinish = () => {
         <small>Ahorrado en multas</small>
       </GenericCard>
       <div className="mx-auto">
-        <button className="px-12 py-2 rounded-md border border-black text-sm relative group hover:bg-gray-100 transition-colors duration-200">
+        <Link
+          href={`/gloss/${glossId}`}
+          className="px-12 py-2 rounded-md border border-black text-sm relative group hover:bg-gray-100 transition-colors duration-200"
+        >
           Terminar
           <span className="absolute right-1 top-1.5 group-hover:animate-fade-right animate-infinite animate-duration-[2000ms] animate-alternate">
             <RightArrow />
           </span>
-        </button>
+        </Link>
       </div>
     </div>
   );
