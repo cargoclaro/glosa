@@ -1,4 +1,4 @@
-import { Header, Sidebar } from "./components";
+import { Header, Main, Sidebar } from "./components";
 import { getMe } from "@/app/services/user/controller";
 import type { IUser } from "@/app/interfaces";
 
@@ -24,7 +24,7 @@ const AuthLayout = async ({ children }: { children: React.ReactNode }) => {
         user={me}
         // notifications={myNotifications}
       />
-      <main className="sm:ml-48 p-4">{children}</main>
+      <Main>{children}</Main>
     </>
   );
 };

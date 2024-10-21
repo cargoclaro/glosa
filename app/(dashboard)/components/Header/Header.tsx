@@ -1,6 +1,10 @@
+"use client";
+
+import { cn } from "@/app/utils/cn";
 import ProfileMenu from "./ProfileMenu";
 import todayIs from "@/app/utils/today-is";
 // import NotificationsMenu from "./NotificationsMenu";
+import { usePathname } from "next/navigation";
 import type { IUser } from "@/app/interfaces";
 
 interface IHeader {
@@ -12,8 +16,15 @@ const Header = ({
   user,
 }: // notifications
 IHeader) => {
+  const pathname = usePathname();
+  const isAnalysisPage = pathname.endsWith("analysis");
   return (
-    <header className="sticky top-0 z-10 bg-[#f8f9fd]">
+    <header
+      className={cn(
+        "sticky top-0 z-10 bg-[#f8f9fd]",
+        isAnalysisPage && "hidden"
+      )}
+    >
       <nav className="sm:ml-48 p-4">
         <ul className="w-full flex justify-between items-center gap-4">
           <li className="flex flex-col gap-0">

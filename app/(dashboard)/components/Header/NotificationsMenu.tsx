@@ -1,4 +1,4 @@
-"use client";
+// "use client";
 
 import Bell from "@/public/icons/Bell";
 import { useModal } from "@/app/hooks";
