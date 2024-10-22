@@ -5,6 +5,21 @@ import {
   Documents,
   SavedNFinish,
 } from "./components";
+import type { Metadata } from "next";
+
+type IDynamicMetadata = {
+  params: Promise<{ id: string }>;
+};
+
+export async function generateMetadata({
+  params,
+}: IDynamicMetadata): Promise<Metadata> {
+  const id = (await params).id;
+
+  return {
+    title: `Análisis de Glosa ${id}`,
+  };
+}
 
 const GlossIdAnalysis = () => {
   return (
