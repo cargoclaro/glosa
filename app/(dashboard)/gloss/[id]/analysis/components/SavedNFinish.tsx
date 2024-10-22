@@ -4,7 +4,7 @@ import formatCurrency from "@/app/utils/format-currency";
 import { CurrencyDollar, RightArrow } from "@/public/icons";
 
 const SavedNFinish = () => {
-  const glossId = 28;
+  const glossId = 28; // THIS WILL BECOME FROM THE DATABASE
   return (
     <div className="flex flex-col gap-4">
       <GenericCard>
@@ -24,10 +24,10 @@ const SavedNFinish = () => {
       <div className="mx-auto">
         <Link
           href={`/gloss/${glossId}`}
-          className="px-12 py-2 rounded-md border border-black text-sm relative group hover:bg-gray-100 transition-colors duration-200"
+          className="px-12 py-2 rounded-md border border-black text-sm relative hover:bg-gray-100 transition-colors duration-200"
         >
           Terminar
-          <span className="absolute right-1 top-1.5 group-hover:animate-fade-right animate-infinite animate-duration-[2000ms] animate-alternate">
+          <span className="absolute right-1 top-1">
             <RightArrow />
           </span>
         </Link>
