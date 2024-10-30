@@ -6,6 +6,7 @@ import { Loading, Modal } from "@/app/components";
 import { Document, Upload } from "@/public/icons";
 import { useModal, useServerAction } from "@/app/hooks";
 import { INITIAL_STATE_RESPONSE } from "@/app/constants";
+import { analysis } from "@/app/services/customGloss/controller";
 import type { IGlossAnalysisState } from "@/app/interfaces";
 
 const GlossForm = () => {
@@ -17,24 +18,20 @@ const GlossForm = () => {
 
   const handlerAction = async () => {
     setIsLoading(true);
-
-    // REAL
-    // const res = await glosar(files)
-    // if (res && res.success) {
-    //   window.location.href = `/gloss/${res.glossId}/analysis`;
-    // } else {
-    //   setResponse(res);
-    //   closeMenu();
-    // }
-
-    // DUMMY
-    await new Promise((resolve) => setTimeout(resolve, 4000));
-    setResponse({
-      success: true,
-      message: "¡Documentos cargados con éxito!",
-    });
+    if (files) {
+      const formData = new FormData();
+      Array.from(files).forEach((file) => {
+        formData.append("documents", file);
+      });
+      const res = await analysis(formData);
+      if (res && res.success) {
+        window.location.href = `/gloss/${res.glossId}/analysis`;
+      } else {
+        setResponse(res);
+      }
+    }
     setIsLoading(false);
-    window.location.reload();
+    closeMenu();
   };
 
   return (

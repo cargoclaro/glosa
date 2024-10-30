@@ -1,3 +1,5 @@
+import getBaseUrl from "../utils/get-base-url";
+
 export const INITIAL_STATE_RESPONSE = {
   success: false,
   message: "",
@@ -145,5 +147,35 @@ export const DUMP_GLOSSES = [
     id: 1,
     importerName: "Subaru234",
     operationStatus: "DONE",
+  },
+];
+
+const baseUrl = getBaseUrl();
+const anexo22Url = `${baseUrl}/api/gloss/anexo_22`;
+const generalOptions = {
+  method: "POST",
+  credentials: "include" as RequestCredentials,
+  headers: {
+    "Content-Type": "application/json",
+  },
+};
+export const ANEXO_22_FIELDS_REQUESTS = [
+  {
+    url: anexo22Url,
+    options: {
+      ...generalOptions,
+      body: JSON.stringify({
+        request_field: "1_encabezado_principal_de_pedimento",
+      }),
+    },
+  },
+  {
+    url: anexo22Url,
+    options: {
+      ...generalOptions,
+      body: JSON.stringify({
+        request_field: "2_encabezado_para_paginas_secundarias_del_pedimento",
+      }),
+    },
   },
 ];
