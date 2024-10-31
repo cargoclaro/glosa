@@ -1,0 +1,65 @@
+{
+  "Descripción": "Tratándose de operaciones de tránsito, la declaración de este bloque no es obligatoria.",
+  "Campos": [
+    {
+      "Número": 1,
+      "Campo": "CVE. GAR.",
+      "Descripción": "Clave del tipo de garantía que se utiliza, conforme a las siguientes opciones:",
+      "Opciones": {
+        "1": "Depósito.",
+        "2": "Fideicomiso.",
+        "3": "Línea de crédito.",
+        "4": "Cuenta referenciada (depósito referenciado).",
+        "5": "Prenda.",
+        "6": "Hipoteca.",
+        "7": "Títulos valor.",
+        "8": "Carteras de créditos del propio contribuyente."
+      }
+    },
+    {
+      "Número": 2,
+      "Campo": "INST. EMISORA.",
+      "Descripción": "Clave de la institución emisora de la constancia de depósito en la cuenta, autorizada por el SAT para emitir cuentas aduaneras de garantía.",
+      "Opciones": {
+        "I": "BBVA México, S.A., Institución de Banca Múltiple, Grupo Financiero BBVA México.",
+        "II": "Banco Nacional de México, S.A.",
+        "III": "Banco HSBC, S.A. de C.V.",
+        "IV": "Bursamex, S.A. de C.V.",
+        "V": "Operadora de Bolsa, S.A. de C.V.",
+        "VI": "Vector Casa de Bolsa, S.A. de C.V."
+      }
+    },
+    {
+      "Número": 3,
+      "Campo": "FECHA C.",
+      "Descripción": "Fecha de la constancia de depósito en la cuenta de garantía.",
+      "Nota": "Deberá ser una fecha válida anterior o igual a la fecha de validación del pedimento. Tratándose de cuentas de garantía globales, el intervalo de tiempo entre la fecha de la constancia y la fecha de pago del pedimento no podrá ser mayor a seis meses."
+    },
+    {
+      "Número": 4,
+      "Campo": "NÚMERO DE CUENTA",
+      "Descripción": "Número de cuenta de garantía asignado por la institución emisora."
+    },
+    {
+      "Número": 5,
+      "Campo": "FOLIO CONSTANCIA",
+      "Descripción": "Folio correspondiente a la constancia de depósito en la cuenta de garantía.",
+      "Nota": "Deberá ser único por institución emisora. No podrá declararse en cero o dejarse en blanco."
+    },
+    {
+      "Número": 6,
+      "Campo": "TOTAL DEPÓSITO",
+      "Descripción": "El importe total que ampara la constancia de depósito."
+    },
+    {
+      "Número": 7,
+      "Campo": "PRECIO ESTIMADO",
+      "Descripción": "Precio estimado que aplique a las mercancías que se están importando."
+    },
+    {
+      "Número": 8,
+      "Campo": "CANT. U.M. PRECIO EST.",
+      "Descripción": "Cantidad en unidades de medida de precio estimado para la mercancía declarada."
+    }
+  ]
+}

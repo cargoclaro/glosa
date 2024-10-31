@@ -1,0 +1,32 @@
+{
+  "Campos": [
+    {
+      "Número": 1,
+      "Campo": "PEDIMENTO ORIGINAL",
+      "Descripción": "El número de pedimento de la operación original, integrado con quince dígitos, que corresponden a:",
+      "Detalles": {
+        "Año": "2 dígitos, del año de validación del pedimento original.",
+        "Aduana": "2 dígitos, de la aduana de despacho del pedimento original.",
+        "Patente": "4 dígitos, del número de la patente o autorización del agente aduanal, agencia aduanal, importador, exportador, apoderado aduanal, o almacén que haya promovido la operación original.",
+        "Consecutivo": "7 dígitos, del consecutivo de la operación original."
+      },
+      "Nota": "Cada uno de estos campos deberá ser separado por dos espacios en blanco."
+    },
+    {
+      "Número": 2,
+      "Campo": "CVE. PEDIM. ORIGINAL",
+      "Descripción": "Clave de pedimento que se haya declarado en el pedimento original, conforme al apéndice 2 del presente Anexo, vigente en la fecha de su presentación ante la aduana."
+    },
+    {
+      "Número": 3,
+      "Campo": "CVE. PEDIM. RECT.",
+      "Descripción": "Clave de pedimento a rectificar conforme al apéndice 2 del presente Anexo, vigente en la fecha de su presentación ante la aduana.",
+      "Nota": "No se permitirá la rectificación de la clave de pedimento, cuando implique un cambio de régimen."
+    },
+    {
+      "Número": 4,
+      "Campo": "FECHA PAGO RECT.",
+      "Descripción": "Declaración de la fecha en que se pretende pagar las contribuciones correspondientes a la rectificación, deberá declararse la fecha con el siguiente formato DD/MM/AAAA."
+    }
+  ]
+}

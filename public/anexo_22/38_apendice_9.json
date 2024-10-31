@@ -1,0 +1,205 @@
+{
+  "Regulaciones y restricciones no arancelarias": {
+    "Secretarías": [
+      {
+        "Nombre": "Secretaría de Economía",
+        "Regulaciones": [
+          {
+            "Clave": "CA",
+            "Descripción": "Certificado de cupo adicional."
+          },
+          {
+            "Clave": "CM",
+            "Descripción": "Cupo medida de transición."
+          },
+          {
+            "Clave": "CP",
+            "Descripción": "Certificado de cupo."
+          },
+          {
+            "Clave": "C1",
+            "Descripción": "Permiso previo o permiso automático de importación definitiva, temporal para mercancías de las fracciones arancelarias comprendidas en los numerales 1, fracción I, 3, 4 y 8 BIS, del Anexo 2.2.1 'Clasificación y codificación de mercancías cuya importación y exportación está sujeta al requisito de permiso previo o aviso automático por parte de la Secretaría de Economía' del 'Acuerdo por el que la Secretaría de Economía emite Reglas y criterios de carácter general en materia de comercio exterior', publicado en el DOF el 09 de mayo de 2022 y sus posteriores modificaciones, según se especifique en cada uno de ellos y aviso de la Secretaría de Economía."
+          },
+          {
+            "Clave": "C2",
+            "Descripción": "Permiso previo de importación definitiva, únicamente cuando se trata de mercancías usadas (fracciones arancelarias comprendidas en el numeral 5 salvo las excepciones señaladas en el numeral 6, ambos, del Anexo 2.2.1 'Clasificación y codificación de mercancías cuya importación y exportación está sujeta al requisito de permiso previo o aviso automático por parte de la Secretaría de Economía' del 'Acuerdo por el que la Secretaría de Economía emite Reglas y criterios de carácter general en materia de comercio exterior', publicado en el DOF el 09 de mayo de 2022 y sus posteriores modificaciones)."
+          },
+          {
+            "Clave": "C6",
+            "Descripción": "Aviso automático de exportación definitiva o temporal de mercancías; permiso automático previo de exportación y aviso de la Secretaría de Economía."
+          },
+          {
+            "Clave": "M6",
+            "Descripción": "Permiso previo de exportación definitiva o temporal de mercancías (fracciones arancelarias comprendidas en los numerales 7 y 7 BIS del Anexo 2.2.1 'Clasificación y codificación de mercancías cuya importación y exportación está sujeta al requisito de permiso previo o aviso automático por parte de la Secretaría de Economía' del 'Acuerdo por el que la Secretaría de Economía emite Reglas y criterios de carácter general en materia de comercio exterior', publicado en el DOF el 09 de mayo de 2022 y sus posteriores modificaciones)."
+          },
+          {
+            "Clave": "AV",
+            "Descripción": "Aviso automático de la SE."
+          },
+          {
+            "Clave": "IM",
+            "Descripción": "Permiso para mercancías sensibles conforme al Decreto IMMEX."
+          },
+          {
+            "Clave": "NM",
+            "Descripción": "Será obligatorio declarar el número del certificado cuando la fracción arancelaria esté comprendida en el Anexo 2.4.1, numerales 1, 2, 4 y 5 del 'Acuerdo por el que la Secretaría de Economía emite Reglas y criterios de carácter general en materia de comercio exterior', publicado en el DOF el 09 de mayo de 2022 y sus posteriores modificaciones. En caso de contar con una resolución de no aplicación de la NOM en el punto de entrada al país, emitida por la autoridad competente, se deberá declarar el número de folio señalado en la misma. Cuando se opte por dar cumplimiento a las NOMs de información comercial en territorio nacional conforme a la regla 2.4.8, fracciones II y III del Acuerdo citado, se deberá declarar el número de solicitud de servicios o folio emitido por la unidad de verificación o inspección aprobada o acreditada de que se trate."
+          },
+          {
+            "Clave": "N3",
+            "Descripción": "Será obligatorio declarar la clave de la NOM cuando la fracción arancelaria esté comprendida en el Anexo 2.4.1, numeral 3 del 'Acuerdo por el que la Secretaría de Economía emite Reglas y criterios de carácter general en materia de comercio exterior', publicado en el DOF el 09 de mayo de 2022 y sus posteriores modificaciones."
+          }
+        ]
+      },
+      {
+        "Nombre": "Secretaría de Salud",
+        "Regulaciones": [
+          {
+            "Clave": "S1",
+            "Descripción": "Autorización sanitaria previa de importación, para importación o autorización de internación definitiva, temporal o a depósito fiscal."
+          },
+          {
+            "Clave": "S2",
+            "Descripción": "Aviso sanitario de importación, para importación definitiva, temporal o a depósito fiscal."
+          },
+          {
+            "Clave": "S3",
+            "Descripción": "Copia del registro sanitario, para importación definitiva, temporal o a depósito fiscal."
+          },
+          {
+            "Clave": "S4",
+            "Descripción": "Mercancía sujeta a cumplir con los requisitos de etiquetado a la importación definitiva, temporal o depósito fiscal."
+          },
+          {
+            "Clave": "S5",
+            "Descripción": "Aviso previo de importación definitiva, temporal o depósito fiscal, por parte de la Secretaría de Salud."
+          },
+          {
+            "Clave": "S6",
+            "Descripción": "Autorización sanitaria previa de exportación, para la exportación o autorización de salida, temporal o definitiva de mercancías."
+          },
+          {
+            "Clave": "S7",
+            "Descripción": "Aviso previo de exportación definitiva o depósito fiscal, por parte de la Secretaría de Salud."
+          }
+        ]
+      },
+      {
+        "Nombre": "Secretaría de Medio Ambiente y Recursos Naturales",
+        "Regulaciones": [
+          {
+            "Clave": "T1",
+            "Descripción": "Mercancía cuya importación definitiva, temporal y depósito fiscal, está sujeta a un certificado CITES o una autorización de importación por parte de la SEMARNAT."
+          },
+          {
+            "Clave": "T2",
+            "Descripción": "Mercancía cuya exportación, está sujeta a una autorización de exportación o aviso de retorno por parte de la SEMARNAT otorgado por la Dirección General de Materiales, Residuos y Actividades Riesgosas."
+          },
+          {
+            "Clave": "T3",
+            "Descripción": "Mercancía cuya importación, está sujeta a un certificado fitosanitario o zoosanitario por parte de la SEMARNAT otorgado por la Dirección General de Vida Silvestre."
+          },
+          {
+            "Clave": "T5",
+            "Descripción": "Mercancía cuya importación, está sujeta a un certificado fitosanitario por parte de la SEMARNAT otorgado por la Dirección General Forestal."
+          },
+          {
+            "Clave": "T7",
+            "Descripción": "Mercancía cuya importación, está sujeta a una autorización de importación o aviso de retorno por parte de la SEMARNAT otorgado por la Dirección General de Materiales, Residuos y Actividades Riesgosas."
+          },
+          {
+            "Clave": "T8",
+            "Descripción": "Mercancía cuya exportación definitiva temporal y depósito fiscal, está sujeta a un certificado CITES o una autorización de exportación por parte de la SEMARNAT."
+          },
+          {
+            "Clave": "T9",
+            "Descripción": "Registro de verificación."
+          }
+        ]
+      },
+      {
+        "Nombre": "Comisión Intersecretarial para el Control del Proceso y Uso de Plaguicidas, Fertilizantes y Sustancias Tóxicas",
+        "Regulaciones": [
+          {
+            "Clave": "PF",
+            "Descripción": "Autorizaciones expedidas por COFEPRIS y SEMARNAT tratándose de importación, y en el caso de la exportación la autorización expedida por SEMARNAT."
+          }
+        ]
+      },
+      {
+        "Nombre": "Secretaría de la Defensa Nacional",
+        "Regulaciones": [
+          {
+            "Clave": "D1",
+            "Descripción": "Autorización de la SEDENA para la importación y exportación de armas, municiones y materiales explosivos."
+          }
+        ]
+      },
+      {
+        "Nombre": "Secretaría de Energía",
+        "Regulaciones": [
+          {
+            "Clave": "N1",
+            "Descripción": "Autorización para importación temporal o definitiva por parte de la SENER."
+          },
+          {
+            "Clave": "N6",
+            "Descripción": "Autorización previa para exportaciones temporales o definitivas por parte de la SENER."
+          },
+          {
+            "Clave": "C1",
+            "Descripción": "Permiso previo de importación y exportación de hidrocarburos y petrolíferos del 'Acuerdo que establece las mercancías cuya importación y exportación está sujeta a regulación por parte de la Secretaría de Energía', publicado en el DOF el 26 de diciembre de 2020 y sus posteriores modificaciones."
+          },
+          {
+            "Clave": "C6",
+            "Descripción": "Permiso previo de exportación de hidrocarburos y petrolíferos del 'Acuerdo que establece las mercancías cuya importación y exportación está sujeta a regulación por parte de la Secretaría de Energía', publicado en el DOF el 26 de diciembre de 2020 y sus posteriores modificaciones."
+          }
+        ]
+      },
+      {
+        "Nombre": "Instituto Nacional de Antropología e Historia",
+        "Regulaciones": [
+          {
+            "Clave": "AH",
+            "Descripción": "Mercancía cuya exportación temporal o definitiva está sujeta a permiso previo."
+          }
+        ]
+      },
+      {
+        "Nombre": "Instituto Nacional de Bellas Artes y Literatura",
+        "Regulaciones": [
+          {
+            "Clave": "BA",
+            "Descripción": "Mercancías cuya exportación temporal o definitiva está sujeta a permiso previo."
+          }
+        ]
+      },
+      {
+        "Nombre": "Consejo Nacional Mexicano del Café o los Consejos Estatales",
+        "Regulaciones": [
+          {
+            "Clave": "FE",
+            "Descripción": "Mercancía cuya exportación definitiva está sujeta a la presentación de un Certificado de Origen."
+          }
+        ]
+      },
+      {
+        "Nombre": "Consejo Regulador del Tequila",
+        "Regulaciones": [
+          {
+            "Clave": "TQ",
+            "Descripción": "Mercancía cuya exportación definitiva está sujeta a la presentación de un certificado."
+          }
+        ]
+      },
+      {
+        "Nombre": "Comisión Reguladora de Energía",
+        "Regulaciones": [
+          {
+            "Clave": "IR",
+            "Descripción": "Informe de resultados."
+          }
+        ]
+      }
+    ]
+  }
+}

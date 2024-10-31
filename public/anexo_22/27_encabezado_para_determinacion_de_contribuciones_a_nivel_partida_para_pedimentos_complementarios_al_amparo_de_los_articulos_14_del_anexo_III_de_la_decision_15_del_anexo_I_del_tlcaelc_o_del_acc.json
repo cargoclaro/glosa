@@ -1,0 +1,35 @@
+{
+  "Descripción": "Para cada una de las partidas del pedimento complementario se deberán declarar los datos que a continuación se mencionan, conforme a la posición en que se encuentran en el encabezado de determinación de contribuciones a nivel partida del formato de pedimento complementario.",
+  "Campos": [
+    {
+      "Número": 1,
+      "Campo": "SEC.",
+      "Descripción": "Número de la secuencia de la fracción en el pedimento."
+    },
+    {
+      "Número": 2,
+      "Campo": "FRACCIÓN",
+      "Descripción": "Fracción arancelaria conforme a la TIGIE aplicable al bien final, declarado en el pedimento de retorno, que se exporta a alguno de los Estados miembros de la Comunidad o de la AELC o del Reino Unido."
+    },
+    {
+      "Número": 3,
+      "Campo": "VALOR MERC. NO ORIG.",
+      "Descripción": "El monto que resulte de sumar el valor de los bienes que se hayan introducido a territorio nacional bajo un programa de diferimiento o devolución de aranceles, sobre los cuales se haya realizado el cálculo del monto del IGI que se adeuda."
+    },
+    {
+      "Número": 4,
+      "Campo": "MONTO IGI",
+      "Descripción": "El monto en moneda nacional que resulte de sumar el IGI correspondiente a las mercancías no originarias que se hayan introducido a territorio nacional bajo un programa de diferimiento o devolución de aranceles."
+    },
+    {
+      "Número": 5,
+      "Campo": "F.P.",
+      "Descripción": "Clave de la forma de pago del concepto a liquidar, conforme al apéndice 13 del presente Anexo."
+    },
+    {
+      "Número": 6,
+      "Campo": "IMPORTE",
+      "Descripción": "Importe total en moneda nacional del concepto a liquidar, para la forma de pago declarada."
+    }
+  ]
+}

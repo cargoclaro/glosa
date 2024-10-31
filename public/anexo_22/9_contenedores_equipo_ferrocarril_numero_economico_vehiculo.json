@@ -1,0 +1,14 @@
+{
+  "Campos": [
+    {
+      "Número": 1,
+      "Campo": "NÚMERO DE CONTENEDOR/EQUIPO FERROCARRIL/NÚMERO ECONÓMICO DEL VEHÍCULO",
+      "Descripción": "Se anotarán las letras y número de los contenedores, equipo ferrocarril o número económico del vehículo."
+    },
+    {
+      "Número": 2,
+      "Campo": "TIPO DE CONTENEDOR/EQUIPO FERROCARRIL/NÚMERO ECONÓMICO DEL VEHÍCULO",
+      "Descripción": "Se anotará la clave que identifique el tipo de contenedor, equipo ferrocarril o número económico del vehículo conforme al apéndice 10 del presente Anexo."
+    }
+  ]
+}

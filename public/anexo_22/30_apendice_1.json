@@ -1,0 +1,644 @@
+{
+  "Aduana_Sección": [
+    {
+      "Aduana": "01",
+      "Sección": "0",
+      "Denominación": "Acapulco, Acapulco de Juárez, Guerrero."
+    },
+    {
+      "Aduana": "01",
+      "Sección": "2",
+      "Denominación": "Aeropuerto Internacional General Juan N. Álvarez, Acapulco, Guerrero."
+    },
+    {
+      "Aduana": "02",
+      "Sección": "0",
+      "Denominación": "Agua Prieta, Agua Prieta, Sonora."
+    },
+    {
+      "Aduana": "05",
+      "Sección": "0",
+      "Denominación": "Subteniente López, Subteniente López, Quintana Roo."
+    },
+    {
+      "Aduana": "05",
+      "Sección": "1",
+      "Denominación": "Subteniente López II \"Chactemal\", Othón P. Blanco, Chetumal, Quintana Roo."
+    },
+    {
+      "Aduana": "06",
+      "Sección": "0",
+      "Denominación": "Ciudad del Carmen, Ciudad del Carmen, Campeche."
+    },
+    {
+      "Aduana": "06",
+      "Sección": "3",
+      "Denominación": "Seybaplaya, Champotón, Campeche."
+    },
+    {
+      "Aduana": "07",
+      "Sección": "0",
+      "Denominación": "Ciudad Juárez, Juárez, Chihuahua."
+    },
+    {
+      "Aduana": "07",
+      "Sección": "1",
+      "Denominación": "Puente Internacional Zaragoza Isleta, Juárez, Chihuahua."
+    },
+    {
+      "Aduana": "07",
+      "Sección": "2",
+      "Denominación": "San Jerónimo-Santa Teresa, Juárez, Chihuahua."
+    },
+    {
+      "Aduana": "07",
+      "Sección": "3",
+      "Denominación": "Aeropuerto Internacional Abraham González, Juárez, Chihuahua."
+    },
+    {
+      "Aduana": "07",
+      "Sección": "4",
+      "Denominación": "Guadalupe-Tornillo, Guadalupe, Chihuahua."
+    },
+    {
+      "Aduana": "08",
+      "Sección": "0",
+      "Denominación": "Coatzacoalcos, Coatzacoalcos, Veracruz."
+    },
+    {
+      "Aduana": "11",
+      "Sección": "0",
+      "Denominación": "Ensenada, Ensenada, Baja California."
+    },
+    {
+      "Aduana": "12",
+      "Sección": "0",
+      "Denominación": "Guaymas, Guaymas, Sonora."
+    },
+    {
+      "Aduana": "14",
+      "Sección": "0",
+      "Denominación": "La Paz, La Paz, Baja California Sur."
+    },
+    {
+      "Aduana": "14",
+      "Sección": "2",
+      "Denominación": "San José del Cabo, Los Cabos, Baja California Sur."
+    },
+    {
+      "Aduana": "14",
+      "Sección": "4",
+      "Denominación": "Santa Rosalía, Mulegé, Baja California Sur."
+    },
+    {
+      "Aduana": "14",
+      "Sección": "7",
+      "Denominación": "Pichilingue, La Paz, Baja California Sur."
+    },
+    {
+      "Aduana": "14",
+      "Sección": "Los Olivos",
+      "Denominación": "La Paz, Baja California Sur."
+    },
+    {
+      "Aduana": "16",
+      "Sección": "0",
+      "Denominación": "Manzanillo, Manzanillo, Colima."
+    },
+    {
+      "Aduana": "16",
+      "Sección": "1",
+      "Denominación": "Armería, Armería, Colima."
+    },
+    {
+      "Aduana": "17",
+      "Sección": "0",
+      "Denominación": "Matamoros, Matamoros, Tamaulipas."
+    },
+    {
+      "Aduana": "17",
+      "Sección": "1",
+      "Denominación": "Lucio Blanco-Los Indios, Matamoros, Tamaulipas."
+    },
+    {
+      "Aduana": "17",
+      "Sección": "2",
+      "Denominación": "Ferroviaria de Matamoros, Matamoros, Tamaulipas."
+    },
+    {
+      "Aduana": "17",
+      "Sección": "Puerto el Mezquital",
+      "Denominación": "Matamoros, Tamaulipas."
+    },
+    {
+      "Aduana": "17",
+      "Sección": "Aeropuerto Internacional General Servando Canales",
+      "Denominación": "Matamoros, Tamaulipas."
+    },
+    {
+      "Aduana": "18",
+      "Sección": "0",
+      "Denominación": "Mazatlán, Mazatlán, Sinaloa."
+    },
+    {
+      "Aduana": "18",
+      "Sección": "3",
+      "Denominación": "Topolobampo, Ahome, Sinaloa."
+    },
+    {
+      "Aduana": "19",
+      "Sección": "0",
+      "Denominación": "Mexicali, Mexicali, Baja California."
+    },
+    {
+      "Aduana": "19",
+      "Sección": "2",
+      "Denominación": "Los Algodones, Mexicali, Baja California."
+    },
+    {
+      "Aduana": "19",
+      "Sección": "3",
+      "Denominación": "San Felipe, Mexicali, Baja California."
+    },
+    {
+      "Aduana": "20",
+      "Sección": "0",
+      "Denominación": "México, Ciudad de México."
+    },
+    {
+      "Aduana": "20",
+      "Sección": "2",
+      "Denominación": "Importación y Exportación de Contenedores, Alcaldía Azcapotzalco, Ciudad de México."
+    },
+    {
+      "Aduana": "22",
+      "Sección": "0",
+      "Denominación": "Naco, Naco, Sonora."
+    },
+    {
+      "Aduana": "23",
+      "Sección": "0",
+      "Denominación": "Nogales, Nogales, Sonora."
+    },
+    {
+      "Aduana": "23",
+      "Sección": "1",
+      "Denominación": "Sásabe, Sáric, Sonora."
+    },
+    {
+      "Aduana": "23",
+      "Sección": "2",
+      "Denominación": "Aeropuerto Internacional General Ignacio Pesqueira García, Hermosillo, Sonora."
+    },
+    {
+      "Aduana": "23",
+      "Sección": "3",
+      "Denominación": "Ciudad Obregón Adyacente al Aeropuerto de Ciudad Obregón, Cajeme, Sonora."
+    },
+    {
+      "Aduana": "23",
+      "Sección": "4",
+      "Denominación": "Aeropuerto Internacional de Culiacán, Culiacán, Sinaloa."
+    },
+    {
+      "Aduana": "24",
+      "Sección": "0",
+      "Denominación": "Nuevo Laredo, Nuevo Laredo, Tamaulipas."
+    },
+    {
+      "Aduana": "24",
+      "Sección": "Estación Sánchez",
+      "Denominación": "Nuevo Laredo, Tamaulipas."
+    },
+    {
+      "Aduana": "24",
+      "Sección": "Aeropuerto Internacional de Nuevo Laredo \"Quetzalcóatl\"",
+      "Denominación": "Nuevo Laredo, Tamaulipas."
+    },
+    {
+      "Aduana": "25",
+      "Sección": "0",
+      "Denominación": "Ojinaga, Ojinaga, Chihuahua."
+    },
+    {
+      "Aduana": "26",
+      "Sección": "0",
+      "Denominación": "Puerto Palomas, Puerto Palomas, Chihuahua."
+    },
+    {
+      "Aduana": "27",
+      "Sección": "0",
+      "Denominación": "Piedras Negras, Piedras Negras, Coahuila de Zaragoza."
+    },
+    {
+      "Aduana": "27",
+      "Sección": "1",
+      "Denominación": "Aeropuerto Internacional Plan de Guadalupe, Ramos Arizpe, Coahuila de Zaragoza."
+    },
+    {
+      "Aduana": "27",
+      "Sección": "Río Escondido",
+      "Denominación": "Nava, Coahuila de Zaragoza."
+    },
+    {
+      "Aduana": "28",
+      "Sección": "0",
+      "Denominación": "Progreso, Progreso, Yucatán."
+    },
+    {
+      "Aduana": "28",
+      "Sección": "2",
+      "Denominación": "Aeropuerto Internacional Lic. Manuel Crescencio Rejón, Mérida, Yucatán."
+    },
+    {
+      "Aduana": "30",
+      "Sección": "0",
+      "Denominación": "Ciudad Reynosa, Reynosa, Tamaulipas."
+    },
+    {
+      "Aduana": "30",
+      "Sección": "2",
+      "Denominación": "Las Flores, Río Bravo, Tamaulipas."
+    },
+    {
+      "Aduana": "30",
+      "Sección": "4",
+      "Denominación": "Aeropuerto Internacional General Lucio Blanco, Reynosa, Tamaulipas."
+    },
+    {
+      "Aduana": "30",
+      "Sección": "5",
+      "Denominación": "Río Bravo-Donna, Río Bravo, Tamaulipas."
+    },
+    {
+      "Aduana": "30",
+      "Sección": "6",
+      "Denominación": "Anzaldúas, Reynosa, Tamaulipas."
+    },
+    {
+      "Aduana": "30",
+      "Sección": "7",
+      "Denominación": "Aeropuerto Internacional General Pedro José Méndez, Victoria, Tamaulipas."
+    },
+    {
+      "Aduana": "31",
+      "Sección": "0",
+      "Denominación": "Salina Cruz, Salina Cruz, Oaxaca."
+    },
+    {
+      "Aduana": "31",
+      "Sección": "3",
+      "Denominación": "Puerto Chiapas, Tapachula, Chiapas."
+    },
+    {
+      "Aduana": "33",
+      "Sección": "0",
+      "Denominación": "San Luis Río Colorado, San Luis Río Colorado, Sonora."
+    },
+    {
+      "Aduana": "34",
+      "Sección": "0",
+      "Denominación": "Ciudad Miguel Alemán, Miguel Alemán, Tamaulipas."
+    },
+    {
+      "Aduana": "34",
+      "Sección": "2",
+      "Denominación": "Guerrero, Guerrero, Tamaulipas."
+    },
+    {
+      "Aduana": "37",
+      "Sección": "0",
+      "Denominación": "Ciudad Hidalgo, Ciudad Hidalgo, Chiapas."
+    },
+    {
+      "Aduana": "37",
+      "Sección": "2",
+      "Denominación": "Ciudad Talismán, Tuxtla Chico, Chiapas."
+    },
+    {
+      "Aduana": "37",
+      "Sección": "6",
+      "Denominación": "Ciudad Cuauhtémoc, Frontera Comalapa, Chiapas."
+    },
+    {
+      "Aduana": "37",
+      "Sección": "Aeropuerto Internacional de Tapachula, Tapachula, Chiapas.",
+      "Denominación": "Aeropuerto Internacional de Tapachula, Tapachula, Chiapas."
+    },
+    {
+      "Aduana": "37",
+      "Sección": "3",
+      "Denominación": "Aeropuerto Internacional de Oaxaca, Santa Cruz Xoxocotlán, Oaxaca."
+    },
+    {
+      "Aduana": "37",
+      "Sección": "4",
+      "Denominación": "Aeropuerto Internacional C.P.A. Carlos Rovirosa Pérez, Ciudad de Villahermosa, Centro, Tabasco."
+    },
+    {
+      "Aduana": "37",
+      "Sección": "7",
+      "Denominación": "El Ceibo, Tenosique, Tabasco."
+    },
+    {
+      "Aduana": "37",
+      "Sección": "8",
+      "Denominación": "Cruce Fronterizo Nuevo Orizaba-Ingenieros, Benemérito de las Américas, Chiapas."
+    },
+    {
+      "Aduana": "38",
+      "Sección": "0",
+      "Denominación": "Tampico, Tampico, Tamaulipas."
+    },
+    {
+      "Aduana": "39",
+      "Sección": "0",
+      "Denominación": "Tecate, Tecate, Baja California."
+    },
+    {
+      "Aduana": "39",
+      "Sección": "1",
+      "Denominación": "Loreto, Loreto, Baja California Sur."
+    },
+    {
+      "Aduana": "39",
+      "Sección": "2",
+      "Denominación": "Cabo San Lucas, Los Cabos, Baja California Sur."
+    },
+    {
+      "Aduana": "40",
+      "Sección": "0",
+      "Denominación": "Tijuana, Tijuana, Baja California."
+    },
+    {
+      "Aduana": "40",
+      "Sección": "2",
+      "Denominación": "Aeropuerto Internacional denominado Abelardo L. Rodríguez, Tijuana, Baja California."
+    },
+    {
+      "Aduana": "40",
+      "Sección": "Mesa de Otay",
+      "Denominación": "Tijuana, Baja California."
+    },
+    {
+      "Aduana": "40",
+      "Sección": "Cruce Fronterizo El Chaparral",
+      "Denominación": "Tijuana, Baja California."
+    },
+    {
+      "Aduana": "40",
+      "Sección": "Cruce Fronterizo Puerta México Este",
+      "Denominación": "Tijuana, Baja California."
+    },
+    {
+      "Aduana": "42",
+      "Sección": "0",
+      "Denominación": "Tuxpan, Tuxpan de Rodríguez Cano, Veracruz."
+    },
+    {
+      "Aduana": "42",
+      "Sección": "1",
+      "Denominación": "Tuxpan, Tuxpan, Veracruz."
+    },
+    {
+      "Aduana": "43",
+      "Sección": "0",
+      "Denominación": "Veracruz, Veracruz, Veracruz."
+    },
+    {
+      "Aduana": "43",
+      "Sección": "2",
+      "Denominación": "Aeropuerto Internacional General Heriberto Jara Corona, Veracruz, Veracruz."
+    },
+    {
+      "Aduana": "44",
+      "Sección": "0",
+      "Denominación": "Ciudad Acuña, Ciudad Acuña, Coahuila de Zaragoza."
+    },
+    {
+      "Aduana": "46",
+      "Sección": "0",
+      "Denominación": "Torreón, Torreón, Coahuila de Zaragoza."
+    },
+    {
+      "Aduana": "46",
+      "Sección": "2",
+      "Denominación": "Gómez Palácio, Gómez Palácio, Durango."
+    },
+    {
+      "Aduana": "46",
+      "Sección": "3",
+      "Denominación": "Aeropuerto Internacional General Guadalupe Victoria, Durango, Durango."
+    },
+    {
+      "Aduana": "46",
+      "Sección": "1",
+      "Denominación": "Aeropuerto de Torreón, Coahuila de Zaragoza."
+    },
+    {
+      "Aduana": "47",
+      "Sección": "0",
+      "Denominación": "Aeropuerto Internacional de la Ciudad de México."
+    },
+    {
+      "Aduana": "47",
+      "Sección": "1",
+      "Denominación": "Satélite, para importación y exportación por vía aérea, Aeropuerto Internacional \"Benito Juárez\" de la Ciudad de México."
+    },
+    {
+      "Aduana": "47",
+      "Sección": "2",
+      "Denominación": "Centro Postal Mecanizado, por vía postal y por tráfico aéreo, Aeropuerto Internacional \"Benito Juárez\" de la Ciudad de México."
+    },
+    {
+      "Aduana": "48",
+      "Sección": "0",
+      "Denominación": "Guadalajara, Tlajomulco de Zúñiga, Jalisco."
+    },
+    {
+      "Aduana": "48",
+      "Sección": "1",
+      "Denominación": "Puerto Vallarta, Puerto Vallarta, Jalisco."
+    },
+    {
+      "Aduana": "48",
+      "Sección": "4",
+      "Denominación": "Terminal Intermodal Ferroviaria, Guadalajara, Jalisco."
+    },
+    {
+      "Aduana": "50",
+      "Sección": "0",
+      "Denominación": "Sonoyta, Sonoyta, Sonora."
+    },
+    {
+      "Aduana": "50",
+      "Sección": "1",
+      "Denominación": "San Emeterio, General Plutarco Elías Calles, Sonora."
+    },
+    {
+      "Aduana": "51",
+      "Sección": "0",
+      "Denominación": "Lázaro Cárdenas, Lázaro Cárdenas, Michoacán."
+    },
+    {
+      "Aduana": "51",
+      "Sección": "1",
+      "Denominación": "Aeropuerto Internacional Ixtapa-Zihuatanejo, Zihuatanejo de Azueta, Guerrero."
+    },
+    {
+      "Aduana": "52",
+      "Sección": "0",
+      "Denominación": "Monterrey, General Mariano Escobedo, Nuevo León."
+    },
+    {
+      "Aduana": "52",
+      "Sección": "1",
+      "Denominación": "Aeropuerto Internacional General Mariano Escobedo, Apodaca, Nuevo León."
+    },
+    {
+      "Aduana": "52",
+      "Sección": "3",
+      "Denominación": "Salinas Victoria A (terminal ferroviaria), Salinas Victoria, Nuevo León."
+    },
+    {
+      "Aduana": "52",
+      "Sección": "4",
+      "Denominación": "General Escobedo, General Escobedo, Nuevo León."
+    },
+    {
+      "Aduana": "52",
+      "Sección": "5",
+      "Denominación": "Salinas Victoria B (Interpuerto), Salinas Victoria, Nuevo León."
+    },
+    {
+      "Aduana": "53",
+      "Sección": "0",
+      "Denominación": "Cancún, Cancún, Quintana Roo."
+    },
+    {
+      "Aduana": "53",
+      "Sección": "2",
+      "Denominación": "Aeropuerto Internacional de Cozumel, Cozumel, Quintana Roo."
+    },
+    {
+      "Aduana": "53",
+      "Sección": "3",
+      "Denominación": "Puerto Morelos, Benito Juárez, Quintana Roo."
+    },
+    {
+      "Aduana": "64",
+      "Sección": "0",
+      "Denominación": "Querétaro, El Marques y Colón, Querétaro."
+    },
+    {
+      "Aduana": "64",
+      "Sección": "7",
+      "Denominación": "Hidalgo, Atotonilco de Tula, Hidalgo."
+    },
+    {
+      "Aduana": "65",
+      "Sección": "0",
+      "Denominación": "Toluca, Toluca, Estado de México."
+    },
+    {
+      "Aduana": "65",
+      "Sección": "1",
+      "Denominación": "San Cayetano Morelos, Toluca, Estado de México."
+    },
+    {
+      "Aduana": "67",
+      "Sección": "0",
+      "Denominación": "Chihuahua, Chihuahua, Chihuahua."
+    },
+    {
+      "Aduana": "67",
+      "Sección": "2",
+      "Denominación": "Aeropuerto Internacional General Roberto Fierro Villalobos, Chihuahua, Chihuahua."
+    },
+    {
+      "Aduana": "73",
+      "Sección": "0",
+      "Denominación": "Aguascalientes, San Francisco de los Romo, Aguascalientes."
+    },
+    {
+      "Aduana": "73",
+      "Sección": "1",
+      "Denominación": "Parque Multimodal Interpuerto, San Luis Potosí, San Luis Potosí."
+    },
+    {
+      "Aduana": "73",
+      "Sección": "3",
+      "Denominación": "Aeropuerto Internacional Ponciano Arriaga, Soledad de Graciano Sánchez, San Luis Potosí."
+    },
+    {
+      "Aduana": "73",
+      "Sección": "2",
+      "Denominación": "Aeropuerto Internacional General Leobardo C. Ruiz, en Calera, Zacatecas."
+    },
+    {
+      "Aduana": "73",
+      "Sección": "4",
+      "Denominación": "La Pila-Villa, Villa de Reyes, San Luis Potosí."
+    },
+    {
+      "Aduana": "73",
+      "Sección": "5",
+      "Denominación": "Aeropuerto Internacional Lic. Jesús Terán Peredo, Aguascalientes, Aguascalientes."
+    },
+    {
+      "Aduana": "75",
+      "Sección": "0",
+      "Denominación": "Puebla, Heroica Puebla de Zaragoza, Puebla."
+    },
+    {
+      "Aduana": "75",
+      "Sección": "1",
+      "Denominación": "Cuernavaca, Jiutepec, Morelos."
+    },
+    {
+      "Aduana": "75",
+      "Sección": "4",
+      "Denominación": "Aeropuerto Internacional Hermanos Serdán, Huejotzingo, Puebla."
+    },
+    {
+      "Aduana": "80",
+      "Sección": "0",
+      "Denominación": "Colombia, Colombia, Nuevo León."
+    },
+    {
+      "Aduana": "81",
+      "Sección": "0",
+      "Denominación": "Altamira, Altamira, Tamaulipas."
+    },
+    {
+      "Aduana": "82",
+      "Sección": "0",
+      "Denominación": "Ciudad Camargo, Camargo, Tamaulipas."
+    },
+    {
+      "Aduana": "83",
+      "Sección": "0",
+      "Denominación": "Dos Bocas, Paraíso, Tabasco."
+    },
+    {
+      "Aduana": "84",
+      "Sección": "0",
+      "Denominación": "Guanajuato, Silao de la Victoria, Guanajuato."
+    },
+    {
+      "Aduana": "84",
+      "Sección": "1",
+      "Denominación": "Celaya, Celaya, Guanajuato."
+    },
+    {
+      "Aduana": "84",
+      "Sección": "2",
+      "Denominación": "Aeropuerto Internacional de Guanajuato, Silao de la Victoria, Guanajuato."
+    },
+    {
+      "Aduana": "85",
+      "Sección": "0",
+      "Denominación": "Aeropuerto Internacional Felipe Ángeles, Santa Lucía, Zumpango, Estado de México."
+    }
+  ]
+}

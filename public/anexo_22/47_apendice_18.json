@@ -1,0 +1,46 @@
+{
+  "Tipos de tasas": {
+    "Tasas": [
+      {
+        "Clave": "1",
+        "Descripción": "Porcentual."
+      },
+      {
+        "Clave": "2",
+        "Descripción": "Específico."
+      },
+      {
+        "Clave": "3",
+        "Descripción": "Cuota mínima (DTA)."
+      },
+      {
+        "Clave": "4",
+        "Descripción": "Cuota fija."
+      },
+      {
+        "Clave": "5",
+        "Descripción": "Tasa de descuento sobre ad valorem."
+      },
+      {
+        "Clave": "6",
+        "Descripción": "Factor de aplicación sobre TIGIE."
+      },
+      {
+        "Clave": "7",
+        "Descripción": "Al millar (DTA)."
+      },
+      {
+        "Clave": "8",
+        "Descripción": "Tasa de descuento sobre el arancel específico."
+      },
+      {
+        "Clave": "9",
+        "Descripción": "Tasa específica sobre precios de referencia."
+      },
+      {
+        "Clave": "10",
+        "Descripción": "Tasa específica sobre precios de referencia con UM."
+      }
+    ]
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "Formas de pago": {
+    "Formas": [
+      {
+        "Clave": "0",
+        "Descripción": "Efectivo."
+      },
+      {
+        "Clave": "2",
+        "Descripción": "Fianza."
+      },
+      {
+        "Clave": "4",
+        "Descripción": "Depósito en cuenta aduanera."
+      },
+      {
+        "Clave": "5",
+        "Descripción": "Temporal no sujeta a impuestos."
+      },
+      {
+        "Clave": "6",
+        "Descripción": "Pendiente de pago."
+      },
+      {
+        "Clave": "7",
+        "Descripción": "Cargo a partida presupuestal Gobierno Federal."
+      },
+      {
+        "Clave": "8",
+        "Descripción": "Franquicia."
+      },
+      {
+        "Clave": "9",
+        "Descripción": "Exento de pago."
+      },
+      {
+        "Clave": "12",
+        "Descripción": "Compensación."
+      },
+      {
+        "Clave": "13",
+        "Descripción": "Pago ya efectuado."
+      },
+      {
+        "Clave": "14",
+        "Descripción": "Condonaciones."
+      },
+      {
+        "Clave": "15",
+        "Descripción": "Cuentas aduaneras de garantía por precios estimados."
+      },
+      {
+        "Clave": "16",
+        "Descripción": "Acreditamiento."
+      },
+      {
+        "Clave": "18",
+        "Descripción": "Estímulo fiscal."
+      },
+      {
+        "Clave": "19",
+        "Descripción": "Otros medios de garantía."
+      },
+      {
+        "Clave": "21",
+        "Descripción": "Crédito en IVA e IEPS."
+      },
+      {
+        "Clave": "22",
+        "Descripción": "Garantía en IVA e IEPS."
+      }
+    ]
+  }
+}

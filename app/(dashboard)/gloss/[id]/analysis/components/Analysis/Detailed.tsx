@@ -35,7 +35,10 @@ const CustomText = ({ text }: { text: string }) => (
 const Detailed = ({ restriction }: { restriction: IRestrictionSelected }) => {
   return (
     <>
-      <h1 className="text-center sticky top-2 pb-4">
+      <h1
+        title={`ANÁLISIS DETALLADO: ${restriction.title}`}
+        className="text-center sticky top-2 pb-4 truncate"
+      >
         ANÁLISIS DETALLADO:{" "}
         <span className="font-semibold">{restriction.title}</span>
       </h1>

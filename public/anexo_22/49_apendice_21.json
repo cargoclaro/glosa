@@ -1,0 +1,499 @@
+{
+  "Administradores y operadores de recintos fiscalizados estratégicos": {
+    "Descripción": "Inmuebles habilitados para introducir mercancías bajo el régimen de recinto fiscalizado estratégico, autorizados en términos de la regla 2.3.2. y autorizados para destinar mercancías al citado régimen en términos de la regla 4.8.1.",
+    "Colindantes": [
+      {
+        "Aduana": "Aeropuerto Internacional Felipe Ángeles",
+        "Clave_RFE": "292",
+        "Administrador_RFE": "Admerce, S.A. de C.V.",
+        "Clave_Operador": "0052",
+        "Operador_RFE": "Admerce, S.A. de C.V."
+      },
+      {
+        "Aduana": "Aguascalientes",
+        "Clave_RFE": "001",
+        "Administrador_RFE": "Recinto Fiscalizado Estratégico de San Luis, S.A. de C.V.",
+        "Clave_Operador": "0001",
+        "Operador_RFE": "Abb México, S.A. De C.V."
+      },
+      {
+        "Aduana": "Aguascalientes",
+        "Clave_RFE": "001",
+        "Administrador_RFE": "Recinto Fiscalizado Estratégico de San Luis, S.A. de C.V.",
+        "Clave_Operador": "0005",
+        "Operador_RFE": "Kontar, S.A. de C.V."
+      },
+      {
+        "Aduana": "Aguascalientes",
+        "Clave_RFE": "001",
+        "Administrador_RFE": "Recinto Fiscalizado Estratégico de San Luis, S.A. de C.V.",
+        "Clave_Operador": "0006",
+        "Operador_RFE": "Welldex Distribution, S.A. de C.V."
+      },
+      {
+        "Aduana": "Aguascalientes",
+        "Clave_RFE": "001",
+        "Administrador_RFE": "Recinto Fiscalizado Estratégico de San Luis, S.A. de C.V.",
+        "Clave_Operador": "0033",
+        "Operador_RFE": "CSL 365, S.A. de C.V."
+      },
+      {
+        "Aduana": "Aguascalientes",
+        "Clave_RFE": "001",
+        "Administrador_RFE": "Recinto Fiscalizado Estratégico de San Luis, S.A. de C.V.",
+        "Clave_Operador": "0032",
+        "Operador_RFE": "Nippon Express de MÉXICO, S.A. de C.V."
+      },
+      {
+        "Aduana": "Aguascalientes",
+        "Clave_RFE": "001",
+        "Administrador_RFE": "Recinto Fiscalizado Estratégico de San Luis, S.A. de C.V.",
+        "Clave_Operador": "0054",
+        "Operador_RFE": "Welldex Distribution, S.A. de C.V."
+      },
+      {
+        "Aduana": "Ciudad Juárez",
+        "Clave_RFE": "037",
+        "Administrador_RFE": "Grupo Promotor San Jerónimo, S. de R.L. de C.V.",
+        "Clave_Operador": null,
+        "Operador_RFE": null
+      },
+      {
+        "Aduana": "Ciudad Juárez",
+        "Clave_RFE": "167",
+        "Administrador_RFE": "Accel Recinto Fiscalizado, S.A. de C.V.",
+        "Clave_Operador": "0030",
+        "Operador_RFE": "Accel Recinto Fiscalizado, S.A. de C.V."
+      },
+      {
+        "Aduana": "Altamira",
+        "Clave_RFE": "003",
+        "Administrador_RFE": "Administración del Sistema Portuario Nacional Altamira, S.A. de C.V.",
+        "Clave_Operador": "0007",
+        "Operador_RFE": "J. Ray Mcdermott de México, S.A. de C.V."
+      },
+      {
+        "Aduana": "Altamira",
+        "Clave_RFE": "006",
+        "Administrador_RFE": "Probca Industrial, S.A.P.I. de C.V.",
+        "Clave_Operador": null,
+        "Operador_RFE": null
+      },
+      {
+        "Aduana": "Colombia",
+        "Clave_RFE": "017",
+        "Administrador_RFE": "Mex Securit, S.A. de C.V.",
+        "Clave_Operador": null,
+        "Operador_RFE": null
+      },
+      {
+        "Aduana": "Colombia",
+        "Clave_RFE": "028",
+        "Administrador_RFE": "S.R. Asesores Aduanales de Nuevo Laredo, S.C.",
+        "Clave_Operador": "0025",
+        "Operador_RFE": "Combo Productora, S. de R.L. de C.V."
+      },
+      {
+        "Aduana": "Guanajuato",
+        "Clave_RFE": "029",
+        "Administrador_RFE": "Gto Logistics Center, S.A. de C.V.",
+        "Clave_Operador": "0031",
+        "Operador_RFE": "Especialistas en Recintos Fiscalizados, S.A.P.I. de C.V."
+      },
+      {
+        "Aduana": "Monterrey",
+        "Clave_RFE": "056",
+        "Administrador_RFE": "Dicex Inmobiliaria, S.A. de C.V.",
+        "Clave_Operador": null,
+        "Operador_RFE": null
+      },
+      {
+        "Aduana": "Reynosa",
+        "Clave_RFE": "040",
+        "Administrador_RFE": "Recintos Fiscalizados del Noreste, S.A. de C.V.",
+        "Clave_Operador": null,
+        "Operador_RFE": null
+      },
+      {
+        "Aduana": "Salina Cruz",
+        "Clave_RFE": "002",
+        "Administrador_RFE": "Fideicomiso para la Habilitación y Administración del Recinto Fiscalizado Estratégico Puerto Chiapas",
+        "Clave_Operador": "0003",
+        "Operador_RFE": "Cafés de Especialidad de Chiapas, S.A.P.I. de C.V."
+      },
+      {
+        "Aduana": "Veracruz",
+        "Clave_RFE": null,
+        "Administrador_RFE": "Administración del Sistema Portuario Nacional Veracruz, S.A. de C.V.",
+        "Clave_Operador": null,
+        "Operador_RFE": null
+      }
+    ],
+    "No_Colindantes": [
+      {
+        "Aduana": "Aeropuerto Internacional Felipe Ángeles",
+        "Clave_RFE": "049",
+        "Administrador_RFE": "RFE del Centro 4s, S.A. de C.V",
+        "Clave_Operador": "0051",
+        "Operador_RFE": "3 PL Grupo 4, S.A. de C.V"
+      },
+      {
+        "Aduana": "Aeropuerto Internacional Felipe Ángeles",
+        "Clave_RFE": "058",
+        "Administrador_RFE": "Azale del Mar de Cortés, S.A. de C.V.",
+        "Clave_Operador": "0051",
+        "Operador_RFE": "Asesores Multinacionales SLI, S.A. de C.V."
+      },
+      {
+        "Aduana": "Aguascalientes",
+        "Clave_RFE": "007",
+        "Administrador_RFE": "Transparque Interpuerto, S.A. de C.V.",
+        "Clave_Operador": null,
+        "Operador_RFE": null
+      },
+      {
+        "Aduana": "Aguascalientes",
+        "Clave_RFE": "016",
+        "Administrador_RFE": "Chronos Almacenaje, S.A. de C.V.",
+        "Clave_Operador": "0013",
+        "Operador_RFE": "Operadora Chronos, S.A. de C.V."
+      },
+      {
+        "Aduana": "Aguascalientes",
+        "Clave_RFE": "023",
+        "Administrador_RFE": "Gobierno del Estado de Zacatecas",
+        "Clave_Operador": "0037",
+        "Operador_RFE": "Connectivity Shelter, S.A.P.I de C.V."
+      },
+      {
+        "Aduana": "Aguascalientes",
+        "Clave_RFE": "033",
+        "Administrador_RFE": "Recinto Fiscalizado Estratégico de San Luis, S.A. de C.V.",
+        "Clave_Operador": "0053",
+        "Operador_RFE": "Welldex Distribution, S.A. de C.V."
+      },
+      {
+        "Aduana": "Aguascalientes",
+        "Clave_RFE": "034",
+        "Administrador_RFE": "Tubesa, S.A. de C.V.",
+        "Clave_Operador": "0038",
+        "Operador_RFE": "Operadora Olmeca Potosí, S.C. de R.L. de C.V."
+      },
+      {
+        "Aduana": "Altamira",
+        "Clave_RFE": "015",
+        "Administrador_RFE": "Comercializadora Sysexporta, S.A. de C.V.",
+        "Clave_Operador": null,
+        "Operador_RFE": null
+      },
+      {
+        "Aduana": "Chihuahua",
+        "Clave_RFE": "051",
+        "Administrador_RFE": "Promotora Inmobiliaria para la Industria y el Comercio Pinos Altos, S.A. de C.V.",
+        "Clave_Operador": null,
+        "Operador_RFE": null
+      },
+      {
+        "Aduana": "Ciudad Miguel Aleman",
+        "Clave_RFE": "053",
+        "Administrador_RFE": "Recinto Fiscalizado Estratégico Alfa, S. de R.L. de C.V.",
+        "Clave_Operador": "0049",
+        "Operador_RFE": "Operadores Logísticos Edg, S. de R.L. de C.V"
+      },
+      {
+        "Aduana": "Queretaro",
+        "Clave_RFE": "010",
+        "Administrador_RFE": "Puerto Interior Querétaro, S.A. de C.V.",
+        "Clave_Operador": "0011",
+        "Operador_RFE": "Gramosa Logistics México, S.A. de C.V."
+      },
+      {
+        "Aduana": "Queretaro",
+        "Clave_RFE": "044",
+        "Administrador_RFE": "OL Park, S.A. de C.V.",
+        "Clave_Operador": "0048",
+        "Operador_RFE": "One Log, S.A. de C.V."
+      },
+      {
+        "Aduana": "Queretaro",
+        "Clave_RFE": "050",
+        "Administrador_RFE": "Makice, S.A. de C.V.",
+        "Clave_Operador": null,
+        "Operador_RFE": null
+      },
+      {
+        "Aduana": "Ciudad Juarez",
+        "Clave_RFE": "012",
+        "Administrador_RFE": "Foxteq Mexico Developer, S.A. de C.V.",
+        "Clave_Operador": null,
+        "Operador_RFE": null
+      },
+      {
+        "Aduana": "Guadalajara",
+        "Clave_RFE": "024",
+        "Administrador_RFE": "Inmobiliaria Arbrus, S. de R.L. de C.V.",
+        "Clave_Operador": "0026",
+        "Operador_RFE": "Especialistas en Recintos Fiscalizados, S.A.P.I. de C.V."
+      },
+      {
+        "Aduana": "Guadalajara",
+        "Clave_RFE": "0026",
+        "Administrador_RFE": "Dubacano, S.A. de C.V.",
+        "Clave_Operador": "0035",
+        "Operador_RFE": "Especialistas en Recintos Fiscalizados, S.A.P.I. de C.V."
+      },
+      {
+        "Aduana": "Guanajuato",
+        "Clave_RFE": "022",
+        "Administrador_RFE": "Recinto Estratégico Santa Fé, S.A. de C.V.",
+        "Clave_Operador": "0029",
+        "Operador_RFE": "CMB Bajío Logistics, S. De R.L. de C.V."
+      },
+      {
+        "Aduana": "Lazaro Cardenas",
+        "Clave_RFE": "049",
+        "Administrador_RFE": "International Supply Chain Solutions and Outsourcing, S. de R.L. de C.V.",
+        "Clave_Operador": "0047",
+        "Operador_RFE": "5 Consultoría Comercio Exterior y Aduanas, S. de R.L. de C.V."
+      },
+      {
+        "Aduana": "Manzanillo",
+        "Clave_RFE": "014",
+        "Administrador_RFE": "Sukarga, S.A. de C.V.",
+        "Clave_Operador": "0018",
+        "Operador_RFE": "Cima Terminal, S.A. de C.V."
+      },
+      {
+        "Aduana": "Manzanillo",
+        "Clave_RFE": "018",
+        "Administrador_RFE": "Hpyc Inmobiliario, S.A. de C.V.",
+        "Clave_Operador": "0019",
+        "Operador_RFE": "Accessa Logistics, S.A. de C.V."
+      },
+      {
+        "Aduana": "Manzanillo",
+        "Clave_RFE": "030",
+        "Administrador_RFE": "Operador Logístico Integral Refepa, S.A. de C.V.",
+        "Clave_Operador": "0027",
+        "Operador_RFE": "Operador Recinto Fiscalizado Estratégico del Pacífico, S.A. de C.V."
+      },
+      {
+        "Aduana": "Manzanillo",
+        "Clave_RFE": "021",
+        "Administrador_RFE": "SSA México, S.A. de C.V.",
+        "Clave_Operador": "0021",
+        "Operador_RFE": "SSA México Holdings, S.A. de C.V."
+      },
+      {
+        "Aduana": "Manzanillo",
+        "Clave_RFE": "036",
+        "Administrador_RFE": "Almacenajes y Maniobras, S.A. de C.V.",
+        "Clave_Operador": "0040",
+        "Operador_RFE": "Integradora de Administración Logística, S.A. de C.V."
+      },
+      {
+        "Aduana": "Manzanillo",
+        "Clave_RFE": "039",
+        "Administrador_RFE": "Recinto Fiscalizado Estratégico Manzanillo, S.A. de C.V.",
+        "Clave_Operador": "0043",
+        "Operador_RFE": "Recinto Fiscalizado Estratégico Zal, S.A. de C.V."
+      },
+      {
+        "Aduana": "Manzanillo",
+        "Clave_RFE": "041",
+        "Administrador_RFE": "Seallogistics, S. de R.L. de C.V.",
+        "Clave_Operador": "0055",
+        "Operador_RFE": "Josjfa Logistics, S. de R.L. de C.V."
+      },
+      {
+        "Aduana": "Manzanillo",
+        "Clave_RFE": "048",
+        "Administrador_RFE": "Trans Kaifal, S.A. de C.V.",
+        "Clave_Operador": "0057",
+        "Operador_RFE": "Operadora Kaifal, S.A. de C.V."
+      },
+      {
+        "Aduana": "Manzanillo",
+        "Clave_RFE": "052",
+        "Administrador_RFE": "Grupo Logístico Intermodal Portuario, S.A. de C.V.",
+        "Clave_Operador": null,
+        "Operador_RFE": null
+      },
+      {
+        "Aduana": "Mazatlan",
+        "Clave_RFE": "031",
+        "Administrador_RFE": "Recintos Tadashi, S.A. de C.V.",
+        "Clave_Operador": "0042",
+        "Operador_RFE": "Servicios Integrales En Importación de Metales, S.A. de C.V."
+      },
+      {
+        "Aduana": "Mexicali",
+        "Clave_RFE": "011",
+        "Administrador_RFE": "International Supply Chain Solutions and Outsourcing, S. de R.L. de C.V.",
+        "Clave_Operador": "0016",
+        "Operador_RFE": "Global International Logistics and Outsourcing Services, S.A. de C.V."
+      },
+      {
+        "Aduana": "Mexicali",
+        "Clave_RFE": "020",
+        "Administrador_RFE": "International Supply Chain Solutions and Outsourcing, S. de R.L. de C.V.",
+        "Clave_Operador": "0034",
+        "Operador_RFE": "Global International Logistics and Outsourcing Services, S.A. de C.V."
+      },
+      {
+        "Aduana": "México",
+        "Clave_RFE": "019",
+        "Administrador_RFE": "Admerce, S.A. de C.V.",
+        "Clave_Operador": "0022",
+        "Operador_RFE": "Centro de Negocios y Comercio Enaltam, S.A. de C.V."
+      },
+      {
+        "Aduana": "México",
+        "Clave_RFE": "019",
+        "Administrador_RFE": "Admerce, S.A. de C.V.",
+        "Clave_Operador": "0039",
+        "Operador_RFE": "Teotimp Latam, S. de R.L. de C.V."
+      },
+      {
+        "Aduana": "México",
+        "Clave_RFE": "027",
+        "Administrador_RFE": "VI Logística y Temperatura Controlada, S.A.P.I. de C.V.",
+        "Clave_Operador": "0028",
+        "Operador_RFE": "Smartmex Storage and Dispatch, S.A.P.I. de C.V."
+      },
+      {
+        "Aduana": "México",
+        "Clave_RFE": "032",
+        "Administrador_RFE": "Consorcio Aduanero Esmeralda, S.A. de C.V.",
+        "Clave_Operador": "0036",
+        "Operador_RFE": "Atmpacks, S.A. de C.V."
+      },
+      {
+        "Aduana": "México",
+        "Clave_RFE": "038",
+        "Administrador_RFE": "Comercializadora BRKS, S.A. de C.V.",
+        "Clave_Operador": "0041",
+        "Operador_RFE": "MYM Spirits, S.A. de C.V."
+      },
+      {
+        "Aduana": "México",
+        "Clave_RFE": "045",
+        "Administrador_RFE": "Sonora CNLA, S.A.",
+        "Clave_Operador": "0045",
+        "Operador_RFE": "Grupo Iande, S. de R.L. de C.V."
+      },
+      {
+        "Aduana": "México",
+        "Clave_RFE": "046",
+        "Administrador_RFE": "E2e Supply Chain Services, S.A. de C.V.",
+        "Clave_Operador": null,
+        "Operador_RFE": null
+      },
+      {
+        "Aduana": "Monterrey",
+        "Clave_RFE": "013",
+        "Administrador_RFE": "Maximum Grandeur, S.A. de C.V.",
+        "Clave_Operador": "0020",
+        "Operador_RFE": "Doxmon Trade, S. de R.L. de C.V."
+      },
+      {
+        "Aduana": "Monterrey",
+        "Clave_RFE": "047",
+        "Administrador_RFE": "International Supply Chain Solutions and Outsourcing, S. de R.L. de C.V.",
+        "Clave_Operador": "0046",
+        "Operador_RFE": "Global International Logistics and Outsourcing Services, S.A. de C.V."
+      },
+      {
+        "Aduana": "Monterrey",
+        "Clave_RFE": "055",
+        "Administrador_RFE": "Recintos Fiscalizados Tech, S. de R.L. de C.V.",
+        "Clave_Operador": "0050",
+        "Operador_RFE": "Operadores Logisticos Edg, S. de R.L. de C.V."
+      },
+      {
+        "Aduana": "Monterrey",
+        "Clave_RFE": "055",
+        "Administrador_RFE": "Recintos Fiscalizados Tech, S. de R.L. de C.V.",
+        "Clave_Operador": "0056",
+        "Operador_RFE": "K & K Estratégico en Comercio, S. de R.L. de C.V."
+      },
+      {
+        "Aduana": "Monterrey",
+        "Clave_RFE": "057",
+        "Administrador_RFE": "Almacenamiento y Logística Portuaria de Altamira, S.A. de C.V.",
+        "Clave_Operador": "0058",
+        "Operador_RFE": "Rfe Alpamed, S.A. de C.V."
+      },
+      {
+        "Aduana": "Piedras Negras",
+        "Clave_RFE": "054",
+        "Administrador_RFE": "Up In Terra, S.A. de C.V.",
+        "Clave_Operador": null,
+        "Operador_RFE": null
+      },
+      {
+        "Aduana": "Piedras Negras",
+        "Clave_RFE": "059",
+        "Administrador_RFE": "Uni Trade Brokers Logistics, S.C.",
+        "Clave_Operador": null,
+        "Operador_RFE": null
+      },
+      {
+        "Aduana": "Puebla",
+        "Clave_RFE": "035",
+        "Administrador_RFE": "Grupo Aduanero WTC México, S.A. de C.V.",
+        "Clave_Operador": null,
+        "Operador_RFE": null
+      },
+      {
+        "Aduana": "Toluca",
+        "Clave_RFE": "042",
+        "Administrador_RFE": "Admerce, S.A. de C.V.",
+        "Clave_Operador": "0044",
+        "Operador_RFE": "Dirsa Servicios, S.A. de C.V."
+      },
+      {
+        "Aduana": "Torreón",
+        "Clave_RFE": "005",
+        "Administrador_RFE": "Inmobiliaria de la Comarca Lagunera, S.A. de C.V.",
+        "Clave_Operador": "0015",
+        "Operador_RFE": "Central Operadora Logística, Estratégica y Fiscalizada, S.A. de C.V."
+      },
+      {
+        "Aduana": "Torreón",
+        "Clave_RFE": "005",
+        "Administrador_RFE": "Inmobiliaria de la Comarca Lagunera, S.A. de C.V.",
+        "Clave_Operador": "0017",
+        "Operador_RFE": "Central Operadora Logística, Estratégica y Fiscalizada, S.A. de C.V."
+      },
+      {
+        "Aduana": "Torreón",
+        "Clave_RFE": "005",
+        "Administrador_RFE": "Inmobiliaria de la Comarca Lagunera, S.A. de C.V.",
+        "Clave_Operador": "0023",
+        "Operador_RFE": "Central Operadora Logística, Estratégica y Fiscalizada, S.A. de C.V."
+      },
+      {
+        "Aduana": "Veracruz",
+        "Clave_RFE": "008",
+        "Administrador_RFE": "Puertos Logísticos de México, S.A. de C.V.",
+        "Clave_Operador": "0009",
+        "Operador_RFE": "Compañía de Equipamiento al Comercio Integral, S.A. de C.V."
+      },
+      {
+        "Aduana": "Veracruz",
+        "Clave_RFE": "009",
+        "Administrador_RFE": "Puertos Logísticos de México, S.A. de C.V.",
+        "Clave_Operador": "0010",
+        "Operador_RFE": "Compañía de Equipamiento al Comercio Integral, S.A. de C.V."
+      },
+      {
+        "Aduana": "Veracruz",
+        "Clave_RFE": "025",
+        "Administrador_RFE": "Puertos Logísticos de México, S.A. de C.V.",
+        "Clave_Operador": "0024",
+        "Operador_RFE": "Compañía de Equipamiento al Comercio Integral, S.A. de C.V."
+      }
+    ]
+  }
+}

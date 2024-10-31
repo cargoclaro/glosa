@@ -1,0 +1,95 @@
+{
+  "Clasificación de las sustancias peligrosas": {
+    "Clases": [
+      {
+        "Clase": "1",
+        "Denominación": "Explosivos.",
+        "Descripción": {
+          "Comprende": {
+            "I": "Sustancias explosivas: Son sustancias o mezcla de sustancias sólidas o líquidas que de manera espontánea o por reacción química, pueden desprender gases a una temperatura, presión y velocidad tales que causen daños en los alrededores.",
+            "II": "Sustancias pirotécnicas: Son sustancias o mezcla de sustancias destinadas a producir un efecto calorífico, luminoso, sonoro, gaseoso o fumígeno o una combinación de los mismos, como consecuencia de reacciones químicas exotérmicas autosostenidas no detonantes.",
+            "III": "Objetos explosivos: Son objetos que contienen una o varias sustancias explosivas."
+          },
+          "Divisiones": {
+            "División 1.1": "Sustancias y objetos que representan un riesgo de explosión de la totalidad de la masa, es decir que la explosión se extiende de manera prácticamente instantánea a casi toda la carga.",
+            "División 1.2": "Sustancias y objetos que representan un riesgo de proyección, pero no un riesgo de explosión de la totalidad de la masa.",
+            "División 1.3": "Sustancias y objetos que representan un riesgo de incendio y de que se produzcan pequeños efectos de onda expansiva, de proyección o ambos, pero no riesgo de explosión de la totalidad de la masa.",
+            "División 1.4": "Sustancias y objetos que no representan un riesgo considerable.",
+            "División 1.5": "Sustancias muy poco sensibles que presentan un riesgo de explosión de la totalidad de la masa, pero que es muy improbable su iniciación o transición de incendio o detonación bajo condiciones normales de transporte.",
+            "División 1.6": "Objetos extremadamente insensibles que no presentan un riesgo de explosión a toda la masa, que contienen sólo sustancias extremadamente insensibles a la detonación y muestran una probabilidad muy escasa de iniciación y propagación accidental."
+          }
+        }
+      },
+      {
+        "Clase": "2",
+        "Denominación": "Gases comprimidos, refrigerados, licuados o disueltos a presión.",
+        "Descripción": {
+          "Comprende": [
+            "I. A 50º C tienen una presión de vapor mayor de 300 kPa.",
+            "II. Son completamente gaseosas a 20ºC a una presión normal de 101.3 kPa."
+          ],
+          "Clasificación": {
+            "I": "Gas comprimido, aquél que bajo presión es totalmente gaseoso a 20ºC.",
+            "II": "Gas licuado, el que es parcialmente líquido a 20ºC.",
+            "III": "Gas licuado refrigerado, el que es parcialmente líquido a causa de su baja temperatura.",
+            "IV": "Gas en solución, aquél que está comprimido y disuelto en un solvente."
+          },
+          "Divisiones": {
+            "División 2.1": "Gases inflamables: Sustancia que a 20ºC y a una presión normal de 101.3 kPa: Arden cuando se encuentran en una mezcla de 13% o menos por volumen de aire o tienen un rango de inflamabilidad con aire de cuando menos 12% sin importar el límite inferior de inflamabilidad.",
+            "División 2.2": "Gases no inflamables, no tóxicos: Gases que son transportados a una presión no menor de 280 kPa a 20ºC, o como líquidos refrigerados y que: a) Son asfixiantes. Gases que diluyen o reemplazan al oxígeno presente normalmente en la atmósfera; o b) Son oxidantes. Gases que pueden, generalmente por ceder oxígeno, causar o contribuir, más que el aire a la combustión de otro material. c) No caben en los anteriores.",
+            "División 2.3": "Gases tóxicos: Gases que: a) Se conoce que son tóxicos o corrosivos para los seres humanos por lo que constituyen un riesgo para la salud; o b) Se supone que son tóxicos o corrosivos para los seres humanos porque tienen un CL igual o menor que 5000 Mo/M3 (ppm)."
+          }
+        }
+      },
+      {
+        "Clase": "3",
+        "Denominación": "Líquidos inflamables.",
+        "Descripción": [
+          "Son mezclas o líquidos que contienen sustancias sólidas en solución o suspensión, que despiden vapores inflamables a una temperatura no superior a 60.5ºC en los ensayos en copa cerrada o no superiores a 65.6°C en copa abierta.",
+          "Las sustancias de esta clase son: I. Líquidos que presentan un punto de ebullición inicial igual o menor de 35ºC. II. Líquidos que presentan un punto de inflamación (en copa cerrada) menor de 23ºC y un punto inicial de ebullición mayor de 35ºC. III. Líquidos que presentan un punto de inflamación (en copa cerrada) mayor o igual a 23ºC, menor o igual de 60.5ºC y un punto inicial de ebullición mayor de 35ºC."
+        ]
+      },
+      {
+        "Clase": "4",
+        "Denominación": "Sólidos inflamables.",
+        "Descripción": "Son sustancias que presentan riesgo de combustión espontánea, así como aquellos que en contacto con el agua desprenden gases inflamables.",
+        "Divisiones": {
+          "División 4.1": "Sólidos inflamables. Sustancias sólidas que no están comprendidas entre las clasificadas como explosivas pero que, derivado de las condiciones que se dan durante el transporte, se inflaman con facilidad o pueden provocar o activar incendios por fricción.",
+          "División 4.2": "Sustancias que presentan un riesgo de combustión espontánea. Sustancias que pueden calentarse espontáneamente en las condiciones normales de transporte o al entrar en contacto con el aire y que entonces puedan inflamarse.",
+          "División 4.3": "Sustancias que en contacto con el agua desprenden gases inflamables. Sustancias que por reacción con el agua pueden hacerse espontáneamente inflamables o desprender gases inflamables en cantidades peligrosas."
+        }
+      },
+      {
+        "Clase": "5",
+        "Denominación": "Oxidantes y peróxidos orgánicos.",
+        "Divisiones": {
+          "División 5.1": "Sustancias oxidantes. Sustancias que, sin ser necesariamente combustibles, pueden, generalmente liberar oxígeno, causar o facilitar la combustión de otras.",
+          "División 5.2": "Peróxidos orgánicos. Sustancias orgánicas que contienen la estructura bivalente -0-0- y pueden considerarse derivados del peróxido de hidrógeno, en el que uno de los átomos de hidrógeno, o ambos, han sido sustituidos por radicales orgánicos. Los peróxidos son sustancias térmicamente inestables que pueden sufrir una descomposición exotérmica autoacelerada. Además, pueden tener una o varias de las propiedades siguientes: a) Ser susceptibles de una descomposición explosiva; b) Arder rápidamente; c) Ser sensibles a los impactos o a la fricción; d) Reaccionar peligrosamente al entrar en contacto con otras sustancias; e) Causar daños a la vista."
+        }
+      },
+      {
+        "Clase": "6",
+        "Denominación": "Tóxicos agudos (venenos) y agentes infecciosos.",
+        "Divisiones": {
+          "División 6.1": "Tóxicos agudos (venenos): Son aquellas sustancias que pueden causar la muerte, lesiones graves o ser nocivas para la salud humana si se ingieren, inhalan o entran en contacto con la piel. Los gases tóxicos (venenos) comprimidos pueden incluirse en la clase 'Gases'.",
+          "División 6.2": "Agentes infecciosos: Son las que contienen microorganismos viables incluyendo bacterias, virus, parásitos, hongos, o una combinación híbrida o mutante; que son conocidos o se cree que pueden provocar enfermedades en el hombre o los animales."
+        }
+      },
+      {
+        "Clase": "7",
+        "Denominación": "Radiactivos.",
+        "Descripción": "Para los efectos de transporte, son todos los materiales cuya actividad específica es superior a 70 kBq/Kg (2 nCi/g)."
+      },
+      {
+        "Clase": "8",
+        "Denominación": "Corrosivos.",
+        "Descripción": "Son sustancias líquidas o sólidas que por su acción química causan lesiones graves a los tejidos vivos con los que entra en contacto o que si se produce un escape pueden causar daños e incluso destrucción de otras mercancías o de las unidades en las que son transportadas."
+      },
+      {
+        "Clase": "9",
+        "Denominación": "Varios.",
+        "Descripción": "Son aquellas sustancias que durante el transporte presentan un riesgo distinto de los correspondientes a las demás clases y que también requieren un manejo especial para su transporte, por representar un riesgo potencial para la salud, el ambiente, la seguridad a los usuarios y la propiedad a terceros."
+      }
+    ]
+  }
+}

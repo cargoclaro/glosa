@@ -1,0 +1,238 @@
+{
+  "Campos": [
+    {
+      "No. campo": "1",
+      "Título del Campo": "Número de Pedimento",
+      "Contenido": "Este número lo integran dos campos constituidos por once dígitos en total; el primero de los campos corresponderá al número de la patente del agente aduanal o la autorización de la agencia aduanal, del apoderado aduanal, o importador, exportador, según se trate. Si éste requiere menos de cuatro dígitos se antepondrán ceros para completar el campo. El segundo campo se formará con siete dígitos, los cuales serán una numeración progresiva asignada por cada agente aduanal, agencia aduanal, apoderado aduanal, importador o exportador, respecto de todos los tipos de pedimento que tramite, empezando cada año con el número progresivo 000001 que irá antecedido por el último dígito del año en que se está formulando el pedimento."
+    },
+    {
+      "No. campo": "2",
+      "Título del Campo": "Tipo de Operación",
+      "Contenido": "Clave que identifica la operación.",
+      "Opciones": {
+        "1": "Importación.",
+        "2": "Exportación."
+      }
+    },
+    {
+      "No. campo": "3",
+      "Título del Campo": "Clave de Pedimento",
+      "Contenido": "Clave de pedimento de que se trate, conforme al apéndice 2 del presente Anexo. La clave R1 se anotará cuando se trate de rectificación a pedimento de tránsito para el transbordo."
+    },
+    {
+      "No. campo": "4",
+      "Título del Campo": "Aduana/Sección Origen",
+      "Contenido": "Clave de la ADUANA/SECCIÓN en la que se origina el tránsito, conforme al apéndice 1 del presente Anexo."
+    },
+    {
+      "No. campo": "5",
+      "Título del Campo": "Aduana/Sección Destino",
+      "Contenido": "Clave de la ADUANA/SECCIÓN a la que está adscrito el aeropuerto de despacho, conforme al apéndice 1 del presente Anexo."
+    },
+    {
+      "No. campo": "6",
+      "Título del Campo": "País de Origen",
+      "Contenido": "La clave del país de origen de la mercancía, conforme al apéndice 4 del presente Anexo."
+    },
+    {
+      "No. campo": "7",
+      "Título del Campo": "T.C.",
+      "Contenido": "El tipo de cambio del peso mexicano con respecto al dólar de los Estados Unidos de América, para efectos fiscales, vigentes en la fecha de entrada de la mercancía a territorio nacional a que se refiere el artículo 56, fracción I de la Ley o en la fecha de pago de las contribuciones de acuerdo al artículo 83, tercer párrafo de la Ley."
+    },
+    {
+      "No. campo": "8",
+      "Título del Campo": "Fecha de Entrada",
+      "Contenido": "La fecha de entrada de la mercancía a territorio nacional, como lo establece el artículo 56, fracción I, inciso c) de la Ley o en la fecha de pago de las contribuciones de acuerdo al artículo 83, tercer párrafo de la misma Ley."
+    },
+    {
+      "No. campo": "9",
+      "Título del Campo": "Fecha de Arribo del Tránsito",
+      "Contenido": "La fecha de presentación de las mercancías para su despacho en el aeropuerto de destino."
+    },
+    {
+      "No. campo": "10",
+      "Título del Campo": "Importador/Destinatario",
+      "Contenido": "Nombre o razón social del importador destinatario, tal como lo haya manifestado para efecto del RFC."
+    },
+    {
+      "No. campo": "11",
+      "Título del Campo": "R.F.C.",
+      "Contenido": "Clave en el RFC del IMPORTADOR/DESTINATARIO."
+    },
+    {
+      "No. campo": "12",
+      "Título del Campo": "Domicilio",
+      "Contenido": "El domicilio del importador, destinatario tal como lo haya manifestado para efectos del RFC."
+    },
+    {
+      "No. campo": "13",
+      "Título del Campo": "Línea Aérea (1)",
+      "Contenido": "Nombre de la línea aérea que transporta las mercancías del extranjero al primer aeropuerto nacional."
+    },
+    {
+      "No. campo": "14",
+      "Título del Campo": "No. de Vuelo",
+      "Contenido": "Número de vuelo en el que se transportan las mercancías del extranjero al primer aeropuerto nacional."
+    },
+    {
+      "No. campo": "15",
+      "Título del Campo": "Matrícula No.",
+      "Contenido": "Número de la matrícula de la aeronave que transporta la carga del extranjero al primer aeropuerto nacional."
+    },
+    {
+      "No. campo": "16",
+      "Título del Campo": "Línea Aérea (2)",
+      "Contenido": "Nombre de la línea aérea que transporta las mercancías del primer aeropuerto nacional al aeropuerto de destino."
+    },
+    {
+      "No. campo": "17",
+      "Título del Campo": "No. de Vuelo",
+      "Contenido": "Número de vuelo en el que se transportan las mercancías del primer aeropuerto nacional al aeropuerto de destino."
+    },
+    {
+      "No. campo": "18",
+      "Título del Campo": "Matrícula",
+      "Contenido": "Número de la matrícula de la aeronave que transporta la carga del primer aeropuerto nacional al aeropuerto de destino."
+    },
+    {
+      "No. campo": "19",
+      "Título del Campo": "R.F.C.",
+      "Contenido": "La clave en el RFC del transportista (línea aérea)."
+    },
+    {
+      "No. campo": "20",
+      "Título del Campo": "No. de Registro Local",
+      "Contenido": "Número de registro local que le haya asignado la aduana en que se promueve el tránsito."
+    },
+    {
+      "No. campo": "21",
+      "Título del Campo": "Domicilio",
+      "Contenido": "El domicilio fiscal del transportista (línea aérea), tal como lo haya manifestado para efectos del RFC."
+    },
+    {
+      "No. campo": "22",
+      "Título del Campo": "Valor M.E.",
+      "Contenido": "El valor total de los CFDI o documentos equivalentes que amparan las mercancías, en la unidad monetaria utilizada en la facturación."
+    },
+    {
+      "No. campo": "23",
+      "Título del Campo": "Valor DLS.",
+      "Contenido": "El equivalente en dólares de los Estados Unidos de América del valor total de las mercancías asentadas en el pedimento, que amparan los CFDI o documentos equivalentes en moneda extranjera."
+    },
+    {
+      "No. campo": "24",
+      "Título del Campo": "Cantidad/Números/Fechas/Forma de Facturación",
+      "Contenido": {
+        "Cantidad": "El número que corresponda al total de los CFDI, documentos equivalentes o guías aéreas que amparan las mercancías.",
+        "Números/fechas": "El número y la fecha de cada uno de los CFDI, documentos equivalentes o guías aéreas que amparan las mercancías.",
+        "Forma de facturación": "La forma de facturación de acuerdo a los INCOTERMS internacionales vigentes, conforme al apéndice 14 del presente Anexo."
+      }
+    },
+    {
+      "No. campo": "25",
+      "Título del Campo": "Proveedor(es)",
+      "Contenido": {
+        "PROVEEDOR(ES)": "El nombre o denominación del proveedor de las mercancías, la dirección comercial, indicando el Estado y la ciudad que corresponda."
+      }
+    },
+    {
+      "No. campo": "26",
+      "Título del Campo": "Bultos: Cantidad/Marcas y Números",
+      "Contenido": {
+        "BULTOS: CANTIDAD/MARCAS Y NÚMEROS": "La cantidad total de bultos que contienen las mercancías, así como las marcas y número de los mismos."
+      }
+    },
+    {
+      "No. campo": "27",
+      "Título del Campo": "Descripción de las Mercancías",
+      "Contenido": {
+        "DESCRIPCIÓN DE LAS MERCANCÍAS": "La descripción, naturaleza y características técnicas y comerciales necesarias y suficientes para determinar su clasificación arancelaria."
+      }
+    },
+    {
+      "No. campo": "28",
+      "Título del Campo": "Precio Unitario",
+      "Contenido": {
+        "PRECIO UNITARIO": "El resultado de dividir el valor en aduana entre la cantidad en unidades de comercialización, de cada una de las mercancías."
+      }
+    },
+    {
+      "No. campo": "29",
+      "Título del Campo": "Valor en Aduana",
+      "Contenido": {
+        "VALOR EN ADUANA": "El valor en aduana de las mercancías en moneda nacional."
+      }
+    },
+    {
+      "No. campo": "30",
+      "Título del Campo": "Unidad de Medida",
+      "Contenido": {
+        "UNIDAD DE MEDIDA": "La unidad de medida de comercialización de las mercancías conforme al apéndice 7 del presente Anexo."
+      }
+    },
+    {
+      "No. campo": "31",
+      "Título del Campo": "Cantidad",
+      "Contenido": {
+        "CANTIDAD": "La cantidad de mercancías en unidades de comercialización, de acuerdo a lo señalado en el CFDI o en el documento equivalente."
+      }
+    },
+    {
+      "No. campo": "32",
+      "Título del Campo": "Permiso(s), Autorización(es), Identificadores, Clave/Número(s) y Firma(s)",
+      "Contenido": {
+        "PERMISO(S), AUTORIZACIÓN(ES), IDENTIFICADORES, CLAVE/NÚMERO(S) Y FIRMA(S)": "La clave del documento que compruebe el cumplimiento de las obligaciones en materia de regulaciones y restricciones no arancelarias, e identificadores conforme al apéndice 8 y/o 9 del presente Anexo. El número de documento mencionado y la firma electrónica de ocho caracteres, que se da de acuerdo al permiso o certificado proporcionado."
+      }
+    },
+    {
+      "No. campo": "33",
+      "Título del Campo": "Acuse Electrónico de Validación",
+      "Contenido": {
+        "ACUSE ELECTRÓNICO DE VALIDACIÓN": "Se anotará el acuse electrónico de validación, compuesto de ocho caracteres con el cual se comprueba que el pedimento ha sido validado."
+      }
+    },
+    {
+      "No. campo": "34",
+      "Título del Campo": "Código de Barras",
+      "Contenido": {
+        "CÓDIGO DE BARRAS": "El código de barras impreso por el agente aduanal, agencia aduanal, apoderado aduanal, importador o exportador, conforme al formato establecido por la AGR, conforme al apéndice 17 del presente Anexo. El código de barras deberá imprimirse en la copia destinada al transportista."
+      }
+    },
+    {
+      "No. campo": "35",
+      "Título del Campo": "Liquidación Provisional",
+      "Contenido": {
+        "LIQUIDACIÓN PROVISIONAL": {
+          "Forma de pago": "La clave de la forma de pago de las contribuciones y cuotas compensatorias o medidas de transición determinadas provisionalmente.",
+          "Impuestos": "La cantidad a pagar por concepto de impuestos causados, determinados provisionalmente."
+        }
+      }
+    },
+    {
+      "No. campo": "36",
+      "Título del Campo": "Engomados o Candados Asignados",
+      "Contenido": "El número o números del (los) engomados o candados asignados."
+    },
+    {
+      "No. campo": "37",
+      "Título del Campo": "Autorizaciones Distintas",
+      "Contenido": "Las autorizaciones distintas a las que corresponda mencionar en el campo permiso(s), autorización(es) e identificadores, clave/número(s)/firma o algún dato adicional al pedimento. Las marcas, números, series de las mercancías o especificaciones adicionales."
+    },
+    {
+      "No. campo": "38",
+      "Título del Campo": "Nombre y Firma del Agente Aduanal",
+      "Contenido": "El nombre completo y la firma del agente aduanal, agencia aduanal, apoderado aduanal o representante legal."
+    },
+    {
+      "No. campo": "39",
+      "Título del Campo": "Nombre y Firma del Representante de Línea Aérea",
+      "Contenido": "El nombre completo y la firma del representante de la línea aérea."
+    },
+    {
+      "No. campo": "40",
+      "Título del Campo": "Nombre y Firma del Encargado de Reconocimiento Aduanero",
+      "Contenido": "El nombre completo y firma del encargado de efectuar el reconocimiento aduanero."
+    }
+  ],
+  "Nota": "El pedimento de tránsito para el transbordo se presentará en los siguientes ejemplares: Original.- ANAM. Copia.- Transportista. Copia.- Importador. Copia.- Agente aduanal o agencia aduanal."
+}

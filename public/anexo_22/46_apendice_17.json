@@ -1,0 +1,187 @@
+{
+  "Código de barras, pedimentos, partes II y copia simple, consolidados": {
+    "Campos": [
+      {
+        "Campo": "1",
+        "Pedimentos normales": "Clave del agente aduanal, agencia aduanal o apoderado aduanal.",
+        "Pedimentos partes II": "Clave del agente aduanal, agencia aduanal o apoderado aduanal.",
+        "Pedimentos copia simple": "Clave del agente aduanal, agencia aduanal o apoderado aduanal.",
+        "Cfdi o documentos equivalentes de pedimentos consolidados": "Clave del agente aduanal, agencia aduanal o apoderado aduanal.",
+        "Relación de cfdi o documentos equivalentes de pedimentos consolidados": "Clave del agente aduanal, agencia aduanal o apoderado aduanal.",
+        "Longitud": "None",
+        "Formato": "None"
+      },
+      {
+        "Campo": "2",
+        "Pedimentos normales": "Número consecutivo de pedimento.",
+        "Pedimentos partes II": "Número consecutivo de pedimento.",
+        "Pedimentos copia simple": "Número consecutivo de pedimento.",
+        "Cfdi o documentos equivalentes de pedimentos consolidados": "Número consecutivo de pedimento.",
+        "Relación de cfdi o documentos equivalentes de pedimentos consolidados": "Número consecutivo de pedimento.",
+        "Longitud": "None",
+        "Formato": "None"
+      },
+      {
+        "Campo": "3",
+        "Pedimentos normales": "Clave de pedimento.",
+        "Pedimentos partes II": "Llenar con 0 Clave del recinto fiscalizado, conforme al apéndice 6 de este Anexo.",
+        "Pedimentos copia simple": "Llenar con 0 Clave del recinto fiscalizado, conforme al apéndice 6 de este Anexo.",
+        "Cfdi o documentos equivalentes de pedimentos consolidados": "Llenar con 0 Clave del recinto fiscalizado, conforme al apéndice 6 de este Anexo.",
+        "Relación de cfdi o documentos equivalentes de pedimentos consolidados": "Llenar con 0 Clave del recinto fiscalizado, conforme al apéndice 6 de este Anexo.",
+        "Longitud": "None",
+        "Formato": "None",
+        "Apendice": "6"
+      },
+      {
+        "Campo": "4",
+        "Pedimentos normales": "Registro Federal de Contribuyentes.",
+        "Pedimentos partes II": "Clave en el RFC.",
+        "Pedimentos copia simple": "Clave en el RFC.",
+        "Cfdi o documentos equivalentes de pedimentos consolidados": "Número del acuse de valor emitido por Ventanilla Digital.",
+        "Relación de cfdi o documentos equivalentes de pedimentos consolidados": "Número del acuse de valor de la relación de CFDI o documentos equivalentes emitido por Ventanilla Digital.",
+        "Longitud": "None",
+        "Formato": "None"
+      },
+      {
+        "Campo": "5",
+        "Pedimentos normales": "Llenar con 0.",
+        "Pedimentos partes II": "Llenar con 0 Para operaciones conforme al tercer párrafo de la regla 2.3.8., declarar el número del contenedor que contiene las mercancías.",
+        "Pedimentos copia simple": "Llenar con 0 Para operaciones conforme al tercer párrafo de la regla 2.3.8., declarar el número del contenedor que contiene las mercancías.",
+        "Cfdi o documentos equivalentes de pedimentos consolidados": "Llenar con 0 Para operaciones conforme al tercer párrafo de la regla 2.3.8., declarar el número del contenedor que contiene las mercancías.",
+        "Relación de cfdi o documentos equivalentes de pedimentos consolidados": "Llenar con 0 Para operaciones conforme al tercer párrafo de la regla 2.3.8., declarar el número del contenedor que contiene las mercancías.",
+        "Longitud": "None",
+        "Formato": "None"
+      },
+      {
+        "Campo": "5",
+        "Pedimentos normales": "",
+        "Pedimentos partes II": "Para operaciones conforme a la regla 1.9.11., declarar el número de identificación del equipo ferroviario o número de contenedor.",
+        "Pedimentos copia simple": "",
+        "Cfdi o documentos equivalentes de pedimentos consolidados": "Para operaciones conforme a la regla 1.9.11., declarar el número de identificación del equipo ferroviario o número de contenedor.",
+        "Relación de cfdi o documentos equivalentes de pedimentos consolidados": "",
+        "Longitud": "None",
+        "Formato": "None"
+      },
+      {
+        "Campo": "6",
+        "Pedimentos normales": "Acuse de recibo generado por el validador.",
+        "Pedimentos partes II": "Acuse de recibo generado por el validador.",
+        "Pedimentos copia simple": "Acuse de recibo generado por el validador.",
+        "Cfdi o documentos equivalentes de pedimentos consolidados": "Acuse de recibo generado por el validador.",
+        "Relación de cfdi o documentos equivalentes de pedimentos consolidados": "Acuse de recibo generado por el validador.",
+        "Longitud": "None",
+        "Formato": "None"
+      },
+      {
+        "Campo": "Pedimentos copia",
+        "Pedimentos normales": "nan",
+        "Pedimentos partes II": "nan",
+        "Pedimentos copia simple": "nan",
+        "Cfdi o documentos equivalentes de pedimentos consolidados": "nan",
+        "Relación de cfdi o documentos equivalentes de pedimentos consolidados": "nan",
+        "Longitud": "nan",
+        "Formato": "nan"
+      },
+      {
+        "Campo": "simple",
+        "Pedimentos normales": "nan",
+        "Pedimentos partes II": "nan",
+        "Pedimentos copia simple": "nan",
+        "Cfdi o documentos equivalentes de pedimentos consolidados": "nan",
+        "Relación de cfdi o documentos equivalentes de pedimentos consolidados": "nan",
+        "Longitud": "nan",
+        "Formato": "nan"
+      },
+      {
+        "Campo": "CFDI o documentos",
+        "Pedimentos normales": "nan",
+        "Pedimentos partes II": "nan",
+        "Pedimentos copia simple": "nan",
+        "Cfdi o documentos equivalentes de pedimentos consolidados": "nan",
+        "Relación de cfdi o documentos equivalentes de pedimentos consolidados": "nan",
+        "Longitud": "nan",
+        "Formato": "nan"
+      },
+      {
+        "Campo": "equivalentes de",
+        "Pedimentos normales": "nan",
+        "Pedimentos partes II": "nan",
+        "Pedimentos copia simple": "nan",
+        "Cfdi o documentos equivalentes de pedimentos consolidados": "nan",
+        "Relación de cfdi o documentos equivalentes de pedimentos consolidados": "nan",
+        "Longitud": "nan",
+        "Formato": "nan"
+      },
+      {
+        "Campo": "pedimentos consolidados",
+        "Pedimentos normales": "nan",
+        "Pedimentos partes II": "nan",
+        "Pedimentos copia simple": "nan",
+        "Cfdi o documentos equivalentes de pedimentos consolidados": "nan",
+        "Relación de cfdi o documentos equivalentes de pedimentos consolidados": "nan",
+        "Longitud": "nan",
+        "Formato": "nan"
+      },
+      {
+        "Campo": "7",
+        "Pedimentos normales": "Cantidad de mercancía en unidades de comercialización. Cuando las diversas fracciones arancelarias tengan diferente unidad de comercialización, deberá realizarse la suma de las cantidades sin considerar las unidades y reportar la suma en tal campo. En caso de pedimento complementario declarar en cero.",
+        "Pedimentos partes II": "La cantidad de mercancía en unidades de comercialización amparada por la parte II.",
+        "Pedimentos copia simple": "La cantidad de mercancía en unidades TIGIE amparada por la copia simple.",
+        "Cfdi o documentos equivalentes de pedimentos consolidados": "La cantidad de mercancía en unidades de comercialización amparada en la remesa.",
+        "Relación de cfdi o documentos equivalentes de pedimentos consolidados": "Cantidad de mercancía en unidades de comercialización. Cuando las diversas fracciones arancelarias tengan diferente unidad de comercialización, deberá realizarse la suma de las cantidades sin considerar las unidades y reportar la suma en tal campo.",
+        "Longitud": "15",
+        "Formato": "11 enteros, punto decimal, 3 decimales."
+      },
+      {
+        "Campo": "8",
+        "Pedimentos normales": "Importe total del pedimento pagado en efectivo.",
+        "Pedimentos partes II": "Llenar con 0.",
+        "Pedimentos copia simple": "Llenar con 0.",
+        "Cfdi o documentos equivalentes de pedimentos consolidados": "Valor en dólares del CFDI o documento equivalente.",
+        "Relación de cfdi o documentos equivalentes de pedimentos consolidados": "Valor en dólares del total de CFDI o documentos equivalentes amparados en la relación de CFDI o documentos equivalentes.",
+        "Longitud": "12",
+        "Formato": "Numérico."
+      },
+      {
+        "Campo": "9",
+        "Pedimentos normales": "Importe total del pedimento pagado en forma diferente a efectivo.",
+        "Pedimentos partes II": "Llenar con 0 Para operaciones al amparo de la regla 1.9.11., se deberá declarar el total de documentos de transporte.",
+        "Pedimentos copia simple": "Llenar con 0 Para operaciones al amparo de la regla 1.9.11., se deberá declarar el total de documentos de transporte amparadas por la copia simple.",
+        "Cfdi o documentos equivalentes de pedimentos consolidados": "Llenar con 0 Para operaciones al amparo de la regla 1.9.11., se deberá declarar el total de documentos de transporte amparadas por la remesa.",
+        "Relación de cfdi o documentos equivalentes de pedimentos consolidados": "Llenar con 0 Para operaciones al amparo de la regla 1.9.11., se deberá declarar el total de documentos de transporte amparadas por la remesa.",
+        "Longitud": "12",
+        "Formato": "Numérico."
+      },
+      {
+        "Campo": "10",
+        "Pedimentos normales": "Importe de derecho de trámite aduanero.",
+        "Pedimentos partes II": "Llenar con 0 Para operaciones al amparo de la regla 1.9.11., se deberá declarar el número del documento de transporte.",
+        "Pedimentos copia simple": "Llenar con 0 Para operaciones al amparo de la regla 1.9.11., se deberá declarar el número del documento de transporte.",
+        "Cfdi o documentos equivalentes de pedimentos consolidados": "Llenar con 0 Para operaciones al amparo de la regla 1.9.11., se deberá declarar el número del documento de transporte.",
+        "Relación de cfdi o documentos equivalentes de pedimentos consolidados": "Llenar con 0 Para operaciones al amparo de la regla 1.9.11., se deberá declarar el número del documento de transporte.",
+        "Longitud": "13",
+        "Formato": "Numérico."
+      },
+      {
+        "Campo": "11",
+        "Pedimentos normales": "Llenar con 0.",
+        "Pedimentos partes II": "Número consecutivo que el agente aduanal o la agencia aduanal asigne a la parte II.",
+        "Pedimentos copia simple": "Número consecutivo que el agente aduanal o la agencia aduanal asigne a la copia simple.",
+        "Cfdi o documentos equivalentes de pedimentos consolidados": "Número consecutivo que el agente aduanal o la agencia aduanal asigne a la remesa del pedimento consolidado.",
+        "Relación de cfdi o documentos equivalentes de pedimentos consolidados": "Número consecutivo que el agente aduanal o la agencia aduanal asigne a la remesa del pedimento consolidado.",
+        "Longitud": "4",
+        "Formato": "Numérico."
+      },
+      {
+        "Campo": "12",
+        "Pedimentos normales": "Llenar con 0 Para operaciones al amparo de la regla 3.1.40., declarar: 3.",
+        "Pedimentos partes II": "Llenar con 0.",
+        "Pedimentos copia simple": "Para operaciones de la regla 3.1.21., fracción II, inciso d), declarar el peso bruto de la mercancía amparada por la copia simple.",
+        "Cfdi o documentos equivalentes de pedimentos consolidados": "Llenar con 0 Para operaciones al amparo de la regla 3.1.40., declarar: 3.",
+        "Relación de cfdi o documentos equivalentes de pedimentos consolidados": "Llenar con 0.",
+        "Longitud": "",
+        "Formato": ""
+      }
+    ]
+  }
+}

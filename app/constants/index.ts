@@ -178,4 +178,454 @@ export const ANEXO_22_FIELDS_REQUESTS = [
       }),
     },
   },
+  {
+    url: anexo22Url,
+    options: {
+      ...generalOptions,
+      body: JSON.stringify({
+        request_field:
+          "3_agente_aduanal_o_agencia_aduanal_representacion_legal_apoderado_aduanal_o_de_almacen",
+      }),
+    },
+  },
+  {
+    url: anexo22Url,
+    options: {
+      ...generalOptions,
+      body: JSON.stringify({
+        request_field: "4_datos_del_proveedor_comprador",
+      }),
+    },
+  },
+  {
+    url: anexo22Url,
+    options: {
+      ...generalOptions,
+      body: JSON.stringify({
+        request_field: "5_datos_del_destinatario",
+      }),
+    },
+  },
+  {
+    url: anexo22Url,
+    options: {
+      ...generalOptions,
+      body: JSON.stringify({
+        request_field: "6_datos_del_transporte_y_transportista",
+      }),
+    },
+  },
+  {
+    url: anexo22Url,
+    options: {
+      ...generalOptions,
+      body: JSON.stringify({
+        request_field: "7_candados",
+      }),
+    },
+  },
+  {
+    url: anexo22Url,
+    options: {
+      ...generalOptions,
+      body: JSON.stringify({
+        request_field:
+          "8_guias_manifiestos_conocimientos_embarque_o_documentos_de_transporte",
+      }),
+    },
+  },
+  {
+    url: anexo22Url,
+    options: {
+      ...generalOptions,
+      body: JSON.stringify({
+        request_field:
+          "9_contenedores_equipo_ferrocarril_numero_economico_vehiculo",
+      }),
+    },
+  },
+  {
+    url: anexo22Url,
+    options: {
+      ...generalOptions,
+      body: JSON.stringify({
+        request_field: "10_identificadores_nivel_pedimento",
+      }),
+    },
+  },
+  {
+    url: anexo22Url,
+    options: {
+      ...generalOptions,
+      body: JSON.stringify({
+        request_field:
+          "11_cuentas_aduaneras_y_cuentas_aduaneras_de_garantia_nivel_pedimento",
+      }),
+    },
+  },
+  {
+    url: anexo22Url,
+    options: {
+      ...generalOptions,
+      body: JSON.stringify({
+        request_field: "12_descargos",
+      }),
+    },
+  },
+  {
+    url: anexo22Url,
+    options: {
+      ...generalOptions,
+      body: JSON.stringify({
+        request_field: "13_compensaciones",
+      }),
+    },
+  },
+  {
+    url: anexo22Url,
+    options: {
+      ...generalOptions,
+      body: JSON.stringify({
+        request_field:
+          "14_documentos_que_amparan_las_formas_de_pago_distintas_a_efectivo",
+      }),
+    },
+  },
+  {
+    url: anexo22Url,
+    options: {
+      ...generalOptions,
+      body: JSON.stringify({
+        request_field: "15_observaciones_nivel_pedimento",
+      }),
+    },
+  },
+  {
+    url: anexo22Url,
+    options: {
+      ...generalOptions,
+      body: JSON.stringify({
+        request_field: "16_partidas",
+      }),
+    },
+  },
+  {
+    url: anexo22Url,
+    options: {
+      ...generalOptions,
+      body: JSON.stringify({
+        request_field: "17_mercancias",
+      }),
+    },
+  },
+  {
+    url: anexo22Url,
+    options: {
+      ...generalOptions,
+      body: JSON.stringify({
+        request_field: "18_regulaciones_y_restricciones_no_arancelarias",
+      }),
+    },
+  },
+  {
+    url: anexo22Url,
+    options: {
+      ...generalOptions,
+      body: JSON.stringify({
+        request_field: "19_identificadores_nivel_partida",
+      }),
+    },
+  },
+  {
+    url: anexo22Url,
+    options: {
+      ...generalOptions,
+      body: JSON.stringify({
+        request_field: "20_cuentas_aduaneras_de_garantia_nivel_partida",
+      }),
+    },
+  },
+  {
+    url: anexo22Url,
+    options: {
+      ...generalOptions,
+      body: JSON.stringify({
+        request_field:
+          "21_determinacion_y_pago_de_contribuciones_por_aplicacion_de_los_artículos_2_5_del_t_mec_14_del_anexo_III_de_la_decision_15_del_anexo_I_del_tlcaelc_o_del_acc_nivel_partida",
+      }),
+    },
+  },
+  {
+    url: anexo22Url,
+    options: {
+      ...generalOptions,
+      body: JSON.stringify({
+        request_field: "22_observaciones_a_nivel_partida",
+      }),
+    },
+  },
+  {
+    url: anexo22Url,
+    options: {
+      ...generalOptions,
+      body: JSON.stringify({
+        request_field: "23_rectificaciones",
+      }),
+    },
+  },
+  {
+    url: anexo22Url,
+    options: {
+      ...generalOptions,
+      body: JSON.stringify({
+        request_field: "24_diferencias_de_contribuciones_nivel_pedimento",
+      }),
+    },
+  },
+  {
+    url: anexo22Url,
+    options: {
+      ...generalOptions,
+      body: JSON.stringify({
+        request_field: "25_prueba_suficiente",
+      }),
+    },
+  },
+  {
+    url: anexo22Url,
+    options: {
+      ...generalOptions,
+      body: JSON.stringify({
+        request_field:
+          "26_encabezado_para_determinacion_de_contribuciones_a_nivel_partida_para_pedimentos_complementarios_al_amparo_del_articulo_2_5_del_t_mec",
+      }),
+    },
+  },
+  {
+    url: anexo22Url,
+    options: {
+      ...generalOptions,
+      body: JSON.stringify({
+        request_field:
+          "27_encabezado_para_determinacion_de_contribuciones_a_nivel_partida_para_pedimentos_complementarios_al_amparo_de_los_articulos_14_del_anexo_III_de_la_decision_15_del_anexo_I_del_tlcaelc_o_del_acc",
+      }),
+    },
+  },
+  {
+    url: anexo22Url,
+    options: {
+      ...generalOptions,
+      body: JSON.stringify({
+        request_field: "28_distribucion_de_copias",
+      }),
+    },
+  },
+  {
+    url: anexo22Url,
+    options: {
+      ...generalOptions,
+      body: JSON.stringify({
+        request_field:
+          "29_instructivo_de_llenado_del_pedimento_de_transito_para_el_transbordo",
+      }),
+    },
+  },
+  {
+    url: anexo22Url,
+    options: {
+      ...generalOptions,
+      body: JSON.stringify({
+        request_field: "30_apendice_1",
+      }),
+    },
+  },
+  {
+    url: anexo22Url,
+    options: {
+      ...generalOptions,
+      body: JSON.stringify({
+        request_field: "31_apendice_2",
+      }),
+    },
+  },
+  {
+    url: anexo22Url,
+    options: {
+      ...generalOptions,
+      body: JSON.stringify({
+        request_field: "32_apendice_3",
+      }),
+    },
+  },
+  {
+    url: anexo22Url,
+    options: {
+      ...generalOptions,
+      body: JSON.stringify({
+        request_field: "33_apendice_4",
+      }),
+    },
+  },
+  {
+    url: anexo22Url,
+    options: {
+      ...generalOptions,
+      body: JSON.stringify({
+        request_field: "34_apendice_5",
+      }),
+    },
+  },
+  {
+    url: anexo22Url,
+    options: {
+      ...generalOptions,
+      body: JSON.stringify({
+        request_field: "35_apendice_6",
+      }),
+    },
+  },
+  {
+    url: anexo22Url,
+    options: {
+      ...generalOptions,
+      body: JSON.stringify({
+        request_field: "36_apendice_7",
+      }),
+    },
+  },
+  {
+    url: anexo22Url,
+    options: {
+      ...generalOptions,
+      body: JSON.stringify({
+        request_field: "37_apendice_8",
+      }),
+    },
+  },
+  {
+    url: anexo22Url,
+    options: {
+      ...generalOptions,
+      body: JSON.stringify({
+        request_field: "38_apendice_9",
+      }),
+    },
+  },
+  {
+    url: anexo22Url,
+    options: {
+      ...generalOptions,
+      body: JSON.stringify({
+        request_field: "39_apendice_10",
+      }),
+    },
+  },
+  {
+    url: anexo22Url,
+    options: {
+      ...generalOptions,
+      body: JSON.stringify({
+        request_field: "40_apendice_11",
+      }),
+    },
+  },
+  {
+    url: anexo22Url,
+    options: {
+      ...generalOptions,
+      body: JSON.stringify({
+        request_field: "41_apendice_12",
+      }),
+    },
+  },
+  {
+    url: anexo22Url,
+    options: {
+      ...generalOptions,
+      body: JSON.stringify({
+        request_field: "42_apendice_13",
+      }),
+    },
+  },
+  {
+    url: anexo22Url,
+    options: {
+      ...generalOptions,
+      body: JSON.stringify({
+        request_field: "43_apendice_14",
+      }),
+    },
+  },
+  {
+    url: anexo22Url,
+    options: {
+      ...generalOptions,
+      body: JSON.stringify({
+        request_field: "44_apendice_15",
+      }),
+    },
+  },
+  {
+    url: anexo22Url,
+    options: {
+      ...generalOptions,
+      body: JSON.stringify({
+        request_field: "45_apendice_16",
+      }),
+    },
+  },
+  {
+    url: anexo22Url,
+    options: {
+      ...generalOptions,
+      body: JSON.stringify({
+        request_field: "46_apendice_17",
+      }),
+    },
+  },
+  {
+    url: anexo22Url,
+    options: {
+      ...generalOptions,
+      body: JSON.stringify({
+        request_field: "47_apendice_18",
+      }),
+    },
+  },
+  {
+    url: anexo22Url,
+    options: {
+      ...generalOptions,
+      body: JSON.stringify({
+        request_field: "48_apendice_19",
+      }),
+    },
+  },
+  {
+    url: anexo22Url,
+    options: {
+      ...generalOptions,
+      body: JSON.stringify({
+        request_field: "49_apendice_21",
+      }),
+    },
+  },
+  {
+    url: anexo22Url,
+    options: {
+      ...generalOptions,
+      body: JSON.stringify({
+        request_field: "50_apendice_22",
+      }),
+    },
+  },
+  {
+    url: anexo22Url,
+    options: {
+      ...generalOptions,
+      body: JSON.stringify({
+        request_field: "51_apendice_23",
+      }),
+    },
+  },
 ];

@@ -1,0 +1,40 @@
+{
+  "Notas": [
+    {
+      "Contenido": "La información de este bloque deberá ser impresa y transmitida electrónicamente sólo cuando se utilicen las formas de pago mencionadas o al presentarse el formato D5 'Declaración para Movimiento en Cuenta Aduanera de Bienes, Importados Para Retornar en su Mismo Estado conforme al Art. 86 de la L.A.' (DMCA) contenido en el Anexo 1."
+    }
+  ],
+  "Campos": [
+    {
+      "Número": 1,
+      "Campo": "FORMAS DE PAGO",
+      "Descripción": "Clave de la forma de pago del concepto a liquidar que corresponde al tipo de documento que se declara, conforme al apéndice 13 del presente Anexo."
+    },
+    {
+      "Número": 2,
+      "Campo": "DEPENDENCIA O INSTITUCIÓN EMISORA",
+      "Descripción": "Nombre de la dependencia o institución que expide el documento (afianzadora, dependencia pública que lo expide o TESOFE)."
+    },
+    {
+      "Número": 3,
+      "Campo": "NÚMERO DEL DOCUMENTO",
+      "Descripción": "Número que permite identificar el documento."
+    },
+    {
+      "Número": 4,
+      "Campo": "FECHA DEL DOCUMENTO",
+      "Descripción": "Fecha en la que se expidió el documento."
+    },
+    {
+      "Número": 5,
+      "Campo": "IMPORTE DEL DOCUMENTO",
+      "Descripción": "El importe total que ampara el documento. Si presenta DMCA, el importe total garantizado más los rendimientos."
+    },
+    {
+      "Número": 6,
+      "Campo": "SALDO DISPONIBLE",
+      "Descripción": "Este campo será igual que el anterior cuando se utilice el total amparado en el documento en una sola operación. De lo contrario, se anotará el saldo disponible del documento al momento del pago. Si presenta DMCA, el importe garantizado que podrá recuperar el exportador."
+    }
+  ],
+  "Nota": "Cuando se tenga la obligación de presentar el formato D5 'Declaración para Movimiento en Cuenta Aduanera de Bienes, Importados Para Retornar en su Mismo Estado conforme al Art. 86 de la L.A.' contenido en el Anexo 1, en operaciones de exportación, se deberá incluir la información a que se refiere el presente bloque."
+}

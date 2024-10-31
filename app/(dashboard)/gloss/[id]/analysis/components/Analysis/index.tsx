@@ -38,8 +38,6 @@ const Analysis = () => {
     openMenu();
   };
 
-  console.log(restrictionSelected);
-
   const dummyData = {
     analysisType: "Regulación",
     isVerified: false,

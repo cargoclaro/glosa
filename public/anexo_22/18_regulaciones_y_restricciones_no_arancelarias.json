@@ -1,0 +1,33 @@
+{
+  "Descripción": "Bloque relacionado con las regulaciones y restricciones no arancelarias que se deben cumplir.",
+  "Campos": [
+    {
+      "Número": 1,
+      "Campo": "PERMISO",
+      "Descripción": "La clave del permiso que comprueba el cumplimiento de las obligaciones en materia de regulaciones y restricciones no arancelarias requeridas.",
+      "Nota": "Conforme al apéndice 9 del presente Anexo."
+    },
+    {
+      "Número": 2,
+      "Campo": "NÚMERO DE PERMISO",
+      "Descripción": "El número del permiso o autorización que compruebe o acredite el cumplimiento de las obligaciones en materia de regulaciones y restricciones no arancelarias."
+    },
+    {
+      "Número": 3,
+      "Campo": "FIRMA DESCARGO",
+      "Descripción": "En ocho caracteres, la firma electrónica que se da de acuerdo al permiso o certificado proporcionado cuando corresponda.",
+      "IMMEX": "En operaciones por parte de empresas con Programa IMMEX, se deberá declarar el 'Complemento de autorización' correspondiente, únicamente en caso de autorizaciones específicas.",
+      "Agricultura": "En operaciones al amparo del 'Acuerdo que establece las mercancías cuya importación está sujeta a regulación por parte de la Secretaría de Agricultura y Desarrollo Rural, así como la emisión del certificado de origen para la exportación de café', se deberá declarar el 'Complemento de Autorización' correspondiente."
+    },
+    {
+      "Número": 4,
+      "Campo": "VAL. COM. DLS.",
+      "Descripción": "Importe del valor comercial en dólares de los Estados Unidos de América que se está descargando."
+    },
+    {
+      "Número": 5,
+      "Campo": "CANTIDAD UMT/C.",
+      "Descripción": "Cantidad de mercancía en unidades de medida de tarifa o de comercialización que se está descargando, según sea expedida por la entidad correspondiente."
+    }
+  ]
+}

@@ -1,0 +1,73 @@
+{
+  "Descripción": "Para cada una de las partidas del pedimento complementario se deberán declarar los datos que a continuación se mencionan, conforme a la posición en que se encuentran en el encabezado de determinación de contribuciones a nivel partida del formato de pedimento complementario.",
+  "Campos": [
+    {
+      "Número": 1,
+      "Campo": "SEC.",
+      "Descripción": "Número de la secuencia de la fracción que se declaró en el pedimento de retorno."
+    },
+    {
+      "Número": 2,
+      "Campo": "FRACCIÓN",
+      "Descripción": "Fracción arancelaria conforme a la TIGIE aplicable al bien final, declarado en el pedimento de retorno, que se exporta a los Estados Unidos de América o Canadá."
+    },
+    {
+      "Número": 3,
+      "Campo": "VALOR MERC. NO ORIG.",
+      "Descripción": "El monto que resulte de sumar el valor de los bienes que se hayan introducido a territorio nacional bajo un programa de diferimiento o devolución de aranceles, sobre los cuales se haya realizado el cálculo del monto del IGI que se adeuda."
+    },
+    {
+      "Número": 4,
+      "Campo": "MONTO IGI",
+      "Descripción": "El monto en moneda nacional que resulte de sumar el IGI correspondiente a los bienes que se hayan introducido a territorio nacional bajo un programa de diferimiento o devolución de aranceles, considerando el valor de los bienes determinados en moneda extranjera, al tipo de cambio vigente en la fecha en que se efectúe el pago del impuesto."
+    },
+    {
+      "Número": 5,
+      "Campo": "TOTAL ARAN. EUA/CAN",
+      "Descripción": "El monto total en moneda nacional del impuesto pagado por la importación definitiva en los Estados Unidos de América o Canadá, del bien que se haya exportado o retornado posteriormente, aplicando el tipo de cambio en los términos del artículo 20 del CFF vigente en la fecha en que se efectúe el pago del impuesto o en la fecha en que se efectúe la determinación de los impuestos."
+    },
+    {
+      "Número": 6,
+      "Campo": "MONTO EXENTO",
+      "Descripción": "El monto en moneda nacional del impuesto determinado conforme lo declarado en el campo 4 (monto IGI) cuando sea igual o menor que el determinado en el campo 5 (ARAN. EUA/CAN), el cual nunca podrá ser inferior a cero."
+    },
+    {
+      "Número": 7,
+      "Campo": "F.P.",
+      "Descripción": "Clave de la forma de pago del concepto a liquidar, conforme al apéndice 13 del presente Anexo."
+    },
+    {
+      "Número": 8,
+      "Campo": "IMPORTE",
+      "Descripción": "Importe total en moneda nacional del concepto a liquidar, para la forma de pago declarada."
+    },
+    {
+      "Número": 9,
+      "Campo": "UMT",
+      "Descripción": "Unidad de medida de la tarifa utilizada en los Estados Unidos de América o Canadá de las mercancías importadas a esos países."
+    },
+    {
+      "Número": 10,
+      "Campo": "CANTIDAD UMT",
+      "Descripción": "La cantidad correspondiente conforme a la unidad de medida de la tarifa de importación utilizada en los Estados Unidos de América o Canadá de las mercancías importadas a esos países."
+    },
+    {
+      "Número": 11,
+      "Campo": "FRACC. EUA/CAN",
+      "Descripción": "La fracción arancelaria aplicable al bien final importado a los Estados Unidos de América o Canadá."
+    },
+    {
+      "Número": 12,
+      "Campo": "TASA EUA/CAN",
+      "Descripción": "La tasa del impuesto de importación aplicada a cada bien por su importación a los Estados Unidos de América o Canadá."
+    },
+    {
+      "Número": 13,
+      "Campo": "ARAN. EUA/CAN",
+      "Descripción": "El monto del impuesto pagado por la importación definitiva en los Estados Unidos de América o Canadá, del bien que se haya exportado o retornado posteriormente. Este monto deberá señalarse en la moneda del país de importación."
+    }
+  ],
+  "Datos_por_partida_del_pedimento_complementario": {
+    "Descripción": "Para cada una de las partidas del pedimento complementario se deberán declarar los datos que a continuación se mencionan, tantas veces como sea necesario, por cada secuencia y fracción, declarada en el sub-bloque anterior."
+  }
+}

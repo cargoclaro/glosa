@@ -1,0 +1,74 @@
+{
+  "Términos de facturación": {
+    "Términos": [
+      {
+        "Grupo": "I",
+        "Título": "C Transporte principal pagado",
+        "Claves": [
+          {
+            "Clave": "CFR",
+            "Descripción": "Coste y flete (puerto de destino convenido)."
+          },
+          {
+            "Clave": "CIF",
+            "Descripción": "Coste, seguro y flete (puerto de destino convenido)."
+          },
+          {
+            "Clave": "CPT",
+            "Descripción": "Transporte pagado hasta (el lugar de destino convenido)."
+          },
+          {
+            "Clave": "CIP",
+            "Descripción": "Transporte y seguro pagados hasta (lugar de destino convenido)."
+          }
+        ]
+      },
+      {
+        "Grupo": "II",
+        "Título": "D Llegada",
+        "Claves": [
+          {
+            "Clave": "DAP",
+            "Descripción": "Entregada en lugar."
+          },
+          {
+            "Clave": "DDP",
+            "Descripción": "Entregada derechos pagados (lugar de destino convenido)."
+          },
+          {
+            "Clave": "DPU",
+            "Descripción": "Entregada y descargada en el lugar acordado."
+          }
+        ]
+      },
+      {
+        "Grupo": "III",
+        "Título": "E Salida",
+        "Claves": [
+          {
+            "Clave": "EXW",
+            "Descripción": "En fabrica (lugar convenido)."
+          }
+        ]
+      },
+      {
+        "Grupo": "IV",
+        "Título": "F Transporte principal no pagado",
+        "Claves": [
+          {
+            "Clave": "FCA",
+            "Descripción": "Franco transportista (lugar designado)."
+          },
+          {
+            "Clave": "FAS",
+            "Descripción": "Franco al costado del buque (puerto de carga convenido)."
+          },
+          {
+            "Clave": "FOB",
+            "Descripción": "Franco a bordo (puerto de carga convenido)."
+          }
+        ]
+      }
+    ]
+  }
+}

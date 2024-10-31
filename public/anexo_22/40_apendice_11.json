@@ -1,0 +1,34 @@
+{
+  "Claves de metodos de valoracion": {
+    "Metodos": [
+      {
+        "Clave": "0",
+        "Descripcion": "Valor comercial (clave usada solo a la exportacion)."
+      },
+      {
+        "Clave": "1",
+        "Descripcion": "Valor de transaccion de las mercancias."
+      },
+      {
+        "Clave": "2",
+        "Descripcion": "Valor de transaccion de mercancias identicas."
+      },
+      {
+        "Clave": "3",
+        "Descripcion": "Valor de transaccion de mercancias similares."
+      },
+      {
+        "Clave": "4",
+        "Descripcion": "Valor de precio unitario de venta."
+      },
+      {
+        "Clave": "5",
+        "Descripcion": "Valor reconstruido."
+      },
+      {
+        "Clave": "6",
+        "Descripcion": "Ultimo recurso."
+      }
+    ]
+  }
+}

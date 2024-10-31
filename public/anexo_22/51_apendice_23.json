@@ -1,0 +1,66 @@
+{
+  "Pago Electrónico": {
+    "Campos": [
+      {
+        "Número": 1,
+        "Campo": "***PAGO ELECTRÓNICO***",
+        "Descripción": "Etiqueta que imprimirá."
+      },
+      {
+        "Número": 2,
+        "Campo": "Nombre de la Institución Bancaria",
+        "Descripción": "Nombre de la Institución de crédito autorizada para el cobro de contribuciones de comercio exterior que recibe el pago."
+      },
+      {
+        "Número": 3,
+        "Campo": "Patente",
+        "Descripción": "(8 dígitos) Número de la patente del agente aduanal, o número de la autorización otorgada por la ANAM al apoderado aduanal o de almacén que promueve el despacho."
+      },
+      {
+        "Número": 4,
+        "Campo": "Pedimento",
+        "Descripción": "Número del Pedimento, conformado por: (1 dígito) Debe corresponder al último dígito del año en curso, salvo que se trate de un pedimento consolidado iniciado en el año inmediato anterior o del pedimento original de una rectificación. (6 dígitos) Numeración progresiva por aduana en la que se encuentren autorizados para el despacho, asignada por cada agente aduanal, apoderado aduanal o de almacén, referido a todos los tipos de pedimento."
+      },
+      {
+        "Número": 5,
+        "Campo": "Aduana",
+        "Descripción": "(3 dígitos) Aduana de despacho."
+      },
+      {
+        "Número": 6,
+        "Campo": "Línea de Captura",
+        "Descripción": "(20 dígitos) La generada por el SEA, alfanumérica."
+      },
+      {
+        "Número": 7,
+        "Campo": "Importe de Pago",
+        "Descripción": "Deberá contener caracteres especiales ($,)."
+      },
+      {
+        "Número": 8,
+        "Campo": "Fecha de Pago",
+        "Descripción": "Fecha en que el SEA envía respuesta de acuse. (dd-mm-aaaa)"
+      },
+      {
+        "Número": 9,
+        "Campo": "Número de Operación Bancaria",
+        "Descripción": "(14 dígitos) Número de identificador único de la transacción del cobro de la línea de captura otorgada por la Institución de crédito autorizada para el cobro de contribuciones de comercio exterior."
+      },
+      {
+        "Número": 10,
+        "Campo": "Número de Transacción SAT",
+        "Descripción": "Identificador único del SEA."
+      },
+      {
+        "Número": 11,
+        "Campo": "Medio de presentación",
+        "Descripción": "Leyenda Fija 'Otros Medios electrónicos: (pago electrónico)'."
+      },
+      {
+        "Número": 12,
+        "Campo": "Medio de recepción/cobro",
+        "Descripción": "Leyenda Fija 'Efectivo - Cargo a cuenta'."
+      }
+    ]
+  }
+}

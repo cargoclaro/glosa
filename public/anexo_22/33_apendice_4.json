@@ -1,0 +1,749 @@
+{
+  "Claves de países": [
+    {
+      "Clave SAAI FIII": "A1",
+      "Clave SAAI M3": "AFG",
+      "País": "Afganistán (Emirato Islámico de)"
+    },
+    {
+      "Clave SAAI FIII": "A2",
+      "Clave SAAI M3": "ALB",
+      "País": "Albania (República de)"
+    },
+    {
+      "Clave SAAI FIII": "A4",
+      "Clave SAAI M3": "DEU",
+      "País": "Alemania (República Federal de)"
+    },
+    {
+      "Clave SAAI FIII": "A7",
+      "Clave SAAI M3": "AND",
+      "País": "Andorra (Principado de)"
+    },
+    {
+      "Clave SAAI FIII": "A8",
+      "Clave SAAI M3": "AGO",
+      "País": "Angola (República de)"
+    },
+    {
+      "Clave SAAI FIII": "AI",
+      "Clave SAAI M3": "AIA",
+      "País": "Anguila"
+    },
+    {
+      "Clave SAAI FIII": "ATA",
+      "Clave SAAI M3": "ATA",
+      "País": "Antártida"
+    },
+    {
+      "Clave SAAI FIII": "A9",
+      "Clave SAAI M3": "ATG",
+      "País": "Antigua y Barbuda (Comunidad Británica de Naciones)"
+    },
+    {
+      "Clave SAAI FIII": "B1",
+      "Clave SAAI M3": "ANT",
+      "País": "Antillas Neerlandesas (Territorio Holandés de Ultramar)"
+    },
+    {
+      "Clave SAAI FIII": "B2",
+      "Clave SAAI M3": "SAU",
+      "País": "Arabia Saudita (Reino de)"
+    },
+    {
+      "Clave SAAI FIII": "B3",
+      "Clave SAAI M3": "DZA",
+      "País": "Argelia (República Democrática y Popular de)"
+    },
+    {
+      "Clave SAAI FIII": "B4",
+      "Clave SAAI M3": "ARG",
+      "País": "Argentina (República)"
+    },
+    {
+      "Clave SAAI FIII": "AM",
+      "Clave SAAI M3": "ARM",
+      "País": "Armenia (República de)"
+    },
+    {
+      "Clave SAAI FIII": "A0",
+      "Clave SAAI M3": "ABW",
+      "País": "Aruba (Territorio Holandés de Ultramar)"
+    },
+    {
+      "Clave SAAI FIII": "B5",
+      "Clave SAAI M3": "AUS",
+      "País": "Australia (Comunidad de)"
+    },
+    {
+      "Clave SAAI FIII": "B6",
+      "Clave SAAI M3": "AUT",
+      "País": "Austria (República de)"
+    },
+    {
+      "Clave SAAI FIII": "AZ",
+      "Clave SAAI M3": "AZE",
+      "País": "Azerbaiyán (República Azerbaiyán)"
+    },
+    {
+      "Clave SAAI FIII": "B7",
+      "Clave SAAI M3": "BHS",
+      "País": "Bahamas (Comunidad de las)"
+    },
+    {
+      "Clave SAAI FIII": "B8",
+      "Clave SAAI M3": "BHR",
+      "País": "Bahréin (Estado de)"
+    },
+    {
+      "Clave SAAI FIII": "B9",
+      "Clave SAAI M3": "BGD",
+      "País": "Bangladesh (República Popular de)"
+    },
+    {
+      "Clave SAAI FIII": "C1",
+      "Clave SAAI M3": "BRB",
+      "País": "Barbados (Comunidad Británica de Naciones)"
+    },
+    {
+      "Clave SAAI FIII": "C2",
+      "Clave SAAI M3": "BEL",
+      "País": "Bélgica (Reino de)"
+    },
+    {
+      "Clave SAAI FIII": "C3",
+      "Clave SAAI M3": "BLZ",
+      "País": "Belice"
+    },
+    {
+      "Clave SAAI FIII": "F9",
+      "Clave SAAI M3": "BEN",
+      "País": "Benín (República de)"
+    },
+    {
+      "Clave SAAI FIII": "C4",
+      "Clave SAAI M3": "BMU",
+      "País": "Bermudas"
+    },
+    {
+      "Clave SAAI FIII": "BES",
+      "Clave SAAI M3": "BES",
+      "País": "Bonaire, San Eustaquio y Saba"
+    },
+    {
+      "Clave SAAI FIII": "BY",
+      "Clave SAAI M3": "BLR",
+      "País": "Bielorrusia (República de)"
+    },
+    {
+      "Clave SAAI FIII": "C6",
+      "Clave SAAI M3": "BOL",
+      "País": "Bolivia (República de)"
+    },
+    {
+      "Clave SAAI FIII": "X7",
+      "Clave SAAI M3": "BIH",
+      "País": "Bosnia y Herzegovina"
+    },
+    {
+      "Clave SAAI FIII": "C7",
+      "Clave SAAI M3": "BWA",
+      "País": "Botswana (República de)"
+    },
+    {
+      "Clave SAAI FIII": "C8",
+      "Clave SAAI M3": "BRA",
+      "País": "Brasil (República Federativa de)"
+    },
+    {
+      "Clave SAAI FIII": "C9",
+      "Clave SAAI M3": "BRN",
+      "País": "Brunéi (Estado de) (Residencia de Paz)"
+    },
+    {
+      "Clave SAAI FIII": "D1",
+      "Clave SAAI M3": "BGR",
+      "País": "Bulgaria (República de)"
+    },
+    {
+      "Clave SAAI FIII": "A6",
+      "Clave SAAI M3": "BFA",
+      "País": "Burkina Faso"
+    },
+    {
+      "Clave SAAI FIII": "D2",
+      "Clave SAAI M3": "BDI",
+      "País": "Burundi (República de)"
+    },
+    {
+      "Clave SAAI FIII": "D3",
+      "Clave SAAI M3": "BTN",
+      "País": "Bután (Reino de)"
+    },
+    {
+      "Clave SAAI FIII": "D4",
+      "Clave SAAI M3": "CPV",
+      "País": "Cabo Verde (República de)"
+    },
+    {
+      "Clave SAAI FIII": "F4",
+      "Clave SAAI M3": "TCD",
+      "País": "Chad (República del)"
+    },
+    {
+      "Clave SAAI FIII": "D6",
+      "Clave SAAI M3": "CYM",
+      "País": "Caimán (Islas)"
+    },
+    {
+      "Clave SAAI FIII": "D7",
+      "Clave SAAI M3": "KHM",
+      "País": "Camboya (Reino de)"
+    },
+    {
+      "Clave SAAI FIII": "D8",
+      "Clave SAAI M3": "CMR",
+      "País": "Camerún (República de)"
+    },
+    {
+      "Clave SAAI FIII": "D9",
+      "Clave SAAI M3": "CAN",
+      "País": "Canadá"
+    },
+    {
+      "Clave SAAI FIII": "E1",
+      "Clave SAAI M3": "RKE",
+      "País": "Canal, Islas del (Islas Normandas)"
+    },
+    {
+      "Clave SAAI FIII": "F6",
+      "Clave SAAI M3": "CHL",
+      "País": "Chile (República de)"
+    },
+    {
+      "Clave SAAI FIII": "Z3",
+      "Clave SAAI M3": "CHN",
+      "País": "China (República Popular)"
+    },
+    {
+      "Clave SAAI FIII": "F8",
+      "Clave SAAI M3": "CYP",
+      "País": "Chipre (República de)"
+    },
+    {
+      "Clave SAAI FIII": "E2",
+      "Clave SAAI M3": "CIA",
+      "País": "Ciudad del Vaticano (Estado de la)"
+    },
+    {
+      "Clave SAAI FIII": "E3",
+      "Clave SAAI M3": "CCK",
+      "País": "Cocos (Keeling, Islas Australianas)"
+    },
+    {
+      "Clave SAAI FIII": "E4",
+      "Clave SAAI M3": "COL",
+      "País": "Colombia (República de)"
+    },
+    {
+      "Clave SAAI FIII": "E5",
+      "Clave SAAI M3": "COM",
+      "País": "Comoras (Islas)"
+    },
+    {
+      "Clave SAAI FIII": "EU",
+      "Clave SAAI M3": "EMU",
+      "País": "Comunidad Europea"
+    },
+    {
+      "Clave SAAI FIII": "E6",
+      "Clave SAAI M3": "COG",
+      "País": "Congo (República del)"
+    },
+    {
+      "Clave SAAI FIII": "E7",
+      "Clave SAAI M3": "COK",
+      "País": "Cook (Islas)"
+    },
+    {
+      "Clave SAAI FIII": "E9",
+      "Clave SAAI M3": "PRK",
+      "País": "Corea (República Popular Democrática de) (Corea del Norte)"
+    },
+    {
+      "Clave SAAI FIII": "E8",
+      "Clave SAAI M3": "KOR",
+      "País": "Corea (República de) (Corea del Sur)"
+    },
+    {
+      "Clave SAAI FIII": "F1",
+      "Clave SAAI M3": "CIV",
+      "País": "Costa de Marfil (República de la)"
+    },
+    {
+      "Clave SAAI FIII": "F2",
+      "Clave SAAI M3": "CRI",
+      "País": "Costa Rica (República de)"
+    },
+    {
+      "Clave SAAI FIII": "HR",
+      "Clave SAAI M3": "HRV",
+      "País": "Croacia (República de)"
+    },
+    {
+      "Clave SAAI FIII": "F3",
+      "Clave SAAI M3": "CUB",
+      "País": "Cuba (República de)"
+    },
+    {
+      "Clave SAAI FIII": "D0",
+      "Clave SAAI M3": "CUR",
+      "País": "Curazao (Territorio Holandés de Ultramar)"
+    },
+    {
+      "Clave SAAI FIII": "G1",
+      "Clave SAAI M3": "DNK",
+      "País": "Dinamarca (Reino de)"
+    },
+    {
+      "Clave SAAI FIII": "V4",
+      "Clave SAAI M3": "DJI",
+      "País": "Djibouti (República de)"
+    },
+    {
+      "Clave SAAI FIII": "G2",
+      "Clave SAAI M3": "DMA",
+      "País": "Dominica (Comunidad de)"
+    },
+    {
+      "Clave SAAI FIII": "G3",
+      "Clave SAAI M3": "ECU",
+      "País": "Ecuador (República del)"
+    },
+    {
+      "Clave SAAI FIII": "G4",
+      "Clave SAAI M3": "EGY",
+      "País": "Egipto (República Árabe de)"
+    },
+    {
+      "Clave SAAI FIII": "G5",
+      "Clave SAAI M3": "SLV",
+      "País": "El Salvador (República de)"
+    },
+    {
+      "Clave SAAI FIII": "G6",
+      "Clave SAAI M3": "ARE",
+      "País": "Emiratos Árabes Unidos"
+    },
+    {
+      "Clave SAAI FIII": "ER",
+      "Clave SAAI M3": "ERI",
+      "País": "Eritrea (Estado de)"
+    },
+    {
+      "Clave SAAI FIII": "SI",
+      "Clave SAAI M3": "SVN",
+      "País": "Eslovenia (República de)"
+    },
+    {
+      "Clave SAAI FIII": "G7",
+      "Clave SAAI M3": "ESP",
+      "País": "España (Reino de)"
+    },
+    {
+      "Clave SAAI FIII": "FM",
+      "Clave SAAI M3": "DSM",
+      "País": "Estado Federado de Micronesia"
+    },
+    {
+      "Clave SAAI FIII": "G8",
+      "Clave SAAI M3": "USA",
+      "País": "Estados Unidos de América"
+    },
+    {
+      "Clave SAAI FIII": "G0",
+      "Clave SAAI M3": "EST",
+      "País": "Estonia (República de)"
+    },
+    {
+      "Clave SAAI FIII": "G9",
+      "Clave SAAI M3": "ETH",
+      "País": "Etiopía (República Democrática Federal)"
+    },
+    {
+      "Clave SAAI FIII": "H1",
+      "Clave SAAI M3": "FJI",
+      "País": "Fidji (República de)"
+    },
+    {
+      "Clave SAAI FIII": "H3",
+      "Clave SAAI M3": "PHL",
+      "País": "Filipinas (República de las)"
+    },
+    {
+      "Clave SAAI FIII": "H4",
+      "Clave SAAI M3": "FIN",
+      "País": "Finlandia (República de)"
+    },
+    {
+      "Clave SAAI FIII": "H5",
+      "Clave SAAI M3": "FRA",
+      "País": "Francia (República Francesa)"
+    },
+    {
+      "Clave SAAI FIII": "GZ",
+      "Clave SAAI M3": "GZA",
+      "País": "Franja de Gaza"
+    },
+    {
+      "Clave SAAI FIII": "H6",
+      "Clave SAAI M3": "GAB",
+      "País": "Gabonesa (República)"
+    },
+    {
+      "Clave SAAI FIII": "H7",
+      "Clave SAAI M3": "GMB",
+      "País": "Gambia (República de la)"
+    },
+    {
+      "Clave SAAI FIII": "GE",
+      "Clave SAAI M3": "GEO",
+      "País": "Georgia (República de)"
+    },
+    {
+      "Clave SAAI FIII": "SGS",
+      "Clave SAAI M3": "SGS",
+      "País": "Georgia del Sur e Islas Sandwich del Sur"
+    },
+    {
+      "Clave SAAI FIII": "H8",
+      "Clave SAAI M3": "GHA",
+      "País": "Ghana (República de)"
+    },
+    {
+      "Clave SAAI FIII": "GI",
+      "Clave SAAI M3": "GIB",
+      "País": "Gibraltar (R.U.)"
+    },
+    {
+      "Clave SAAI FIII": "I1",
+      "Clave SAAI M3": "GRD",
+      "País": "Granada"
+    },
+    {
+      "Clave SAAI FIII": "I2",
+      "Clave SAAI M3": "GRC",
+      "País": "Grecia (República Helénica)"
+    },
+    {
+      "Clave SAAI FIII": "GL",
+      "Clave SAAI M3": "GRL",
+      "País": "Groenlandia (Dinamarca)"
+    },
+    {
+      "Clave SAAI FIII": "I4",
+      "Clave SAAI M3": "GLP",
+      "País": "Guadalupe (Departamento de)"
+    },
+    {
+      "Clave SAAI FIII": "I5",
+      "Clave SAAI M3": "GUM",
+      "País": "Guam (E.U.A.)"
+    },
+    {
+      "Clave SAAI FIII": "I6",
+      "Clave SAAI M3": "GTM",
+      "País": "Guatemala (República de)"
+    },
+    {
+      "Clave SAAI FIII": "GGY",
+      "Clave SAAI M3": "GGY",
+      "País": "Guernsey"
+    },
+    {
+      "Clave SAAI FIII": "J1",
+      "Clave SAAI M3": "GNB",
+      "País": "Guinea-Bissau (República de)"
+    },
+    {
+      "Clave SAAI FIII": "I9",
+      "Clave SAAI M3": "GNQ",
+      "País": "Guinea Ecuatorial (República de)"
+    },
+    {
+      "Clave SAAI FIII": "I8",
+      "Clave SAAI M3": "GIN",
+      "País": "Guinea (República de)"
+    },
+    {
+      "Clave SAAI FIII": "I7",
+      "Clave SAAI M3": "GUF",
+      "País": "Guyana Francesa"
+    },
+    {
+      "Clave SAAI FIII": "J2",
+      "Clave SAAI M3": "GUY",
+      "País": "Guyana (República Cooperativa de)"
+    },
+    {
+      "Clave SAAI FIII": "J3",
+      "Clave SAAI M3": "HTI",
+      "País": "Haití (República de)"
+    },
+    {
+      "Clave SAAI FIII": "J5",
+      "Clave SAAI M3": "HND",
+      "País": "Honduras (República de)"
+    },
+    {
+      "Clave SAAI FIII": "J6",
+      "Clave SAAI M3": "HKG",
+      "País": "Hong Kong (Región Administrativa Especial de la República)"
+    },
+    {
+      "Clave SAAI FIII": "J7",
+      "Clave SAAI M3": "HUN",
+      "País": "Hungría (República de)"
+    },
+    {
+      "Clave SAAI FIII": "J8",
+      "Clave SAAI M3": "IND",
+      "País": "India (República de)"
+    },
+    {
+      "Clave SAAI FIII": "J9",
+      "Clave SAAI M3": "IDN",
+      "País": "Indonesia (República de)"
+    },
+    {
+      "Clave SAAI FIII": "K1",
+      "Clave SAAI M3": "IRQ",
+      "País": "Irak (República de)"
+    },
+    {
+      "Clave SAAI FIII": "K2",
+      "Clave SAAI M3": "IRN",
+      "País": "Irán (República Islámica del)"
+    },
+    {
+      "Clave SAAI FIII": "K3",
+      "Clave SAAI M3": "IRL",
+      "País": "Irlanda (República de)"
+    },
+    {
+      "Clave SAAI FIII": "K4",
+      "Clave SAAI M3": "ISL",
+      "País": "Islandia (República de)"
+    },
+    {
+      "Clave SAAI FIII": "ALA",
+      "Clave SAAI M3": "ALA",
+      "País": "Islas Aland"
+    },
+    {
+      "Clave SAAI FIII": "BVT",
+      "Clave SAAI M3": "BVT",
+      "País": "Isla Bouvet"
+    },
+    {
+      "Clave SAAI FIII": "IMN",
+      "Clave SAAI M3": "IMN",
+      "País": "Isla de Man"
+    },
+    {
+      "Clave SAAI FIII": "FRO",
+      "Clave SAAI M3": "FRO",
+      "País": "Isla Feroe (Las)"
+    },
+    {
+      "Clave SAAI FIII": "HM",
+      "Clave SAAI M3": "LHM",
+      "País": "Islas Heard y Mcdonald"
+    },
+    {
+      "Clave SAAI FIII": "FK",
+      "Clave SAAI M3": "FLK",
+      "País": "Islas Malvinas (R.U.)"
+    },
+    {
+      "Clave SAAI FIII": "MP",
+      "Clave SAAI M3": "MNP",
+      "País": "Islas Marianas Septentrionales"
+    },
+    {
+      "Clave SAAI FIII": "MH",
+      "Clave SAAI M3": "MHL",
+      "País": "Islas Marshall"
+    },
+    {
+      "Clave SAAI FIII": "SB",
+      "Clave SAAI M3": "SLB",
+      "País": "Islas Salomón (Comunidad Británica de Naciones)"
+    },
+    {
+      "Clave SAAI FIII": "SJ",
+      "Clave SAAI M3": "SJM",
+      "País": "Islas Svalbard y Jan Mayen (Noruega)"
+    },
+    {
+      "Clave SAAI FIII": "TK",
+      "Clave SAAI M3": "TKL",
+      "País": "Islas Tokelau"
+    },
+    {
+      "Clave SAAI FIII": "WF",
+      "Clave SAAI M3": "WLF",
+      "País": "Islas Wallis y Futuna"
+    },
+    {
+      "Clave SAAI FIII": "K5",
+      "Clave SAAI M3": "ISR",
+      "País": "Israel (Estado de)"
+    },
+    {
+      "Clave SAAI FIII": "K6",
+      "Clave SAAI M3": "ITA",
+      "País": "Italia (República Italiana)"
+    },
+    {
+      "Clave SAAI FIII": "K7",
+      "Clave SAAI M3": "JAM",
+      "País": "Jamaica"
+    },
+    {
+      "Clave SAAI FIII": "K9",
+      "Clave SAAI M3": "JPN",
+      "País": "Japón"
+    },
+    {
+      "Clave SAAI FIII": "JEY",
+      "Clave SAAI M3": "JEY",
+      "País": "Jersey"
+    },
+    {
+      "Clave SAAI FIII": "L1",
+      "Clave SAAI M3": "JOR",
+      "País": "Jordania (Reino Hachemita de)"
+    },
+    {
+      "Clave SAAI FIII": "KZ",
+      "Clave SAAI M3": "KAZ",
+      "País": "Kazajistán (República de)"
+    },
+    {
+      "Clave SAAI FIII": "L2",
+      "Clave SAAI M3": "KEN",
+      "País": "Kenya (República de)"
+    },
+    {
+      "Clave SAAI FIII": "L0",
+      "Clave SAAI M3": "KIR",
+      "País": "Kiribati (República de)"
+    },
+    {
+      "Clave SAAI FIII": "L3",
+      "Clave SAAI M3": "KWT",
+      "País": "Kuwait (Estado de)"
+    },
+    {
+      "Clave SAAI FIII": "KG",
+      "Clave SAAI M3": "KGZ",
+      "País": "Kyrgyzstán (República Kirgyzia)"
+    },
+    {
+      "Clave SAAI FIII": "L6",
+      "Clave SAAI M3": "LSO",
+      "País": "Lesotho (Reino de)"
+    },
+    {
+      "Clave SAAI FIII": "Y1",
+      "Clave SAAI M3": "LVA",
+      "País": "Letonia (República de)"
+    },
+    {
+      "Clave SAAI FIII": "L7",
+      "Clave SAAI M3": "LBN",
+      "País": "Líbano (República de)"
+    },
+    {
+      "Clave SAAI FIII": "L8",
+      "Clave SAAI M3": "LBR",
+      "País": "Liberia (República de)"
+    },
+    {
+      "Clave SAAI FIII": "L9",
+      "Clave SAAI M3": "LBY",
+      "País": "Libia (Jamahiriya Libia Árabe Popular Socialista)"
+    },
+    {
+      "Clave SAAI FIII": "L5",
+      "Clave SAAI M3": "LIE",
+      "País": "Liechtenstein (Principado de)"
+    },
+    {
+      "Clave SAAI FIII": "Y2",
+      "Clave SAAI M3": "LTU",
+      "País": "Lituania (República de)"
+    },
+    {
+      "Clave SAAI FIII": "M0",
+      "Clave SAAI M3": "LUX",
+      "País": "Luxemburgo (Gran Ducado de)"
+    },
+    {
+      "Clave SAAI FIII": "M1",
+      "Clave SAAI M3": "MAC",
+      "País": "Macao"
+    },
+    {
+      "Clave SAAI FIII": "MK",
+      "Clave SAAI M3": "MKD",
+      "País": "Macedonia (Antigua República Yugoslava de)"
+    },
+    {
+      "Clave SAAI FIII": "M2",
+      "Clave SAAI M3": "MDG",
+      "País": "Madagascar (República de)"
+    },
+    {
+      "Clave SAAI FIII": "M3",
+      "Clave SAAI M3": "MYS",
+      "País": "Malasia"
+    },
+    {
+      "Clave SAAI FIII": "M4",
+      "Clave SAAI M3": "MWI",
+      "País": "Malawi (República de)"
+    },
+    {
+      "Clave SAAI FIII": "M5",
+      "Clave SAAI M3": "MDV",
+      "País": "Maldivas (República de)"
+    },
+    {
+      "Clave SAAI FIII": "M6",
+      "Clave SAAI M3": "MLI",
+      "País": "Malí (República de)"
+    },
+    {
+      "Clave SAAI FIII": "M7",
+      "Clave SAAI M3": "MLT",
+      "País": "Malta (República de)"
+    },
+    {
+      "Clave SAAI FIII": "M8",
+      "Clave SAAI M3": "MAR",
+      "País": "Marruecos (Reino de)"
+    },
+    {
+      "Clave SAAI FIII": "M9",
+      "Clave SAAI M3": "MTQ",
+      "País": "Martinica (Departamento de) (Francia)"
+    },
+    {
+      "Clave SAAI FIII": "N1",
+      "Clave SAAI M3": "MUS",
+      "País": "Mauricio (República de)"
+    }
+  ]
+}

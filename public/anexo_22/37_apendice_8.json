@@ -1,0 +1,1388 @@
+{
+  "Identificadores": [
+    {
+      "Clave": "AC- Almacén general de depósito certificado.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Identificar a un almacén general de depósito certificado.",
+      "Complemento 1": "Número de registro como almacén general de depósito certificado.",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "AE- Empresa de comercio exterior.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Declarar la autorización de empresa de comercio exterior.",
+      "Complemento 1": "Número de autorización de empresa de comercio exterior.",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "AF - Activo fijo.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Identificar el activo fijo, únicamente cuando la clave de documento no sea exclusiva para dicha mercancía.",
+      "Complemento 1": "No asentar datos. (Vacío).",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "AG- Almacén general de depósito fiscal.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Identificar a un almacén general de depósito.",
+      "Complemento 1": "Clave de almacén general de depósito.",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "AI- Operaciones de comercio exterior con amparo.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Declarar operaciones de comercio exterior que se realizan con amparo.",
+      "Complemento 1": "Número del expediente y año del amparo, el número del juzgado que conoce el amparo; la clave del municipio y de la entidad federativa donde se localiza dicho juzgado; y el tipo de resolución que se presenta para el despacho aduanero, conforme a lo siguiente: • SP: Suspensión provisional. • SD: Suspensión definitiva. • AC: Amparo concedido.",
+      "Complemento 2": "Declarar el tipo del acto reclamado: 1. No aplica. 2. Ley Aduanera: a) Artículo 84-A y 86-A b) Otros. 3. IGI: a) Carne de pollo. b) Pescado. c) Carne de ovino. d) Carne de bovino. e) Otros. 4. Cuota compensatoria: a) Manzanas. b) Otros. 5. DTA. 6. IEPS a) Vinos y licores. b) Otros. 7. IVA. 8. RGCE. 9. Otros (excepto tratándose de vehículos usados). 10. Vehículos usados (operaciones con clave de documento C2). 11. Vehículos usados (operaciones con clave de documento distinta a C2).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "AL- Mercancía originaria importada al amparo de ALADI.",
+      "Nivel": "P",
+      "Supuestos de Aplicación": "Declarar preferencia arancelaria de la ALADI.",
+      "Complemento 1": "• Clave del acuerdo suscrito por México, al amparo del cual se importa la mercancía, de conformidad con lo siguiente: REG2: Acuerdo Regional 2. REG3: Acuerdo Regional 3. REG4: Acuerdo Regional 4. REG7: Acuerdo Regional 7. ACE5: Acuerdo de Complementación Económica 5. ACE6: Acuerdo de Complementación Económica 6. ACE6-A: Acuerdo de Complementación Económica 6, canasta A. ACE6-B: Acuerdo de Complementación Económica 6, canasta B. ACE6-C: Acuerdo de Complementación Económica 6, canasta C. ACE51: Acuerdo de Complementación Económica 51. ACE53: Acuerdo de Complementación Económica 53. ACE55: Acuerdo de Complementación Económica 55. ACE66: Acuerdo de Complementación Económica 66. AAP14: Acuerdo de Alcance Parcial Número 14. AAP29: Acuerdo de Alcance Parcial Número 29. AAP38: Acuerdo de Alcance Parcial Número 38. • Número de la constancia emitida por la SE, conforme a la regla 1.6.32.",
+      "Complemento 2": "País parte del acuerdo celebrado con México, de conformidad con el apéndice 4.",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "AP- Aplica pago virtual.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Declarar cuando en el pedimento se señalen exclusivamente las siguientes formas de pago: 5, 6, 8, 9, 13, 14, 16, 18, 21 y 22 de conformidad con el apéndice 13.",
+      "Complemento 1": "Señalar la clave conforme a las siguientes opciones: 1. El pedimento se considerará pagado una vez validado. 2. Se requiere transmitir archivo de confirmación de pago.",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "AR- Consulta arancelaria.",
+      "Nivel": "P",
+      "Supuestos de Aplicación": "Declarar consulta sobre clasificación arancelaria a la autoridad competente.",
+      "Complemento 1": "Clave que corresponda de conformidad con lo siguiente: 1. Consulta en trámite. 2. Con resolución de clasificación.",
+      "Complemento 2": "La opción que aplique de las siguientes: • AGJ cuando se declare la clave 1. • Número de oficio de la resolución de clasificación arancelaria, cuando se declare la clave 2.",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "AT- Aviso de tránsito.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Avisar sobre el tránsito interno a la exportación. Este identificador no deberá declararse cuando se efectúe la consolidación de carga conforme a lo establecido en la regla 4.6.4. y se declare el identificador TB a nivel general.",
+      "Complemento 1": "No asentar datos. (Vacío).",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "AV- Aviso electrónico de importación y exportación.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Indicar en los previos de consolidado el uso del aviso electrónico de importación y exportación por cada remesa presentada ante el módulo de selección automatizado.",
+      "Complemento 1": "1. De conformidad con la regla 7.3.3., fracción XXX. 2. De conformidad con la regla 3.7.32.",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "A3- Regularización de mercancías (importación definitiva).",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Identificar conforme a los supuestos de la clave de documento A3 del apéndice 2.",
+      "Complemento 1": "Declarar la clave que corresponda, conforme a lo siguiente: 1. Regla 2.5.1., excepto vehículos. 1A. Regla 2.5.1., una vez iniciadas las facultades de comprobación por parte de la autoridad. 2. Regla 2.5.2., una vez iniciadas las facultades de comprobación por parte de la autoridad. 2A. Regla 2.5.2., excepto vehículos. 3. Regla 4.3.21. 4. (Derogado) 5. Regla 2.5.2., para desperdicios. 6. Regla 2.5.5. 7. (Derogado) 8. Regla 4.5.31., fracción III. 9. No aplica. 10. Regla 4.5.24. 11. Regla 2.5.7., primer párrafo. 12. Regla 2.5.7., sexto párrafo. 13. Regla 2.5.1., para vehículos 14. Regla 2.5.2., para vehículos. 15. Regla 2.5.4.",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "BB- Exportación definitiva y retorno virtual.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Identificar la exportación definitiva virtual de mercancía (productos terminados) que enajenen residentes en el país a recinto fiscalizado para la elaboración, transformación o reparación.",
+      "Complemento 1": "1. No aplica. 2. Para la enajenación de mercancías en recinto fiscalizado.",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "BR- Exportación temporal de mercancías fungibles y su retorno.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Identificar mercancías listadas en el Anexo 12.",
+      "Complemento 1": "1. Regla 4.4.5. 2. No aplica.",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "B2- Bienes del artículo 2 de la Ley del IEPS.",
+      "Nivel": "P",
+      "Supuestos de Aplicación": "Identificar las mercancías conforme al artículo 2, fracción I, incisos D) y/o H), de la Ley del IEPS.",
+      "Complemento 1": "Declarar la clave que corresponda de conformidad con el artículo 2 de la Ley del IEPS: D- Para la fracción I, inciso D) H- Para la fracción I, inciso H)",
+      "Complemento 2": "La opción que aplique de acuerdo a los bienes señalados en el artículo 2, fracción I de la Ley del IEPS, de acuerdo a lo siguiente: Para la clave D señalar: 1a. Combustibles Fósiles – Gasolina menor a 92 octanos. 1b. Combustibles Fósiles – Gasolina mayor o igual a 92 octanos. 1c. Combustibles Fósiles – Diésel. 2. Combustibles no fósiles. Para la clave H señalar: 1. Propano. 2. Butano. 3. Gasolinas y gas avión. 4. Turbosina y otros kerosenos. 5. Diésel. 6. Combustóleo. 7. Coque de petróleo. 8. Coque de carbón. 9. Carbón mineral. 10. Otros combustibles fósiles.",
+      "Complemento 3": "La cuota aplicable de conformidad con el artículo 2, fracción I, incisos D) y/o H) de la Ley del IEPS."
+    },
+    {
+      "Clave": "CC- Carta de cupo.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Identificar las mercancías que se almacenarán en depósito fiscal.",
+      "Complemento 1": "Número consecutivo de la carta de cupo, asignado por el almacén general de depósito.",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "CD- Certificado con dispensa temporal.",
+      "Nivel": "P",
+      "Supuestos de Aplicación": "Declarar la información relativa a los certificados con dispensa de acuerdo al Tratado de Libre Comercio correspondiente.",
+      "Complemento 1": "Número de la Decisión en la cual se publicó la dispensa que se utiliza.",
+      "Complemento 2": "Fracción arancelaria de los insumos utilizados, autorizados en la dispensa.",
+      "Complemento 3": "Volumen de los insumos utilizados, autorizados en la dispensa."
+    },
+    {
+      "Clave": "CE- Certificado de elegibilidad.",
+      "Nivel": "P",
+      "Supuestos de Aplicación": "Declarar el certificado de elegibilidad de mercancías no originarias importadas bajo TLC.",
+      "Complemento 1": "No asentar datos. (Vacío).",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "CF- Registro ante la Secretaría de Economía de empresas ubicadas en la franja o región fronteriza.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Identificar a la empresa que cuente con registro ante la SE de conformidad con el Decreto de la Franja o Región Fronteriza.",
+      "Complemento 1": "Número de registro ante la SE. (Anotar únicamente los últimos 8 caracteres del número de registro).",
+      "Complemento 2": "Clave de la actividad económica de que se trate: 1. Comercio. 2. Hotel. 3. Restaurante. 4. Desmantelamiento de unidades. 5. Otros servicios.",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "CF- Preferencia arancelaria para empresas ubicadas en la franja o región fronteriza.",
+      "Nivel": "P",
+      "Supuestos de Aplicación": "Declarar tasas preferenciales conforme al Decreto de la Franja o Región Fronteriza.",
+      "Complemento 1": "No asentar datos. (Vacío).",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "CI- Certificación en materia de IVA e IEPS.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Identificar las operaciones de las empresas que hayan obtenido la certificación en materia de IVA e IEPS.",
+      "Complemento 1": "Declarar la clave que corresponda conforme a lo siguiente: A Regla 7.1.2. AA Regla 7.1.3., fracción I. AAA Regla 7.1.3., fracción II. B Regla 7.1.2., apartado A, tercer párrafo.",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "CO- Condonación de créditos fiscales.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Condonación emitida de conformidad con el transitorio tercero de la Ley de Ingresos de la Federación para el ejercicio fiscal de 2013, publicada en el DOF el 17 de diciembre de 2012.",
+      "Complemento 1": "Se deberá anotar la línea de captura que arroja la página de internet del SAT.",
+      "Complemento 2": "Deberá anotarse la fecha en que fue emitida dicha línea de captura.",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "CR– Recinto fiscalizado.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Identificar el recinto fiscalizado en el que se encuentre la mercancía en depósito ante la aduana o para su introducción al mismo.",
+      "Complemento 1": "Clave del recinto fiscalizado conforme al apéndice 6.",
+      "Complemento 2": "Clave del recinto fiscalizado conforme al apéndice 6, identificar el recinto de salida, cuando se realice la transferencia entre recintos, en operaciones de exportación, en términos de la regla 2.3.5., fracción V.",
+      "Complemento 3": "(Derogado)"
+    },
+    {
+      "Clave": "CS- Copia simple.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Declarar uso de copia simple en el despacho de las mercancías al amparo de la regla 3.1.21., fracción III, inciso b).",
+      "Complemento 1": "Número total de vehículos.",
+      "Complemento 2": "Declarar la clave que aplique de acuerdo al tipo de mercancías: 1. Animales vivos. 2. Mercancía a granel de una misma especie. 3. Láminas y tubos metálicos y alambre en rollo. 4. Operaciones efectuadas por la industria automotriz terminal o manufacturera de vehículos de autotransporte y las comercializadoras de vehículos nuevos identificados por la SE.",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "C5- Depósito fiscal para la industria automotriz.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Identificar a la industria automotriz terminal autorizada.",
+      "Complemento 1": "Número de autorización para depósito fiscal de la industria automotriz.",
+      "Complemento 2": "INI: Clave utilizada para identificar el informe del inventario inicial de la IAT. DES: Clave utilizada para identificar los informes de descargos de mercancías introducidas a depósito fiscal que fueron destruidas, o bien para identificar las mercancías a ser importadas en definitiva (con clave de pedimento F3) cuando resulten de un proceso de destrucción y que serán reportadas en el informe de descargos. DON: Clave utilizada para identificar los informes de descargos de mercancías introducidas a depósito fiscal que fueron donadas. AF: Clave utilizada para identificar la extracción de depósito fiscal del activo fijo.",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "DA- Despacho anticipado.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Indicar que se trata de una operación de comercio exterior que se sujeta a despacho anticipado.",
+      "Complemento 1": "No asentar datos. (Vacío).",
+      "Complemento 2": "Declarar la clave F cuando se trate de una operación en full.",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "DC- Clasificación del cupo.",
+      "Nivel": "P",
+      "Supuestos de Aplicación": "Identificar el tipo de cupo utilizado.",
+      "Complemento 1": "Declarar la clave que corresponda al tipo de cupo: 1. Unilateral. 2. Al amparo de tratados de libre comercio. 3. Al amparo de ALADI. 4. Al amparo de decretos de frontera o de región. 5. Para países miembros de la OMC. 6. De productos calificados de los EUA y que no se han beneficiado del programa “Sugar Re-Export Program” del mismo país. 7. Autorregulado.",
+      "Complemento 2": "No asentar datos. (Vacío). Para el numeral 4 del complemento 1: 1. Al amparo del Decreto de la Franja o Región Fronteriza. 2. Al amparo del “Decreto de la zona libre de Chetumal”, publicado en el DOF el 31 de diciembre de 2020 y sus posteriores modificaciones.",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "DD- Despacho a domicilio a la exportación.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Declarar que se cuenta con autorización para el despacho de las mercancías por lugar distinto o en día u hora inhábil.",
+      "Complemento 1": "No asentar datos. (Vacío).",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "DE- Desperdicios.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Indicar que se trata de desperdicios derivados de los procesos productivos de mercancías que se hubieran importado temporalmente por empresas con Programa IMMEX.",
+      "Complemento 1": "No asentar datos. (Vacío).",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "DH- Datos de importación de hidrocarburos.",
+      "Nivel": "P",
+      "Supuestos de Aplicación": "Identificar el medio de transporte y, en su caso, el medidor con el que cuenta. Tratándose de importación por medio de ductos deberán declararse los complementos 1 y 2. Tratándose de importación por medios distintos de ductos deberá declararse el complemento 2. No obstante lo anterior, podrán declararse ambos complementos cuando se requieran.",
+      "Complemento 1": "Tratándose de la importación de las mercancías identificadas en el Anexo 14 de las RGCE que ingresen a territorio nacional por medio de ductos, se deberá declarar el número de serie del medidor con que cuente el ducto.",
+      "Complemento 2": "Tratándose de la importación de las mercancías identificadas en el Anexo 14 de las RGCE que ingresen a territorio nacional, se deberá declarar el número de permiso otorgado por la Comisión Reguladora de Energía al proveedor del transporte que trasladará la mercancía de la entrada a territorio nacional a su destino. En caso que el proveedor del transporte de las mercancías de que se trate no requiera permiso por parte de la Comisión Reguladora de Energía, se deberá declarar la clave: 1. No aplica.",
+      "Complemento 3": "No asentar datos (Vacío)."
+    },
+    {
+      "Clave": "DI- Documento de incrementable (CFDI o documento equivalente).",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Declarar el folio del CFDI o documento equivalente correspondiente al incrementable de la contratación del servicio de la importación de un vehículo usado, conforme a la regla 3.5.10.",
+      "Complemento 1": "No asentar datos. (Vacío).",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "Declarar número de folio del CFDI o documento equivalente."
+    },
+    {
+      "Clave": "DN- Donación por parte de las empresas con programa IMMEX.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Indicar que se trata de la donación de desperdicios, maquinaria y/o equipos obsoletos.",
+      "Complemento 1": "No asentar datos. (Vacío).",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "DP- Introducción y extracción de depósito fiscal para exposición y venta de artículos promocionales.",
+      "Nivel": "P",
+      "Supuestos de Aplicación": "Identificar a los artículos promocionales, de conformidad con la regla 4.5.27.",
+      "Complemento 1": "No asentar datos. (Vacío).",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "DR- Rectificación por discrepancia documental.",
+      "Nivel": "P",
+      "Supuestos de Aplicación": "Rectificar los datos asentados en el pedimento, de conformidad con la regla 4.5.7.",
+      "Complemento 1": "No asentar datos. (Vacío).",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "DS- Destrucción de mercancías en depósito fiscal para la exposición y venta.",
+      "Nivel": "P",
+      "Supuestos de Aplicación": "Indicar la destrucción de mercancías extranjeras y nacionales, conforme a la regla 4.5.22.",
+      "Complemento 1": "Número de acta de hechos.",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "DT- Operaciones sujetas al artículo 2.5 del T-MEC.",
+      "Nivel": "P",
+      "Supuestos de Aplicación": "Señalar supuesto de aplicación para la determinación y pago del IGI de los insumos no originarios de la región del T-MEC.",
+      "Complemento 1": "Declarar la clave que corresponda, conforme a lo siguiente: 1. No aplica. 2. Regla 1.6.12. 3. Regla 1.6.13. 4. Regla 1.6.17., segundo párrafo. 5. No aplica. 6. No aplica. 7. No aplica. 8. Regla 1.6.14. (determinación y pago en pedimento complementario). 9a. Regla 1.6.14. (determinación y pago en pedimento de retorno).",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "DU- Operaciones sujetas a los arts. 14 del Anexo III de la Decisión, 15 del Anexo I del TLCAELC o al ACC.",
+      "Nivel": "P",
+      "Supuestos de Aplicación": "Señalar el supuesto de aplicación para la determinación y pago del IGI de los insumos no originarios conforme a la Decisión, TLCAELC o al ACC.",
+      "Complemento 1": "Declarar la clave que corresponda, conforme a lo siguiente: 1. No aplica. 2. Regla 1.6.12. 3. Regla 1.6.13. 4. Regla 1.6.17. 5. No aplica. 6. No aplica. 7. No aplica. 8. Regla 1.6.15., fracción I. 9. No aplica. 10. Regla 1.6.15., fracción III (determinación y pago en pedimento de retorno). 11. No aplica. 12. No aplica. 13. No aplica. 14. No aplica. 15. No aplica. 16. Regla 4.3.13., fracción II. 17. No aplica. 18. No aplica. 19. No aplica.",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "DV- Venta de mercancías a misiones diplomáticas y consulares cuando cuente con franquicia diplomática.",
+      "Nivel": "P",
+      "Supuestos de Aplicación": "Declarar autorización para la venta de mercancías a misiones diplomáticas y consulares o a los organismos internacionales, regla 4.5.25.",
+      "Complemento 1": "Número de la autorización expedida por la SRE.",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "EA- Excepción de aviso automático de importación/exportación.",
+      "Nivel": "P",
+      "Supuestos de Aplicación": "Exceptuar la presentación del aviso automático a que se refiere el Anexo 2.2.1. Clasificación y codificación de mercancías cuya importación y exportación está sujeta al requisito de permiso previo o aviso automático por parte de la Secretaría de Economía del “Acuerdo por el que la Secretaria de Economía emite Reglas y criterios de carácter general en materia de comercio exterior”, publicado en el DOF el 09 de mayo de 2022 y sus posteriores modificaciones.",
+      "Complemento 1": "Declarar la clave que corresponda a las siguientes excepciones: 1. No es para conducción eléctrica. 2. No es para construcción de torres de conducción eléctrica. 3. Es tomate de cáscara o tomatillo (comúnmente conocido como tomate verde). 4. No aplica.",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "EB- Envases y empaques.",
+      "Nivel": "P",
+      "Supuestos de Aplicación": "Identificar los envases y empaques reutilizables de empresas con Programa IMMEX y a los que se refiere la regla 4.3.3.",
+      "Complemento 1": "Declarar la clave que corresponda: 1. Palets. 2. Contenedor de plástico. 3. Charolas. 4. Racks. 5. Dollies. 6. Canastillas plásticas. 7. Otros. 8. Envases y empaques a que se refiere la regla 4.3.3.",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "EC- Excepción de pago de cuota compensatoria.",
+      "Nivel": "P",
+      "Supuestos de Aplicación": "Indicar que la mercancía no se encuentra sujeta al pago de cuota compensatoria.",
+      "Complemento 1": "Declarar el supuesto que corresponda, conforme a lo siguiente: 1. Las características de la mercancía no obligan al pago de cuota compensatoria. 2. El valor en aduana excede el valor mínimo establecido. 3. El fabricante no está sujeto al pago de cuota compensatoria.",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "ED- Documento digitalizado.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Identificar a un documento digitalizado anexo al pedimento.",
+      "Complemento 1": "Número de referencia emitido por Ventanilla Digital.",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "EF- Estímulo fiscal.",
+      "Nivel": "P",
+      "Supuestos de Aplicación": "Señalar cuando apliquen el Decreto por el que se establece un estímulo fiscal a la importación o enajenación de los productos que se indican.",
+      "Complemento 1": "Declarar el supuesto que corresponda conforme a la mercancía de que se trate: 1. Jugos, néctares y otras bebidas, conforme al “Decreto que compila diversos beneficios fiscales y establece medidas de simplificación administrativa” publicado en el DOF el 26 de diciembre de 2013 y sus posteriores modificaciones. 2. Turbosina, conforme al “Decreto que compila diversos beneficios fiscales y establece medidas de simplificación administrativa”, publicado en el DOF el 26 de diciembre de 2013 y sus posteriores modificaciones. 3. Chicles y goma de mascar, conforme al “Decreto que compila diversos beneficios fiscales y establece medidas de simplificación administrativa”, publicado en el DOF el 26 de diciembre de 2013 y sus posteriores modificaciones. 4. Vehículos usados importados en definitiva de conformidad con el “Decreto por el que se fomenta la regularización de vehículos usados de procedencia extranjera”, publicado en el DOF el 19 de enero de 2022 y sus posteriores modificaciones.",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "EI- Autorización de depósito fiscal temporal para exposiciones internacionales de mercancías.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Identificar el local autorizado de depósito fiscal, de conformidad con la regla 4.5.29.",
+      "Complemento 1": "Número del oficio de autorización.",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "EM- Empresa de mensajería y paquetería.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Identificar a las empresas de mensajería y paquetería.",
+      "Complemento 1": "Clave de la empresa de mensajería y paquetería.",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "EN- No aplicación de la Norma Oficial Mexicana.",
+      "Nivel": "P",
+      "Supuestos de Aplicación": "Identificar que la mercancía no está sujeta al cumplimiento de la NOM de conformidad con: I. Las reglas 2.4.10., 2.4.11. y 2.4.12., así como el Anexo 2.4.1 del “Acuerdo por el que la Secretaría de Economía emite Reglas y criterios de carácter general en materia de comercio exterior”, publicado en el DOF el 09 de mayo de 2022 y sus posteriores modificaciones. II. Políticas y procedimientos para la evaluación de la conformidad. III. Procedimientos de certificación y verificación de productos sujetos al cumplimiento de NOM’s, competencia de la SE.",
+      "Complemento 1": "• Declarar la clave de excepción válida conforme a las siguientes opciones: ENOM- Mercancía exceptuada en términos de la propia NOM. U- Por no estar comprendida en la acotación únicamente del Acuerdo. E- Por estar comprendida en la acotación “excepto” del Acuerdo. EIR- Por no estar sujeta al cumplimiento de la NOM- 016-CRE-2016, Especificaciones de calidad de los petrolíferos publicada en el DOF el 29 de agosto de 2016 y sus posteriores modificaciones, de conformidad con el “Acuerdo por el que la Secretaría de Economía emite Reglas y criterios de carácter general en materia de comercio exterior”, publicado en el DOF el 09 de mayo de 2022 y sus posteriores modificaciones. REGLA2410- Conforme a la regla 2.4.10 del “Acuerdo por el que la Secretaría de Economía emite Reglas y criterios de carácter general en materia de comercio exterior”, publicado en el DOF el 09 de mayo de 2022 y sus posteriores modificaciones. ART13- Conforme al artículo 13 de las “Políticas y procedimientos”. • La fracción que corresponda de la regla 2.4.11 del “Acuerdo por el que la Secretaría de Economía emite Reglas y criterios de carácter general en materia de comercio exterior”, publicado en el DOF el 09 de mayo de 2022 y sus",
+      "Complemento 2": "Declarar la NOM que se exceptúa.",
+      "Complemento 3": "Numeral de la NOM que exceptúa, cuando en el complemento 1 se declare la clave ENOM."
+    },
+    {
+      "Clave": "EO – Emisor del certificado de origen.",
+      "Nivel": "P",
+      "Supuestos de Aplicación": "Declarar en operaciones de importación, el carácter del sujeto que certifica el origen de la mercancía, cuando se aplique trato arancelario preferencial al amparo de un acuerdo comercial o tratado de libre comercio en el que el Estado mexicano sea parte.",
+      "Complemento 1": "Declarar la clave que corresponda, conforme a lo siguiente: 1. Productor / Exportador. 2. Importador. 3. Autoridad Extranjera.",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "EP- Declaración de CURP.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Identificar el tipo de excepción para no declarar el RFC.",
+      "Complemento 1": "Declarar la clave que corresponda de conformidad con: 1. Amas de casa. 2. Estudiantes. 3. Importación definitiva de vehículos usados con clave de pedimento A1. 4. Importación definitiva de vehículos usados con clave de pedimento A3, de conformidad con el “Decreto por el que se fomenta la regularización de vehículos usados de procedencia extranjera”, publicado en el DOF el 19 de enero de 2022 y sus posteriores modificaciones.",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "EP- Excepción de inscripción al padrón de importadores.",
+      "Nivel": "P",
+      "Supuestos de Aplicación": "Identificar el tipo de excepción de conformidad con lo establecido en la regla 1.3.1.",
+      "Complemento 1": "Declarar la clave que corresponda de conformidad con la regla 1.3.1.: C – Para la fracción XXI. H – Para la fracción XVII. J – Para la fracción XVIII. K – Para la fracción II. O – Para la fracción XIV. P – Para la fracción XVI.",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "ES- Estado de la mercancía.",
+      "Nivel": "P",
+      "Supuestos de Aplicación": "Únicamente para determinar la aplicación de regulaciones o restricciones no arancelarias, de conformidad con el estado de la mercancía; o para el caso de mercancías remanufacturadas importadas con tratamiento arancelario preferencial del TIPAT o T-MEC.",
+      "Complemento 1": "Declarar la clave que corresponda: N – Nuevos. U – Usados. R – Reconstruidos. RM – Remanufacturados.",
+      "Complemento 2": "En los casos en que se declaren mercancías remanufacturadas, deberá declararse el Tratado de que se trate: T-MEC. - Tratado entre los Estados Unidos Mexicanos, los Estados Unidos de América y Canadá. TIP.- Tratado Integral y Progresista de Asociación Transpacífico.",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "EX- Exención de cuenta aduanera de garantía.",
+      "Nivel": "P",
+      "Supuestos de Aplicación": "Indicar excepción de la presentación de la cuenta aduanera de garantía de mercancías sujetas a precio estimado.",
+      "Complemento 1": "1. Valor igual o superior al precio estimado conforme al segundo párrafo de la regla 1.6.29. 2. No aplica. 3. No aplica. 4. No aplica. 5. No aplica. 6. No aplica. 7. No aplica. 8. No aplica. 9. No aplica. 10. No aplica. 11. No aplica. 12. No aplica. 13. No aplica. 14. No aplica. 15. No aplica. 16. No aplica. 17. No aplica. 18. No aplica. 19. No aplica. 20. No aplica. 21. No aplica. 22. Vehículo no descrito en el Anexo 2 de la Resolución de precios estimados, por no estar incluida la fracción arancelaria y NICO o no encontrarse dentro de los años modelo sujetos a dicho anexo.",
+      "Complemento 2": "No asentar datos. (Vacío). Para efectos del numeral 28 del complemento 1, asentar la clave del registro de identificación que corresponde al proveedor en el extranjero que hubiera efectuado la enajenación del vehículo de que se trate.",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "FC- Fracción correlacionada.",
+      "Nivel": "P",
+      "Supuestos de Aplicación": "Señalar la fracción arancelaria que corresponda cuando exista un cambio en la fracción arancelaria entre la fecha de entrada de la mercancía a territorio nacional y en la fecha de pago del pedimento vigente.",
+      "Complemento 1": "Se deberán declarar las claves de acuerdo con el supuesto que corresponda: 1. Cuando la fracción arancelaria declarada en el complemento 2 pertenezca a la tarifa anterior. 2. Cuando la fracción arancelaria declarada en el complemento 2 corresponda a la nueva tarifa.",
+      "Complemento 2": "Fracción arancelaria correlacionada.",
+      "Complemento 3": "NICO que corresponda."
+    },
+    {
+      "Clave": "FI- Factor de actualización con índice nacional de precios al consumidor.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Actualizar las contribuciones aplicando factor de actualización con base en el INPC.",
+      "Complemento 1": "Factor de actualización (numérico truncado a 4 decimales).",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "FR- Fecha que rige.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Declarar cuando la fecha de entrada es igual a la fecha de pago, en aduanas con depósito ante la aduana.",
+      "Complemento 1": "1. Tipo de cambio es el de la fecha de pago (Se considera pago anticipado). 2. No aplica.",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "FT- Folio de trámite generado por la Ventanilla Digital.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Operaciones en las que se requiera presentar anexo al pedimento una constancia, aviso o solicitud de autorización a que se refiere el tercer párrafo de la regla 2.4.12.",
+      "Complemento 1": "No asentar datos. (Vacío)",
+      "Complemento 2": "Número de folio de trámite generado por la Ventanilla Digital.",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "FV- Factor de actualización con variación cambiaria.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Actualizar las contribuciones aplicando factor de actualización con base en el tipo de cambio.",
+      "Complemento 1": "Factor de actualización (numérico truncado a cuatro decimales).",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "F8- Depósito fiscal para exposición y venta (mercancías nacionales o nacionalizadas).",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "I. Introducción de mercancía nacional o nacionalizada a depósito fiscal para exposición y venta, conforme a la regla 4.5.19., fracción II. II. Exportación definitiva virtual de mercancía nacional o nacionalizada conforme a la regla 4.5.19., fracción II. III. Extracción de depósito fiscal de mercancías por devolución para reincorporarse al mercado nacional, conforme a la regla 4.5.23., fracción II. IV. Desistimiento del régimen de exportación definitiva de las mercancías a depósito fiscal por devolución, conforme a la regla 4.5.23., fracción II.",
+      "Complemento 1": "Supuesto 1: La clave en el RFC del proveedor nacional que enajena las mercancías. Supuesto 2: La clave en el RFC de la empresa autorizada que recibe las mercancías, a destinar al régimen de depósito fiscal para exposición y venta. Supuesto 3: La clave en el RFC del proveedor nacional que recibe las mercancías en devolución. Supuesto 4: La clave en el RFC de la empresa autorizada a destinar al régimen de depósito fiscal para exposición y venta que realiza la devolución de las mercancías.",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "GA- Cuenta aduanera de garantía.",
+      "Nivel": "P",
+      "Supuestos de Aplicación": "Indicar la presentación de una cuenta aduanera de garantía.",
+      "Complemento 1": "1. No aplica. 2. Mercancía contenida en el Anexo 2 de la Resolución de precios estimados. 3. Mercancía contenida en el Anexo 3 de la Resolución de precios estimados. 4. Mercancía contenida en el Anexo 4 de la Resolución de precios estimados.",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "GI- Garantía IMMEX.",
+      "Nivel": "P",
+      "Supuestos de Aplicación": "Mercancía importada de forma temporal por empresas con Programa IMMEX al amparo del esquema de garantía a que se refiere el artículo 5, fracción IV del Decreto IMMEX.",
+      "Complemento 1": "Número de Folio Único de la Garantía otorgado por la VUCEM. Al registro en el esquema de garantía IMMEX.",
+      "Complemento 2": "Monto que será descargado conforme al esquema de garantía del artículo 5, fracción IV del Decreto IMMEX, de acuerdo al resultado de la unidad de medida de la tarifa por el factor de conversión establecido por la SE.",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "GS- Exportación temporal y retorno de dispositivos electrónicos que establece la regla 3.7.33.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Identificar mercancías acompañadas por un dispositivo electrónico, o de radiofrecuencia de localización, distinto de los integrados en los medios de transporte, de conformidad con la regla 3.7.33.",
+      "Complemento 1": "Marca del dispositivo.",
+      "Complemento 2": "Número de serie del dispositivo.",
+      "Complemento 3": "Modelo del dispositivo."
+    },
+    {
+      "Clave": "G9- Transferencia de mercancías que se retiran de un recinto fiscalizado estratégico no colindante con la aduana, para importación definitiva de residentes en territorio nacional.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Indicar que la operación se realiza conforme a la regla 4.8.7., fracción I, inciso c), segundo párrafo.",
+      "Complemento 1": "Declarar el número o la clave en el RFC, según corresponda al supuesto aplicable: • Número de autorización del recinto fiscalizado estratégico. La clave en el RFC de la empresa que recibe.",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "HC- Operaciones del sector de hidrocarburos.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Indicar que se tratan de operaciones conforme a lo establecido en la regla 3.7.32.",
+      "Complemento 1": "Declarar la clave que corresponda: 1. Regla 3.7.32., fracción I, inciso a). 2. Regla 3.7.32., fracción I, inciso b). 3. Regla 3.7.32., fracción I, inciso c).",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "HI- Tipo de gasolina.",
+      "Nivel": "P",
+      "Supuestos de Aplicación": "Declarar dependiendo el índice de octanaje.",
+      "Complemento 1": "Declarar la clave que corresponda, conforme a lo siguiente: 1. Gasolina regular (gasolina con un índice de octano mínimo de 87). 2. Gasolina Premium (gasolina con un índice de octano mínimo de 91).",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "IA- Certificado de aprobación para producción de partes aeronáuticas.",
+      "Nivel": "P",
+      "Supuestos de Aplicación": "Identificar a las empresas inscritas en el padrón de Producción Aeroespacial que cuentan con el Certificado de Aprobación para Producción emitido por la SICT.",
+      "Complemento 1": "Número de certificado.",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "IC- Empresa certificada.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Señalar que se trata de una empresa certificada.",
+      "Complemento 1": "Declarar la clave que corresponda, conforme a lo siguiente: A. Regla 7.1.4., apartado A. O. Regla 7.1.4., primer párrafo y apartados B, C, D, E, F y G.",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "ID- Importación definitiva de vehículos o en franquicia diplomática con autorización de la AGJ.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "I. Importación definitiva de vehículos con autorización. II. Importación definitiva de vehículos en franquicia diplomática con autorización.",
+      "Complemento 1": "Número de oficio de autorización, además, se deberán poner las iniciales AGJ.",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "IF- Registro ante la Secretaría de Economía de empresas ubicadas en la región fronteriza de Chetumal.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Identificar a la empresa de la región que cuente con registro ante la Secretaría de Economía de conformidad con el “Decreto de la zona libre de Chetumal”, publicado en el DOF el 31 de diciembre de 2020 y sus posteriores modificaciones.",
+      "Complemento 1": "Número de registro ante la Secretaría de Economía.",
+      "Complemento 2": "Tipo de actividad económica que desarrollará de acuerdo al artículo Segundo, fracción I del “Decreto de la zona libre de Chetumal”, publicado en el DOF el 31 de diciembre de 2020 y sus posteriores modificaciones.",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "IF- Preferencia arancelaria para empresas ubicadas en la región fronteriza de Chetumal.",
+      "Nivel": "P",
+      "Supuestos de Aplicación": "Declarar las tasas preferenciales correspondientes conforme al “Decreto de la zona libre de Chetumal”, publicado en el DOF el 31 de diciembre de 2020 y sus posteriores modificaciones.",
+      "Complemento 1": "No asentar datos. (Vacío).",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "II- Inventario inicial de empresas denominadas Duty Free.",
+      "Nivel": "P",
+      "Supuestos de Aplicación": "Declarar descargo del inventario inicial.",
+      "Complemento 1": "No asentar datos. (Vacío).",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "IM- Empresas con programa IMMEX.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Indicar el número de autorización de empresa IMMEX proporcionado por la SE, incluso RFE que cuenten con dicho programa.",
+      "Complemento 1": "Número de autorización.",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "IN- Incidencia.",
+      "Nivel": "P",
+      "Supuestos de Aplicación": "Indicar el supuesto en que se realiza la rectificación.",
+      "Complemento 1": "Declarar la clave que conforme a la regla vigente aplique, o la que corresponda de conformidad con el resolutivo séptimo de la Cuarta Resolución de Modificaciones a las Reglas de Carácter General en Materia de Comercio Exterior, para 2011, publicada en el DOF el 15 de diciembre de 2011: 1. Regla 3.7.21., fracción I, inciso b), primer párrafo. 2. Regla 3.7.21., fracción I, inciso a), numeral 1. 3. No aplica. 4. Regla 7.3.3., fracción III. 5. Regla 7.3.3., fracción XV. 6. Regla 7.3.3., fracción XVI. 7. No aplica. 8. No aplica. 9. No aplica. 10. No aplica. 11. Regla 3.5.1., fracción II, inciso h).",
+      "Complemento 2": "Número de acta cuando en el complemento 1 se declare la clave 1, 2, 4, 5, 6 o 14. En caso de que el acta se genere en el primer reconocimiento se deberá declarar conforme a los criterios de SIRESI. En otro caso no declarar datos.",
+      "Complemento 3": "En caso de declarar el número de acta en el complemento 2, indicar la clave que corresponda al tipo de acta: 1. Primer reconocimiento. 2. No aplica. 3. Toma de muestras. 4. Verificación de mercancías en transporte."
+    },
+    {
+      "Clave": "IR- Recinto fiscalizado estratégico.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Declarar la clave del RFE del inmueble habilitado. Declarar la clave del autorizado para destinar mercancías al régimen de RFE.",
+      "Complemento 1": "Clave del administrador del inmueble habilitado para la introducción de mercancías al régimen de RFE.",
+      "Complemento 2": "Indicar la ubicación del recinto fiscalizado estratégico. 1. En colindancia con la Aduana. 2. En la circunscripción de la aduana.",
+      "Complemento 3": "Clave del autorizado para destinar mercancías al régimen de RFE."
+    },
+    {
+      "Clave": "IS- Mercancías exentas de impuestos al comercio exterior.",
+      "Nivel": "P",
+      "Supuestos de Aplicación": "Identificar mercancías por las que no se pagan los impuestos al comercio exterior al amparo del artículo 61 de la Ley.",
+      "Complemento 1": "Declarar la fracción del artículo 61 de la Ley que aplica a la operación.",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "J4- Retorno de mercancía de procedencia extranjera.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Retorno de mercancía extranjera de recinto fiscalizado estratégico.",
+      "Complemento 1": "1. Mercancía extranjera que se sometió a un proceso de elaboración, transformación o reparación. 2. Mercancía extranjera que se retorna en su mismo estado.",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "LD- Despacho por lugar distinto.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Declarar autorización para el despacho aduanero por lugar distinto, conforme a lo establecido en el artículo 10 de la Ley.",
+      "Complemento 1": "La clave en el RFC de la persona autorizada.",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "LP- Lista de escaso abasto.",
+      "Nivel": "P",
+      "Supuestos de Aplicación": "Identificar cuando la mercancía haya sido producida con materiales de escaso abasto listados en el Apéndice 1 del Anexo 4-A del TIPAT.",
+      "Complemento 1": "Declarar el número de producto que le corresponda al material de escaso abasto listado en la primera columna del Apéndice 1 del Anexo 4-A del TIPAT.",
+      "Complemento 2": "Declarar el número de producto que le corresponda al segundo material de escaso abasto, listado en la primera columna del Apéndice 1 del Anexo 4- A del TIPAT. De no existir un segundo material listado, no asentar datos. (Vacío).",
+      "Complemento 3": "Declarar el número de producto que le corresponda al tercer material de escaso abasto listado en la primera columna del Apéndice 1 del Anexo 4-A del TIPAT. De no existir un segundo material listado, no asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "LR- Importación por pequeños contribuyentes.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Señalar que se trata de importación de mercancías mediante pedimento simplificado.",
+      "Complemento 1": "1. Operaciones realizadas al amparo de la regla 3.7.1.",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "MA- Embalajes de madera.",
+      "Nivel": "P",
+      "Supuestos de Aplicación": "Señalar que se trata de embalajes de madera que cumplen con la “Norma Oficial Mexicana NOM-144-SEMARNAT-2017, que establece las medidas fitosanitarias y los requisitos de la marca reconocidas internacionalmente para el embalaje de madera que se utiliza en el comercio internacional de bienes y mercancías” publicada en el DOF el 22 de febrero de 2018.",
+      "Complemento 1": "No asentar datos (Vacío).",
+      "Complemento 2": "No asentar datos (Vacío).",
+      "Complemento 3": "No asentar datos (Vacío)."
+    },
+    {
+      "Clave": "MB- Marbetes y/o precintos.",
+      "Nivel": "P",
+      "Supuestos de Aplicación": "Declarar marbetes y/o precintos que se coloquen en envases que contengan bebidas alcohólicas, de conformidad con la regla 5.1.7. de la RMF.",
+      "Complemento 1": "Número de serie de marbetes y/o precintos.",
+      "Complemento 2": "Inicio de secuencia de marbetes y/o precintos.",
+      "Complemento 3": "Fin de secuencia de marbetes y/o precintos."
+    },
+    {
+      "Clave": "MC- Marca.",
+      "Nivel": "P",
+      "Supuestos de Aplicación": "Marca nominativa, innominada, tridimensional o mixta, que identifica el producto.",
+      "Complemento 1": "1. Si el importador es el titular de los derechos marcarios y se encuentra registrada en el Instituto Mexicano de la Propiedad Industrial.",
+      "Complemento 2": "Se deberá de asentar el número de registro otorgado por el Instituto Mexicano de la Propiedad Industrial.",
+      "Complemento 3": "Indicar el tipo de marca: 1. Nominativa. 2. Innominada. 3. Tridimensional. 4. Mixta"
+    },
+    {
+      "Clave": "MC- Marca.",
+      "Nivel": "P",
+      "Supuestos de Aplicación": "",
+      "Complemento 1": "2. Licencia, convenio o autorización para el uso y distribución de la marca.",
+      "Complemento 2": "1. Sin registro en el Instituto Mexicano de la Propiedad Industrial. 2. Número de registro otorgado por el Instituto Mexicano de la Propiedad Industrial.",
+      "Complemento 3": "Indicar el tipo de marca: 1. Nominativa. 2. Innominada. 3. Tridimensional. 4. Mixta."
+    },
+    {
+      "Clave": "MC- Marca.",
+      "Nivel": "P",
+      "Supuestos de Aplicación": "",
+      "Complemento 1": "3. Cuando la mercancía no ostente ninguna marca nominativa, innominada, tridimensional o mixta.",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "MC- Marca.",
+      "Nivel": "P",
+      "Supuestos de Aplicación": "",
+      "Complemento 1": "4. Tratándose de importaciones en las cuales el importador no sea el titular, ni cuente con autorización de la marca nominativa, innominada, tridimensional o mixta, aún y cuando ésta se encuentre registrada ante el Instituto Mexicano de la Propiedad Industrial, siempre y cuando no se contravenga alguna disposición legal en materia de propiedad industrial.",
+      "Complemento 2": "Indicar el tipo de marca: 1 Nominativa. 2 Innominada. 3 Tridimensional. 4 Mixta.",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "MC- Marca.",
+      "Nivel": "P",
+      "Supuestos de Aplicación": "",
+      "Complemento 1": "Cuando la mercancía ostente marca nominativa, innominada, tridimensional o mixta, sin registro otorgado por el Instituto Mexicano de la Propiedad Industrial.",
+      "Complemento 2": "",
+      "Complemento 3": ""
+    },
+    {
+      "Clave": "MC- Marca.",
+      "Nivel": "P",
+      "Supuestos de Aplicación": "",
+      "Complemento 1": "5. Cuando el registro de la marca nominativa, innominada, tridimensional o mixta, ante el Instituto Mexicano de la Propiedad Industrial, se encuentre en trámite o pendiente de resolución.",
+      "Complemento 2": "Fecha de presentación de la solicitud.",
+      "Complemento 3": "Indicar el tipo de marca: 1. Nominativa. 2. Innominada. 3. Tridimensional. 4. Mixta."
+    },
+    {
+      "Clave": "MD- Menaje de diplomáticos.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Señalar para diplomáticos acreditados conforme al artículo 61 fracción I de la Ley, artículo 90 y 91 del Reglamento y la regla 3.2.8.",
+      "Complemento 1": "Número de autorización (Se deberán declarar las letras y los dígitos que conforman el número de oficio emitido por la Dirección General de Protocolo de la SRE, con el cual se informa de la franquicia de importación o de exportación).",
+      "Complemento 2": "No asentar datos (Vacío).",
+      "Complemento 3": "No asentar datos (Vacío)."
+    },
+    {
+      "Clave": "ME- Material de ensamble.",
+      "Nivel": "P",
+      "Supuestos de Aplicación": "Indicar que la mercancía es material de ensamble.",
+      "Complemento 1": "Declarar la fracción arancelaria y NICO que corresponda: 9803.00.01 00 o 9803.00.02 00",
+      "Complemento 2": "No asentar datos (Vacío).",
+      "Complemento 3": "No asentar datos (Vacío)."
+    },
+    {
+      "Clave": "MI- Importación definitiva de muestras amparadas bajo un protocolo de investigación.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Indicar para muestras amparadas bajo un protocolo de investigación en humanos, conforme a la regla 3.1.4.",
+      "Complemento 1": "Declarar la clave que corresponda conforme a lo siguiente: 1. Productos químicos. 2. Productos farmacéuticos.",
+      "Complemento 2": "Declarar el número de autorización del protocolo que corresponda.",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "MJ- Operaciones de empresas de mensajería y paquetería de mercancías no sujetas al pago de IGI e IVA.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Indicar para operaciones realizadas conforme a la regla 3.7.5., en relación con la regla 3.7.35., fracción I, cuando el valor en aduana de las mercancías no es mayor a 50 dólares.",
+      "Complemento 1": "No asentar datos. (Vacío).",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "MM- Importación definitiva de muestras y muestrarios.",
+      "Nivel": "P",
+      "Supuestos de Aplicación": "Indicar para mercancías destinadas a demostración o levantamiento de pedidos de conformidad con la regla 3.1.2.",
+      "Complemento 1": "Declarar la clave que corresponda conforme a lo siguiente: 1. Juguetes. 2. Otros.",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "MR- Registro para la toma de muestras, peligrosas o para las que se requiera de instalaciones o equipos especiales para la toma de las mismas.",
+      "Nivel": "P",
+      "Supuestos de Aplicación": "Indicar que se trata de mercancías estériles, radiactivas, peligrosas o para las que se requiera de instalaciones o equipos especiales para la toma de muestras, conforme a la regla 3.1.3. y el Anexo 23.",
+      "Complemento 1": "Declarar el número de oficio de autorización emitido por la ANAM.",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "MS- Modalidad de servicios de empresas con programa IMMEX.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Indicar la actividad de servicios que corresponda a la empresa con Programa IMMEX.",
+      "Complemento 1": "Declarar la clave que corresponda conforme a lo siguiente: 1. Abastecimiento, almacenaje o distribución de mercancías. 2. Clasificación, inspección, prueba o verificación de mercancías. 3. Operaciones que no alteren materialmente las características de la mercancía, de conformidad con el artículo 15, fracción VI del Decreto IMMEX, que incluye envase, lijado, engomado, pulido, pintado o",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "MT- Monto total del valor en dólares a ejercer por mercancía textil.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Declarar el importe estimado en dólares por mercancía textil (Anexo III, Decreto IMMEX) de empresas IMMEX del Sector Textil y Confección “8”.",
+      "Complemento 1": "Importe en dólares estimado a ejercer en mercancía textil.",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "MV- Año-modelo del vehículo.",
+      "Nivel": "P",
+      "Supuestos de Aplicación": "Indicar el año y modelo del vehículo a importar y, en su caso, el precio estimado que corresponda.",
+      "Complemento 1": "Año-modelo del vehículo a 4 dígitos.",
+      "Complemento 2": "Número que corresponda conforme al catálogo de precios estimados.",
+      "Complemento 3": "Indicar el número de registro de empresas proveedoras de antecedentes de vehículos usados."
+    },
+    {
+      "Clave": "M7- Opinión favorable de la SE.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Declarar opinión favorable de la SE, para las mercancías del Anexo 12, conforme al artículo 116 de la Ley.",
+      "Complemento 1": "No asentar datos. (Vacío).",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "NA- Mercancías con preferencia arancelaria ALADI señaladas en el Acuerdo.",
+      "Nivel": "P",
+      "Supuestos de Aplicación": "Indicar las mercancías señaladas en el acuerdo ALADI correspondiente.",
+      "Complemento 1": "Clave del acuerdo suscrito por México, al amparo del cual se importa la mercancía, de conformidad con lo siguiente: REG2: Acuerdo Regional 2. REG3: Acuerdo Regional 3. REG4: Acuerdo Regional 4. REG7: Acuerdo Regional 7. ACE6: Acuerdo de Complementación Económica 6. ACE6-A: Acuerdo de Complementación Económica 6, canasta A. ACE6-B: Acuerdo de Complementación Económica 6, canasta B. ACE6-C: Acuerdo de Complementación Económica 6, canasta C. ACE66: Acuerdo de Complementación Económica 66. ACE53: Acuerdo de Complementación Económica 53. ACE55: Acuerdo de Complementación Económica 55. • Número de la constancia emitida por la SE conforme a la regla 1.6.32.",
+      "Complemento 2": "País parte del acuerdo celebrado con México, de conformidad con el apéndice 4 del presente Anexo.",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "NE- Excepción de cumplir con el Anexo 21.",
+      "Nivel": "P",
+      "Supuestos de Aplicación": "Identificar que la mercancía no corresponde a las listadas en el Anexo 21.",
+      "Complemento 1": "Declarar la clave que corresponda conforme a lo siguiente: 15. No es Cianuro de bencilo sus sales y derivados. 16. No es Fenilacetamida. 17. No aplica. 18. No es Cloruro de fenilacetilo, Fluoruro de fenilacetilo, Bromuro de fenilacetilo.",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "NR- Operación en la que las mercancías no ingresan a recinto fiscalizado.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Identificar las operaciones realizadas por empresas certificadas, de mercancías que no ingresaron a recinto fiscalizado, de conformidad con los lineamientos que para tal efecto emita la ANAM, mismos que se darán a conocer en el Portal del SAT.",
+      "Complemento 1": "Declarar la clave que corresponda: 1. Importación o exportación de mercancías por empresas certificadas. 2. No aplica.",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "NS- Excepción de inscripción en los padrones de importadores y exportadores sectoriales.",
+      "Nivel": "P",
+      "Supuestos de Aplicación": "Identificar las mercancías exceptuadas del Anexo 10, fracción I, conforme al: I. “Acuerdo que establece las mercancías cuya importación y exportación está sujeta a regulación por parte de la Secretaría de Salud”, publicado en el DOF el 26 de diciembre de 2020 y sus posteriores modificaciones. II. “Acuerdo que establece las mercancías cuya importación y exportación está sujeta a regulación por parte de la Secretaría de Energía”, publicado en el DOF el 26 de diciembre de 2020 y sus posteriores modificaciones. III. La regla 3.1.2. Identificar las mercancías exceptuadas del Anexo 10, fracción II, conforme al: I. “Acuerdo por el que la Secretaría de Economía emite Reglas y criterios de carácter general en materia de comercio exterior”, publicado en el DOF el 09 de mayo de 2022 y sus posteriores modificaciones. Cuando la modalidad de la mercancía no se encuentre descrita en el Anexo 10, fracciones I o II.",
+      "Complemento 1": "Declarar la clave que corresponda conforme a lo siguiente: 201- No es grafito de pureza nuclear, con grado de pureza superior a 5 partes por millón de boro equivalente y con una densidad superior a 1.5. g/cm3, o grafito de pureza nuclear, en forma de semimanufactura, con grado de pureza superior a 5 partes por millón de boro equivalente y con una densidad superior a 1.5. g/cm3. 202- No son unidades generadoras de radiación ionizante, aceleradores para uso médico e industrial. 301- No es cianuro de bencilo; sinónimo: alfaciano tolueno. 302- No es Piperidina, y sus sales; sinónimo: hexahidropiridina. 303- No es Fenilpropanolamina base (norefedrina) y sus sales. 401- Mercancías listadas en el Anexo 10, fracción I, sector 4. 304- No es Acido yodhídrico (Yoduro de hidrógeno). 305- No es Fenilacetamida. 306- No es Cloruro de fenilacetilo, Fluoruro de fenilacetilo, Bromuro de fenilacetilo. 501- Mercancías listadas en el Anexo 10, fracción I, sector 5. 601- Mercancías listadas en el Anexo 10, fracción I, sector 6. 701- Mercancías listadas en el Anexo 10, fracción I, sector 7. 801- Mercancías listadas en el Anexo 10, fracción I, sector 8. 901- Mercancías listadas en el Anexo 10, fracción I, sector 12.",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "NT- Nota de Tratado.",
+      "Nivel": "P",
+      "Supuestos de Aplicación": "Identificar la mercancía con preferencia arancelaria prevista en el Decreto por el que se establezca la tasa aplicable del IGI para las mercancías originarias de conformidad con los Tratados de Libre Comercio que México tenga suscritos.",
+      "Complemento 1": "Clave del país parte del Tratado celebrado con México, de conformidad con el apéndice 4 del presente Anexo.",
+      "Complemento 2": "La opción que aplique de las siguientes: • Clave de la nota como lo indica el apéndice del decreto correspondiente. • Número del artículo que se aplica de conformidad con el decreto que corresponda cuando el apéndice haya sido suprimido del tratado.",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "NZ- Mercancía que no se ha beneficiado del “Sugar Re-Export Program” de los Estados Unidos de América.",
+      "Nivel": "P",
+      "Supuestos de Aplicación": "Señalar que se presenta declaración escrita del exportador en la que manifieste que la mercancía no se ha beneficiado del programa.",
+      "Complemento 1": "No asentar datos. (Vacío).",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "OC- Operación tramitada en fase de contingencia.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Identificar los pedimentos tramitados durante la fase de contingencia de la Ventanilla Digital o del SAAI para la validación del pedimento.",
+      "Complemento 1": "Clave que corresponda de acuerdo al sistema que se encuentre en contingencia, de conformidad con lo siguiente: VU- Ventanilla Digital Mexicana de Comercio Exterior. VOCE- Validador de Operaciones de Comercio Exterior.",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "OE- Operador Económico Autorizado.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Identificar a los proveedores internacionales, que cuenten con una certificación vigente del Operador Económico Autorizado en su país, y se haya firmado un Acuerdo de Reconocimiento Mutuo con México.",
+      "Complemento 1": "Declarar el número de Operador Económico Autorizado, proporcionado por el proveedor.",
+      "Complemento 2": "País parte del Acuerdo celebrado con México, de conformidad con el apéndice 4.",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "OM- Mercancía originaria de México.",
+      "Nivel": "P",
+      "Supuestos de Aplicación": "Declarar que la mercancía es originaria de México, de conformidad con las reglas 3.2.7 y 3.4.14 del “Acuerdo por el que la Secretaría de Economía emite Reglas y criterios de carácter general en materia de comercio exterior”, publicado en el DOF el 09 de mayo de 2022 y sus posteriores modificaciones.",
+      "Complemento 1": "Declarar la fracción arancelaria y el NICO: 9807.00.01 00",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "OV - Operación vulnerable.",
+      "Nivel": "P",
+      "Supuestos de Aplicación": "Únicamente para las mercancías cuya clasificación arancelaria se encuentre listada en el Anexo A de la “Resolución por la que se expiden los formatos oficiales de los avisos e informes que deben presentar quienes realicen actividades vulnerables”, publicada en el DOF el 30 de agosto de 2013.",
+      "Complemento 1": "1. Si la mercancía encuadra dentro de la acotación del artículo 17, fracción XIV de la Ley Federal para la Prevención e Identificación de Operaciones con Recursos de Procedencia Ilícita. 2. La mercancía por su valor, no encuadra en la acotación del artículo 17, fracción XIV de la Ley Federal para la Prevención e Identificación de Operaciones con Recursos de Procedencia Ilícita, considerando para la determinación del monto, el valor comercial de la mercancía consignado en el pedimento entre la unidad de medida. 3. La mercancía por sus características, no encuadra en la acotación del artículo 17, fracción XIV de la Ley Federal para la Prevención e Identificación de Operaciones con Recursos de Procedencia Ilícita.",
+      "Complemento 2": "No asentar datos. (Vacío)",
+      "Complemento 3": "No asentar datos. (Vacío)"
+    },
+    {
+      "Clave": "PA- Cumplimiento de la Norma Oficial Mexicana, para verificarse en un almacén general de depósito autorizado.",
+      "Nivel": "P",
+      "Supuestos de Aplicación": "Indicar que la NOM se cumplirá conforme a la regla 2.4.8 del “Acuerdo por el que la Secretaría de Economía emite Reglas y criterios de carácter general en materia de comercio exterior”, publicado en el DOF el 09 de mayo de 2022 y sus posteriores modificaciones.",
+      "Complemento 1": "Clave de la Unidad Verificadora.",
+      "Complemento 2": "Declarar clave o código de la NOM cuyo cumplimiento se verificará en el almacén general de depósito.",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "PB– Cumplimiento de NOM para su verificación dentro del territorio nacional, en un domicilio particular.",
+      "Nivel": "P",
+      "Supuestos de Aplicación": "Indicar que la NOM se cumplirá conforme a la regla 2.4.8 del “Acuerdo por el que la Secretaría de Economía emite Reglas y criterios de carácter general en materia de comercio exterior”, publicado en el DOF el 09 de mayo de 2022 y sus posteriores modificaciones.",
+      "Complemento 1": "Clave de la Unidad Verificadora.",
+      "Complemento 2": "Declarar clave o código de la NOM cuyo cumplimiento se verificará en domicilio particular.",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "PC- Pedimento consolidado.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Indicar para el cierre de un pedimento consolidado.",
+      "Complemento 1": "No asentar datos. (Vacío).",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "PD- Parte II.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Señalar el despacho de mercancías con pedimentos Parte II, conforme a la regla 3.1.21., fracción III, inciso a).",
+      "Complemento 1": "Número total de vehículos.",
+      "Complemento 2": "Declarar conforme a lo siguiente: 1. Cuando se trate de máquinas desmontadas o sin montar todavía o líneas",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "PG- Mercancía peligrosa.",
+      "Nivel": "P",
+      "Supuestos de Aplicación": "Indicar que se trata de mercancía peligrosa conforme a la regla 3.1.5., y al apéndice 19 del presente Anexo.",
+      "Complemento 1": "Clave de la clase y división.",
+      "Complemento 2": "Número de mercancía peligrosa conforme al listado de la ONU.",
+      "Complemento 3": "Número telefónico del contacto en caso de accidente."
+    },
+    {
+      "Clave": "PH- Pedimento electrónico simplificado.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Identificar a un pedimento electrónico simplificado conforme a la regla 7.3.6., fracciones I y II.",
+      "Complemento 1": "No asentar datos. (Vacío).",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "PI- Inspección previa.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Indicar que se trata de operaciones de conformidad con las reglas 3.7.28., 7.3.1., fracción II y 7.3.3., fracción XXX.",
+      "Complemento 1": "Se deberá declarar el número de registro que se le asigne a la empresa.",
+      "Complemento 2": "Para efectos de operaciones de conformidad con la fracción II de la regla 7.3.1., se deberá declarar la aduana de destino, en caso contrario, no se deberán asentar datos.",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "PL- Preliberación de mercancías.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Indicar que se trata de una operación de comercio exterior que se sujeta a preliberación.",
+      "Complemento 1": "Declarar la clave que corresponda conforme a lo siguiente: 1. Despacho de mercancías por empresas de mensajería y paquetería certificadas. 2. Despacho de mercancías por empresas de la industria automotriz.",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "PM- Presentación de la mercancía.",
+      "Nivel": "P",
+      "Supuestos de Aplicación": "Indicar que se trata de las mercancías mencionadas en la regla 3.1.21.",
+      "Complemento 1": "Declarar la clave que corresponda al tipo de mercancía, conforme a lo siguiente: G- Granel, láminas metálicas o alambre en rollo. E- Envase.",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "PO – Proveedor de origen.",
+      "Nivel": "P",
+      "Supuestos de Aplicación": "Declarar en operaciones de importación los datos del proveedor de origen de las mercancías a las que se aplique una preferencia arancelaria al amparo de un acuerdo comercial o tratado de libre comercio en el que el Estado mexicano sea parte.",
+      "Complemento 1": "Valor en aduana de la mercancía.",
+      "Complemento 2": "Nombre del proveedor en el país de origen de la mercancía (declarar los primeros 50 caracteres).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "PP- Programa de promoción sectorial.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Identificar operaciones al amparo del PROSEC.",
+      "Complemento 1": "Número del programa autorizado por la SE.",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "PR- Proporción determinada.",
+      "Nivel": "P",
+      "Supuestos de Aplicación": "Declarar el pago del IGI correspondiente a los bienes no originarios importados temporalmente, conforme a la regla 21. de la Resolución del T-MEC.",
+      "Complemento 1": "Proporción determinada en porcentaje redondeado a 5 decimales.",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "PS- Sector autorizado al amparo de PROSEC.",
+      "Nivel": "P",
+      "Supuestos de Aplicación": "Determinar el arancel correspondiente a las mercancías importadas al amparo del “Decreto por el que se establecen diversos Programas de Promoción Sectorial”, publicado en el DOF el 02 de agosto de 2002",
+      "Complemento 1": "Declarar en números romanos la fracción y en letras minúsculas el inciso que corresponda, del artículo 5 del Decreto.",
+      "Complemento 2": "Indicar R1 cuando se trate de la aplicación del arancel del IGI de acuerdo con el PROSEC que corresponda, de conformidad con el artículo tercero transitorio del Decreto.",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "PT- Exportación o retorno de producto terminado.",
+      "Nivel": "P",
+      "Supuestos de Aplicación": "Especificar que se trata de producto terminado de mercancías elaboradas, transformadas o reparadas en recinto fiscalizado o por empresas con programa IMMEX.",
+      "Complemento 1": "No asentar datos. (Vacío).",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "PV- Prueba de valor.",
+      "Nivel": "P",
+      "Supuestos de Aplicación": "Indicar que el agente aduanal o la agencia aduanal cuenta con la documentación y medios de prueba necesarios para comprobar el valor declarado de conformidad con la fracción III del artículo 59 de la Ley.",
+      "Complemento 1": "No asentar datos. (Vacío).",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "PZ- Ampliación del plazo para el retorno de mercancía importada o exportada temporalmente.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Declarar que se cuenta con una prórroga para el retorno de la mercancía.",
+      "Complemento 1": "Declarar la clave que corresponda conforme a lo siguiente: 1. Conforme al artículo 116, segundo párrafo de la Ley.",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "RA- Retorno de racks.",
+      "Nivel": "P",
+      "Supuestos de Aplicación": "Indicar que se retornan racks que se introdujeron a depósito fiscal con la clave de pedimento F2.",
+      "Complemento 1": "No asentar datos. (Vacío).",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "RC- Consecutivo de CFDI, documentos equivalentes o remesas.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Indicar en el cierre de pedimentos consolidados para señalar el rango de remesas moduladas.",
+      "Complemento 1": "El número consecutivo o intervalo de números que el SAAI el agente aduanal o la agencia aduanal asignó al CFDI o documento equivalente, lista de CFDI o documentos equivalentes, lista de embarque o cualquier otro documento válido, contenido en el campo 11 del código de barras, de las remesas presentadas al módulo de selección automatizado.",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "RD- Retorno a depósito fiscal de la industria automotriz de mercancía exportada en definitiva.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Retorno de mercancías extraídas para su exportación definitiva conforme a la regla 4.5.31., fracción IV.",
+      "Complemento 1": "No asentar datos. (Vacío).",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "RF- Cuota compensatoria basada en precios de referencia.",
+      "Nivel": "P",
+      "Supuestos de Aplicación": "Identificar cuando se den los supuestos del pago de cuotas complementarias basadas en precios de referencia.",
+      "Complemento 1": "UM-Unidad de medida.",
+      "Complemento 2": "CUM-Cantidad unidad de medida.",
+      "Complemento 3": "No asentar datos. (vacío)."
+    },
+    {
+      "Clave": "RL- Responsable solidario.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Identificar el responsable solidario de las mercancías que ingresan a depósito fiscal las personas físicas o morales residentes en el extranjero.",
+      "Complemento 1": "Declarar la clave en el RFC del responsable solidario en México.",
+      "Complemento 2": "Declarar el nombre o denominación social del responsable solidario en México.",
+      "Complemento 3": "Declarar el domicilio del responsable solidario en México."
+    },
+    {
+      "Clave": "RO- Revisión en origen por parte de empresas certificadas.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Identificar el despacho de mercancías de empresas certificadas mediante el procedimiento de revisión en origen, conforme al artículo 98 de la Ley y la regla 7.3.3., fracción XVII.",
+      "Complemento 1": "No asentar datos. (Vacío).",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "RP- Retorno de residuos peligrosos generados por empresas con programa IMMEX.",
+      "Nivel": "P",
+      "Supuestos de Aplicación": "Identificar que se trata de mercancía considerada como residuos peligrosos, conforme al “Acuerdo que establece las mercancías cuya importación y exportación está sujeta a regulación por parte de la Secretaría de Medio Ambiente y Recursos",
+      "Complemento 1": "No asentar datos. (Vacío).",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "RQ- Importación definitiva de remolques, semirremolques y portacontenedores.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Indicar que se trata de una importación definitiva de remolques, semirremolques y portacontenedores.",
+      "Complemento 1": "Declarar la clave que corresponda conforme a lo siguiente: 1. Artículo Resolutivo Décimo tercero de la Segunda Resolución de Modificaciones a las Reglas de Carácter General en Materia de Comercio Exterior para 2010. 2. Regla 2.5.2. 3. Regla 2.5.1.",
+      "Complemento 2": "Número de pedimento de importación temporal del remolque, semirremolque o portacontenedor, compuesto por la clave de la empresa autorizada, la clave de la aduana y número de documento, separados por un guion.",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "RT- Reexpedición por terceros.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Identificar la reexpedición de mercancías de la franja o región fronteriza por una persona distinta al importador.",
+      "Complemento 1": "No asentar datos. (Vacío).",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "RV- Regularización de vehículos usados.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Identificar cuando se trate de importaciones definitivas, de conformidad con el “Decreto por el que se fomenta la regularización de vehículos usados de procedencia extranjera”, publicado en el DOF el 19 de enero de 2022 y sus posteriores modificaciones.",
+      "Complemento 1": "No asentar datos. (Vacío).",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "SB- Importación de organismos genéticamente modificados.",
+      "Nivel": "P",
+      "Supuestos de Aplicación": "Identificar mercancías cuya importación requiere autorización por parte de la SE y SEDER.",
+      "Complemento 1": "1. Maíz amarillo: 1005.90.99.02 2. Otros.",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "SC- Excepción de pago de medida de transición.",
+      "Nivel": "P",
+      "Supuestos de Aplicación": "Indicar que la mercancía no se encuentra sujeta al pago de la medida de transición.",
+      "Complemento 1": "Declarar el supuesto que corresponda, conforme a lo siguiente: 1. Las características de la mercancía no obligan al pago de la medida de transición. 2. El valor en aduana excede el valor mínimo establecido. 3. Se cuenta con la autorización/cupo expedida por la SE.",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "SF- Clave de unidad autorizada del almacén general de depósito.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Identificar la unidad autorizada, conforme la autorización otorgada para prestar el servicio de almacenamiento de mercancías en depósito fiscal y colocar marbetes o precintos.",
+      "Complemento 1": "Clave de la unidad autorizada.",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "SH- Autorización del SAT.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Identificar las operaciones: I. Autorizaciones otorgadas por el SAT. II. Franquicia diplomática.",
+      "Complemento 1": "Número del oficio de autorización.",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "SH- Autorización del SAT.",
+      "Nivel": "P",
+      "Supuestos de Aplicación": "Indicar que la importación de las mercancías cuenta con una resolución particular otorgada",
+      "Complemento 1": "Número del oficio de autorización.",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "SM- Excepción de la declaración de marbetes.",
+      "Nivel": "P",
+      "Supuestos de Aplicación": "Indicar que por la naturaleza de las mercancías no se está obligado a la declaración de marbetes.",
+      "Complemento 1": "Declarar la mercancía que corresponda. 1. Bebidas refrescantes de conformidad con el artículo 3 de la Ley del IEPS. 2. Las importaciones por las que no deba pagarse este impuesto de conformidad con el artículo 13 de la Ley del IEPS.",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "SO- Socio Comercial Certificado.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Identificar a los contribuyentes que participan en el manejo, almacenaje, custodia y/o traslado de las mercancías de comercio exterior inscritos en el Registro en el Esquema de Certificación de Empresa bajo la modalidad de Socio Comercial Certificado.",
+      "Complemento 1": "Declarar la clave que corresponda, conforme a lo siguiente: TT. Socio Comercial Certificado, rubro Auto Transportista Terrestre. AA. Socio Comercial Certificado, rubro Agente Aduanal o Agencia Aduanal. TF. Socio Comercial Certificado, rubro Transportista Ferroviario. PI. Socio Comercial Certificado, rubro Parque Industrial. RF. Socio Comercial Certificado, rubro Recinto Fiscalizado. MP. Socio Comercial Certificado, rubro Mensajería y Paquetería.",
+      "Complemento 2": "Declarar la clave en el RFC del Socio Comercial Certificado, excepto cuando se trate de la clave AA. En caso de pedimentos consolidados, se deberá declarar cada uno de los Auto Transportistas Terrestres certificados que intervinieron en el aviso consolidado o en el aviso electrónico de importación y de exportación.",
+      "Complemento 3": "1. Declarar el número de autorización cuando se trate de la clave PI. 2. Declarar el tramo certificado por el que se transportó la mercancía, cuando se trate de la clave TF."
+    },
+    {
+      "Clave": "ST- Operaciones sujetas al artículo 2.5 del T-MEC.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Señalar en el pedimento el supuesto de aplicación para la determinación y pago del IGI de los insumos no originarios de la región del T-MEC.",
+      "Complemento 1": "Declarar la clave que corresponda, conforme a lo siguiente: 99- Para indicar que a nivel partida se señalará la opción que aplique con el identificador DT. 1. No aplica 2. Regla 1.6.12. 3. Regla 1.6.13. 4. Regla 1.6.17. 5. No aplica. 6. No aplica. 7. No aplica. 8. Regla 1.6.14. (determinación y pago en pedimento complementario). 9a. Regla 1.6.14. (determinación y pago en pedimento de",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "SU- Operaciones sujetas a los artículos 14 del Anexo III de la Decisión, 15 del Anexo I del TLCAELC o al ACC.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Señalar en el pedimento el supuesto de aplicación para la determinación y pago del IGI de los insumos no originarios conforme a la Decisión, el TLCAELC o al ACC.",
+      "Complemento 1": "Declarar la clave que corresponda, conforme a lo siguiente: 99- Para indicar que a nivel partida se señalará la opción que aplique con el identificador DU. 1. No aplica. 2. Regla 1.6.12. 3. Regla 1.6.13. 4. Regla 1.6.17. 5. No aplica. 6. No aplica. 7. No aplica. 8. Regla 1.6.15., fracción I. 9. No aplica. 10. Regla 1.6.15., fracción III. 11. No aplica. 12. No aplica.",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "TA- Régimen de transición alternativo.",
+      "Nivel": "P",
+      "Supuestos de Aplicación": "Identificar la mercancía en régimen de transición alternativo en términos del artículo 8, del apéndice sobre Disposiciones Relacionadas con las Reglas de Origen Específicas por Producto para Mercancías Automotrices del Anexo 4-B relativo a las Reglas de Origen Específicas por Producto del Capítulo 4 del T-MEC.",
+      "Complemento 1": "No asentar datos. (Vacío).",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "TB- Tránsito interno por aduanas y mercancías específicas.",
+      "Nivel": "P",
+      "Supuestos de Aplicación": "Indicar que se trata de un tránsito conforme a lo establecido en la regla 4.6.6.",
+      "Complemento 1": "Declarar la clave que corresponda conforme a las mercancías de que se trate: 1. Confecciones. 2. Calzado. 3. Aparatos electrodomésticos. 4. Juguetes. 5. Bienes a que se refiere el artículo 2, fracción I, inciso C) de la Ley del IEPS. 6. Aparatos electrónicos. 7. Textiles. 8. Llantas usadas. 9. Plaguicidas, fertilizantes y sustancias tóxicas, señaladas en el “Acuerdo que establece las",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "TB- Aviso de tránsito interno cuya carga se va a consolidar.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Indicar que se trata de un tránsito a la exportación cuya carga será consolidada conforme a la regla 4.6.4. Este identificador no deberá declararse cuando se señale el Identificador AT.",
+      "Complemento 1": "No asentar datos. (Vacío).",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "TC- Correlación de las fracciones arancelarias.",
+      "Nivel": "P",
+      "Supuestos de Aplicación": "Declarar la fracción arancelaria correlacionada de acuerdo a lo establecido en los Decretos por los que se establece la tasa aplicable en los Tratados de Libre Comercio suscritos por México.",
+      "Complemento 1": "Declarar la fracción arancelaria indicada con el código “CORR” en el artículo o apéndice del Acuerdo correspondiente.",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "TD- Tipo de desistimiento y retorno.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Conforme a los supuestos de la clave de documento K1 del apéndice 2.",
+      "Complemento 1": "Declarar la clave que corresponda: 1. Retorno de mercancías conforme al artículo 103 de la Ley. 2. Artículo 93, segundo párrafo de la Ley. 3. Regla 5.2.7., fracción II. 4. Regla 4.5.19., fracción II. 5. Regla 2.2.7. 6. Regla 4.3.9.",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "TI- Tránsito interfronterizo.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Indicar que se trata de un tránsito conforme a lo establecido en la regla 4.6.12.",
+      "Complemento 1": "No asentar datos (Vacío).",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "TL- Mercancía originaria al amparo de Tratados de Libre Comercio.",
+      "Nivel": "P",
+      "Supuestos de Aplicación": "Declarar una preferencia arancelaria al amparo de un Tratado suscrito por México.",
+      "Complemento 1": "Clave del país, grupo de países o territorio de la Parte exportadora, Parte del Tratado suscrito por México, de conformidad con el apéndice 4.",
+      "Complemento 2": "ALP.- Acuerdo de la Alianza del Pacífico. TIP.- Tratado Integral y Progresista de Asociación Transpacífico.",
+      "Complemento 3": "Declarar el Certificado de Origen cuando se declaren mercancías originarias de la Alianza del Pacífico."
+    },
+    {
+      "Clave": "TM- Tránsito internacional.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Indicar que se trata de un tránsito conforme a lo establecido en las reglas 4.6.23. y 4.6.24.",
+      "Complemento 1": "1. Regla 4.6.23. 2. Regla 4.6.24.",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "TR- Traspaso de mercancías en depósito fiscal.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Indicar operaciones de traspaso de mercancías conforme la regla 4.5.14., fracciones III y IV.",
+      "Complemento 1": "Declarar la clave que corresponda, conforme a los destinos siguientes: 1. A un local autorizado para exposiciones internacionales. 2. A depósito fiscal para exposición y venta de mercancías extranjeras y nacionales. 3. A depósito fiscal para el ensamble y fabricación de vehículos. 4. A un almacén general de depósito.",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "TU- Transferencia de mercancías (operaciones virtuales), con pedimento único.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Señalar en operaciones de transferencia de mercancías que se importen temporalmente a través del pedimento único, de conformidad con la regla 4.3.20., fracción I, inciso c) vigente hasta el 20 de junio de 2016.",
+      "Complemento 1": "Declarar la clave en el RFC de la empresa que transfiere la mercancía.",
+      "Complemento 2": "Declarar el tipo de caso de la certificación autorizada de la empresa que transfiere la mercancía.",
+      "Complemento 3": "Indicar el rubro de la certificación autorizada."
+    },
+    {
+      "Clave": "TV- Total de mercancía extraída de depósito fiscal.",
+      "Nivel": "P",
+      "Supuestos de Aplicación": "Indicar que se trata de extracciones realizadas conforme a la regla 4.5.20.",
+      "Complemento 1": "Cantidad total de mercancía en unidad de medida de la TIGIE, vendida a pasajeros internacionales que salgan del país directamente al extranjero.",
+      "Complemento 2": "Cantidad total de mercancía en unidad de medida de la TIGIE vendida a pasajeros internacionales que arriben al país directamente del extranjero.",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "UM- Uso de la mercancía.",
+      "Nivel": "P",
+      "Supuestos de Aplicación": "Indicar el uso de la mercancía, así como la exención de impuestos.",
+      "Complemento 1": "Declarar la clave que corresponda conforme a lo siguiente: A- No aplica. B- No aplica. C- Vehículos con capacidad de carga mayor a 4250 kilogramos, artículo 3, fracción II de la Ley del ISAN. D- No aplica. E- No aplica. H- Humanos. I- No aplica. J- Juguetes. K- No aplica. L- No aplica. MT- Medio de transporte y mercancía. O- Otros.",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "UP- Unidades prototipo.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Identificar a las operaciones realizadas de conformidad con la regla 4.5.31.",
+      "Complemento 1": "No asentar datos. (Vacío).",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "VC- Importación definitiva de vehículos usados en el Estado de Chihuahua.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Indicar la importación definitiva de vehículos usados, de conformidad con el “Acuerdo que establece el programa para que el Estado de Chihuahua garantice contribuciones en la importación definitiva de vehículos automotores usados que circulan en dicha Entidad”, publicado en el DOF el 30 de octubre de 2012 y sus posteriores modificaciones.",
+      "Complemento 1": "Se deberá declarar la clave que corresponda conforme a lo siguiente: 070. Ciudad Juárez. 250. Ojinaga. 260. Puerto Palomas. 670. Chihuahua.",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "VF- Importación definitiva de vehículos usados a la franja o región fronteriza norte.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Indicar la importación definitiva de vehículos usados conforme a las reglas 3.5.6, 3.5.11. y 3.5.13",
+      "Complemento 1": "Declarar el supuesto que corresponda, conforme a lo siguiente: 1. Importación definitiva por personas físicas y morales. 2. No aplica. 3. (Derogado) 4. No aplica.",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "VJ- Fronterización de vehículos.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Indicar la importación definitiva de vehículos usados, de conformidad con el “Acuerdo por el que se establece el Programa para que los Gobiernos Locales Garanticen Contribuciones en la Importación Definitiva de Vehículos Automotores Usados destinados a permanecer en la Franja y Región Fronteriza Norte”, publicado en el DOF el 11 de abril de 2011 y sus posteriores modificaciones.",
+      "Complemento 1": "Se deberá declarar la clave que corresponda conforme a lo siguiente: 070. Ciudad Juárez. 110. Ensenada. 190. Mexicali. 250. Ojinaga. 260. Puerto Palomas. 390. Tecate. 400. Tijuana.",
+      "Complemento 2": "1. Conforme al artículo Tercero del Acuerdo. 2. Conforme al artículo Cuarto del Acuerdo.",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "VN- Importación definitiva de vehículos nuevos.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Indicar la importación definitiva de vehículos nuevos.",
+      "Complemento 1": "Declarar el supuesto que corresponda, conforme a lo siguiente: 1. Importación por personas físicas, un vehículo al año conforme a la regla 3.5.1., fracción I. 2. Importación por personas físicas. 3. Importación por personas morales. 4. Importación por empresas comercializadoras de vehículos nuevos. 5. Importación por la Industria Automotriz Terminal o Manufacturera de Vehículos.",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "VU- Importación definitiva de vehículos usados.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Indicar la importación definitiva de vehículos usados, conforme a las reglas 3.5.5. y 3.5.8.",
+      "Complemento 1": "Declarar el supuesto que corresponda, conforme a lo siguiente: 1. Importación definitiva conforme a la regla 3.5.5. 2. Cambio de importación temporal a importación definitiva conforme a la regla 3.5.8.",
+      "Complemento 2": "Cuando en el Complemento 1 se declare 2, se deberá indicar el número de folio del permiso de importación.",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "VT- Importación de autobuses, camiones y tractocamiones usados para el transporte de personas y mercancías.",
+      "Nivel": "P",
+      "Supuestos de Aplicación": "Indicar el tipo y capacidad del vehículo solo cuando se trate de las fracciones arancelarias y NICO: 8702.10.05 00, 8702.20.05 00, 8704.22.07 00 y 8704.42.02 00.",
+      "Complemento 1": "1. Vehículos automóviles usados para el transporte de diez o más personas, incluido el conductor clasificados en la fracciones arancelarias y NICO 8702.10.05 00 y 8702.20.05 00.",
+      "Complemento 2": "1. Con carrocería montada sobre chasis, excepto lo comprendido en las fracciones arancelarias y NICO: 8702.10.99 03 y 8702.20.99 03. 2. Con carrocería integral, excepto lo comprendido en las fracciones arancelarias y NICO: 8702.10.99 04 y 8702.20.99 04. 3. Para el transporte de 16 o",
+      "Complemento 3": "No asentar datos (Vacío)."
+    },
+    {
+      "Clave": "V1- Transferencias de mercancías.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Indicar conforme a los supuestos de la clave de documento V1 del apéndice 2 del presente Anexo, regla 4.3.21. y artículo 86 de la Ley.",
+      "Complemento 1": "Declarar el número o la clave en el RFC, según corresponda al supuesto aplicable: • Número de autorización IMMEX. • Número de autorización de Empresa de Comercio Exterior. • Número de autorización de depósito fiscal para la industria automotriz. • La clave en el RFC de proveedor nacional. • La clave en el RFC de la empresa que recibe o transfiera las mercancías en recinto fiscalizado estratégico. • La clave en el RFC de la empresa que transfiere o",
+      "Complemento 2": "Declara la clave que corresponda de acuerdo al complemento 1: • IM en caso del número de autorización IMMEX. • AE en caso del número de autorización de Empresa de Comercio Exterior. • RFE en caso de que las mercancías se encuentren o se destinen a recinto fiscalizado estratégico. • V2 en caso de declarar la clave en el RFC del quien transfiere o recibe con cuenta aduanera. • CN en caso de enajenación de mercancías que realicen los proveedores nacionales a residentes en el extranjero, de mercancías nacionales o importadas en forma",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "V2- Transferencia de mercancías importadas con cuenta aduanera.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Señalar en el supuesto de la regla 1.6.31.",
+      "Complemento 1": "Indicar la clave en el RFC: • De la empresa que transfiere la mercancía, en el pedimento de importación virtual. • De la empresa que recibe las mercancías, en el pedimento de exportación virtual.",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "V3- Extracción de depósito fiscal de bienes para su retorno o exportación virtual (IA).",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Identificar las operaciones de transferencia que realice la industria automotriz terminal o manufacturera de vehículos de autotransporte.",
+      "Complemento 1": "La clave en el RFC de la empresa que transfiere la mercancía en el pedimento de introducción a depósito fiscal. La clave en el RFC de la empresa que recibe la mercancía en el pedimento de extracción de depósito fiscal.",
+      "Complemento 2": "Clave C5 cuando se trate de depósito fiscal.",
+      "Complemento 3": "1. Vehículos. 2. Material (insumos, partes y componentes)."
+    },
+    {
+      "Clave": "V4- Retorno virtual derivado de la constancia de transferencia de mercancías.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Indicar conforme al supuesto de la clave de documento V4 del apéndice 2 del presente Anexo y la regla 4.3.13., fracción II.",
+      "Complemento 1": "Indicar número de folio de la constancia de transferencia de mercancías.",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "V5- Transferencias de mercancías de empresas certificadas a residentes territorio nacional para su importación definitiva.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Indicar conforme a los supuestos de la clave de documento V5 del apéndice 2 del presente Anexo y la regla 7.3.3., fracción XIII.",
+      "Complemento 1": "Declarar el número o la clave en el RFC, según corresponda al supuesto aplicable: • Número de autorización IMMEX. • La clave en el RFC de la empresa que recibe o devuelve las mercancías.",
+      "Complemento 2": "IM en caso de declarar el número de autorización IMMEX en el complemento 1. En otro caso Nulo.",
+      "Complemento 3": "Declarar la clave que corresponda, conforme al supuesto aplicable: 1. Regla 7.3.3., XIII, inciso a). 2. Regla 7.3.3., fracción XIII, inciso b)."
+    },
+    {
+      "Clave": "V6- Transferencias de mercancías sujetas a cupo.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Indicar conforme al supuesto de la clave de documento V6 del apéndice 2 del presente Anexo y la regla 1.6.7.",
+      "Complemento 1": "Declarar el número o la clave en el RFC, según corresponda al supuesto aplicable: • Número de autorización IMMEX. • La clave en el RFC de la empresa que recibe.",
+      "Complemento 2": "IM en caso de declarar el número de autorización IMMEX en el Complemento 1. En otro caso Nulo.",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "V7- Transferencias del sector azucarero.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Indicar conforme al supuesto de la clave de documento V7, del apéndice 2 del presente Anexo y la regla 4.3.9.",
+      "Complemento 1": "Declarar el número o la clave en el RFC, según corresponda al supuesto aplicable: • Número de autorización IMMEX. • Número de registro de proveedor de insumos del sector azucarero emitido por la SE.",
+      "Complemento 2": "Declarar la clave que corresponda de acuerdo al complemento 1: • IM en caso del número de autorización IMMEX. • PA en caso del número de registro de proveedor de insumos del sector azucarero.",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "V8- Transferencias de mercancías extranjeras, nacionales y",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Indicar conforme al supuesto de la clave de documento V8 del apéndice 2 del presente",
+      "Complemento 1": "Declarar la clave en el RFC: • De la empresa que transfiere",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "nacionalizadas de tiendas libres de impuestos (Duty Free).",
+      "Nivel": "<NA>",
+      "Supuestos de Aplicación": "Anexo y la regla 4.5.21., fracción II.",
+      "Complemento 1": "las mercancías, en el pedimento de introducción a depósito fiscal. • De la empresa que recibe las mercancías, en el pedimento de extracción de depósito fiscal.",
+      "Complemento 2": "",
+      "Complemento 3": ""
+    },
+    {
+      "Clave": "V9- Transferencias de mercancías por donación.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Indicar conforme al supuesto de la clave de documento V9 del apéndice 2 del presente Anexo y la regla 3.3.11.",
+      "Complemento 1": "Declarar el número o la clave en el RFC, según corresponda al supuesto aplicable: • Número de autorización IMMEX. • La clave en el RFC de la donataria que recibe las mercancías.",
+      "Complemento 2": "IM en caso de declarar el número de autorización IMMEX en el complemento 1. En otro caso Nulo.",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "XP- Excepción al cumplimiento de regulaciones y restricciones no arancelarias.",
+      "Nivel": "P",
+      "Supuestos de Aplicación": "Indicar para exceptuar el cumplimiento de un permiso, excepto NOM.",
+      "Complemento 1": "Declarar la clave del permiso que se exceptúa, contenido en el apéndice 9.",
+      "Complemento 2": "La opción que aplique conforme al permiso declarado, de acuerdo a lo siguiente: Para cualquier clave de permisos: E- No es mercancía obligada por estar dentro de la acotación “excepto”. U- No es mercancía obligada por estar fuera de la acotación “únicamente”.",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "XP- Excepción al cumplimiento de regulaciones y restricciones no arancelarias.",
+      "Nivel": "P",
+      "Supuestos de Aplicación": "",
+      "Complemento 1": "A1- Certificado Fitozoosanitario y Certificado de Sanidad Acuícola de Importación (Acuerdo que establece las mercancías cuya importación está sujeta a regulación por parte de la Secretaría de Agricultura y Desarrollo Rural, así como la emisión del certificado de origen para la exportación de café, publicado en el DOF el 26 de diciembre de 2020 y sus posteriores modificaciones).",
+      "Complemento 2": "Para A1 señalar: 1. Se trata de productos químicos, farmacéuticos y biológicos para uso en animales acuáticos. (Anexo 1, inciso a). 2. Son animales, bienes de origen animal o alimenticios para consumo de animales acuáticos, mercancías de origen no animal. (Anexo 1, incisos b) y c). 3. No Aplica. 4. No es mercancía regulada por la Dirección General de Sanidad Vegetal. (Anexo 1, inciso e). 5. No es mercancía sujeta al cumplimiento de los",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "XL- Presentación de mercancía en transporte sobredimensionado.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Identificar la mercancía que se presenta en vehículos con características sobredimensionadas.",
+      "Complemento 1": "No asentar datos. (Vacío).",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "XV- Exportación de vehículos de la industria automotriz terminal o manufacturera de vehículos de autotransporte.",
+      "Nivel": "G",
+      "Supuestos de Aplicación": "Exportación de vehículos, a los cuales se les incorporaron opciones especiales por parte de empresas con Programa IMMEX.",
+      "Complemento 1": "Número de pedimento de exportación de vehículos, a los que se les incorporaron opciones especiales importadas temporalmente por la empresa con Programa IMMEX.",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    },
+    {
+      "Clave": "ZC- Contenido de azúcar.",
+      "Nivel": "P",
+      "Supuestos de Aplicación": "Indicar el contenido de azúcar de las mercancías cuyas fracciones arancelarias tengan un arancel mixto.",
+      "Complemento 1": "Declarar en kilogramos el contenido de azúcar.",
+      "Complemento 2": "No asentar datos. (Vacío).",
+      "Complemento 3": "No asentar datos. (Vacío)."
+    }
+  ]
+}
