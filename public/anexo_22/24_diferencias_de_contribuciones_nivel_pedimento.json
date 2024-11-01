@@ -1,0 +1,35 @@
+{
+  "Campos": [
+    {
+      "Número": 1,
+      "Campo": "CONCEPTO",
+      "Descripción": "Descripción abreviada del concepto para el que hayan surgido diferencias a liquidar."
+    },
+    {
+      "Número": 2,
+      "Campo": "F.P.",
+      "Descripción": "Forma de pago de las diferencias del concepto a liquidar, conforme al apéndice 13 del presente Anexo."
+    },
+    {
+      "Número": 3,
+      "Campo": "DIFERENCIA",
+      "Descripción": "Importe total, en moneda nacional de las diferencias del concepto en la forma de pago a liquidar."
+    },
+    {
+      "Número": 4,
+      "Campo": "EFECTIVO",
+      "Descripción": "Se anotará el importe total, en moneda nacional, de las diferencias a pagar en efectivo."
+    },
+    {
+      "Número": 5,
+      "Campo": "OTROS",
+      "Descripción": "Es el importe total, en moneda nacional, de las diferencias a pagar en las formas de pago distintas al efectivo."
+    },
+    {
+      "Número": 6,
+      "Campo": "DIF. TOTALES",
+      "Descripción": "La suma de los dos conceptos anteriores."
+    }
+  ],
+  "Nota": "Cuando en una rectificación resulten diferencias a favor del contribuyente, el total de dichas diferencias deberá anotarse en un renglón, con sus claves de contribución y forma de pago correspondientes, de acuerdo con los apéndices 12 y 13 del presente Anexo. Estas diferencias no deberán adicionarse a las diferencias totales."
+}

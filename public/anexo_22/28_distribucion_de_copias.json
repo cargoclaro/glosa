@@ -1,0 +1,22 @@
+{
+  "Presentación_del_pedimento": "El pedimento se presentará en un ejemplar, destinado al importador o exportador.",
+  "Leyenda_en_parte_inferior_derecha": {
+    "Descripción": "En la parte inferior derecha deberá llevar impresa la leyenda que corresponda conforme a lo siguiente:",
+    "Opciones": [
+      "Destino/origen: interior del país.",
+      "Destino/origen: región fronteriza.",
+      "Destino/origen: franja fronteriza."
+    ]
+  },
+  "Color_del_pedimento": {
+    "Interior_del_país_exportación_complementario_tránsito": "blanca",
+    "Franjas_fronterizas": "amarilla",
+    "Región_fronteriza": "verde"
+  },
+  "Circulación_de_mercancía": "En ningún caso la mercancía podrá circular con el ejemplar por una zona del país diferente a la que corresponda conforme al color, excepto del blanco que podrá circular por todo el país.",
+  "Requisitos_adicionales": {
+    "e_firma": "El pedimento deberá llevar la e.firma expedida por el SAT",
+    "Leyenda_pago": "Leyenda de referencia al pago de las contribuciones mediante el servicio de pago electrónico, en el espacio designado en el pie de página descrito anteriormente."
+  },
+  "Claves_y_códigos": "Las claves o códigos internos que se deberán utilizar para todos los fines de los sistemas SAAI M3 o SAAI y de las instituciones de crédito autorizadas para el cobro de contribuciones de comercio exterior, así como los aspectos relativos a las estadísticas y a los programas prevalidadores, serán contemplados en los manuales del SAAI o del SAAI M3, siendo estos los instrumentos que determinarán las claves a utilizar."
+}

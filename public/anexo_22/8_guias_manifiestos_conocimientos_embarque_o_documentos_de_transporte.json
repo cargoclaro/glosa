@@ -1,0 +1,18 @@
+{
+  "Campos": [
+    {
+      "Número": 1,
+      "Campo": "NÚMERO (GUÍA/CONOCIMIENTO EMBARQUE) DOCUMENTOS DE TRANSPORTE",
+      "Descripción": {
+        "Importación": "El o los números de la(s) guía(s) aérea(s), manifiesto(s) de los números de orden del conocimiento(s) de embarque, o documento de transporte. En el caso de tránsitos a la importación, deberá imprimirse el o los números de la(s) guía(s) terrestre(s).",
+        "Exportación": "La declaración de la información de guía, manifiesto o conocimientos de embarque es opcional.",
+        "Regla_1.9.11": "Tratándose de las operaciones a que se refiere la regla 1.9.11., se deberá declarar el número de documento de transporte también en exportaciones."
+      }
+    },
+    {
+      "Número": 2,
+      "Campo": "ID",
+      "Descripción": "Se anotará la letra mayúscula que identifique el tipo de guía o documento de transporte a utilizar (M) Master o (H) House, según sea el caso."
+    }
+  ]
+}

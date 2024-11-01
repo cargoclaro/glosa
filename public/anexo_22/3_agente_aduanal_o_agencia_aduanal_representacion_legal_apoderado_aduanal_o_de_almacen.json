@@ -1,0 +1,65 @@
+{
+  "Campos": [
+    {
+      "Número": 1,
+      "Campo": "NOMBRE, DENOMINACIÓN O RAZ. SOC.",
+      "Descripción": "Nombre completo del agente aduanal o agencia aduanal, apoderado aduanal o representante legal que promueve el despacho, y su RFC.",
+      "Almacenes_generales": "Tratándose de almacenes generales de depósito, se asentará la razón social del almacén."
+    },
+    {
+      "Número": 2,
+      "Campo": "RFC",
+      "Descripción": "Clave en el RFC del agente aduanal o agencia aduanal que acumula el ingreso."
+    },
+    {
+      "Número": 3,
+      "Campo": "CURP",
+      "Descripción": "CURP del agente aduanal, representante legal o apoderado aduanal que realiza el trámite."
+    },
+    {
+      "Número": 4,
+      "Campo": "MANDATARIO/PERSONA AUTORIZADA",
+      "Descripción": "Datos del mandatario del agente aduanal o de la agencia aduanal que firma el pedimento."
+    },
+    {
+      "Número": 5,
+      "Campo": "NOMBRE",
+      "Descripción": "Nombre completo del mandatario del agente aduanal o agencia aduanal que promueve el despacho.",
+      "Almacenes_generales": "Se asentará el nombre completo de la persona autorizada para realizar trámites ante la aduana."
+    },
+    {
+      "Número": 6,
+      "Campo": "RFC",
+      "Descripción": "Clave en el RFC del mandatario del agente aduanal o de la agencia aduanal."
+    },
+    {
+      "Número": 7,
+      "Campo": "CURP",
+      "Descripción": "CURP del mandatario del agente aduanal o de la agencia aduanal."
+    },
+    {
+      "Número": 8,
+      "Campo": "PATENTE O AUTORIZACIÓN",
+      "Descripción": "Número de la patente o autorización otorgada por la ANAM."
+    },
+    {
+      "Número": 9,
+      "Campo": "FIRMA ELECTRÓNICA AVANZADA",
+      "Descripción": "e.firma del agente aduanal, importador, exportador o apoderado que promueve el despacho."
+    },
+    {
+      "Número": 10,
+      "Campo": "NÚM. DE SERIE DEL CERTIFICADO",
+      "Descripción": "Número de serie del certificado de la e.firma."
+    }
+  ],
+  "Fin_del_pedimento": {
+    "Descripción": "Leyenda de FIN DE PEDIMENTO al final de la última partida, incluyendo el número total de partidas y la clave del prevalidador correspondiente."
+  },
+  "Nota": {
+    "Descripción": "El agente aduanal, agencia aduanal, importador, exportador o apoderado puede incrementar los anexos del pedimento según considere necesario."
+  },
+  "Nota_general": {
+    "Descripción": "El agente aduanal, agencia aduanal, importador, exportador o apoderado puede incrementar los anexos del pedimento según considere necesario."
+  }
+}

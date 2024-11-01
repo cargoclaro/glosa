@@ -1,0 +1,50 @@
+{
+  "Notas": [
+    {
+      "Contenido": "La información de descargos de la operación u operaciones originales, sólo deberá ser impresa y transmitida electrónicamente cuando se trate de pedimentos de extracción de depósito fiscal (excepto industria automotriz), cambio de régimen de mercancías importadas al amparo del artículo 106, fracción III, inciso a) de la Ley, retorno de importaciones temporales en su mismo estado (excepto empresas con Programa IMMEX), cambio de régimen (excepto empresas con Programa IMMEX), sustitución, desistimiento o retorno, reexpedición, en pedimentos complementarios al amparo del artículo 2.5 del T-MEC o cuando las mercancías hayan arribado a la aduana de despacho en tránsito."
+    },
+    {
+      "Contenido": "En estos casos se deberán descargar los pedimentos de introducción a depósito fiscal, importación temporal de conformidad con el artículo 106, fracción III, inciso a) de la Ley en cambios de régimen, importación temporal para retornar en su mismo estado, importación a franja o región fronteriza, el pedimento de exportación (retorno), o tránsito respectivamente."
+    }
+  ],
+  "Campos": [
+    {
+      "Número": 1,
+      "Campo": "NÚM. PEDIMENTO ORIGINAL",
+      "Descripción": "El número asignado por el agente aduanal o la agencia aduanal, importador, exportador, apoderado aduanal o de almacén en la operación original, integrado con quince dígitos, que corresponden a:",
+      "Subcampos": [
+        {
+          "Descripción": "2 dígitos",
+          "Detalle": "Del año de validación."
+        },
+        {
+          "Descripción": "2 dígitos",
+          "Detalle": "De la aduana de despacho."
+        },
+        {
+          "Descripción": "4 dígitos",
+          "Detalle": "Del número de la patente o autorización otorgada por la ANAM al agente aduanal o agencia aduanal, importador, exportador, apoderado aduanal o de almacén que promueve el despacho. Cuando este número sea menor a cuatro dígitos, se deberán anteponer los ceros que fueren necesarios para completar 4 dígitos."
+        },
+        {
+          "Descripción": "1 dígito",
+          "Detalle": "Debe corresponder al declarado en el pedimento original."
+        },
+        {
+          "Descripción": "6 dígitos",
+          "Detalle": "Los cuales serán numeración progresiva por aduana en la que se encuentren autorizados para el despacho, asignada por cada agente aduanal, agencia aduanal, importador, exportador, apoderado aduanal o de almacén, referido a todos los tipos de pedimento."
+        }
+      ],
+      "Separación": "Cada uno de estos grupos de dígitos deberá ser separado por dos espacios en blanco."
+    },
+    {
+      "Número": 2,
+      "Campo": "FECHA DE OPERACIÓN ORIGINAL",
+      "Descripción": "Fecha en que se efectuó la operación original."
+    },
+    {
+      "Número": 3,
+      "Campo": "CVE. PEDIMENTO ORIGINAL",
+      "Descripción": "Clave de pedimento de que se trate, conforme al apéndice 2 del presente Anexo, en la fecha de la operación original."
+    }
+  ]
+}

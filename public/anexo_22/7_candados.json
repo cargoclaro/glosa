@@ -1,0 +1,19 @@
+{
+  "Campos": [
+    {
+      "Número": 1,
+      "Campo": "NÚMERO DE CANDADO",
+      "Descripción": "Número(s) de candado(s) que el agente aduanal, la agencia aduanal, importador, exportador o apoderado aduanal coloca al contenedor o vehículo, o el número de candado de origen en los casos previstos en la legislación vigente."
+    },
+    {
+      "Número": 2,
+      "Campo": "1RA. REVISIÓN",
+      "Descripción": "Se anotará el número(s) de candado(s) asignado(s) al terminar la primera revisión. Para uso exclusivo de la autoridad aduanera."
+    },
+    {
+      "Número": 3,
+      "Campo": "2DA. REVISIÓN",
+      "Descripción": "Se anotará el número(s) de candado(s) asignado(s) al terminar la segunda revisión. Para uso exclusivo de la autoridad aduanera."
+    }
+  ]
+}

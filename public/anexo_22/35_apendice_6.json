@@ -1,0 +1,808 @@
+{
+  "Recintos_fiscalizados": [
+    {
+      "Aduana": "Aeropuerto Internacional de la Ciudad de México",
+      "Clave": 3,
+      "Recinto_Fiscalizado": "Aerovías de México, S.A. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Aeropuerto Internacional de la Ciudad de México",
+      "Clave": 4,
+      "Recinto_Fiscalizado": "AAACESA Almacenes Fiscalizados, S.A. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Aeropuerto Internacional de la Ciudad de México",
+      "Clave": 6,
+      "Recinto_Fiscalizado": "American Airlines de México, S.A. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Aeropuerto Internacional de la Ciudad de México",
+      "Clave": 7,
+      "Recinto_Fiscalizado": "Talma México Servicios Aeroportuarios, S.A. de C. V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Aeropuerto Internacional de la Ciudad de México",
+      "Clave": 8,
+      "Recinto_Fiscalizado": "CCO-SAASA Cargo, S.A.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Aeropuerto Internacional de la Ciudad de México",
+      "Clave": 12,
+      "Recinto_Fiscalizado": "DHL Express México, S.A. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Aeropuerto Internacional de la Ciudad de México",
+      "Clave": 13,
+      "Recinto_Fiscalizado": "CCO Almacén Fiscal, S.A. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Aeropuerto Internacional de la Ciudad de México",
+      "Clave": 14,
+      "Recinto_Fiscalizado": "Lufthansa Cargo Servicios Logísticos de México, S.A. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Aeropuerto Internacional de la Ciudad de México",
+      "Clave": 15,
+      "Recinto_Fiscalizado": "Tramitadores Asociados de Aerocarga, S.A. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Aeropuerto Internacional de la Ciudad de México",
+      "Clave": 16,
+      "Recinto_Fiscalizado": "Transportación México Express, S.A. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Aeropuerto Internacional de la Ciudad de México",
+      "Clave": 17,
+      "Recinto_Fiscalizado": "United Parcel Service de México, S.A. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Aeropuerto Internacional de la Ciudad de México",
+      "Clave": 262,
+      "Recinto_Fiscalizado": "Interpuerto Multimodal de México, S.A. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Aeropuerto Internacional de la Ciudad de México",
+      "Clave": 263,
+      "Recinto_Fiscalizado": "World Express Cargo de México, S.A. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Aeropuerto Internacional de la Ciudad de México",
+      "Clave": 279,
+      "Recinto_Fiscalizado": "Talma Servicios de Carga, S.A. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Aeropuerto Internacional de la Ciudad de México",
+      "Clave": 288,
+      "Recinto_Fiscalizado": "México Cargo Handling, S.A. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Aeropuerto Internacional Felipe Ángeles",
+      "Clave": 292,
+      "Recinto_Fiscalizado": "Admerce, S.A. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Aeropuerto Internacional Felipe Ángeles",
+      "Clave": 293,
+      "Recinto_Fiscalizado": "Terminal Logistics, S.A. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Aeropuerto Internacional Felipe Ángeles",
+      "Clave": 294,
+      "Recinto_Fiscalizado": "Talma México Servicios Aeroportuarios, S.A. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Aeropuerto Internacional Felipe Ángeles",
+      "Clave": 295,
+      "Recinto_Fiscalizado": "AAACESA Almacenes Fiscalizados, S.A. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Aeropuerto Internacional Felipe Ángeles",
+      "Clave": 296,
+      "Recinto_Fiscalizado": "JC&JF Cargo, S.A. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Aeropuerto Internacional Felipe Ángeles",
+      "Clave": 297,
+      "Recinto_Fiscalizado": "Interpuerto Multimodal de México, S.A. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Aguascalientes",
+      "Clave": 165,
+      "Recinto_Fiscalizado": "Centros de Intercambio de Carga Express Estafeta, S.A. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Aguascalientes",
+      "Clave": 224,
+      "Recinto_Fiscalizado": "Nafta Rail, S. de R.L. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Altamira",
+      "Clave": 19,
+      "Recinto_Fiscalizado": "Altamira Terminal Multimodal, S.A. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Altamira",
+      "Clave": 20,
+      "Recinto_Fiscalizado": "Altamira Terminal Portuaria, S.A. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Altamira",
+      "Clave": 225,
+      "Recinto_Fiscalizado": "Integradora de Servicios, Transporte y Almacenaje, S.A. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Altamira",
+      "Clave": 22,
+      "Recinto_Fiscalizado": "Infraestructura Portuaria Mexicana, S.A. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Altamira",
+      "Clave": 166,
+      "Recinto_Fiscalizado": "Administración del Sistema Portuario Nacional Altamira, S.A. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Altamira",
+      "Clave": 179,
+      "Recinto_Fiscalizado": "D.A. Hinojosa Terminal Multiusos, S.A. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Altamira",
+      "Clave": 180,
+      "Recinto_Fiscalizado": "Inmobiliaria Portuaria de Altamira, S. de R.L. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Altamira",
+      "Clave": 201,
+      "Recinto_Fiscalizado": "Cooper T. Smith de México, S.A. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Altamira",
+      "Clave": 203,
+      "Recinto_Fiscalizado": "Grupo Castañeda, S.A. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Altamira",
+      "Clave": 245,
+      "Recinto_Fiscalizado": "Almacenamiento y Logística Portuaria de Altamira, S.A. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Altamira",
+      "Clave": 274,
+      "Recinto_Fiscalizado": "Administración del Sistema Portuario Nacional Altamira, S.A. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Altamira",
+      "Clave": 283,
+      "Recinto_Fiscalizado": "Altamira Terminal de Multiservicios, S. de R.L. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Altamira",
+      "Clave": 286,
+      "Recinto_Fiscalizado": "Almacenamiento y Logística Portuaria de Altamira, S.A. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Altamira",
+      "Clave": 285,
+      "Recinto_Fiscalizado": "Posco México, S.A. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Cancún",
+      "Clave": 54,
+      "Recinto_Fiscalizado": "Administración Portuaria Integral de Quintana Roo, S.A. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Cancún",
+      "Clave": 175,
+      "Recinto_Fiscalizado": "Caribbean Logistics, S.A. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Cancún",
+      "Clave": 238,
+      "Recinto_Fiscalizado": "Cargo RF, S.A. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Chihuahua",
+      "Clave": 171,
+      "Recinto_Fiscalizado": "Aeropuerto de Chihuahua, S.A. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Ciudad Hidalgo",
+      "Clave": 270,
+      "Recinto_Fiscalizado": "R.F. del Sureste, S.A. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Ciudad Juárez",
+      "Clave": 167,
+      "Recinto_Fiscalizado": "Accel Recinto Fiscalizado, S.A. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Ciudad Juárez",
+      "Clave": 174,
+      "Recinto_Fiscalizado": "Aeropuerto de Ciudad Juárez, S.A. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Coatzacoalcos",
+      "Clave": 23,
+      "Recinto_Fiscalizado": "Administración del Sistema Portuario Nacional Coatzacoalcos, S.A. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Coatzacoalcos",
+      "Clave": 24,
+      "Recinto_Fiscalizado": "Vopak México, S.A. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Colombia",
+      "Clave": 25,
+      "Recinto_Fiscalizado": "Dicex Integraciones, S.A. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "Sí"
+    },
+    {
+      "Aduana": "Colombia",
+      "Clave": 26,
+      "Recinto_Fiscalizado": "Mex Securit, S.A. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Colombia",
+      "Clave": 151,
+      "Recinto_Fiscalizado": "S.R. Asesores Aduanales de Nuevo Laredo, S.C.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Colombia",
+      "Clave": 161,
+      "Recinto_Fiscalizado": "Santos Esquivel y Cía, S.C.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Colombia",
+      "Clave": 176,
+      "Recinto_Fiscalizado": "Centro de Carga y Descarga de Colombia, S.A. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Colombia",
+      "Clave": 178,
+      "Recinto_Fiscalizado": "Grupo Coordinador de Importadores, S.A. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Ensenada",
+      "Clave": 27,
+      "Recinto_Fiscalizado": "Ensenada International Terminal, S.A. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Ensenada",
+      "Clave": 78,
+      "Recinto_Fiscalizado": "Administración del Sistema Portuario Nacional Ensenada, S.A. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Guadalajara",
+      "Clave": 28,
+      "Recinto_Fiscalizado": "Almacenadora GWTC, S.A. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "Sí"
+    },
+    {
+      "Aduana": "Guadalajara",
+      "Clave": 162,
+      "Recinto_Fiscalizado": "Ferrocarril Mexicano, S.A. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Guadalajara",
+      "Clave": 228,
+      "Recinto_Fiscalizado": "CLA Guadalajara, S.A. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Guadalajara",
+      "Clave": 277,
+      "Recinto_Fiscalizado": "Federal Express Holdings (México) y Compañía, S.N.C. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Guanajuato",
+      "Clave": 196,
+      "Recinto_Fiscalizado": "Ferrocarril Mexicano, S.A. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Guanajuato",
+      "Clave": 265,
+      "Recinto_Fiscalizado": "GTO Logistics Center, S.A. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Guaymas",
+      "Clave": 30,
+      "Recinto_Fiscalizado": "Administración del Sistema Portuario Nacional Guaymas, S.A. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Lázaro Cárdenas",
+      "Clave": 31,
+      "Recinto_Fiscalizado": "Administración del Sistema Portuario Nacional Lázaro Cárdenas, S.A. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Lázaro Cárdenas",
+      "Clave": 33,
+      "Recinto_Fiscalizado": "AAK México, S.A. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Lázaro Cárdenas",
+      "Clave": 173,
+      "Recinto_Fiscalizado": "UTTSA, S.A. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Lázaro Cárdenas",
+      "Clave": 199,
+      "Recinto_Fiscalizado": "Promotora Inmobiliaria del Balsas, S.A. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Lázaro Cárdenas",
+      "Clave": 200,
+      "Recinto_Fiscalizado": "L.C. Terminal Portuaria de Contenedores, S.A. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Lázaro Cárdenas",
+      "Clave": 221,
+      "Recinto_Fiscalizado": "Promotora Inmobiliaria del Balsas, S.A. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Lázaro Cárdenas",
+      "Clave": 232,
+      "Recinto_Fiscalizado": "Arcelormittal Portuarios, S.A. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Lázaro Cárdenas",
+      "Clave": 249,
+      "Recinto_Fiscalizado": "L.C. Multipurpose Terminal, S.A. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Lázaro Cárdenas",
+      "Clave": 257,
+      "Recinto_Fiscalizado": "APM Terminals Lázaro Cárdenas, S.A. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Lázaro Cárdenas",
+      "Clave": 259,
+      "Recinto_Fiscalizado": "SSA Lázaro Cárdenas, S.A. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Manzanillo",
+      "Clave": 35,
+      "Recinto_Fiscalizado": "Administración del Sistema Portuario Nacional Manzanillo, S.A. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Manzanillo",
+      "Clave": 36,
+      "Recinto_Fiscalizado": "Comercializadora La Junta, S.A. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Manzanillo",
+      "Clave": 39,
+      "Recinto_Fiscalizado": "SSA México, S.A. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Manzanillo",
+      "Clave": 40,
+      "Recinto_Fiscalizado": "Terminal Internacional de Manzanillo, S.A. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Manzanillo",
+      "Clave": 77,
+      "Recinto_Fiscalizado": "Corporación Multimodal, S.A. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Manzanillo",
+      "Clave": 242,
+      "Recinto_Fiscalizado": "Frigorífico de Manzanillo, S.A. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Manzanillo",
+      "Clave": 241,
+      "Recinto_Fiscalizado": "Contecon Manzanillo, S.A. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Manzanillo",
+      "Clave": 254,
+      "Recinto_Fiscalizado": "Terminal Marítima Hazesa, S.A. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Manzanillo",
+      "Clave": 284,
+      "Recinto_Fiscalizado": "Cemex, S.A.B. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Manzanillo",
+      "Clave": 291,
+      "Recinto_Fiscalizado": "Operadora de la Cuenca del Pacífico, S.A. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Matamoros",
+      "Clave": 227,
+      "Recinto_Fiscalizado": "Profesionales Mexicanos del Comercio Exterior, S.C.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Mazatlán",
+      "Clave": 235,
+      "Recinto_Fiscalizado": "Terminal Marítima Mazatlán, S.A. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "México",
+      "Clave": 145,
+      "Recinto_Fiscalizado": "Ferrocarril y Terminal del Valle de México, S.A. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Monterrey",
+      "Clave": 45,
+      "Recinto_Fiscalizado": "Kansas City Southern de México, S.A. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Monterrey",
+      "Clave": 158,
+      "Recinto_Fiscalizado": "Aeropuerto de Monterrey, S.A. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Monterrey",
+      "Clave": 164,
+      "Recinto_Fiscalizado": "United Parcel Service de México, S.A. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Monterrey",
+      "Clave": 204,
+      "Recinto_Fiscalizado": "Ferrocarril Mexicano, S.A. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Monterrey",
+      "Clave": 223,
+      "Recinto_Fiscalizado": "DHL Express México, S.A. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Monterrey",
+      "Clave": 243,
+      "Recinto_Fiscalizado": "Federal Express Holdings (México) y Compañía, S.N.C. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Monterrey",
+      "Clave": 260,
+      "Recinto_Fiscalizado": "OMA Logística, S.A. de C.V.",
+      "Autorizado_para_elaboracion_transformacion_o_reparacion": "No"
+    },
+    {
+      "Aduana": "Nogales",
+      "Clave": 46,
+      "Recinto Fiscalizado": "Servicios de Almacén Fiscalizado de Nogales, S.A. de C.V.",
+      "Autorizado para elaboración, transformación o reparación": "No"
+    },
+    {
+      "Aduana": "Nogales",
+      "Clave": 177,
+      "Recinto Fiscalizado": "Grupo Inmobiliario Maymar, S.A. de C.V.",
+      "Autorizado para elaboración, transformación o reparación": "No"
+    },
+    {
+      "Aduana": "Nuevo Laredo",
+      "Clave": 240,
+      "Recinto Fiscalizado": "Loginspecs, S.C.",
+      "Autorizado para elaboración, transformación o reparación": "No"
+    },
+    {
+      "Aduana": "Piedras Negras",
+      "Clave": 150,
+      "Recinto Fiscalizado": "Mercurio Cargo, S.A. de C.V.",
+      "Autorizado para elaboración, transformación o reparación": "No"
+    },
+    {
+      "Aduana": "Piedras Negras",
+      "Clave": 267,
+      "Recinto Fiscalizado": "Consultores de Logística en Comercio Exterior, S.A. de C.V.",
+      "Autorizado para elaboración, transformación o reparación": "No"
+    },
+    {
+      "Aduana": "Progreso",
+      "Clave": 47,
+      "Recinto Fiscalizado": "Administración del Sistema Portuario Nacional Progreso, S.A. de C.V.",
+      "Autorizado para elaboración, transformación o reparación": "No"
+    },
+    {
+      "Aduana": "Progreso",
+      "Clave": 49,
+      "Recinto Fiscalizado": "Grupo de Desarrollo del Sureste, S.A. de C.V.",
+      "Autorizado para elaboración, transformación o reparación": "Sí"
+    },
+    {
+      "Aduana": "Progreso",
+      "Clave": 50,
+      "Recinto Fiscalizado": "Multisur, S.A. de C.V.",
+      "Autorizado para elaboración, transformación o reparación": "No"
+    },
+    {
+      "Aduana": "Progreso",
+      "Clave": 184,
+      "Recinto Fiscalizado": "Terminal de Contenedores de Yucatán, S.A. de C.V.",
+      "Autorizado para elaboración, transformación o reparación": "No"
+    },
+    {
+      "Aduana": "Progreso",
+      "Clave": 264,
+      "Recinto Fiscalizado": "Cargo RF, S.A. de C.V.",
+      "Autorizado para elaboración, transformación o reparación": "No"
+    },
+    {
+      "Aduana": "Puebla",
+      "Clave": 198,
+      "Recinto Fiscalizado": "A/WTC Puebla, S.A. de C.V.",
+      "Autorizado para elaboración, transformación o reparación": "No"
+    },
+    {
+      "Aduana": "Querétaro",
+      "Clave": 210,
+      "Recinto Fiscalizado": "Terminal Logistics, S.A. de C.V.",
+      "Autorizado para elaboración, transformación o reparación": "No"
+    },
+    {
+      "Aduana": "Reynosa",
+      "Clave": 52,
+      "Recinto Fiscalizado": "Recintos Fiscalizados del Noreste, S.A. de C.V.",
+      "Autorizado para elaboración, transformación o reparación": "No"
+    },
+    {
+      "Aduana": "Salina Cruz",
+      "Clave": 53,
+      "Recinto Fiscalizado": "Administración del Sistema Portuario Nacional Salina Cruz, S.A. de C.V.",
+      "Autorizado para elaboración, transformación o reparación": "No"
+    },
+    {
+      "Aduana": "Salina Cruz",
+      "Clave": 237,
+      "Recinto Fiscalizado": "Administración del Sistema Portuario Nacional Puerto Chiapas, S.A. de C.V.",
+      "Autorizado para elaboración, transformación o reparación": "No"
+    },
+    {
+      "Aduana": "Tampico",
+      "Clave": 55,
+      "Recinto Fiscalizado": "Gremio Unido de Alijadores, S.C. de R.L.",
+      "Autorizado para elaboración, transformación o reparación": "No"
+    },
+    {
+      "Aduana": "Tampico",
+      "Clave": 289,
+      "Recinto Fiscalizado": "Tampico Terminal Marítima, S.A. de C.V.",
+      "Autorizado para elaboración, transformación o reparación": "No"
+    },
+    {
+      "Aduana": "Tampico",
+      "Clave": 290,
+      "Recinto Fiscalizado": "Administración de Servicios Comunes Portuarios, S.A. de C.V.",
+      "Autorizado para elaboración, transformación o reparación": "No"
+    },
+    {
+      "Aduana": "Tijuana",
+      "Clave": 269,
+      "Recinto Fiscalizado": "Carga Aérea Matrix, S. de R.L. de C.V.",
+      "Autorizado para elaboración, transformación o reparación": "No"
+    },
+    {
+      "Aduana": "Toluca",
+      "Clave": 56,
+      "Recinto Fiscalizado": "Talma México Servicios Aeroportuarios, S.A. de C.V.",
+      "Autorizado para elaboración, transformación o reparación": "No"
+    },
+    {
+      "Aduana": "Toluca",
+      "Clave": 57,
+      "Recinto Fiscalizado": "Federal Express Holdings (México) y Compañía, S.N.C. de C.V.",
+      "Autorizado para elaboración, transformación o reparación": "No"
+    },
+    {
+      "Aduana": "Toluca",
+      "Clave": 197,
+      "Recinto Fiscalizado": "Vamos a México, S.A. de C.V.",
+      "Autorizado para elaboración, transformación o reparación": "No"
+    },
+    {
+      "Aduana": "Tuxpan",
+      "Clave": 246,
+      "Recinto Fiscalizado": "FR Terminales, S.A. de C.V.",
+      "Autorizado para elaboración, transformación o reparación": "No"
+    },
+    {
+      "Aduana": "Tuxpan",
+      "Clave": 251,
+      "Recinto Fiscalizado": "Administración del Sistema Portuario Nacional Tuxpan, S.A. de C.V.",
+      "Autorizado para elaboración, transformación o reparación": "No"
+    },
+    {
+      "Aduana": "Tuxpan",
+      "Clave": 256,
+      "Recinto Fiscalizado": "Tuxpan Port Terminal, S.A. de C.V.",
+      "Autorizado para elaboración, transformación o reparación": "No"
+    },
+    {
+      "Aduana": "Tuxpan",
+      "Clave": 261,
+      "Recinto Fiscalizado": "Terminales Marítimas Transunisa, S.A. de C.V.",
+      "Autorizado para elaboración, transformación o reparación": "No"
+    },
+    {
+      "Aduana": "Veracruz",
+      "Clave": 63,
+      "Recinto Fiscalizado": "Administración del Sistema Portuario Nacional Veracruz, S.A. de C.V.",
+      "Autorizado para elaboración, transformación o reparación": "No"
+    },
+    {
+      "Aduana": "Veracruz",
+      "Clave": 64,
+      "Recinto Fiscalizado": "Almacenadora Golmex, S.A. de C.V.",
+      "Autorizado para elaboración, transformación o reparación": "No"
+    },
+    {
+      "Aduana": "Veracruz",
+      "Clave": 66,
+      "Recinto Fiscalizado": "CIF Almacenajes y Servicios, S.A. de C.V.",
+      "Autorizado para elaboración, transformación o reparación": "No"
+    },
+    {
+      "Aduana": "Veracruz",
+      "Clave": 67,
+      "Recinto Fiscalizado": "Corporación Integral de Comercio Exterior, S.A. de C.V.",
+      "Autorizado para elaboración, transformación o reparación": "No"
+    },
+    {
+      "Aduana": "Veracruz",
+      "Clave": 71,
+      "Recinto Fiscalizado": "Reparación Integral de Contenedores, S.A.P.I. de C.V.",
+      "Autorizado para elaboración, transformación o reparación": "No"
+    },
+    {
+      "Aduana": "Veracruz",
+      "Clave": 73,
+      "Recinto Fiscalizado": "Terminales de Cargas Especializadas, S.A. de C.V.",
+      "Autorizado para elaboración, transformación o reparación": "No"
+    },
+    {
+      "Aduana": "Veracruz",
+      "Clave": 74,
+      "Recinto Fiscalizado": "Vopak México, S.A. de C.V.",
+      "Autorizado para elaboración, transformación o reparación": "No"
+    },
+    {
+      "Aduana": "Veracruz",
+      "Clave": 146,
+      "Recinto Fiscalizado": "Cargill de México, S.A. de C.V.",
+      "Autorizado para elaboración, transformación o reparación": "No"
+    },
+    {
+      "Aduana": "Veracruz",
+      "Clave": 172,
+      "Recinto Fiscalizado": "Servicios Especiales Portuarios, S.A. de C.V.",
+      "Autorizado para elaboración, transformación o reparación": "No"
+    },
+    {
+      "Aduana": "Veracruz",
+      "Clave": 233,
+      "Recinto Fiscalizado": "Excellence Sea & Land Logistics, S.A. de C.V.",
+      "Autorizado para elaboración, transformación o reparación": "No"
+    },
+    {
+      "Aduana": "Veracruz",
+      "Clave": 255,
+      "Recinto Fiscalizado": "SSA México, S.A. de C.V.",
+      "Autorizado para elaboración, transformación o reparación": "No"
+    },
+    {
+      "Aduana": "Veracruz",
+      "Clave": 271,
+      "Recinto Fiscalizado": "Servicios Maniobras y Almacenamientos de Veracruz, S.A. de C.V.",
+      "Autorizado para elaboración, transformación o reparación": "No"
+    },
+    {
+      "Aduana": "Veracruz",
+      "Clave": 275,
+      "Recinto Fiscalizado": "Internacional de Contenedores Asociados de Veracruz, S.A. de C.V.",
+      "Autorizado para elaboración, transformación o reparación": "No"
+    },
+    {
+      "Aduana": "Veracruz",
+      "Clave": 276,
+      "Recinto Fiscalizado": "Corporación Portuaria de Veracruz, S.A. de C.V.",
+      "Autorizado para elaboración, transformación o reparación": "No"
+    },
+    {
+      "Aduana": "Veracruz",
+      "Clave": 278,
+      "Recinto Fiscalizado": "SSA México, S.A. de C.V.",
+      "Autorizado para elaboración, transformación o reparación": "No"
+    },
+    {
+      "Aduana": "Veracruz",
+      "Clave": 280,
+      "Recinto Fiscalizado": "Opever, S.A. de C.V.",
+      "Autorizado para elaboración, transformación o reparación": "No"
+    },
+    {
+      "Aduana": "Veracruz",
+      "Clave": 281,
+      "Recinto Fiscalizado": "Puerto Especializados Transnacionales PETRA, S.A. de C.V.",
+      "Autorizado para elaboración, transformación o reparación": "No"
+    }
+  ]
+}

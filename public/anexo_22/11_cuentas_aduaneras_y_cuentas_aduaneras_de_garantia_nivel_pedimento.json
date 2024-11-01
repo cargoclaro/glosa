@@ -1,0 +1,62 @@
+{
+  "Campos": [
+    {
+      "Número": 1,
+      "Campo": "TIPO CUENTA",
+      "Descripción": "Clave del tipo de cuenta aduanera o cuenta aduanera de garantía que se utiliza, conforme a las siguientes opciones:",
+      "Opciones": {
+        "0": "Cuenta aduanera.",
+        "2": "Cuenta aduanera de garantía global."
+      }
+    },
+    {
+      "Número": 2,
+      "Campo": "CLAVE DE GARANTÍA",
+      "Descripción": "Tratándose de las cuentas aduaneras de garantía, la clave de tipo de garantía que se utiliza, conforme a las siguientes opciones:",
+      "Opciones": {
+        "1": "Depósito.",
+        "2": "Fideicomiso.",
+        "3": "Línea de Crédito.",
+        "4": "Cuenta referenciada (depósito referenciado).",
+        "5": "Prenda.",
+        "6": "Hipoteca.",
+        "7": "Títulos valor.",
+        "8": "Carteras de créditos del propio contribuyente."
+      },
+      "Nota": "Tratándose de cuentas aduaneras, se deberá declarar la clave 1 (depósito)."
+    },
+    {
+      "Número": 3,
+      "Campo": "INSTITUCIÓN EMISORA",
+      "Descripción": "Clave de la institución emisora de la constancia de depósito en la cuenta, autorizada por la SHCP para emitir cuentas aduaneras, conforme a lo siguiente:",
+      "Opciones": {
+        "I": "BBVA México, S.A., Institución de Banca Múltiple, Grupo Financiero BBVA México.",
+        "II": "Banco Nacional de México, S.A.",
+        "III": "Banco HSBC, S.A. de C.V.",
+        "IV": "Bursamex, S.A. de C.V.",
+        "V": "Operadora de Bolsa, S.A. de C.V.",
+        "VI": "Vector Casa de Bolsa, S.A. de C.V."
+      }
+    },
+    {
+      "Número": 4,
+      "Campo": "NÚMERO DE CONTRATO",
+      "Descripción": "Número de contrato asignado por la institución emisora."
+    },
+    {
+      "Número": 5,
+      "Campo": "FOLIO CONSTANCIA",
+      "Descripción": "Folio correspondiente a la constancia de depósito en la cuenta aduanera. Deberá ser único por institución emisora. No podrá declararse en cero o dejarse en blanco."
+    },
+    {
+      "Número": 6,
+      "Campo": "TOTAL DEPÓSITO",
+      "Descripción": "El importe total que ampara la constancia de depósito. En exportación, este importe se obtiene del formato D5 'Declaración para Movimiento en Cuenta Aduanera de Bienes, Importados Para Retornar en su Mismo Estado conforme al Art. 86 de la L.A.'"
+    },
+    {
+      "Número": 7,
+      "Campo": "FECHA CONSTANCIA",
+      "Descripción": "Fecha de la constancia de depósito en la cuenta aduanera. Deberá ser una fecha válida anterior o igual a la fecha de validación."
+    }
+  ]
+}

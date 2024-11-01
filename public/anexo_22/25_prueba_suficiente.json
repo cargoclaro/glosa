@@ -1,0 +1,41 @@
+{
+  "Campos": [
+    {
+      "Número": 1,
+      "Campo": "PAÍS DESTINO",
+      "Descripción": "La clave del país al que se exporta la mercancía conforme al apéndice 4 del presente Anexo. (Estados Unidos de América o Canadá)."
+    },
+    {
+      "Número": 2,
+      "Campo": "NÚM. PEDIMENTO EUA/CAN",
+      "Descripción": "El número del pedimento o documento de importación que amparen las mercancías, en los Estados Unidos de América o Canadá."
+    },
+    {
+      "Número": 3,
+      "Campo": "PRUEBA SUFICIENTE",
+      "Descripción": "La clave que corresponda conforme a lo siguiente:",
+      "Subcampos": [
+        {
+          "Descripción": "I.",
+          "Detalle": "Copia del recibo, que compruebe el pago del impuesto de importación a los Estados Unidos de América o Canadá."
+        },
+        {
+          "Descripción": "II.",
+          "Detalle": "Copia del documento de importación en que conste que éste fue recibido por la autoridad aduanera de los Estados Unidos de América o Canadá."
+        },
+        {
+          "Descripción": "III.",
+          "Detalle": "Copia de una resolución definitiva de la autoridad aduanera de los Estados Unidos de América o Canadá, respecto del impuesto de importación correspondiente a la importación de que se trate."
+        },
+        {
+          "Descripción": "IV.",
+          "Detalle": "Un escrito firmado por el importador en los Estados Unidos de América o Canadá o por su representante legal."
+        },
+        {
+          "Descripción": "V.",
+          "Detalle": "Un escrito firmado bajo protesta de decir verdad, por la persona que efectúe el retorno o exportación de las mercancías o su representante legal con base en la información proporcionada por el importador en los Estados Unidos de América o Canadá o por su representante legal."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "Notas": [
+    {
+      "Contenido": "Tratándose de operaciones de tránsito, la declaración de este bloque no es obligatoria, salvo que se traten de operaciones realizadas conforme a la regla 4.6.5."
+    },
+    {
+      "Contenido": "La obligación de declarar en el pedimento los campos de este bloque deberá ser cumplida en la transmisión a que se refieren las reglas 1.9.16. y 1.9.17.; por lo que en el pedimento sólo deberá declararse el número del acuse de valor obtenido con la transmisión."
+    }
+  ],
+  "Campos": [
+    {
+      "Número": 1,
+      "Campo": "ID. FISCAL",
+      "Descripción": "La clave de identificación fiscal del destinatario bajo los siguientes supuestos:",
+      "Supuestos": {
+        "Canadá": "El número de negocios o el número de seguro social.",
+        "Corea": "El número de negocios o el número de residencia.",
+        "Estados_Unidos": "El número de identificación fiscal o el número de seguridad social.",
+        "Francia": "El número de IVA o el número de seguridad social.",
+        "Otros_países": "El número de registro utilizado en el país del destinatario para identificarlo en su pago de impuestos."
+      },
+      "Observaciones": "Si no existe dicho número, deberá constar en el campo de observaciones del pedimento.",
+      "Opcional": "Este campo es opcional."
+    },
+    {
+      "Número": 2,
+      "Campo": "NOMBRE, DENOMINACIÓN O RAZÓN SOCIAL",
+      "Descripción": "Nombre, denominación o razón social del destinatario de las mercancías."
+    },
+    {
+      "Número": 3,
+      "Campo": "DOMICILIO",
+      "Descripción": "Domicilio comercial del destinatario, compuesto de calle, número exterior, número interior, código postal, Municipio/Ciudad, Entidad Federativa y País."
+    }
+  ]
+}

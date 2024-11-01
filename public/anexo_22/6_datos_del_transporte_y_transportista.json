@@ -1,0 +1,49 @@
+{
+  "Notas": [
+    {
+      "Contenido": "Los campos 1 y 2 de este bloque se exigirán a la importación en las siguientes modalidades: transporte carretero, ferroviario y marítimo, excepto cuando se realice mediante pedimentos consolidados, así como cuando se trate de operaciones en las que no se requiera la presentación física de las mercancías para realizar su despacho."
+    },
+    {
+      "Contenido": "Tratándose de operaciones de tránsito, excepto para tránsito internacional de transmigrante, serán exigibles todos los campos (1 a 6) de este bloque."
+    }
+  ],
+  "Campos": [
+    {
+      "Número": 1,
+      "Campo": "IDENTIFICACIÓN",
+      "Descripción": "Identificación del transporte que introduce la mercancía al territorio nacional.",
+      "Detalles": {
+        "Vehículo terrestre": "Se anotarán las placas de circulación, marca y modelo.",
+        "Ferrocarril": "Se anotará el número de furgón o plataforma.",
+        "Medio marítimo": "El nombre de la embarcación."
+      },
+      "Declaración": "Esta información podrá anotarse hasta antes de activarse el mecanismo de selección automatizado.",
+      "CAAT": "Si el medio de transporte es vehículo terrestre y se hace uso de carriles con componentes de integración tecnológica, se deberá declarar a 4 posiciones el número del CAAT en lugar de las placas de circulación, marca y modelo."
+    },
+    {
+      "Número": 2,
+      "Campo": "PAÍS",
+      "Descripción": "Clave del país de origen del medio de transporte, conforme al apéndice 4 del presente Anexo."
+    },
+    {
+      "Número": 3,
+      "Campo": "TRANSPORTISTA",
+      "Descripción": "El nombre o razón social del transportista, tal como lo haya manifestado para efectos del RFC."
+    },
+    {
+      "Número": 4,
+      "Campo": "RFC",
+      "Descripción": "La clave en el RFC del transportista."
+    },
+    {
+      "Número": 5,
+      "Campo": "CURP",
+      "Descripción": "CURP del transportista cuando sea persona física."
+    },
+    {
+      "Número": 6,
+      "Campo": "DOMICILIO/CIUDAD/ESTADO",
+      "Descripción": "El domicilio fiscal del transportista, tal como lo haya manifestado para efectos del RFC."
+    }
+  ]
+}

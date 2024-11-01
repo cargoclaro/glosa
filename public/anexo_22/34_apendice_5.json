@@ -1,0 +1,579 @@
+{
+  "Claves_de_monedas": [
+    {
+      "País": "África Central",
+      "Clave_moneda": "XOF",
+      "Nombre_moneda": "Franco"
+    },
+    {
+      "País": "Albania",
+      "Clave_moneda": "ALL",
+      "Nombre_moneda": "Lek"
+    },
+    {
+      "País": "Alemania",
+      "Clave_moneda": "EUR",
+      "Nombre_moneda": "Euro"
+    },
+    {
+      "País": "Antillas Holan",
+      "Clave_moneda": "ANG",
+      "Nombre_moneda": "Florín"
+    },
+    {
+      "País": "Arabia Saudita",
+      "Clave_moneda": "SAR",
+      "Nombre_moneda": "Riyal"
+    },
+    {
+      "País": "Argelia",
+      "Clave_moneda": "DZD",
+      "Nombre_moneda": "Dinar"
+    },
+    {
+      "País": "Argentina",
+      "Clave_moneda": "ARP",
+      "Nombre_moneda": "Peso"
+    },
+    {
+      "País": "Australia",
+      "Clave_moneda": "AUD",
+      "Nombre_moneda": "Dólar"
+    },
+    {
+      "País": "Austria",
+      "Clave_moneda": "EUR",
+      "Nombre_moneda": "Euro"
+    },
+    {
+      "País": "Bahamas",
+      "Clave_moneda": "BSD",
+      "Nombre_moneda": "Dólar"
+    },
+    {
+      "País": "Bahréin",
+      "Clave_moneda": "BHD",
+      "Nombre_moneda": "Dinar"
+    },
+    {
+      "País": "Barbados",
+      "Clave_moneda": "BBD",
+      "Nombre_moneda": "Dólar"
+    },
+    {
+      "País": "Bélgica",
+      "Clave_moneda": "EUR",
+      "Nombre_moneda": "Euro"
+    },
+    {
+      "País": "Belice",
+      "Clave_moneda": "BZD",
+      "Nombre_moneda": "Dólar"
+    },
+    {
+      "País": "Bermuda",
+      "Clave_moneda": "BMD",
+      "Nombre_moneda": "Dólar"
+    },
+    {
+      "País": "Bolivia",
+      "Clave_moneda": "BOP",
+      "Nombre_moneda": "Boliviano"
+    },
+    {
+      "País": "Brasil",
+      "Clave_moneda": "BRC",
+      "Nombre_moneda": "Real"
+    },
+    {
+      "País": "Bulgaria",
+      "Clave_moneda": "BGL",
+      "Nombre_moneda": "Lev"
+    },
+    {
+      "País": "Canadá",
+      "Clave_moneda": "CAD",
+      "Nombre_moneda": "Dólar"
+    },
+    {
+      "País": "Chile",
+      "Clave_moneda": "CLP",
+      "Nombre_moneda": "Peso"
+    },
+    {
+      "País": "China",
+      "Clave_moneda": "CNY",
+      "Nombre_moneda": "Yuan continental"
+    },
+    {
+      "País": "China",
+      "Clave_moneda": "CNE",
+      "Nombre_moneda": "Yuan extracontinental"
+    },
+    {
+      "País": "Chipre",
+      "Clave_moneda": "EUR",
+      "Nombre_moneda": "Euro"
+    },
+    {
+      "País": "Colombia",
+      "Clave_moneda": "COP",
+      "Nombre_moneda": "Peso"
+    },
+    {
+      "País": "Corea del Norte",
+      "Clave_moneda": "KPW",
+      "Nombre_moneda": "Won"
+    },
+    {
+      "País": "Corea del Sur",
+      "Clave_moneda": "KRW",
+      "Nombre_moneda": "Won"
+    },
+    {
+      "País": "Costa Rica",
+      "Clave_moneda": "CRC",
+      "Nombre_moneda": "Colón"
+    },
+    {
+      "País": "Cuba",
+      "Clave_moneda": "CUP",
+      "Nombre_moneda": "Peso"
+    },
+    {
+      "País": "Croacia (República de)",
+      "Clave_moneda": "HRK",
+      "Nombre_moneda": "Kuna"
+    },
+    {
+      "País": "Dinamarca",
+      "Clave_moneda": "DKK",
+      "Nombre_moneda": "Corona"
+    },
+    {
+      "País": "Ecuador",
+      "Clave_moneda": "ECS",
+      "Nombre_moneda": "Dólar"
+    },
+    {
+      "País": "Egipto",
+      "Clave_moneda": "EGP",
+      "Nombre_moneda": "Libra"
+    },
+    {
+      "País": "El Salvador",
+      "Clave_moneda": "SVC",
+      "Nombre_moneda": "Colón"
+    },
+    {
+      "País": "Emiratos Árabes Unidos",
+      "Clave_moneda": "AED",
+      "Nombre_moneda": "Dirham"
+    },
+    {
+      "País": "Eslovenia",
+      "Clave_moneda": "EUR",
+      "Nombre_moneda": "Euro"
+    },
+    {
+      "País": "España",
+      "Clave_moneda": "EUR",
+      "Nombre_moneda": "Euro"
+    },
+    {
+      "País": "Estonia",
+      "Clave_moneda": "EUR",
+      "Nombre_moneda": "Euro"
+    },
+    {
+      "País": "Etiopía",
+      "Clave_moneda": "ETB",
+      "Nombre_moneda": "Birr"
+    },
+    {
+      "País": "E.U.A.",
+      "Clave_moneda": "USD",
+      "Nombre_moneda": "Dólar"
+    },
+    {
+      "País": "Fed. Rusa",
+      "Clave_moneda": "RUR",
+      "Nombre_moneda": "Rublo"
+    },
+    {
+      "País": "Fidji",
+      "Clave_moneda": "FJD",
+      "Nombre_moneda": "Dólar"
+    },
+    {
+      "País": "Filipinas",
+      "Clave_moneda": "PHP",
+      "Nombre_moneda": "Peso"
+    },
+    {
+      "País": "Finlandia",
+      "Clave_moneda": "EUR",
+      "Nombre_moneda": "Euro"
+    },
+    {
+      "País": "Francia",
+      "Clave_moneda": "EUR",
+      "Nombre_moneda": "Euro"
+    },
+    {
+      "País": "Ghana",
+      "Clave_moneda": "GHC",
+      "Nombre_moneda": "Cedi"
+    },
+    {
+      "País": "Gran Bretaña",
+      "Clave_moneda": "STG",
+      "Nombre_moneda": "Libra esterlina"
+    },
+    {
+      "País": "Grecia",
+      "Clave_moneda": "EUR",
+      "Nombre_moneda": "Euro"
+    },
+    {
+      "País": "Guatemala",
+      "Clave_moneda": "GTO",
+      "Nombre_moneda": "Quetzal"
+    },
+    {
+      "País": "Guyana",
+      "Clave_moneda": "GYD",
+      "Nombre_moneda": "Dólar"
+    },
+    {
+      "País": "Haití",
+      "Clave_moneda": "HTG",
+      "Nombre_moneda": "Gourde"
+    },
+    {
+      "País": "Holanda",
+      "Clave_moneda": "EUR",
+      "Nombre_moneda": "Euro"
+    },
+    {
+      "País": "Honduras",
+      "Clave_moneda": "HNL",
+      "Nombre_moneda": "Lempira"
+    },
+    {
+      "País": "Hong Kong",
+      "Clave_moneda": "HKD",
+      "Nombre_moneda": "Dólar"
+    },
+    {
+      "País": "Hungría",
+      "Clave_moneda": "HUF",
+      "Nombre_moneda": "Forín"
+    },
+    {
+      "País": "India",
+      "Clave_moneda": "INR",
+      "Nombre_moneda": "Rupia"
+    },
+    {
+      "País": "Indonesia",
+      "Clave_moneda": "IDR",
+      "Nombre_moneda": "Rupia"
+    },
+    {
+      "País": "Irak",
+      "Clave_moneda": "IQD",
+      "Nombre_moneda": "Dinar"
+    },
+    {
+      "País": "Irán",
+      "Clave_moneda": "IRR",
+      "Nombre_moneda": "Riyal"
+    },
+    {
+      "País": "Irlanda",
+      "Clave_moneda": "EUR",
+      "Nombre_moneda": "Euro"
+    },
+    {
+      "País": "Islandia",
+      "Clave_moneda": "ISK",
+      "Nombre_moneda": "Corona"
+    },
+    {
+      "País": "Israel",
+      "Clave_moneda": "ILS",
+      "Nombre_moneda": "Shekel"
+    },
+    {
+      "País": "Italia",
+      "Clave_moneda": "EUR",
+      "Nombre_moneda": "Euro"
+    },
+    {
+      "País": "Jamaica",
+      "Clave_moneda": "JMD",
+      "Nombre_moneda": "Dólar"
+    },
+    {
+      "País": "Japón",
+      "Clave_moneda": "JPY",
+      "Nombre_moneda": "Yen"
+    },
+    {
+      "País": "Jordania",
+      "Clave_moneda": "JOD",
+      "Nombre_moneda": "Dinar"
+    },
+    {
+      "País": "Kenya",
+      "Clave_moneda": "KES",
+      "Nombre_moneda": "Chelín"
+    },
+    {
+      "País": "Kuwait",
+      "Clave_moneda": "KWD",
+      "Nombre_moneda": "Dinar"
+    },
+    {
+      "País": "Letonia",
+      "Clave_moneda": "EUR",
+      "Nombre_moneda": "Euro"
+    },
+    {
+      "País": "Libano",
+      "Clave_moneda": "LBP",
+      "Nombre_moneda": "Libra"
+    },
+    {
+      "País": "Libia",
+      "Clave_moneda": "LYD",
+      "Nombre_moneda": "Dinar"
+    },
+    {
+      "País": "Lituania",
+      "Clave_moneda": "LTT",
+      "Nombre_moneda": "Litas"
+    },
+    {
+      "País": "Luxemburgo",
+      "Clave_moneda": "EUR",
+      "Nombre_moneda": "Euro"
+    },
+    {
+      "País": "Malasia",
+      "Clave_moneda": "MYR",
+      "Nombre_moneda": "Ringgit"
+    },
+    {
+      "País": "Malta",
+      "Clave_moneda": "EUR",
+      "Nombre_moneda": "Euro"
+    },
+    {
+      "País": "Marruecos",
+      "Clave_moneda": "MAD",
+      "Nombre_moneda": "Dirham"
+    },
+    {
+      "País": "México",
+      "Clave_moneda": "MXP",
+      "Nombre_moneda": "Peso"
+    },
+    {
+      "País": "Montenegro",
+      "Clave_moneda": "EUR",
+      "Nombre_moneda": "Euro"
+    },
+    {
+      "País": "Nicaragua",
+      "Clave_moneda": "NIC",
+      "Nombre_moneda": "Córdoba"
+    },
+    {
+      "País": "Nigeria (Fed)",
+      "Clave_moneda": "NGN",
+      "Nombre_moneda": "Naira"
+    },
+    {
+      "País": "Noruega",
+      "Clave_moneda": "NOK",
+      "Nombre_moneda": "Corona"
+    },
+    {
+      "País": "Nueva Zelanda",
+      "Clave_moneda": "NZD",
+      "Nombre_moneda": "Dólar"
+    },
+    {
+      "País": "Pakistán",
+      "Clave_moneda": "PKR",
+      "Nombre_moneda": "Rupia"
+    },
+    {
+      "País": "Palestina",
+      "Clave_moneda": "ILS",
+      "Nombre_moneda": "Shekel"
+    },
+    {
+      "País": "Panamá",
+      "Clave_moneda": "PAB",
+      "Nombre_moneda": "Balboa"
+    },
+    {
+      "País": "Paraguay",
+      "Clave_moneda": "PYG",
+      "Nombre_moneda": "Guaraní"
+    },
+    {
+      "País": "Perú",
+      "Clave_moneda": "PES",
+      "Nombre_moneda": "N. Sol"
+    },
+    {
+      "País": "Polonia",
+      "Clave_moneda": "PLZ",
+      "Nombre_moneda": "Zloty"
+    },
+    {
+      "País": "Portugal",
+      "Clave_moneda": "EUR",
+      "Nombre_moneda": "Euro"
+    },
+    {
+      "País": "Puerto Rico",
+      "Clave_moneda": "USD",
+      "Nombre_moneda": "Dólar"
+    },
+    {
+      "País": "República Checa",
+      "Clave_moneda": "CSK",
+      "Nombre_moneda": "Corona"
+    },
+    {
+      "País": "República Democrática del Congo",
+      "Clave_moneda": "ZRZ",
+      "Nombre_moneda": "Franco"
+    },
+    {
+      "País": "República de Serbia",
+      "Clave_moneda": "RSD",
+      "Nombre_moneda": "Dinar"
+    },
+    {
+      "País": "República Dominicana",
+      "Clave_moneda": "DOP",
+      "Nombre_moneda": "Peso"
+    },
+    {
+      "País": "República Eslovaca",
+      "Clave_moneda": "EUR",
+      "Nombre_moneda": "Euro"
+    },
+    {
+      "País": "Rumania",
+      "Clave_moneda": "ROL",
+      "Nombre_moneda": "Leu"
+    },
+    {
+      "País": "Singapur",
+      "Clave_moneda": "SGD",
+      "Nombre_moneda": "Dólar"
+    },
+    {
+      "País": "Siria",
+      "Clave_moneda": "SYP",
+      "Nombre_moneda": "Libra"
+    },
+    {
+      "País": "Sri-Lanka",
+      "Clave_moneda": "LKR",
+      "Nombre_moneda": "Rupia"
+    },
+    {
+      "País": "Suecia",
+      "Clave_moneda": "SEK",
+      "Nombre_moneda": "Corona"
+    },
+    {
+      "País": "Suiza",
+      "Clave_moneda": "CHF",
+      "Nombre_moneda": "Franco"
+    },
+    {
+      "País": "Surinam",
+      "Clave_moneda": "SRG",
+      "Nombre_moneda": "Dólar"
+    },
+    {
+      "País": "Tailandia",
+      "Clave_moneda": "THB",
+      "Nombre_moneda": "Baht"
+    },
+    {
+      "País": "Taiwán",
+      "Clave_moneda": "TWD",
+      "Nombre_moneda": "Nuevo dólar"
+    },
+    {
+      "País": "Tanzania",
+      "Clave_moneda": "TZS",
+      "Nombre_moneda": "Chelín"
+    },
+    {
+      "País": "Trinidad y Tobago",
+      "Clave_moneda": "TTD",
+      "Nombre_moneda": "Dólar"
+    },
+    {
+      "País": "Turquía",
+      "Clave_moneda": "TRL",
+      "Nombre_moneda": "Lira"
+    },
+    {
+      "País": "Ucrania",
+      "Clave_moneda": "UAK",
+      "Nombre_moneda": "Hryvna"
+    },
+    {
+      "País": "Unión Sudafricana",
+      "Clave_moneda": "ZAR",
+      "Nombre_moneda": "Rand"
+    },
+    {
+      "País": "Uruguay",
+      "Clave_moneda": "UYP",
+      "Nombre_moneda": "Peso"
+    },
+    {
+      "País": "U. Mon. Europea",
+      "Clave_moneda": "EUR",
+      "Nombre_moneda": "Euro"
+    },
+    {
+      "País": "Venezuela",
+      "Clave_moneda": "VEB",
+      "Nombre_moneda": "Bolívar fuerte"
+    },
+    {
+      "País": "Vietnam",
+      "Clave_moneda": "VND",
+      "Nombre_moneda": "Dong"
+    },
+    {
+      "País": "Yemen (Dem. Pop.)",
+      "Clave_moneda": "YDD",
+      "Nombre_moneda": "Rial"
+    },
+    {
+      "País": "Yugoslavia",
+      "Clave_moneda": "YUD",
+      "Nombre_moneda": "Dinar"
+    },
+    {
+      "País": "Los demás países",
+      "Clave_moneda": "XXX",
+      "Nombre_moneda": "Otras monedas"
+    }
+  ]
+}

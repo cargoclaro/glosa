@@ -1,0 +1,181 @@
+{
+  "Contribuciones, cuotas compensatorias, gravámenes y derechos": {
+    "Contribuciones": [
+      {
+        "Clave": "1",
+        "Contribución": "Derecho de trámite aduanero.",
+        "Abreviación": "DTA",
+        "Nivel": "G/C"
+      },
+      {
+        "Clave": "2",
+        "Contribución": "Cuotas compensatorias.",
+        "Abreviación": "C.C.",
+        "Nivel": "P"
+      },
+      {
+        "Clave": "3",
+        "Contribución": "Impuesto al Valor Agregado.",
+        "Abreviación": "IVA",
+        "Nivel": "P"
+      },
+      {
+        "Clave": "4",
+        "Contribución": "Impuesto sobre Automóviles Nuevos.",
+        "Abreviación": "ISAN",
+        "Nivel": "P"
+      },
+      {
+        "Clave": "6",
+        "Contribución": "Impuesto General de Importación/Exportación.",
+        "Abreviación": "IGI/IGE",
+        "Nivel": "P"
+      },
+      {
+        "Clave": "7",
+        "Contribución": "Recargos.",
+        "Abreviación": "REC.",
+        "Nivel": "G"
+      },
+      {
+        "Clave": "9",
+        "Contribución": "Otros.",
+        "Abreviación": "OTROS",
+        "Nivel": "P/G"
+      },
+      {
+        "Clave": "11",
+        "Contribución": "Multas.",
+        "Abreviación": "MULT.",
+        "Nivel": "G"
+      },
+      {
+        "Clave": "12",
+        "Contribución": "Contribuciones por aplicación del Artículo 2.5 del T-MEC.",
+        "Abreviación": "2.5",
+        "Nivel": "P/C"
+      },
+      {
+        "Clave": "13",
+        "Contribución": "Recargos por aplicación del Artículo 2.5 del T-MEC.",
+        "Abreviación": "RT",
+        "Nivel": "G/C"
+      },
+      {
+        "Clave": "15",
+        "Contribución": "Prevalidación.",
+        "Abreviación": "PRV",
+        "Nivel": "G"
+      },
+      {
+        "Clave": "16",
+        "Contribución": "Contribuciones por aplicación de los artículos 14 del Anexo III de la Decisión, 15 del Anexo I del TLCAELC y del ACC.",
+        "Abreviación": "EUR",
+        "Nivel": "P/C"
+      },
+      {
+        "Clave": "17",
+        "Contribución": "Recargos por aplicación de los artículos 14 del Anexo III de la Decisión, 15 del Anexo I del TLCAELC y del ACC.",
+        "Abreviación": "REU",
+        "Nivel": "G/C"
+      },
+      {
+        "Clave": "20",
+        "Contribución": "Medida de transición.",
+        "Abreviación": "MT",
+        "Nivel": "P"
+      },
+      {
+        "Clave": "22",
+        "Contribución": "IEPS.- gasolina, artículo 2 de la Ley del IEPS.",
+        "Abreviación": "IEPS",
+        "Nivel": "P"
+      },
+      {
+        "Clave": "23",
+        "Contribución": "IVA.- prevalidación artículo 16-A de la Ley Aduanera.",
+        "Abreviación": "IVA/PRV",
+        "Nivel": "G"
+      },
+      {
+        "Clave": "24",
+        "Contribución": "IEPS.- alcohol, alcohol desnaturalizado y mieles inscristalizables artículo 2, I, B) de la Ley del IEPS.",
+        "Abreviación": "2IB",
+        "Nivel": "P"
+      },
+      {
+        "Clave": "25",
+        "Contribución": "IEPS. - bebidas alcohólicas artículo 2, I, A) de la Ley del IEPS.",
+        "Abreviación": "2IA2",
+        "Nivel": "P"
+      },
+      {
+        "Clave": "26",
+        "Contribución": "IEPS. - cerveza artículo 2, I, A) de la Ley del IEPS.",
+        "Abreviación": "2IA1",
+        "Nivel": "P"
+      },
+      {
+        "Clave": "27",
+        "Contribución": "IEPS.- tabacos labrados artículo 2, I, C) de la Ley del IEPS.",
+        "Abreviación": "2IC",
+        "Nivel": "P"
+      },
+      {
+        "Clave": "28",
+        "Contribución": "IEPS. - bebidas energetizantes, artículo 2, I, F) de la Ley del IEPS.",
+        "Abreviación": "2IF",
+        "Nivel": "P"
+      },
+      {
+        "Clave": "29",
+        "Contribución": "IEPS.- bebidas saborizadas artículo 2, I, G) de la Ley del IEPS.",
+        "Abreviación": "2IG",
+        "Nivel": "P"
+      },
+      {
+        "Clave": "30",
+        "Contribución": "IEPS.- alimentos no básicos con alta densidad calórica artículo 2, I, J) de la Ley del IEPS.",
+        "Abreviación": "2IJ",
+        "Nivel": "P"
+      },
+      {
+        "Clave": "31",
+        "Contribución": "IEPS. - plaguicidas artículo 2, I, I) de la Ley del IEPS.",
+        "Abreviación": "2II",
+        "Nivel": "P"
+      },
+      {
+        "Clave": "32",
+        "Contribución": "IEPS.- importación de combustibles fósiles distintos a gasolina y diésel.",
+        "Abreviación": "ICF",
+        "Nivel": "P"
+      },
+      {
+        "Clave": "33",
+        "Contribución": "IEPS.- diésel, artículo 2 de la Ley del IEPS.",
+        "Abreviación": "IEPSDIE",
+        "Nivel": "P"
+      },
+      {
+        "Clave": "34",
+        "Contribución": "IEPS.- importación de combustibles no fósiles.",
+        "Abreviación": "ICNF",
+        "Nivel": "P"
+      },
+      {
+        "Clave": "35",
+        "Contribución": "IEPS.- otros.",
+        "Abreviación": "LIEPS",
+        "Nivel": "P"
+      },
+      {
+        "Clave": "50",
+        "Contribución": "Diferencia a favor del contribuyente.",
+        "Abreviación": "DFC",
+        "Nivel": "G"
+      }
+    ]
+  },
+  "Nota": "* Las claves 'G' y 'P' son para indicar si se trata de un identificador a nivel global (pedimento) o a nivel partida. La clave 'C' corresponde a las contribuciones, cuotas compensatorias, gravámenes y derechos que pueden ser declarados en el pedimento complementario para la determinación y pago de contribuciones por la aplicación del Artículo 2.5 del T-MEC."
+}

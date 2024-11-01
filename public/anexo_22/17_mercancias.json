@@ -1,0 +1,19 @@
+{
+  "Descripción": "Se deberá imprimir el siguiente bloque inmediatamente después de la partida correspondiente.",
+  "Campos": [
+    {
+      "Número": 1,
+      "Campo": "NIV/NÚM. SERIE",
+      "Descripción": "Tratándose de vehículos automotores se deberá declarar el NIV (Número de Identificación Vehicular), excepto cuando se trate de operaciones de la industria automotriz terminal o manufacturera de vehículos de autotransporte.",
+      "Nota": "Cuando cuenten con la autorización a que se refiere el artículo 121, fracción IV de la Ley.",
+      "Mercancías_Distintas": "Tratándose de mercancías distintas a vehículos, se deberá declarar el número de serie de las mercancías."
+    },
+    {
+      "Número": 2,
+      "Campo": "KILOMETRAJE",
+      "Descripción": "El kilometraje del vehículo será necesario cuando éste se importe al amparo del Anexo 2.2.1. Clasificación y codificación de mercancías.",
+      "Nota": "Sujeta al requisito de permiso previo o aviso automático por parte de la Secretaría de Economía.",
+      "Aplicación": "Para la importación definitiva de vehículos nuevos conforme a la regla 3.5.2. y vehículos usados de conformidad con la regla 3.5.1., fracción II de las RGCE."
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "Campos": [
+    {
+      "Número": 1,
+      "Campo": "CLAVE",
+      "Descripción": "Clave que define el identificador aplicable, conforme al apéndice 8 del presente Anexo y marcado en la columna de 'NIVEL' de dicho apéndice con la clave 'G'."
+    },
+    {
+      "Número": 2,
+      "Campo": "COMPL. IDENTIFICADOR 1",
+      "Descripción": "Complemento del identificador aplicable, conforme al apéndice 8 del presente Anexo, siguiendo las instrucciones señaladas en la columna de 'COMPLEMENTO' de dicho apéndice, para el identificador en cuestión."
+    },
+    {
+      "Número": 3,
+      "Campo": "COMPL. IDENTIFICADOR 2",
+      "Descripción": "Complemento del identificador aplicable, conforme al apéndice 8 del presente Anexo, siguiendo las instrucciones señaladas en la columna de 'COMPLEMENTO' de dicho apéndice, para el identificador en cuestión."
+    }
+  ]
+}

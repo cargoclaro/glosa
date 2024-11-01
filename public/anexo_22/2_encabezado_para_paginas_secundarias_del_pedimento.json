@@ -1,0 +1,75 @@
+{
+  "Campos": [
+    {
+      "Número": 1,
+      "Campo": "NÚM. PEDIMENTO",
+      "Descripción": "El número asignado por el agente aduanal, agencia aduanal, importador, exportador, apoderado aduanal o de almacén, integrado con quince dígitos, que corresponden a:",
+      "Subcampos": [
+        {
+          "Descripción": "2 dígitos",
+          "Detalle": "Del año de validación."
+        },
+        {
+          "Descripción": "2 dígitos",
+          "Detalle": "De la aduana de despacho."
+        },
+        {
+          "Descripción": "4 dígitos",
+          "Detalle": "Del número de la patente o autorización otorgada por la ANAM."
+        },
+        {
+          "Descripción": "1 dígito",
+          "Detalle": "Debe corresponder al último dígito del año en curso."
+        },
+        {
+          "Descripción": "6 dígitos",
+          "Detalle": "Numeración progresiva por la aduana."
+        }
+      ],
+      "Espaciado": "Cada uno de estos grupos de dígitos deberá ser separado por dos espacios en blanco.",
+      "Rectificación": "Tratándose de pedimentos de rectificación, deberá identificarse con un número nuevo.",
+      "Notas": "Dicha numeración deberá iniciar con 000001."
+    },
+    {
+      "Número": 2,
+      "Campo": "TIPO OPER.",
+      "Descripción": "Leyenda que identifica al tipo de operación.",
+      "Opciones": {
+        "IMP": "Importación",
+        "EXP": "Exportación",
+        "TRA": "Tránsitos"
+      },
+      "Notas": "Este campo no deberá ser llenado cuando se trate de pedimentos complementarios.",
+      "Apéndice": "No aplica"
+    },
+    {
+      "Número": 3,
+      "Campo": "CVE. PEDIM.",
+      "Descripción": "Clave de pedimento conforme al apéndice 2.",
+      "Apéndice": "2"
+    },
+    {
+      "Número": 4,
+      "Campo": "RFC",
+      "Descripción": "RFC del IMPORTADOR/EXPORTADOR que efectúe la operación.",
+      "Formato": {
+        "I": "La primera letra del apellido paterno.",
+        "II": "La primera vocal del apellido paterno (que no sea la primera letra).",
+        "III": "La primera letra del apellido materno.",
+        "IV": "La primera letra del nombre.",
+        "V": "Los dos últimos dígitos del año de nacimiento.",
+        "VI": "Mes de nacimiento a dos dígitos.",
+        "VII": "Día de nacimiento a dos dígitos."
+      },
+      "Complementario": "Se deberá declarar el RFC del contribuyente que realizó la exportación (retorno) en pedimentos complementarios.",
+      "Notas": "La declaración del RFC será obligatoria."
+    },
+    {
+      "Número": 5,
+      "Campo": "CURP",
+      "Descripción": "CURP del IMPORTADOR/EXPORTADOR que efectúe la operación.",
+      "Complementario": "Se deberá declarar la CURP del contribuyente que realizó la exportación (retorno) en pedimentos complementarios.",
+      "Notas": "La declaración de la CURP es opcional."
+    }
+  ]
+}

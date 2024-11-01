@@ -1,0 +1,10 @@
+{
+  "Campos": [
+    {
+      "Número": 1,
+      "Campo": "OBSERVACIONES",
+      "Descripción": "En el caso de que se requiera algún dato adicional al pedimento, no deberán declararse datos ya citados en alguno de los campos del pedimento.",
+      "Nota": "Este campo no podrá utilizarse tratándose de pedimentos con clave A1, VF, VU, C1 y F5, que amparen la importación definitiva de vehículos usados, así como sus rectificaciones tramitadas con pedimentos clave R1, conforme al presente Anexo."
+    }
+  ]
+}

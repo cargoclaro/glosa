@@ -1,8 +1,8 @@
 "use client";
 
+import GlossForm from "./GlossForm";
 import { Modal } from "@/app/components";
 import { useModal } from "@/app/hooks";
-import GlossForm from "./GlossForm";
 
 const Header = () => {
   const { isOpen, openMenu, closeMenu, menuRef } = useModal(false);

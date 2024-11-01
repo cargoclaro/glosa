@@ -1,0 +1,42 @@
+{
+  "Características tecnológicas de dispositivos con tecnología de radiofrecuencia": {
+    "Secciones": {
+      "DispositivoTecnologico": {
+        "Descripcion": "Las características del dispositivo tecnológico para realizar el despacho aduanero de las mercancías conforme a la regla 2.4.12., serán las siguientes:",
+        "EspecificacionesFisicas": {
+          "Material": "Plástico PVC laminado",
+          "Dimensiones": "85.60 x 53.98 mm, con base en el ISO/IEC 7810 ID-1",
+          "TemperaturaSoportada": "-25°C a 50°C",
+          "Reutilizable": "A criterio del usuario"
+        },
+        "EspecificacionesTecnologicas": {
+          "Descripcion": "Debe contener dos chips, uno de lectura por proximidad y otro de lectura de largo alcance, ambos de tipo pasivo, con capacidad de lectura, escritura y regrabables, con las siguientes características:",
+          "ChipLecturaProximidad": {
+            "ProtocoloInterfaz": "ISO/IEC 14443-A Mifare Plus SE 1k",
+            "FrecuenciaOperacion": "Banda HF 13.56 MHz",
+            "Memoria": "1 KB organizada en 16 sectores",
+            "FormatoGrabacion": "Conforme a los lineamientos que se emitan para tal efecto por la ANAM, mismos que se darán a conocer en el Portal del SAT"
+          },
+          "ChipLecturaLargoAlcance": {
+            "ProtocoloInterfaz": "ISO-18000-6C",
+            "FrecuenciaOperacion": "UHF 860-960MHz",
+            "Memoria": "Mínima de 64 Bytes y TID (Tag ID) de 96 bit",
+            "FormatoGrabacion": "Conforme a los lineamientos que se emitan para tal efecto por la ANAM, mismos que se darán a conocer en el Portal del SAT"
+          }
+        }
+      },
+      "Transponder": {
+        "Descripcion": "Las características del transponder para el servicio de autotransporte terrestre y de los propietarios de vehículos de carga a que hace referencia la regla 2.4.5., serán las siguientes:",
+        "Caracteristicas": {
+          "EtiquetaAdhesiva": "Windshield Sticker Tag",
+          "FrecuenciaOperacion": "UHF 860-960 MHZ",
+          "DistanciaLectura": "10 m / 32.8 ft",
+          "DimensionesPropuestas": "85.6 x 54 x 0.6 mm / 3.4 x 2.1 x 0.02 in",
+          "TemperaturaOperacion": "-10°C a + 80°C / 14°F a 176°F",
+          "Protocolo": "ISO 18000-6B"
+        },
+        "Instruccion": "El transponder deberá ser adherido al parabrisas del vehículo de carga. Los vehículos de autotransporte terrestre y vehículos de carga que ya cuenten con el transponder que es utilizado por el Bureau of Customs and Border Protection (CBP), pueden utilizarlo para lo establecido en el inciso e), de la fracción III, de la regla 2.4.5."
+      }
+    }
+  }
+}

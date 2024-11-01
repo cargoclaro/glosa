@@ -1,0 +1,29 @@
+{
+  "Descripción": "Bloque que contiene identificadores aplicables a nivel de partida, conforme a las regulaciones establecidas.",
+  "Campos": [
+    {
+      "Número": 1,
+      "Campo": "IDENTIF.",
+      "Descripción": "Clave que define el identificador aplicable, conforme al apéndice 8 del presente Anexo.",
+      "Nota": "Marcado en la columna de 'NIVEL' de dicho apéndice con la clave 'P'."
+    },
+    {
+      "Número": 2,
+      "Campo": "COMPLEMENTO 1",
+      "Descripción": "Complemento del identificador aplicable, conforme al apéndice 8 del presente Anexo.",
+      "Nota": "Siguiendo las instrucciones señaladas en la columna de 'COMPLEMENTO' de dicho apéndice para el identificador en cuestión."
+    },
+    {
+      "Número": 3,
+      "Campo": "COMPLEMENTO 2",
+      "Descripción": "Complemento adicional del identificador aplicable, conforme al apéndice 8 del presente Anexo.",
+      "Nota": "Siguiendo las instrucciones señaladas en la columna de 'COMPLEMENTO' de dicho apéndice para el identificador en cuestión."
+    },
+    {
+      "Número": 4,
+      "Campo": "COMPLEMENTO 3",
+      "Descripción": "Complemento adicional del identificador aplicable, conforme al apéndice 8 del presente Anexo.",
+      "Nota": "Siguiendo las instrucciones señaladas en la columna de 'COMPLEMENTO' de dicho apéndice para el identificador en cuestión."
+    }
+  ]
+}

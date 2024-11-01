@@ -1,0 +1,15 @@
+{
+  "Campos": [
+    {
+      "Número": 1,
+      "Campo": "VALOR MERCANCÍAS NO ORIGINARIAS",
+      "Descripción": "El monto que resulte de sumar el valor de los bienes que se hayan introducido a territorio nacional bajo un programa de diferimiento o devolución de aranceles, sobre los cuales se haya realizado el cálculo del monto IGI que se adeuda."
+    },
+    {
+      "Número": 2,
+      "Campo": "MONTO IGI",
+      "Descripción": "El monto en moneda nacional que resulte de sumar el IGI correspondiente a las mercancías no originarias que se hayan introducido a territorio nacional bajo un programa de diferimiento o devolución de aranceles."
+    }
+  ],
+  "Nota": "Cuando de la determinación de contribuciones por aplicación del artículo 2.5 del T-MEC, 14 del Anexo III de la Decisión, 15 del Anexo I del TLCAELC o del ACC resulte un saldo a pagar, se deberá asentar la información en la parte derecha, en las columnas correspondientes a la contribución o aprovechamiento, forma de pago e importe, que aplique a nivel partida (P), conforme al apéndice 12 del presente Anexo. La suma de los importes a pagar de todas las fracciones, determinados por concepto del artículo 2.5 del T-MEC, 14 del Anexo III de la Decisión, 15 del Anexo I del TLCAELC o del ACC, deberán ser declarados en el cuadro de liquidación del pedimento."
+}
