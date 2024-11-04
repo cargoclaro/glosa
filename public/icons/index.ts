@@ -24,6 +24,7 @@ import DoorArrowRight from "./DoorArrowRight";
 import CurrencyDollar from "./CurrencyDollar";
 import LeftDoubleChevron from "./LeftDoubleChevron";
 import RightDoubleChevron from "./RightDoubleChevron";
+import ExclamationTriangle from "./ExclamationTriangle";
 import ClipboardDocumentList from "./ClipboardDocumentList";
 
 export {
@@ -53,5 +54,6 @@ export {
   CurrencyDollar,
   LeftDoubleChevron,
   RightDoubleChevron,
+  ExclamationTriangle,
   ClipboardDocumentList,
 };

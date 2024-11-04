@@ -22,6 +22,7 @@ const MyInfo = () => {
               className="size-20 rounded-full"
               width={64}
               height={64}
+              priority
             />
           </div>
           <h1 className="font-extrabold text-2xl">

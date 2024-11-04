@@ -1,22 +1,27 @@
 "use client";
 
 import { useState } from "react";
+import Detailed from "./Detailed";
 import { cn } from "@/app/utils/cn";
 import { useModal } from "@/app/hooks";
 import { GenericCard, Modal } from "@/app/components";
-import { Check, RightArrow, Search, XMark } from "@/public/icons";
-import ExclamationTriangle from "@/public/icons/ExclamationTriangle";
-import Detailed from "./Detailed";
+import {
+  Check,
+  XMark,
+  Search,
+  RightArrow,
+  ExclamationTriangle,
+} from "@/public/icons";
 
 export interface IRestrictionSelected {
   id: number;
   title: string;
-  description: string;
   status: string;
   result: string;
+  summary: string;
+  description: string;
   comparisons: string;
   actionsToTake: string;
-  summary: string;
 }
 
 const Analysis = () => {
@@ -70,7 +75,7 @@ const Analysis = () => {
         status: "CHECKED",
         result: "Cumplimiento Obligatorio",
         comparisons:
-          '[{"id": 1,"title": "1. Descripción del Producto (Ficha Técnica)","description":"❕ Cumple parcialmente - El producto está correctamente descrito con nombre, marca, y modelo, **pero tiene una dimensión de 3mm, lo que no lo exenta de la norma**. [(Ver Artículo 6.1 - Descripción técnica obligatoria para productos mayores o iguales a 3mm)](https://google.com) [(Ver Ficha Técnica - Sección de Dimensiones)](https://google.com)"},{"id": 2,"title": "2. Exención de la NOM (Ficha Técnica vs Artículos)","description":"❌ No aplica exención - Solo están exentas las mercancías con una dimensión menor a 3mm. Este producto tiene 3mm, por lo que debe cumplir con la NOM. [(Ver Artículo 5.3 - Exención para productos menores a 3mm)](https://google.com) [(Ver Ficha Técnica - Confirmación de dimensiones)](https://google.com)"},{"id": 3,"title": "3. Instrucciones de Uso (Ficha Técnica)","description":"❌ No cumple - Las instrucciones proporcionadas están solo en inglés, lo cual infringe el requisito de estar en español. [(Ver Artículo 7.2 - Instrucciones en idioma español obligatorias)](https://google.com) [(Ver Ficha Técnica - Sección de Instrucciones)](https://google.com)"},{"id": 4,"title": "4. Advertencias de Seguridad (Ficha Técnica)","description":"❕ Cumple parcialmente - Se incluyen advertencias, pero faltan detalles sobre riesgos específicos. [(Ver Artículo 7.5 - Advertencias de seguridad obligatorias y detalladas)](https://google.com) [(Ver Ficha Técnica - Sección de Seguridad)](https://google.com)"}]',
+          '[{"id": 1,"title": "Descripción del Producto (Ficha Técnica)","description":"⚠️ Cumple parcialmente - El producto está correctamente descrito con nombre, marca, y modelo, **pero tiene una dimensión de 3mm, lo que no lo exenta de la norma**.", "links": "[(Ver Artículo 6.1 - Descripción técnica obligatoria para productos mayores o iguales a 3mm)](https://google.com) [(Ver Ficha Técnica - Sección de Dimensiones)](https://bing.com)"},{"id": 2,"title": "Exención de la NOM (Ficha Técnica vs Artículos)","description":"❌ No aplica exención - Solo están exentas las mercancías con una dimensión menor a 3mm. Este producto tiene 3mm, por lo que debe cumplir con la NOM.", "links": "[(Ver Artículo 5.3 - Exención para productos menores a 3mm)](https://google.com) [(Ver Ficha Técnica - Confirmación de dimensiones)](https://google.com)"},{"id": 3,"title": "Instrucciones de Uso (Ficha Técnica)","description":"❌ No cumple - Las instrucciones proporcionadas están solo en inglés, lo cual infringe el requisito de estar en español.", "links": "[(Ver Artículo 7.2 - Instrucciones en idioma español obligatorias)](https://google.com) [(Ver Ficha Técnica - Sección de Instrucciones)](https://google.com)"},{"id": 4,"title": "Advertencias de Seguridad (Ficha Técnica)","description":"⚠️ Cumple parcialmente - Se incluyen advertencias, pero faltan detalles sobre riesgos específicos.", "links": "[(Ver Artículo 7.5 - Advertencias de seguridad obligatorias y detalladas)](https://google.com) [(Ver Ficha Técnica - Sección de Seguridad)](https://google.com)"}]',
         actionsToTake:
           '[{"id": 1,"description":"Cumplimiento Obligatorio: El producto no está exento y debe cumplir con la NOM-024-SCFI-2013. **Se ha indicado con el identificador EN en el sistema para reflejar esta obligación**."},{"id": 2,"description":"**Actualizar la Factura**: Incluir instrucciones en español."},{"id": 3,"description":"**Completar la Sección de Seguridad**: Añadir detalles más específicos sobre los riesgos."}]',
         summary:
