@@ -8,7 +8,7 @@ const Pediment = () => {
         width="100%"
         height="100%"
         title="Pedimento"
-        src="/pedimento_format.pdf"
+        src="/pedimento_format_modified.pdf"
       />
     </GenericCard>
   );

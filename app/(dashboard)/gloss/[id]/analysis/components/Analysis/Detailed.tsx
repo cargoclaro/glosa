@@ -4,6 +4,7 @@ import ReactMarkdown from "react-markdown";
 interface IComparison {
   id: number;
   title: string;
+  links: string;
   description: string;
 }
 
@@ -48,12 +49,13 @@ const Detailed = ({ restriction }: { restriction: IRestrictionSelected }) => {
         </h2>
         <div>
           <h3>Resultados de la comparación:</h3>
-          <ol className="flex flex-col gap-2">
+          <ol className="flex flex-col gap-2 list-decimal ml-4">
             {JSON.parse(restriction.comparisons).map(
               (comparison: IComparison) => (
                 <li key={comparison.id}>
                   <p>{comparison.title}</p>
                   <CustomText text={comparison.description} />
+                  <CustomText text={comparison.links} />
                 </li>
               )
             )}

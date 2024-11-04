@@ -1,4 +1,4 @@
-import getBaseUrl from "../utils/get-base-url";
+// import getBaseUrl from "../utils/get-base-url";
 
 export const INITIAL_STATE_RESPONSE = {
   success: false,
@@ -150,8 +150,9 @@ export const DUMP_GLOSSES = [
   },
 ];
 
-const baseUrl = getBaseUrl();
-const anexo22Url = `${baseUrl}/api/gloss/anexo_22`;
+// const baseUrl = getBaseUrl();
+// const anexo22Url = `${baseUrl}/api/gloss/anexo_22`;
+const anexo22Url = `http://localhost:3000/api/gloss/anexo_22`;
 const generalOptions = {
   method: "POST",
   credentials: "include" as RequestCredentials,

@@ -22,6 +22,29 @@ export async function analysis(formData: FormData) {
 
     console.log(data);
 
+    const pdfModifications = await fetch(
+      "http://localhost:3000/api/gloss/highlighting_pediment_pdf",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          data,
+        }),
+      }
+    )
+      .then((res) => res.text())
+      .catch((error) => {
+        console.error(error);
+        return {
+          success: false,
+          message: "Ocurrió un error al modificar el PDF",
+        };
+      });
+
+    console.log(pdfModifications);
+
     return {
       success: true,
       glossId: "123456",
