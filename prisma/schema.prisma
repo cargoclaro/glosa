@@ -65,11 +65,12 @@ enum AnalysisType {
 
 model CustomGloss {
   id              String          @id @default(uuid())
+  summary         String
   timeSaved       Float
   moneySaved      Float
   isVerified      Boolean
   importerName    String
-  analysisType    AnalysisType
+  analysisType    AnalysisType    @default(REGULATION)
   operationStatus OperationStatus @default(IN_PROGRESS)
 
   user                                        User                                         @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -78,7 +79,6 @@ model CustomGloss {
   customId                                    String
   files                                       CustomGlossFile[]
   alerts                                      CustomGlossAlert[]
-  report                                      CustomGlossReport?
   customGlossTaxes                            CustomGlossTax[]
   customGlossNonTariffRestrictionNRegulations CustomGlossNonTariffRestrictionNRegulation[]
 
@@ -107,20 +107,19 @@ model CustomGlossFile {
   id  String @id @default(uuid())
   url String
 
-  customGloss                                        CustomGloss                                      @relation(fields: [customGlossId], references: [id], onDelete: Cascade)
-  customGlossId                                      String
-  customGlossNonTariffRestrictionNRegulationDetail   CustomGlossNonTariffRestrictionNRegulationDetail @relation(fields: [customGlossNonTariffRestrictionNRegulationDetailId], references: [id], onDelete: Cascade)
-  customGlossNonTariffRestrictionNRegulationDetailId String                                           @unique
+  customGloss   CustomGloss @relation(fields: [customGlossId], references: [id], onDelete: Cascade)
+  customGlossId String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 enum CustomGlossTaxType {
-  TARIFF
   IVA
   IEPS
-  OTHER
+  ISAN
+  TIGIE
+  PROSEC
 }
 
 model CustomGlossTax {
@@ -136,40 +135,40 @@ model CustomGlossTax {
   updatedAt DateTime @updatedAt
 }
 
+enum CustomGlossNonTariffRestrictionNRegulationAbbreviationType {
+  SC
+  SE
+  SRE
+  SCT
+  SSA
+  SHCP
+  SEGOB
+  SEMAR
+  SENER
+  SADER
+  SEDENA
+  SEMARNAT
+}
+
+enum CustomGlossNonTariffRestrictionNRegulationStatusType {
+  ERROR
+  WARNING
+  CHECKED
+}
+
 model CustomGlossNonTariffRestrictionNRegulation {
-  id             String @id @default(uuid())
-  law            String
-  lawDescription String
+  id            String                                                     @id @default(uuid())
+  type          CustomGlossNonTariffRestrictionNRegulationAbbreviationType
+  title         String
+  result        String
+  status        CustomGlossNonTariffRestrictionNRegulationStatusType
+  summary       String
+  description   String
+  comparisons   String
+  actionsToTake String
 
-  details       CustomGlossNonTariffRestrictionNRegulationDetail[]
-  customGloss   CustomGloss                                        @relation(fields: [customGlossId], references: [id])
+  customGloss   CustomGloss @relation(fields: [customGlossId], references: [id])
   customGlossId String
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model CustomGlossNonTariffRestrictionNRegulationDetail {
-  id               String  @id @default(uuid())
-  field            String
-  isCheck          Boolean
-  operation        String
-  checkDescription String?
-
-  file                                         CustomGlossFile?
-  customGlossNonTariffRestrictionNRegulation   CustomGlossNonTariffRestrictionNRegulation @relation(fields: [customGlossNonTariffRestrictionNRegulationId], references: [id], onDelete: Cascade)
-  customGlossNonTariffRestrictionNRegulationId String
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model CustomGlossReport {
-  id          String @id @default(uuid())
-  description String
-
-  customGloss   CustomGloss @relation(fields: [customGlossId], references: [id], onDelete: Cascade)
-  customGlossId String      @unique
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

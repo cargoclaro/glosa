@@ -4,7 +4,7 @@ import { BellAlert, XMark } from "@/public/icons";
 import ExclamationTriangle from "@/public/icons/ExclamationTriangle";
 
 const Alerts = () => {
-  const dummyData = [
+  const alerts = [
     {
       id: 1,
       type: "HIGH",
@@ -39,7 +39,7 @@ const Alerts = () => {
         Alertas
       </h1>
       <ul className="mt-4 flex flex-col gap-4 max-h-[250px] overflow-auto">
-        {dummyData.map((alert) => (
+        {alerts.map((alert) => (
           <li
             key={alert.id}
             title={alert.description}

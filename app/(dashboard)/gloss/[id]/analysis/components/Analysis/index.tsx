@@ -43,7 +43,7 @@ const Analysis = () => {
     openMenu();
   };
 
-  const dummyData = {
+  const analysis = {
     analysisType: "Regulación",
     isVerified: false,
     customGlossTaxes: [
@@ -117,22 +117,22 @@ const Analysis = () => {
           Análisis
         </h1>
         <h2
-          title={dummyData.analysisType}
+          title={analysis.analysisType}
           className={cn(
             "mt-4 px-12 py-2 rounded-full text-center border truncate",
-            dummyData.analysisType === "Regulación"
+            analysis.analysisType === "Regulación"
               ? "bg-yellow-100 border-yellow-400"
               : "bg-blue-100 border-blue-400"
           )}
         >
-          {dummyData.analysisType}
+          {analysis.analysisType}
         </h2>
         <h3 className="mt-4 pt-4 border-dashed border-t border-t-black text-center font-medium">
           Impuestos Aplicables
         </h3>
         <table className="w-full text-center">
           <tbody>
-            {dummyData.customGlossTaxes.map((tax) => (
+            {analysis.customGlossTaxes.map((tax) => (
               <tr key={tax.id}>
                 <td className="border-r border-r-black">{tax.type}</td>
                 <td>{tax.tax > 0 ? `${tax.tax}%` : "Exento"}</td>
@@ -152,7 +152,7 @@ const Analysis = () => {
           Restricciones y Regulaciones No Arancelarias
         </h4>
         <ul className="my-4 flex flex-col gap-4 max-h-[300px] overflow-y-auto overflow-x-hidden">
-          {dummyData.customGlossNonTariffRestrictionNRegulations.map(
+          {analysis.customGlossNonTariffRestrictionNRegulations.map(
             (restriction) => (
               <li
                 key={restriction.id}
@@ -192,15 +192,15 @@ const Analysis = () => {
         </ul>
         <div className="text-center">
           <button
-            disabled={dummyData.isVerified}
+            disabled={analysis.isVerified}
             className={cn(
               "px-12 py-2 rounded-md shadow-black/50 shadow-md border border-white text-sm",
-              dummyData.isVerified
+              analysis.isVerified
                 ? "bg-gray-300 cursor-not-allowed text-gray-900"
                 : "bg-cargoClaroOrange hover:bg-cargoClaroOrange-hover text-white"
             )}
           >
-            {dummyData.isVerified
+            {analysis.isVerified
               ? "Análisis Verificado"
               : "Marcar como verificado"}
           </button>

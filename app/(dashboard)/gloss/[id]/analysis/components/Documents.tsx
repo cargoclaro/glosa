@@ -2,7 +2,7 @@ import { Document } from "@/public/icons";
 import { GenericCard } from "@/app/components";
 
 const Documents = () => {
-  const dummyData = [
+  const documents = [
     {
       id: 1,
       url: "https://dummycloud.com/glosas/files/gloss28/proforma.pdf",
@@ -31,7 +31,7 @@ const Documents = () => {
         Documentos
       </h1>
       <ul className="mt-4 flex flex-col gap-4">
-        {dummyData.map((doc) => (
+        {documents.map((doc) => (
           <li
             key={doc.id}
             title={doc.url.substring(doc.url.lastIndexOf("/") + 1)}
