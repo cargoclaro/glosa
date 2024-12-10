@@ -2,36 +2,9 @@ import { cn } from "@/app/utils/cn";
 import { GenericCard } from "@/app/components";
 import { BellAlert, XMark } from "@/public/icons";
 import ExclamationTriangle from "@/public/icons/ExclamationTriangle";
+import type { ICustomGloss } from "@/app/interfaces";
 
-const Alerts = () => {
-  const alerts = [
-    {
-      id: 1,
-      type: "HIGH",
-      description: "NUM. FACTURA",
-    },
-    {
-      id: 2,
-      type: "LOW",
-      description: "# CONTENEDOR",
-    },
-    {
-      id: 3,
-      type: "LOW",
-      description: "PRECIO UNIT",
-    },
-    {
-      id: 4,
-      type: "LOW",
-      description: "CANTIDAD UMT",
-    },
-    {
-      id: 5,
-      type: "LOW",
-      description: "PESO BRUTO",
-    },
-  ];
-
+const Alerts = ({ data }: { data: ICustomGloss["alerts"] }) => {
   return (
     <GenericCard customClass="">
       <h1 className="flex justify-center items-center gap-2 font-semibold pb-2 border-b border-black">
@@ -39,7 +12,7 @@ const Alerts = () => {
         Alertas
       </h1>
       <ul className="mt-4 flex flex-col gap-4 max-h-[250px] overflow-auto">
-        {alerts.map((alert) => (
+        {data.map((alert) => (
           <li
             key={alert.id}
             title={alert.description}

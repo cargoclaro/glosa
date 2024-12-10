@@ -6,7 +6,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { RightArrow, ArrowsUpDown } from "@/public/icons";
 
 interface IDumpGlosses {
-  id: number;
+  id: string;
   importerName: string;
   operationStatus: string;
 }

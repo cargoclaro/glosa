@@ -1,15 +1,9 @@
 import { GenericCard } from "@/app/components";
 
-const Pediment = () => {
-  // THE PDF WILL BE COME FROM THE DATABASE
+const Pediment = ({ document }: { document: string }) => {
   return (
     <GenericCard customClass="h-full">
-      <iframe
-        width="100%"
-        height="100%"
-        title="Pedimento"
-        src="/pedimento_format_modified.pdf"
-      />
+      <iframe width="100%" height="100%" title="Pedimento" src={document} />
     </GenericCard>
   );
 };

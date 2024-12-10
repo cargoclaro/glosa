@@ -55,7 +55,7 @@ const Detailed = ({ restriction }: { restriction: IRestrictionSelected }) => {
                 <li key={comparison.id}>
                   <p>{comparison.title}</p>
                   <CustomText text={comparison.description} />
-                  <CustomText text={comparison.links} />
+                  <CustomText text={comparison.links[0]} />
                 </li>
               )
             )}

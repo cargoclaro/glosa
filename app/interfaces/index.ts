@@ -1,4 +1,12 @@
-import type { User, Custom } from "@prisma/client";
+import type {
+  User,
+  Custom,
+  CustomGloss,
+  CustomGlossFile,
+  CustomGlossAlert,
+  CustomGlossTax,
+  CustomGlossNonTariffRestrictionNRegulation,
+} from "@prisma/client";
 
 export interface IUser extends User {
   customs: {
@@ -14,6 +22,15 @@ export interface ICustom extends Custom {
     customId: string;
     user: IUser;
   }[];
+}
+
+export interface ICustomGloss extends CustomGloss {
+  user: IUser;
+  custom: ICustom;
+  files: CustomGlossFile[];
+  alerts: CustomGlossAlert[];
+  customGlossTaxes: CustomGlossTax[];
+  customGlossNonTariffRestrictionNRegulations: CustomGlossNonTariffRestrictionNRegulation[];
 }
 
 export interface ISharedState {

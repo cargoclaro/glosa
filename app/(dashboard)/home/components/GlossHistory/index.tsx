@@ -3,10 +3,10 @@
 import Link from "next/link";
 import { useAuth } from "@/app/hooks";
 import { RightArrow } from "@/public/icons";
-import { DUMP_GLOSSES } from "@/app/constants";
 import { GenericCard, GlossHistorySkeleton } from "@/app/components";
+import { ICustomGloss } from "@/app/interfaces";
 
-const GlossHistory = () => {
+const GlossHistory = ({ history }: { history: ICustomGloss[] }) => {
   const { user } = useAuth();
 
   return (
@@ -19,7 +19,7 @@ const GlossHistory = () => {
             </h1>
             <div className="border-t border-gray-300 my-2" />
             <ul className="flex flex-col gap-2">
-              {DUMP_GLOSSES.slice(0, 3).map((gloss) => (
+              {history.map((gloss) => (
                 <li key={gloss.id}>
                   <Link
                     href={`/gloss/${gloss.id}`}

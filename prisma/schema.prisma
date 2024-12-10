@@ -92,7 +92,7 @@ enum CustomGlossType {
 }
 
 model CustomGlossAlert {
-  id          String          @id @default(uuid())
+  id          Int
   type        CustomGlossType
   description String
 
@@ -101,10 +101,12 @@ model CustomGlossAlert {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@id([id, customGlossId])
 }
 
 model CustomGlossFile {
-  id  String @id @default(uuid())
+  id  Int
   url String
 
   customGloss   CustomGloss @relation(fields: [customGlossId], references: [id], onDelete: Cascade)
@@ -112,10 +114,13 @@ model CustomGlossFile {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@id([id, customGlossId])
 }
 
 enum CustomGlossTaxType {
   IVA
+  IGI
   IEPS
   ISAN
   TIGIE
@@ -123,7 +128,7 @@ enum CustomGlossTaxType {
 }
 
 model CustomGlossTax {
-  id      String             @id @default(uuid())
+  id      Int
   tax     Float
   type    CustomGlossTaxType
   isCheck Boolean
@@ -133,6 +138,8 @@ model CustomGlossTax {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@id([id, customGlossId])
 }
 
 enum CustomGlossNonTariffRestrictionNRegulationAbbreviationType {
@@ -157,7 +164,7 @@ enum CustomGlossNonTariffRestrictionNRegulationStatusType {
 }
 
 model CustomGlossNonTariffRestrictionNRegulation {
-  id            String                                                     @id @default(uuid())
+  id            Int
   type          CustomGlossNonTariffRestrictionNRegulationAbbreviationType
   title         String
   result        String
@@ -172,4 +179,6 @@ model CustomGlossNonTariffRestrictionNRegulation {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@id([id, customGlossId])
 }

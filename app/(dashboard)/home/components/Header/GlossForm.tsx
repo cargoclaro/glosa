@@ -21,7 +21,7 @@ const GlossForm = () => {
     if (files) {
       const formData = new FormData();
       Array.from(files).forEach((file) => {
-        formData.append("documents", file);
+        formData.append("files", file);
       });
       const res = await analysis(formData);
       if (res && res.success) {
