@@ -2,12 +2,12 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { cn } from "@/app/utils/cn";
-import { useServerAction } from "@/app/hooks";
-import { register } from "@/app/services/user/controller";
-import { INITIAL_STATE_RESPONSE } from "@/app/constants";
-import { GenericInput, SubmitButton } from "@/app/components";
-import type { IRegisterState } from "@/app/interfaces";
+import { cn } from "@/app/shared/utils/cn";
+import { useServerAction } from "@/app/shared/hooks";
+import { register } from "@/app/shared/services/user/controller";
+import { INITIAL_STATE_RESPONSE } from "@/app/shared/constants";
+import { GenericInput, SubmitButton } from "@/app/shared/components";
+import type { IRegisterState } from "@/app/shared/interfaces";
 
 const Form = () => {
   const { response, isLoading, setResponse, setIsLoading } =
@@ -33,7 +33,7 @@ const Form = () => {
       <section className="flex flex-col items-center gap-4 max-h-full overflow-y-auto py-5 md:py-10 md:px-14 px-7 rounded-2xl shadow-2xl animate-fade-down">
         <Link href="/" className="w-40 md:w-64 h-auto">
           <Image
-            src="/logo.webp"
+            src="/assets/images/logo.webp"
             alt="Cargo Claro Logo"
             width={100}
             height={100}

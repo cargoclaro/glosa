@@ -1,7 +1,7 @@
 import Link from "next/link";
-import { GenericCard } from "@/app/components";
-import formatCurrency from "@/app/utils/format-currency";
-import { CurrencyDollar, RightArrow } from "@/public/icons";
+import { GenericCard } from "@/app/shared/components";
+import formatCurrency from "@/app/shared/utils/format-currency";
+import { CurrencyDollar, RightArrow } from "@/app/shared/icons";
 
 interface ISavedNFinish {
   glossId: string;

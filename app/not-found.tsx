@@ -11,7 +11,7 @@ const NotFoundPage = () => {
     <article className="h-screen flex flex-col gap-4 items-center justify-center">
       <div className="w-52 md:w-96 h-auto">
         <Image
-          src="/logo.webp"
+          src="/assets/images/logo.webp"
           alt="Cargo Claro Logo"
           width={100}
           height={100}

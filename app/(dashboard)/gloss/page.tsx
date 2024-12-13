@@ -1,7 +1,7 @@
 import { GlossDataTable, GlossDataTableColumns } from "./components";
-import { getMyAnalysis } from "@/app/services/customGloss/controller";
+import { getMyAnalysis } from "@/app/shared/services/customGloss/controller";
 import type { Metadata } from "next";
-import type { ICustomGloss } from "@/app/interfaces";
+import type { ICustomGloss } from "@/app/shared/interfaces";
 
 export const metadata: Metadata = {
   title: "Operaciones",

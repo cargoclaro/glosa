@@ -1,8 +1,8 @@
-import { cn } from "@/app/utils/cn";
-import { GenericCard } from "@/app/components";
-import { BellAlert, XMark } from "@/public/icons";
-import ExclamationTriangle from "@/public/icons/ExclamationTriangle";
-import type { ICustomGloss } from "@/app/interfaces";
+import { cn } from "@/app/shared/utils/cn";
+import { GenericCard } from "@/app/shared/components";
+import { BellAlert, XMark } from "@/app/shared/icons";
+import ExclamationTriangle from "@/app/shared/icons/ExclamationTriangle";
+import type { ICustomGloss } from "@/app/shared/interfaces";
 
 const Alerts = ({ data }: { data: ICustomGloss["alerts"] }) => {
   return (

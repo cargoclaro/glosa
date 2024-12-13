@@ -1,6 +1,6 @@
-import { Document } from "@/public/icons";
-import { GenericCard } from "@/app/components";
-import { ICustomGloss } from "@/app/interfaces";
+import { Document } from "@/app/shared/icons";
+import { GenericCard } from "@/app/shared/components";
+import { ICustomGloss } from "@/app/shared/interfaces";
 
 const Documents = ({ data }: { data: ICustomGloss["files"] }) => {
   return (
@@ -13,10 +13,10 @@ const Documents = ({ data }: { data: ICustomGloss["files"] }) => {
         {data.map((doc) => (
           <li
             key={doc.id}
-            title={doc.url.substring(doc.url.lastIndexOf("/") + 1)}
+            title={doc.name}
             className="rounded-md p-1 border border-black truncate text-sm text-center"
           >
-            {doc.url.substring(doc.url.lastIndexOf("/") + 1)}
+            {doc.name}
           </li>
         ))}
       </ul>

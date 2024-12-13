@@ -2,9 +2,9 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { cn } from "@/app/utils/cn";
+import { cn } from "@/app/shared/utils/cn";
 import { usePathname } from "next/navigation";
-import { GlobeAlt, Square2x2 } from "@/public/icons";
+import { GlobeAlt, Square2x2 } from "@/app/shared/icons";
 
 const Sidebar = () => {
   const pathname = usePathname();
@@ -20,7 +20,7 @@ const Sidebar = () => {
       <div className="h-full overflow-y-auto">
         <div className="size-auto my-10 pr-10">
           <Image
-            src="/logo.webp"
+            src="/assets/images/logo.webp"
             alt="Cargo Claro Logo"
             width={100}
             height={100}

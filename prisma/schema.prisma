@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -14,53 +8,47 @@ datasource db {
   directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
 }
 
-// THIS MODEL CAN CHANGE AT ANY TIME BEFORE THE LAUNCH OF THE APP
-
 model User {
   id           String @id @default(uuid())
   name         String
   email        String @unique
-  image        String @default("/profilepic.webp")
+  image        String @default("/assets/images/profilepic.webp")
   password     String
   lastName     String
   patentNumber Int    @unique
 
-  customs UserOnCustom[]
+  // customs UserOnCustom[]
   glosses CustomGloss[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
-model UserOnCustom {
-  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId   String
-  custom   Custom @relation(fields: [customId], references: [id], onDelete: Cascade)
-  customId String
+// model UserOnCustom {
+//   user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+//   userId   String
+//   custom   Custom @relation(fields: [customId], references: [id], onDelete: Cascade)
+//   customId String
 
-  @@id([userId, customId])
-}
+//   @@id([userId, customId])
+// }
 
-model Custom {
-  id        String @id @default(uuid())
-  city      String
-  latitude  Float
-  longitude Float
+// model Custom {
+//   id        String @id @default(uuid())
+//   city      String
+//   latitude  Float
+//   longitude Float
 
-  users         UserOnCustom[]
-  customGlosses CustomGloss[]
+//   users         UserOnCustom[]
+//   customGlosses CustomGloss[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+// }
 
 enum OperationStatus {
   IN_PROGRESS
   DONE
-}
-
-enum AnalysisType {
-  REGULATION
 }
 
 model CustomGloss {
@@ -68,19 +56,25 @@ model CustomGloss {
   summary         String
   timeSaved       Float
   moneySaved      Float
-  isVerified      Boolean
   importerName    String
-  analysisType    AnalysisType    @default(REGULATION)
   operationStatus OperationStatus @default(IN_PROGRESS)
 
-  user                                        User                                         @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId                                      String
-  custom                                      Custom                                       @relation(fields: [customId], references: [id], onDelete: Cascade)
-  customId                                    String
-  files                                       CustomGlossFile[]
-  alerts                                      CustomGlossAlert[]
-  customGlossTaxes                            CustomGlossTax[]
-  customGlossNonTariffRestrictionNRegulations CustomGlossNonTariffRestrictionNRegulation[]
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+  // custom   Custom @relation(fields: [customId], references: [id], onDelete: Cascade)
+  // customId String
+
+  pedimentNum       CustomGlossPedimentNum?
+  operationType     CustomGlossOperationType?
+  destinationOrigin CustomGlossDestinationOrigin?
+  operation         CustomGlossOperation?
+  grossWeight       CustomGlossGrossWeight?
+  invoiceData       CustomGlossInvoiceData?
+  transportData     CustomGlossTransportData?
+  certification     CustomGlossCertification?
+
+  files  CustomGlossFile[]
+  alerts CustomGlossAlert[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -92,7 +86,7 @@ enum CustomGlossType {
 }
 
 model CustomGlossAlert {
-  id          Int
+  id          Int             @default(autoincrement())
   type        CustomGlossType
   description String
 
@@ -106,8 +100,9 @@ model CustomGlossAlert {
 }
 
 model CustomGlossFile {
-  id  Int
-  url String
+  id   Int    @default(autoincrement())
+  name String
+  url  String
 
   customGloss   CustomGloss @relation(fields: [customGlossId], references: [id], onDelete: Cascade)
   customGlossId String
@@ -118,23 +113,15 @@ model CustomGlossFile {
   @@id([id, customGlossId])
 }
 
-enum CustomGlossTaxType {
-  IVA
-  IGI
-  IEPS
-  ISAN
-  TIGIE
-  PROSEC
-}
-
-model CustomGlossTax {
-  id      Int
-  tax     Float
-  type    CustomGlossTaxType
-  isCheck Boolean
+model CustomGlossPedimentNum {
+  id         Int     @default(autoincrement())
+  number     BigInt
+  status     String
+  anio       Int
+  isVerified Boolean @default(false)
 
   customGloss   CustomGloss @relation(fields: [customGlossId], references: [id], onDelete: Cascade)
-  customGlossId String
+  customGlossId String      @unique
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -142,40 +129,116 @@ model CustomGlossTax {
   @@id([id, customGlossId])
 }
 
-enum CustomGlossNonTariffRestrictionNRegulationAbbreviationType {
-  SC
-  SE
-  SRE
-  SCT
-  SSA
-  SHCP
-  SEGOB
-  SEMAR
-  SENER
-  SADER
-  SEDENA
-  SEMARNAT
+model CustomGlossOperationType {
+  id         Int     @default(autoincrement())
+  status     String
+  data       String
+  appendices String
+  isVerified Boolean @default(false)
+
+  customGloss   CustomGloss @relation(fields: [customGlossId], references: [id], onDelete: Cascade)
+  customGlossId String      @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@id([id, customGlossId])
 }
 
-enum CustomGlossNonTariffRestrictionNRegulationStatusType {
-  ERROR
-  WARNING
-  CHECKED
+model CustomGlossDestinationOrigin {
+  id                   Int     @default(autoincrement())
+  status               String
+  destinationOriginKey String
+  appendixValidator    String
+  appendices           String
+  isVerified           Boolean @default(false)
+
+  customGloss   CustomGloss @relation(fields: [customGlossId], references: [id], onDelete: Cascade)
+  customGlossId String      @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@id([id, customGlossId])
 }
 
-model CustomGlossNonTariffRestrictionNRegulation {
-  id            Int
-  type          CustomGlossNonTariffRestrictionNRegulationAbbreviationType
-  title         String
-  result        String
-  status        CustomGlossNonTariffRestrictionNRegulationStatusType
-  summary       String
-  description   String
-  comparisons   String
-  actionsToTake String
+model CustomGlossOperation {
+  id           Int     @default(autoincrement())
+  status       String
+  calculations String
+  isVerified   Boolean @default(false)
 
-  customGloss   CustomGloss @relation(fields: [customGlossId], references: [id])
-  customGlossId String
+  customGloss   CustomGloss @relation(fields: [customGlossId], references: [id], onDelete: Cascade)
+  customGlossId String      @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@id([id, customGlossId])
+}
+
+model CustomGlossGrossWeight {
+  id           Int     @default(autoincrement())
+  status       String
+  calculations String
+  isVerified   Boolean @default(false)
+
+  customGloss   CustomGloss @relation(fields: [customGlossId], references: [id], onDelete: Cascade)
+  customGlossId String      @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@id([id, customGlossId])
+}
+
+model CustomGlossInvoiceData {
+  id               Int     @default(autoincrement())
+  status           String
+  importerExporter String
+  supplierBuyer    String
+  isVerified       Boolean @default(false)
+
+  customGloss   CustomGloss @relation(fields: [customGlossId], references: [id], onDelete: Cascade)
+  customGlossId String      @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@id([id, customGlossId])
+}
+
+enum CustomGlossTransportType {
+  AIR
+  SEA
+  LAND
+}
+
+model CustomGlossTransportData {
+  id         Int                      @default(autoincrement())
+  status     String
+  type       CustomGlossTransportType
+  data       String
+  isVerified Boolean                  @default(false)
+
+  customGloss   CustomGloss @relation(fields: [customGlossId], references: [id], onDelete: Cascade)
+  customGlossId String      @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@id([id, customGlossId])
+}
+
+model CustomGlossCertification {
+  id                      Int     @default(autoincrement())
+  status                  String
+  taxes                   String
+  restrictionsRegulations String
+  isVerified              Boolean @default(false)
+
+  customGloss   CustomGloss @relation(fields: [customGlossId], references: [id], onDelete: Cascade)
+  customGlossId String      @unique
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

@@ -1,8 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { useAuth } from "@/app/hooks";
-import { ProfileCardSkeleton, GenericCard } from "@/app/components";
+import { useAuth } from "@/app/shared/hooks";
+import { ProfileCardSkeleton, GenericCard } from "@/app/shared/components";
 
 const MyInfo = () => {
   const { user } = useAuth();
@@ -28,7 +28,7 @@ const MyInfo = () => {
           <h1 className="font-extrabold text-2xl">
             {user.name + " " + user.lastName}
           </h1>
-          <div className="flex justify-start mt-2 text-xl">
+          {/* <div className="flex justify-start mt-2 text-xl">
             <p className="font-semibold text-left mr-2">Aduanas:</p>
             <ul
               title={
@@ -44,7 +44,7 @@ const MyInfo = () => {
                 </li>
               ))}
             </ul>
-          </div>
+          </div> */}
         </GenericCard>
       ) : (
         <ProfileCardSkeleton />

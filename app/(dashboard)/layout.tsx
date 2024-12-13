@@ -1,6 +1,6 @@
 import { Header, Main, Sidebar } from "./components";
-import { getMe } from "@/app/services/user/controller";
-import type { IUser } from "@/app/interfaces";
+import { getMe } from "@/app/shared/services/user/controller";
+import type { IUser } from "@/app/shared/interfaces";
 
 const AuthLayout = async ({ children }: { children: React.ReactNode }) => {
   const me = (await getMe()) as IUser;

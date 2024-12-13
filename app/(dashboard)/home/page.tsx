@@ -1,7 +1,7 @@
-import { getRecentAnalysis } from "@/app/services/customGloss/controller";
-import { GlossHistory, Header, MexMap, MyInfo, Summary } from "./components";
+import { getRecentAnalysis } from "@/app/shared/services/customGloss/controller";
+import { Header, MyInfo, MexMap, Summary, GlossHistory } from "./components";
 import type { Metadata } from "next";
-import { ICustomGloss } from "@/app/interfaces";
+import { ICustomGloss } from "@/app/shared/interfaces";
 
 export const metadata: Metadata = {
   title: "Administración",

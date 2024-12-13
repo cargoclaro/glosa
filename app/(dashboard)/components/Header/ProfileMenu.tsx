@@ -3,11 +3,11 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useEffect } from "react";
-import { cn } from "@/app/utils/cn";
-import { useAuth, useModal } from "@/app/hooks";
-import { logout } from "@/app/services/user/controller";
-import { GlobeAlt, Square2x2, DoorArrowRight } from "@/public/icons";
-import type { IUser } from "@/app/interfaces";
+import { cn } from "@/app/shared/utils/cn";
+import { useAuth, useModal } from "@/app/shared/hooks";
+import { logout } from "@/app/shared/services/user/controller";
+import { GlobeAlt, Square2x2, DoorArrowRight } from "@/app/shared/icons";
+import type { IUser } from "@/app/shared/interfaces";
 
 interface IProfileMenu {
   user: IUser;

@@ -1,4 +1,4 @@
-import { IRestrictionSelected } from ".";
+import { ICommonDataForDetail } from ".";
 import ReactMarkdown from "react-markdown";
 
 interface IComparison {
@@ -33,24 +33,23 @@ const CustomText = ({ text }: { text: string }) => (
   </ReactMarkdown>
 );
 
-const Detailed = ({ restriction }: { restriction: IRestrictionSelected }) => {
+const Detailed = ({ data }: { data: ICommonDataForDetail }) => {
   return (
     <>
       <h1
-        title={`ANÁLISIS DETALLADO: ${restriction.title}`}
+        title={`ANÁLISIS DETALLADO: ${data.title}`}
         className="text-center sticky top-2 pb-4 truncate"
       >
-        ANÁLISIS DETALLADO:{" "}
-        <span className="font-semibold">{restriction.title}</span>
+        ANÁLISIS DETALLADO: <span className="font-semibold">{data.title}</span>
       </h1>
       <div className="border rounded-md border-cargoClaroOrange p-2 flex flex-col gap-4">
         <h2>
-          Resultado: <span className="font-medium">{restriction.result}</span>
+          Resultado: <span className="font-medium">{data.result}</span>
         </h2>
         <div>
           <h3>Resultados de la comparación:</h3>
           <ol className="flex flex-col gap-2 list-decimal ml-4">
-            {JSON.parse(restriction.comparisons).map(
+            {JSON.parse(JSON.stringify(data.comparisons)).map(
               (comparison: IComparison) => (
                 <li key={comparison.id}>
                   <p>{comparison.title}</p>
@@ -64,7 +63,7 @@ const Detailed = ({ restriction }: { restriction: IRestrictionSelected }) => {
         <div>
           <h4>Acciones a realizar:</h4>
           <ol className="flex flex-col list-disc ml-4">
-            {JSON.parse(restriction.actionsToTake).map(
+            {JSON.parse(JSON.stringify(data.actions_to_take)).map(
               (action: IActionsToTake) => (
                 <li key={action.id}>
                   <CustomText text={action.description} />
@@ -73,7 +72,7 @@ const Detailed = ({ restriction }: { restriction: IRestrictionSelected }) => {
             )}
           </ol>
         </div>
-        <CustomText text={restriction.summary} />
+        <CustomText text={data.summary} />
       </div>
     </>
   );
