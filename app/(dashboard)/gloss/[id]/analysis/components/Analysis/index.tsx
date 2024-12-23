@@ -7,13 +7,17 @@ import { useModal } from "@/app/shared/hooks";
 import { GenericCard, Modal } from "@/app/shared/components";
 import {
   Check,
-  XMark,
   RightArrow,
-  ExclamationTriangle,
   LeftChevron,
   RightChevron,
+  DocMagniGlass,
+  ArrowTrendingUp,
+  ExclamationTriangle,
 } from "@/app/shared/icons";
-import { GLOSS_ANALYSIS_TABS } from "@/app/shared/constants";
+import type {
+  ICustomGlossTab,
+  ICustomGlossTabValidation,
+} from "@/app/shared/interfaces";
 
 export interface ICommonDataForDetail {
   id: number;
@@ -26,98 +30,28 @@ export interface ICommonDataForDetail {
   actions_to_take: string;
 }
 
-interface IPedimentNum {
-  number: bigint;
-  status: string;
-  anio: number;
-  isVerified: boolean;
-}
-
-interface IOperationType {
-  status: string;
-  data: string;
-  appendices: string;
-  isVerified: boolean;
-}
-
-interface IDestinationOrigin {
-  status: string;
-  destinationOriginKey: string;
-  appendixValidator: string;
-  appendices: string;
-  isVerified: boolean;
-}
-
-interface IOperation {
-  status: string;
-  isVerified: boolean;
-  calculations: string;
-}
-
-interface IGrossWeight {
-  status: string;
-  isVerified: boolean;
-  calculations: string;
-}
-
-interface IInvoiceData {
-  status: string;
-  isVerified: boolean;
-  importerExporter: string;
-  supplierBuyer: string;
-}
-
-interface ITransportData {
-  status: string;
-  type: string;
-  data: string;
-  isVerified: boolean;
-}
-
-interface IPartidas {
-  taxes: string;
-  status: string;
-  isVerified: boolean;
-  restrictionsRegulations: string;
-}
-
-interface IAnalysis {
-  pedimentNum: IPedimentNum;
-  operationType: IOperationType;
-  destinationOrigin: IDestinationOrigin;
-  operation: IOperation;
-  grossWeight: IGrossWeight;
-  invoiceData: IInvoiceData;
-  transportData: ITransportData;
-  partidas: IPartidas;
-}
-
-const Analysis = ({
-  pedimentNum,
-  operationType,
-  destinationOrigin,
-  operation,
-  grossWeight,
-  invoiceData,
-  transportData,
-  partidas,
-}: IAnalysis) => {
-  const { isOpen, openMenu, closeMenu, menuRef } = useModal(false);
-  const [tabSelected, setTabSelected] = useState("pedimentNum");
+const Analysis = ({ tabs }: { tabs: ICustomGlossTab[] }) => {
   const scrollContainerRef = useRef<HTMLUListElement>(null);
+  const { isOpen, openMenu, closeMenu, menuRef } = useModal(false);
+  const [tabSelected, setTabSelected] = useState("Número de Pedimento");
 
-  const [dataForDetail, setDataForDetail] = useState<ICommonDataForDetail>({
-    id: 0,
-    title: "",
-    description: "",
-    status: "",
-    result: "",
-    comparisons: "",
-    actions_to_take: "",
-    summary: "",
-  });
+  const [dataForDetail, setDataForDetail] = useState<ICustomGlossTabValidation>(
+    {
+      id: 0,
+      name: "",
+      description: "",
+      llmAnalysis: "",
+      isCorrect: true,
+      resources: [],
+      actionsToTake: [],
+      summary: "",
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      customGlossTabId: "",
+    }
+  );
 
-  const handleDetail = (data: ICommonDataForDetail) => {
+  const handleDetail = (data: ICustomGlossTabValidation) => {
     setDataForDetail(data);
     openMenu();
   };
@@ -131,27 +65,21 @@ const Analysis = ({
   };
 
   const handleNext = () => {
-    const currentIndex = GLOSS_ANALYSIS_TABS.findIndex(
-      (tab) => tab.id === tabSelected
-    );
-    const nextIndex = (currentIndex + 1) % GLOSS_ANALYSIS_TABS.length;
-    setTabSelected(GLOSS_ANALYSIS_TABS[nextIndex].id);
+    const currentIndex = tabs.findIndex((tab) => tab.name === tabSelected);
+    const nextIndex = (currentIndex + 1) % tabs.length;
+    setTabSelected(tabs[nextIndex].name);
     scrollToTab(nextIndex);
   };
 
   const handlePrevious = () => {
-    const currentIndex = GLOSS_ANALYSIS_TABS.findIndex(
-      (tab) => tab.id === tabSelected
-    );
-    const prevIndex =
-      (currentIndex - 1 + GLOSS_ANALYSIS_TABS.length) %
-      GLOSS_ANALYSIS_TABS.length;
-    setTabSelected(GLOSS_ANALYSIS_TABS[prevIndex].id);
+    const currentIndex = tabs.findIndex((tab) => tab.name === tabSelected);
+    const prevIndex = (currentIndex - 1 + tabs.length) % tabs.length;
+    setTabSelected(tabs[prevIndex].name);
     scrollToTab(prevIndex);
   };
 
   const handleTabClick = (id: string) => {
-    const tabIndex = GLOSS_ANALYSIS_TABS.findIndex((tab) => tab.id === id);
+    const tabIndex = tabs.findIndex((tab) => tab.name === id);
     setTabSelected(id);
     scrollToTab(tabIndex);
   };
@@ -174,12 +102,12 @@ const Analysis = ({
             style={{ scrollbarWidth: "none" }}
             className="flex gap-4 overflow-x-scroll font-semibold"
           >
-            {GLOSS_ANALYSIS_TABS.map((tab) => (
+            {tabs.map((tab) => (
               <GenericTabLi
                 key={tab.id}
-                title={tab.title}
-                active={tabSelected === tab.id}
-                onClick={() => handleTabClick(tab.id)}
+                title={tab.name}
+                active={tabSelected === tab.name}
+                onClick={() => handleTabClick(tab.name)}
               />
             ))}
           </ul>
@@ -190,70 +118,15 @@ const Analysis = ({
             <RightChevron />
           </button>
         </div>
-        {tabSelected === "pedimentNum" ? (
-          <PedimentNum
-            anio={pedimentNum.anio}
-            number={pedimentNum.number}
-            status={pedimentNum.status}
-            isVerified={pedimentNum.isVerified}
-          />
-        ) : tabSelected === "operationType" ? (
-          <OperationType
-            data={operationType.data}
-            status={operationType.status}
-            appendices={operationType.appendices}
-            isVerified={operationType.isVerified}
-            handleClick={(data: ICommonDataForDetail) => handleDetail(data)}
-          />
-        ) : tabSelected === "destinationOrigin" ? (
-          <DestinationOrigin
-            status={destinationOrigin.status}
-            destinationOriginKey={destinationOrigin.destinationOriginKey}
-            appendixValidator={destinationOrigin.appendixValidator}
-            appendices={destinationOrigin.appendices}
-            isVerified={operationType.isVerified}
-            handleClick={(data: ICommonDataForDetail) => handleDetail(data)}
-          />
-        ) : tabSelected === "operation" ? (
-          <OperationNGrossWeight
-            status={operation.status}
-            isVerified={operation.isVerified}
-            calculations={operation.calculations}
-            handleClick={(data: ICommonDataForDetail) => handleDetail(data)}
-          />
-        ) : tabSelected === "grossWeight" ? (
-          <OperationNGrossWeight
-            status={grossWeight.status}
-            isVerified={grossWeight.isVerified}
-            calculations={grossWeight.calculations}
-            handleClick={(data: ICommonDataForDetail) => handleDetail(data)}
-          />
-        ) : tabSelected === "invoiceData" ? (
-          <InvoiceData
-            status={invoiceData.status}
-            isVerified={invoiceData.isVerified}
-            importerExporter={invoiceData.importerExporter}
-            supplierBuyer={invoiceData.supplierBuyer}
-            handleClick={(data: ICommonDataForDetail) => handleDetail(data)}
-          />
-        ) : tabSelected === "transportData" ? (
-          <TransportData
-            status={transportData.status}
-            type={transportData.type}
-            data={transportData.data}
-            isVerified={transportData.isVerified}
-            handleClick={(data: ICommonDataForDetail) => handleDetail(data)}
-          />
-        ) : (
-          tabSelected === "certification" && (
-            <Partidas
-              taxes={partidas.taxes}
-              status={partidas.status}
-              isVerified={partidas.isVerified}
-              restrictionsRegulations={partidas.restrictionsRegulations}
-              handleClick={(data: ICommonDataForDetail) => handleDetail(data)}
-            />
-          )
+        {tabs.map(
+          (tab) =>
+            tabSelected === tab.name && (
+              <GenericTabComponent
+                key={tab.id}
+                data={tab}
+                handleClick={(data) => handleDetail(data)}
+              />
+            )
         )}
       </GenericCard>
     </>
@@ -284,455 +157,69 @@ const GenericTabLi = ({ title, active, onClick }: IGenericTabLi) => (
   </li>
 );
 
-const PedimentNum = ({ anio, number, status, isVerified }: IPedimentNum) => (
-  <>
-    <h1 className="text-center font-bold py-10">{number.toString()}</h1>
-    <DashedLine />
-    <StatusHeader status={status} />
-    <ul className="my-10 flex flex-col gap-4 md:mx-10 lg:mx-0 xl:mx-10">
-      <li className="flex gap-2 justify-between items-center">
-        <p className="size-10 py-2 px-4 rounded-full border border-black">1</p>
-        <p>Año extraído = {anio}</p>
-        <Check customClass="text-green-500" size="size-6" />
-      </li>
-      <li className="flex gap-2 justify-between items-center">
-        <p className="size-10 py-2 px-3.5 rounded-full border border-black">
-          2
-        </p>
-        <p>Año actual = {new Date().getFullYear()}</p>
-        <Check customClass="text-green-500" size="size-6" />
-      </li>
-      <li className="flex gap-2 justify-between items-center">
-        <p className="size-10 py-2 px-3.5 rounded-full border border-black">
-          3
-        </p>
-        <p>Año actual = Año extraído</p>
-        {anio === new Date().getFullYear() ? (
-          <Check customClass="text-green-500" size="size-6" />
-        ) : (
-          <XMark customClass="text-red-500" size="size-6" />
+interface IGenericTabComponent {
+  data: ICustomGlossTab;
+  handleClick: (data: ICustomGlossTabValidation) => void;
+}
+
+const GenericTabComponent = ({ data, handleClick }: IGenericTabComponent) => {
+  return (
+    <>
+      <StatusHeader status={data.isCorrect} />
+      <SectionDivider title="Contexto" icon={<DocMagniGlass />} />
+      <table className="w-full text-center my-5">
+        <tbody>
+          {data.context[0].data.map((item) => (
+            <tr key={item.id}>
+              <td className="w-1/2 border-r border-r-black pr-2 py-2">
+                <p title={item.name} className="line-clamp-1">
+                  {item.name}
+                </p>
+              </td>
+              <td className="w-1/2 font-bold">
+                <p title={item.value} className="pl-1 line-clamp-1">
+                  {item.value}
+                </p>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <SectionDivider title="Fuentes" icon={<DocMagniGlass />} />
+      <p
+        title={`Anexo 22 - ${data.context[1].origin}`}
+        className={cn(
+          "mt-4 px-12 py-2 rounded-full text-center border truncate bg-purple-100 border-purple-400"
         )}
-      </li>
-    </ul>
-    <VerifiedButton isVerified={isVerified} />
-  </>
-);
-
-interface IOperationTypeWithHandle extends IOperationType {
-  handleClick: (data: ICommonDataForDetail) => void;
-}
-
-const OperationType = ({
-  status,
-  data,
-  appendices,
-  isVerified,
-  handleClick,
-}: IOperationTypeWithHandle) => {
-  interface IOperationTypeData {
-    id: number;
-    name: string;
-    value: string;
-    is_check: boolean;
-  }
-  const dataParsed = JSON.parse(data) as IOperationTypeData[];
-
-  return (
-    <>
-      <table className="w-full text-center my-5">
-        <tbody>
-          {dataParsed.map((item) => (
-            <tr key={item.id}>
-              <td className="w-2/3 border-r border-r-black pr-2">
-                {item.name}
-              </td>
-              <td className="w-1/3 font-bold">{item.value}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <DashedLine />
-      <StatusHeader status={status} />
-      <table className="w-full text-center my-5">
-        <tbody>
-          {dataParsed.map((item) => (
-            <tr key={item.id}>
-              <td className="border-r border-r-black font-bold pr-2">
-                {item.value}
-              </td>
-              <td className="">
-                {item.is_check ? (
-                  <Check customClass="text-green-500 mx-auto" size="size-6" />
-                ) : (
-                  <XMark customClass="text-red-500" size="size-6" />
-                )}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <DashedLine />
-      <p className="mt-4 text-center font-bold">APÉNDICES</p>
-      <DataListForSummaryCard data={appendices} handleDetail={handleClick} />
-      <VerifiedButton isVerified={isVerified} />
-    </>
-  );
-};
-
-interface IDestinationOriginWithHandle extends IDestinationOrigin {
-  handleClick: (data: ICommonDataForDetail) => void;
-}
-
-const DestinationOrigin = ({
-  status,
-  destinationOriginKey,
-  appendixValidator,
-  appendices,
-  isVerified,
-  handleClick,
-}: IDestinationOriginWithHandle) => (
-  <>
-    <StatusHeader status={status} />
-    <DashedLine customClass="mt-4" />
-    <table className="w-full text-center my-5">
-      <tbody>
-        <tr>
-          <td className="border-r border-r-black font-bold w-1/2 pr-2">
-            Destino/Origen
-          </td>
-          <td>{destinationOriginKey}</td>
-        </tr>
-      </tbody>
-    </table>
-    <DashedLine />
-    <p className="mt-10 mb-4 font-bold text-center">Pasos</p>
-    <ul className="mb-10 flex flex-col gap-4 md:mx-10 lg:mx-0 2xl:mx-10">
-      <li className="flex gap-2 justify-between items-center">
-        <p className="size-10 py-2 px-4 rounded-full border border-black">1</p>
-        <p>Clave DESTINO/ORIGEN</p>
-        <Check customClass="text-green-500" size="size-6" />
-      </li>
-      <li className="flex gap-2 justify-between items-center">
-        <p className="size-10 py-2 px-3.5 rounded-full border border-black">
-          2
-        </p>
-        <p>Validar con {appendixValidator}</p>
-        <Check customClass="text-green-500" size="size-6" />
-      </li>
-      <li className="flex gap-2 justify-between items-center">
-        <p className="size-10 py-2 px-3.5 rounded-full border border-black">
-          3
-        </p>
-        <p>Confirmar con destino final</p>
-        <Check customClass="text-green-500" size="size-6" />
-      </li>
-    </ul>
-    <DashedLine />
-    <p className="mt-4 text-center font-bold">APÉNDICES</p>
-    <DataListForSummaryCard data={appendices} handleDetail={handleClick} />
-    <VerifiedButton isVerified={isVerified} />
-  </>
-);
-
-interface IOperationNGrossWeightWithHandle extends IOperation {
-  handleClick: (data: ICommonDataForDetail) => void;
-}
-
-const OperationNGrossWeight = ({
-  status,
-  isVerified,
-  calculations,
-  handleClick,
-}: IOperationNGrossWeightWithHandle) => {
-  const dataParsed = JSON.parse(calculations) as ICommonDataForDetail[];
-
-  return (
-    <>
-      <StatusHeader status={status} />
-      <DashedLine customClass="mt-4" />
-      <table className="w-full text-center my-5">
-        <tbody>
-          {dataParsed.map((item) => (
-            <tr key={item.id}>
-              <td className="w-1/2 border-r border-r-black font-bold pr-2">
-                {item.title}
-              </td>
-              <td className="">
-                {item.status === "CHECKED" ? (
-                  <Check customClass="text-green-500 mx-auto" size="size-6" />
-                ) : (
-                  <XMark customClass="text-red-500 mx-auto" size="size-6" />
-                )}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <DashedLine />
-      <p className="mt-4 font-bold text-center">Cálculos</p>
-      <DataListForSummaryCard data={calculations} handleDetail={handleClick} />
-      <VerifiedButton isVerified={isVerified} />
-    </>
-  );
-};
-
-interface IInvoiceDataWithHandle extends IInvoiceData {
-  handleClick: (data: ICommonDataForDetail) => void;
-}
-
-const InvoiceData = ({
-  status,
-  isVerified,
-  importerExporter,
-  supplierBuyer,
-  handleClick,
-}: IInvoiceDataWithHandle) => {
-  interface IImporterExporterDetails {
-    rfc_is_check: boolean;
-    tax_address_is_check: boolean;
-    company_name_is_check: boolean;
-    details: string;
-  }
-  const importerExporterParsed = JSON.parse(
-    importerExporter
-  ) as IImporterExporterDetails;
-  const { details: importerExporterParsedDetails } = importerExporterParsed;
-
-  interface ISupplierBuyerDetails {
-    company_name_is_check: boolean;
-    address_is_check: boolean;
-    tax_id: boolean; // tax_id_is_check
-    details: string;
-  }
-  const supplierBuyerParsed = JSON.parse(
-    supplierBuyer
-  ) as ISupplierBuyerDetails;
-  const { details: supplierBuyerParsedDetails } = supplierBuyerParsed;
-
-  return (
-    <>
-      <StatusHeader status={status} />
-      <DashedLine customClass="mt-4" />
-      <p className="mt-4 text-center font-bold">Importador/Exportador</p>
-      <table className="w-full text-center my-5">
-        <tbody>
-          <tr>
-            <td className="w-1/2 border-r border-r-black pr-2">
-              RFC Importador
-            </td>
-            <td>
-              {importerExporterParsed.rfc_is_check ? (
-                <Check customClass="text-green-500 mx-auto" size="size-6" />
-              ) : (
-                <XMark customClass="text-red-500" size="size-6" />
-              )}
-            </td>
-          </tr>
-          <tr>
-            <td className="w-1/2 border-r border-r-black pr-2">
-              Domicilio Fiscal
-            </td>
-            <td>
-              {importerExporterParsed.tax_address_is_check ? (
-                <Check customClass="text-green-500 mx-auto" size="size-6" />
-              ) : (
-                <XMark customClass="text-red-500" size="size-6" />
-              )}
-            </td>
-          </tr>
-          <tr>
-            <td className="w-1/2 border-r border-r-black pr-2">
-              Nombre/Razón Social
-            </td>
-            <td>
-              {importerExporterParsed.company_name_is_check ? (
-                <Check customClass="text-green-500 mx-auto" size="size-6" />
-              ) : (
-                <XMark customClass="text-red-500" size="size-6" />
-              )}
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <DataListForSummaryCard
-        data={JSON.stringify([importerExporterParsedDetails])}
-        handleDetail={handleClick}
-      />
-      <DashedLine />
-      <p className="mt-4 text-center font-bold">Proveedor/Comprador</p>
-      <table className="w-full text-center my-5">
-        <tbody>
-          <tr>
-            <td className="w-1/2 border-r border-r-black pr-2">
-              Nombre/Razón Social
-            </td>
-            <td>
-              {supplierBuyerParsed.company_name_is_check ? (
-                <Check customClass="text-green-500 mx-auto" size="size-6" />
-              ) : (
-                <XMark customClass="text-red-500" size="size-6" />
-              )}
-            </td>
-          </tr>
-          <tr>
-            <td className="w-1/2 border-r border-r-black pr-2">Domicilio</td>
-            <td>
-              {supplierBuyerParsed.address_is_check ? (
-                <Check customClass="text-green-500 mx-auto" size="size-6" />
-              ) : (
-                <XMark customClass="text-red-500" size="size-6" />
-              )}
-            </td>
-          </tr>
-          <tr>
-            <td className="w-1/2 border-r border-r-black pr-2">ID Fiscal</td>
-            <td>
-              {supplierBuyerParsed.tax_id ? (
-                <Check customClass="text-green-500 mx-auto" size="size-6" />
-              ) : (
-                <XMark customClass="text-red-500" size="size-6" />
-              )}
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <DataListForSummaryCard
-        data={JSON.stringify([supplierBuyerParsedDetails])}
-        handleDetail={handleClick}
-      />
-      <VerifiedButton isVerified={isVerified} />
-    </>
-  );
-};
-
-interface ITransportDataWithHandle extends ITransportData {
-  handleClick: (data: ICommonDataForDetail) => void;
-}
-
-const TransportData = ({
-  status,
-  type,
-  data,
-  isVerified,
-  handleClick,
-}: ITransportDataWithHandle) => {
-  const dataParsed = JSON.parse(data) as ICommonDataForDetail[];
-
-  return (
-    <>
-      <StatusHeader status={status} />
-      <DashedLine customClass="mt-4" />
-      <ul className="flex gap-2 items-center justify-between md:text-3xl lg:text-xl xl:text-3xl mt-4 md:mx-10 lg:mx-0 2xl:mx-10">
-        <li
-          className={cn(
-            "px-5 py-4 rounded-full border",
-            type === "LAND" ? "border-cargoClaroOrange" : "border-white"
-          )}
-        >
-          🚚
-        </li>
-        <li
-          className={cn(
-            "px-5 py-4 rounded-full border",
-            type === "AIR" ? "border-cargoClaroOrange" : "border-white"
-          )}
-        >
-          ✈️
-        </li>
-        <li
-          className={cn(
-            "px-5 py-4 rounded-full border",
-            type === "SEA" ? "border-cargoClaroOrange" : "border-white"
-          )}
-        >
-          🚢
-        </li>
-      </ul>
-      <DashedLine customClass="mt-4" />
-      <p className="mt-4 text-center font-bold">Datos del Vehículo</p>
-      <table className="w-full text-center my-5">
-        <tbody>
-          {dataParsed.map((item) => (
-            <tr key={item.id}>
-              <td className="w-1/2 border-r border-r-black font-bold pr-2">
-                {item.title}
-              </td>
-              <td className="">
-                {item.status === "CHECKED" ? (
-                  <Check customClass="text-green-500 mx-auto" size="size-6" />
-                ) : (
-                  <XMark customClass="text-red-500" size="size-6" />
-                )}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <DashedLine />
-      <DataListForSummaryCard data={data} handleDetail={handleClick} />
-      <VerifiedButton isVerified={isVerified} />
-    </>
-  );
-};
-
-interface IPartidasWithHandle extends IPartidas {
-  handleClick: (data: ICommonDataForDetail) => void;
-}
-
-const Partidas = ({
-  status,
-  isVerified,
-  taxes,
-  restrictionsRegulations,
-  handleClick,
-}: IPartidasWithHandle) => {
-  interface ITax {
-    id: number;
-    tax: number;
-    type: string;
-    isCheck: boolean;
-  }
-  const taxesParsed = JSON.parse(taxes) as ITax[];
-  const restrictionsRegulationsParsed = JSON.parse(
-    restrictionsRegulations
-  ) as ICommonDataForDetail[];
-
-  console.log(taxesParsed);
-
-  return (
-    <>
-      <StatusHeader status={status} />
-      <DashedLine customClass="mt-4" />
-      <p className="mt-4 text-center font-bold">Impuestos Aplicables</p>
-      <table className="w-full text-center mt-4">
-        <tbody>
-          {taxesParsed.map((tax) => (
-            <tr key={tax.id}>
-              <td className="border-r border-r-black">{tax.type}</td>
-              <td>{tax.tax > 0 ? `${tax.tax}%` : "Exento"}</td>
-              <td>
-                {tax.isCheck ? (
-                  <Check customClass="text-green-500" size="size-4" />
-                ) : (
-                  <XMark customClass="text-red-500" size="size-4" />
-                )}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <DashedLine customClass="mt-4" />
-      <p className="mt-4 text-center font-bold">
-        Restricciones y Regulaciones No Arancelarias
+      >
+        Anexo 22 {"->"} {data.context[1].origin}
       </p>
+      <SectionDivider title="Pasos de Validación" icon={<ArrowTrendingUp />} />
       <DataListForSummaryCard
-        data={JSON.stringify(restrictionsRegulationsParsed)}
+        data={data.validations}
         handleDetail={handleClick}
       />
-      <VerifiedButton isVerified={isVerified} />
+      <div className="border-t border-t-black mb-4" />
+      <VerifiedButton isVerified={data.isCorrect} />
     </>
   );
 };
+
+interface ISectionDivider {
+  title: string;
+  icon: JSX.Element;
+}
+
+const SectionDivider = ({ title, icon }: ISectionDivider) => (
+  <>
+    <DashedLine customClass="mt-4" />
+    <p className="flex gap-1 items-center justify-center font-bold py-2">
+      <span>{icon}</span>
+      {title}
+    </p>
+    <DashedLine customClass="mb-4" />
+  </>
+);
 
 interface IVerifiedButton {
   isVerified: boolean;
@@ -755,17 +242,17 @@ const VerifiedButton = ({ isVerified }: IVerifiedButton) => (
   </div>
 );
 
-const StatusHeader = ({ status }: { status: string }) => (
+const StatusHeader = ({ status }: { status: boolean }) => (
   <h2
-    title={status}
+    title={status ? "El análisis fue correcto" : "El análisis no fue correcto"}
     className={cn(
       "mt-4 px-12 py-2 rounded-full text-center border truncate",
-      status === "Validation"
+      status
         ? "bg-green-100 border-green-400"
-        : "bg-red-100 border-red-400"
+        : "bg-yellow-100 border-yellow-400"
     )}
   >
-    {status === "Validation" ? "Validación" : "Error"}
+    {status ? "Todo parece bien" : "Verificar datos"}
   </h2>
 );
 
@@ -774,46 +261,38 @@ const DashedLine = ({ customClass = "" }: { customClass?: string }) => (
 );
 
 interface IDataListForSummaryCard {
-  data: string;
-  handleDetail: (data: ICommonDataForDetail) => void;
+  data: ICustomGlossTabValidation[];
+  handleDetail: (data: ICustomGlossTabValidation) => void;
 }
 
 const DataListForSummaryCard = ({
   data,
   handleDetail,
 }: IDataListForSummaryCard) => {
-  const parsedData = JSON.parse(data) as ICommonDataForDetail[];
-
   return (
     <ul className="my-4 flex flex-col gap-4 max-h-[300px] overflow-y-auto overflow-x-hidden">
-      {parsedData.map((item) => (
+      {data.map((item) => (
         <li
           key={item.id}
           onClick={() => handleDetail(item)}
           className={cn(
             "flex flex-col sm:flex-row lg:flex-col xl:flex-row items-center justify-between gap-2 rounded-lg p-2 border text-sm group cursor-pointer",
-            item.status === "CHECKED"
+            item.isCorrect
               ? "bg-green-100/50 hover:bg-green-100/80 border-green-500 text-green-500"
-              : item.status === "WARNING"
-              ? "bg-yellow-100/50 hover:bg-yellow-100/80 border-yellow-500 text-yellow-500"
-              : "bg-red-100/50 hover:bg-red-100/80 border-red-500 text-red-500"
+              : "bg-yellow-100/50 hover:bg-yellow-100/80 border-yellow-500 text-yellow-500"
           )}
         >
-          {item.status === "CHECKED" ? (
+          {item.isCorrect ? (
             <span>
               <Check />
             </span>
-          ) : item.status === "WARNING" ? (
+          ) : (
             <span>
               <ExclamationTriangle />
             </span>
-          ) : (
-            <span>
-              <XMark />
-            </span>
           )}
           <p className="text-black font-semibold">
-            {item.title + ": "}
+            {item.name + ": "}
             <span className="font-normal">{item.description}</span>
           </p>
           <span className="text-black p-1 rounded-full border-2 border-black group-hover:animate-pulse animate-infinite">

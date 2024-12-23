@@ -4,14 +4,12 @@ import type {
   CustomGloss,
   CustomGlossFile,
   CustomGlossAlert,
-  CustomGlossOperation,
-  CustomGlossGrossWeight,
-  CustomGlossPedimentNum,
-  CustomGlossInvoiceData,
-  CustomGlossTransportData,
-  CustomGlossOperationType,
-  CustomGlossCertification,
-  CustomGlossDestinationOrigin,
+  CustomGlossTab,
+  CustomGlossTabContext,
+  CustomGlossTabContextData,
+  CustomGlossTabValidationStepActionToTake,
+  CustomGlossTabValidationStepResources,
+  CustomGlossTabValidationStep,
 } from "@prisma/client";
 
 export interface IUser extends User {
@@ -36,14 +34,22 @@ export interface ICustomGloss extends CustomGloss {
   // custom: ICustom;
   files: CustomGlossFile[];
   alerts: CustomGlossAlert[];
-  pedimentNum: CustomGlossPedimentNum;
-  operationType: CustomGlossOperationType;
-  destinationOrigin: CustomGlossDestinationOrigin;
-  operation: CustomGlossOperation;
-  grossWeight: CustomGlossGrossWeight;
-  invoiceData: CustomGlossInvoiceData;
-  transportData: CustomGlossTransportData;
-  certification: CustomGlossCertification;
+  tabs: ICustomGlossTab[];
+}
+
+export interface ICustomGlossTab extends CustomGlossTab {
+  context: ICustomGlossTabContext[];
+  validations: ICustomGlossTabValidation[];
+}
+
+export interface ICustomGlossTabContext extends CustomGlossTabContext {
+  data: CustomGlossTabContextData[];
+}
+
+export interface ICustomGlossTabValidation
+  extends CustomGlossTabValidationStep {
+  resources: CustomGlossTabValidationStepResources[];
+  actionsToTake: CustomGlossTabValidationStepActionToTake[];
 }
 
 export interface ISharedState {

@@ -64,15 +64,7 @@ model CustomGloss {
   // custom   Custom @relation(fields: [customId], references: [id], onDelete: Cascade)
   // customId String
 
-  pedimentNum       CustomGlossPedimentNum?
-  operationType     CustomGlossOperationType?
-  destinationOrigin CustomGlossDestinationOrigin?
-  operation         CustomGlossOperation?
-  grossWeight       CustomGlossGrossWeight?
-  invoiceData       CustomGlossInvoiceData?
-  transportData     CustomGlossTransportData?
-  certification     CustomGlossCertification?
-
+  tabs   CustomGlossTab[]
   files  CustomGlossFile[]
   alerts CustomGlossAlert[]
 
@@ -113,135 +105,89 @@ model CustomGlossFile {
   @@id([id, customGlossId])
 }
 
-model CustomGlossPedimentNum {
-  id         Int     @default(autoincrement())
-  number     BigInt
-  status     String
-  anio       Int
-  isVerified Boolean @default(false)
+model CustomGlossTab {
+  id          String  @id @default(uuid())
+  name        String
+  isCorrect   Boolean
+  fullContext String
+  isVerified  Boolean @default(false)
 
-  customGloss   CustomGloss @relation(fields: [customGlossId], references: [id], onDelete: Cascade)
-  customGlossId String      @unique
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@id([id, customGlossId])
-}
-
-model CustomGlossOperationType {
-  id         Int     @default(autoincrement())
-  status     String
-  data       String
-  appendices String
-  isVerified Boolean @default(false)
-
-  customGloss   CustomGloss @relation(fields: [customGlossId], references: [id], onDelete: Cascade)
-  customGlossId String      @unique
+  context       CustomGlossTabContext[]
+  validations   CustomGlossTabValidationStep[]
+  customGloss   CustomGloss                    @relation(fields: [customGlossId], references: [id], onDelete: Cascade)
+  customGlossId String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@id([id, customGlossId])
+  @@unique([name, customGlossId])
 }
 
-model CustomGlossDestinationOrigin {
-  id                   Int     @default(autoincrement())
-  status               String
-  destinationOriginKey String
-  appendixValidator    String
-  appendices           String
-  isVerified           Boolean @default(false)
+enum CustomGlossTabContextType {
+  PROVIDED
+  EXTERNAL
+}
 
-  customGloss   CustomGloss @relation(fields: [customGlossId], references: [id], onDelete: Cascade)
-  customGlossId String      @unique
+model CustomGlossTabContext {
+  id     Int                       @id @default(autoincrement())
+  type   CustomGlossTabContextType
+  origin String
+
+  data             CustomGlossTabContextData[]
+  customGlossTab   CustomGlossTab              @relation(fields: [customGlossTabId], references: [id], onDelete: Cascade)
+  customGlossTabId String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  @@id([id, customGlossId])
 }
 
-model CustomGlossOperation {
-  id           Int     @default(autoincrement())
-  status       String
-  calculations String
-  isVerified   Boolean @default(false)
+model CustomGlossTabContextData {
+  id    Int    @id @default(autoincrement())
+  name  String
+  value String
 
-  customGloss   CustomGloss @relation(fields: [customGlossId], references: [id], onDelete: Cascade)
-  customGlossId String      @unique
+  customGlossTabContext   CustomGlossTabContext @relation(fields: [customGlossTabContextId], references: [id], onDelete: Cascade)
+  customGlossTabContextId Int
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  @@id([id, customGlossId])
 }
 
-model CustomGlossGrossWeight {
-  id           Int     @default(autoincrement())
-  status       String
-  calculations String
-  isVerified   Boolean @default(false)
+model CustomGlossTabValidationStep {
+  id          Int     @id @default(autoincrement())
+  name        String
+  description String
+  llmAnalysis String
+  isCorrect   Boolean
+  summary     String
 
-  customGloss   CustomGloss @relation(fields: [customGlossId], references: [id], onDelete: Cascade)
-  customGlossId String      @unique
+  resources        CustomGlossTabValidationStepResources[]
+  actionsToTake    CustomGlossTabValidationStepActionToTake[]
+  customGlossTab   CustomGlossTab                             @relation(fields: [customGlossTabId], references: [id], onDelete: Cascade)
+  customGlossTabId String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  @@id([id, customGlossId])
 }
 
-model CustomGlossInvoiceData {
-  id               Int     @default(autoincrement())
-  status           String
-  importerExporter String
-  supplierBuyer    String
-  isVerified       Boolean @default(false)
+model CustomGlossTabValidationStepActionToTake {
+  id          Int    @id @default(autoincrement())
+  description String
 
-  customGloss   CustomGloss @relation(fields: [customGlossId], references: [id], onDelete: Cascade)
-  customGlossId String      @unique
+  customGlossTabValidationStep   CustomGlossTabValidationStep @relation(fields: [customGlossTabValidationStepId], references: [id], onDelete: Cascade)
+  customGlossTabValidationStepId Int
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  @@id([id, customGlossId])
 }
 
-enum CustomGlossTransportType {
-  AIR
-  SEA
-  LAND
-}
+model CustomGlossTabValidationStepResources {
+  id   Int    @id @default(autoincrement())
+  link String
 
-model CustomGlossTransportData {
-  id         Int                      @default(autoincrement())
-  status     String
-  type       CustomGlossTransportType
-  data       String
-  isVerified Boolean                  @default(false)
-
-  customGloss   CustomGloss @relation(fields: [customGlossId], references: [id], onDelete: Cascade)
-  customGlossId String      @unique
+  customGlossTabValidationStep   CustomGlossTabValidationStep @relation(fields: [customGlossTabValidationStepId], references: [id], onDelete: Cascade)
+  customGlossTabValidationStepId Int
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  @@id([id, customGlossId])
-}
-
-model CustomGlossCertification {
-  id                      Int     @default(autoincrement())
-  status                  String
-  taxes                   String
-  restrictionsRegulations String
-  isVerified              Boolean @default(false)
-
-  customGloss   CustomGloss @relation(fields: [customGlossId], references: [id], onDelete: Cascade)
-  customGlossId String      @unique
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@id([id, customGlossId])
 }

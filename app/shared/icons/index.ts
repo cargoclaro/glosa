@@ -20,8 +20,10 @@ import LeftChevron from "./LeftChevron";
 import RightChevron from "./RightChevron";
 import ArrowsUpDown from "./ArrowsUpDown";
 import CalendarDays from "./CalendarDays";
+import DocMagniGlass from "./DocMagniGlass";
 import DoorArrowRight from "./DoorArrowRight";
 import CurrencyDollar from "./CurrencyDollar";
+import ArrowTrendingUp from "./ArrowTrendingUp";
 import LeftDoubleChevron from "./LeftDoubleChevron";
 import RightDoubleChevron from "./RightDoubleChevron";
 import ExclamationTriangle from "./ExclamationTriangle";
@@ -50,8 +52,10 @@ export {
   ArrowsUpDown,
   RightChevron,
   CalendarDays,
+  DocMagniGlass,
   DoorArrowRight,
   CurrencyDollar,
+  ArrowTrendingUp,
   LeftDoubleChevron,
   RightDoubleChevron,
   ExclamationTriangle,

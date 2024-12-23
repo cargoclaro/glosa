@@ -22,14 +22,21 @@ export async function read({ id, userId, recent }: IRead) {
   const globalInclude = {
     files: true,
     alerts: true,
-    pedimentNum: true,
-    operationType: true,
-    destinationOrigin: true,
-    operation: true,
-    grossWeight: true,
-    invoiceData: true,
-    transportData: true,
-    certification: true,
+    tabs: {
+      include: {
+        context: {
+          include: {
+            data: true,
+          },
+        },
+        validations: {
+          include: {
+            resources: true,
+            actionsToTake: true,
+          },
+        },
+      },
+    },
   };
 
   if (id && userId) {

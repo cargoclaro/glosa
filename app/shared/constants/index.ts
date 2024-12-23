@@ -4,68 +4,212 @@ export const INITIAL_STATE_RESPONSE = {
   errors: {},
 };
 
-export const GLOSS_ANALYSIS_TABS = [
-  { id: "pedimentNum", title: "Num. Pedimento" },
-  { id: "operationType", title: "Tipo de Operación" },
-  { id: "destinationOrigin", title: "Destino/Origen" },
-  { id: "operation", title: "Operación" },
-  { id: "grossWeight", title: "Peso Bruto" },
-  { id: "invoiceData", title: "Datos de Factura" },
-  { id: "transportData", title: "Datos de Transporte" },
-  { id: "certification", title: "Partidas" },
-];
-
 export const DUMP_GLOSS_FOR_CREATION = {
   summary: "Custom Gloss Example Summary",
   timeSaved: 12.5,
   moneySaved: 3000.75,
   importerName: "Importer S.A.",
-  pedimentNum: {
-    number: 12345,
-    status: "Validation",
-    anio: 2024,
-  },
-  operationType: {
-    status: "Validation",
-    data: '[{"id": 1,"name":"Tipo de Operación", "value": "IMP", "is_check": true}]',
-    appendices:
-      '[{"id": 1, "title": "APENDICE 2", "description": "(justificacion del llm)", "status": "CHECKED", "result": "Cumplimiento Condicional", "comparisons": "[{\\"id\\": 1, \\"title\\": \\"Descripción del Producto (Ficha Técnica)\\", \\"description\\": \\"⚠️ Cumple parcialmente - El producto está correctamente descrito con nombre, marca, y modelo, **pero tiene una dimensión de 3mm, lo que no lo exenta de la norma**.\\", \\"links\\": \\"[(Ver Artículo 6.1 - Descripción técnica obligatoria para productos mayores o iguales a 3mm)](https://google.com) [(Ver Ficha Técnica - Sección de Dimensiones)](https://bing.com)\\"}]", "actions_to_take": "[{\\"id\\": 1, \\"description\\": \\"Cumplimiento Obligatorio: El producto no está exento y debe cumplir con la NOM-024-SCFI-2013. **Se ha indicado con el identificador EN en el sistema para reflejar esta obligación**.\\"}]", "summary": "(sin especificar)"}]',
-  },
-  destinationOrigin: {
-    status: "Validation",
-    destinationOriginKey: "9",
-    appendixValidator: "Apéndice 15",
-    appendices:
-      '[{"id": 1,"title":"APENDICE 2", "description": "(justificacion del llm)", "status": "CHECKED", "result": "Cumplimiento Condicional", "comparisons": "[{\\"id\\": 1, \\"title\\": \\"Descripción del Producto (Ficha Técnica)\\",\\"description\\": \\"⚠️ Cumple parcialmente - El producto está correctamente descrito con nombre, marca, y modelo, **pero tiene una dimensión de 3mm, lo que no lo exenta de la norma**.\\", \\"links\\": \\"[(Ver Artículo 6.1 - Descripción técnica obligatoria para productos mayores o iguales a 3mm)](https://google.com) [(Ver Ficha Técnica - Sección de Dimensiones)](https://bing.com)\\"}]", "actions_to_take": "[{\\"id\\": 1, \\"description\\": \\"Cumplimiento Obligatorio: El producto no está exento y debe cumplir con la NOM-024-SCFI-2013. **Se ha indicado con el identificador EN en el sistema para reflejar esta obligación**.\\"}]", "summary": "(sin especificar)"}]',
-  },
-  operation: {
-    status: "Validation",
-    calculations:
-      '[{"id": 1,"title":"Fecha de Entrada", "description": "(justificacion del llm)", "status": "CHECKED", "result": "(sin especificar)", "comparisons": "[{\\"id\\": 1, \\"title\\": \\"Descripción del Producto (Ficha Técnica)\\",\\"description\\": \\"⚠️ Cumple parcialmente - El producto está correctamente descrito con nombre, marca, y modelo, **pero tiene una dimensión de 3mm, lo que no lo exenta de la norma**.\\", \\"links\\": \\"[(Ver Artículo 6.1 - Descripción técnica obligatoria para productos mayores o iguales a 3mm)](https://google.com) [(Ver Ficha Técnica - Sección de Dimensiones)](https://bing.com)\\"}]", "actions_to_take": "[{\\"id\\": 1, \\"description\\": \\"Cumplimiento Obligatorio: El producto no está exento y debe cumplir con la NOM-024-SCFI-2013. **Se ha indicado con el identificador EN en el sistema para reflejar esta obligación**.\\"}]", "summary": "(sin especificar)"}]',
-  },
-  grossWeight: {
-    status: "Validation",
-    calculations:
-      '[{"id": 1,"title":"Peso Neto Pedimento", "description": "(justificacion del llm)", "status": "CHECKED", "result": "(sin especificar)", "comparisons": "[{\\"id\\": 1, \\"title\\": \\"Descripción del Producto (Ficha Técnica)\\",\\"description\\": \\"⚠️ Cumple parcialmente - El producto está correctamente descrito con nombre, marca, y modelo, **pero tiene una dimensión de 3mm, lo que no lo exenta de la norma**.\\", \\"links\\": \\"[(Ver Artículo 6.1 - Descripción técnica obligatoria para productos mayores o iguales a 3mm)](https://google.com) [(Ver Ficha Técnica - Sección de Dimensiones)](https://bing.com)\\"}]", "actions_to_take": "[{\\"id\\": 1, \\"description\\": \\"Cumplimiento Obligatorio: El producto no está exento y debe cumplir con la NOM-024-SCFI-2013. **Se ha indicado con el identificador EN en el sistema para reflejar esta obligación**.\\"}]", "summary": "(sin especificar)"}]',
-  },
-  invoiceData: {
-    status: "Validation",
-    importerExporter:
-      '{"rfc_is_check": true, "tax_address_is_check": true, "company_name_is_check": true, "details": "{\\"id\\": 1, \\"title\\": \\"Importador/Exportador\\", \\"description\\": \\"(justificacion del llm)\\", \\"status\\": \\"CHECKED\\", \\"result\\": \\"(sin especificar)\\", \\"comparisons\\": \\"[{\\\\\\"id\\\\\\": 1, \\\\\\"title\\\\\\": \\\\\\"Descripción del Producto (Ficha Técnica)\\\\\\", \\\\\\"description\\\\\\": \\\\\\"⚠️ Cumple parcialmente - El producto está correctamente descrito con nombre, marca, y modelo, **pero tiene una dimensión de 3mm, lo que no lo exenta de la norma**.\\\\\\", \\\\\\"links\\\\\\": \\\\\\"[(Ver Artículo 6.1 - Descripción técnica obligatoria para productos mayores o iguales a 3mm)](https://google.com) [(Ver Ficha Técnica - Sección de Dimensiones)](https://bing.com)\\\\\\"}]\\", \\"actions_to_take\\": \\"[{\\\\\\"id\\\\\\": 1, \\\\\\"description\\\\\\": \\\\\\"Cumplimiento Obligatorio: El producto no está exento y debe cumplir con la NOM-024-SCFI-2013. **Se ha indicado con el identificador EN en el sistema para reflejar esta obligación**.\\\\\\"}]\\", \\"summary\\": \\"(sin especificar)\\"}"}',
-    supplierBuyer:
-      '{"company_name_is_check": true, "address_is_check": true, "tax_id": true, "details": "{\\"id\\": 1, \\"title\\": \\"Proveedor/Comprador\\", \\"description\\": \\"(justificacion del llm)\\", \\"status\\": \\"CHECKED\\", \\"result\\": \\"(sin especificar)\\", \\"comparisons\\": \\"[{\\\\\\"id\\\\\\": 1, \\\\\\"title\\\\\\": \\\\\\"Descripción del Producto (Ficha Técnica)\\\\\\",\\\\\\"description\\\\\\": \\\\\\"⚠️ Cumple parcialmente - El producto está correctamente descrito con nombre, marca, y modelo, **pero tiene una dimensión de 3mm, lo que no lo exenta de la norma**.\\\\\\", \\\\\\"links\\\\\\": \\\\\\"[(Ver Artículo 6.1 - Descripción técnica obligatoria para productos mayores o iguales a 3mm)](https://google.com) [(Ver Ficha Técnica - Sección de Dimensiones)](https://bing.com)\\\\\\"}]\\", \\"actions_to_take\\": \\"[{\\\\\\"id\\\\\\": 1, \\\\\\"description\\\\\\": \\\\\\"Cumplimiento Obligatorio: El producto no está exento y debe cumplir con la NOM-024-SCFI-2013. **Se ha indicado con el identificador EN en el sistema para reflejar esta obligación**.\\\\\\"}]\\", \\"summary\\": \\"(sin especificar)\\"}"}',
-  },
-  transportData: {
-    status: "Validation",
-    type: "LAND",
-    data: '[{"id": 1,"title":"Medio de Transporte", "description": "(justificacion del llm)", "status": "CHECKED", "result": "(sin especificar)", "comparisons": "[{\\"id\\": 1, \\"title\\": \\"Descripción del Producto (Ficha Técnica)\\",\\"description\\": \\"⚠️ Cumple parcialmente - El producto está correctamente descrito con nombre, marca, y modelo, **pero tiene una dimensión de 3mm, lo que no lo exenta de la norma**.\\", \\"links\\": \\"[(Ver Artículo 6.1 - Descripción técnica obligatoria para productos mayores o iguales a 3mm)](https://google.com) [(Ver Ficha Técnica - Sección de Dimensiones)](https://bing.com)\\"}]", "actions_to_take": "[{\\"id\\": 1, \\"description\\": \\"Cumplimiento Obligatorio: El producto no está exento y debe cumplir con la NOM-024-SCFI-2013. **Se ha indicado con el identificador EN en el sistema para reflejar esta obligación**.\\"}]", "summary": "(sin especificar)"}]',
-  },
-  certification: {
-    status: "Validation",
-    taxes: '[{"id": 1,"tax":16, "type": "IVA", "is_check": true}]',
-    restrictionsRegulations:
-      '[{"id": 1,"title":"(NOM-024-SCFI-2013)", "description": "Se requiere etiquetado, a menos que...", "status": "WARNING", "result": "Cumplimiento Obligatorio", "comparisons": "[{\\"id\\": 1, \\"title\\": \\"Descripción del Producto (Ficha Técnica)\\",\\"description\\": \\"⚠️ Cumple parcialmente - El producto está correctamente descrito con nombre, marca, y modelo, **pero tiene una dimensión de 3mm, lo que no lo exenta de la norma**.\\", \\"links\\": \\"[(Ver Artículo 6.1 - Descripción técnica obligatoria para productos mayores o iguales a 3mm)](https://google.com) [(Ver Ficha Técnica - Sección de Dimensiones)](https://bing.com)\\"}]", "actions_to_take": "[{\\"id\\": 1, \\"description\\": \\"Cumplimiento Obligatorio: El producto no está exento y debe cumplir con la NOM-024-SCFI-2013. **Se ha indicado con el identificador EN en el sistema para reflejar esta obligación**.\\"}]", "summary": "(sin especificar)"}]',
-  },
+  tabs: [
+    {
+      name: "Número de Pedimento",
+      isCorrect: false,
+      fullContext: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      context: [
+        {
+          type: "PROVIDED",
+          origin: "Pedimento",
+          data: [
+            {
+              name: "Número de pedimento",
+              value: "123456789012345",
+            },
+            {
+              name: "Año del pedimento",
+              value: "23",
+            },
+            {
+              name: "Año actual",
+              value: "2024",
+            },
+          ],
+        },
+        {
+          type: "EXTERNAL",
+          origin: "Apéndice 15",
+          data: [
+            {
+              name: "Claves de destino válidas",
+              value: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+            },
+          ],
+        },
+      ],
+      validations: [
+        {
+          name: "Longitud",
+          description: "El número de pedimento debe tener 15 dígitos",
+          llmAnalysis:
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+          isCorrect: true,
+          summary: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+          actionsToTake: [
+            {
+              description:
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+            },
+          ],
+          resources: [
+            {
+              link: "[Reglamento de la Ley Aduanera](https://www.diputados.gob.mx/LeyesBiblio/regley/Reg_LAdua.pdf)",
+            },
+          ],
+        },
+        {
+          name: "Año del pedimento",
+          description:
+            "El año del pedimento (dígitos 3 y 4) debe ser igual al año actual",
+          llmAnalysis:
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+          isCorrect: false,
+          summary: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+          actionsToTake: [
+            {
+              description:
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+            },
+          ],
+          resources: [
+            {
+              link: "[Reglamento de la Ley Aduanera](https://www.diputados.gob.mx/LeyesBiblio/regley/Reg_LAdua.pdf)",
+            },
+          ],
+        },
+      ],
+    },
+    {
+      name: "Tipo de Operación",
+      isCorrect: false,
+      fullContext: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      context: [
+        {
+          type: "PROVIDED",
+          origin: "Pedimento",
+          data: [
+            {
+              name: "Tipo de operación",
+              value: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+            },
+          ],
+        },
+        {
+          type: "EXTERNAL",
+          origin: "Apéndice 15",
+          data: [
+            {
+              name: "Claves de destino válidas",
+              value: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+            },
+          ],
+        },
+      ],
+      validations: [
+        {
+          name: "Tipo de operación",
+          description: "El tipo de operación debe ser válido",
+          llmAnalysis:
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+          isCorrect: true,
+          summary: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+          actionsToTake: [
+            {
+              description:
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+            },
+          ],
+          resources: [
+            {
+              link: "[Reglamento de la Ley Aduanera](https://www.diputados.gob.mx/LeyesBiblio/regley/Reg_LAdua.pdf)",
+            },
+          ],
+        },
+      ],
+    },
+    {
+      name: "Destino/Origen",
+      isCorrect: false,
+      fullContext: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      context: [
+        {
+          type: "PROVIDED",
+          origin: "Pedimento",
+          data: [
+            {
+              name: "Clave de destino",
+              value: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+            },
+            {
+              name: "Clave de origen",
+              value: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+            },
+          ],
+        },
+        {
+          type: "EXTERNAL",
+          origin: "Apéndice 15",
+          data: [
+            {
+              name: "Claves de destino válidas",
+              value: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+            },
+            {
+              name: "Claves de origen válidas",
+              value: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+            },
+          ],
+        },
+      ],
+      validations: [
+        {
+          name: "Clave de destino",
+          description: "La clave de destino debe ser válida",
+          llmAnalysis:
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+          isCorrect: true,
+          summary: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+          actionsToTake: [
+            {
+              description:
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+            },
+          ],
+          resources: [
+            {
+              link: "[Reglamento de la Ley Aduanera](https://www.diputados.gob.mx/LeyesBiblio/regley/Reg_LAdua.pdf)",
+            },
+          ],
+        },
+        {
+          name: "Clave de origen",
+          description: "La clave de origen debe ser válida",
+          llmAnalysis:
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+          isCorrect: false,
+          summary: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+          actionsToTake: [
+            {
+              description:
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+            },
+          ],
+          resources: [
+            {
+              link: "[Reglamento de la Ley Aduanera](https://www.diputados.gob.mx/LeyesBiblio/regley/Reg_LAdua.pdf)",
+            },
+          ],
+        },
+      ],
+    },
+  ],
   files: [
     {
       name: "BL.pdf",
