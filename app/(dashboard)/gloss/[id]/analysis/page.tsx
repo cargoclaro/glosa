@@ -1,15 +1,14 @@
-import { getMyAnalysisById } from "@/app/shared/services/customGloss/controller";
+import { notFound } from "next/navigation";
 import {
   // Alerts,
   Analysis,
-  // Pediment,
+  Pediment,
   Documents,
   SavedNFinish,
 } from "./components";
+import { getMyAnalysisById } from "@/app/shared/services/customGloss/controller";
 import type { Metadata } from "next";
-import { ICustomGloss } from "@/app/shared/interfaces";
-import { notFound } from "next/navigation";
-import NewPdf from "./components/NewPdf";
+import type { ICustomGloss } from "@/app/shared/interfaces";
 
 type IDynamicMetadata = {
   params: Promise<{ id: string }>;
@@ -40,17 +39,11 @@ const GlossIdAnalysis = async ({
         <Documents data={customGloss.files} />
       </section>
       <section className="sm:col-span-2">
-        {/* <Pediment
-          document={
-            customGloss.files.find((doc) =>
-              doc.name === "PEDIMENTO" ? doc : null
-            )?.url || ""
-          }
-        /> */}
-        <NewPdf
+        <Pediment
           // document={
-          //   customGloss.files.find((doc) => (doc.name === "PEDIMENTO" ? doc : null))
-          //     ?.url || ""
+          //   customGloss.files.find((doc) =>
+          //     doc.name === "PEDIMENTO" ? doc : null
+          //   )?.url || ""
           // }
           document="/PEDIMENTO.pdf"
         />
