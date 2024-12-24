@@ -1,10 +1,10 @@
 "use client";
 
 import Detailed from "./Detailed";
-import { useRef, useState } from "react";
 import { cn } from "@/app/shared/utils/cn";
 import { useModal } from "@/app/shared/hooks";
 import { GenericCard, Modal } from "@/app/shared/components";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   Check,
   RightArrow,
@@ -30,7 +30,12 @@ export interface ICommonDataForDetail {
   actions_to_take: string;
 }
 
-const Analysis = ({ tabs }: { tabs: ICustomGlossTab[] }) => {
+interface IAnalysis {
+  tabs: ICustomGlossTab[];
+  tabSelectedFromDocument: string;
+}
+
+const Analysis = ({ tabs, tabSelectedFromDocument }: IAnalysis) => {
   const scrollContainerRef = useRef<HTMLUListElement>(null);
   const { isOpen, openMenu, closeMenu, menuRef } = useModal(false);
   const [tabSelected, setTabSelected] = useState("Número de Pedimento");
@@ -78,11 +83,32 @@ const Analysis = ({ tabs }: { tabs: ICustomGlossTab[] }) => {
     scrollToTab(prevIndex);
   };
 
-  const handleTabClick = (id: string) => {
-    const tabIndex = tabs.findIndex((tab) => tab.name === id);
-    setTabSelected(id);
-    scrollToTab(tabIndex);
-  };
+  const handleTabClick = useCallback(
+    (id: string) => {
+      const tabIndex = tabs.findIndex((tab) => tab.name === id);
+      setTabSelected(id);
+      scrollToTab(tabIndex);
+    },
+    [tabs]
+  );
+
+  useEffect(() => {
+    if (tabSelectedFromDocument !== "") {
+      if (tabSelectedFromDocument === "NUM. PEDIMENTO:") {
+        handleTabClick("Número de Pedimento");
+      } else if (
+        tabSelectedFromDocument === "T. OPER" ||
+        tabSelectedFromDocument === "TIPO OPER" ||
+        tabSelectedFromDocument === "TIPO OPER:"
+      ) {
+        handleTabClick("Tipo de Operación");
+      } else if (tabSelectedFromDocument === "DESTINO:") {
+        handleTabClick("Destino/Origen");
+      } else {
+        handleTabClick(tabSelectedFromDocument);
+      }
+    }
+  }, [tabSelectedFromDocument, handleTabClick]);
 
   return (
     <>

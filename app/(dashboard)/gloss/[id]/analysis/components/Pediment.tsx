@@ -11,10 +11,10 @@ pdfjs.GlobalWorkerOptions.workerSrc = "/pdf.worker.mjs";
 
 interface IPediment {
   document: string;
-  onClick?: () => void;
+  onClick: (tab: string) => void;
 }
 
-const Pediment = ({ document }: IPediment) => {
+const Pediment = ({ document, onClick }: IPediment) => {
   const [numPages, setNumPages] = useState(0);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [currentPage, setCurrentPage] = useState(1);
@@ -78,11 +78,15 @@ const Pediment = ({ document }: IPediment) => {
         "NUM. PEDIMENTO:",
         "T. OPER",
         "TIPO OPER",
+        "TIPO OPER:",
         "DESTINO:",
+        "TIPO CAMBIO:",
         "PESO BRUTO:",
-        "PARTIDAS",
+        "VALOR DOLARES:",
         "DATOS DEL IMPORTADOR/EXPORTADOR",
+        "VAL. SEGUROS",
         "DATOS DEL PROVEEDOR O COMPRADOR",
+        "PARTIDAS",
       ]; // Palabras clave a buscar
 
       (textContent.items as TextItem[]).forEach((item) => {
@@ -91,14 +95,87 @@ const Pediment = ({ document }: IPediment) => {
           const { transform, width, height } = item;
 
           const [, , , , offsetX, offsetY] = transform;
-          const x = offsetX * scale;
-          const y = viewport.height - offsetY * scale;
-          const w = width * scale;
-          const h = height * scale;
+          const customX =
+            text === "DATOS DEL IMPORTADOR/EXPORTADOR"
+              ? -110
+              : text === "DATOS DEL PROVEEDOR O COMPRADOR"
+              ? -210
+              : text === "PARTIDAS"
+              ? -255
+              : 0;
+          const x = (offsetX + customX) * scale;
+          const customY =
+            text === "DATOS DEL IMPORTADOR/EXPORTADOR"
+              ? -60
+              : text === "VAL. SEGUROS"
+              ? -10
+              : text === "VALOR DOLARES:"
+              ? -18
+              : text === "DATOS DEL PROVEEDOR O COMPRADOR"
+              ? -30
+              : text === "PARTIDAS"
+              ? -80
+              : 0;
+          const y = viewport.height - (offsetY + customY) * scale;
+          const customW =
+            text === "NUM. PEDIMENTO:"
+              ? 85
+              : text === "T. OPER" ||
+                text === "TIPO OPER" ||
+                text === "TIPO OPER:"
+              ? 175
+              : text === "DESTINO:"
+              ? 35
+              : text === "TIPO CAMBIO:" || text === "PESO BRUTO:"
+              ? 55
+              : text === "VALOR DOLARES:"
+              ? 165
+              : text === "DATOS DEL IMPORTADOR/EXPORTADOR"
+              ? 240
+              : text === "VAL. SEGUROS"
+              ? 335
+              : text === "DATOS DEL PROVEEDOR O COMPRADOR"
+              ? 400
+              : text === "PARTIDAS"
+              ? 510
+              : 0;
+          const w = (width + customW) * scale;
+          const customH =
+            text === "DATOS DEL IMPORTADOR/EXPORTADOR"
+              ? 60
+              : text === "VAL. SEGUROS"
+              ? 10
+              : text === "VALOR DOLARES:"
+              ? 18
+              : text === "DATOS DEL PROVEEDOR O COMPRADOR"
+              ? 30
+              : text === "PARTIDAS"
+              ? 80
+              : 0;
+          const h = (height + customH) * scale;
 
-          context.strokeStyle = "red";
-          context.lineWidth = 2;
-          context.strokeRect(
+          context.fillStyle =
+            text === "NUM. PEDIMENTO:"
+              ? "rgba(214,200,233,0.6)"
+              : text === "T. OPER" ||
+                text === "TIPO OPER" ||
+                text === "TIPO OPER:"
+              ? "rgba(125,181,145,0.5)"
+              : text === "DESTINO:"
+              ? "rgba(112,182,249,0.6)"
+              : text === "TIPO CAMBIO:" ||
+                text === "VALOR DOLARES:" ||
+                text === "VAL. SEGUROS"
+              ? "rgba(236,167,148,0.6)"
+              : text === "PESO BRUTO:"
+              ? "rgba(251,231,159,0.6)"
+              : text === "DATOS DEL IMPORTADOR/EXPORTADOR" ||
+                text === "DATOS DEL PROVEEDOR O COMPRADOR"
+              ? "rgba(165,133,217,0.6)"
+              : text === "PARTIDAS"
+              ? "rgba(216,181,126,0.6)"
+              : "rgba(0,0,0,0.6)";
+          context.fillRect(
             x - buffer,
             y - h - buffer,
             w + 2 * buffer,
@@ -135,7 +212,7 @@ const Pediment = ({ document }: IPediment) => {
             mouseY >= y &&
             mouseY <= y + height
           ) {
-            alert(`Texto clicado: ${text}`);
+            onClick(text);
           }
         });
       };
@@ -148,7 +225,7 @@ const Pediment = ({ document }: IPediment) => {
     };
 
     renderPage();
-  }, [pdfDoc, currentPage]);
+  }, [pdfDoc, currentPage, onClick]);
 
   const goToNextPage = () => {
     if (currentPage < numPages) {

@@ -1,10 +1,8 @@
 import { notFound } from "next/navigation";
 import {
   // Alerts,
-  Analysis,
-  Pediment,
   Documents,
-  SavedNFinish,
+  PedimentAnalysisNFinish,
 } from "./components";
 import { getMyAnalysisById } from "@/app/shared/services/customGloss/controller";
 import type { Metadata } from "next";
@@ -38,23 +36,13 @@ const GlossIdAnalysis = async ({
         {/* <Alerts data={customGloss.alerts} /> */}
         <Documents data={customGloss.files} />
       </section>
-      <section className="sm:col-span-2">
-        <Pediment
-          // document={
-          //   customGloss.files.find((doc) =>
-          //     doc.name === "PEDIMENTO" ? doc : null
-          //   )?.url || ""
-          // }
-          document="/PEDIMENTO.pdf"
-        />
-      </section>
-      <section className="flex flex-col gap-4 col-span-1 sm:col-span-3 lg:col-span-1">
-        <Analysis tabs={customGloss.tabs} />
-        <SavedNFinish
-          glossId={customGloss.id}
-          moneySaved={customGloss.moneySaved}
-        />
-      </section>
+      <PedimentAnalysisNFinish
+        customGloss={{
+          id: customGloss.id,
+          tabs: customGloss.tabs,
+          moneySaved: customGloss.moneySaved,
+        }}
+      />
     </article>
   );
 };
