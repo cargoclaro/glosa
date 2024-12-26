@@ -105,7 +105,14 @@ const Pediment = ({ document, onClick }: IPediment) => {
               : 0;
           const x = (offsetX + customX) * scale;
           const customY =
-            text === "DATOS DEL IMPORTADOR/EXPORTADOR"
+            text === "NUM. PEDIMENTO:" && currentPage !== 1
+              ? -15
+              : (text === "T. OPER" ||
+                  text === "TIPO OPER" ||
+                  text === "TIPO OPER:") &&
+                currentPage !== 1
+              ? -15
+              : text === "DATOS DEL IMPORTADOR/EXPORTADOR"
               ? -60
               : text === "VAL. SEGUROS"
               ? -10
@@ -118,12 +125,20 @@ const Pediment = ({ document, onClick }: IPediment) => {
               : 0;
           const y = viewport.height - (offsetY + customY) * scale;
           const customW =
-            text === "NUM. PEDIMENTO:"
+            text === "NUM. PEDIMENTO:" && currentPage === 1
               ? 85
-              : text === "T. OPER" ||
-                text === "TIPO OPER" ||
-                text === "TIPO OPER:"
+              : text === "NUM. PEDIMENTO:" && currentPage !== 1
+              ? 15
+              : (text === "T. OPER" ||
+                  text === "TIPO OPER" ||
+                  text === "TIPO OPER:") &&
+                currentPage === 1
               ? 175
+              : (text === "T. OPER" ||
+                  text === "TIPO OPER" ||
+                  text === "TIPO OPER:") &&
+                currentPage !== 1
+              ? 125
               : text === "DESTINO:"
               ? 35
               : text === "TIPO CAMBIO:" || text === "PESO BRUTO:"
@@ -141,7 +156,14 @@ const Pediment = ({ document, onClick }: IPediment) => {
               : 0;
           const w = (width + customW) * scale;
           const customH =
-            text === "DATOS DEL IMPORTADOR/EXPORTADOR"
+            text === "NUM. PEDIMENTO:" && currentPage !== 1
+              ? 15
+              : (text === "T. OPER" ||
+                  text === "TIPO OPER" ||
+                  text === "TIPO OPER:") &&
+                currentPage !== 1
+              ? 15
+              : text === "DATOS DEL IMPORTADOR/EXPORTADOR"
               ? 60
               : text === "VAL. SEGUROS"
               ? 10
