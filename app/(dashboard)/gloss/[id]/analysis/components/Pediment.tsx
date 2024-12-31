@@ -77,8 +77,10 @@ const Pediment = ({ document, onClick }: IPediment) => {
       const keywords = [
         "NUM. PEDIMENTO:",
         "T. OPER",
+        "T.OPER",
         "TIPO OPER",
         "TIPO OPER:",
+        "TIPO OPER.:",
         "DESTINO:",
         "TIPO CAMBIO:",
         "PESO BRUTO:",
@@ -108,8 +110,10 @@ const Pediment = ({ document, onClick }: IPediment) => {
             text === "NUM. PEDIMENTO:" && currentPage !== 1
               ? -15
               : (text === "T. OPER" ||
+                  text === "T.OPER" ||
                   text === "TIPO OPER" ||
-                  text === "TIPO OPER:") &&
+                  text === "TIPO OPER:" ||
+                  text === "TIPO OPER.:") &&
                 currentPage !== 1
               ? -15
               : text === "DATOS DEL IMPORTADOR/EXPORTADOR"
@@ -125,18 +129,20 @@ const Pediment = ({ document, onClick }: IPediment) => {
               : 0;
           const y = viewport.height - (offsetY + customY) * scale;
           const customW =
-            text === "NUM. PEDIMENTO:" && currentPage === 1
-              ? 85
-              : text === "NUM. PEDIMENTO:" && currentPage !== 1
-              ? 15
+            text === "NUM. PEDIMENTO:"
+              ? 90
               : (text === "T. OPER" ||
+                  text === "T.OPER" ||
                   text === "TIPO OPER" ||
-                  text === "TIPO OPER:") &&
+                  text === "TIPO OPER:" ||
+                  text === "TIPO OPER.:") &&
                 currentPage === 1
               ? 175
               : (text === "T. OPER" ||
+                  text === "T.OPER" ||
                   text === "TIPO OPER" ||
-                  text === "TIPO OPER:") &&
+                  text === "TIPO OPER:" ||
+                  text === "TIPO OPER.:") &&
                 currentPage !== 1
               ? 125
               : text === "DESTINO:"
@@ -159,8 +165,10 @@ const Pediment = ({ document, onClick }: IPediment) => {
             text === "NUM. PEDIMENTO:" && currentPage !== 1
               ? 15
               : (text === "T. OPER" ||
+                  text === "T.OPER" ||
                   text === "TIPO OPER" ||
-                  text === "TIPO OPER:") &&
+                  text === "TIPO OPER:" ||
+                  text === "TIPO OPER.:") &&
                 currentPage !== 1
               ? 15
               : text === "DATOS DEL IMPORTADOR/EXPORTADOR"
@@ -180,8 +188,10 @@ const Pediment = ({ document, onClick }: IPediment) => {
             text === "NUM. PEDIMENTO:"
               ? "rgba(214,200,233,0.6)"
               : text === "T. OPER" ||
+                text === "T.OPER" ||
                 text === "TIPO OPER" ||
-                text === "TIPO OPER:"
+                text === "TIPO OPER:" ||
+                text === "TIPO OPER.:"
               ? "rgba(125,181,145,0.5)"
               : text === "DESTINO:"
               ? "rgba(112,182,249,0.6)"

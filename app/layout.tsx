@@ -4,6 +4,8 @@ import { GeistSans } from "geist/font/sans";
 import { AuthComponent, ThemeComponent } from "@/app/shared/components";
 import type { Metadata } from "next";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: {
     template: "%s | Cargo Claro",

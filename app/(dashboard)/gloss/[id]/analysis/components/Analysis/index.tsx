@@ -98,8 +98,10 @@ const Analysis = ({ tabs, tabSelectedFromDocument }: IAnalysis) => {
         handleTabClick("Número de Pedimento");
       } else if (
         tabSelectedFromDocument === "T. OPER" ||
+        tabSelectedFromDocument === "T.OPER" ||
         tabSelectedFromDocument === "TIPO OPER" ||
-        tabSelectedFromDocument === "TIPO OPER:"
+        tabSelectedFromDocument === "TIPO OPER:" ||
+        tabSelectedFromDocument === "TIPO OPER.:"
       ) {
         handleTabClick("Tipo de Operación");
       } else if (tabSelectedFromDocument === "DESTINO:") {

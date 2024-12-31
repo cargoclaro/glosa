@@ -27,7 +27,7 @@ const PedimentAnalysisNFinish = ({
       <section className="sm:col-span-2">
         <Pediment
           onClick={handleFunction}
-          document="/PEDIMENTO.pdf"
+          document="/ANOTHER_PEDIMENT4.pdf"
           // document={
           //   customGloss.files.find((doc) =>
           //     doc.name === "PEDIMENTO" ? doc : null
