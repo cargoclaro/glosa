@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
 export function middleware(request: NextRequest) {
-  const session = request.cookies.get("session")?.value;
+  const session = request.cookies.get("glosa-session")?.value;
   const pathname = request.nextUrl.pathname;
 
   if (pathname === "/")

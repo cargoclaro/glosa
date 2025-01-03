@@ -107,7 +107,7 @@ export async function register(formData: FormData) {
 }
 
 export async function logout() {
-  cookies().set("session", "", { expires: new Date(0) });
+  cookies().set("glosa-session", "", { expires: new Date(0) });
   revalidatePath("/sign-in");
   redirect("/sign-in");
 }

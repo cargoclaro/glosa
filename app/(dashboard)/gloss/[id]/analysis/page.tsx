@@ -40,6 +40,7 @@ const GlossIdAnalysis = async ({
         customGloss={{
           id: customGloss.id,
           tabs: customGloss.tabs,
+          files: customGloss.files,
           moneySaved: customGloss.moneySaved,
         }}
       />

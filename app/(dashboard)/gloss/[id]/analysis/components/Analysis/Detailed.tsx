@@ -1,5 +1,5 @@
-import type { ICustomGlossTabValidation } from "@/app/shared/interfaces";
 import ReactMarkdown from "react-markdown";
+import type { ICustomGlossTabValidation } from "@/app/shared/interfaces";
 
 interface IResource {
   id: number;
@@ -68,7 +68,6 @@ const Detailed = ({ data }: { data: ICustomGlossTabValidation }) => {
             )}
           </ol>
         </div>
-        <CustomText text={data.summary} />
       </div>
     </>
   );

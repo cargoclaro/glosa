@@ -3,56 +3,13 @@
 // import { randomUUID } from "crypto";
 import { create, read } from "./model";
 import { isAuthenticated } from "../auth";
-import { DUMP_GLOSS_FOR_CREATION } from "@/app/shared/constants";
-
-// import { ANEXO_22_FIELDS_REQUESTS } from "@/app/constants";
+import { VICTOR_GLOSS_EXAMPLE } from "@/app/shared/constants";
 
 export async function analysis(formData: FormData) {
   console.log("analysis", formData);
   try {
-    // const responses = await Promise.all(
-    //   ANEXO_22_FIELDS_REQUESTS.map((req) => fetch(req.url, req.options))
-    // );
-
-    // const allOk = responses.every((res) => res.ok);
-    // if (!allOk) {
-    //   return {
-    //     success: false,
-    //     message: "Ocurrió un error al obtener los campos del Anexo 22",
-    //   };
-    // }
-
-    // const data = await Promise.all(responses.map((res) => res.text()));
-
-    // console.log(data);
-
-    // const pdfModifications = await fetch(
-    //   "http://localhost:3000/api/gloss/highlighting_pediment_pdf",
-    //   {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify({
-    //       data,
-    //     }),
-    //   }
-    // )
-    //   .then((res) => res.text())
-    //   .catch((error) => {
-    //     console.error(error);
-    //     return {
-    //       success: false,
-    //       message: "Ocurrió un error al modificar el PDF",
-    //     };
-    //   });
-
-    // console.log(pdfModifications);
-
     const session = await isAuthenticated();
     const user_id = session.userId as string;
-
-    // const custom_id = "3b25fce1-f969-4449-9968-dca412c022ac"; // CDMX
 
     // const query_id = randomUUID();
 
@@ -76,7 +33,7 @@ export async function analysis(formData: FormData) {
 
     // const jsonResponse = await response.json();
 
-    const jsonResponse = DUMP_GLOSS_FOR_CREATION;
+    const jsonResponse = VICTOR_GLOSS_EXAMPLE;
 
     const newCustomGloss = await create({
       data: {
@@ -108,7 +65,6 @@ export async function analysis(formData: FormData) {
                 description: validation.description,
                 llmAnalysis: validation.llmAnalysis,
                 isCorrect: validation.isCorrect,
-                summary: validation.summary,
                 resources: {
                   create: validation.resources.map((resource) => ({
                     link: resource.link,

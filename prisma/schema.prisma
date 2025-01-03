@@ -75,6 +75,7 @@ model CustomGloss {
 enum CustomGlossType {
   LOW
   HIGH
+  MEDIUM
 }
 
 model CustomGlossAlert {
@@ -109,7 +110,7 @@ model CustomGlossTab {
   id          String  @id @default(uuid())
   name        String
   isCorrect   Boolean
-  fullContext String
+  fullContext Boolean
   isVerified  Boolean @default(false)
 
   context       CustomGlossTabContext[]
@@ -159,7 +160,6 @@ model CustomGlossTabValidationStep {
   description String
   llmAnalysis String
   isCorrect   Boolean
-  summary     String
 
   resources        CustomGlossTabValidationStepResources[]
   actionsToTake    CustomGlossTabValidationStepActionToTake[]

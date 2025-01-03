@@ -25,7 +25,6 @@ export interface ICommonDataForDetail {
   status: string;
   description: string;
   result: string;
-  summary: string;
   comparisons: string;
   actions_to_take: string;
 }
@@ -38,7 +37,7 @@ interface IAnalysis {
 const Analysis = ({ tabs, tabSelectedFromDocument }: IAnalysis) => {
   const scrollContainerRef = useRef<HTMLUListElement>(null);
   const { isOpen, openMenu, closeMenu, menuRef } = useModal(false);
-  const [tabSelected, setTabSelected] = useState("Número de Pedimento");
+  const [tabSelected, setTabSelected] = useState("N° de pedimento");
 
   const [dataForDetail, setDataForDetail] = useState<ICustomGlossTabValidation>(
     {
@@ -49,7 +48,6 @@ const Analysis = ({ tabs, tabSelectedFromDocument }: IAnalysis) => {
       isCorrect: true,
       resources: [],
       actionsToTake: [],
-      summary: "",
       createdAt: new Date(),
       updatedAt: new Date(),
       customGlossTabId: "",
@@ -95,7 +93,7 @@ const Analysis = ({ tabs, tabSelectedFromDocument }: IAnalysis) => {
   useEffect(() => {
     if (tabSelectedFromDocument !== "") {
       if (tabSelectedFromDocument === "NUM. PEDIMENTO:") {
-        handleTabClick("Número de Pedimento");
+        handleTabClick("N° de pedimento");
       } else if (
         tabSelectedFromDocument === "T. OPER" ||
         tabSelectedFromDocument === "T.OPER" ||
@@ -215,12 +213,12 @@ const GenericTabComponent = ({ data, handleClick }: IGenericTabComponent) => {
       </table>
       <SectionDivider title="Fuentes" icon={<DocMagniGlass />} />
       <p
-        title={`Anexo 22 - ${data.context[1].origin}`}
+        title={`Anexo 22 - ${data.context[0].origin}`}
         className={cn(
           "mt-4 px-12 py-2 rounded-full text-center border truncate bg-purple-100 border-purple-400"
         )}
       >
-        Anexo 22 {"->"} {data.context[1].origin}
+        Anexo 22 {"->"} {data.context[0].origin}
       </p>
       <SectionDivider title="Pasos de Validación" icon={<ArrowTrendingUp />} />
       <DataListForSummaryCard

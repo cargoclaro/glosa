@@ -29,7 +29,7 @@ async function decrypt(token: string): Promise<JWTPayload> {
 export async function createUserSession(userId: string) {
   const expires = new Date(Date.now() + 1000 * 60 * 60 * 24 * 7);
   const session = await encrypt({ userId, expires });
-  cookies().set("session", session, {
+  cookies().set("glosa-session", session, {
     expires,
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
@@ -38,7 +38,7 @@ export async function createUserSession(userId: string) {
 }
 
 export async function getSession() {
-  const session = cookies().get("session")?.value;
+  const session = cookies().get("glosa-session")?.value;
   if (!session) return null;
   return await decrypt(session);
 }
