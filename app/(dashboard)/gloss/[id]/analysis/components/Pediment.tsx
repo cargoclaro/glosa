@@ -76,18 +76,27 @@ const Pediment = ({ document, onClick }: IPediment) => {
 
       const keywords = [
         "NUM. PEDIMENTO:",
+
         "T. OPER",
         "T.OPER",
         "TIPO OPER",
         "TIPO OPER:",
         "TIPO OPER.:",
+
         "DESTINO:",
+
         "TIPO CAMBIO:",
+
         "PESO BRUTO:",
+
         "VALOR DOLARES:",
+
         "DATOS DEL IMPORTADOR/EXPORTADOR",
+
         "VAL. SEGUROS",
+
         "DATOS DEL PROVEEDOR O COMPRADOR",
+
         "PARTIDAS",
       ]; // Palabras clave a buscar
 

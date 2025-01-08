@@ -126,6 +126,7 @@ model CustomGlossTab {
 
 enum CustomGlossTabContextType {
   PROVIDED
+  INFERRED
   EXTERNAL
 }
 

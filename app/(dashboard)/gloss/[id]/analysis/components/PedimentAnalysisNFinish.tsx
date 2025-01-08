@@ -8,7 +8,7 @@ interface IPedimentAnalysisNFinish {
   id: string;
   moneySaved: number;
   tabs: ICustomGlossTab[];
-  files: ICustomGloss["files"]; // THIS OPTIONAL WILL CHANGE TO REQUIRED
+  files: ICustomGloss["files"];
 }
 
 const PedimentAnalysisNFinish = ({
@@ -27,13 +27,12 @@ const PedimentAnalysisNFinish = ({
       <section className="sm:col-span-2">
         <Pediment
           onClick={handleFunction}
-          // document="https://drive.google.com/uc?export=download&id=1_MPjjVK1TgmZISo29rx5_3XkWjo1Ub1j"
           // document="/ANOTHER_PEDIMENT4.pdf"
-          document={
+          document={`https://cargo-claro-fastapi-6z19.onrender.com/proxy-file?url=${
             customGloss.files.find((doc) =>
               doc.name === "PEDIMENTO" ? doc : null
             )?.url || ""
-          }
+          }`}
         />
       </section>
       <section className="flex flex-col gap-4 col-span-1 sm:col-span-3 lg:col-span-1">

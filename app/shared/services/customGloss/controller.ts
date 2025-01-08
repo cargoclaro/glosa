@@ -1,9 +1,10 @@
 "use server";
 
-// import { randomUUID } from "crypto";
+import { randomUUID } from "crypto";
 import { create, read } from "./model";
 import { isAuthenticated } from "../auth";
-import { VICTOR_GLOSS_EXAMPLE } from "@/app/shared/constants";
+// import { VICTOR_GLOSS_EXAMPLE } from "@/app/shared/constants";
+import { ICustomGloss } from "../../interfaces";
 
 export async function analysis(formData: FormData) {
   console.log("analysis", formData);
@@ -11,29 +12,30 @@ export async function analysis(formData: FormData) {
     const session = await isAuthenticated();
     const user_id = session.userId as string;
 
-    // const query_id = randomUUID();
+    const query_id = randomUUID();
 
-    // const response = await fetch(
-    //   `https://cargo-claro-fastapi.onrender.com/receive-pdf/sandbox/${user_id}/${query_id}`,
-    //   {
-    //     method: "POST",
-    //     headers: {
-    //       Authorization: `Bearer ${process.env.GLOSS_TOKEN}`,
-    //     },
-    //     body: formData,
-    //   }
-    // );
+    const response = await fetch(
+      `https://cargo-claro-fastapi-6z19.onrender.com/receive-pdf/sandbox/${user_id}/${query_id}`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${process.env.GLOSS_TOKEN}`,
+        },
+        body: formData,
+      }
+    );
 
-    // if (!response.ok) {
-    //   return {
-    //     success: false,
-    //     message: "Ocurrió un error al enviar los documentos",
-    //   };
-    // }
+    if (!response.ok) {
+      return {
+        success: false,
+        message: "Ocurrió un error al enviar los documentos",
+      };
+    }
 
-    // const jsonResponse = await response.json();
+    const jsonResponse = (await response.json()) as ICustomGloss;
+    console.log("jsonResponse", jsonResponse);
 
-    const jsonResponse = VICTOR_GLOSS_EXAMPLE;
+    // const jsonResponse = VICTOR_GLOSS_EXAMPLE;
 
     const newCustomGloss = await create({
       data: {
