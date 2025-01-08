@@ -16,6 +16,7 @@ interface IPediment {
 
 const Pediment = ({ document, onClick }: IPediment) => {
   const [numPages, setNumPages] = useState(0);
+  const [isLoading, setIsLoading] = useState(true); // Indicador de carga
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [errorDetected, setErrorDetected] = useState(false);
@@ -23,15 +24,20 @@ const Pediment = ({ document, onClick }: IPediment) => {
   const [pdfDoc, setPdfDoc] = useState<pdfjs.PDFDocumentProxy | null>(null);
 
   useEffect(() => {
+    setIsLoading(true); // Empieza la carga del nuevo documento
     const loadingTask = pdfjs.getDocument(document);
+
     loadingTask.promise.then(
       (pdf) => {
         setPdfDoc(pdf);
         setNumPages(pdf.numPages);
+        setCurrentPage(1); // Resetea a la primera página al cambiar documento
+        setIsLoading(false); // Finaliza la carga
       },
       (reason) => {
         console.error("Error loading PDF: ", reason);
         setErrorDetected(true);
+        setIsLoading(false); // Finaliza la carga incluso si hay un error
       }
     );
   }, [document]);
@@ -279,6 +285,57 @@ const Pediment = ({ document, onClick }: IPediment) => {
       setCurrentPage((prev) => prev - 1);
     }
   };
+
+  return (
+    <GenericCard>
+      {isLoading ? (
+        <div className="flex justify-center items-center w-full h-80">
+          <p className="text-gray-500 text-center">Cargando documento...</p>
+        </div>
+      ) : errorDetected ? (
+        <div className="flex justify-center items-center w-full h-80">
+          <p className="text-red-500 text-center">
+            No se pudo cargar el documento
+          </p>
+        </div>
+      ) : (
+        <>
+          <div className="flex justify-between items-center gap-2">
+            <button
+              className={cn(
+                "rounded-full p-2",
+                currentPage <= 1
+                  ? "bg-gray-200 text-gray-500"
+                  : "bg-gray-500 text-white"
+              )}
+              // onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+              onClick={goToPrevPage}
+              disabled={currentPage <= 1}
+            >
+              <LeftChevron />
+            </button>
+            <p>
+              Página {currentPage} de {numPages}
+            </p>
+            <button
+              className={cn(
+                "rounded-full p-2",
+                currentPage >= numPages
+                  ? "bg-gray-200 text-gray-500"
+                  : "bg-gray-500 text-white"
+              )}
+              // onClick={() => setCurrentPage((prev) => Math.min(prev + 1, numPages))}
+              onClick={goToNextPage}
+              disabled={currentPage >= numPages}
+            >
+              <RightChevron />
+            </button>
+          </div>
+          <canvas ref={canvasRef} className="w-full max-w-full" />
+        </>
+      )}
+    </GenericCard>
+  );
 
   return (
     <GenericCard>
