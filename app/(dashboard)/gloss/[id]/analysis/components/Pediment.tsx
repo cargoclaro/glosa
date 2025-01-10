@@ -90,6 +90,7 @@ const Pediment = ({ document, onClick }: IPediment) => {
         "TIPO OPER.:",
 
         "DESTINO:",
+        "DESTINO/ORIGEN:",
 
         "TIPO CAMBIO:",
 
@@ -98,12 +99,15 @@ const Pediment = ({ document, onClick }: IPediment) => {
         "VALOR DOLARES:",
 
         "DATOS DEL IMPORTADOR/EXPORTADOR",
+        "DATOS DEL IMPORTADOR / EXPORTADOR",
 
         "VAL. SEGUROS",
+        "VAL.SEGUROS",
 
         "DATOS DEL PROVEEDOR O COMPRADOR",
 
         "PARTIDAS",
+        "OBSERVACIONES A NIVEL PARTIDA",
       ]; // Palabras clave a buscar
 
       (textContent.items as TextItem[]).forEach((item) => {
@@ -113,12 +117,15 @@ const Pediment = ({ document, onClick }: IPediment) => {
 
           const [, , , , offsetX, offsetY] = transform;
           const customX =
-            text === "DATOS DEL IMPORTADOR/EXPORTADOR"
+            text === "DATOS DEL IMPORTADOR/EXPORTADOR" ||
+            text === "DATOS DEL IMPORTADOR / EXPORTADOR"
               ? -110
               : text === "DATOS DEL PROVEEDOR O COMPRADOR"
               ? -210
               : text === "PARTIDAS"
               ? -255
+              : text === "OBSERVACIONES A NIVEL PARTIDA"
+              ? -135
               : 0;
           const x = (offsetX + customX) * scale;
           const customY =
@@ -131,9 +138,10 @@ const Pediment = ({ document, onClick }: IPediment) => {
                   text === "TIPO OPER.:") &&
                 currentPage !== 1
               ? -15
-              : text === "DATOS DEL IMPORTADOR/EXPORTADOR"
-              ? -60
-              : text === "VAL. SEGUROS"
+              : text === "DATOS DEL IMPORTADOR/EXPORTADOR" ||
+                text === "DATOS DEL IMPORTADOR / EXPORTADOR"
+              ? -50
+              : text === "VAL. SEGUROS" || text === "VAL.SEGUROS"
               ? -10
               : text === "VALOR DOLARES:"
               ? -18
@@ -141,6 +149,8 @@ const Pediment = ({ document, onClick }: IPediment) => {
               ? -30
               : text === "PARTIDAS"
               ? -80
+              : text === "OBSERVACIONES A NIVEL PARTIDA"
+              ? 50
               : 0;
           const y = viewport.height - (offsetY + customY) * scale;
           const customW =
@@ -160,20 +170,23 @@ const Pediment = ({ document, onClick }: IPediment) => {
                   text === "TIPO OPER.:") &&
                 currentPage !== 1
               ? 125
-              : text === "DESTINO:"
+              : text === "DESTINO:" || text === "DESTINO/ORIGEN:"
               ? 35
               : text === "TIPO CAMBIO:" || text === "PESO BRUTO:"
               ? 55
               : text === "VALOR DOLARES:"
               ? 165
-              : text === "DATOS DEL IMPORTADOR/EXPORTADOR"
+              : text === "DATOS DEL IMPORTADOR/EXPORTADOR" ||
+                text === "DATOS DEL IMPORTADOR / EXPORTADOR"
               ? 240
-              : text === "VAL. SEGUROS"
+              : text === "VAL. SEGUROS" || text === "VAL.SEGUROS"
               ? 335
               : text === "DATOS DEL PROVEEDOR O COMPRADOR"
               ? 400
               : text === "PARTIDAS"
               ? 510
+              : text === "OBSERVACIONES A NIVEL PARTIDA"
+              ? 410
               : 0;
           const w = (width + customW) * scale;
           const customH =
@@ -186,9 +199,10 @@ const Pediment = ({ document, onClick }: IPediment) => {
                   text === "TIPO OPER.:") &&
                 currentPage !== 1
               ? 15
-              : text === "DATOS DEL IMPORTADOR/EXPORTADOR"
-              ? 60
-              : text === "VAL. SEGUROS"
+              : text === "DATOS DEL IMPORTADOR/EXPORTADOR" ||
+                text === "DATOS DEL IMPORTADOR / EXPORTADOR"
+              ? 50
+              : text === "VAL. SEGUROS" || text === "VAL.SEGUROS"
               ? 10
               : text === "VALOR DOLARES:"
               ? 18
@@ -196,6 +210,8 @@ const Pediment = ({ document, onClick }: IPediment) => {
               ? 30
               : text === "PARTIDAS"
               ? 80
+              : text === "OBSERVACIONES A NIVEL PARTIDA"
+              ? -70 // 10+ because the title is more down
               : 0;
           const h = (height + customH) * scale;
 
@@ -208,18 +224,20 @@ const Pediment = ({ document, onClick }: IPediment) => {
                 text === "TIPO OPER:" ||
                 text === "TIPO OPER.:"
               ? "rgba(125,181,145,0.5)"
-              : text === "DESTINO:"
+              : text === "DESTINO:" || text === "DESTINO/ORIGEN:"
               ? "rgba(112,182,249,0.6)"
               : text === "TIPO CAMBIO:" ||
                 text === "VALOR DOLARES:" ||
-                text === "VAL. SEGUROS"
+                text === "VAL. SEGUROS" ||
+                text === "VAL.SEGUROS"
               ? "rgba(236,167,148,0.6)"
               : text === "PESO BRUTO:"
               ? "rgba(251,231,159,0.6)"
               : text === "DATOS DEL IMPORTADOR/EXPORTADOR" ||
+                "DATOS DEL IMPORTADOR / EXPORTADOR" ||
                 text === "DATOS DEL PROVEEDOR O COMPRADOR"
               ? "rgba(165,133,217,0.6)"
-              : text === "PARTIDAS"
+              : text === "PARTIDAS" || text === "OBSERVACIONES A NIVEL PARTIDA"
               ? "rgba(216,181,126,0.6)"
               : "rgba(0,0,0,0.6)";
           context.fillRect(

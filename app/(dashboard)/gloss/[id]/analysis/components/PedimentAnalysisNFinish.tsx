@@ -43,7 +43,8 @@ const PedimentAnalysisNFinish = ({
         </div>
         <Pediment
           onClick={handleFunction}
-          // document="/ANOTHER_PEDIMENT4.pdf"
+          // document="/PEDIMENT500.pdf"
+          // document="/ANOTHER_PEDIMENT5.pdf"
           document={`https://cargo-claro-fastapi-6z19.onrender.com/proxy-file?url=${
             customGloss.files.find((doc) =>
               doc.name === documentSelected ? doc : null

@@ -132,7 +132,7 @@ const GlossForm = () => {
         menuRef={isLoading ? null : menuRef}
         onClose={isLoading ? () => {} : closeMenu}
       >
-        <div className="flex flex-col gap-2 items-center justify-center">
+        <div className="flex flex-col gap-2 items-center justify-center h-[430px]">
           {isLoading ? (
             <>
               <Loading color="cargoClaro" size="size-20" />
