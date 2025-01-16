@@ -37,6 +37,14 @@ export interface ICustomGloss extends CustomGloss {
   tabs: ICustomGlossTab[];
 }
 
+export interface ILLMResponse extends CustomGloss {
+  user: IUser;
+  // custom: ICustom;
+  files: CustomGlossFile[];
+  alerts: CustomGlossAlert[];
+  tabsPedimento: ICustomGlossTab[];
+}
+
 export interface ICustomGlossTab extends CustomGlossTab {
   context: ICustomGlossTabContext[];
   validations: ICustomGlossTabValidation[];

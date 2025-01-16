@@ -4,7 +4,10 @@ import { randomUUID } from "crypto";
 import { create, read } from "./model";
 import { isAuthenticated } from "../auth";
 // import { VICTOR_GLOSS_EXAMPLE } from "@/app/shared/constants";
-import { ICustomGloss } from "../../interfaces";
+import {
+  // ICustomGloss,
+  ILLMResponse,
+} from "../../interfaces";
 
 export async function analysis(formData: FormData) {
   console.log("analysis", formData);
@@ -32,7 +35,7 @@ export async function analysis(formData: FormData) {
       };
     }
 
-    const jsonResponse = (await response.json()) as ICustomGloss;
+    const jsonResponse = (await response.json()) as ILLMResponse;
     console.log("jsonResponse", jsonResponse);
 
     // const jsonResponse = VICTOR_GLOSS_EXAMPLE;
@@ -45,7 +48,7 @@ export async function analysis(formData: FormData) {
         moneySaved: jsonResponse.moneySaved,
         importerName: jsonResponse.importerName,
         tabs: {
-          create: jsonResponse.tabs.map((tab) => ({
+          create: jsonResponse.tabsPedimento.map((tab) => ({
             name: tab.name,
             isCorrect: tab.isCorrect,
             fullContext: tab.fullContext,
