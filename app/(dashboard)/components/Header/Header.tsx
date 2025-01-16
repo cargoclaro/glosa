@@ -1,11 +1,11 @@
 "use client";
 
-import { cn } from "@/app/utils/cn";
+import { cn } from "@/app/shared/utils/cn";
 import ProfileMenu from "./ProfileMenu";
-import todayIs from "@/app/utils/today-is";
+import todayIs from "@/app/shared/utils/today-is";
 // import NotificationsMenu from "./NotificationsMenu";
 import { usePathname } from "next/navigation";
-import type { IUser } from "@/app/interfaces";
+import type { IUser } from "@/app/shared/interfaces";
 
 interface IHeader {
   user: IUser;

@@ -1,11 +1,14 @@
-import { GlossHistory, Header, MexMap, MyInfo, Summary } from "./components";
+import { getRecentAnalysis } from "@/app/shared/services/customGloss/controller";
+import { Header, MyInfo, MexMap, Summary, GlossHistory } from "./components";
 import type { Metadata } from "next";
+import { ICustomGloss } from "@/app/shared/interfaces";
 
 export const metadata: Metadata = {
   title: "Administración",
 };
 
-const HomePage = () => {
+const HomePage = async () => {
+  const myLatestGlosses = (await getRecentAnalysis()) as ICustomGloss[];
   return (
     <article>
       <Header />
@@ -16,7 +19,7 @@ const HomePage = () => {
         </div>
         <div className="flex flex-col gap-4 w-full md:w-1/2">
           <Summary />
-          <GlossHistory />
+          <GlossHistory history={myLatestGlosses} />
         </div>
       </section>
     </article>

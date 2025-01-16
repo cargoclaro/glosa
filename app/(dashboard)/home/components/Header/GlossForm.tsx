@@ -1,13 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { cn } from "@/app/utils/cn";
-import { Loading, Modal } from "@/app/components";
-import { Document, Upload } from "@/public/icons";
-import { useModal, useServerAction } from "@/app/hooks";
-import { INITIAL_STATE_RESPONSE } from "@/app/constants";
-import { analysis } from "@/app/services/customGloss/controller";
-import type { IGlossAnalysisState } from "@/app/interfaces";
+import { cn } from "@/app/shared/utils/cn";
+import { Loading, Modal } from "@/app/shared/components";
+import { Document, Upload } from "@/app/shared/icons";
+import { useModal, useServerAction } from "@/app/shared/hooks";
+import { INITIAL_STATE_RESPONSE } from "@/app/shared/constants";
+import { analysis } from "@/app/shared/services/customGloss/controller";
+import type { IGlossAnalysisState } from "@/app/shared/interfaces";
 
 const GlossForm = () => {
   const [files, setFiles] = useState<FileList | null>(null);
@@ -21,7 +21,7 @@ const GlossForm = () => {
     if (files) {
       const formData = new FormData();
       Array.from(files).forEach((file) => {
-        formData.append("documents", file);
+        formData.append("files", file);
       });
       const res = await analysis(formData);
       if (res && res.success) {
@@ -132,7 +132,7 @@ const GlossForm = () => {
         menuRef={isLoading ? null : menuRef}
         onClose={isLoading ? () => {} : closeMenu}
       >
-        <div className="flex flex-col gap-2 items-center justify-center">
+        <div className="flex flex-col gap-2 items-center justify-center h-[430px]">
           {isLoading ? (
             <>
               <Loading color="cargoClaro" size="size-20" />

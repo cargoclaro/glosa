@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import hashPassword from "../app/utils/hash-password";
+import hashPassword from "../app/shared/utils/hash-password";
 
 const prisma = new PrismaClient();
 
@@ -24,126 +24,129 @@ async function main() {
     },
   });
 
-  const customsEntries = [
-    {
-      city: "Ciudad de México",
-      latitude: 19.0326,
-      longitude: -99.8332,
-      users: {
-        create: [
-          {
-            user: {
-              connect: {
-                id: user.id,
-              },
-            },
-          },
-        ],
-      },
-    },
-    {
-      city: "Guadalajara",
-      latitude: 20.3597,
-      longitude: -104.3496,
-      users: {
-        create: [
-          {
-            user: {
-              connect: {
-                id: user.id,
-              },
-            },
-          },
-        ],
-      },
-    },
-    {
-      city: "Monterrey",
-      latitude: 25.2866142,
-      longitude: -100.9161126,
-      users: {
-        create: [
-          {
-            user: {
-              connect: {
-                id: user.id,
-              },
-            },
-          },
-        ],
-      },
-    },
-    {
-      city: "Tijuana",
-      latitude: 32.5149469,
-      longitude: -117.0382471,
-      users: {
-        create: [
-          {
-            user: {
-              connect: {
-                id: anotherUser.id,
-              },
-            },
-          },
-        ],
-      },
-    },
-    {
-      city: "Cancún",
-      latitude: 21.4619,
-      longitude: -87.2515,
-      users: {
-        create: [
-          {
-            user: {
-              connect: {
-                id: anotherUser.id,
-              },
-            },
-          },
-        ],
-      },
-    },
-    {
-      city: "Guanajuato",
-      latitude: 20.5190145,
-      longitude: -102.0673586,
-      users: {
-        create: [
-          {
-            user: {
-              connect: {
-                id: anotherUser.id,
-              },
-            },
-          },
-        ],
-      },
-    },
-    {
-      city: "Subteniente López",
-      latitude: 18.5037,
-      longitude: -88.3051,
-      users: {
-        create: [
-          {
-            user: {
-              connect: {
-                id: anotherUser.id,
-              },
-            },
-          },
-        ],
-      },
-    },
-  ];
+  console.log(user);
+  console.log(anotherUser);
 
-  customsEntries.forEach(async (entry) => {
-    await prisma.custom.create({
-      data: entry,
-    });
-  });
+  // const customsEntries = [
+  //   {
+  //     city: "Ciudad de México",
+  //     latitude: 19.0326,
+  //     longitude: -99.8332,
+  //     users: {
+  //       create: [
+  //         {
+  //           user: {
+  //             connect: {
+  //               id: user.id,
+  //             },
+  //           },
+  //         },
+  //       ],
+  //     },
+  //   },
+  //   {
+  //     city: "Guadalajara",
+  //     latitude: 20.3597,
+  //     longitude: -104.3496,
+  //     users: {
+  //       create: [
+  //         {
+  //           user: {
+  //             connect: {
+  //               id: user.id,
+  //             },
+  //           },
+  //         },
+  //       ],
+  //     },
+  //   },
+  //   {
+  //     city: "Monterrey",
+  //     latitude: 25.2866142,
+  //     longitude: -100.9161126,
+  //     users: {
+  //       create: [
+  //         {
+  //           user: {
+  //             connect: {
+  //               id: user.id,
+  //             },
+  //           },
+  //         },
+  //       ],
+  //     },
+  //   },
+  //   {
+  //     city: "Tijuana",
+  //     latitude: 32.5149469,
+  //     longitude: -117.0382471,
+  //     users: {
+  //       create: [
+  //         {
+  //           user: {
+  //             connect: {
+  //               id: anotherUser.id,
+  //             },
+  //           },
+  //         },
+  //       ],
+  //     },
+  //   },
+  //   {
+  //     city: "Cancún",
+  //     latitude: 21.4619,
+  //     longitude: -87.2515,
+  //     users: {
+  //       create: [
+  //         {
+  //           user: {
+  //             connect: {
+  //               id: anotherUser.id,
+  //             },
+  //           },
+  //         },
+  //       ],
+  //     },
+  //   },
+  //   {
+  //     city: "Guanajuato",
+  //     latitude: 20.5190145,
+  //     longitude: -102.0673586,
+  //     users: {
+  //       create: [
+  //         {
+  //           user: {
+  //             connect: {
+  //               id: anotherUser.id,
+  //             },
+  //           },
+  //         },
+  //       ],
+  //     },
+  //   },
+  //   {
+  //     city: "Subteniente López",
+  //     latitude: 18.5037,
+  //     longitude: -88.3051,
+  //     users: {
+  //       create: [
+  //         {
+  //           user: {
+  //             connect: {
+  //               id: anotherUser.id,
+  //             },
+  //           },
+  //         },
+  //       ],
+  //     },
+  //   },
+  // ];
+
+  // customsEntries.forEach(async (entry) => {
+  //   await prisma.custom.create({
+  //     data: entry,
+  //   });
+  // });
 }
 
 main()

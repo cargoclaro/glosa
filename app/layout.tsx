@@ -1,8 +1,10 @@
-import "./globals.css";
-import { cn } from "@/app/utils/cn";
+import "./styles/globals.css";
+import { cn } from "@/app/shared/utils/cn";
 import { GeistSans } from "geist/font/sans";
-import { AuthComponent, ThemeComponent } from "@/app/components";
+import { AuthComponent, ThemeComponent } from "@/app/shared/components";
 import type { Metadata } from "next";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: {

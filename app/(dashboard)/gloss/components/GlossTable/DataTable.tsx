@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { cn } from "@/app/utils/cn";
+import { cn } from "@/app/shared/utils/cn";
 import {
   Search,
   Funnel,
@@ -9,7 +9,7 @@ import {
   RightChevron,
   LeftDoubleChevron,
   RightDoubleChevron,
-} from "@/public/icons";
+} from "@/app/shared/icons";
 import {
   Table,
   TableRow,
@@ -17,7 +17,7 @@ import {
   TableCell,
   TableHead,
   TableHeader,
-} from "@/app/components/ui/table";
+} from "@/app/shared/components/ui/table";
 import {
   ColumnDef,
   flexRender,

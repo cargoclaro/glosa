@@ -1,11 +1,12 @@
+import { notFound } from "next/navigation";
 import {
-  Alerts,
-  Analysis,
-  Pediment,
+  // Alerts,
   Documents,
-  SavedNFinish,
+  PedimentAnalysisNFinish,
 } from "./components";
+import { getMyAnalysisById } from "@/app/shared/services/customGloss/controller";
 import type { Metadata } from "next";
+import type { ICustomGloss } from "@/app/shared/interfaces";
 
 type IDynamicMetadata = {
   params: Promise<{ id: string }>;
@@ -21,20 +22,28 @@ export async function generateMetadata({
   };
 }
 
-const GlossIdAnalysis = () => {
+const GlossIdAnalysis = async ({
+  params: { id },
+}: {
+  params: { id: string };
+}) => {
+  const customGloss = (await getMyAnalysisById(id)) as ICustomGloss;
+  if (!customGloss) notFound();
+
   return (
     <article className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-4">
       <section className="flex flex-col gap-4">
-        <Alerts />
-        <Documents />
+        {/* <Alerts data={customGloss.alerts} /> */}
+        <Documents data={customGloss.files} />
       </section>
-      <section className="sm:col-span-2">
-        <Pediment />
-      </section>
-      <section className="flex flex-col sm:flex-row lg:flex-col gap-4 col-span-1 sm:col-span-3 lg:col-span-1">
-        <Analysis />
-        <SavedNFinish />
-      </section>
+      <PedimentAnalysisNFinish
+        customGloss={{
+          id: customGloss.id,
+          tabs: customGloss.tabs,
+          files: customGloss.files,
+          moneySaved: customGloss.moneySaved,
+        }}
+      />
     </article>
   );
 };

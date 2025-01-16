@@ -3,5 +3,13 @@ import Pediment from "./Pediment";
 import Analysis from "./Analysis";
 import Documents from "./Documents";
 import SavedNFinish from "./SavedNFinish";
+import PedimentAnalysisNFinish from "./PedimentAnalysisNFinish";
 
-export { Alerts, Pediment, Analysis, Documents, SavedNFinish };
+export {
+  Alerts,
+  Pediment,
+  Analysis,
+  Documents,
+  SavedNFinish,
+  PedimentAnalysisNFinish,
+};

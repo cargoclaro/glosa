@@ -1,19 +1,23 @@
 import Link from "next/link";
-import { GenericCard } from "@/app/components";
-import formatCurrency from "@/app/utils/format-currency";
-import { CurrencyDollar, RightArrow } from "@/public/icons";
+import { GenericCard } from "@/app/shared/components";
+import formatCurrency from "@/app/shared/utils/format-currency";
+import { CurrencyDollar, RightArrow } from "@/app/shared/icons";
 
-const SavedNFinish = () => {
-  const glossId = 28; // THIS WILL BECOME FROM THE DATABASE
+interface ISavedNFinish {
+  glossId: string;
+  moneySaved: number;
+}
+
+const SavedNFinish = ({ glossId, moneySaved }: ISavedNFinish) => {
   return (
     <div className="flex flex-col gap-4">
       <GenericCard>
         <div className="flex justify-between gap-1">
           <p
-            title={"+" + formatCurrency(5200, "MXN")}
+            title={"+" + formatCurrency(moneySaved, "MXN")}
             className="text-2xl font-bold truncate text-green-500"
           >
-            {"+" + formatCurrency(5200, "MXN")}
+            {"+" + formatCurrency(moneySaved, "MXN")}
           </p>
           <div className="h-full p-3 rounded-full bg-green-500 text-white">
             <CurrencyDollar />

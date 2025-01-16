@@ -1,6 +1,9 @@
 import Link from "next/link";
-import { LeftArrow } from "@/public/icons";
+import { notFound } from "next/navigation";
+import { LeftArrow } from "@/app/shared/icons";
+import { getMyAnalysisById } from "@/app/shared/services/customGloss/controller";
 import type { Metadata } from "next";
+import type { ICustomGloss } from "@/app/shared/interfaces";
 
 type IDynamicMetadata = {
   params: Promise<{ id: string }>;
@@ -17,6 +20,9 @@ export async function generateMetadata({
 }
 
 const GlossIdPage = async ({ params: { id } }: { params: { id: string } }) => {
+  const customGloss = (await getMyAnalysisById(id)) as ICustomGloss;
+  if (!customGloss) notFound();
+
   return (
     <article>
       <h1 className="text-2xl font-bold">
@@ -27,8 +33,17 @@ const GlossIdPage = async ({ params: { id } }: { params: { id: string } }) => {
           Mis Operaciones
         </Link>
       </h1>
-      GlossIdPage {id}
-      <Link href={`/gloss/${id}/analysis`}>Analysis</Link>
+      <div className="flex flex-col gap-4 mt-4">
+        <p>{customGloss.summary}</p>
+        <p>
+          <Link
+            href={`/gloss/${id}/analysis`}
+            className="px-12 py-2 rounded-md shadow-black/50 shadow-md border border-white text-sm bg-cargoClaroOrange hover:bg-cargoClaroOrange-hover text-white"
+          >
+            Ver análisis
+          </Link>
+        </p>
+      </div>
     </article>
   );
 };
