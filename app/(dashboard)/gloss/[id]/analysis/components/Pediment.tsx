@@ -93,17 +93,15 @@ const Pediment = ({ document, onClick }: IPediment) => {
         "DESTINO/ORIGEN:",
 
         "TIPO CAMBIO:",
+        "VALOR DOLARES:",
+        "VAL. SEGUROS",
+        "VAL.SEGUROS",
+        "FECHAS", // ⚠️ WARNING ⚠️
 
         "PESO BRUTO:",
 
-        "VALOR DOLARES:",
-
         "DATOS DEL IMPORTADOR/EXPORTADOR",
         "DATOS DEL IMPORTADOR / EXPORTADOR",
-
-        "VAL. SEGUROS",
-        "VAL.SEGUROS",
-
         "DATOS DEL PROVEEDOR O COMPRADOR",
 
         "PARTIDAS",
@@ -117,8 +115,10 @@ const Pediment = ({ document, onClick }: IPediment) => {
 
           const [, , , , offsetX, offsetY] = transform;
           const customX =
-            text === "DATOS DEL IMPORTADOR/EXPORTADOR" ||
-            text === "DATOS DEL IMPORTADOR / EXPORTADOR"
+            text === "FECHAS"
+              ? -50
+              : text === "DATOS DEL IMPORTADOR/EXPORTADOR" ||
+                text === "DATOS DEL IMPORTADOR / EXPORTADOR"
               ? -110
               : text === "DATOS DEL PROVEEDOR O COMPRADOR"
               ? -210
@@ -138,6 +138,8 @@ const Pediment = ({ document, onClick }: IPediment) => {
                   text === "TIPO OPER.:") &&
                 currentPage !== 1
               ? -15
+              : text === "FECHAS"
+              ? -30
               : text === "DATOS DEL IMPORTADOR/EXPORTADOR" ||
                 text === "DATOS DEL IMPORTADOR / EXPORTADOR"
               ? -50
@@ -176,6 +178,8 @@ const Pediment = ({ document, onClick }: IPediment) => {
               ? 55
               : text === "VALOR DOLARES:"
               ? 165
+              : text === "FECHAS"
+              ? 100
               : text === "DATOS DEL IMPORTADOR/EXPORTADOR" ||
                 text === "DATOS DEL IMPORTADOR / EXPORTADOR"
               ? 240
@@ -206,6 +210,8 @@ const Pediment = ({ document, onClick }: IPediment) => {
               ? 10
               : text === "VALOR DOLARES:"
               ? 18
+              : text === "FECHAS"
+              ? 30
               : text === "DATOS DEL PROVEEDOR O COMPRADOR"
               ? 30
               : text === "PARTIDAS"
@@ -229,7 +235,8 @@ const Pediment = ({ document, onClick }: IPediment) => {
               : text === "TIPO CAMBIO:" ||
                 text === "VALOR DOLARES:" ||
                 text === "VAL. SEGUROS" ||
-                text === "VAL.SEGUROS"
+                text === "VAL.SEGUROS" ||
+                text === "FECHAS"
               ? "rgba(236,167,148,0.6)"
               : text === "PESO BRUTO:"
               ? "rgba(251,231,159,0.6)"

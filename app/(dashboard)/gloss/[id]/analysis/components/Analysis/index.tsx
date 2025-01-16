@@ -102,8 +102,32 @@ const Analysis = ({ tabs, tabSelectedFromDocument }: IAnalysis) => {
         tabSelectedFromDocument === "TIPO OPER.:"
       ) {
         handleTabClick("Tipo de Operación");
-      } else if (tabSelectedFromDocument === "DESTINO:") {
-        handleTabClick("Destino/Origen");
+      } else if (
+        tabSelectedFromDocument === "DESTINO:" ||
+        tabSelectedFromDocument === "DESTINO/ORIGEN:"
+      ) {
+        handleTabClick("Destino/Origen de Mercancías");
+      } else if (
+        tabSelectedFromDocument === "TIPO CAMBIO:" ||
+        tabSelectedFromDocument === "VALOR DOLARES:" ||
+        tabSelectedFromDocument === "VAL. SEGUROS" ||
+        tabSelectedFromDocument === "VAL.SEGUROS" ||
+        tabSelectedFromDocument === "FECHAS"
+      ) {
+        handleTabClick("Operación (Fecha de entrada y Tipo de cambio)");
+      } else if (tabSelectedFromDocument === "PESO BRUTO:") {
+        handleTabClick("Pesos y Bultos");
+      } else if (
+        tabSelectedFromDocument === "DATOS DEL IMPORTADOR/EXPORTADOR" ||
+        tabSelectedFromDocument === "DATOS DEL IMPORTADOR / EXPORTADOR" ||
+        tabSelectedFromDocument === "DATOS DEL PROVEEDOR O COMPRADOR"
+      ) {
+        handleTabClick("Datos de Factura");
+      } else if (
+        tabSelectedFromDocument === "PARTIDAS" ||
+        tabSelectedFromDocument === "OBSERVACIONES A NIVEL PARTIDA"
+      ) {
+        handleTabClick("Partidas");
       } else {
         handleTabClick(tabSelectedFromDocument);
       }
