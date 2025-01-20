@@ -18,7 +18,7 @@ export async function analysis(formData: FormData) {
     const query_id = randomUUID();
 
     const response = await fetch(
-      `https://cargo-claro-fastapi-6z19.onrender.com/receive-pdf/sandbox/${user_id}/${query_id}`,
+      `https://cargo-claro-fastapi-6z19.onrender.com/receive-pdf/production/${user_id}/${query_id}`,
       {
         method: "POST",
         headers: {
