@@ -51,7 +51,8 @@ export async function analysis(formData: FormData) {
           create: jsonResponse.tabsPedimento.map((tab) => ({
             name: tab.name,
             isCorrect: tab.isCorrect,
-            fullContext: tab.fullContext,
+            fullContext:
+              typeof tab.fullContext === "boolean" ? tab.fullContext : false,
             context: {
               create: tab.context.map((context) => ({
                 type: context.type,
