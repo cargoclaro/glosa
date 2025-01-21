@@ -6,15 +6,152 @@ import { GenericCard } from "@/app/shared/components";
 import React, { useEffect, useRef, useState } from "react";
 import { LeftChevron, RightChevron } from "@/app/shared/icons";
 import type { TextItem } from "pdfjs-dist/types/src/display/api";
+import { ITabInfoSelected } from "./PedimentAnalysisNFinish";
+import { ICustomGlossTab } from "@/app/shared/interfaces";
 
 pdfjs.GlobalWorkerOptions.workerSrc = "/pdf.worker.mjs";
 
 interface IPediment {
   document: string;
+  tabs: ICustomGlossTab[];
   onClick: (tab: string) => void;
+  tabInfoSelected: ITabInfoSelected;
 }
 
-const Pediment = ({ document, onClick }: IPediment) => {
+const keywords = [
+  "NUM. PEDIMENTO:",
+
+  "T. OPER",
+  "T.OPER",
+  "TIPO OPER",
+  "TIPO OPER:",
+  "TIPO OPER.:",
+
+  "DESTINO:",
+  "DESTINO/ORIGEN:",
+
+  "TIPO CAMBIO:",
+  "VALOR DOLARES:",
+  "VAL. SEGUROS",
+  "VAL.SEGUROS",
+  "FECHAS", // ⚠️ WARNING ⚠️
+
+  "PESO BRUTO:",
+
+  "DATOS DEL IMPORTADOR/EXPORTADOR",
+  "DATOS DEL IMPORTADOR / EXPORTADOR",
+  "DATOS DEL PROVEEDOR O COMPRADOR",
+
+  "PARTIDAS",
+  "OBSERVACIONES A NIVEL PARTIDA",
+]; // Palabras clave a buscar
+
+interface IKeywordPosition {
+  x: number;
+  y: number | ((currentPage: number) => number);
+  w: number | ((currentPage: number) => number);
+  h: number | ((currentPage: number) => number);
+}
+
+const sharedConfigForTipoOper = {
+  x: 0,
+  y: (currentPage: number) => (currentPage !== 1 ? -15 : 0),
+  w: (currentPage: number) => (currentPage === 1 ? 175 : 125),
+  h: (currentPage: number) => (currentPage !== 1 ? 15 : 0),
+};
+
+const sharedConfigForDestino = {
+  x: 0,
+  y: 0,
+  w: 35,
+  h: 0,
+};
+
+const sharedConfigForDatosImportador = {
+  x: -110,
+  y: -50,
+  w: 240,
+  h: 50,
+};
+
+const sharedConfigForTipoCambioNPesoBruto = {
+  x: 0,
+  y: 0,
+  w: 55,
+  h: 0,
+};
+
+const sharedConfigValSeguros = {
+  x: 0,
+  y: -10,
+  w: 335,
+  h: 10,
+};
+
+const keywordPositions: Record<string, IKeywordPosition> = {
+  "NUM. PEDIMENTO:": {
+    x: 0,
+    y: (currentPage) => (currentPage !== 1 ? -15 : 0),
+    w: 90,
+    h: (currentPage) => (currentPage !== 1 ? 15 : 0),
+  },
+
+  "T. OPER": sharedConfigForTipoOper,
+  "T.OPER": sharedConfigForTipoOper,
+  "TIPO OPER": sharedConfigForTipoOper,
+  "TIPO OPER:": sharedConfigForTipoOper,
+  "TIPO OPER.:": sharedConfigForTipoOper,
+
+  "DESTINO:": sharedConfigForDestino,
+  "DESTINO/ORIGEN:": sharedConfigForDestino,
+
+  "TIPO CAMBIO:": sharedConfigForTipoCambioNPesoBruto,
+  "VALOR DOLARES:": { x: 0, y: -18, w: 165, h: 18 },
+  "VAL. SEGUROS": sharedConfigValSeguros,
+  "VAL.SEGUROS": sharedConfigValSeguros,
+  FECHAS: { x: -50, y: -30, w: 100, h: 30 },
+
+  "PESO BRUTO:": sharedConfigForTipoCambioNPesoBruto,
+
+  "DATOS DEL IMPORTADOR/EXPORTADOR": sharedConfigForDatosImportador,
+  "DATOS DEL IMPORTADOR / EXPORTADOR": sharedConfigForDatosImportador,
+  "DATOS DEL PROVEEDOR O COMPRADOR": { x: -210, y: -30, w: 400, h: 30 },
+
+  PARTIDAS: { x: -255, y: -80, w: 510, h: 80 },
+  "OBSERVACIONES A NIVEL PARTIDA": { x: -135, y: 50, w: 410, h: -70 },
+};
+
+const defaultConfig = { x: 0, y: 0, w: 0, h: 0 };
+
+const keywordsConfig = {
+  "NUM. PEDIMENTO:": "N° de pedimento",
+
+  "T. OPER": "Tipo de Operación",
+  "T.OPER": "Tipo de Operación",
+  "TIPO OPER": "Tipo de Operación",
+  "TIPO OPER:": "Tipo de Operación",
+  "TIPO OPER.:": "Tipo de Operación",
+
+  "DESTINO:": "Destino/Origen de Mercancías",
+  "DESTINO/ORIGEN:": "Destino/Origen de Mercancías",
+
+  "TIPO CAMBIO:": "Operación (Fecha de entrada y Tipo de cambio)",
+  "VALOR DOLARES:": "Operación (Fecha de entrada y Tipo de cambio)",
+  "VAL. SEGUROS": "Operación (Fecha de entrada y Tipo de cambio)",
+  "VAL.SEGUROS": "Operación (Fecha de entrada y Tipo de cambio)",
+  FECHAS: "Operación (Fecha de entrada y Tipo de cambio)",
+
+  "PESO BRUTO:": "Pesos y Bultos",
+
+  "DATOS DEL IMPORTADOR/EXPORTADOR": "Datos de Factura",
+  "DATOS DEL IMPORTADOR / EXPORTADOR": "Datos de Factura",
+  "DATOS DEL PROVEEDOR O COMPRADOR": "Datos de Factura",
+
+  PARTIDAS: "Partidas",
+  "OBSERVACIONES A NIVEL PARTIDA": "Partidas",
+};
+
+const Pediment = ({ tabs, document, onClick, tabInfoSelected }: IPediment) => {
   const [numPages, setNumPages] = useState(0);
   const [isLoading, setIsLoading] = useState(true); // Indicador de carga
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -80,173 +217,35 @@ const Pediment = ({ document, onClick }: IPediment) => {
         text: string;
       }[] = [];
 
-      const keywords = [
-        "NUM. PEDIMENTO:",
-
-        "T. OPER",
-        "T.OPER",
-        "TIPO OPER",
-        "TIPO OPER:",
-        "TIPO OPER.:",
-
-        "DESTINO:",
-        "DESTINO/ORIGEN:",
-
-        "TIPO CAMBIO:",
-        "VALOR DOLARES:",
-        "VAL. SEGUROS",
-        "VAL.SEGUROS",
-        "FECHAS", // ⚠️ WARNING ⚠️
-
-        "PESO BRUTO:",
-
-        "DATOS DEL IMPORTADOR/EXPORTADOR",
-        "DATOS DEL IMPORTADOR / EXPORTADOR",
-        "DATOS DEL PROVEEDOR O COMPRADOR",
-
-        "PARTIDAS",
-        "OBSERVACIONES A NIVEL PARTIDA",
-      ]; // Palabras clave a buscar
-
       (textContent.items as TextItem[]).forEach((item) => {
         const text = item.str;
         if (keywords.includes(text)) {
           const { transform, width, height } = item;
 
           const [, , , , offsetX, offsetY] = transform;
-          const customX =
-            text === "FECHAS"
-              ? -50
-              : text === "DATOS DEL IMPORTADOR/EXPORTADOR" ||
-                text === "DATOS DEL IMPORTADOR / EXPORTADOR"
-              ? -110
-              : text === "DATOS DEL PROVEEDOR O COMPRADOR"
-              ? -210
-              : text === "PARTIDAS"
-              ? -255
-              : text === "OBSERVACIONES A NIVEL PARTIDA"
-              ? -135
-              : 0;
+
+          const {
+            x: customX,
+            y: customY,
+            w: customW,
+            h: customH,
+          } = getKeywordConfig(text, currentPage);
+
           const x = (offsetX + customX) * scale;
-          const customY =
-            text === "NUM. PEDIMENTO:" && currentPage !== 1
-              ? -15
-              : (text === "T. OPER" ||
-                  text === "T.OPER" ||
-                  text === "TIPO OPER" ||
-                  text === "TIPO OPER:" ||
-                  text === "TIPO OPER.:") &&
-                currentPage !== 1
-              ? -15
-              : text === "FECHAS"
-              ? -30
-              : text === "DATOS DEL IMPORTADOR/EXPORTADOR" ||
-                text === "DATOS DEL IMPORTADOR / EXPORTADOR"
-              ? -50
-              : text === "VAL. SEGUROS" || text === "VAL.SEGUROS"
-              ? -10
-              : text === "VALOR DOLARES:"
-              ? -18
-              : text === "DATOS DEL PROVEEDOR O COMPRADOR"
-              ? -30
-              : text === "PARTIDAS"
-              ? -80
-              : text === "OBSERVACIONES A NIVEL PARTIDA"
-              ? 50
-              : 0;
           const y = viewport.height - (offsetY + customY) * scale;
-          const customW =
-            text === "NUM. PEDIMENTO:"
-              ? 90
-              : (text === "T. OPER" ||
-                  text === "T.OPER" ||
-                  text === "TIPO OPER" ||
-                  text === "TIPO OPER:" ||
-                  text === "TIPO OPER.:") &&
-                currentPage === 1
-              ? 175
-              : (text === "T. OPER" ||
-                  text === "T.OPER" ||
-                  text === "TIPO OPER" ||
-                  text === "TIPO OPER:" ||
-                  text === "TIPO OPER.:") &&
-                currentPage !== 1
-              ? 125
-              : text === "DESTINO:" || text === "DESTINO/ORIGEN:"
-              ? 35
-              : text === "TIPO CAMBIO:" || text === "PESO BRUTO:"
-              ? 55
-              : text === "VALOR DOLARES:"
-              ? 165
-              : text === "FECHAS"
-              ? 100
-              : text === "DATOS DEL IMPORTADOR/EXPORTADOR" ||
-                text === "DATOS DEL IMPORTADOR / EXPORTADOR"
-              ? 240
-              : text === "VAL. SEGUROS" || text === "VAL.SEGUROS"
-              ? 335
-              : text === "DATOS DEL PROVEEDOR O COMPRADOR"
-              ? 400
-              : text === "PARTIDAS"
-              ? 510
-              : text === "OBSERVACIONES A NIVEL PARTIDA"
-              ? 410
-              : 0;
           const w = (width + customW) * scale;
-          const customH =
-            text === "NUM. PEDIMENTO:" && currentPage !== 1
-              ? 15
-              : (text === "T. OPER" ||
-                  text === "T.OPER" ||
-                  text === "TIPO OPER" ||
-                  text === "TIPO OPER:" ||
-                  text === "TIPO OPER.:") &&
-                currentPage !== 1
-              ? 15
-              : text === "DATOS DEL IMPORTADOR/EXPORTADOR" ||
-                text === "DATOS DEL IMPORTADOR / EXPORTADOR"
-              ? 50
-              : text === "VAL. SEGUROS" || text === "VAL.SEGUROS"
-              ? 10
-              : text === "VALOR DOLARES:"
-              ? 18
-              : text === "FECHAS"
-              ? 30
-              : text === "DATOS DEL PROVEEDOR O COMPRADOR"
-              ? 30
-              : text === "PARTIDAS"
-              ? 80
-              : text === "OBSERVACIONES A NIVEL PARTIDA"
-              ? -70 // 10+ because the title is more down
-              : 0;
           const h = (height + customH) * scale;
 
-          context.fillStyle =
-            text === "NUM. PEDIMENTO:"
-              ? "rgba(214,200,233,0.6)"
-              : text === "T. OPER" ||
-                text === "T.OPER" ||
-                text === "TIPO OPER" ||
-                text === "TIPO OPER:" ||
-                text === "TIPO OPER.:"
-              ? "rgba(125,181,145,0.5)"
-              : text === "DESTINO:" || text === "DESTINO/ORIGEN:"
-              ? "rgba(112,182,249,0.6)"
-              : text === "TIPO CAMBIO:" ||
-                text === "VALOR DOLARES:" ||
-                text === "VAL. SEGUROS" ||
-                text === "VAL.SEGUROS" ||
-                text === "FECHAS"
-              ? "rgba(236,167,148,0.6)"
-              : text === "PESO BRUTO:"
-              ? "rgba(251,231,159,0.6)"
-              : text === "DATOS DEL IMPORTADOR/EXPORTADOR" ||
-                "DATOS DEL IMPORTADOR / EXPORTADOR" ||
-                text === "DATOS DEL PROVEEDOR O COMPRADOR"
-              ? "rgba(165,133,217,0.6)"
-              : text === "PARTIDAS" || text === "OBSERVACIONES A NIVEL PARTIDA"
-              ? "rgba(216,181,126,0.6)"
-              : "rgba(0,0,0,0.6)";
+          context.strokeStyle = getStrokeStyle(text, tabs);
+          context.lineWidth = 2;
+          context.fillStyle = getFillStyle(text, tabInfoSelected);
+
+          context.strokeRect(
+            x - buffer,
+            y - h - buffer,
+            w + 2 * buffer,
+            h + 2 * buffer
+          );
           context.fillRect(
             x - buffer,
             y - h - buffer,
@@ -297,7 +296,7 @@ const Pediment = ({ document, onClick }: IPediment) => {
     };
 
     renderPage();
-  }, [pdfDoc, currentPage, onClick]);
+  }, [pdfDoc, currentPage, onClick, tabInfoSelected, tabs]);
 
   const goToNextPage = () => {
     if (currentPage < numPages) {
@@ -333,47 +332,6 @@ const Pediment = ({ document, onClick }: IPediment) => {
                   ? "bg-gray-200 text-gray-500"
                   : "bg-gray-500 text-white"
               )}
-              // onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-              onClick={goToPrevPage}
-              disabled={currentPage <= 1}
-            >
-              <LeftChevron />
-            </button>
-            <p>
-              Página {currentPage} de {numPages}
-            </p>
-            <button
-              className={cn(
-                "rounded-full p-2",
-                currentPage >= numPages
-                  ? "bg-gray-200 text-gray-500"
-                  : "bg-gray-500 text-white"
-              )}
-              // onClick={() => setCurrentPage((prev) => Math.min(prev + 1, numPages))}
-              onClick={goToNextPage}
-              disabled={currentPage >= numPages}
-            >
-              <RightChevron />
-            </button>
-          </div>
-          <canvas ref={canvasRef} className="w-full max-w-full" />
-        </>
-      )}
-    </GenericCard>
-  );
-
-  return (
-    <GenericCard>
-      {numPages > 1 ? (
-        <>
-          <div className="flex justify-between items-center gap-2">
-            <button
-              className={cn(
-                "rounded-full p-2",
-                currentPage <= 1
-                  ? "bg-gray-200 text-gray-500"
-                  : "bg-gray-500 text-white"
-              )}
               onClick={goToPrevPage}
               disabled={currentPage <= 1}
             >
@@ -397,27 +355,39 @@ const Pediment = ({ document, onClick }: IPediment) => {
           </div>
           <canvas ref={canvasRef} className="w-full max-w-full" />
         </>
-      ) : !errorDetected ? (
-        <div className="flex justify-center items-center w-full h-80">
-          <p
-            className="text-gray-500 text-center"
-            style={{ whiteSpace: "pre-wrap" }}
-          >
-            Cargando documento...
-          </p>
-        </div>
-      ) : (
-        <div className="flex justify-center items-center w-full h-80">
-          <p
-            className="text-red-500 text-center"
-            style={{ whiteSpace: "pre-wrap" }}
-          >
-            No se pudo cargar el documento
-          </p>
-        </div>
       )}
     </GenericCard>
   );
 };
 
 export default Pediment;
+
+function getKeywordConfig(text: string, currentPage: number) {
+  const config = keywordPositions[text] || defaultConfig;
+
+  return {
+    x: config.x,
+    y: typeof config.y === "function" ? config.y(currentPage) : config.y,
+    w: typeof config.w === "function" ? config.w(currentPage) : config.w,
+    h: typeof config.h === "function" ? config.h(currentPage) : config.h,
+  };
+}
+
+const getStrokeStyle = (text: string, tabs: ICustomGlossTab[]) => {
+  const tabName = keywordsConfig[text as keyof typeof keywordsConfig];
+  if (!tabName) return "black";
+
+  const tab = tabs.find((tab) => tab.name === tabName);
+  return tab?.isCorrect || tab?.isVerified
+    ? "rgb(81,174,57)"
+    : "rgb(235,202,98)";
+};
+
+const getFillStyle = (text: string, tabInfoSelected: ITabInfoSelected) => {
+  const tabName = keywordsConfig[text as keyof typeof keywordsConfig];
+  if (!tabName || tabInfoSelected.name !== tabName) return "transparent";
+
+  return tabInfoSelected.isCorrect || tabInfoSelected.isVerified
+    ? "rgba(81,174,57,0.5)"
+    : "rgba(235,202,98,0.5)";
+};
