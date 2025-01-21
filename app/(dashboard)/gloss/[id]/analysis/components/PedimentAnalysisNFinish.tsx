@@ -11,6 +11,12 @@ interface IPedimentAnalysisNFinish {
   files: ICustomGloss["files"];
 }
 
+export interface ITabInfoSelected {
+  name: string;
+  isCorrect: boolean;
+  isVerified: boolean;
+}
+
 const PedimentAnalysisNFinish = ({
   customGloss,
 }: {
@@ -18,6 +24,11 @@ const PedimentAnalysisNFinish = ({
 }) => {
   const [documentSelected, setDocumentSelected] = useState("PEDIMENTO");
   const [tabSelectedFromDocument, setTabSelectedFromDocument] = useState("");
+  const [tabInfoSelected, setTabInfoSelected] = useState<ITabInfoSelected>({
+    name: customGloss.tabs[0].name,
+    isCorrect: customGloss.tabs[0].isCorrect,
+    isVerified: customGloss.tabs[0].isVerified,
+  });
 
   const handleFunction = (tab: string) => {
     setTabSelectedFromDocument(tab);
@@ -42,19 +53,22 @@ const PedimentAnalysisNFinish = ({
           </button>
         </div>
         <Pediment
+          tabs={customGloss.tabs}
           onClick={handleFunction}
+          tabInfoSelected={tabInfoSelected}
           // document="/PEDIMENT500.pdf"
-          // document="/ANOTHER_PEDIMENT5.pdf"
-          document={`https://cargo-claro-fastapi-6z19.onrender.com/proxy-file?url=${
-            customGloss.files.find((doc) =>
-              doc.name === documentSelected ? doc : null
-            )?.url || ""
-          }`}
+          document="/PEDIMENTO.pdf"
+          // document={`https://cargo-claro-fastapi-6z19.onrender.com/proxy-file?url=${
+          //   customGloss.files.find((doc) =>
+          //     doc.name === documentSelected ? doc : null
+          //   )?.url || ""
+          // }`}
         />
       </section>
       <section className="flex flex-col gap-4 col-span-1 sm:col-span-3 lg:col-span-1">
         <Analysis
           tabs={customGloss.tabs}
+          setTabInfoSelected={setTabInfoSelected}
           tabSelectedFromDocument={tabSelectedFromDocument}
         />
         <SavedNFinish

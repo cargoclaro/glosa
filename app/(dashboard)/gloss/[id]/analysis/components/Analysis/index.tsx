@@ -18,6 +18,7 @@ import type {
   ICustomGlossTab,
   ICustomGlossTabValidation,
 } from "@/app/shared/interfaces";
+import { ITabInfoSelected } from "../PedimentAnalysisNFinish";
 
 export interface ICommonDataForDetail {
   id: number;
@@ -32,9 +33,14 @@ export interface ICommonDataForDetail {
 interface IAnalysis {
   tabs: ICustomGlossTab[];
   tabSelectedFromDocument: string;
+  setTabInfoSelected: (tab: ITabInfoSelected) => void;
 }
 
-const Analysis = ({ tabs, tabSelectedFromDocument }: IAnalysis) => {
+const Analysis = ({
+  tabs,
+  setTabInfoSelected,
+  tabSelectedFromDocument,
+}: IAnalysis) => {
   const scrollContainerRef = useRef<HTMLUListElement>(null);
   const { isOpen, openMenu, closeMenu, menuRef } = useModal(false);
   const [tabSelected, setTabSelected] = useState("N° de pedimento");
@@ -71,6 +77,11 @@ const Analysis = ({ tabs, tabSelectedFromDocument }: IAnalysis) => {
     const currentIndex = tabs.findIndex((tab) => tab.name === tabSelected);
     const nextIndex = (currentIndex + 1) % tabs.length;
     setTabSelected(tabs[nextIndex].name);
+    setTabInfoSelected({
+      name: tabs[nextIndex].name,
+      isCorrect: tabs[nextIndex].isCorrect,
+      isVerified: tabs[nextIndex].isVerified,
+    });
     scrollToTab(nextIndex);
   };
 
@@ -78,6 +89,11 @@ const Analysis = ({ tabs, tabSelectedFromDocument }: IAnalysis) => {
     const currentIndex = tabs.findIndex((tab) => tab.name === tabSelected);
     const prevIndex = (currentIndex - 1 + tabs.length) % tabs.length;
     setTabSelected(tabs[prevIndex].name);
+    setTabInfoSelected({
+      name: tabs[prevIndex].name,
+      isCorrect: tabs[prevIndex].isCorrect,
+      isVerified: tabs[prevIndex].isVerified,
+    });
     scrollToTab(prevIndex);
   };
 
@@ -85,9 +101,14 @@ const Analysis = ({ tabs, tabSelectedFromDocument }: IAnalysis) => {
     (id: string) => {
       const tabIndex = tabs.findIndex((tab) => tab.name === id);
       setTabSelected(id);
+      setTabInfoSelected({
+        name: tabs[tabIndex].name,
+        isCorrect: tabs[tabIndex].isCorrect,
+        isVerified: tabs[tabIndex].isVerified,
+      });
       scrollToTab(tabIndex);
     },
-    [tabs]
+    [tabs, setTabInfoSelected]
   );
 
   useEffect(() => {
@@ -140,7 +161,7 @@ const Analysis = ({ tabs, tabSelectedFromDocument }: IAnalysis) => {
         <Detailed data={dataForDetail} />
       </Modal>
       <GenericCard>
-        <div className="relative">
+        <div className="relative w-full">
           <button
             className="absolute top-0 left-0 rounded-full p-1 shadow-md bg-white/70 hover:bg-white/90 transition-colors duration-200"
             onClick={handlePrevious}
@@ -194,15 +215,16 @@ interface IGenericTabLi {
 const GenericTabLi = ({ title, active, onClick }: IGenericTabLi) => (
   <li>
     <button
+      title={title}
       onClick={onClick}
       className={cn(
-        "border-b-2 min-w-48 text-center pb-2 hover:border-cargoClaroOrange-hover hover:text-cargoClaroOrange-hover",
+        "border-b-2 min-w-52 text-center pb-2 hover:border-cargoClaroOrange-hover hover:text-cargoClaroOrange-hover",
         active
           ? "border-cargoClaroOrange text-cargoClaroOrange"
           : "border-black"
       )}
     >
-      {title}
+      <p className="line-clamp-1">{title}</p>
     </button>
   </li>
 );
