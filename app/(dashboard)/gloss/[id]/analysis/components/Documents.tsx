@@ -1,6 +1,7 @@
 import { Document } from "@/app/shared/icons";
 import { GenericCard } from "@/app/shared/components";
 import { ICustomGloss } from "@/app/shared/interfaces";
+import Link from "next/link";
 
 const Documents = ({ data }: { data: ICustomGloss["files"] }) => {
   return (
@@ -13,10 +14,12 @@ const Documents = ({ data }: { data: ICustomGloss["files"] }) => {
         {data.map((doc) => (
           <li
             key={doc.id}
-            title={doc.name}
-            className="rounded-md p-1 border border-black truncate text-sm text-center"
+            title={`Ver documento ${doc.name}`}
+            className="rounded-md p-1 border border-black truncate text-sm text-center hover:bg-gray-200 transition-colors duration-200"
           >
-            {doc.name}
+            <Link href={doc.url} target="_blank" rel="noreferrer">
+              <p>{doc.name}</p>
+            </Link>
           </li>
         ))}
       </ul>
