@@ -2,8 +2,9 @@
 
 import Detailed from "./Detailed";
 import { cn } from "@/app/shared/utils/cn";
-import { useModal } from "@/app/shared/hooks";
+import { useModal, useServerAction } from "@/app/shared/hooks";
 import { GenericCard, Modal } from "@/app/shared/components";
+import { ITabInfoSelected } from "../PedimentAnalysisNFinish";
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
   Check,
@@ -17,8 +18,10 @@ import {
 import type {
   ICustomGlossTab,
   ICustomGlossTabValidation,
+  ISharedState,
 } from "@/app/shared/interfaces";
-import { ITabInfoSelected } from "../PedimentAnalysisNFinish";
+import { markTabAsVerifiedByTabIdNCustomGlossID } from "@/app/shared/services/customGloss/controller";
+import { INITIAL_STATE_RESPONSE } from "@/app/shared/constants";
 
 export interface ICommonDataForDetail {
   id: number;
@@ -218,7 +221,7 @@ const GenericTabLi = ({ title, active, onClick }: IGenericTabLi) => (
       title={title}
       onClick={onClick}
       className={cn(
-        "border-b-2 min-w-52 text-center pb-2 hover:border-cargoClaroOrange-hover hover:text-cargoClaroOrange-hover",
+        "border-b-2 min-w-64 text-center pb-2 hover:border-cargoClaroOrange-hover hover:text-cargoClaroOrange-hover",
         active
           ? "border-cargoClaroOrange text-cargoClaroOrange"
           : "border-black"
@@ -272,7 +275,11 @@ const GenericTabComponent = ({ data, handleClick }: IGenericTabComponent) => {
         handleDetail={handleClick}
       />
       <div className="border-t border-t-black mb-4" />
-      <VerifiedButton isVerified={data.isCorrect} />
+      <VerifiedButton
+        tabId={data.id}
+        isVerified={data.isVerified}
+        customGlossId={data.customGlossId}
+      />
     </>
   );
 };
@@ -294,25 +301,50 @@ const SectionDivider = ({ title, icon }: ISectionDivider) => (
 );
 
 interface IVerifiedButton {
+  tabId: string;
   isVerified: boolean;
-  onClick?: () => void;
+  customGlossId: string;
 }
 
-const VerifiedButton = ({ isVerified }: IVerifiedButton) => (
-  <div className="text-center">
-    <button
-      disabled={isVerified}
-      className={cn(
-        "px-12 py-2 rounded-md shadow-black/50 shadow-md border border-white text-sm",
-        isVerified
-          ? "bg-gray-300 cursor-not-allowed text-gray-900"
-          : "bg-cargoClaroOrange hover:bg-cargoClaroOrange-hover text-white"
-      )}
-    >
-      {isVerified ? "Análisis Verificado" : "Marcar como verificado"}
-    </button>
-  </div>
-);
+const VerifiedButton = ({
+  tabId,
+  isVerified,
+  customGlossId,
+}: IVerifiedButton) => {
+  const { response, isLoading, setResponse, setIsLoading } =
+    useServerAction<ISharedState>(INITIAL_STATE_RESPONSE);
+
+  const handleVerify = async () => {
+    setIsLoading(true);
+    const res = await markTabAsVerifiedByTabIdNCustomGlossID({
+      tabId,
+      customGlossId,
+    });
+    if (res && !res.success) {
+      setResponse(res);
+    }
+    setIsLoading(false);
+  };
+
+  return (
+    <div className="text-center">
+      {response.message && <p className="text-red-500">{response.message}</p>}
+      <button
+        disabled={isVerified}
+        onClick={() => handleVerify()}
+        className={cn(
+          "px-12 py-2 rounded-md shadow-black/50 shadow-md border border-white text-sm",
+          isLoading && "cursor-not-allowed opacity-50",
+          isVerified
+            ? "bg-gray-300 cursor-not-allowed text-gray-900"
+            : "bg-cargoClaroOrange hover:bg-cargoClaroOrange-hover text-white"
+        )}
+      >
+        {isVerified ? "Análisis Verificado" : "Marcar como verificado"}
+      </button>
+    </div>
+  );
+};
 
 const StatusHeader = ({ status }: { status: boolean }) => (
   <h2

@@ -60,3 +60,31 @@ export async function read({ id, userId, recent }: IRead) {
     });
   }
 }
+
+export async function update({
+  id,
+  data,
+}: {
+  id: string;
+  data: (typeof prisma.customGloss.update)["arguments"]["data"];
+}) {
+  return await prisma.customGloss.update({
+    where: { id },
+    data,
+  });
+}
+
+export async function updateTabWithCustomGlossId({
+  id,
+  data,
+  customGlossId,
+}: {
+  id: string;
+  customGlossId: string;
+  data: (typeof prisma.customGlossTab.update)["arguments"]["data"];
+}) {
+  return await prisma.customGlossTab.update({
+    where: { id, customGlossId },
+    data,
+  });
+}
