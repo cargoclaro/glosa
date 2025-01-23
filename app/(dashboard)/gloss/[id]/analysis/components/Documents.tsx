@@ -1,7 +1,7 @@
+import Link from "next/link";
 import { Document } from "@/app/shared/icons";
 import { GenericCard } from "@/app/shared/components";
-import { ICustomGloss } from "@/app/shared/interfaces";
-import Link from "next/link";
+import type { ICustomGloss } from "@/app/shared/interfaces";
 
 const Documents = ({ data }: { data: ICustomGloss["files"] }) => {
   return (

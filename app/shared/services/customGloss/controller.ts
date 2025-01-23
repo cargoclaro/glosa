@@ -1,13 +1,15 @@
 "use server";
 
 import { randomUUID } from "crypto";
-import { create, read } from "./model";
+import { create, read, updateTabWithCustomGlossId } from "./model";
 import { isAuthenticated } from "../auth";
 // import { VICTOR_GLOSS_EXAMPLE } from "@/app/shared/constants";
 import {
   // ICustomGloss,
   ILLMResponse,
-} from "../../interfaces";
+} from "@/app/shared/interfaces";
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 export async function analysis(formData: FormData) {
   console.log("analysis", formData);
@@ -131,4 +133,39 @@ export async function getRecentAnalysis() {
     console.error(error);
     return [];
   }
+}
+
+export async function markTabAsVerifiedByTabIdNCustomGlossID({
+  tabId,
+  customGlossId,
+}: {
+  tabId: string;
+  customGlossId: string;
+}) {
+  try {
+    const session = await isAuthenticated();
+    const user_id = session.userId as string;
+
+    const customGloss = await read({ id: customGlossId, userId: user_id });
+
+    if (!customGloss) {
+      throw new Error("Gloss not found");
+    }
+
+    await updateTabWithCustomGlossId({
+      id: tabId,
+      customGlossId,
+      data: {
+        isVerified: true,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    return {
+      success: false,
+      message: "Ocurrió un error interno",
+    };
+  }
+  revalidatePath(`/gloss/${customGlossId}/analysis`);
+  redirect(`/gloss/${customGlossId}/analysis`);
 }
