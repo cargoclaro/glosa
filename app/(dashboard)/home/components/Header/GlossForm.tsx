@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { cn } from "@/app/shared/utils/cn";
 import { Loading, Modal } from "@/app/shared/components";
-import { Document, Upload } from "@/app/shared/icons";
+import { Document, Upload, XMark } from "@/app/shared/icons";
 import { useModal, useServerAction } from "@/app/shared/hooks";
 import { INITIAL_STATE_RESPONSE } from "@/app/shared/constants";
 import { analysis } from "@/app/shared/services/customGloss/controller";
@@ -32,6 +32,20 @@ const GlossForm = () => {
     }
     setIsLoading(false);
     closeMenu();
+  };
+
+  const handleRemoveFile = (index: number) => {
+    if (!files) return;
+    const updatedFileList = Array.from(files).filter((_, i) => i !== index);
+    const dataTransfer = new DataTransfer();
+    updatedFileList.forEach((file) => dataTransfer.items.add(file));
+
+    if (updatedFileList.length === 0) {
+      setFiles(null);
+      closeMenu();
+    } else {
+      setFiles(dataTransfer.files);
+    }
   };
 
   return (
@@ -115,15 +129,6 @@ const GlossForm = () => {
             >
               Glosar
             </button>
-            {/* {files && (
-              <button
-                onClick={() => setFiles(null)}
-                // className="underline text-gray-600"
-                className="px-12 py-2 rounded-md shadow-black/50 shadow-md border border-white text-sm bg-gray-400 hover:bg-gray-500 text-white"
-              >
-                Borrar selección
-              </button>
-            )} */}
           </div>
         </div>
       </div>
@@ -153,8 +158,14 @@ const GlossForm = () => {
                   Array.from(files).map((file, index) => (
                     <li
                       key={index}
-                      className="flex flex-col gap-2 w-[260px] h-[260px]"
+                      className="relative flex flex-col gap-2 w-[260px] h-[260px]"
                     >
+                      <button
+                        onClick={() => handleRemoveFile(index)}
+                        className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 text-sm z-10 hover:bg-red-600"
+                      >
+                        <XMark />
+                      </button>
                       {errorDisplaying ? (
                         <Document />
                       ) : (
