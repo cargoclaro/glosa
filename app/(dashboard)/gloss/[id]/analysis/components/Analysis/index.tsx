@@ -14,6 +14,7 @@ import {
   DocMagniGlass,
   ArrowTrendingUp,
   ExclamationTriangle,
+  Document,
 } from "@/app/shared/icons";
 import type {
   ICustomGlossTab,
@@ -242,33 +243,42 @@ const GenericTabComponent = ({ data, handleClick }: IGenericTabComponent) => {
     <>
       <StatusHeader status={data.isCorrect} />
       <SectionDivider title="Contexto" icon={<DocMagniGlass />} />
-      <table className="w-full text-center my-5">
-        <tbody>
-          {data.context[0].data.map((item) => (
-            <tr key={item.id}>
-              <td className="w-1/2 border-r border-r-black pr-2 py-2">
-                <p title={item.name} className="line-clamp-1">
-                  {item.name}
-                </p>
-              </td>
-              <td className="w-1/2 font-bold">
-                <p title={item.value} className="pl-1 line-clamp-1">
-                  {item.value}
-                </p>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <div className="max-h-[420px] overflow-y-auto my-5">
+        <table className="w-full text-center">
+          <tbody>
+            {data.context[0].data.map((item) => (
+              <tr key={item.id}>
+                <td className="w-1/2 border-r border-r-black pr-2 py-2">
+                  <p title={item.name} className="line-clamp-1">
+                    {item.name}
+                  </p>
+                </td>
+                <td className="w-1/2 font-bold">
+                  <p title={item.value} className="pl-1 line-clamp-1">
+                    {item.value}
+                  </p>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
       <SectionDivider title="Fuentes" icon={<DocMagniGlass />} />
-      <p
-        title={`Anexo 22 - ${data.context[0].origin}`}
-        className={cn(
-          "mt-4 px-12 py-2 rounded-full text-center border truncate bg-purple-100 border-purple-400"
-        )}
-      >
-        Anexo 22 {"->"} {data.context[0].origin}
-      </p>
+      <ul className="flex flex-col gap-1 mt-4 max-h-[160px] overflow-y-auto">
+        {data.context.map((item) => (
+          <li key={item.id} className="">
+            <p
+              title={item.origin}
+              className="w-full px-12 py-2 rounded-full text-center border truncate bg-purple-100 border-purple-400 inline-flex gap-1 justify-center items-center"
+            >
+              <span>
+                <Document />
+              </span>
+              {item.origin}
+            </p>
+          </li>
+        ))}
+      </ul>
       <SectionDivider title="Pasos de Validación" icon={<ArrowTrendingUp />} />
       <DataListForSummaryCard
         data={data.validations}
