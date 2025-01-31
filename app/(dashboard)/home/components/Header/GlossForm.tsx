@@ -162,7 +162,7 @@ const GlossForm = () => {
                     >
                       <button
                         onClick={() => handleRemoveFile(index)}
-                        className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 text-sm z-10 hover:bg-red-600"
+                        className="absolute top-1.5 right-1.5 bg-gray-400 text-white rounded-full p-1 text-sm z-10 hover:bg-gray-600"
                       >
                         <XMark />
                       </button>
