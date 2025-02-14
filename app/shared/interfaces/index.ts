@@ -58,6 +58,7 @@ export interface ICustomGlossTabValidation
   extends CustomGlossTabValidationStep {
   resources: CustomGlossTabValidationStepResources[];
   actionsToTake: CustomGlossTabValidationStepActionToTake[];
+  steps: ICustomGlossTabValidation[];
 }
 
 export interface ISharedState {

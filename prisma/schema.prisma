@@ -109,13 +109,15 @@ model CustomGlossFile {
 model CustomGlossTab {
   id          String  @id @default(uuid())
   name        String
+  summary     String?
   isCorrect   Boolean
   fullContext Boolean
   isVerified  Boolean @default(false)
 
-  context       CustomGlossTabContext[]
-  validations   CustomGlossTabValidationStep[]
-  customGloss   CustomGloss                    @relation(fields: [customGlossId], references: [id], onDelete: Cascade)
+  context     CustomGlossTabContext[]
+  validations CustomGlossTabValidationStep[]
+
+  customGloss   CustomGloss @relation(fields: [customGlossId], references: [id], onDelete: Cascade)
   customGlossId String
 
   createdAt DateTime @default(now())
@@ -131,12 +133,14 @@ enum CustomGlossTabContextType {
 }
 
 model CustomGlossTabContext {
-  id     Int                       @id @default(autoincrement())
-  type   CustomGlossTabContextType
-  origin String
+  id      Int                       @id @default(autoincrement())
+  type    CustomGlossTabContextType
+  origin  String
+  summary String?
 
-  data             CustomGlossTabContextData[]
-  customGlossTab   CustomGlossTab              @relation(fields: [customGlossTabId], references: [id], onDelete: Cascade)
+  data CustomGlossTabContextData[]
+
+  customGlossTab   CustomGlossTab @relation(fields: [customGlossTabId], references: [id], onDelete: Cascade)
   customGlossTabId String
 
   createdAt DateTime @default(now())
@@ -146,7 +150,7 @@ model CustomGlossTabContext {
 model CustomGlossTabContextData {
   id    Int    @id @default(autoincrement())
   name  String
-  value String
+  value String @db.Text
 
   customGlossTabContext   CustomGlossTabContext @relation(fields: [customGlossTabContextId], references: [id], onDelete: Cascade)
   customGlossTabContextId Int
@@ -156,15 +160,20 @@ model CustomGlossTabContextData {
 }
 
 model CustomGlossTabValidationStep {
-  id          Int     @id @default(autoincrement())
-  name        String
-  description String
-  llmAnalysis String
-  isCorrect   Boolean
+  id          Int      @id @default(autoincrement())
+  name        String?
+  fraccion    String?
+  isCorrect   Boolean?
+  description String?
+  llmAnalysis String?
 
-  resources        CustomGlossTabValidationStepResources[]
-  actionsToTake    CustomGlossTabValidationStepActionToTake[]
-  customGlossTab   CustomGlossTab                             @relation(fields: [customGlossTabId], references: [id], onDelete: Cascade)
+  resources     CustomGlossTabValidationStepResources[]
+  actionsToTake CustomGlossTabValidationStepActionToTake[]
+  steps         CustomGlossTabValidationStep[]             @relation("StepToParent")
+
+  parentStep       CustomGlossTabValidationStep? @relation("StepToParent", fields: [parentStepId], references: [id])
+  parentStepId     Int?
+  customGlossTab   CustomGlossTab                @relation(fields: [customGlossTabId], references: [id], onDelete: Cascade)
   customGlossTabId String
 
   createdAt DateTime @default(now())
