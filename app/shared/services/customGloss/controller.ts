@@ -55,7 +55,7 @@ export async function analysis(formData: FormData) {
     const { pediment_number, operation_type, destination_origin, operation, gross_weight, invoice_data, transport_data, partidas } = jsonResponse.secciones_pedimento;
 
     const pedimentNumberTab = {
-      name: "Pedimento",
+      name: "N° de pedimento",
       isCorrect: pediment_number.is_correct,
       fullContext: true,
       context: {
