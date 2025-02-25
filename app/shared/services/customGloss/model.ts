@@ -1,11 +1,12 @@
 "use server";
 
 import prisma from "@/app/shared/services/prisma";
+import { Prisma } from "@prisma/client";
 
 export async function create({
   data,
 }: {
-  data: (typeof prisma.customGloss.create)["arguments"]["data"];
+  data: Prisma.CustomGlossCreateInput;
 }) {
   return await prisma.customGloss.create({
     data,
