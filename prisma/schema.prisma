@@ -171,10 +171,10 @@ model CustomGlossTabValidationStep {
   actionsToTake CustomGlossTabValidationStepActionToTake[]
   steps         CustomGlossTabValidationStep[]             @relation("StepToParent")
 
-  parentStep       CustomGlossTabValidationStep? @relation("StepToParent", fields: [parentStepId], references: [id])
+  parentStep       CustomGlossTabValidationStep? @relation("StepToParent", fields: [parentStepId], references: [id], onDelete: Cascade)
   parentStepId     Int?
-  customGlossTab   CustomGlossTab                @relation(fields: [customGlossTabId], references: [id], onDelete: Cascade)
-  customGlossTabId String
+  customGlossTab   CustomGlossTab?               @relation(fields: [customGlossTabId], references: [id], onDelete: Cascade)
+  customGlossTabId String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -192,8 +192,9 @@ model CustomGlossTabValidationStepActionToTake {
 }
 
 model CustomGlossTabValidationStepResources {
-  id   Int    @id @default(autoincrement())
-  link String
+  id   Int     @id @default(autoincrement())
+  name String?
+  link String?
 
   customGlossTabValidationStep   CustomGlossTabValidationStep @relation(fields: [customGlossTabValidationStepId], references: [id], onDelete: Cascade)
   customGlossTabValidationStepId Int

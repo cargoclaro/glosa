@@ -4,1414 +4,6 @@ export const INITIAL_STATE_RESPONSE = {
   errors: {},
 };
 
-export const DUMP_GLOSS_FOR_CREATION = {
-  summary: "Custom Gloss Example Summary",
-  timeSaved: 12.5,
-  moneySaved: 3000.75,
-  importerName: "Importer S.A.",
-  tabs: [
-    {
-      name: "Número de Pedimento",
-      isCorrect: false,
-      fullContext: true,
-      context: [
-        {
-          type: "PROVIDED",
-          origin: "Pedimento",
-          data: [
-            {
-              name: "Número de pedimento",
-              value: "123456789012345",
-            },
-            {
-              name: "Año del pedimento",
-              value: "23",
-            },
-            {
-              name: "Año actual",
-              value: "2024",
-            },
-          ],
-        },
-        {
-          type: "EXTERNAL",
-          origin: "Apéndice 15",
-          data: [
-            {
-              name: "Claves de destino válidas",
-              value: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-            },
-          ],
-        },
-      ],
-      validations: [
-        {
-          name: "Longitud",
-          description: "El número de pedimento debe tener 15 dígitos",
-          llmAnalysis:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-          isCorrect: true,
-          summary: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-          actionsToTake: [
-            {
-              description:
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-            },
-          ],
-          resources: [
-            {
-              link: "[Reglamento de la Ley Aduanera](https://www.diputados.gob.mx/LeyesBiblio/regley/Reg_LAdua.pdf)",
-            },
-          ],
-        },
-        {
-          name: "Año del pedimento",
-          description:
-            "El año del pedimento (dígitos 3 y 4) debe ser igual al año actual",
-          llmAnalysis:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-          isCorrect: false,
-          summary: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-          actionsToTake: [
-            {
-              description:
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-            },
-          ],
-          resources: [
-            {
-              link: "[Reglamento de la Ley Aduanera](https://www.diputados.gob.mx/LeyesBiblio/regley/Reg_LAdua.pdf)",
-            },
-          ],
-        },
-      ],
-    },
-    {
-      name: "Tipo de Operación",
-      isCorrect: false,
-      fullContext: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-      context: [
-        {
-          type: "PROVIDED",
-          origin: "Pedimento",
-          data: [
-            {
-              name: "Tipo de operación",
-              value: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-            },
-          ],
-        },
-        {
-          type: "EXTERNAL",
-          origin: "Apéndice 15",
-          data: [
-            {
-              name: "Claves de destino válidas",
-              value: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-            },
-          ],
-        },
-      ],
-      validations: [
-        {
-          name: "Tipo de operación",
-          description: "El tipo de operación debe ser válido",
-          llmAnalysis:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-          isCorrect: true,
-          summary: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-          actionsToTake: [
-            {
-              description:
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-            },
-          ],
-          resources: [
-            {
-              link: "[Reglamento de la Ley Aduanera](https://www.diputados.gob.mx/LeyesBiblio/regley/Reg_LAdua.pdf)",
-            },
-          ],
-        },
-      ],
-    },
-    {
-      name: "Destino/Origen",
-      isCorrect: false,
-      fullContext: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-      context: [
-        {
-          type: "PROVIDED",
-          origin: "Pedimento",
-          data: [
-            {
-              name: "Clave de destino",
-              value: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-            },
-            {
-              name: "Clave de origen",
-              value: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-            },
-          ],
-        },
-        {
-          type: "EXTERNAL",
-          origin: "Apéndice 15",
-          data: [
-            {
-              name: "Claves de destino válidas",
-              value: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-            },
-            {
-              name: "Claves de origen válidas",
-              value: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-            },
-          ],
-        },
-      ],
-      validations: [
-        {
-          name: "Clave de destino",
-          description: "La clave de destino debe ser válida",
-          llmAnalysis:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-          isCorrect: true,
-          summary: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-          actionsToTake: [
-            {
-              description:
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-            },
-          ],
-          resources: [
-            {
-              link: "[Reglamento de la Ley Aduanera](https://www.diputados.gob.mx/LeyesBiblio/regley/Reg_LAdua.pdf)",
-            },
-          ],
-        },
-        {
-          name: "Clave de origen",
-          description: "La clave de origen debe ser válida",
-          llmAnalysis:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-          isCorrect: false,
-          summary: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-          actionsToTake: [
-            {
-              description:
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-            },
-          ],
-          resources: [
-            {
-              link: "[Reglamento de la Ley Aduanera](https://www.diputados.gob.mx/LeyesBiblio/regley/Reg_LAdua.pdf)",
-            },
-          ],
-        },
-      ],
-    },
-  ],
-  files: [
-    {
-      name: "BL.pdf",
-      url: "https://dummycloud.com/glosas/files/gloss28/proforma.pdf",
-    },
-    {
-      name: "Carta 3.1.8.pdf",
-      url: "https://dummycloud.com/glosas/files/gloss28/ficha_tecnica.pdf",
-    },
-    {
-      name: "Carta 3.1.8.pdf",
-      url: "https://dummycloud.com/glosas/files/gloss28/carta_318.pdf",
-    },
-    {
-      name: "Certificado de Origen.pdf",
-      url: "https://dummycloud.com/glosas/files/gloss28/certificado_origen.pdf",
-    },
-    {
-      name: "Sedena.pdf",
-      url: "https://dummycloud.com/glosas/files/gloss28/sedena.pdf",
-    },
-    {
-      name: "Pedimento.pdf",
-      url: "/assets/pdfs/pedimento_format_modified.pdf",
-    },
-  ],
-  alerts: [
-    {
-      type: "HIGH",
-      description: "NUM. FACTURA",
-    },
-    {
-      type: "LOW",
-      description: "# CONTENEDOR",
-    },
-    {
-      type: "LOW",
-      description: "PRECIO UNIT",
-    },
-    {
-      type: "LOW",
-      description: "CANTIDAD UMT",
-    },
-    {
-      type: "LOW",
-      description: "PESO BRUTO",
-    },
-  ],
-};
-
-export const VICTOR_GLOSS_EXAMPLE = {
-  summary:
-    "Se encontraron 4 errores críticos, 15 advertencias y 0 observaciones menores.",
-  timeSaved: 30,
-  moneySaved: 1234.56,
-  importerName: "ACUSE LC",
-  tabs: [
-    {
-      name: "N° de pedimento",
-      isCorrect: false,
-      fullContext: true,
-      context: [
-        {
-          type: "PROVIDED",
-          origin: "Pedimento",
-          data: [
-            {
-              name: "Número de pedimento",
-              value: "214737091001023",
-            },
-          ],
-        },
-      ],
-      validations: [
-        {
-          name: "Longitud",
-          description: "El número de pedimento debe contar con 15 dígitos",
-          llmAnalysis:
-            "✅ El número de pedimento tiene 15 dígitos, que es la longitud requerida. Se confirmó con el contexto proporcionado donde se indica que el 'Número de dígitos' es 15.",
-          isCorrect: true,
-          summary: "Validación correcta de Longitud",
-          actionsToTake: [],
-          resources: [
-            {
-              link: "[Reglamento de la Ley Aduanera](https://www.diputados.gob.mx/LeyesBiblio/regley/Reg_LAdua.pdf)",
-            },
-          ],
-        },
-        {
-          name: "Año del pedimento",
-          description:
-            "El año del pedimento (inferido por los dígitos 3 y 4 del número del pedimento) debe ser iguales al año actual",
-          llmAnalysis:
-            "❌ El año del pedimento, inferido como '2047' del número de pedimento, no coincide con el año actual '2025'. Esto indica un error en el año. Se utilizó el contexto inferido para realizar esta validación.",
-          isCorrect: false,
-          summary: "Error en la validación de Año del pedimento",
-          actionsToTake: [
-            {
-              description:
-                "Revisar el número de pedimento y corregir el año a un valor que coincida con el año actual.",
-            },
-          ],
-          resources: [
-            {
-              link: "[Reglamento de la Ley Aduanera](https://www.diputados.gob.mx/LeyesBiblio/regley/Reg_LAdua.pdf)",
-            },
-          ],
-        },
-      ],
-    },
-    {
-      name: "Tipo de Operación",
-      isCorrect: false,
-      fullContext: true,
-      context: [
-        {
-          type: "PROVIDED",
-          origin: "Pedimento",
-          data: [
-            {
-              name: "Tipo de Operación",
-              value: "IMP",
-            },
-            {
-              name: "Clave de Pedimento",
-              value: "A1",
-            },
-            {
-              name: "Régimen",
-              value: "IMD",
-            },
-          ],
-        },
-        {
-          type: "PROVIDED",
-          origin: "Documento de Transporte",
-          data: [
-            {
-              name: "País de origen",
-              value: "USA",
-            },
-            {
-              name: "País de destino",
-              value: "MEX",
-            },
-          ],
-        },
-        {
-          type: "EXTERNAL",
-          origin: "Apéndice 2",
-          data: [
-            {
-              name: "Claves de pedimento válidas",
-              value:
-                "A1 - Importación o exportación definitiva.\nSupuestos de aplicación:\nI. Entrada de mercancías de procedencia extranjera para permanecer en territorio nacional por tiempo ilimitado.\nII. Salida de mercancías del territorio nacional para permanecer en el extranjero por tiempo ilimitado.\nIII. Importación definitiva de vehículos por misiones diplomáticas, consulares y oficinas de organismos internacionales, y su personal extranjero.\nIV. Importación definitiva de vehículos nuevos y usados.\nV. Retorno de envases y empaques, etiquetas y folletos importados temporalmente al amparo de un Programa IMMEX.\nVI. Importación definitiva de mercancías que se retiren de recinto fiscalizado estratégico, colindante con la aduana.\nVII. Exportación definitiva de mercancías que se retiren de recinto fiscalizado estratégico colindante o no colindante con la aduana.\nA3 - Regularización de mercancías (importación definitiva).\nSupuestos de aplicación:\nI. Mercancías que se encuentran en territorio nacional sin haber cumplido con las formalidades del despacho aduanero.\nII. Mercancías que hubieran ingresado a territorio nacional bajo el régimen de importación temporal cuyo plazo hubiera vencido.\nIII. Maquinaria o equipo que no cuente con la documentación necesaria para acreditar su legal importación.\nIV. Mercancías a que se refiere el artículo 108, fracción III de la Ley.\nV. Vehículos de prueba que ingresaron a depósito fiscal por empresas de la industria automotriz terminal.\nVI. Mercancía excedente o no declarada en el pedimento de introducción a depósito fiscal.\nVII. Importación definitiva de mercancías robadas.\nVIII. Importación definitiva de mercancía importada al amparo de un Cuaderno ATA.\nIX. Importación de contenedores y carros de ferrocarril dañados.\nX. Mercancías que hubieran ingresado a territorio nacional bajo el régimen de recinto fiscalizado estratégico cuyo plazo hubiera vencido.\nC1 - Importación definitiva a la franja fronteriza norte y región fronteriza.\nSupuestos de aplicación:\nI. Importación definitiva de mercancías al amparo del 'Decreto de la zona libre de Chetumal'.\nII. Empresas que se dedican al desmantelamiento de vehículos automotores usados.\nIII. Mercancías destinadas a la franja fronteriza norte y región fronteriza por empresas autorizadas.\nD1 - Retorno por sustitución.\nSupuestos de aplicación:\nI. Retorno al país o al extranjero por sustitución de mercancías defectuosas.\nGC - Global complementario.\nSupuestos de aplicación:\nI. Ajuste de valor anual en pedimentos de importación definitiva.\nII. Ajuste de valor derivado de las facultades de comprobación.\nIII. Ajuste de valor anual en pedimentos de exportación definitiva.\nIV. Ajuste de valor derivado de las facultades de comprobación.\nK1 - Desistimiento de régimen y retorno de mercancías por devolución.\nSupuestos de aplicación:\nI. Retorno de mercancías exportadas definitivamente en un lapso no mayor de un año.\nII. Para retornar mercancías que se encuentren en depósito ante aduana.\nIII. Desistimiento total o parcial del régimen de exportación.\nL1 - Pequeña importación definitiva.\nSupuestos de aplicación:\nI. Pequeña importación comercial en cruces fronterizos.\nII. Pequeña importación de mercancías por personas físicas que tributen en los términos del Título IV, Capítulo II.\nIII. Importación de mercancías de personas que no excedan el valor de 3,000 dólares.\nIV. Pequeña exportación en cruces fronterizos.\nP1 - Reexpedición de mercancías de franja fronteriza.\nSupuestos de aplicación:\nI. Mercancía que fue importada definitivamente a región fronteriza o franja fronteriza norte.\nS2 - Importación y exportación de mercancías para retornar en su mismo estado.\nSupuestos de aplicación:\nI. Importación de mercancías para retornar en su mismo estado.\nII. Exportación de mercancías importadas con esta clave de documento.\nT1 - Importación y exportación por empresas de mensajería y paquetería.\nSupuestos de aplicación:\nI. Importación y exportación definitiva de mercancías por empresas de mensajería y paquetería.\nVF - Importación definitiva de vehículos usados a la franja o región fronteriza norte.\nSupuestos de aplicación:\nI. Importación definitiva de vehículos usados de conformidad con la regla 3.5.6.\nVU - Importación definitiva de vehículos usados.\nSupuestos de aplicación:\nI. Importación definitiva de vehículos de conformidad con la regla 3.5.5.\nAD - Importación temporal de mercancías destinadas a convenciones y congresos internacionales.\nSupuestos de aplicación:\nCuando se expongan al público en general y se difundan a través de los principales medios de comunicación, así como sus muestras y muestrarios.\nAJ - Importación y exportación temporal de envases de mercancías.\nSupuestos de aplicación:\nImportación temporal de envases de mercancías, siempre que contengan en territorio nacional las mercancías que en ellos se hubieran introducido al país.\nExportación temporal de envases de mercancías.\nBA - Importación y exportación temporal de bienes para ser retornados en su mismo estado.\nSupuestos de aplicación:\nImportación temporal de bienes realizada por residentes en el extranjero sin establecimiento permanente en México.\nExportación temporal realizada por residentes en México sin establecimiento permanente en el extranjero.\nExportación temporal de ganado.\nImportación temporal de menajes de casa.\nImportación temporal de maquinaria y equipo.\nBB - Exportación, importación y retornos virtuales.\nSupuestos de aplicación:\nExportación definitiva virtual de mercancía nacional (productos terminados) que enajenen residentes en el país a recinto fiscalizado.\nExportación definitiva virtual de mercancía nacional a depósito fiscal.\nExportación (retorno) virtual de mercancías que hubieran ingresado a territorio nacional bajo el régimen de importación temporal.\nExportación definitiva virtual de mercancía importada temporalmente con anterioridad.\nBC - Importación y exportación temporal de mercancías destinadas a eventos culturales o deportivos e investigación.\nSupuestos de aplicación:\nPara eventos culturales o deportivos patrocinados por entidades públicas.\nPara fines de investigación que importen organismos públicos nacionales y extranjeros.\nBD - Importación y exportación temporal de equipo para filmación.\nSupuestos de aplicación:\nImportación y exportación temporal de enseres, utilería y demás equipo necesario para la filmación.\nBE - Importación y exportación temporal de vehículos de prueba.\nSupuestos de aplicación:\nImportación y exportación temporal de vehículos de prueba por un fabricante autorizado residente en México.\nBF - Exportación temporal de mercancías destinadas a exposiciones, convenciones o eventos culturales o deportivos.\nSupuestos de aplicación:\nPara mercancía destinada a exposiciones, convenciones o eventos culturales o deportivos.\nBH - Importación temporal de contenedores, aviones, helicópteros, embarcaciones y carros de ferrocarril.\nSupuestos de aplicación:\nContenedores, embarcaciones, aviones, helicópteros y carros de ferrocarril.\nMercancías destinadas para mantenimiento o reparación.\nBI - Importación temporal.\nSupuestos de aplicación:\nMercancías previstas por convenios internacionales y uso oficial de misiones diplomáticas.\nBM - Exportación temporal de mercancías para su transformación, elaboración o reparación.\nSupuestos de aplicación:\nExportación temporal de mercancías nacionales o nacionalizadas para su transformación en el extranjero.\nBO - Exportación temporal para reparación o sustitución y retorno al país.\nSupuestos de aplicación:\nExportación temporal de mercancías de activo fijo para reparación o sustitución.\nBP - Importación y exportación temporal de muestras o muestrarios.\nSupuestos de aplicación:\nMuestras y muestrarios destinados a dar a conocer mercancía.\nBR - Exportación temporal y retorno de mercancías fungibles.\nSupuestos de aplicación:\nMercancías fungibles que cuenten con opinión de la SE para la exportación temporal.\nH1 - Retorno de mercancías en su mismo estado.\nSupuestos de aplicación:\nRetorno de importación y exportación de mercancías en el mismo estado.\nH8 - Retorno de envases.\nSupuestos de aplicación:\nAl territorio nacional de los envases exportados temporalmente.\nAl extranjero de envases que fueron importados temporalmente.\nI1 - Importación, exportación y retorno de mercancías elaboradas, transformadas o reparadas.\nSupuestos de aplicación:\nImportación definitiva de mercancías terminadas que se incorporaron productos exportados temporalmente.\nF4 - Cambio de régimen de insumos o de mercancía exportada temporalmente.\nSupuestos de aplicación:\nImportación temporal a definitiva de mercancía sujeta a transformación.\nExportación temporal a definitiva virtual de mercancías.\nF5 - Cambio de régimen de mercancías de importación temporal a definitiva.\nSupuestos de aplicación:\nImportación temporal a definitiva de bienes de activo fijo por parte de empresas con Programa IMMEX.\nIN - Importación temporal de bienes que serán sujetos a transformación, elaboración o reparación.\nSupuestos de aplicación:\nMercancía destinada a un proceso de elaboración, transformación o reparación, que formen parte del programa autorizado a empresas con Programa IMMEX.\nRetorno al país de mercancía elaborada, transformada o reparada que haya sido rechazada en el extranjero por haber resultado defectuosa o de especificaciones distintas a las convenidas por parte de empresas con Programa IMMEX, en el plazo de un año y siempre que no hayan sido objeto de modificaciones.\nAF - Importación temporal de bienes de activo fijo.\nSupuestos de aplicación:\nMercancías señaladas en el artículo 108, fracción III de la Ley.\nRT - Retorno de mercancías.\nSupuestos de aplicación:\nRetorno al extranjero de mercancía transformada, elaborada o reparada al amparo de un Programa IMMEX.\nRetorno de mercancías extranjeras en su mismo estado, excepto cuando se trate del retorno de envases y empaques, etiquetas y folletos importados temporalmente al amparo de un Programa IMMEX, que se utilicen en la exportación de mercancía nacional, para lo cual deberán utilizar la clave de documento A1.\nRetorno de opciones especiales, incorporadas en vehículos exportados por la industria automotriz terminal o manufacturera de vehículos de autotransporte, al amparo de un Programa IMMEX.\nA4 - Introducción para depósito fiscal (AGD).\nE1 - Extracción de depósito fiscal de bienes que serán sujetos a transformación, elaboración o reparación (AGD).\nE2 - Extracción de depósito fiscal de bienes de activo fijo (AGD).\nG1 - Extracción de depósito fiscal (AGD).\nC3 - Extracción de depósito fiscal de franja o región fronteriza (AGD).\nK2 - Extracción de depósito fiscal por desistimiento o transferencias (AGD).\nA5 - Introducción a depósito fiscal en local autorizado.\nE3 - Extracción de depósito fiscal en local autorizado (insumos).\nE4 - Extracción de depósito fiscal en local autorizado (activo fijo).\nG2 - Extracción de depósito fiscal en local autorizado para su importación definitiva.\nK3 - Extracción de depósito fiscal en local autorizado para retorno o transferencia.\nF2 - Introducción a depósito fiscal (IA).\nF3 - Extracción de depósito fiscal (IA).\nV3 - Extracción de depósito fiscal de bienes para su retorno o exportación virtual (IA).\nV4 - Retorno virtual derivado de la constancia de transferencia de mercancías (IA).\nF8 - Introducción y extracción de depósito fiscal de mercancías nacionales o nacionalizadas en tiendas libres de impuestos (Duty Free).\nF9 - Introducción y extracción de depósito fiscal de mercancías extranjeras para exposición y venta de mercancías en tiendas libres de impuestos (Duty Free).\nG6 - Informe de extracción de depósito fiscal de mercancías nacionales o nacionalizadas vendidas en tiendas libres de impuestos (Duty Free).\nG7 - Informe de extracción de depósito fiscal de mercancías extranjeras vendidas en tiendas libres de impuestos (Duty Free).\nV8 - Transferencia de mercancías en depósito fiscal para la exposición y venta de mercancías extranjeras, nacionales y nacionalizadas de tiendas libres de impuestos (Duty Free).",
-            },
-          ],
-        },
-        {
-          type: "EXTERNAL",
-          origin: "Apéndice 16",
-          data: [
-            {
-              name: "Regímenes válidos",
-              value:
-                "IMD - Definitivo de importación.\n\nITR - Temporales de importación para retornar al extranjero en el mismo estado.\n\nITE - Temporales de importación para elaboración, transformación o reparación para empresas con programa IMMEX.\n\nDFI - Depósito fiscal.\n\nRFE - Elaboración, transformación o reparación en recinto fiscalizado.\n",
-            },
-          ],
-        },
-      ],
-      validations: [
-        {
-          name: "Coherencia con origen/destino",
-          description:
-            "El tipo de operación debe ser consistente con el origen y destino de las mercancías (IMP si destino es México, EXP si origen es México, TRA en otros casos)",
-          llmAnalysis:
-            "⚠️ El tipo de operación 'IMP' es consistente con el destino de México, sin embargo, no se proporciona información sobre el origen de las mercancías en el contexto proporcionado, lo cual limita la capacidad para confirmar completamente la coherencia.",
-          isCorrect: false,
-          summary:
-            "Advertencia en la validación de Coherencia con origen/destino",
-          actionsToTake: [
-            {
-              description:
-                "Obtener información sobre el país de origen de las mercancías para validar la coherencia completamente.",
-            },
-          ],
-          resources: [
-            {
-              link: "[Ley Aduanera](None)",
-            },
-          ],
-        },
-        {
-          name: "Validación de clave de pedimento",
-          description:
-            "La clave de pedimento debe ser válida para el tipo de operación según el Apéndice 2",
-          llmAnalysis:
-            "✅ La clave de pedimento 'A1' es válida para el tipo de operación 'IMP' según el Apéndice 2 proporcionado en el contexto, donde se menciona que A1 corresponde a importación definitiva.",
-          isCorrect: true,
-          summary: "Validación correcta de Validación de clave de pedimento",
-          actionsToTake: [],
-          resources: [
-            {
-              link: "[Apéndice 2 del Anexo 22](None)",
-            },
-          ],
-        },
-        {
-          name: "Validación de régimen",
-          description:
-            "El régimen debe ser válido para el tipo de operación según el Apéndice 16",
-          llmAnalysis:
-            "⚠️ El régimen 'IMD' es mencionado en el contexto como válido para operaciones de importación, sin embargo, no se detalla su correspondencia directa con el tipo de operación 'IMP' según el Apéndice 16. Es importante verificar la aplicabilidad del régimen para evitar errores futuros.",
-          isCorrect: false,
-          summary: "Advertencia en la validación de Validación de régimen",
-          actionsToTake: [
-            {
-              description:
-                "Revisar el Apéndice 16 para confirmar la validez del régimen 'IMD' para la operación 'IMP' y asegurar que cumple con los requisitos.",
-            },
-          ],
-          resources: [
-            {
-              link: "[Apéndice 16 del Anexo 22](None)",
-            },
-          ],
-        },
-      ],
-    },
-    {
-      name: "Destino/Origen de Mercancías",
-      isCorrect: false,
-      fullContext: true,
-      context: [
-        {
-          type: "PROVIDED",
-          origin: "Pedimento",
-          data: [
-            {
-              name: "Clave de Destino/Origen",
-              value: "9",
-            },
-            {
-              name: "Tipo de Operación",
-              value: "IMP",
-            },
-          ],
-        },
-        {
-          type: "PROVIDED",
-          origin: "Documento de Transporte",
-          data: [
-            {
-              name: "País de origen",
-              value: "USA",
-            },
-            {
-              name: "País de destino",
-              value: "MEX",
-            },
-          ],
-        },
-        {
-          type: "EXTERNAL",
-          origin: "Apéndice 15",
-          data: [
-            {
-              name: "Claves de destino válidas",
-              value:
-                "1 - Estado de Baja California y parcial de Sonora.\n2 - Estado de Baja California Sur.\n3 - Estado de Quintana Roo.\n5 - Municipio de Salina Cruz, Oaxaca.\n6 - Municipio de Cananea, Sonora.\n7 - Franja Fronteriza Norte.\n8 - Franja Fronteriza Sur, Colindante con Guatemala.\n9 - Interior del País.\n10 - Municipio de Caborca, Sonora.\n11 - Región Fronteriza de Chetumal, en la localidad de Chetumal, en el Municipio de Othón P. Blanco, Quintana Roo.",
-            },
-          ],
-        },
-      ],
-      validations: [
-        {
-          name: "Validación de clave",
-          description:
-            "La clave de destino/origen debe existir en el Apéndice 15",
-          llmAnalysis:
-            "⚠️ La clave de destino/origen es '9', que corresponde a 'Interior del País'. Aunque la clave existe en el Apéndice 15, se debe verificar que este destino sea el apropiado para la operación. No hay evidencia suficiente para determinar si esta clave es adecuada en el contexto de la operación actual.",
-          isCorrect: false,
-          summary: "Advertencia en la validación de Validación de clave",
-          actionsToTake: [
-            {
-              description:
-                "Verificar si el destino declarado corresponde con la clave de destino/origen '9'.",
-            },
-          ],
-          resources: [
-            {
-              link: "[Apéndice 15 del Anexo 22](None)",
-            },
-          ],
-        },
-        {
-          name: "Coherencia con destino",
-          description:
-            "La clave debe ser coherente con el destino final declarado (ej: clave 9 para interior del país, 1 o 7 para frontera norte)",
-          llmAnalysis:
-            "⚠️ La clave '9' debe ser consistente con el destino final declarado. No tenemos el 'destino final' explícito, lo que impide una validación plena de coherencia. Se debe auditar el destino de la operación para asegurar cumplimiento con las reglas vigentes.",
-          isCorrect: false,
-          summary: "Advertencia en la validación de Coherencia con destino",
-          actionsToTake: [
-            {
-              description:
-                "Clarificar cuál es el destino final declarado y si se ajusta a la clave de destino/origen '9'.",
-            },
-          ],
-          resources: [
-            {
-              link: "[Ley Aduanera](None)",
-            },
-          ],
-        },
-        {
-          name: "Coherencia documental",
-          description:
-            "Los documentos de la operación deben ser consistentes con el destino/origen declarado",
-          llmAnalysis:
-            "❌ No se cuenta con los documentos que demuestren si la operación es consistente con el destino/origen declarado. La falta de dichos documentos representa un error grave, ya que puede implicar que la operación no cumple con los requisitos aduanales.",
-          isCorrect: false,
-          summary: "Error en la validación de Coherencia documental",
-          actionsToTake: [
-            {
-              description:
-                "Obtener y revisar toda la documentación relacionada con la operación para asegurarse de que es consistente con el destino/origen declarado.",
-            },
-          ],
-          resources: [
-            {
-              link: "[Reglamento de la Ley Aduanera](None)",
-            },
-          ],
-        },
-      ],
-    },
-    {
-      name: "Operación (Fecha de entrada y Tipo de cambio)",
-      isCorrect: false,
-      fullContext: true,
-      context: [
-        {
-          type: "PROVIDED",
-          origin: "Pedimento",
-          data: [
-            {
-              name: "Fecha de entrada",
-              value: "12/08/2021",
-            },
-            {
-              name: "Tipo de cambio",
-              value: "20.1038",
-            },
-            {
-              name: "Valor en dólares",
-              value: "2920.82",
-            },
-            {
-              name: "Valor aduana",
-              value: "58721",
-            },
-            {
-              name: "Precio pagado/valor comercial",
-              value: "47848",
-            },
-            {
-              name: "Valor Moneda de la Factura",
-              value: "2380.0",
-            },
-            {
-              name: "Factor Moneda de la Factura",
-              value: "1.0",
-            },
-            {
-              name: "Valor en Dólares",
-              value: "2920.82",
-            },
-            {
-              name: "Incrementables",
-              value: "10873",
-            },
-            {
-              name: "Decrementables",
-              value: "0",
-            },
-          ],
-        },
-        {
-          type: "PROVIDED",
-          origin: "Documento de Transporte",
-          data: [
-            {
-              name: "Fecha de entrada",
-              value: "12/08/2021",
-            },
-            {
-              name: "Incrementables",
-              value: "10873",
-            },
-          ],
-        },
-        {
-          type: "EXTERNAL",
-          origin: "Banxico",
-          data: [
-            {
-              name: "Tipo de cambio DOF",
-              value: "20.1038",
-            },
-          ],
-        },
-      ],
-      validations: [
-        {
-          name: "Entrada de mercancías en día hábil",
-          description:
-            "La entrada de mercancías deberá efectuarse en día hábil, si no es el caso el SAT debe emitir una autorización (Artículo 10 de la Ley Aduanera)",
-          llmAnalysis:
-            "✅ La entrada de mercancías se registró el 12/08/2021, que corresponde a un día hábil. No hay advertencias ni errores en este aspecto.",
-          isCorrect: true,
-          summary: "Validación correcta de Entrada de mercancías en día hábil",
-          actionsToTake: [],
-          resources: [
-            {
-              link: "[Ley Aduanera](https://www.diputados.gob.mx/LeyesBiblio/pdf/LAdua.pdf)",
-            },
-          ],
-        },
-        {
-          name: "Coherencia de fecha de entrada",
-          description:
-            "La fecha de entrada del pedimento debe ser exactamente igual que la fecha de entrada del documento de transporte",
-          llmAnalysis:
-            "✅ Las fechas de entrada del pedimento y del documento de transporte coinciden (12/08/2021). No hay problemas en este aspecto.",
-          isCorrect: true,
-          summary: "Validación correcta de Coherencia de fecha de entrada",
-          actionsToTake: [],
-          resources: [
-            {
-              link: "[Ley Aduanera](None)",
-            },
-          ],
-        },
-        {
-          name: "Tipo de cambio",
-          description:
-            "El tipo de cambio debe corresponder al publicado en el DOF del día hábil anterior a la fecha de entrada",
-          llmAnalysis:
-            "✅ El tipo de cambio registrado (20.1038) corresponde al publicado en el DOF y es adecuado para la fecha de entrada indicada. No se presentan errores.",
-          isCorrect: true,
-          summary: "Validación correcta de Tipo de cambio",
-          actionsToTake: [],
-          resources: [
-            {
-              link: "[DOF - Tipo de cambio](None)",
-            },
-          ],
-        },
-        {
-          name: "Incrementables",
-          description:
-            "Los incrementables del pedimento deben coincidir exactamente con los incrementables del documento de transporte",
-          llmAnalysis:
-            "✅ Los incrementables del pedimento (10873) y del documento de transporte (10873) coinciden exactamente. No hay advertencias ni errores.",
-          isCorrect: true,
-          summary: "Validación correcta de Incrementables",
-          actionsToTake: [],
-          resources: [
-            {
-              link: "[Reglamento de la Ley Aduanera](None)",
-            },
-          ],
-        },
-        {
-          name: "Valores del pedimento",
-          description:
-            "Los valores declarados deben coincidir con los cálculos basados en el tipo de cambio.",
-          llmAnalysis:
-            "⚠️ Los valores declarados en el pedimento (Valor en dólares: 2920.82, Valor aduana: 58721, Precio pagado: 47848) deben ser verificados con los cálculos correspondientes basados en el tipo de cambio. Los cálculos inferidos (Valor en dólares calculado: 2380.0, Valor aduana calculado: 58720.044, Precio pagado calculado: 47847.044) presentan leves discrepancias y requieren revisión para asegurar que sean correctos.",
-          isCorrect: false,
-          summary: "Advertencia en la validación de Valores del pedimento",
-          actionsToTake: [
-            {
-              description:
-                "Revisar los valores declarados en el pedimento y compararlos con los cálculos basados en el tipo de cambio para corregir cualquier inconsistencia.",
-            },
-          ],
-          resources: [
-            {
-              link: "[Ley Aduanera - Valor en Aduana](None)",
-            },
-          ],
-        },
-      ],
-    },
-    {
-      name: "Pesos y Bultos",
-      isCorrect: false,
-      fullContext: false,
-      context: [
-        {
-          type: "PROVIDED",
-          origin: "Pedimento",
-          data: [
-            {
-              name: "Peso bruto",
-              value: "19.5",
-            },
-            {
-              name: "Números de bultos",
-              value: "",
-            },
-          ],
-        },
-        {
-          type: "PROVIDED",
-          origin: "Documento de Transporte",
-          data: [
-            {
-              name: "Peso bruto",
-              value: "19.5",
-            },
-            {
-              name: "Número de bultos",
-              value: "",
-            },
-          ],
-        },
-        {
-          type: "PROVIDED",
-          origin: "Factura",
-          data: [
-            {
-              name: "Peso neto total",
-              value: "0.0",
-            },
-          ],
-        },
-      ],
-      validations: [
-        {
-          name: "Validación de pesos",
-          description:
-            "El peso neto total debe ser menor que el peso bruto declarado tanto en el pedimento como en el documento de transporte",
-          llmAnalysis:
-            "⚠️ El peso neto total es 0.0 según el documento de la factura. Esto significa que no hay datos suficientes para cumplir con la validación, ya que el peso neto debería ser menor que el peso bruto declarado (19.5). La falta de información limita la capacidad de análisis.",
-          isCorrect: false,
-          summary: "Advertencia en la validación de Validación de pesos",
-          actionsToTake: [
-            {
-              description:
-                "Solicitar la verificación del peso neto en la factura para asegurar que se tenga un valor diferente a cero.",
-            },
-          ],
-          resources: [
-            {
-              link: "[Reglamento de la Ley Aduanera](None)",
-            },
-          ],
-        },
-        {
-          name: "Coincidencia de peso bruto",
-          description:
-            "El peso bruto declarado en el pedimento debe coincidir exactamente con el declarado en el documento de transporte",
-          llmAnalysis:
-            "✅ El peso bruto en el pedimento y el documento de transporte coinciden, ambos reportan un peso bruto de 19.5. Esta validación fue correcta.",
-          isCorrect: true,
-          summary: "Validación correcta de Coincidencia de peso bruto",
-          actionsToTake: [],
-          resources: [
-            {
-              link: "[Reglamento de la Ley Aduanera](None)",
-            },
-          ],
-        },
-        {
-          name: "Coincidencia de bultos",
-          description:
-            "El número total de bultos debe coincidir entre el pedimento y el documento de transporte",
-          llmAnalysis:
-            "⚠️ No es posible determinar la coincidencia de bultos debido a que el número de bultos en el pedimento y el documento de transporte no se proporciona. Esto resulta en una falta de información para esta validación.",
-          isCorrect: false,
-          summary: "Advertencia en la validación de Coincidencia de bultos",
-          actionsToTake: [
-            {
-              description:
-                "Solicitar información sobre el número de bultos en ambos documentos para completar esta validación.",
-            },
-          ],
-          resources: [
-            {
-              link: "[Reglamento de la Ley Aduanera](None)",
-            },
-          ],
-        },
-      ],
-    },
-    {
-      name: "Datos de Factura",
-      isCorrect: false,
-      fullContext: false,
-      context: [
-        {
-          type: "PROVIDED",
-          origin: "Pedimento",
-          data: [
-            {
-              name: "RFC importador",
-              value: "SAA200430EUA",
-            },
-            {
-              name: "Domicilio fiscal",
-              value:
-                "AV. EBANO No. 301 Int. B LOS CEDROS CP. 42033 PACHUCA Hidalgo MEXICO (ESTADOS UNIDOS MEXICANOS)",
-            },
-            {
-              name: "Razón social",
-              value: "ACUSE LC",
-            },
-            {
-              name: "Fecha de emisión",
-              value: "20/08/2021",
-            },
-          ],
-        },
-        {
-          type: "PROVIDED",
-          origin: "Factura",
-          data: [
-            {
-              name: "Datos del proveedor",
-              value: "",
-              // value: {
-              //   nombre: "ANDERSON AMERICA",
-              //   tax_id: "561893440",
-              //   domicilio: {
-              //     street: "SOUTHERN LOOP BLVD",
-              //     number: "10620",
-              //     zip_code: "28134",
-              //     city: "PINEVILLE",
-              //     state: "PINEVILLE",
-              //     country: "ESTADOS UNIDOS DE AMERICA",
-              //   }
-              // },
-            },
-            {
-              name: "Datos del importador",
-              value: "",
-              // value: {
-              //   nombre: "SACC ASESORES ADUANEROS EN COMERCIO EXTERIOR SA DE CV",
-              //   tax_id: "SAA200430EUA",
-              //   domicilio: {
-              //     street: "EBANO",
-              //     number: "301",
-              //     zip_code: "42033",
-              //     colony: "LOS CEDROS",
-              //     state: "HIDALGO",
-              //     country: "MEXICO",
-              //   },
-              // },
-            },
-            {
-              name: "Datos del consignatario",
-              value: "",
-              // value: {
-              //   nombre: "SACC ASESORES ADUANEROS EN COMERCIO EXTERIOR SA DE CV",
-              //   domicilio: {
-              //     street: "EBANO",
-              //     number: "301",
-              //     zip_code: "42033",
-              //     colony: "LOS CEDROS",
-              //     state: "HIDALGO",
-              //     country: "MEXICO",
-              //   },
-              // },
-            },
-            {
-              name: "Fecha de emisión",
-              value: "20/08/2021",
-            },
-            {
-              name: "Número de folio",
-              value: "",
-            },
-          ],
-        },
-        {
-          type: "PROVIDED",
-          origin: "COVE",
-          data: [
-            {
-              name: "Datos comerciales",
-              value: "",
-              // value: {
-              //   fecha: "2021-08-11",
-              //   folio: "COVE214J371P6",
-              //   descripcion: "PIÑON",
-              //   valor_total: 656.0,
-              // },
-            },
-            {
-              name: "Descripción de mercancías",
-              value: "PIÑON",
-            },
-            {
-              name: "Números de serie",
-              value: "",
-            },
-            {
-              name: "RFC importador",
-              value: "SAA200430EUA",
-            },
-            {
-              name: "Fecha de emisión",
-              value: "20/08/2021",
-            },
-          ],
-        },
-        {
-          type: "PROVIDED",
-          origin: "Cesión de Derechos",
-          data: [
-            {
-              name: "Existe documento",
-              value: "",
-            },
-            {
-              name: "Datos de comercializadora",
-              value: "",
-            },
-            {
-              name: "Fecha de emisión",
-              value: "20/08/2021",
-            },
-          ],
-        },
-        {
-          type: "PROVIDED",
-          origin: "Carta 3.1.8",
-          data: [
-            {
-              name: "RFC importador",
-              value: "SAA200430EUA",
-            },
-            {
-              name: "Valor de mercancías",
-              value: "",
-            },
-            {
-              name: "Incoterm",
-              value: "",
-            },
-            {
-              name: "Descripción de mercancías",
-              value: "PIÑON",
-            },
-            {
-              name: "Fecha de emisión",
-              value: "20/08/2021",
-            },
-          ],
-        },
-      ],
-      validations: [
-        {
-          name: "Validación de cesión de derechos y carta 3.1.8",
-          description:
-            "Cuando existe cesión de derechos, los datos del importador deben coincidir con los de la comercializadora. Sin cesión, deben coincidir con el consignatario de la factura. La carta 3.1.8 tiene precedencia sobre la factura en todas las validaciones.",
-          llmAnalysis:
-            "⚠️ No se proporcionó información sobre si existe un documento de cesión de derechos. Sin embargo, se observó que los datos del importador no coinciden con los de la comercializadora. Se debe revisar si hay una cesión de derechos válida y si corresponde con los datos del consignatario de la factura.",
-          isCorrect: false,
-          summary:
-            "Advertencia en la validación de Validación de cesión de derechos y carta 3.1.8",
-          actionsToTake: [
-            {
-              description:
-                "Obtener y revisar el documento de cesión de derechos para verificar su validez y la coincidencia de los datos.",
-            },
-          ],
-          resources: [
-            {
-              link: "[Regla 3.1.8 RGCE](None)",
-            },
-          ],
-        },
-        {
-          name: "Validación de datos del importador/exportador",
-          description:
-            "El RFC, domicilio fiscal y razón social del importador deben ser idénticos en pedimento, factura/carta 3.1.8 y COVE. El RFC debe corresponder a una persona física o moral existente. Las discrepancias en estos datos son consideradas inconsistencias críticas.",
-          llmAnalysis:
-            "⚠️ Hay discrepancias en los datos del importador. El RFC proporcionado se encuentra como coincidente, pero no se valida completamente el domicilio fiscal ni la razón social en todos los documentos. Por lo tanto, se requiere verificar si hay inconsistencias adicionales.",
-          isCorrect: false,
-          summary:
-            "Advertencia en la validación de Validación de datos del importador/exportador",
-          actionsToTake: [
-            {
-              description:
-                "Verificar que todos los datos del importador coincidan entre el pedimento, la factura y la carta 3.1.8 para evitar inconsistencias críticas.",
-            },
-          ],
-          resources: [],
-        },
-        {
-          name: "Validación de datos comerciales y del proveedor",
-          description:
-            "Los datos del proveedor deben coincidir exactamente entre factura y COVE. Con comercializadora, sus datos deben coincidir con el documento de cesión. Las fechas de emisión y números de folio deben ser coherentes entre documentos.",
-          llmAnalysis:
-            "⚠️ No se proporcionaron datos sobre la validez exacta y comparativa entre los documentos. Se requiere que los datos del proveedor coincidan exactamente entre la factura y la COVE, lo cual no se valida. La fecha de emisión y los números de folio deben ser coherentes y no se pudo corroborar esta información.",
-          isCorrect: false,
-          summary:
-            "Advertencia en la validación de Validación de datos comerciales y del proveedor",
-          actionsToTake: [
-            {
-              description:
-                "Confirmar y comparar los datos del proveedor entre la factura y la COVE, y verificar la coherencia de las fechas de emisión y los números de folio.",
-            },
-          ],
-          resources: [],
-        },
-        {
-          name: "Validación de campos multables",
-          description:
-            "Los campos entre COVE y factura/carta 3.1.8 deben coincidir: datos básicos (fecha, folio), valores (unitario, total, dólares), mercancía (descripción, cantidad, unidad) y datos de identificación individual cuando aplique (series, marca, modelo). La información debe ser idéntica en todos los documentos.",
-          llmAnalysis:
-            "⚠️ Los datos básicos como fecha y folio no están completamente validados en todos los documentos. También se advirtió que la descripción de mercancías en varios documentos es coincidente, pero no se puede validar totalmente por falta de información. Esto requiere atención.",
-          isCorrect: false,
-          summary:
-            "Advertencia en la validación de Validación de campos multables",
-          actionsToTake: [
-            {
-              description:
-                "Revisar y validar todos los campos (fecha, folio, valor y descripción) para comprobar la coincidencia en COVE y la factura, asegurándose de que sean idénticos.",
-            },
-          ],
-          resources: [],
-        },
-      ],
-    },
-    {
-      name: "Datos de Transporte",
-      isCorrect: false,
-      fullContext: false,
-      context: [
-        {
-          type: "PROVIDED",
-          origin: "Pedimento",
-          data: [
-            {
-              name: "Clave del medio de transporte",
-              value: "4",
-            },
-            {
-              name: "Peso bruto del pedimento",
-              value: "19.0",
-            },
-            {
-              name: "Número de bultos del pedimento",
-              value: "1",
-            },
-            {
-              name: "Número de guía o embarque",
-              value: "2W646MHPPF",
-            },
-          ],
-        },
-        {
-          type: "PROVIDED",
-          origin: "Documento de Transporte",
-          data: [
-            {
-              name: "Modalidad",
-              value: "AIR",
-            },
-            {
-              name: "Peso bruto del documento de transporte",
-              value: "19.5",
-            },
-            {
-              name: "Número de bultos del documento de transporte",
-              value: "",
-            },
-            {
-              name: "Número de contenedor, placa o master y house",
-              value: "40600231954",
-            },
-          ],
-        },
-        {
-          type: "EXTERNAL",
-          origin: "Apéndice 3",
-          data: [
-            {
-              name: "Medio de transporte",
-              value: "Aéreo",
-            },
-          ],
-        },
-      ],
-      validations: [
-        {
-          name: "Medio de transporte",
-          description:
-            "La modalidad del documento de transporte y el medio de transporte del apéndice 3 deben tener coherencia entre sí.",
-          llmAnalysis:
-            "⚠️ La modalidad del documento de transporte es 'AIR' y el medio de transporte del apéndice 3 es 'Aéreo', lo que genera una coherencia. Sin embargo, sería útil asegurar que ambos términos son equivalentes, dado que 'AIR' puede interpretarse de manera diferente en otro contexto. Se debe verificar el entendimiento específico de las nomenclaturas para prevenir contaminación.",
-          isCorrect: true,
-          summary: "Advertencia en la validación de Medio de transporte",
-          actionsToTake: [],
-          resources: [
-            {
-              link: "[Documento de Transporte](None)",
-            },
-          ],
-        },
-        {
-          name: "Peso bruto",
-          description:
-            "El peso bruto del pedimento debe ser exactamente igual al peso bruto del documento de transporte.",
-          llmAnalysis:
-            "❌ El peso bruto del pedimento es 19.0 y el peso bruto del documento de transporte es 19.5, lo que significa que no son iguales. Esto representa un error grave que debe ser corregido.",
-          isCorrect: false,
-          summary: "Error en la validación de Peso bruto",
-          actionsToTake: [
-            {
-              description:
-                "Revisar la calibración y documentación del peso en el pedimento y el documento de transporte para determinar el origen de la discrepancia.",
-            },
-          ],
-          resources: [],
-        },
-        {
-          name: "Número de bultos",
-          description:
-            "El número de bultos del pedimento debe ser exactamente igual al número de bultos del documento de transporte.",
-          llmAnalysis:
-            "⚠️ El número de bultos del pedimento es '1', pero el número de bultos del documento de transporte no fue proporcionado. Sin esta información, no es posible validar si ambos números coinciden, lo que genera una advertencia de falta de datos.",
-          isCorrect: false,
-          summary: "Advertencia en la validación de Número de bultos",
-          actionsToTake: [
-            {
-              description:
-                "Obtener el número de bultos del documento de transporte para poder realizar una comparación adecuada.",
-            },
-          ],
-          resources: [],
-        },
-        {
-          name: "Número de guía o embarque",
-          description:
-            "El número de guía o embarque del pedimento debe ser exactamente igual al número de contenedor, placa o master y house del documento de transporte, cualquier discrepancia es un error.",
-          llmAnalysis:
-            "❌ El número de guía o embarque del pedimento es '2W646MHPPF', mientras que el número de contenedor, placa o master y house del documento de transporte es '40600231954'. Estas dos informaciones no coinciden, lo que representa un error claro que debe ser abordado.",
-          isCorrect: false,
-          summary: "Error en la validación de Número de guía o embarque",
-          actionsToTake: [
-            {
-              description:
-                "Verificar la documentación para asegurarse de que el número de guía o embarque y el número de contenedor, placa o master y house sean consistentes.",
-            },
-          ],
-          resources: [],
-        },
-      ],
-    },
-    {
-      name: "Partidas",
-      isCorrect: false,
-      fullContext: false,
-      context: [
-        {
-          type: "PROVIDED",
-          origin: "Pedimento",
-          data: [
-            {
-              name: "IVA",
-              value: "16.0",
-            },
-            {
-              name: "IEPS",
-              value: "0",
-            },
-            {
-              name: "IGI",
-              value: "10.0",
-            },
-            {
-              name: "Fracción arancelaria",
-              value: "84836099",
-            },
-            {
-              name: "Unidad de Medida Comercial (UMC)",
-              value: "6",
-            },
-            {
-              name: "Cantidad en la Unidad de Medida Comercial (UMC)",
-              value: "2.0",
-            },
-            {
-              name: "Unidad de Medida de Tarifa (UMT)",
-              value: "1",
-            },
-            {
-              name: "Cantidad en la Unidad de Medida de Tarifa (UMT)",
-              value: "2.2",
-            },
-            {
-              name: "Valor aduana",
-              value: "2869",
-            },
-            {
-              name: "Precio unitario",
-              value: "6594.0",
-            },
-          ],
-        },
-        {
-          type: "EXTERNAL",
-          origin: "Taxfinder",
-          data: [
-            {
-              name: "IVA",
-              value: "16.0",
-            },
-            {
-              name: "IEPS",
-              value: "0",
-            },
-            {
-              name: "IGI",
-              value: "10.0",
-            },
-            {
-              name: "Regulaciones arancelarias",
-              value: "",
-            },
-            {
-              name: "Regulaciones no arancelarias",
-              value: "No aplican.",
-            },
-            {
-              name: "Unidad de Medida de Tarifa (UMT) según la TIGIE",
-              value: "",
-            },
-          ],
-        },
-      ],
-      validations: [
-        {
-          name: "Validación de unidades de medida",
-          description:
-            "Verificar que las cantidades declaradas en UMC y UMT están correctamente convertidas y corresponden a la unidad de medida de tarifa según la TIGIE.",
-          llmAnalysis:
-            "⚠️ Al verificar las cantidades declaradas en UMC (Cantidad en la Unidad de Medida Comercial) y UMT (Cantidad en la Unidad de Medida de Tarifa), se observa que la Unidad de Medida de Tarifa (UMT) según la TIGIE no fue proporcionada. Esto implica que no se pueden validar completamente las conversiones y corresponde a las unidades de medida aplicables. Se recomienda obtener la información de la UMT según la TIGIE para una validación precisa.",
-          isCorrect: false,
-          summary:
-            "Advertencia en la validación de Validación de unidades de medida",
-          actionsToTake: [
-            {
-              description:
-                "Obtener la Unidad de Medida de Tarifa (UMT) según la TIGIE para revisar las conversiones.",
-            },
-          ],
-          resources: [],
-        },
-        {
-          name: "Cálculo de contribuciones",
-          description:
-            "Asegurarse de que los valores de IVA, IEPS e IGI están correctamente calculados con base en los valores aduana y las tasas aplicables.",
-          llmAnalysis:
-            "✅ Los valores de IVA (16.0), IEPS (0), e IGI (10.0) se presentan con tasas aplicables que corresponden a los valores aduana y se consideran correctos según la información proporcionada con relación a los impuestos comunes en el contexto fiscal.",
-          isCorrect: true,
-          summary: "Validación correcta de Cálculo de contribuciones",
-          actionsToTake: [],
-          resources: [],
-        },
-        {
-          name: "Cumplimiento de regulaciones",
-          description:
-            "Analizar las regulaciones arancelarias y no arancelarias en busca de potenciales problemas que podrían hacer errónea la interpretación hasta ahora, si aplica. Si no hay nada fuera de lo común, es correcto.",
-          llmAnalysis:
-            "⚠️ Las regulaciones no arancelarias especificadas indican que 'No aplican' y, aunque no se identificaron problemas significativos, la falta de contexto sobre las regulaciones específicas podría dificultar una evaluación exhaustiva. Sin un análisis más detallado de regulaciones específicas requieren más información para un cumplimiento completo.",
-          isCorrect: false,
-          summary:
-            "Advertencia en la validación de Cumplimiento de regulaciones",
-          actionsToTake: [
-            {
-              description:
-                "Solicitar información adicional sobre regulaciones no arancelarias que puedan ser relevantes para el pedimento.",
-            },
-          ],
-          resources: [],
-        },
-      ],
-    },
-  ],
-  files: [
-    {
-      name: "TRANSPORTE",
-      url: "https://drive.google.com/file/d/1Gjq-L3_GK7XFkqNhiNRQQWQT5mWpsZOF/preview",
-    },
-    {
-      name: "CESIÓN DE DERECHOS",
-      url: "https://drive.google.com/file/d/1V1NqXOKdDbqCVfe4N_Y9sO7EJ8DUofm3/preview",
-    },
-    {
-      name: "PEDIMENTO",
-      url: "https://drive.google.com/file/d/1_MPjjVK1TgmZISo29rx5_3XkWjo1Ub1j/preview",
-    },
-    {
-      name: "E-NOM",
-      url: "https://drive.google.com/file/d/1CEdjGzHD7ZZg5uTLcVLIKv__D2-R7ngr/preview",
-    },
-    {
-      name: "CARTA 3.1.8",
-      url: "https://drive.google.com/file/d/1QLYUVE1KEv5CnefU5JSZK-78o0W9uDQ1/preview",
-    },
-    {
-      name: "COVE",
-      url: "https://drive.google.com/file/d/1kGQMf4l-O1sYCusB863k5yDPoituPmuS/preview",
-    },
-  ],
-  alerts: [
-    {
-      type: "HIGH",
-      description: "Año del pedimento",
-    },
-    {
-      type: "HIGH",
-      description: "Coherencia documental",
-    },
-    {
-      type: "HIGH",
-      description: "Número de guía o embarque",
-    },
-    {
-      type: "HIGH",
-      description: "Peso bruto",
-    },
-    {
-      type: "MEDIUM",
-      description: "Coherencia con destino",
-    },
-    {
-      type: "MEDIUM",
-      description: "Coherencia con origen/destino",
-    },
-    {
-      type: "MEDIUM",
-      description: "Coincidencia de bultos",
-    },
-    {
-      type: "MEDIUM",
-      description: "Cumplimiento de regulaciones",
-    },
-    {
-      type: "MEDIUM",
-      description: "Medio de transporte",
-    },
-    {
-      type: "MEDIUM",
-      description: "Número de bultos",
-    },
-    {
-      type: "MEDIUM",
-      description: "Validación de campos multables",
-    },
-    {
-      type: "MEDIUM",
-      description: "Validación de cesión de derechos y carta 3.1.8",
-    },
-    {
-      type: "MEDIUM",
-      description: "Validación de clave",
-    },
-    {
-      type: "MEDIUM",
-      description: "Validación de datos comerciales y del proveedor",
-    },
-    {
-      type: "MEDIUM",
-      description: "Validación de datos del importador/exportador",
-    },
-    {
-      type: "MEDIUM",
-      description: "Validación de pesos",
-    },
-    {
-      type: "MEDIUM",
-      description: "Validación de régimen",
-    },
-    {
-      type: "MEDIUM",
-      description: "Validación de unidades de medida",
-    },
-    {
-      type: "MEDIUM",
-      description: "Valores del pedimento",
-    },
-  ],
-};
-
 export const ANOTHER_VICTOR_GLOSS_EXAMPLE = {
   importer_name: "SACC ASESORES ADUANEROS EN COMERCIO EXTERIOR, SA DE CV",
   summary:
@@ -3447,6 +2039,1416 @@ export const ANOTHER_VICTOR_GLOSS_EXAMPLE = {
       },
       {
         id: 7,
+        validation_step_name: "Validación de pesos",
+      },
+    ],
+    low: [],
+  },
+};
+
+export const LAST_VICTOR_GLOSS_EXAMPLE = {
+  importer_name: "SACC ASESORES ADUANEROS EN COMERCIO EXTERIOR, SA DE CV",
+  summary:
+    "Se encontraron 3 errores críticos, 10 advertencias y 0 observaciones menores.\n\nLa operación analizada presenta varios aspectos que requieren atención inmediata para asegurar su validez y consistencia. El número de pedimento tiene un error crítico en el año, ya que figura 2021 en lugar del actual, 2025. En el tipo de operación, aunque no se afecta la validación final, se recomienda una revisión manual futura debido a la falta de datos sobre el origen y destino de las mercancías. En cuanto a la operación, hay inconsistencias en el tipo de cambio y los incrementables, ya que los valores de fletes difieren en el pedimento y las cartas 3.1.8. Estas discrepancias deben ser verificadas y ajustadas. En el peso bruto, aunque los pasos de validación son correctos, se recomienda obtener el documento de transporte y el peso neto para confirmar la precisión. La sección de datos de factura muestra consistencia en general, pero un error crítico es la falta de fecha de emisión en la cesión de derechos, que necesita ser corregida. También se requiere validar el tipo de cambio aplicable. En los datos de transporte, la clave del tipo de transporte es correcta, sin embargo, hay advertencias y un error crítico por la falta de información sobre la modalidad de transporte y la falta de documentación para validar el número de guía o embarque, que deben ser corregidos antes de continuar. En conclusión, las áreas que requieren atención inmediata son la corrección del año del pedimento, la verificación del tipo de cambio y los incrementables, la obtención de documentos faltantes para validación de pesos y transporte, y la corrección de la fecha de emisión en la cesión de derechos.",
+  metrics: [],
+  secciones_pedimento: {
+    pediment_number: {
+      provided_context: {
+        pedimento: [
+          {
+            document_id: "214737091001023",
+            document_summary:
+              "Este documento detalla un pedimento de importación definitiva bajo el régimen IMD, con un valor aduanero de 58,721 MXN y un valor en dólares de 2,920.82 USD. El importador es SACC ASESORES ADUANEROS EN COMERCIO EXTERIOR, SA DE CV, con domicilio en Pachuca, Hidalgo, México. Se incluyen detalles de transporte, valores incrementables y decrementables, y contribuciones pagadas. El documento también menciona identificadores a nivel de pedimento y observaciones sobre la operación.",
+            data: [
+              {
+                name: "Número de pedimento",
+                value: "214737091001023",
+              },
+              {
+                name: "Número de dígitos",
+                value: 15,
+              },
+              {
+                name: "Año del pedimento",
+                value: "2021",
+              },
+              {
+                name: "Año actual",
+                value: "2025",
+              },
+            ],
+          },
+        ],
+      },
+      validation_steps: [
+        {
+          name: "Longitud",
+          description: "El número de pedimento debe contar con 15 dígitos",
+          llm_analysis:
+            "✅ El número de pedimento tiene 15 dígitos, lo cual es correcto de acuerdo con el 'Número de dígitos' proporcionado en el contexto. Este validation_step pasó correctamente.",
+          is_correct: true,
+          actions_to_take: [],
+        },
+        {
+          name: "Año del pedimento",
+          description:
+            "El año del pedimento (inferido por los dígitos 1 y 2 del número del pedimento) debe ser iguales al año actual",
+          llm_analysis:
+            "❌ El año del pedimento proporcionado es 2021, pero el año actual indicado es 2025. Esto no cumple con la condición de que el año del pedimento debe coincidir con el año actual.",
+          is_correct: false,
+          actions_to_take: [
+            {
+              id: 1,
+              step_description:
+                "Verificar si el año del pedimento es correcto en el contexto principal y actualizar los datos si es necesario.",
+            },
+          ],
+        },
+      ],
+      is_correct: false,
+      summary:
+        "Se analizó el número de pedimento y su consistencia con los datos proporcionados. El primer validation_step relacionado con la longitud del número de pedimento es correcto (✅). Sin embargo, se encontró un error en el validation_step referente al año del pedimento (❌), ya que el año del pedimento (2021) no coincide con el año actual (2025). Se recomienda verificar y corregir el año del pedimento en el contexto principal para asegurar la precisión del documento.",
+    },
+    operation_type: {
+      provided_context: {
+        pedimento: {
+          document_id: "21 47 3709 1001023",
+          document_summary:
+            "Este documento detalla un pedimento de importación definitiva bajo el régimen IMD, con un valor aduanero de 58,721 MXN y un valor en dólares de 2,920.82 USD. El importador es SACC ASESORES ADUANEROS EN COMERCIO EXTERIOR, SA DE CV, con domicilio en Pachuca, Hidalgo, México. Se incluyen detalles de transporte, valores incrementables y decrementables, y contribuciones pagadas. El documento también menciona identificadores a nivel de pedimento y observaciones sobre la operación.",
+          data: [
+            {
+              name: "Tipo de Operación",
+              value: "IMP",
+            },
+            {
+              name: "Clave de pedimento",
+              value: "A1",
+            },
+            {
+              name: "Régimen",
+              value: "IMD",
+            },
+          ],
+        },
+        documento_de_transporte: [],
+      },
+      external_context: {
+        apendice_2: {
+          name: "Claves de tipo de operación válidas",
+          value:
+            "A1 - Importación o exportación definitiva.\nA3 - Regularización de mercancías (importación definitiva).\nC1 - Importación definitiva a la franja fronteriza norte y región fronteriza.\nD1 - Retorno por sustitución.\nGC - Global complementario.\nK1 - Desistimiento de régimen y retorno de mercancías por devolución.\nL1 - Pequeña importación definitiva.\nP1 - Reexpedición de mercancías de franja fronteriza.\nS2 - Importación y exportación de mercancías para retornar en su mismo estado.\nT1 - Importación y exportación por empresas de mensajería y paquetería.\nVF - Importación definitiva de vehículos usados a la franja o región fronteriza norte.\nVU - Importación definitiva de vehículos usados.\nAD - Importación temporal de mercancías destinadas a convenciones y congresos internacionales.\nAJ - Importación y exportación temporal de envases de mercancías.\nBA - Importación y exportación temporal de bienes para ser retornados en su mismo estado.\nBB - Exportación, importación y retornos virtuales.\nBC - Importación y exportación temporal de mercancías destinadas a eventos culturales o deportivos e investigación.\nBD - Importación y exportación temporal de equipo para filmación.\nBE - Importación y exportación temporal de vehículos de prueba.\nBF - Exportación temporal de mercancías destinadas a exposiciones, convenciones o eventos culturales o deportivos.\nBH - Importación temporal de contenedores, aviones, helicópteros, embarcaciones y carros de ferrocarril.\nBI - Importación temporal.\nBM - Exportación temporal de mercancías para su transformación, elaboración o reparación.\nBO - Exportación temporal para reparación o sustitución y retorno al país.\nBP - Importación y exportación temporal de muestras o muestrarios.\nBR - Exportación temporal y retorno de mercancías fungibles.\nH1 - Retorno de mercancías en su mismo estado.\nH8 - Retorno de envases.\nI1 - Importación, exportación y retorno de mercancías elaboradas, transformadas o reparadas.\nF4 - Cambio de régimen de insumos o de mercancía exportada temporalmente.\nF5 - Cambio de régimen de mercancías de importación temporal a definitiva.\nIN - Importación temporal de bienes que serán sujetos a transformación, elaboración o reparación.\nAF - Importación temporal de bienes de activo fijo.\nRT - Retorno de mercancías.\nA4 - Introducción para depósito fiscal (AGD).\nE1 - Extracción de depósito fiscal de bienes que serán sujetos a transformación, elaboración o reparación (AGD).\nE2 - Extracción de depósito fiscal de bienes de activo fijo (AGD).\nG1 - Extracción de depósito fiscal (AGD).\nC3 - Extracción de depósito fiscal de franja o región fronteriza (AGD).\nK2 - Extracción de depósito fiscal por desistimiento o transferencias (AGD).\nA5 - Introducción a depósito fiscal en local autorizado.\nE3 - Extracción de depósito fiscal en local autorizado (insumos).\nE4 - Extracción de depósito fiscal en local autorizado (activo fijo).\nG2 - Extracción de depósito fiscal en local autorizado para su importación definitiva.\nK3 - Extracción de depósito fiscal en local autorizado para retorno o transferencia.\nF2 - Introducción a depósito fiscal (IA).\nF3 - Extracción de depósito fiscal (IA).\nV3 - Extracción de depósito fiscal de bienes para su retorno o exportación virtual (IA).\nV4 - Retorno virtual derivado de la constancia de transferencia de mercancías (IA).\nF8 - Introducción y extracción de depósito fiscal de mercancías nacionales o nacionalizadas en tiendas libres de impuestos (Duty Free).\nF9 - Introducción y extracción de depósito fiscal de mercancías extranjeras para exposición y venta de mercancías en tiendas libres de impuestos (Duty Free).\nG6 - Informe de extracción de depósito fiscal de mercancías nacionales o nacionalizadas vendidas en tiendas libres de impuestos (Duty Free).\nG7 - Informe de extracción de depósito fiscal de mercancías extranjeras vendidas en tiendas libres de impuestos (Duty Free).\nV8 - Transferencia de mercancías en depósito fiscal para la exposición y venta de mercancías extranjeras, nacionales y nacionalizadas de tiendas libres de impuestos (Duty Free).",
+        },
+        apendice_16: {
+          name: "Regímenes válidos",
+          value:
+            "IMD - Definitivo de importación.\nITR - Temporales de importación para retornar al extranjero en el mismo estado.\nITE - Temporales de importación para elaboración, transformación o reparación para empresas con programa IMMEX.\nDFI - Depósito fiscal.\nRFE - Elaboración, transformación o reparación en recinto fiscalizado.",
+        },
+      },
+      validation_steps: [
+        {
+          name: "Coherencia con origen/destino",
+          description:
+            "El tipo de operación debe ser consistente con el origen y destino de las mercancías, es decir IMP (importación) si destino es México, si no se pueden determinar los datos de origen y destino, ignorar y marcar como correcto.",
+          llm_analysis:
+            "⚠️ No se pueden determinar los datos de origen y destino. Dado que no hay datos disponibles para verificar si México es el destino de las mercancías, se asume correcto por defecto.",
+          is_correct: true,
+          actions_to_take: [
+            {
+              id: 1,
+              step_description:
+                "Verificar manualmente los datos de origen y destino cuando estén disponibles.",
+            },
+          ],
+        },
+        {
+          name: "Validación de clave de pedimento",
+          description:
+            "La clave de pedimento debe ser válida para el tipo de operación según el Apéndice 2",
+          llm_analysis:
+            "✅ La clave de pedimento 'A1' es adecuada para una operación de importación IMP según el Apéndice 2.",
+          is_correct: true,
+          actions_to_take: [],
+        },
+        {
+          name: "Validación de régimen",
+          description:
+            "El régimen debe ser válido para el tipo de operación según el Apéndice 16",
+          llm_analysis:
+            "✅ El régimen 'IMD' es consistente y válido para el tipo de operación de importación IMP, según el Apéndice 16.",
+          is_correct: true,
+          actions_to_take: [],
+        },
+      ],
+      is_correct: true,
+      summary:
+        "La revisión encontró una advertencia debido a la falta de datos sobre el origen y destino de las mercancías. Aunque esto no afecta el resultado final de la validación, se recomienda una verificación manual futura. Los demás aspectos del documento, como la clave de pedimento y el régimen, son correctos y están bien alineados.",
+    },
+    destination_origin: {
+      provided_context: {
+        pedimento: {
+          document_id: "21 47 3709 1001023",
+          document_summary:
+            "Este documento detalla un pedimento de importación definitiva bajo el régimen IMD, con un valor aduanero de 58,721 MXN y un valor en dólares de 2,920.82 USD. El importador es SACC ASESORES ADUANEROS EN COMERCIO EXTERIOR, SA DE CV, con domicilio en Pachuca, Hidalgo, México. Se incluyen detalles de transporte, valores incrementables y decrementables, y contribuciones pagadas. El documento también menciona identificadores a nivel de pedimento y observaciones sobre la operación.",
+          data: [
+            {
+              name: "Clave de Destino/Origen",
+              value: "9",
+            },
+            {
+              name: "Tipo de Operación",
+              value: "IMP",
+            },
+            {
+              name: "Régimen",
+              value: "IMD",
+            },
+          ],
+        },
+        documento_de_transporte: [],
+      },
+      external_context: {
+        apendice_15: {
+          name: "Claves de destino válidas",
+          value:
+            "1 - Estado de Baja California y parcial de Sonora.\n2 - Estado de Baja California Sur.\n3 - Estado de Quintana Roo.\n5 - Municipio de Salina Cruz, Oaxaca.\n6 - Municipio de Cananea, Sonora.\n7 - Franja Fronteriza Norte.\n8 - Franja Fronteriza Sur, Colindante con Guatemala.\n9 - Interior del País.\n10 - Municipio de Caborca, Sonora.\n11 - Región Fronteriza de Chetumal, en la localidad de Chetumal, en el Municipio de Othón P. Blanco, Quintana Roo.",
+        },
+      },
+      validation_steps: [
+        {
+          name: "Validación de clave",
+          description:
+            "La clave de destino/origen debe existir en el Apéndice 15",
+          llm_analysis:
+            "✅ La clave de destino/origen proporcionada es '9'. Este dato es explícito y puede ser validado según el Apéndice 15 del SAT, que contiene una lista de claves válidas. Dado que la clave '9' se encuentra presente en este apéndice, esta validación está asegurada y correcta.",
+          is_correct: true,
+          actions_to_take: [],
+        },
+      ],
+      is_correct: true,
+      summary:
+        "El validation_step fue revisado y es correcto sin observaciones ni advertencias. No se requieren acciones adicionales. Todo está conforme a las pautas y reglas establecidas.",
+    },
+    operation: {
+      provided_context: {
+        pedimento: [
+          {
+            document_id: "21 47 3709 1001023",
+            document_summary:
+              "Este documento detalla un pedimento de importación definitiva bajo el régimen IMD, con un valor aduanero de 58,721 MXN y un valor en dólares de 2,920.82 USD. El importador es SACC ASESORES ADUANEROS EN COMERCIO EXTERIOR, SA DE CV, con domicilio en Pachuca, Hidalgo, México. Se incluyen detalles de transporte, valores incrementables y decrementables, y contribuciones pagadas. El documento también menciona identificadores a nivel de pedimento y observaciones sobre la operación.",
+            data: [
+              {
+                name: "Fecha de entrada",
+                value: "12/08/2021",
+              },
+              {
+                name: "Tipo de cambio",
+                value: 20.1038,
+              },
+              {
+                name: "Valor en dólares",
+                value: 2920.82,
+              },
+              {
+                name: "Valor aduana",
+                value: 58721,
+              },
+              {
+                name: "Precio pagado/valor comercial",
+                value: 47848,
+              },
+              {
+                name: "Datos de facturas",
+                value: [
+                  {
+                    num_factura: "561893440",
+                    fecha_factura: "11/08/2021",
+                    incoterm: "EXW",
+                    moneda_factura: "USD",
+                    valor_moneda_factura: 2380,
+                    factor_moneda_factura: 1,
+                    valor_dolares_factura: 2380,
+                  },
+                ],
+              },
+              {
+                name: "Incrementables",
+                value: {
+                  seguros: {
+                    valor: 0,
+                    moneda: "MXN",
+                  },
+                  fletes: {
+                    valor: 10873,
+                    moneda: "MXN",
+                  },
+                  embalajes: {
+                    valor: 0,
+                    moneda: "MXN",
+                  },
+                  otros: {
+                    valor: 0,
+                    moneda: "MXN",
+                  },
+                },
+              },
+              {
+                name: "Decrementables",
+                value: {
+                  fletes: {
+                    valor: 0,
+                    moneda: "MXN",
+                  },
+                  seguros: {
+                    valor: 0,
+                    moneda: "MXN",
+                  },
+                  carga: {
+                    valor: 0,
+                    moneda: "MXN",
+                  },
+                  descarga: {
+                    valor: 0,
+                    moneda: "MXN",
+                  },
+                  otros: {
+                    valor: 0,
+                    moneda: "MXN",
+                  },
+                },
+              },
+            ],
+          },
+        ],
+        transport_doc: [],
+        cove: [
+          {
+            document_id: "COVE214J371P6",
+            document_summary:
+              "Este COVE (COVE214J371P6) corresponde a una operación de importación sin relación de facturas, con fecha de expedición 11 de agosto de 2021. El agente aduanal está involucrado. El proveedor es ANDERSON AMERICA con Tax ID 561893440, ubicado en Estados Unidos. El destinatario es SACC ASESORES ADUANEROS EN COMERCIO EXTERIOR SA DE CV con RFC SAA200430EUA, ubicado en México. La mercancía declarada incluye piñones, poleas, chumaceras y partes para sierra, todas medidas en piezas, valoradas en dólares estadounidenses (USD).",
+            data: [
+              {
+                name: "Número de COVE",
+                value: "COVE214J371P6",
+              },
+              {
+                name: "Fecha",
+                value: "2021-08-11",
+              },
+              {
+                name: "Valor comercial",
+                value: {
+                  valor: 2380,
+                  moneda: "USD",
+                },
+              },
+              {
+                name: "Mercancías",
+                value: [
+                  {
+                    descripcion: "PIÑON",
+                    cantidad: 2,
+                    unidad: "piece",
+                    precio_unitario: 328,
+                    precio_total: 656,
+                    moneda: "USD",
+                  },
+                  {
+                    descripcion: "POLEAS",
+                    cantidad: 2,
+                    unidad: "piece",
+                    precio_unitario: 172,
+                    precio_total: 344,
+                    moneda: "USD",
+                  },
+                  {
+                    descripcion: "POLEAS",
+                    cantidad: 2,
+                    unidad: "piece",
+                    precio_unitario: 80,
+                    precio_total: 160,
+                    moneda: "USD",
+                  },
+                  {
+                    descripcion: "POLEAS",
+                    cantidad: 2,
+                    unidad: "piece",
+                    precio_unitario: 140,
+                    precio_total: 280,
+                    moneda: "USD",
+                  },
+                  {
+                    descripcion: "POLEAS",
+                    cantidad: 2,
+                    unidad: "piece",
+                    precio_unitario: 115,
+                    precio_total: 230,
+                    moneda: "USD",
+                  },
+                  {
+                    descripcion: "CHUMACERA",
+                    cantidad: 2,
+                    unidad: "piece",
+                    precio_unitario: 200,
+                    precio_total: 400,
+                    moneda: "USD",
+                  },
+                  {
+                    descripcion: "PARTE PARA SIERRA",
+                    cantidad: 1,
+                    unidad: "piece",
+                    precio_unitario: 310,
+                    precio_total: 310,
+                    moneda: "USD",
+                  },
+                ],
+              },
+              {
+                name: "Incrementables",
+                value: {
+                  seguros: {
+                    valor: null,
+                    moneda: null,
+                  },
+                  fletes: {
+                    valor: null,
+                    moneda: null,
+                  },
+                  embalajes: {
+                    valor: null,
+                    moneda: null,
+                  },
+                  otros: {
+                    valor: null,
+                    moneda: null,
+                  },
+                },
+              },
+            ],
+          },
+        ],
+        carta_318: [
+          {
+            document_id: "SIN NÚMERO_2021-08-19",
+            document_summary:
+              "Esta es una carta 3.1.8 emitida en Pachuca el 19 de agosto de 2021 por Sandra Quintero López, representante legal de SACC Asesores Aduaneros, dirigida al Administrador de la Aduana del AICM. La carta declara, bajo protesta de decir verdad, que la chumacera importada con factura del 11 de agosto de 2021 de Anderson America Corp, está exenta de la NOM-050-SCFI-2004 porque es un repuesto y no se destina al consumidor final. Se fundamenta en el oficio DGN.418.01.2020.3301 y criterios de la Dirección General de Normas sobre productos no destinados al consumidor final.",
+            data: [
+              {
+                name: "Fecha de emisión",
+                value: "2021-08-19",
+              },
+              {
+                name: "Valor comercial",
+                value: {
+                  valor: 0,
+                  moneda: "USD",
+                },
+              },
+              {
+                name: "Mercancías",
+                value: [
+                  {
+                    descripcion: "CHUMACERA",
+                    cantidad: 0,
+                    unidad: "No se especifica",
+                    precio_unitario: 0,
+                    precio_total: 0,
+                    moneda: "USD",
+                  },
+                ],
+              },
+              {
+                name: "Incrementables",
+                value: {
+                  seguros: {
+                    valor: null,
+                    moneda: null,
+                  },
+                  fletes: {
+                    valor: null,
+                    moneda: null,
+                  },
+                  embalajes: {
+                    valor: null,
+                    moneda: null,
+                  },
+                  otros: {
+                    valor: null,
+                    moneda: null,
+                  },
+                },
+              },
+            ],
+          },
+          {
+            document_id: "S/N_2021-08-19",
+            document_summary:
+              "Esta es una carta 3.1.8 emitida el 19 de agosto de 2021 en Pachuca, Hidalgo, dirigida al Administrador de la Aduana del Aeropuerto Internacional de la Ciudad de México. Sandra Quintero López, Representante Legal de SACC Asesores Aduaneros en Comercio Exterior S.A. DE C.V., declara bajo protesta de decir verdad que la información contenida en la factura comercial sin número de fecha 11 de agosto de 2021 del proveedor Anderson America Corp es correcta. La factura incluye detalles del importador (SACC), el proveedor (Anderson America), la descripción de la mercancía, cantidades, precios unitarios y totales en USD, con un INCOTERM EXW. Se declara un flete de 540.82 USD y un valor comercial total de 2380 USD. La mercancía consta de piñones, poleas, chumaceras y partes para sierra.",
+            data: [
+              {
+                name: "Fecha de emisión",
+                value: "2021-08-19",
+              },
+              {
+                name: "Valor comercial",
+                value: {
+                  valor: 2380,
+                  moneda: "USD",
+                },
+              },
+              {
+                name: "Mercancías",
+                value: [
+                  {
+                    descripcion: "Piñón",
+                    cantidad: 2,
+                    unidad: "Pieza",
+                    precio_unitario: 328,
+                    precio_total: 656,
+                    moneda: "USD",
+                  },
+                  {
+                    descripcion: "Poleas",
+                    cantidad: 2,
+                    unidad: "Pieza",
+                    precio_unitario: 172,
+                    precio_total: 344,
+                    moneda: "USD",
+                  },
+                  {
+                    descripcion: "Poleas",
+                    cantidad: 2,
+                    unidad: "Pieza",
+                    precio_unitario: 80,
+                    precio_total: 160,
+                    moneda: "USD",
+                  },
+                  {
+                    descripcion: "Poleas",
+                    cantidad: 2,
+                    unidad: "Pieza",
+                    precio_unitario: 140,
+                    precio_total: 280,
+                    moneda: "USD",
+                  },
+                  {
+                    descripcion: "Poleas",
+                    cantidad: 2,
+                    unidad: "Pieza",
+                    precio_unitario: 115,
+                    precio_total: 230,
+                    moneda: "USD",
+                  },
+                  {
+                    descripcion: "Chumacera",
+                    cantidad: 2,
+                    unidad: "Pieza",
+                    precio_unitario: 200,
+                    precio_total: 400,
+                    moneda: "USD",
+                  },
+                  {
+                    descripcion: "Partes para sierra",
+                    cantidad: 1,
+                    unidad: "Pieza",
+                    precio_unitario: 310,
+                    precio_total: 310,
+                    moneda: "USD",
+                  },
+                ],
+              },
+              {
+                name: "Incrementables",
+                value: {
+                  seguros: {
+                    valor: null,
+                    moneda: null,
+                  },
+                  fletes: {
+                    valor: null,
+                    moneda: null,
+                  },
+                  embalajes: {
+                    valor: null,
+                    moneda: null,
+                  },
+                  otros: {
+                    valor: null,
+                    moneda: null,
+                  },
+                },
+              },
+            ],
+          },
+        ],
+        factura: [],
+      },
+      external_context: {
+        diario_oficial_de_la_federacion: [
+          {
+            name: "Tipo de cambio MXN-USD oficial",
+            value: 20.1038,
+          },
+        ],
+        apendice_14: [
+          {
+            name: "Grupo del INCOTERM",
+            value: "EXW: Grupo III",
+          },
+          {
+            name: "Descripción del INCOTERM",
+            value: "EXW: En fabrica (lugar convenido).",
+          },
+        ],
+      },
+      validation_steps: [
+        {
+          name: "Fecha de entrada",
+          description:
+            "En caso de aero, la fecha de entrada del documento debe de ser la misma a la fecha de entrada del pedimento. En caso de terrestre, la fecha de entrada del pedimento siempre es correcta por que se envia el mismo dia del pago del pedimento. En caso de marítimo la fecha de entrada debe de coincidir con la fecha de entrada del bill of lading.",
+          llm_analysis:
+            "✅ La fecha de entrada del pedimento es 12/08/2021 y concuerda con la fecha de la factura (11/08/2021) ya que típicamente se realiza un día después para la importación aérea. Esto es asumido ya que no hay documento de transporte presente que indique lo contrario (aero, terrestre, marítimo).",
+          is_correct: true,
+          actions_to_take: [],
+        },
+        {
+          name: "Tipo de cambio",
+          description:
+            "El tipo de cambio debe ser exactamente igual al publicado en el DOF el día hábil anterior a la fecha de entrada.",
+          llm_analysis:
+            "⚠️ La información proporcionada no incluye el tipo de cambio del DOF para el día hábil anterior (11/08/2021). No es posible confirmar si el tipo de cambio 20.1038 es correcto para esa fecha.",
+          is_correct: false,
+          actions_to_take: [
+            {
+              id: 1,
+              step_description:
+                "Confirmar el tipo de cambio del DOF para el día 11/08/2021 para verificar su consistencia.",
+            },
+          ],
+        },
+        {
+          name: "Incrementables",
+          description:
+            "Sigue estos pasos para validar los incrementables correctamente. Piensa paso por paso antes de dar una respuesta.\n\nPaso 1: Identificar los incrementables.\n• Los incrementables son los costos adicionales de la operación, como seguros, fletes, embalajes y otros conceptos similares.\n• Deben incluirse en el cálculo de impuestos.\n\nPaso 2: Comparar entre documentos.\n• Verifica que los valores desglosados (VAL.SEGUROS, SEGUROS, FLETES, EMBALAJES, OTROS INCREMENTABLES) sean consistentes en:\n• El pedimento.\n• El documento de transporte y/o la carta 3.1.8.\n• Si no hay documento de transporte, compara solo entre el pedimento y la carta 3.1.8.\n\nPaso 3: Convertir moneda si es necesario.\n• Si los valores están en dólares, usa el tipo de cambio proporcionado.\n• Si no se proporciona un tipo de cambio, usa 20 pesos por dólar como referencia.\n• Convierte los valores en dólares a pesos antes de compararlos.\n\nPaso 4: Verificar que no se declare de menos.\n• El valor en el pedimento debe ser mayor o muy similar al valor calculado.\n• Si el valor en el pedimento es menor al calculado, marca una discrepancia porque el riesgo es declarar de menos.\n\nPaso 5: Explicar el resultado paso a paso.\n• Indica los valores en cada documento y la conversión si aplica.\n• Explica si hay diferencias y si representan un riesgo.\n• Resalta si se está declarando un valor menor del que debería.",
+          llm_analysis:
+            "⚠️ El pedimento muestra incrementables como fletes = 10873 MXN, pero los documentos (COVE y carta 3.1.8) no proporcionan detalles concretos para comparación. No se declaran seguros ni embalajes en ambos documentos. La carta 3.1.8 segunda edición menciona un flete de 540.82 USD que no está reflejado en el pedimento.",
+          is_correct: false,
+          actions_to_take: [
+            {
+              id: 1,
+              step_description:
+                "Actualizar el pedimento para reflejar los incrementables detallados en la carta 3.1.8.",
+            },
+            {
+              id: 2,
+              step_description:
+                "Incluir valores de incrementables en el pedimento si existen otros costes no declarados.",
+            },
+          ],
+        },
+        {
+          name: "Valores del pedimento",
+          description:
+            'Sigue estos pasos para validar correctamente los valores declarados. Piensa paso por paso antes de dar una respuesta, razonando con base en la información que se te proporciona. Usa datos para fundamentar tu respuesta, como si tuvieras que citar todos tus argumentos.\n\nPaso 1: Confirmar el Valor en dólares\n• Verifica si el Valor en dólares (valor aduana / tipo de cambio) declarado en el pedimento tiene sentido comparándolo con los datos proporcionados:\n• Valor de la factura.\n• Incrementables (en USD).\n• Razona si este valor es consistente con los datos dados. No realices cálculos, solo evalúa la coherencia.\n\nPaso 2: Validar el Valor comercial\n• Confirma si el Valor comercial declarado en el pedimento se alinea con el cálculo obtenido al restar a la aduana en MXN los incrementables en MXN, considerando que el valor aduana se obtiene al multiplicar el valor en dólares total (suma de incrementables convertidos a USD y factura en USD) por el tipo de cambio DOF.\n• Evalúa si la relación entre el Valor comercial y los demás valores proporcionados es razonable, considerando la coherencia de los datos.\n\nPaso 3: Verificar el Valor aduana\n• Verifica si el Valor aduana declarado en el pedimento tiene sentido con base en los datos dados:\n• Valor comercial.\n• Incrementables.\n• Decrementables.\n• Evalúa si el resultado final es consistente con lo esperado según la información.\n\nPaso 4: Explicar el resultado con lógica\n• Razona paso por paso por qué los valores tienen sentido o, si detectas alguna discrepancia, explica por qué puede haber un problema.\n• Ejemplo esperado de respuesta:\n"El valor en dólares del pedimento es [x], hace sentido porque el valor de la factura ([y]) más los incrementables convertidos a USD da un total consistente. Al aplicar el tipo de cambio, el Valor aduana y el Valor comercial resultan coherentes con los datos proporcionados."\n\nNota: utiliza únicamente la información proporcionada para llegar a las conclusiones de manera lógica y detallada. Si necesitas realizar un cálculo para argumentar, hazlo. Siempre indica dónde está el problema y adjunta la data sobre el mismo.',
+          llm_analysis:
+            "✅ El valor aduana proporcionado es 58721 MXN, y el valor en dólares es 2920.82 USD. Con un tipo de cambio de 20.1038, el valor total en USD estaría aproximadamente en línea con lo declarado considerando incrementables en MXN. Dado que la factura cubre 2380 USD y no hay incrementables adicionales declarados consistentemente, escucha lógico el valor total.",
+          is_correct: true,
+          actions_to_take: [],
+        },
+      ],
+      is_correct: false,
+      summary:
+        "Se encontró una posible inconsistencia en el tipo de cambio, ya que no se puede verificar su exactitud (⚠️). Además, hay una discrepancia en los incrementables, ya que el pedimento y las cartas 3.1.8 tienen valores diferentes de fletes (⚠️). Los valores del pedimento parecen correctos (✅) en base a los datos proporcionados. Es necesario verificar los valores de tipo de cambio y ajustar los incrementables para asegurar la consistencia en todos los documentos.",
+    },
+    gross_weight: {
+      provided_context: {
+        pedimento: [
+          {
+            document_id: "21 47 3709 1001023",
+            document_summary:
+              "Este documento detalla un pedimento de importación definitiva bajo el régimen IMD, con un valor aduanero de 58,721 MXN y un valor en dólares de 2,920.82 USD. El importador es SACC ASESORES ADUANEROS EN COMERCIO EXTERIOR, SA DE CV, con domicilio en Pachuca, Hidalgo, México. Se incluyen detalles de transporte, valores incrementables y decrementables, y contribuciones pagadas. El documento también menciona identificadores a nivel de pedimento y observaciones sobre la operación.",
+            data: [
+              {
+                name: "Peso bruto",
+                value: 19,
+              },
+              {
+                name: "Número de bultos",
+                value: "1",
+              },
+            ],
+          },
+        ],
+        documento_de_transporte: [],
+        factura: [],
+        packing_list: [],
+        cove: [
+          {
+            document_id: "COVE214J371P6",
+            document_summary:
+              "Este COVE (COVE214J371P6) corresponde a una operación de importación sin relación de facturas, con fecha de expedición 11 de agosto de 2021. El agente aduanal está involucrado. El proveedor es ANDERSON AMERICA con Tax ID 561893440, ubicado en Estados Unidos. El destinatario es SACC ASESORES ADUANEROS EN COMERCIO EXTERIOR SA DE CV con RFC SAA200430EUA, ubicado en México. La mercancía declarada incluye piñones, poleas, chumaceras y partes para sierra, todas medidas en piezas, valoradas en dólares estadounidenses (USD).",
+            data: [
+              {
+                name: "Subdivisión",
+                value: "Sin subdivisión",
+              },
+            ],
+          },
+        ],
+      },
+      external_context: {
+        apendice_7: [
+          {
+            sec: 1,
+            fraccion: "84836099",
+            umt: "1",
+            descripcion_umt: "Kilo",
+          },
+        ],
+      },
+      validation_steps: [
+        {
+          name: "Validación de pesos",
+          description:
+            "El peso neto total debe ser menor que el peso bruto declarado tanto en el pedimento como en el documento de transporte, si no hay peso neto, ignorar y marcar como correcto",
+          llm_analysis:
+            "⚠️ Existen datos del peso bruto en el pedimento (19.0), pero no hay información del peso neto ni del documento de transporte en el contexto proporcionado. No es posible validar completamente esta sección sin el peso neto, falta contexto.",
+          is_correct: true,
+          actions_to_take: [
+            {
+              id: 1,
+              step_description:
+                "Obtener el peso neto para realizar una validación completa.",
+            },
+          ],
+        },
+        {
+          name: "Coincidencia de peso bruto",
+          description:
+            "El peso bruto declarado en el pedimento debe coincidir con el declarado en el documento de transporte. Si no hay documento de transporte, intentar validar entre el pedimento y la carta 3.1.8",
+          llm_analysis:
+            "⚠️ El peso bruto en el pedimento es 19.0, pero no hay documento de transporte en el contexto proporcionado para comparar. No hay suficiente información para comprobar la coincidencia.",
+          is_correct: true,
+          actions_to_take: [
+            {
+              id: 1,
+              step_description:
+                "Obtener o verificar el documento de transporte para validar el peso bruto.",
+            },
+          ],
+        },
+        {
+          name: "Coincidencia de bultos",
+          description:
+            "El número total de bultos debe coincidir entre el pedimento, documento de transporte y/o carta 3.1.8 / invoice. Si no hay documento de transporte, validar entre el pedimento y la carta 3.1.8/invoice",
+          llm_analysis:
+            "⚠️ Hay un dato de número de bultos en el pedimento (1), pero no se puede validar contra el documento de transporte ya que no está presente. Falta información adicional para completar la validación.",
+          is_correct: true,
+          actions_to_take: [
+            {
+              id: 1,
+              step_description:
+                "Obtener o verificar el documento de transporte, carta 3.1.8, o factura para validar la coincidencia en el número de bultos.",
+            },
+          ],
+        },
+      ],
+      is_correct: true,
+      summary:
+        "En los validation_steps, se detectaron varias advertencias debido a la falta de información, particularmente del documento de transporte y del peso neto. Aunque los pasos son marcados como correctos, requieren de validación adicional para confirmar precisión. Se recomienda obtener el documento de transporte y el peso neto para realizar una validación completa.",
+    },
+    invoice_data: {
+      provided_context: {
+        pedimento: [
+          {
+            document_id: "21 47 3709 1001023",
+            document_summary:
+              "Este documento detalla un pedimento de importación definitiva bajo el régimen IMD, con un valor aduanero de 58,721 MXN y un valor en dólares de 2,920.82 USD. El importador es SACC ASESORES ADUANEROS EN COMERCIO EXTERIOR, SA DE CV, con domicilio en Pachuca, Hidalgo, México. Se incluyen detalles de transporte, valores incrementables y decrementables, y contribuciones pagadas. El documento también menciona identificadores a nivel de pedimento y observaciones sobre la operación.",
+            data: [
+              {
+                name: "RFC importador",
+                value: "SAA200430EUA",
+              },
+              {
+                name: "Domicilio fiscal",
+                value:
+                  "AV. EBANO No. 301 Int. B LOS CEDROS CP. 42033 PACHUCA Hidalgo MEXICO (ESTADOS UNIDOS MEXICANOS)",
+              },
+              {
+                name: "Razón social",
+                value: "SACC ASESORES ADUANEROS EN COMERCIO EXTERIOR, SA DE CV",
+              },
+              {
+                name: "Fecha de entrada",
+                value: "12/08/2021",
+              },
+              {
+                name: "Número de COVE",
+                value: "COVE214J371P6",
+              },
+              {
+                name: "ID fiscal proveedor/comprador",
+                value: "",
+              },
+              {
+                name: "Domicilio fiscal proveedor/comprador",
+                value: "",
+              },
+              {
+                name: "Razón social proveedor/comprador",
+                value: "ANDERSON AMERICA",
+              },
+              {
+                name: "Datos de facturas",
+                value: [
+                  {
+                    num_factura: "561893440",
+                    fecha_factura: "11/08/2021",
+                    incoterm: "EXW",
+                    moneda_factura: "USD",
+                    valor_moneda_factura: 2380,
+                    factor_moneda_factura: 1,
+                    valor_dolares_factura: 2380,
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+        factura: [],
+        cove: [
+          {
+            document_id: "COVE214J371P6",
+            document_summary:
+              "Este COVE (COVE214J371P6) corresponde a una operación de importación sin relación de facturas, con fecha de expedición 11 de agosto de 2021. El agente aduanal está involucrado. El proveedor es ANDERSON AMERICA con Tax ID 561893440, ubicado en Estados Unidos. El destinatario es SACC ASESORES ADUANEROS EN COMERCIO EXTERIOR SA DE CV con RFC SAA200430EUA, ubicado en México. La mercancía declarada incluye piñones, poleas, chumaceras y partes para sierra, todas medidas en piezas, valoradas en dólares estadounidenses (USD).",
+            data: [
+              {
+                name: "Datos del proveedor/comprador",
+                value: "Tax ID: 561893440",
+              },
+              {
+                name: "RFC importador",
+                value: "SAA200430EUA",
+              },
+              {
+                name: "Fecha de emisión",
+                value: "2021-08-11",
+              },
+              {
+                name: "Número de COVE",
+                value: "COVE214J371P6",
+              },
+              {
+                name: "Moneda",
+                value: "USD",
+              },
+              {
+                name: "Valor de la factura",
+                value: 2380,
+              },
+            ],
+          },
+        ],
+        carta_318: [
+          {
+            document_id: "SIN NÚMERO_2021-08-19",
+            document_summary:
+              "Esta es una carta 3.1.8 emitida en Pachuca el 19 de agosto de 2021 por Sandra Quintero López, representante legal de SACC Asesores Aduaneros, dirigida al Administrador de la Aduana del AICM. La carta declara, bajo protesta de decir verdad, que la chumacera importada con factura del 11 de agosto de 2021 de Anderson America Corp, está exenta de la NOM-050-SCFI-2004 porque es un repuesto y no se destina al consumidor final. Se fundamenta en el oficio DGN.418.01.2020.3301 y criterios de la Dirección General de Normas sobre productos no destinados al consumidor final.",
+            data: [
+              {
+                name: "RFC importador",
+                value: "SAA200430EUA",
+              },
+              {
+                name: "INCOTERM",
+                value: null,
+              },
+              {
+                name: "Fecha de emisión",
+                value: "2021-08-19",
+              },
+              {
+                name: "Moneda",
+                value: null,
+              },
+              {
+                name: "Valor de la factura",
+                value: {
+                  valor: 0,
+                  moneda: "USD",
+                },
+              },
+            ],
+          },
+          {
+            document_id: "S/N_2021-08-19",
+            document_summary:
+              "Esta es una carta 3.1.8 emitida el 19 de agosto de 2021 en Pachuca, Hidalgo, dirigida al Administrador de la Aduana del Aeropuerto Internacional de la Ciudad de México. Sandra Quintero López, Representante Legal de SACC Asesores Aduaneros en Comercio Exterior S.A. DE C.V., declara bajo protesta de decir verdad que la información contenida en la factura comercial sin número de fecha 11 de agosto de 2021 del proveedor Anderson America Corp es correcta. La factura incluye detalles del importador (SACC), el proveedor (Anderson America), la descripción de la mercancía, cantidades, precios unitarios y totales en USD, con un INCOTERM EXW. Se declara un flete de 540.82 USD y un valor comercial total de 2380 USD. La mercancía consta de piñones, poleas, chumaceras y partes para sierra.",
+            data: [
+              {
+                name: "RFC importador",
+                value: "SAA200430EUA",
+              },
+              {
+                name: "INCOTERM",
+                value: "EXW",
+              },
+              {
+                name: "Fecha de emisión",
+                value: "2021-08-19",
+              },
+              {
+                name: "Moneda",
+                value: null,
+              },
+              {
+                name: "Valor de la factura",
+                value: {
+                  valor: 2380,
+                  moneda: "USD",
+                },
+              },
+            ],
+          },
+        ],
+        carta_cesion_de_derechos: [
+          {
+            document_id: "1",
+            document_summary:
+              "This document is a letter of assignment of rights, dated August 16, 2021, from MARIANO ROSAS AMADOR (assignor) to SACC ASESORES ADUANEROS EN COMERCIO EXTERIOR S.A. DE C.V. (assignee). The assignor transfers the rights and obligations related to the import of goods covered by guide number 1Z72W6460465846645 and invoice without number dated August 11. The assignee is authorized to proceed with the release of the goods and carry out all import procedures on behalf of the owner.",
+            data: [
+              {
+                name: "RFC de comercializadora",
+                value: "SAA200430EUA",
+              },
+              {
+                name: "Fecha de emisión",
+                value: null,
+              },
+            ],
+          },
+        ],
+      },
+      external_context: {
+        validacion_rfc: [
+          {
+            rfc: "SAA200430EUA",
+            tipo: "RFC importador (Pedimento)",
+            es_valido: true,
+          },
+          {
+            rfc: "SAA200430EUA",
+            tipo: "RFC importador (COVE)",
+            es_valido: true,
+          },
+          {
+            rfc: "SAA200430EUA",
+            tipo: "RFC importador (Carta 3.1.8)",
+            es_valido: true,
+          },
+          {
+            rfc: "SAA200430EUA",
+            tipo: "RFC importador (Carta 3.1.8)",
+            es_valido: true,
+          },
+          {
+            rfc: "SAA200430EUA",
+            tipo: "RFC de comercializadora (Cesión de Derechos)",
+            es_valido: true,
+          },
+        ],
+        diario_oficial_de_la_federacion: [
+          {
+            name: "Tipo de cambio MXN-USD oficial",
+            value: 20.1038,
+          },
+        ],
+      },
+      validation_steps: [
+        {
+          name: "Validación de los RFC",
+          description:
+            "Validar que los RFC cumplan con los siguientes criterios:\n\n1. Formato válido:\n• RFC Moral: 12 caracteres (ej: ABC850101AAA)\n• RFC Física: 13 caracteres (ej: ABCD850101AAA)\n\n2. Existencia real:\n• Consultar el RFC ante el SAT (servicio web)\n\n3. Consistencia entre documentos:\n• RFC del importador debe ser idéntico en Pedimento, COVE y Carta 3.1.8\n• Si hay Cesión de Derechos, el RFC de la comercializadora debe coincidir con el RFC del importador en la Carta 3.1.8",
+          llm_analysis:
+            "✅ 1. Formato de RFC del importador (SAA200430EUA) es válido y se repite correctamente en Pedimento, COVE y Carta 3.1.8. La existencia real no fue verificada dado que no se realizó una consulta al SAT. ⚠️ Se mencionó RFC de comercializadora en la cesión de derechos, y coincide correctamente con el del importador, marcando consistencia. Debo mencionar que no tengo el contexto necesario para validar si este RFC es real.",
+          is_correct: true,
+          actions_to_take: [],
+        },
+        {
+          name: "Validación de cesión de derechos y carta 3.1.8",
+          description:
+            "Si existe Cesión de Derechos:\n\nComparar:\n• RFC comercializadora vs. RFC importador en Carta 3.1.8\n• Fecha de emisión de la Cesión debe ser anterior a Fecha de entrada del Pedimento\n\nPrecedencia:\n• La Carta 3.1.8 anula cualquier discrepancia en Factura/COVE\n• Si no hay Cesión, omitir y marcar como válido",
+          llm_analysis:
+            "❌ Fecha de emisión de la Cesión de Derechos es nula, no se puede determinar si es anterior a la fecha de entrada del Pedimento. Esto impide validar totalmente este paso. ⚠️ Sin embargo, el RFC coincide entre los documentos implicados. La Carta 3.1.8 prevalece en caso de discrepancias, pero requiere información completa para ser válida totalmente.",
+          is_correct: false,
+          actions_to_take: [
+            {
+              id: 1,
+              step_description:
+                "Obtener y verificar la fecha de emisión de la Cesión de Derechos.",
+            },
+          ],
+        },
+        {
+          name: "Validación de datos del importador/exportador",
+          description:
+            "Validar que los siguientes campos coincidan literalmente entre documentos:\n\nRFC: Debe coincidir entre Pedimento, Carta 3.1.8 y COVE.\nDomicilio fiscal: Debe coincidir entre Pedimento, Carta 3.1.8 (implícito) y Factura (importador).\nRazón social: Debe coincidir entre Pedimento, Carta 3.1.8 (implícito) y COVE.\nRegla de precedencia:\nSi la Carta 3.1.8 existe, sus datos tienen prioridad sobre Factura/COVE. Cualquier discrepancia en otros documentos se marca como error.",
+          llm_analysis:
+            "✅ RFC, domicilio fiscal y razón social del importador coinciden correctamente entre Pedimento y otros documentos implicados (COVE, Carta 3.1.8). Además, la carta 3.1.8 no tiene datos contradictorios o dominantes sobre el pedimento.",
+          is_correct: true,
+          actions_to_take: [],
+        },
+        {
+          name: "Validación de datos comerciales del proveedor/comprador",
+          description:
+            "Validar los siguientes pasos:\n1. Los datos del proveedor/comprador deben coincidir exactamente entre factura, COVE y Cesión de Derechos\n2. Si hay comercializadora, sus datos deben coincidir con el documento de cesión\n3. La Carta 3.1.8 tiene precedencia sobre la factura",
+          llm_analysis:
+            "⚠️ Tax ID 561893440 concuerda entre COVE y datos de facturas del proveedor. Sin embargo, el ID fiscal y domicilio del proveedor en el pedimento son nulos, lo que impide una validación completa. La Carta 3.1.8 respalda la información sin contradicciones.",
+          is_correct: true,
+          actions_to_take: [
+            {
+              id: 2,
+              step_description:
+                "Obtener y validar el ID fiscal y domicilio del proveedor en el pedimento.",
+            },
+          ],
+        },
+        {
+          name: "Validación de fechas de emisión, números de folio y COVE",
+          description:
+            "Verificar secuencias lógicas y coincidencias exactas:\n\nFechas:\n• Fecha emisión Factura debe ser menor o igual a la Fecha entrada Pedimento\n• Fecha COVE debe ser igual a la Fecha Factura\n\nNúmeros:\n• Número COVE en el Pedimento debe ser igual al Número COVE en el COVE\n• Número Factura debe ser único y no repetido en otras operaciones",
+          llm_analysis:
+            "✅ Fecha de emisión de la factura (11/08/2021) es anterior a la fecha de entrada del Pedimento (12/08/2021). Fecha del COVE coincide con la de la factura. Número de COVE también consistentemente registrado. No se ha encontrado ningún número de factura repetido.",
+          is_correct: true,
+          actions_to_take: [],
+        },
+        {
+          name: "Validación de moneda y factor de equivalencia",
+          description:
+            "Validar los siguientes aspectos:\n\nMoneda:\n• La moneda declarada debe coincidir entre:\n  - Factura\n  - COVE\n  - Carta 3.1.8\n\nCálculo en USD:\n• El valor en dólares del pedimento debe ser igual a:\n  - Valor de Factura multiplicado por Factor DOF\n• Se permite una tolerancia máxima de ±0.5%\n\nFactor DOF:\n• Debe corresponder al tipo de cambio publicado el día de la fecha de emisión de la Factura",
+          llm_analysis:
+            "⚠️ La moneda concuerda entre la factura, el COVE y la carta 3.1.8. Sin embargo, el COVE no menciona un valor de factor DOF directamente. No se pudo comprobar si el tipo de cambio corresponde dado a la falta de una referencia publicada del tipo de cambio o factor.",
+          is_correct: true,
+          actions_to_take: [
+            {
+              id: 3,
+              step_description:
+                "Revisar la publicación del tipo de cambio correspondiente al día de emisión de la factura a través de una fuente oficial para confirmar el factor DOF.",
+            },
+          ],
+        },
+      ],
+      is_correct: false,
+      summary:
+        "Las validaciones en general muestran consistencia, especialmente en RFCs y datos de importación/exportación. Se detectaron advertencias (⚠️) en los datos fiscales del proveedor y en la conversión del tipo de cambio, pero no afectan la validez general. Un error crítico (❌) es la ausencia de fecha de emisión en la cesión de derechos, lo cual es necesario corregir para completar dicha validación. Acciones recomendadas incluyen obtener la fecha de emisión faltante y validar el tipo de cambio aplicable en el día de la factura.",
+    },
+    transport_data: {
+      provided_context: {
+        pedimento: [
+          {
+            document_id: "21 47 3709 1001023",
+            document_summary:
+              "Este documento detalla un pedimento de importación definitiva bajo el régimen IMD, con un valor aduanero de 58,721 MXN y un valor en dólares de 2,920.82 USD. El importador es SACC ASESORES ADUANEROS EN COMERCIO EXTERIOR, SA DE CV, con domicilio en Pachuca, Hidalgo, México. Se incluyen detalles de transporte, valores incrementables y decrementables, y contribuciones pagadas. El documento también menciona identificadores a nivel de pedimento y observaciones sobre la operación.",
+            data: [
+              {
+                name: "Clave del medio de transporte",
+                value: "4",
+              },
+              {
+                name: "Número de guía o embarque (master y house o master)",
+                value: "2W646MHPPF",
+              },
+              {
+                name: "Medios de transporte",
+                value: {
+                  entrada_salida: "4",
+                  arribo: "4",
+                  salida: "12",
+                },
+              },
+            ],
+          },
+        ],
+        documento_de_transporte: [],
+      },
+      external_context: {
+        apendice_3: {
+          name: "Descripción del medio de transporte",
+          value: "4 - Aéreo",
+        },
+        apendice_10: {
+          name: "Descripción de la clave del medio de transporte",
+          value: null,
+        },
+      },
+      validation_steps: [
+        {
+          name: "Clave del tipo de transporte",
+          description:
+            "La clave del tipo de transporte debe existir en el apéndice 10.",
+          llm_analysis:
+            "✅ La clave del tipo de transporte '4' existe y es válida según el apéndice 10, que indica que '4' corresponde a transporte por carretera. Este valor es consistente con los medios de transporte indicados (entrada/salida: 4, arribo: 4).",
+          is_correct: true,
+          actions_to_take: [],
+        },
+        {
+          name: "Modalidad y medio de transporte",
+          description:
+            "La modalidad del documento de transporte y el medio de transporte deben tener coherencia.",
+          llm_analysis:
+            "⚠️ Falta la modalidad específica del documento de transporte para confirmar la coherencia con el medio de transporte. Solo se tiene el valor '4' que indica el medio de transporte. Sin más detalles del documento de transporte, la validación es parcial.",
+          is_correct: false,
+          actions_to_take: [
+            {
+              id: 1,
+              step_description:
+                "Revisar y agregar información sobre la modalidad del documento de transporte para verificar su coherencia con el medio '4' que indica carretera.",
+            },
+          ],
+        },
+        {
+          name: "Número de guía o embarque",
+          description:
+            "El número de guía o embarque del pedimento debe ser exactamente igual al número de contenedor, placa o master y house del documento de transporte.",
+          llm_analysis:
+            "❌ El número de guía o embarque es '2W646MHPPF', pero no hay datos en el documento de transporte para confirmar si coincide con el número de contenedor, placa o master y house. Esto es crítico para la validez del pedimento.",
+          is_correct: false,
+          actions_to_take: [
+            {
+              id: 1,
+              step_description:
+                "Obtener y verificar la documentación de transporte para asegurar que el número de guía o embarque '2W646MHPPF' coincide con el número de contenedor, placa o master y house.",
+            },
+          ],
+        },
+      ],
+      is_correct: false,
+      summary:
+        "Se encontraron algunos problemas en la sección analizada. La 'Clave del tipo de transporte' es correcta (✅), pero hay advertencias en la 'Modalidad y medio de transporte' (⚠️) debido a la falta de información sobre la modalidad del documento de transporte; es necesario verificar este dato. Hay un error crítico (❌) en el 'Número de guía o embarque', ya que falta documentación para validar la coincidencia con el número relevante del documento de transporte. Se deben tomar acciones para corregir estos aspectos antes de proceder.",
+    },
+    partidas: {
+      provided_context: {
+        pedimento: [
+          {
+            document_id: "21 47 3709 1001023",
+            document_summary:
+              "Este documento detalla un pedimento de importación definitiva bajo el régimen IMD, con un valor aduanero de 58,721 MXN y un valor en dólares de 2,920.82 USD. El importador es SACC ASESORES ADUANEROS EN COMERCIO EXTERIOR, SA DE CV, con domicilio en Pachuca, Hidalgo, México. Se incluyen detalles de transporte, valores incrementables y decrementables, y contribuciones pagadas. El documento también menciona identificadores a nivel de pedimento y observaciones sobre la operación.",
+            data: [
+              {
+                id: 1,
+                name: "Valor en dólares",
+                value: 2920.82,
+              },
+              {
+                id: 2,
+                name: "Valor aduana",
+                value: 58721,
+              },
+              {
+                id: 3,
+                name: "Precio pagado o Valor comercial",
+                value: 47848,
+              },
+              {
+                id: 4,
+                name: "Partidas (Pedimento)",
+                value: [
+                  {
+                    sec: 1,
+                    fraccion: "84836099",
+                    nico: "00",
+                    umc: "6",
+                    cantidad_umc: 2,
+                    umt: "1",
+                    cantidad_umt: 2.2,
+                    p_v_c: "USA",
+                    p_o_d: "TWN",
+                    val_adu: 16185,
+                    imp_precio_pag: 13188,
+                    precio_unit: 6594,
+                    val_agreg: null,
+                    identificadores: [],
+                    contribuciones: [
+                      {
+                        con: "IVA",
+                        tasa: 16,
+                        t_t: "1",
+                        f_p: "0",
+                        importe: 2869,
+                      },
+                      {
+                        con: "IGI",
+                        tasa: 10,
+                        t_t: "1",
+                        f_p: "0",
+                        importe: 1618,
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+        cove: [
+          {
+            document_id: "COVE214J371P6",
+            document_summary:
+              "Este COVE (COVE214J371P6) corresponde a una operación de importación sin relación de facturas, con fecha de expedición 11 de agosto de 2021. El agente aduanal está involucrado. El proveedor es ANDERSON AMERICA con Tax ID 561893440, ubicado en Estados Unidos. El destinatario es SACC ASESORES ADUANEROS EN COMERCIO EXTERIOR SA DE CV con RFC SAA200430EUA, ubicado en México. La mercancía declarada incluye piñones, poleas, chumaceras y partes para sierra, todas medidas en piezas, valoradas en dólares estadounidenses (USD).",
+            data: [
+              {
+                name: "Certificado de origen",
+                value: {
+                  funge_certificado: false,
+                  subdivision: "Sin subdivisión",
+                },
+              },
+            ],
+          },
+        ],
+        rrnas: [],
+      },
+      inferred_context: {
+        pedimento: [
+          {
+            document_id: "21 47 3709 1001023",
+            document_summary:
+              "Este documento detalla un pedimento de importación definitiva bajo el régimen IMD, con un valor aduanero de 58,721 MXN y un valor en dólares de 2,920.82 USD. El importador es SACC ASESORES ADUANEROS EN COMERCIO EXTERIOR, SA DE CV, con domicilio en Pachuca, Hidalgo, México. Se incluyen detalles de transporte, valores incrementables y decrementables, y contribuciones pagadas. El documento también menciona identificadores a nivel de pedimento y observaciones sobre la operación.",
+            data: [
+              {
+                name: "Prorrateo",
+                value: 1.22724042802207,
+              },
+              {
+                name: "DTA",
+                value: 469.76800000000003,
+              },
+              {
+                name: "Cálculo de partidas",
+                value: [
+                  {
+                    sec: 1,
+                    fraccion: "84836099",
+                    precio_pagado: 13188,
+                    precio_unitario: 6594,
+                    valor_aduana: 16184.846764755057,
+                    igi: 1618.4846764755057,
+                    iva: 2869.2496344557767,
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      external_context: {
+        taxfinder: [
+          {
+            sec: 1,
+            fraccion: "84836099",
+            nico: [
+              {
+                nico: "00",
+                descripcion: "Los demás.",
+                fecha_dof: "2020-07-01",
+                fecha_entrada_vigor: "2020-12-28",
+                abrogado: false,
+                oid: "65393a05af0b362f8b24c644",
+              },
+            ],
+            umt: "01 - KILO",
+            identificadores: "No aplicable",
+            contribuciones: "No aplicable",
+            permisos: "No aplicable",
+            restricciones_arancelarias: [],
+            restricciones_no_arancelarias: [],
+          },
+        ],
+        apendice_8: [],
+      },
+      validation_steps: [
+        {
+          id: 1,
+          fraccion: "84836099",
+          steps: [
+            {
+              id: 1,
+              name: "Preferencia arancelaria y certificado de origen",
+              llm_analysis:
+                "✅ No hay preferencia arancelaria registrada, no es necesario el certificado.",
+              is_correct: true,
+              actions_to_take: [],
+            },
+            {
+              id: 2,
+              name: "Coherencia de UMC y cantidad UMC",
+              llm_analysis:
+                "⚠️ Falta información de la factura en contexto para verificar coherencia.",
+              is_correct: false,
+              actions_to_take: [
+                {
+                  id: 1,
+                  step_description:
+                    "Revisar factura y detallar UMC y cantidad UMC.",
+                },
+              ],
+            },
+            {
+              id: 3,
+              name: "Coherencia de peso",
+              llm_analysis:
+                "⚠️ No se provee peso bruto en contexto para validar coherencia de peso.",
+              is_correct: false,
+              actions_to_take: [
+                {
+                  id: 2,
+                  step_description:
+                    "Obtener peso bruto del pedimento para cotejar.",
+                },
+              ],
+            },
+            {
+              id: 4,
+              name: "Cálculo del prorrateo y DTA",
+              llm_analysis:
+                "⚠️ Ausencia de contexto de DTA para verificar valores calculados.",
+              is_correct: false,
+              actions_to_take: [
+                {
+                  id: 3,
+                  step_description:
+                    "Incluir detalles del DTA para validar prorrateo.",
+                },
+              ],
+            },
+            {
+              id: 5,
+              name: "Cálculo de contribuciones",
+              llm_analysis:
+                "✅ Contribuciones de IVA (16%) e IGI (10%) se calculan correctamente con los datos establecidos.",
+              is_correct: true,
+              actions_to_take: [],
+            },
+            {
+              id: 6,
+              name: "Coincidencia de permisos e identificadores",
+              llm_analysis:
+                "⚠️ No hay identidades ni permisos declarados para cotejar.",
+              is_correct: true,
+              actions_to_take: [],
+            },
+            {
+              id: 7,
+              name: "Regulaciones arancelarias",
+              llm_analysis:
+                "⚠️ No se especifican regulaciones arancelarias en el contexto.",
+              is_correct: true,
+              actions_to_take: [],
+            },
+            {
+              id: 8,
+              name: "Regulaciones no arancelarias",
+              llm_analysis:
+                "⚠️ No se especifican regulaciones no arancelarias en el contexto.",
+              is_correct: true,
+              actions_to_take: [],
+            },
+          ],
+          llm_analysis: "Error procesando respuesta: 0",
+          is_correct: false,
+          actions_to_take: [
+            {
+              id: 1,
+              step_description:
+                "Reintentar análisis o verificar el estado de la API",
+            },
+          ],
+        },
+      ],
+      is_correct: false,
+      summary: "Error procesando respuesta: 0",
+    },
+  },
+  files: [
+    {
+      name: "CESIÓN DE DERECHOS",
+      url: "https://drive.google.com/file/d/1vTRxq-UZpkjsEQfBt98R4ebp8CS6G--q/preview",
+    },
+    {
+      name: "COVE",
+      url: "https://drive.google.com/file/d/10Ykn0MtAo3BuVpWH169KH4tNdVLFttNq/preview",
+    },
+    {
+      name: "CARTA 3.1.8",
+      url: "https://drive.google.com/file/d/1KwxchVA-Qe0dO0eMH5oLfsV_o8fGjo1i/preview",
+    },
+    {
+      name: "TRANSPORTE",
+      url: "https://drive.google.com/file/d/1CraoOwsQkNTxj5-9on1o1StUFBiPyNKy/preview",
+    },
+    {
+      name: "PEDIMENTO",
+      url: "https://drive.google.com/file/d/17vwOj9G-b72nyLhweIXdMSCG3Es2SiVg/preview",
+    },
+    {
+      name: "CARTA 3.1.8",
+      url: "https://drive.google.com/file/d/1l5rahmqG7R3nNJtD-RH5Z-GtgnXbHcwf/preview",
+    },
+  ],
+  alerts: {
+    high: [
+      {
+        id: 1,
+        validation_step_name: "Año del pedimento",
+      },
+      {
+        id: 2,
+        validation_step_name: "Número de guía o embarque",
+      },
+      {
+        id: 3,
+        validation_step_name: "Validación de cesión de derechos y carta 3.1.8",
+      },
+    ],
+    medium: [
+      {
+        id: 1,
+        validation_step_name: "Coherencia con origen/destino",
+      },
+      {
+        id: 2,
+        validation_step_name: "Coincidencia de bultos",
+      },
+      {
+        id: 3,
+        validation_step_name: "Coincidencia de peso bruto",
+      },
+      {
+        id: 4,
+        validation_step_name: "Incrementables",
+      },
+      {
+        id: 5,
+        validation_step_name: "Modalidad y medio de transporte",
+      },
+      {
+        id: 6,
+        validation_step_name: "Tipo de cambio",
+      },
+      {
+        id: 7,
+        validation_step_name:
+          "Validación de datos comerciales del proveedor/comprador",
+      },
+      {
+        id: 8,
+        validation_step_name: "Validación de los RFC",
+      },
+      {
+        id: 9,
+        validation_step_name: "Validación de moneda y factor de equivalencia",
+      },
+      {
+        id: 10,
         validation_step_name: "Validación de pesos",
       },
     ],

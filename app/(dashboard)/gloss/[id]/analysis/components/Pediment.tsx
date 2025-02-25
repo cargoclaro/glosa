@@ -19,6 +19,7 @@ interface IPediment {
 }
 
 const keywords = [
+  // PEDIMENTO
   "NUM. PEDIMENTO:",
 
   "T. OPER",
@@ -44,6 +45,17 @@ const keywords = [
 
   "PARTIDAS",
   "OBSERVACIONES A NIVEL PARTIDA",
+
+  // COVE
+  "No. de Factura",
+  "Fecha Expedición",
+
+  "Datos generales del proveedor",
+  "Domicilio del proveedor",
+  "Datos generales del destinatario",
+  "Domicilio del destinatario",
+
+  "Datos de la Mercancía",
 ]; // Palabras clave a buscar
 
 interface IKeywordPosition {
@@ -89,6 +101,7 @@ const sharedConfigValSeguros = {
 };
 
 const keywordPositions: Record<string, IKeywordPosition> = {
+  // PEDIMENTO
   "NUM. PEDIMENTO:": {
     x: 0,
     y: (currentPage) => (currentPage !== 1 ? -15 : 0),
@@ -119,6 +132,17 @@ const keywordPositions: Record<string, IKeywordPosition> = {
 
   PARTIDAS: { x: -255, y: -80, w: 510, h: 80 },
   "OBSERVACIONES A NIVEL PARTIDA": { x: -135, y: 50, w: 410, h: -70 },
+
+  // COVE
+  "No. de Factura": { x: 0, y: -18, w: 50, h: 18 },
+  "Fecha Expedición": { x: 0, y: -18, w: 50, h: 18 },
+
+  "Datos generales del proveedor": { x: -80, y: -30, w: 160, h: 30 },
+  "Domicilio del proveedor": { x: -80, y: -30, w: 160, h: 30 },
+  "Datos generales del destinatario": { x: -80, y: -30, w: 160, h: 30 },
+  "Domicilio del destinatario": { x: -80, y: -30, w: 160, h: 30 },
+
+  "Datos de la Mercancía": { x: -80, y: -30, w: 160, h: 30 },
 };
 
 const defaultConfig = { x: 0, y: 0, w: 0, h: 0 };
@@ -149,6 +173,16 @@ const keywordsConfig = {
 
   PARTIDAS: "Partidas",
   "OBSERVACIONES A NIVEL PARTIDA": "Partidas",
+
+  "No. de Factura": "Datos de la Mercancía",
+  "Fecha Expedición": "Datos de la Mercancía",
+
+  "Datos generales del proveedor": "Datos del Proveedor",
+  "Domicilio del proveedor": "Datos del Proveedor",
+  "Datos generales del destinatario": "Datos del Destinatario",
+  "Domicilio del destinatario": "Datos del Destinatario",
+
+  "Datos de la Mercancía": "Datos de la Mercancía",
 };
 
 const Pediment = ({ tabs, document, onClick, tabInfoSelected }: IPediment) => {

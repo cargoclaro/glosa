@@ -32,33 +32,51 @@ export interface IUser extends User {
 export interface ICustomGloss extends CustomGloss {
   user: IUser;
   // custom: ICustom;
-  files: CustomGlossFile[];
-  alerts: CustomGlossAlert[];
   tabs: ICustomGlossTab[];
+  files: ICustomGlossFile[];
+  alerts: ICustomGlossAlert[];
 }
 
-export interface ILLMResponse extends CustomGloss {
-  user: IUser;
-  // custom: ICustom;
-  files: CustomGlossFile[];
-  alerts: CustomGlossAlert[];
-  tabsPedimento: ICustomGlossTab[];
+export interface ICustomGlossAlert extends CustomGlossAlert {
+  customGloss: ICustomGloss;
+}
+
+export interface ICustomGlossFile extends CustomGlossFile {
+  customGloss: ICustomGloss;
 }
 
 export interface ICustomGlossTab extends CustomGlossTab {
+  customGloss: ICustomGloss;
   context: ICustomGlossTabContext[];
-  validations: ICustomGlossTabValidation[];
+  validations: ICustomGlossTabValidationStep[];
 }
 
 export interface ICustomGlossTabContext extends CustomGlossTabContext {
-  data: CustomGlossTabContextData[];
+  customGlossTab: ICustomGlossTab;
+  data: ICustomGlossTabContextData[];
 }
 
-export interface ICustomGlossTabValidation
+export interface ICustomGlossTabContextData extends CustomGlossTabContextData {
+  customGlossTabContext: ICustomGlossTabContext;
+}
+
+export interface ICustomGlossTabValidationStep
   extends CustomGlossTabValidationStep {
-  resources: CustomGlossTabValidationStepResources[];
-  actionsToTake: CustomGlossTabValidationStepActionToTake[];
-  steps: ICustomGlossTabValidation[];
+  customGlossTab?: ICustomGlossTab;
+  parentStep?: ICustomGlossTabValidationStep;
+  steps: ICustomGlossTabValidationStep[];
+  resources: ICustomGlossTabValidationStepResources[];
+  actionsToTake: ICustomGlossTabValidationStepActionToTake[];
+}
+
+export interface ICustomGlossTabValidationStepResources
+  extends CustomGlossTabValidationStepResources {
+  customGlossTabValidationStep: ICustomGlossTabValidationStep;
+}
+
+export interface ICustomGlossTabValidationStepActionToTake
+  extends CustomGlossTabValidationStepActionToTake {
+  customGlossTabValidationStep: ICustomGlossTabValidationStep;
 }
 
 export interface ISharedState {
