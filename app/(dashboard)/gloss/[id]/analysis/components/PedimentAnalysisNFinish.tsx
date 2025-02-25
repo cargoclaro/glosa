@@ -24,10 +24,19 @@ const PedimentAnalysisNFinish = ({
 }) => {
   const [documentSelected, setDocumentSelected] = useState("PEDIMENTO");
   const [tabSelectedFromDocument, setTabSelectedFromDocument] = useState("");
+  const customGlossTabs = customGloss.tabs;
+  if (customGlossTabs.length === 0) {
+    throw new Error("No tabs found");
+  }
+  const customGlossTab = customGlossTabs[0];
+  if (!customGlossTab) {
+    throw new Error("No tab found");
+  }
+  const { name, isCorrect, isVerified } = customGlossTab;
   const [tabInfoSelected, setTabInfoSelected] = useState<ITabInfoSelected>({
-    name: customGloss.tabs[0].name,
-    isCorrect: customGloss.tabs[0].isCorrect,
-    isVerified: customGloss.tabs[0].isVerified,
+    name,
+    isCorrect,
+    isVerified,
   });
 
   const handleFunction = (tab: string) => {

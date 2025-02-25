@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 import { AuthRequiredError } from "@/app/shared/exceptions";
 import { JWTPayload, SignJWT, jwtVerify } from "jose";
 
-const SESSION_SECRET = process.env.SESSION_SECRET;
+const SESSION_SECRET = process.env["SESSION_SECRET"];
 if (!SESSION_SECRET) throw new Error("SESSION_SECRET is not set");
 const SESSION_SECRET_ENCODED = new TextEncoder().encode(SESSION_SECRET);
 
@@ -45,7 +45,7 @@ export async function getSession() {
 
 export async function isAuthenticated() {
   const session = await getSession();
-  if (!session || !session.userId) {
+  if (!session || !session["userId"]) {
     throw new AuthRequiredError();
   }
   return session;

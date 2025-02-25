@@ -11,8 +11,16 @@ export async function POST(req: NextRequest) {
     //   return new NextResponse("Unauthorized", { status: 401 });
     // }
 
-    const { request_field } = await req.json();
-    if (!request_field) {
+    const request = await req.json();
+    if (
+      typeof request !== "object" ||
+      request === null ||
+      !("request_field" in request)
+    ) {
+      return new NextResponse("Bad Request", { status: 400 });
+    }
+    const request_field = request["request_field"];
+    if (typeof request_field !== "string") {
       return new NextResponse("Bad Request", { status: 400 });
     }
 

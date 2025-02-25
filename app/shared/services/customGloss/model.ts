@@ -60,6 +60,8 @@ export async function read({ id, userId, recent }: IRead) {
       where: { userId },
     });
   }
+
+  throw new Error("Should never happen");
 }
 
 export async function update({

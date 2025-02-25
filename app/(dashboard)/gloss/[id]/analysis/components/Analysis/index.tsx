@@ -18,7 +18,7 @@ import {
 } from "@/app/shared/icons";
 import type {
   ICustomGlossTab,
-  ICustomGlossTabValidation,
+  ICustomGlossTabValidationStep,
   ISharedState,
 } from "@/app/shared/interfaces";
 import { markTabAsVerifiedByTabIdNCustomGlossID } from "@/app/shared/services/customGloss/controller";
@@ -49,7 +49,7 @@ const Analysis = ({
   const { isOpen, openMenu, closeMenu, menuRef } = useModal(false);
   const [tabSelected, setTabSelected] = useState("N° de pedimento");
 
-  const [dataForDetail, setDataForDetail] = useState<ICustomGlossTabValidation>(
+  const [dataForDetail, setDataForDetail] = useState<ICustomGlossTabValidationStep>(
     {
       id: 0,
       name: "",
@@ -61,10 +61,13 @@ const Analysis = ({
       createdAt: new Date(),
       updatedAt: new Date(),
       customGlossTabId: "",
+      steps: [],
+      fraccion: "",
+      parentStepId: 0,
     }
   );
 
-  const handleDetail = (data: ICustomGlossTabValidation) => {
+  const handleDetail = (data: ICustomGlossTabValidationStep) => {
     setDataForDetail(data);
     openMenu();
   };
@@ -80,11 +83,15 @@ const Analysis = ({
   const handleNext = () => {
     const currentIndex = tabs.findIndex((tab) => tab.name === tabSelected);
     const nextIndex = (currentIndex + 1) % tabs.length;
-    setTabSelected(tabs[nextIndex].name);
+    const nextTab = tabs[nextIndex];
+    if (!nextTab) {
+      return;
+    }
+    setTabSelected(nextTab.name);
     setTabInfoSelected({
-      name: tabs[nextIndex].name,
-      isCorrect: tabs[nextIndex].isCorrect,
-      isVerified: tabs[nextIndex].isVerified,
+      name: nextTab.name,
+      isCorrect: nextTab.isCorrect,
+      isVerified: nextTab.isVerified,
     });
     scrollToTab(nextIndex);
   };
@@ -92,11 +99,15 @@ const Analysis = ({
   const handlePrevious = () => {
     const currentIndex = tabs.findIndex((tab) => tab.name === tabSelected);
     const prevIndex = (currentIndex - 1 + tabs.length) % tabs.length;
-    setTabSelected(tabs[prevIndex].name);
+    const prevTab = tabs[prevIndex];
+    if (!prevTab) {
+      return;
+    }
+    setTabSelected(prevTab.name);
     setTabInfoSelected({
-      name: tabs[prevIndex].name,
-      isCorrect: tabs[prevIndex].isCorrect,
-      isVerified: tabs[prevIndex].isVerified,
+      name: prevTab.name,
+      isCorrect: prevTab.isCorrect,
+      isVerified: prevTab.isVerified,
     });
     scrollToTab(prevIndex);
   };
@@ -104,11 +115,15 @@ const Analysis = ({
   const handleTabClick = useCallback(
     (id: string) => {
       const tabIndex = tabs.findIndex((tab) => tab.name === id);
+      const tab = tabs[tabIndex];
+      if (!tab) {
+        return;
+      }
       setTabSelected(id);
       setTabInfoSelected({
-        name: tabs[tabIndex].name,
-        isCorrect: tabs[tabIndex].isCorrect,
-        isVerified: tabs[tabIndex].isVerified,
+        name: tab.name,
+        isCorrect: tab.isCorrect,
+        isVerified: tab.isVerified,
       });
       scrollToTab(tabIndex);
     },
@@ -235,7 +250,7 @@ const GenericTabLi = ({ title, active, onClick }: IGenericTabLi) => (
 
 interface IGenericTabComponent {
   data: ICustomGlossTab;
-  handleClick: (data: ICustomGlossTabValidation) => void;
+  handleClick: (data: ICustomGlossTabValidationStep) => void;
 }
 
 const GenericTabComponent = ({ data, handleClick }: IGenericTabComponent) => {
@@ -246,20 +261,22 @@ const GenericTabComponent = ({ data, handleClick }: IGenericTabComponent) => {
       <div className="max-h-[420px] overflow-y-auto my-5">
         <table className="w-full text-center">
           <tbody>
-            {data.context[0].data.map((item) => (
-              <tr key={item.id}>
-                <td className="w-1/2 border-r border-r-black pr-2 py-2">
-                  <p title={item.name} className="line-clamp-1">
-                    {item.name}
-                  </p>
-                </td>
-                <td className="w-1/2 font-bold">
-                  <p title={item.value} className="pl-1 line-clamp-1">
-                    {item.value}
-                  </p>
-                </td>
-              </tr>
-            ))}
+            {data.context.flatMap((context) => 
+              context.data.map((item) => (
+                <tr key={item.id}>
+                  <td className="w-1/2 border-r border-r-black pr-2 py-2">
+                    <p title={item.name} className="line-clamp-1">
+                      {item.name}
+                    </p>
+                  </td>
+                  <td className="w-1/2 font-bold">
+                    <p title={item.value} className="pl-1 line-clamp-1">
+                      {item.value}
+                    </p>
+                  </td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>
@@ -375,8 +392,8 @@ const DashedLine = ({ customClass = "" }: { customClass?: string }) => (
 );
 
 interface IDataListForSummaryCard {
-  data: ICustomGlossTabValidation[];
-  handleDetail: (data: ICustomGlossTabValidation) => void;
+  data: ICustomGlossTabValidationStep[];
+  handleDetail: (data: ICustomGlossTabValidationStep) => void;
 }
 
 const DataListForSummaryCard = ({

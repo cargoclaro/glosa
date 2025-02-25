@@ -1,9 +1,9 @@
 import ReactMarkdown from "react-markdown";
-import type { ICustomGlossTabValidation } from "@/app/shared/interfaces";
+import type { ICustomGlossTabValidationStep } from "@/app/shared/interfaces";
 
 interface IResource {
   id: number;
-  link: string;
+  link: string | null;
 }
 
 interface IActionsToTake {
@@ -31,7 +31,7 @@ const CustomText = ({ text }: { text: string }) => (
   </ReactMarkdown>
 );
 
-const Detailed = ({ data }: { data: ICustomGlossTabValidation }) => {
+const Detailed = ({ data }: { data: ICustomGlossTabValidationStep }) => {
   return (
     <>
       <h1
@@ -47,7 +47,7 @@ const Detailed = ({ data }: { data: ICustomGlossTabValidation }) => {
         <div>
           <h4>Acciones a realizar:</h4>
           <ol className="flex flex-col list-disc ml-4">
-            {JSON.parse(JSON.stringify(data.actionsToTake)).map(
+            {data.actionsToTake.map(
               (action: IActionsToTake) => (
                 <li key={action.id}>
                   <CustomText text={action.description} />
@@ -59,10 +59,10 @@ const Detailed = ({ data }: { data: ICustomGlossTabValidation }) => {
         <div>
           <h3>Referencias:</h3>
           <ol className="flex flex-col gap-2 list-decimal ml-4">
-            {JSON.parse(JSON.stringify(data.resources)).map(
+            {data.resources.map(
               (resource: IResource) => (
                 <li key={resource.id}>
-                  <CustomText text={resource.link} />
+                  <CustomText text={resource.link ?? "Sin enlace"} />
                 </li>
               )
             )}

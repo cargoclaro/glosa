@@ -115,7 +115,11 @@ export async function logout() {
 export async function getMe() {
   try {
     const session = await isAuthenticated();
-    return await read({ id: session.userId as string });
+    const userId = session["userId"];
+    if (typeof userId !== "string") {
+      throw new Error("User ID is not a string");
+    }
+    return await read({ id: userId });
   } catch (error) {
     console.error(error);
     return null;

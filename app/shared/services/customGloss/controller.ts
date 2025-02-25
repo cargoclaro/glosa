@@ -1,19 +1,20 @@
 "use server";
 
-import { writeFile } from "fs/promises";
 import { randomUUID } from "crypto";
 import { redirect } from "next/navigation";
 import { schema } from "../../interfaces/glosa";
 import { revalidatePath } from "next/cache";
 import { isAuthenticated } from "@/app/shared/services/auth";
 import { read, create, updateTabWithCustomGlossId } from "./model";
-import { ANOTHER_VICTOR_GLOSS_EXAMPLE } from "@/app/shared/constants";
 import { CustomGlossType, CustomGlossTabContextType } from "@prisma/client";
 
 export async function analysis(formData: FormData) {
   try {
     const session = await isAuthenticated();
-    const user_id = session.userId as string;
+    const user_id = session["userId"];
+    if (typeof user_id !== "string") {
+      throw new Error("User ID is not a string");
+    }
 
     const query_id = randomUUID();
 
@@ -25,7 +26,7 @@ export async function analysis(formData: FormData) {
       {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${process.env.GLOSS_TOKEN}`,
+          Authorization: `Bearer ${process.env["GLOSS_TOKEN"]}`,
         },
         body: formData,
       }
@@ -611,8 +612,8 @@ export async function analysis(formData: FormData) {
       data: {
         user: { connect: { id: user_id } },
         summary: jsonResponse.summary,
-        timeSaved: jsonResponse.metrics[0]?.time_saved,
-        moneySaved: jsonResponse.metrics[0]?.money_saved,
+        timeSaved: jsonResponse.metrics[0]?.time_saved ?? 0,
+        moneySaved: jsonResponse.metrics[0]?.money_saved ?? 0,
         importerName: jsonResponse.importer_name,
         tabs: {
           create: [
@@ -662,7 +663,11 @@ export async function analysis(formData: FormData) {
 export async function getMyAnalysis() {
   try {
     const session = await isAuthenticated();
-    return await read({ userId: session.userId as string });
+    const userId = session["userId"];
+    if (typeof userId !== "string") {
+      throw new Error("User ID is not a string");
+    }
+    return await read({ userId });
   } catch (error) {
     console.error(error);
     return [];
@@ -672,7 +677,11 @@ export async function getMyAnalysis() {
 export async function getMyAnalysisById(id: string) {
   try {
     const session = await isAuthenticated();
-    return await read({ id, userId: session.userId as string });
+    const userId = session["userId"];
+    if (typeof userId !== "string") {
+      throw new Error("User ID is not a string");
+    }
+    return await read({ id, userId });
   } catch (error) {
     console.error(error);
     return null;
@@ -682,7 +691,11 @@ export async function getMyAnalysisById(id: string) {
 export async function getRecentAnalysis() {
   try {
     const session = await isAuthenticated();
-    return await read({ userId: session.userId as string, recent: true });
+    const userId = session["userId"];
+    if (typeof userId !== "string") {
+      throw new Error("User ID is not a string");
+    }
+    return await read({ userId, recent: true });
   } catch (error) {
     console.error(error);
     return [];
@@ -698,9 +711,12 @@ export async function markTabAsVerifiedByTabIdNCustomGlossID({
 }) {
   try {
     const session = await isAuthenticated();
-    const user_id = session.userId as string;
+    const userId = session["userId"];
+    if (typeof userId !== "string") {
+      throw new Error("User ID is not a string");
+    }
 
-    const customGloss = await read({ id: customGlossId, userId: user_id });
+    const customGloss = await read({ id: customGlossId, userId });
 
     if (!customGloss) {
       throw new Error("Gloss not found");

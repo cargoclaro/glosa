@@ -22,6 +22,9 @@ export async function POST(req: NextRequest) {
     const customFont = await pdfDoc.embedFont(fontBytes);
 
     const page = pages[0];
+    if (!page) {
+      throw new Error("No page found");
+    }
     const { height } = page.getSize();
 
     const colors = {
