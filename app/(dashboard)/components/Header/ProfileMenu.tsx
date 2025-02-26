@@ -7,10 +7,16 @@ import { cn } from "@/app/shared/utils/cn";
 import { useAuth, useModal } from "@/app/shared/hooks";
 import { logout } from "@/app/shared/services/user/controller";
 import { GlobeAlt, Square2x2, DoorArrowRight } from "@/app/shared/icons";
-import type { IUser } from "@/app/shared/interfaces";
+import { Prisma } from "@prisma/client";
+
+type User = Prisma.UserGetPayload<{
+  include: {
+    glosses: true;
+  };
+}>;
 
 interface IProfileMenu {
-  user: IUser;
+  user: User;
 }
 
 const ProfileMenu = ({ user }: IProfileMenu) => {

@@ -1,8 +1,19 @@
+import { isAuthenticated } from "../shared/services/auth";
+import prisma from "../shared/services/prisma";
 import { Header, Main, Sidebar } from "./components";
-import { getMe } from "@/app/shared/services/user/controller";
 
 const AuthLayout = async ({ children }: { children: React.ReactNode }) => {
-  const me = (await getMe());
+  const session = await isAuthenticated();
+  const userId = session["userId"];
+  if (typeof userId !== "string") {
+    throw new Error("User ID is not a string");
+  }
+  const me = await prisma.user.findUnique({
+    where: { id: userId },
+    include: {
+      glosses: true,
+    },
+  });
   if (!me) {
     return <div>No se pudo obtener el usuario</div>;
   }

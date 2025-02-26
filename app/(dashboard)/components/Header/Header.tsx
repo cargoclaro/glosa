@@ -5,10 +5,16 @@ import ProfileMenu from "./ProfileMenu";
 import todayIs from "@/app/shared/utils/today-is";
 // import NotificationsMenu from "./NotificationsMenu";
 import { usePathname } from "next/navigation";
-import type { IUser } from "@/app/shared/interfaces";
+import { Prisma } from "@prisma/client";
+
+type User = Prisma.UserGetPayload<{
+  include: {
+    glosses: true;
+  };
+}>;
 
 interface IHeader {
-  user: IUser;
+  user: User;
   // notifications: object;
 }
 

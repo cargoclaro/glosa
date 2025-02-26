@@ -1,15 +1,21 @@
 import { createContext, useState, ReactNode } from "react";
-import type { IUser } from "@/app/shared/interfaces";
+import { Prisma } from "@prisma/client";
+
+type User = Prisma.UserGetPayload<{
+  include: {
+    glosses: true;
+  };
+}>;
 
 export interface IAuthContext {
-  user: IUser | null;
-  setUser: React.Dispatch<React.SetStateAction<IUser | null>>;
+  user: User | null;
+  setUser: React.Dispatch<React.SetStateAction<User | null>>;
 }
 
 export const AuthContext = createContext<IAuthContext | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<IUser | null>(null);
+  const [user, setUser] = useState<User | null>(null);
 
   return (
     <AuthContext.Provider value={{ user, setUser }}>
