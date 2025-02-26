@@ -91,11 +91,10 @@ export default function GlossDataTable<TData, TValue>({
             id="operationStatusSelect"
             aria-label="operationStatusSelect"
             className="w-full h-10 pl-10 text-sm border rounded-md"
-            defaultValue={
-              (table
-                .getColumn("operationStatus")
-                ?.getFilterValue() as string) ?? ""
-            }
+            defaultValue={(() => {
+              const filterValue = table.getColumn("operationStatus")?.getFilterValue();
+              return typeof filterValue === "string" ? filterValue : "";
+            })()}
             onChange={(event) =>
               table
                 .getColumn("operationStatus")

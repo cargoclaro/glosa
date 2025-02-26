@@ -1,9 +1,11 @@
 import { Header, Main, Sidebar } from "./components";
 import { getMe } from "@/app/shared/services/user/controller";
-import type { IUser } from "@/app/shared/interfaces";
 
 const AuthLayout = async ({ children }: { children: React.ReactNode }) => {
-  const me = (await getMe()) as IUser;
+  const me = (await getMe());
+  if (!me) {
+    return <div>No se pudo obtener el usuario</div>;
+  }
   // const myNotifications = [
   //   {
   //     id: 1,

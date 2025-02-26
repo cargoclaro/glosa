@@ -6,7 +6,6 @@ import {
 } from "./components";
 import { getMyAnalysisById } from "@/app/shared/services/customGloss/controller";
 import type { Metadata } from "next";
-import type { ICustomGloss } from "@/app/shared/interfaces";
 
 type IDynamicMetadata = {
   params: Promise<{ id: string }>;
@@ -27,7 +26,7 @@ const GlossIdAnalysis = async ({
 }: {
   params: { id: string };
 }) => {
-  const customGloss = (await getMyAnalysisById(id)) as ICustomGloss;
+  const customGloss = (await getMyAnalysisById(id));
   if (!customGloss) notFound();
 
   return (

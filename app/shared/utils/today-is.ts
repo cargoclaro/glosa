@@ -1,9 +1,9 @@
 const options = {
-  weekday: "long" as const,
-  year: "numeric" as const,
-  month: "long" as const,
-  day: "numeric" as const,
-};
+  weekday: "long",
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+} as const;
 
 const capitalizer = (word: string) =>
   word.charAt(0).toUpperCase() + word.slice(1);

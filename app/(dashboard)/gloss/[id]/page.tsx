@@ -3,7 +3,6 @@ import { notFound } from "next/navigation";
 import { LeftArrow } from "@/app/shared/icons";
 import { getMyAnalysisById } from "@/app/shared/services/customGloss/controller";
 import type { Metadata } from "next";
-import type { ICustomGloss } from "@/app/shared/interfaces";
 
 type IDynamicMetadata = {
   params: Promise<{ id: string }>;
@@ -20,7 +19,7 @@ export async function generateMetadata({
 }
 
 const GlossIdPage = async ({ params: { id } }: { params: { id: string } }) => {
-  const customGloss = (await getMyAnalysisById(id)) as ICustomGloss;
+  const customGloss = (await getMyAnalysisById(id));
   if (!customGloss) notFound();
 
   return (

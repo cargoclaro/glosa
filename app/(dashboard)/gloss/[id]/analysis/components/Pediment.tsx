@@ -14,7 +14,7 @@ pdfjs.GlobalWorkerOptions.workerSrc = "/pdf.worker.mjs";
 interface IPediment {
   document: string;
   tabs: ICustomGlossTab[];
-  onClick: (tab: string) => void;
+  onClick: (tab: Keyword) => void;
   tabInfoSelected: ITabInfoSelected;
 }
 
@@ -56,7 +56,13 @@ const keywords = [
   "Domicilio del destinatario",
 
   "Datos de la Mercancía",
-]; // Palabras clave a buscar
+] as const; // Make this a const assertion to create a tuple of literal types
+
+// Define a type for the keywords
+type Keyword = typeof keywords[number];
+
+// Create a Set from the keywords array for runtime type checking
+const keywordsSet = new Set(keywords);
 
 interface IKeywordPosition {
   x: number;
@@ -100,7 +106,7 @@ const sharedConfigValSeguros = {
   h: 10,
 };
 
-const keywordPositions: Record<string, IKeywordPosition> = {
+const keywordPositions: Record<Keyword, IKeywordPosition> = {
   // PEDIMENTO
   "NUM. PEDIMENTO:": {
     x: 0,
@@ -145,9 +151,7 @@ const keywordPositions: Record<string, IKeywordPosition> = {
   "Datos de la Mercancía": { x: -80, y: -30, w: 160, h: 30 },
 };
 
-const defaultConfig = { x: 0, y: 0, w: 0, h: 0 };
-
-const keywordsConfig = {
+const keywordsConfig: Record<Keyword, string> = {
   "NUM. PEDIMENTO:": "N° de pedimento",
 
   "T. OPER": "Tipo de Operación",
@@ -183,7 +187,7 @@ const keywordsConfig = {
   "Domicilio del destinatario": "Datos del Destinatario",
 
   "Datos de la Mercancía": "Datos de la Mercancía",
-};
+} as const;
 
 const Pediment = ({ tabs, document, onClick, tabInfoSelected }: IPediment) => {
   const [numPages, setNumPages] = useState(0);
@@ -251,52 +255,54 @@ const Pediment = ({ tabs, document, onClick, tabInfoSelected }: IPediment) => {
         text: string;
       }[] = [];
 
-      (textContent.items as TextItem[]).forEach((item) => {
-        const text = item.str;
-        if (keywords.includes(text)) {
-          const { transform, width, height } = item;
+      (textContent.items)
+        .filter((item): item is TextItem => 'str' in item)
+        .forEach((item) => {
+          const text = item.str;
+          if (isKeyword(text)) {
+            const { transform, width, height } = item;
 
-          const [, , , , offsetX, offsetY] = transform;
+            const [, , , , offsetX, offsetY] = transform;
 
-          const {
-            x: customX,
-            y: customY,
-            w: customW,
-            h: customH,
-          } = getKeywordConfig(text, currentPage);
+            const {
+              x: customX,
+              y: customY,
+              w: customW,
+              h: customH,
+            } = getKeywordConfig(text, currentPage);
 
-          const x = (offsetX + customX) * scale;
-          const y = viewport.height - (offsetY + customY) * scale;
-          const w = (width + customW) * scale;
-          const h = (height + customH) * scale;
+            const x = (offsetX + customX) * scale;
+            const y = viewport.height - (offsetY + customY) * scale;
+            const w = (width + customW) * scale;
+            const h = (height + customH) * scale;
 
-          context.strokeStyle = getStrokeStyle(text, tabs);
-          context.lineWidth = 2;
-          context.fillStyle = getFillStyle(text, tabInfoSelected);
+            context.strokeStyle = getStrokeStyle(text, tabs);
+            context.lineWidth = 2;
+            context.fillStyle = getFillStyle(text, tabInfoSelected);
 
-          context.strokeRect(
-            x - buffer,
-            y - h - buffer,
-            w + 2 * buffer,
-            h + 2 * buffer
-          );
-          context.fillRect(
-            x - buffer,
-            y - h - buffer,
-            w + 2 * buffer,
-            h + 2 * buffer
-          );
+            context.strokeRect(
+              x - buffer,
+              y - h - buffer,
+              w + 2 * buffer,
+              h + 2 * buffer
+            );
+            context.fillRect(
+              x - buffer,
+              y - h - buffer,
+              w + 2 * buffer,
+              h + 2 * buffer
+            );
 
-          // Agregar área para click
-          clickableAreas.push({
-            x: x - buffer,
-            y: y - h - buffer,
-            width: w + 2 * buffer,
-            height: h + 2 * buffer,
-            text,
-          });
-        }
-      });
+            // Agregar área para click
+            clickableAreas.push({
+              x: x - buffer,
+              y: y - h - buffer,
+              width: w + 2 * buffer,
+              height: h + 2 * buffer,
+              text,
+            });
+          }
+        });
 
       // Manejar clics
       const handleClick = (e: MouseEvent) => {
@@ -315,7 +321,8 @@ const Pediment = ({ tabs, document, onClick, tabInfoSelected }: IPediment) => {
             mouseX >= x &&
             mouseX <= x + width &&
             mouseY >= y &&
-            mouseY <= y + height
+            mouseY <= y + height &&
+            isKeyword(text)
           ) {
             onClick(text);
           }
@@ -396,8 +403,8 @@ const Pediment = ({ tabs, document, onClick, tabInfoSelected }: IPediment) => {
 
 export default Pediment;
 
-function getKeywordConfig(text: string, currentPage: number) {
-  const config = keywordPositions[text] || defaultConfig;
+function getKeywordConfig(text: Keyword, currentPage: number) {
+  const config = keywordPositions[text];
 
   return {
     x: config.x,
@@ -407,9 +414,8 @@ function getKeywordConfig(text: string, currentPage: number) {
   };
 }
 
-const getStrokeStyle = (text: string, tabs: ICustomGlossTab[]) => {
-  const tabName = keywordsConfig[text as keyof typeof keywordsConfig];
-  if (!tabName) return "black";
+const getStrokeStyle = (text: Keyword, tabs: ICustomGlossTab[]) => {
+  const tabName = keywordsConfig[text];
 
   const tab = tabs.find((tab) => tab.name === tabName);
   return tab?.isCorrect || tab?.isVerified
@@ -417,11 +423,15 @@ const getStrokeStyle = (text: string, tabs: ICustomGlossTab[]) => {
     : "rgb(235,202,98)";
 };
 
-const getFillStyle = (text: string, tabInfoSelected: ITabInfoSelected) => {
-  const tabName = keywordsConfig[text as keyof typeof keywordsConfig];
+const getFillStyle = (text: Keyword, tabInfoSelected: ITabInfoSelected) => {
+  const tabName = keywordsConfig[text];
   if (!tabName || tabInfoSelected.name !== tabName) return "transparent";
 
   return tabInfoSelected.isCorrect || tabInfoSelected.isVerified
     ? "rgba(81,174,57,0.5)"
     : "rgba(235,202,98,0.5)";
 };
+
+function isKeyword(text: string): text is Keyword {
+  return keywordsSet.has(text);
+}
