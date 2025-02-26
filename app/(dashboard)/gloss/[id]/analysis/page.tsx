@@ -4,8 +4,9 @@ import {
   Documents,
   PedimentAnalysisNFinish,
 } from "./components";
-import { getMyAnalysisById } from "@/app/shared/services/customGloss/controller";
 import type { Metadata } from "next";
+import prisma from "@/app/shared/services/prisma";
+import { isAuthenticated } from "@/app/shared/services/auth";
 
 type IDynamicMetadata = {
   params: Promise<{ id: string }>;
@@ -26,7 +27,39 @@ const GlossIdAnalysis = async ({
 }: {
   params: { id: string };
 }) => {
-  const customGloss = (await getMyAnalysisById(id));
+  const session = await isAuthenticated();
+  const userId = session["userId"];
+  if (typeof userId !== "string") {
+    throw new Error("User ID is not a string");
+  }
+  const customGloss = await prisma.customGloss.findUnique({
+    where: { id, userId },
+    include: {
+      files: {
+        include: {
+          customGloss: true,
+        },
+      },
+      alerts: true,
+      tabs: {
+        include: {
+          context: {
+            include: {
+              data: true,
+            },
+          },
+          validations: {
+            include: {
+              resources: true,
+              actionsToTake: true,
+              steps: true,
+            },
+          },
+          customGloss: true,
+        },
+      },
+    },
+  });
   if (!customGloss) notFound();
 
   return (

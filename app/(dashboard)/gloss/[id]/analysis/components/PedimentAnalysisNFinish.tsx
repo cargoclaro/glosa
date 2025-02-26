@@ -2,13 +2,30 @@
 
 import { useState } from "react";
 import { Pediment, Analysis, SavedNFinish } from ".";
-import type { ICustomGloss, ICustomGlossTab } from "@/app/shared/interfaces";
+import { CustomGlossFile } from "@prisma/client";
+import { Prisma } from "@prisma/client";
+
+type tabs = Prisma.CustomGlossTabGetPayload<{
+  include: {
+    context: {
+      include: { data: true };
+    };
+    validations: {
+      include: {
+        resources: true;
+        actionsToTake: true;
+        steps: true;
+      };
+    };
+    customGloss: true;
+  };
+}>;
 
 interface IPedimentAnalysisNFinish {
   id: string;
   moneySaved: number;
-  tabs: ICustomGlossTab[];
-  files: ICustomGloss["files"];
+  tabs: tabs[];
+  files: CustomGlossFile[];
 }
 
 export interface ITabInfoSelected {

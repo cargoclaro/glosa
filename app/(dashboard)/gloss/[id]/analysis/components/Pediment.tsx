@@ -7,13 +7,13 @@ import React, { useEffect, useRef, useState } from "react";
 import { LeftChevron, RightChevron } from "@/app/shared/icons";
 import type { TextItem } from "pdfjs-dist/types/src/display/api";
 import { ITabInfoSelected } from "./PedimentAnalysisNFinish";
-import { ICustomGlossTab } from "@/app/shared/interfaces";
+import { CustomGlossTab } from "@prisma/client";
 
 pdfjs.GlobalWorkerOptions.workerSrc = "/pdf.worker.mjs";
 
 interface IPediment {
   document: string;
-  tabs: ICustomGlossTab[];
+  tabs: CustomGlossTab[];
   onClick: (tab: Keyword) => void;
   tabInfoSelected: ITabInfoSelected;
 }
@@ -414,7 +414,7 @@ function getKeywordConfig(text: Keyword, currentPage: number) {
   };
 }
 
-const getStrokeStyle = (text: Keyword, tabs: ICustomGlossTab[]) => {
+const getStrokeStyle = (text: Keyword, tabs: CustomGlossTab[]) => {
   const tabName = keywordsConfig[text];
 
   const tab = tabs.find((tab) => tab.name === tabName);

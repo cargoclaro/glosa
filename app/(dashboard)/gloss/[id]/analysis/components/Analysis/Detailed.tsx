@@ -1,5 +1,4 @@
 import ReactMarkdown from "react-markdown";
-import type { ICustomGlossTabValidationStep } from "@/app/shared/interfaces";
 
 interface IResource {
   id: number;
@@ -31,7 +30,16 @@ const CustomText = ({ text }: { text: string }) => (
   </ReactMarkdown>
 );
 
-const Detailed = ({ data }: { data: ICustomGlossTabValidationStep }) => {
+import { Prisma } from "@prisma/client";
+
+type validation = Prisma.CustomGlossTabValidationStepGetPayload<{
+  include: {
+    resources: true;
+    actionsToTake: true;
+  };
+}>;
+
+const Detailed = ({ data }: { data: validation }) => {
   return (
     <>
       <h1

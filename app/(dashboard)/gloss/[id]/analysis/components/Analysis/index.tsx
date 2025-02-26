@@ -17,12 +17,27 @@ import {
   Document,
 } from "@/app/shared/icons";
 import type {
-  ICustomGlossTab,
-  ICustomGlossTabValidationStep,
   ISharedState,
 } from "@/app/shared/interfaces";
 import { markTabAsVerifiedByTabIdNCustomGlossID } from "@/app/shared/services/customGloss/controller";
 import { INITIAL_STATE_RESPONSE } from "@/app/shared/constants";
+import { Prisma } from "@prisma/client";
+
+type tabs = Prisma.CustomGlossTabGetPayload<{
+  include: {
+    context: {
+      include: { data: true };
+    };
+    validations: {
+      include: {
+        resources: true;
+        actionsToTake: true;
+        steps: true;
+      };
+    };
+    customGloss: true;
+  };
+}>;
 
 export interface ICommonDataForDetail {
   id: number;
@@ -35,7 +50,7 @@ export interface ICommonDataForDetail {
 }
 
 interface IAnalysis {
-  tabs: ICustomGlossTab[];
+  tabs: tabs[];
   tabSelectedFromDocument: string;
   setTabInfoSelected: (tab: ITabInfoSelected) => void;
 }
@@ -49,25 +64,25 @@ const Analysis = ({
   const { isOpen, openMenu, closeMenu, menuRef } = useModal(false);
   const [tabSelected, setTabSelected] = useState("N° de pedimento");
 
-  const [dataForDetail, setDataForDetail] = useState<ICustomGlossTabValidationStep>(
-    {
-      id: 0,
-      name: "",
-      description: "",
-      llmAnalysis: "",
-      isCorrect: true,
-      resources: [],
-      actionsToTake: [],
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      customGlossTabId: "",
-      steps: [],
-      fraccion: "",
-      parentStepId: 0,
-    }
-  );
+  const [dataForDetail, setDataForDetail] = useState<
+    tabs["validations"][number]
+  >({
+    id: 0,
+    name: "",
+    description: "",
+    llmAnalysis: "",
+    isCorrect: true,
+    resources: [],
+    actionsToTake: [],
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    customGlossTabId: "",
+    steps: [],
+    fraccion: "",
+    parentStepId: 0,
+  });
 
-  const handleDetail = (data: ICustomGlossTabValidationStep) => {
+  const handleDetail = (data: tabs["validations"][number]) => {
     setDataForDetail(data);
     openMenu();
   };
@@ -249,8 +264,8 @@ const GenericTabLi = ({ title, active, onClick }: IGenericTabLi) => (
 );
 
 interface IGenericTabComponent {
-  data: ICustomGlossTab;
-  handleClick: (data: ICustomGlossTabValidationStep) => void;
+  data: tabs;
+  handleClick: (data: tabs["validations"][number]) => void;
 }
 
 const GenericTabComponent = ({ data, handleClick }: IGenericTabComponent) => {
@@ -392,8 +407,8 @@ const DashedLine = ({ customClass = "" }: { customClass?: string }) => (
 );
 
 interface IDataListForSummaryCard {
-  data: ICustomGlossTabValidationStep[];
-  handleDetail: (data: ICustomGlossTabValidationStep) => void;
+  data: tabs["validations"];
+  handleDetail: (data: tabs["validations"][number]) => void;
 }
 
 const DataListForSummaryCard = ({
