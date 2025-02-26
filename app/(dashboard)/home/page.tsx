@@ -1,13 +1,23 @@
-import { getRecentAnalysis } from "@/app/shared/services/customGloss/controller";
 import { Header, MyInfo, MexMap, Summary, GlossHistory } from "./components";
 import type { Metadata } from "next";
+import { isAuthenticated } from "@/app/shared/services/auth";
+import prisma from "@/app/shared/services/prisma";
 
 export const metadata: Metadata = {
   title: "Administración",
 };
 
 const HomePage = async () => {
-  const myLatestGlosses = (await getRecentAnalysis());
+  const session = await isAuthenticated();
+  const userId = session["userId"];
+  if (typeof userId !== "string") {
+    throw new Error("User ID is not a string");
+  }
+  const myLatestGlosses = await prisma.customGloss.findMany({
+    where: { userId },
+    orderBy: { createdAt: "desc" },
+    take: 3,
+  })
   if (!myLatestGlosses) {
     return <div>No hay glosas recientes</div>;
   }
