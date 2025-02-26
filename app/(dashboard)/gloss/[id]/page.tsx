@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { LeftArrow } from "@/app/shared/icons";
-import { getMyAnalysisById } from "@/app/shared/services/customGloss/controller";
 import type { Metadata } from "next";
+import { isAuthenticated } from "@/app/shared/services/auth";
+import prisma from "@/app/shared/services/prisma";
 
 type IDynamicMetadata = {
   params: Promise<{ id: string }>;
@@ -19,7 +20,33 @@ export async function generateMetadata({
 }
 
 const GlossIdPage = async ({ params: { id } }: { params: { id: string } }) => {
-  const customGloss = (await getMyAnalysisById(id));
+  const session = await isAuthenticated();
+  const userId = session["userId"];
+  if (typeof userId !== "string") {
+    throw new Error("User ID is not a string");
+  }
+  const customGloss = await prisma.customGloss.findUnique({
+    where: { id, userId },
+    include: {
+      files: true,
+      alerts: true,
+      tabs: {
+        include: {
+          context: {
+            include: {
+              data: true,
+            },
+          },
+          validations: {
+            include: {
+              resources: true,
+              actionsToTake: true,
+            },
+          },
+        },
+      },
+    },
+  });
   if (!customGloss) notFound();
 
   return (
