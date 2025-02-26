@@ -16,12 +16,11 @@ import {
   ExclamationTriangle,
   Document,
 } from "@/app/shared/icons";
-import type {
-  ISharedState,
-} from "@/app/shared/interfaces";
+import type { ISharedState } from "@/app/shared/interfaces";
 import { markTabAsVerifiedByTabIdNCustomGlossID } from "@/app/shared/services/customGloss/controller";
 import { INITIAL_STATE_RESPONSE } from "@/app/shared/constants";
 import { Prisma } from "@prisma/client";
+import formatValue from "@/app/shared/utils/format-value-data";
 
 type tabs = Prisma.CustomGlossTabGetPayload<{
   include: {
@@ -90,8 +89,8 @@ const Analysis = ({
   const scrollToTab = (index: number) => {
     if (scrollContainerRef.current) {
       const container = scrollContainerRef.current;
-      const tabWidth = container.firstElementChild?.clientWidth || 100; // Ancho de cada tab
-      container.scrollTo({ left: index * (tabWidth + 16), behavior: "smooth" }); // 16px es el `gap`
+      const tabWidth = container.firstElementChild?.clientWidth || 100;
+      container.scrollTo({ left: index * (tabWidth + 16), behavior: "smooth" });
     }
   };
 
@@ -156,12 +155,12 @@ const Analysis = ({
         tabSelectedFromDocument === "TIPO OPER:" ||
         tabSelectedFromDocument === "TIPO OPER.:"
       ) {
-        handleTabClick("Tipo de Operación");
+        handleTabClick("Tipo de operación");
       } else if (
         tabSelectedFromDocument === "DESTINO:" ||
         tabSelectedFromDocument === "DESTINO/ORIGEN:"
       ) {
-        handleTabClick("Destino/Origen de Mercancías");
+        handleTabClick("Destino/Origen");
       } else if (
         tabSelectedFromDocument === "TIPO CAMBIO:" ||
         tabSelectedFromDocument === "VALOR DOLARES:" ||
@@ -169,15 +168,19 @@ const Analysis = ({
         tabSelectedFromDocument === "VAL.SEGUROS" ||
         tabSelectedFromDocument === "FECHAS"
       ) {
-        handleTabClick("Operación (Fecha de entrada y Tipo de cambio)");
+        handleTabClick("Operación");
       } else if (tabSelectedFromDocument === "PESO BRUTO:") {
-        handleTabClick("Pesos y Bultos");
+        handleTabClick("Peso bruto");
       } else if (
         tabSelectedFromDocument === "DATOS DEL IMPORTADOR/EXPORTADOR" ||
         tabSelectedFromDocument === "DATOS DEL IMPORTADOR / EXPORTADOR" ||
         tabSelectedFromDocument === "DATOS DEL PROVEEDOR O COMPRADOR"
       ) {
-        handleTabClick("Datos de Factura");
+        handleTabClick("Datos de la factura");
+      } else if (
+        tabSelectedFromDocument === "DATOS DEL TRANSPORTE Y TRANSPORTISTA"
+      ) {
+        handleTabClick("Datos de transporte");
       } else if (
         tabSelectedFromDocument === "PARTIDAS" ||
         tabSelectedFromDocument === "OBSERVACIONES A NIVEL PARTIDA"
@@ -269,6 +272,9 @@ interface IGenericTabComponent {
 }
 
 const GenericTabComponent = ({ data, handleClick }: IGenericTabComponent) => {
+  const uniqueOrigins = Array.from(
+    new Set(data.context.map((item) => item.origin))
+  );
   return (
     <>
       <StatusHeader status={data.isCorrect} />
@@ -276,18 +282,21 @@ const GenericTabComponent = ({ data, handleClick }: IGenericTabComponent) => {
       <div className="max-h-[420px] overflow-y-auto my-5">
         <table className="w-full text-center">
           <tbody>
-            {data.context.flatMap((context) => 
+            {data.context.flatMap((context, index) =>
               context.data.map((item) => (
-                <tr key={item.id}>
+                <tr
+                  key={item.id}
+                  className={cn(index % 2 === 0 && "bg-gray-100")}
+                >
                   <td className="w-1/2 border-r border-r-black pr-2 py-2">
                     <p title={item.name} className="line-clamp-1">
                       {item.name}
                     </p>
                   </td>
                   <td className="w-1/2 font-bold">
-                    <p title={item.value} className="pl-1 line-clamp-1">
-                      {item.value}
-                    </p>
+                    <div title={item.value} className="pl-1 line-clamp-1">
+                      {formatValue(item.value)}
+                    </div>
                   </td>
                 </tr>
               ))
@@ -297,16 +306,16 @@ const GenericTabComponent = ({ data, handleClick }: IGenericTabComponent) => {
       </div>
       <SectionDivider title="Fuentes" icon={<DocMagniGlass />} />
       <ul className="flex flex-col gap-1 mt-4 max-h-[160px] overflow-y-auto">
-        {data.context.map((item) => (
-          <li key={item.id} className="">
+        {uniqueOrigins.map((origin, index) => (
+          <li key={index} className="">
             <p
-              title={item.origin}
+              title={origin}
               className="w-full px-12 py-2 rounded-full text-center border truncate bg-purple-100 border-purple-400 inline-flex gap-1 justify-center items-center"
             >
               <span>
                 <Document />
               </span>
-              {item.origin}
+              {origin.toUpperCase()}
             </p>
           </li>
         ))}

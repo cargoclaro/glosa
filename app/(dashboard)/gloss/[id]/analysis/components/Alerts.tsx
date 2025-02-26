@@ -2,9 +2,9 @@ import { cn } from "@/app/shared/utils/cn";
 import { GenericCard } from "@/app/shared/components";
 import { BellAlert, XMark } from "@/app/shared/icons";
 import ExclamationTriangle from "@/app/shared/icons/ExclamationTriangle";
-import type { ICustomGloss } from "@/app/shared/interfaces";
+import { CustomGlossAlert } from "@prisma/client";
 
-const Alerts = ({ data }: { data: ICustomGloss["alerts"] }) => {
+const Alerts = ({ data }: { data: CustomGlossAlert[] }) => {
   return (
     <GenericCard customClass="">
       <h1 className="flex justify-center items-center gap-2 font-semibold pb-2 border-b border-black">

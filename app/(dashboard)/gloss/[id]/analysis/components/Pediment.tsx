@@ -43,6 +43,8 @@ const keywords = [
   "DATOS DEL IMPORTADOR / EXPORTADOR",
   "DATOS DEL PROVEEDOR O COMPRADOR",
 
+  "DATOS DEL TRANSPORTE Y TRANSPORTISTA",
+
   "PARTIDAS",
   "OBSERVACIONES A NIVEL PARTIDA",
 
@@ -59,7 +61,7 @@ const keywords = [
 ] as const; // Make this a const assertion to create a tuple of literal types
 
 // Define a type for the keywords
-type Keyword = typeof keywords[number];
+type Keyword = (typeof keywords)[number];
 
 // Create a Set from the keywords array for runtime type checking
 const keywordsSet = new Set(keywords);
@@ -136,48 +138,54 @@ const keywordPositions: Record<Keyword, IKeywordPosition> = {
   "DATOS DEL IMPORTADOR / EXPORTADOR": sharedConfigForDatosImportador,
   "DATOS DEL PROVEEDOR O COMPRADOR": { x: -210, y: -30, w: 400, h: 30 },
 
+  "DATOS DEL TRANSPORTE Y TRANSPORTISTA": { x: 0, y: -110, w: 370, h: 110 },
+
   PARTIDAS: { x: -255, y: -80, w: 510, h: 80 },
   "OBSERVACIONES A NIVEL PARTIDA": { x: -135, y: 50, w: 410, h: -70 },
 
   // COVE
-  "No. de Factura": { x: 0, y: -18, w: 50, h: 18 },
-  "Fecha Expedición": { x: 0, y: -18, w: 50, h: 18 },
+  "No. de Factura": { x: 0, y: -18, w: 153, h: 18 },
+  "Fecha Expedición": { x: 0, y: -18, w: 182, h: 18 },
 
-  "Datos generales del proveedor": { x: -80, y: -30, w: 160, h: 30 },
-  "Domicilio del proveedor": { x: -80, y: -30, w: 160, h: 30 },
-  "Datos generales del destinatario": { x: -80, y: -30, w: 160, h: 30 },
-  "Domicilio del destinatario": { x: -80, y: -30, w: 160, h: 30 },
+  "Datos generales del proveedor": { x: 0, y: -65, w: 390, h: 65 },
+  "Domicilio del proveedor": { x: 0, y: -145, w: 425, h: 145 },
+  "Datos generales del destinatario": { x: 0, y: -70, w: 380, h: 70 },
+  "Domicilio del destinatario": { x: 0, y: -150, w: 415, h: 150 },
 
-  "Datos de la Mercancía": { x: -80, y: -30, w: 160, h: 30 },
+  "Datos de la Mercancía": { x: 0, y: -70, w: 430, h: 60 },
 };
 
 const keywordsConfig: Record<Keyword, string> = {
+  // PEDIMENTO
   "NUM. PEDIMENTO:": "N° de pedimento",
 
-  "T. OPER": "Tipo de Operación",
-  "T.OPER": "Tipo de Operación",
-  "TIPO OPER": "Tipo de Operación",
-  "TIPO OPER:": "Tipo de Operación",
-  "TIPO OPER.:": "Tipo de Operación",
+  "T. OPER": "Tipo de operación",
+  "T.OPER": "Tipo de operación",
+  "TIPO OPER": "Tipo de operación",
+  "TIPO OPER:": "Tipo de operación",
+  "TIPO OPER.:": "Tipo de Ooperación",
 
-  "DESTINO:": "Destino/Origen de Mercancías",
-  "DESTINO/ORIGEN:": "Destino/Origen de Mercancías",
+  "DESTINO:": "Destino/Origen",
+  "DESTINO/ORIGEN:": "Destino/Origen",
 
-  "TIPO CAMBIO:": "Operación (Fecha de entrada y Tipo de cambio)",
-  "VALOR DOLARES:": "Operación (Fecha de entrada y Tipo de cambio)",
-  "VAL. SEGUROS": "Operación (Fecha de entrada y Tipo de cambio)",
-  "VAL.SEGUROS": "Operación (Fecha de entrada y Tipo de cambio)",
-  FECHAS: "Operación (Fecha de entrada y Tipo de cambio)",
+  "TIPO CAMBIO:": "Operación",
+  "VALOR DOLARES:": "Operación",
+  "VAL. SEGUROS": "Operación",
+  "VAL.SEGUROS": "Operación",
+  FECHAS: "Operación",
 
-  "PESO BRUTO:": "Pesos y Bultos",
+  "PESO BRUTO:": "Peso bruto",
 
-  "DATOS DEL IMPORTADOR/EXPORTADOR": "Datos de Factura",
-  "DATOS DEL IMPORTADOR / EXPORTADOR": "Datos de Factura",
-  "DATOS DEL PROVEEDOR O COMPRADOR": "Datos de Factura",
+  "DATOS DEL IMPORTADOR/EXPORTADOR": "Datos de la factura",
+  "DATOS DEL IMPORTADOR / EXPORTADOR": "Datos de la factura",
+  "DATOS DEL PROVEEDOR O COMPRADOR": "Datos de la factura",
+
+  "DATOS DEL TRANSPORTE Y TRANSPORTISTA": "Datos de transporte",
 
   PARTIDAS: "Partidas",
   "OBSERVACIONES A NIVEL PARTIDA": "Partidas",
 
+  // COVE
   "No. de Factura": "Datos de la Mercancía",
   "Fecha Expedición": "Datos de la Mercancía",
 
@@ -255,8 +263,8 @@ const Pediment = ({ tabs, document, onClick, tabInfoSelected }: IPediment) => {
         text: string;
       }[] = [];
 
-      (textContent.items)
-        .filter((item): item is TextItem => 'str' in item)
+      textContent.items
+        .filter((item): item is TextItem => "str" in item)
         .forEach((item) => {
           const text = item.str;
           if (isKeyword(text)) {

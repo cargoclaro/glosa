@@ -1,9 +1,5 @@
 import { notFound } from "next/navigation";
-import {
-  // Alerts,
-  Documents,
-  PedimentAnalysisNFinish,
-} from "./components";
+import { Alerts, Documents, PedimentAnalysisNFinish } from "./components";
 import type { Metadata } from "next";
 import prisma from "@/app/shared/services/prisma";
 import { isAuthenticated } from "@/app/shared/services/auth";
@@ -40,7 +36,11 @@ const GlossIdAnalysis = async ({
           customGloss: true,
         },
       },
-      alerts: true,
+      alerts: {
+        include: {
+          customGloss: true,
+        },
+      },
       tabs: {
         include: {
           context: {
@@ -65,7 +65,7 @@ const GlossIdAnalysis = async ({
   return (
     <article className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-4">
       <section className="flex flex-col gap-4">
-        {/* <Alerts data={customGloss.alerts} /> */}
+        <Alerts data={customGloss.alerts} />
         <Documents data={customGloss.files} />
       </section>
       <PedimentAnalysisNFinish
