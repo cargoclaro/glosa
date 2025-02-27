@@ -49,7 +49,9 @@ export function validateSchema(action: string, data: unknown) {
   } else {
     const errors = result.error.errors.reduce(
       (acc: { [key: string]: string }, error) => {
-        acc[error.path[0]] = error.message;
+        if (error.path[0] !== undefined) {
+          acc[error.path[0]] = error.message;
+        }
         return acc;
       },
       {}

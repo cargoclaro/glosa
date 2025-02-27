@@ -59,7 +59,7 @@ const Form = () => {
                     labelClassName="text-base"
                     ariaLabel="Correo Electrónico"
                     placeholder="usuario@cargoclaro.com"
-                    error={response.errors?.email}
+                    error={response.errors?.email ?? ""}
                   />
                 </CustomDiv>
                 <CustomDiv>
@@ -70,7 +70,7 @@ const Form = () => {
                     labelClassName="text-base"
                     placeholder="************"
                     autoComplete="current-password"
-                    error={response.errors?.password}
+                    error={response.errors?.password ?? ""}
                   />
                 </CustomDiv>
               </div>

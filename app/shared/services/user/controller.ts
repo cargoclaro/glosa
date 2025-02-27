@@ -7,13 +7,20 @@ import { validateSchema } from "./schema";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { createUserSession, isAuthenticated } from "../auth";
-import type { IUser } from "@/app/shared/interfaces";
+import prisma from "@/app/shared/services/prisma";
 
 export async function login(formData: FormData) {
-  const dataToValidate = {
-    email: formData.get("email") as string,
-    password: formData.get("password") as string,
-  };
+  const email = formData.get("email");
+  const password = formData.get("password");
+  
+  if (typeof email !== "string" || typeof password !== "string") {
+    return {
+      success: false,
+      message: "Correo o contraseña inválidos"
+    };
+  }
+
+  const dataToValidate = { email, password };
 
   const errors = validateSchema("login", dataToValidate);
 
@@ -25,9 +32,11 @@ export async function login(formData: FormData) {
   }
 
   try {
-    const user = (await read({
-      email: dataToValidate.email,
-    })) as unknown as IUser;
+    const user = await prisma.user.findUnique({
+      where: {
+        email: dataToValidate.email,
+      },
+    });
 
     if (
       !user ||
@@ -53,13 +62,21 @@ export async function login(formData: FormData) {
 }
 
 export async function register(formData: FormData) {
+  const email = formData.get("email");
+  if (typeof email !== "string") {
+    return {
+      success: false,
+      message: "Correo electrónico inválido",
+    };
+  }
+  
   const dataToValidate = {
-    name: formData.get("name") as string,
-    email: formData.get("email") as string,
-    password: formData.get("password") as string,
-    lastName: formData.get("lastName") as string,
+    name: formData.get("name"),
+    email,
+    password: formData.get("password"),
+    lastName: formData.get("lastName"),
     patentNumber: Number(formData.get("patentNumber")),
-    confirmPassword: formData.get("confirmPassword") as string,
+    confirmPassword: formData.get("confirmPassword"),
   };
 
   const errors = validateSchema("register", dataToValidate);
@@ -79,7 +96,7 @@ export async function register(formData: FormData) {
   }
 
   try {
-    const userAlreadyExists = await read({ email: dataToValidate.email });
+    const userAlreadyExists = await read({ email });
     if (userAlreadyExists) {
       return {
         success: false,
@@ -115,7 +132,11 @@ export async function logout() {
 export async function getMe() {
   try {
     const session = await isAuthenticated();
-    return await read({ id: session.userId as string });
+    const userId = session["userId"];
+    if (typeof userId !== "string") {
+      throw new Error("User ID is not a string");
+    }
+    return await read({ id: userId });
   } catch (error) {
     console.error(error);
     return null;

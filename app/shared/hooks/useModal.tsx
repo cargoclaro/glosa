@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 
 const useModal = (initialState = false) => {
-  const menuRef = useRef(null);
+  const menuRef = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState(initialState);
 
   const openMenu = () => setIsOpen(true);
@@ -11,10 +11,9 @@ const useModal = (initialState = false) => {
   const toggleMenu = () => setIsOpen((prev) => !prev);
 
   const handleClickOutside = useCallback((event: MouseEvent) => {
-    if (
-      menuRef.current &&
-      !(menuRef.current as HTMLElement).contains(event.target as Node)
-    ) {
+    if (!(event.target instanceof Node)) return;
+    
+    if (menuRef.current && !menuRef.current.contains(event.target)) {
       closeMenu();
     }
   }, []);

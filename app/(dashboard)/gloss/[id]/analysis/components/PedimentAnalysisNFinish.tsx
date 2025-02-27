@@ -2,13 +2,30 @@
 
 import { useState } from "react";
 import { Pediment, Analysis, SavedNFinish } from ".";
-import type { ICustomGloss, ICustomGlossTab } from "@/app/shared/interfaces";
+import { CustomGlossFile } from "@prisma/client";
+import { Prisma } from "@prisma/client";
+
+type tabs = Prisma.CustomGlossTabGetPayload<{
+  include: {
+    context: {
+      include: { data: true };
+    };
+    validations: {
+      include: {
+        resources: true;
+        actionsToTake: true;
+        steps: true;
+      };
+    };
+    customGloss: true;
+  };
+}>;
 
 interface IPedimentAnalysisNFinish {
   id: string;
   moneySaved: number;
-  tabs: ICustomGlossTab[];
-  files: ICustomGloss["files"];
+  tabs: tabs[];
+  files: CustomGlossFile[];
 }
 
 export interface ITabInfoSelected {
@@ -24,10 +41,19 @@ const PedimentAnalysisNFinish = ({
 }) => {
   const [documentSelected, setDocumentSelected] = useState("PEDIMENTO");
   const [tabSelectedFromDocument, setTabSelectedFromDocument] = useState("");
+  const customGlossTabs = customGloss.tabs;
+  if (customGlossTabs.length === 0) {
+    throw new Error("No tabs found");
+  }
+  const customGlossTab = customGlossTabs[0];
+  if (!customGlossTab) {
+    throw new Error("No tab found");
+  }
+  const { name, isCorrect, isVerified } = customGlossTab;
   const [tabInfoSelected, setTabInfoSelected] = useState<ITabInfoSelected>({
-    name: customGloss.tabs[0].name,
-    isCorrect: customGloss.tabs[0].isCorrect,
-    isVerified: customGloss.tabs[0].isVerified,
+    name,
+    isCorrect,
+    isVerified,
   });
 
   const handleFunction = (tab: string) => {

@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { Document } from "@/app/shared/icons";
 import { GenericCard } from "@/app/shared/components";
-import type { ICustomGloss } from "@/app/shared/interfaces";
+import { CustomGlossFile } from "@prisma/client";
 
-const Documents = ({ data }: { data: ICustomGloss["files"] }) => {
+const Documents = ({ data }: { data: CustomGlossFile[] }) => {
   return (
     <GenericCard customClass="">
       <h1 className="flex justify-center items-center gap-2 font-semibold pb-2 border-b border-black">

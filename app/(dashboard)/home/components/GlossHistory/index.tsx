@@ -4,9 +4,9 @@ import Link from "next/link";
 import { useAuth } from "@/app/shared/hooks";
 import { RightArrow } from "@/app/shared/icons";
 import { GenericCard, GlossHistorySkeleton } from "@/app/shared/components";
-import { ICustomGloss } from "@/app/shared/interfaces";
+import { CustomGloss } from "@prisma/client";
 
-const GlossHistory = ({ history }: { history: ICustomGloss[] }) => {
+const GlossHistory = ({ history }: { history: CustomGloss[] }) => {
   const { user } = useAuth();
 
   return (

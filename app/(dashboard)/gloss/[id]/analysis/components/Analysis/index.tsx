@@ -16,13 +16,27 @@ import {
   ExclamationTriangle,
   Document,
 } from "@/app/shared/icons";
-import type {
-  ICustomGlossTab,
-  ICustomGlossTabValidation,
-  ISharedState,
-} from "@/app/shared/interfaces";
+import type { ISharedState } from "@/app/shared/interfaces";
 import { markTabAsVerifiedByTabIdNCustomGlossID } from "@/app/shared/services/customGloss/controller";
 import { INITIAL_STATE_RESPONSE } from "@/app/shared/constants";
+import { Prisma } from "@prisma/client";
+import formatValue from "@/app/shared/utils/format-value-data";
+
+type tabs = Prisma.CustomGlossTabGetPayload<{
+  include: {
+    context: {
+      include: { data: true };
+    };
+    validations: {
+      include: {
+        resources: true;
+        actionsToTake: true;
+        steps: true;
+      };
+    };
+    customGloss: true;
+  };
+}>;
 
 export interface ICommonDataForDetail {
   id: number;
@@ -35,7 +49,7 @@ export interface ICommonDataForDetail {
 }
 
 interface IAnalysis {
-  tabs: ICustomGlossTab[];
+  tabs: tabs[];
   tabSelectedFromDocument: string;
   setTabInfoSelected: (tab: ITabInfoSelected) => void;
 }
@@ -49,22 +63,25 @@ const Analysis = ({
   const { isOpen, openMenu, closeMenu, menuRef } = useModal(false);
   const [tabSelected, setTabSelected] = useState("N° de pedimento");
 
-  const [dataForDetail, setDataForDetail] = useState<ICustomGlossTabValidation>(
-    {
-      id: 0,
-      name: "",
-      description: "",
-      llmAnalysis: "",
-      isCorrect: true,
-      resources: [],
-      actionsToTake: [],
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      customGlossTabId: "",
-    }
-  );
+  const [dataForDetail, setDataForDetail] = useState<
+    tabs["validations"][number]
+  >({
+    id: 0,
+    name: "",
+    description: "",
+    llmAnalysis: "",
+    isCorrect: true,
+    resources: [],
+    actionsToTake: [],
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    customGlossTabId: "",
+    steps: [],
+    fraccion: "",
+    parentStepId: 0,
+  });
 
-  const handleDetail = (data: ICustomGlossTabValidation) => {
+  const handleDetail = (data: tabs["validations"][number]) => {
     setDataForDetail(data);
     openMenu();
   };
@@ -72,19 +89,23 @@ const Analysis = ({
   const scrollToTab = (index: number) => {
     if (scrollContainerRef.current) {
       const container = scrollContainerRef.current;
-      const tabWidth = container.firstElementChild?.clientWidth || 100; // Ancho de cada tab
-      container.scrollTo({ left: index * (tabWidth + 16), behavior: "smooth" }); // 16px es el `gap`
+      const tabWidth = container.firstElementChild?.clientWidth || 100;
+      container.scrollTo({ left: index * (tabWidth + 16), behavior: "smooth" });
     }
   };
 
   const handleNext = () => {
     const currentIndex = tabs.findIndex((tab) => tab.name === tabSelected);
     const nextIndex = (currentIndex + 1) % tabs.length;
-    setTabSelected(tabs[nextIndex].name);
+    const nextTab = tabs[nextIndex];
+    if (!nextTab) {
+      return;
+    }
+    setTabSelected(nextTab.name);
     setTabInfoSelected({
-      name: tabs[nextIndex].name,
-      isCorrect: tabs[nextIndex].isCorrect,
-      isVerified: tabs[nextIndex].isVerified,
+      name: nextTab.name,
+      isCorrect: nextTab.isCorrect,
+      isVerified: nextTab.isVerified,
     });
     scrollToTab(nextIndex);
   };
@@ -92,11 +113,15 @@ const Analysis = ({
   const handlePrevious = () => {
     const currentIndex = tabs.findIndex((tab) => tab.name === tabSelected);
     const prevIndex = (currentIndex - 1 + tabs.length) % tabs.length;
-    setTabSelected(tabs[prevIndex].name);
+    const prevTab = tabs[prevIndex];
+    if (!prevTab) {
+      return;
+    }
+    setTabSelected(prevTab.name);
     setTabInfoSelected({
-      name: tabs[prevIndex].name,
-      isCorrect: tabs[prevIndex].isCorrect,
-      isVerified: tabs[prevIndex].isVerified,
+      name: prevTab.name,
+      isCorrect: prevTab.isCorrect,
+      isVerified: prevTab.isVerified,
     });
     scrollToTab(prevIndex);
   };
@@ -104,11 +129,15 @@ const Analysis = ({
   const handleTabClick = useCallback(
     (id: string) => {
       const tabIndex = tabs.findIndex((tab) => tab.name === id);
+      const tab = tabs[tabIndex];
+      if (!tab) {
+        return;
+      }
       setTabSelected(id);
       setTabInfoSelected({
-        name: tabs[tabIndex].name,
-        isCorrect: tabs[tabIndex].isCorrect,
-        isVerified: tabs[tabIndex].isVerified,
+        name: tab.name,
+        isCorrect: tab.isCorrect,
+        isVerified: tab.isVerified,
       });
       scrollToTab(tabIndex);
     },
@@ -126,12 +155,12 @@ const Analysis = ({
         tabSelectedFromDocument === "TIPO OPER:" ||
         tabSelectedFromDocument === "TIPO OPER.:"
       ) {
-        handleTabClick("Tipo de Operación");
+        handleTabClick("Tipo de operación");
       } else if (
         tabSelectedFromDocument === "DESTINO:" ||
         tabSelectedFromDocument === "DESTINO/ORIGEN:"
       ) {
-        handleTabClick("Destino/Origen de Mercancías");
+        handleTabClick("Destino/Origen");
       } else if (
         tabSelectedFromDocument === "TIPO CAMBIO:" ||
         tabSelectedFromDocument === "VALOR DOLARES:" ||
@@ -139,15 +168,19 @@ const Analysis = ({
         tabSelectedFromDocument === "VAL.SEGUROS" ||
         tabSelectedFromDocument === "FECHAS"
       ) {
-        handleTabClick("Operación (Fecha de entrada y Tipo de cambio)");
+        handleTabClick("Operación");
       } else if (tabSelectedFromDocument === "PESO BRUTO:") {
-        handleTabClick("Pesos y Bultos");
+        handleTabClick("Peso bruto");
       } else if (
         tabSelectedFromDocument === "DATOS DEL IMPORTADOR/EXPORTADOR" ||
         tabSelectedFromDocument === "DATOS DEL IMPORTADOR / EXPORTADOR" ||
         tabSelectedFromDocument === "DATOS DEL PROVEEDOR O COMPRADOR"
       ) {
-        handleTabClick("Datos de Factura");
+        handleTabClick("Datos de la factura");
+      } else if (
+        tabSelectedFromDocument === "DATOS DEL TRANSPORTE Y TRANSPORTISTA"
+      ) {
+        handleTabClick("Datos de transporte");
       } else if (
         tabSelectedFromDocument === "PARTIDAS" ||
         tabSelectedFromDocument === "OBSERVACIONES A NIVEL PARTIDA"
@@ -234,11 +267,14 @@ const GenericTabLi = ({ title, active, onClick }: IGenericTabLi) => (
 );
 
 interface IGenericTabComponent {
-  data: ICustomGlossTab;
-  handleClick: (data: ICustomGlossTabValidation) => void;
+  data: tabs;
+  handleClick: (data: tabs["validations"][number]) => void;
 }
 
 const GenericTabComponent = ({ data, handleClick }: IGenericTabComponent) => {
+  const uniqueOrigins = Array.from(
+    new Set(data.context.map((item) => item.origin))
+  );
   return (
     <>
       <StatusHeader status={data.isCorrect} />
@@ -246,35 +282,40 @@ const GenericTabComponent = ({ data, handleClick }: IGenericTabComponent) => {
       <div className="max-h-[420px] overflow-y-auto my-5">
         <table className="w-full text-center">
           <tbody>
-            {data.context[0].data.map((item) => (
-              <tr key={item.id}>
-                <td className="w-1/2 border-r border-r-black pr-2 py-2">
-                  <p title={item.name} className="line-clamp-1">
-                    {item.name}
-                  </p>
-                </td>
-                <td className="w-1/2 font-bold">
-                  <p title={item.value} className="pl-1 line-clamp-1">
-                    {item.value}
-                  </p>
-                </td>
-              </tr>
-            ))}
+            {data.context.flatMap((context, index) =>
+              context.data.map((item) => (
+                <tr
+                  key={item.id}
+                  className={cn(index % 2 === 0 && "bg-gray-100")}
+                >
+                  <td className="w-1/2 border-r border-r-black pr-2 py-2">
+                    <p title={item.name} className="line-clamp-1">
+                      {item.name}
+                    </p>
+                  </td>
+                  <td className="w-1/2 font-bold">
+                    <div title={item.value} className="pl-1 line-clamp-1">
+                      {formatValue(item.value)}
+                    </div>
+                  </td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>
       <SectionDivider title="Fuentes" icon={<DocMagniGlass />} />
       <ul className="flex flex-col gap-1 mt-4 max-h-[160px] overflow-y-auto">
-        {data.context.map((item) => (
-          <li key={item.id} className="">
+        {uniqueOrigins.map((origin, index) => (
+          <li key={index} className="">
             <p
-              title={item.origin}
+              title={origin}
               className="w-full px-12 py-2 rounded-full text-center border truncate bg-purple-100 border-purple-400 inline-flex gap-1 justify-center items-center"
             >
               <span>
                 <Document />
               </span>
-              {item.origin}
+              {origin.toUpperCase()}
             </p>
           </li>
         ))}
@@ -375,8 +416,8 @@ const DashedLine = ({ customClass = "" }: { customClass?: string }) => (
 );
 
 interface IDataListForSummaryCard {
-  data: ICustomGlossTabValidation[];
-  handleDetail: (data: ICustomGlossTabValidation) => void;
+  data: tabs["validations"];
+  handleDetail: (data: tabs["validations"][number]) => void;
 }
 
 const DataListForSummaryCard = ({

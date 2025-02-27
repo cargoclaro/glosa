@@ -59,7 +59,7 @@ const Form = () => {
                       ariaLabel="Nombre"
                       autoComplete="name"
                       placeholder="Nombre"
-                      error={response.errors?.name}
+                      error={response.errors?.name ?? ""}
                     />
                   </CustomDiv>
                   <CustomDiv>
@@ -69,7 +69,7 @@ const Form = () => {
                       ariaLabel="Apellido"
                       autoComplete="family-name"
                       placeholder="Apellido"
-                      error={response.errors?.lastName}
+                      error={response.errors?.lastName ?? ""}
                     />
                   </CustomDiv>
                 </PairCustomDiv>
@@ -80,7 +80,7 @@ const Form = () => {
                       type="number"
                       ariaLabel="Número de Patente"
                       placeholder="123456789"
-                      error={response.errors?.patentNumber}
+                      error={response.errors?.patentNumber ?? ""}
                     />
                   </CustomDiv>
                   <CustomDiv>
@@ -90,7 +90,7 @@ const Form = () => {
                       autoComplete="email"
                       ariaLabel="Correo Electrónico"
                       placeholder="usuario@cargoclaro.com"
-                      error={response.errors?.email}
+                      error={response.errors?.email ?? ""}
                     />
                   </CustomDiv>
                 </PairCustomDiv>
@@ -102,7 +102,7 @@ const Form = () => {
                       ariaLabel="Contraseña"
                       placeholder="************"
                       autoComplete="current-password"
-                      error={response.errors?.password}
+                      error={response.errors?.password ?? ""}
                     />
                   </CustomDiv>
                   <CustomDiv>
@@ -112,7 +112,7 @@ const Form = () => {
                       ariaLabel="Confirmar Contraseña"
                       placeholder="************"
                       autoComplete="current-password"
-                      error={response.errors?.confirmPassword}
+                      error={response.errors?.confirmPassword ?? ""}
                     />
                   </CustomDiv>
                 </PairCustomDiv>

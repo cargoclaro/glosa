@@ -1,12 +1,8 @@
 import { notFound } from "next/navigation";
-import {
-  // Alerts,
-  Documents,
-  PedimentAnalysisNFinish,
-} from "./components";
-import { getMyAnalysisById } from "@/app/shared/services/customGloss/controller";
+import { Alerts, Documents, PedimentAnalysisNFinish } from "./components";
 import type { Metadata } from "next";
-import type { ICustomGloss } from "@/app/shared/interfaces";
+import prisma from "@/app/shared/services/prisma";
+import { isAuthenticated } from "@/app/shared/services/auth";
 
 type IDynamicMetadata = {
   params: Promise<{ id: string }>;
@@ -27,13 +23,49 @@ const GlossIdAnalysis = async ({
 }: {
   params: { id: string };
 }) => {
-  const customGloss = (await getMyAnalysisById(id)) as ICustomGloss;
+  const session = await isAuthenticated();
+  const userId = session["userId"];
+  if (typeof userId !== "string") {
+    throw new Error("User ID is not a string");
+  }
+  const customGloss = await prisma.customGloss.findUnique({
+    where: { id, userId },
+    include: {
+      files: {
+        include: {
+          customGloss: true,
+        },
+      },
+      alerts: {
+        include: {
+          customGloss: true,
+        },
+      },
+      tabs: {
+        include: {
+          context: {
+            include: {
+              data: true,
+            },
+          },
+          validations: {
+            include: {
+              resources: true,
+              actionsToTake: true,
+              steps: true,
+            },
+          },
+          customGloss: true,
+        },
+      },
+    },
+  });
   if (!customGloss) notFound();
 
   return (
     <article className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-4">
       <section className="flex flex-col gap-4">
-        {/* <Alerts data={customGloss.alerts} /> */}
+        <Alerts data={customGloss.alerts} />
         <Documents data={customGloss.files} />
       </section>
       <PedimentAnalysisNFinish
