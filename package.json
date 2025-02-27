@@ -20,11 +20,13 @@
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
   },
   "dependencies": {
+    "@ai-sdk/anthropic": "^1.1.11",
     "@pdf-lib/fontkit": "^1.1.1",
     "@prisma/client": "^6.4.1",
     "@radix-ui/react-slot": "^1.1.0",
     "@tanstack/react-table": "^8.20.5",
     "@types/pdfjs-dist": "^2.10.377",
+    "ai": "^4.1.46",
     "bcrypt": "^5.1.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
