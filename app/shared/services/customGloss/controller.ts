@@ -7,6 +7,7 @@ import { revalidatePath } from "next/cache";
 import { isAuthenticated } from "@/app/shared/services/auth";
 import { read, create, updateTabWithCustomGlossId } from "./model";
 import { CustomGlossType, CustomGlossTabContextType } from "@prisma/client";
+import { UTApi } from "uploadthing/server";
 
 export async function analysis(formData: FormData) {
   try {
@@ -15,6 +16,10 @@ export async function analysis(formData: FormData) {
     if (typeof user_id !== "string") {
       throw new Error("User ID is not a string");
     }
+
+    const utapi = new UTApi();
+    const files = formData.getAll("files") as File[]; // TODO: We should use zod instead of this
+    const uploadedFiles = await utapi.uploadFiles(files);
 
     const query_id = randomUUID();
 
