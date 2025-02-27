@@ -44,7 +44,13 @@ export const schema = z.object({
           document_summary: z.string(),
           data: z.array(z.object({ name: z.string(), value: z.string() }))
         }),
-        documento_de_transporte: z.array(z.unknown())
+        documento_de_transporte: z.array(
+          z.object({
+            document_id: z.string(),
+            document_summary: z.string(),
+            data: z.array(z.object({ name: z.string(), value: z.string() }))
+          })
+        )
       }),
       external_context: z.object({
         apendice_2: z.object({ name: z.string(), value: z.string() }),
@@ -72,7 +78,13 @@ export const schema = z.object({
           document_summary: z.string(),
           data: z.array(z.object({ name: z.string(), value: z.string() }))
         }),
-        documento_de_transporte: z.array(z.unknown())
+        documento_de_transporte: z.array(
+          z.object({
+            document_id: z.string(),
+            document_summary: z.string(),
+            data: z.array(z.object({ name: z.string(), value: z.string() }))
+          })
+        )
       }),
       external_context: z.object({
         apendice_15: z.object({ name: z.string(), value: z.string() })
@@ -259,10 +271,10 @@ export const schema = z.object({
       ),
       external_context: z.object({
         diario_oficial_de_la_federacion: z.array(
-          z.object({ name: z.string(), value: z.number() })
+          z.object({ name: z.string(), value: z.union([z.string(), z.null()]) })
         ),
-        apendice_3: z.array(z.object({ name: z.string(), value: z.string() })),
-        apendice_14: z.array(z.object({ name: z.string(), value: z.string() }))
+        apendice_3: z.array(z.object({ name: z.string(), value: z.union([z.string(), z.null()]) })),
+        apendice_14: z.array(z.object({ name: z.string(), value: z.union([z.string(), z.null()]) }))
       }),
       validation_steps: z.array(
         z.object({
@@ -299,6 +311,13 @@ export const schema = z.object({
                 })
               ])
             )
+          })
+        ),
+        documento_de_transporte: z.array(
+          z.object({
+            document_id: z.string(),
+            document_summary: z.string(),
+            data: z.array(z.object({ name: z.string(), value: z.string() }))
           })
         ),
         factura: z.array(
@@ -497,7 +516,13 @@ export const schema = z.object({
             )
           })
         ),
-        documento_de_transporte: z.array(z.unknown())
+        documento_de_transporte: z.array(
+          z.object({
+            document_id: z.string(),
+            document_summary: z.string(),
+            data: z.array(z.object({ name: z.string(), value: z.string() }))
+          })
+        )
       }),
       external_context: z.object({
         apendice_3: z.object({ name: z.string(), value: z.string() }),
@@ -549,26 +574,12 @@ export const schema = z.object({
                       precio_unit: z.number(),
                       val_agreg: z.null(),
                       identificadores: z.array(
-                        z.union([
-                          z.object({
-                            clave: z.string(),
-                            complemento1: z.string(),
-                            complemento2: z.null(),
-                            complemento3: z.null()
-                          }),
-                          z.object({
-                            clave: z.string(),
-                            complemento1: z.string(),
-                            complemento2: z.string(),
-                            complemento3: z.null()
-                          }),
-                          z.object({
-                            clave: z.string(),
-                            complemento1: z.null(),
-                            complemento2: z.null(),
-                            complemento3: z.null()
-                          })
-                        ])
+                        z.object({
+                          clave: z.string(),
+                          complemento1: z.union([z.string(), z.null()]).optional(),
+                          complemento2: z.union([z.string(), z.null()]).optional(),
+                          complemento3: z.union([z.string(), z.null()]).optional()
+                        })
                       ),
                       contribuciones: z.array(
                         z.object({
@@ -666,38 +677,16 @@ export const schema = z.object({
           })
         ),
         apendice_8: z.array(
-          z.union([
-            z.object({
-              sec: z.number(),
-              fraccion: z.string(),
-              clave: z.string(),
-              nivel: z.string(),
-              supuestos_aplicacion: z.string(),
-              complemento1: z.string(),
-              complemento2: z.null(),
-              complemento3: z.null()
-            }),
-            z.object({
-              sec: z.number(),
-              fraccion: z.string(),
-              clave: z.string(),
-              nivel: z.string(),
-              supuestos_aplicacion: z.string(),
-              complemento1: z.null(),
-              complemento2: z.null(),
-              complemento3: z.null()
-            }),
-            z.object({
-              sec: z.number(),
-              fraccion: z.string(),
-              clave: z.string(),
-              nivel: z.string(),
-              supuestos_aplicacion: z.string(),
-              complemento1: z.string(),
-              complemento2: z.string(),
-              complemento3: z.null()
-            })
-          ])
+          z.object({
+            sec: z.number(),
+            fraccion: z.string(),
+            clave: z.string(),
+            nivel: z.string(),
+            supuestos_aplicacion: z.string(),
+            complemento1: z.union([z.string(), z.null()]).optional(),
+            complemento2: z.union([z.string(), z.null()]).optional(),
+            complemento3: z.union([z.string(), z.null()]).optional()
+          })
         )
       }),
       validation_steps: z.array(
@@ -736,9 +725,87 @@ export const schema = z.object({
       full_context: z.boolean()
     })
   }),
-  secciones_cove: z.object({}),
+  secciones_cove: z.object({
+    datos_generales: z.object({
+      provided_context: z.object({
+        pedimento: z.array(z.unknown()),
+        documento_de_transporte: z.array(z.unknown()),
+        cove: z.array(z.unknown()),
+        carta_318: z.array(z.unknown()),
+        factura: z.array(z.unknown())
+      }),
+      validation_steps: z.array(
+        z.object({
+          name: z.string(),
+          description: z.string(),
+          llm_analysis: z.string(),
+          is_correct: z.boolean(),
+          actions_to_take: z.array(
+            z.object({ id: z.number(), step_description: z.string() })
+          )
+        })
+      ),
+      is_correct: z.boolean(),
+      summary: z.string()
+    }),
+    proveedor_comprador: z.object({
+      provided_context: z.object({
+        pedimento: z.array(z.unknown()),
+        documento_de_transporte: z.array(z.unknown()),
+        cove: z.array(z.unknown()),
+        carta_318: z.array(z.unknown()),
+        factura: z.array(z.unknown())
+      }),
+      validation_steps: z.array(
+        z.object({
+          name: z.string(),
+          description: z.string(),
+          llm_analysis: z.string(),
+          is_correct: z.boolean(),
+          actions_to_take: z.array(
+            z.object({ id: z.number(), step_description: z.string() })
+          )
+        })
+      ),
+      is_correct: z.boolean(),
+      summary: z.string()
+    }),
+    datos_de_mercancías: z.object({
+      provided_context: z.object({
+        pedimento: z.array(z.unknown()),
+        documento_de_transporte: z.array(z.unknown()),
+        cove: z.array(z.unknown()),
+        carta_318: z.array(z.unknown()),
+        factura: z.array(z.unknown())
+      }),
+      validation_steps: z.array(
+        z.object({
+          name: z.string(),
+          description: z.string(),
+          llm_analysis: z.string(),
+          is_correct: z.boolean(),
+          actions_to_take: z.array(
+            z.object({ id: z.number(), step_description: z.string() })
+          )
+        })
+      ),
+      is_correct: z.boolean(),
+      summary: z.string()
+    })
+  }),
   files: z.array(z.object({ name: z.string(), url: z.string() })),
   alerts: z.object({
+    high: z.array(
+      z.object({ id: z.number(), validation_step_name: z.string() })
+    ),
+    medium: z.array(
+      z.object({ id: z.number(), validation_step_name: z.string() })
+    ),
+    low: z.array(
+      z.object({ id: z.number(), validation_step_name: z.string() })
+    )
+  }),
+  cove_alerts: z.object({
     high: z.array(
       z.object({ id: z.number(), validation_step_name: z.string() })
     ),
