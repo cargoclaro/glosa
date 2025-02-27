@@ -76,7 +76,7 @@ export async function analysis(formData: FormData) {
               create: [
                 {
                   name: item.name,
-                  value: item.value.toString(),
+                  value: item.value?.toString() || "Sin valor",
                 },
               ],
             },
@@ -120,7 +120,7 @@ export async function analysis(formData: FormData) {
                 create: [
                   {
                     name,
-                    value,
+                    value: JSON.stringify(value),
                   },
                 ],
               },
@@ -133,7 +133,7 @@ export async function analysis(formData: FormData) {
               create: [
                 {
                   name: operation_type.external_context.apendice_2.name,
-                  value: operation_type.external_context.apendice_2.value,
+                  value: JSON.stringify(operation_type.external_context.apendice_2.value),
                 },
               ],
             },
@@ -145,7 +145,7 @@ export async function analysis(formData: FormData) {
               create: [
                 {
                   name: operation_type.external_context.apendice_16.name,
-                  value: operation_type.external_context.apendice_16.value,
+                  value: JSON.stringify(operation_type.external_context.apendice_16.value),
                 },
               ],
             },
@@ -189,7 +189,7 @@ export async function analysis(formData: FormData) {
                 create: [
                   {
                     name,
-                    value,
+                    value: JSON.stringify(value),
                   },
                 ],
               },
@@ -202,7 +202,7 @@ export async function analysis(formData: FormData) {
               create: [
                 {
                   name: destination_origin.external_context.apendice_15.name,
-                  value: destination_origin.external_context.apendice_15.value,
+                  value: JSON.stringify(destination_origin.external_context.apendice_15.value),
                 },
               ],
             },
@@ -246,8 +246,7 @@ export async function analysis(formData: FormData) {
                 create: [
                   {
                     name,
-                    value:
-                      typeof value === "string" ? value : JSON.stringify(value),
+                    value: JSON.stringify(value),
                   },
                 ],
               },
@@ -261,8 +260,7 @@ export async function analysis(formData: FormData) {
                 create: [
                   {
                     name,
-                    value:
-                      typeof value === "string" ? value : JSON.stringify(value),
+                    value: JSON.stringify(value),
                   },
                 ],
               },
@@ -276,8 +274,7 @@ export async function analysis(formData: FormData) {
                 create: [
                   {
                     name,
-                    value:
-                      typeof value === "string" ? value : JSON.stringify(value),
+                    value: JSON.stringify(value),
                   },
                 ],
               },
@@ -291,8 +288,7 @@ export async function analysis(formData: FormData) {
                 create: [
                   {
                     name,
-                    value:
-                      typeof value === "string" ? value : JSON.stringify(value),
+                    value: JSON.stringify(value),
                   },
                 ],
               },
@@ -300,7 +296,7 @@ export async function analysis(formData: FormData) {
           ),
           ...operation.inferred_context.flatMap((inferredItem) => {
             if ("pedimento" in inferredItem) {
-              return inferredItem.pedimento.flatMap(({ data }) =>
+              return inferredItem.pedimento?.flatMap(({ data }) =>
                 data.map(({ name, value }) => ({
                   type: CustomGlossTabContextType.INFERRED,
                   origin: "pedimento",
@@ -308,14 +304,14 @@ export async function analysis(formData: FormData) {
                     create: [
                       {
                         name,
-                        value,
+                        value: JSON.stringify(value),
                       },
                     ],
                   },
                 }))
-              );
+              ) || [];
             } else if ("factura" in inferredItem) {
-              return inferredItem.factura.flatMap(({ data }) =>
+              return inferredItem.factura?.flatMap(({ data }) =>
                 data.map(({ name, value }) => ({
                   type: CustomGlossTabContextType.INFERRED,
                   origin: "factura",
@@ -323,12 +319,12 @@ export async function analysis(formData: FormData) {
                     create: [
                       {
                         name,
-                        value,
+                        value: JSON.stringify(value),
                       },
                     ],
                   },
                 }))
-              );
+              ) || [];
             }
             return [];
           }),
@@ -413,14 +409,7 @@ export async function analysis(formData: FormData) {
                 create: [
                   {
                     name,
-                    value: Array.isArray(value)
-                      ? value
-                          .map(
-                            (item) =>
-                              `ID: ${item.id}, UMC: ${item.umc}, Cantidad UMC: ${item.cantidad_umc}`
-                          )
-                          .join("; ")
-                      : value,
+                    value: JSON.stringify(value),
                   },
                 ],
               },
@@ -434,14 +423,7 @@ export async function analysis(formData: FormData) {
                 create: [
                   {
                     name,
-                    value: Array.isArray(value)
-                      ? value
-                          .map(
-                            (item) =>
-                              `ID: ${item.id}, UMC: ${item.umc}, Cantidad UMC: ${item.cantidad_umc}`
-                          )
-                          .join("; ")
-                      : value,
+                    value: JSON.stringify(value),
                   },
                 ],
               },
@@ -455,14 +437,7 @@ export async function analysis(formData: FormData) {
                 create: [
                   {
                     name,
-                    value: Array.isArray(value)
-                      ? value
-                          .map(
-                            (item) =>
-                              `ID: ${item.id}, Peso Bruto: ${item.peso_bruto}, Peso Neto: ${item.peso_neto}`
-                          )
-                          .join("; ")
-                      : value,
+                    value: JSON.stringify(value),
                   },
                 ],
               },
@@ -476,14 +451,7 @@ export async function analysis(formData: FormData) {
                 create: [
                   {
                     name,
-                    value: Array.isArray(value)
-                      ? value
-                          .map(
-                            (item) =>
-                              `ID: ${item.id}, Peso Bruto: ${item.peso_bruto}, Peso Neto: ${item.peso_neto}`
-                          )
-                          .join("; ")
-                      : value,
+                    value: JSON.stringify(value),
                   },
                 ],
               },
@@ -528,19 +496,7 @@ export async function analysis(formData: FormData) {
                 create: [
                   {
                     name,
-                    value:
-                      typeof value === "string"
-                        ? value
-                        : Array.isArray(value)
-                        ? value
-                            .map(
-                              (item) =>
-                                `Factura: ${item.num_factura}, Fecha: ${item.fecha_factura}, Incoterm: ${item.incoterm}, ` +
-                                `Moneda: ${item.moneda_factura}, Valor: ${item.valor_moneda_factura}, ` +
-                                `Factor: ${item.factor_moneda_factura}, Valor USD: ${item.valor_dolares_factura}`
-                            )
-                            .join("; ")
-                        : value,
+                    value: JSON.stringify(value),
                   },
                 ],
               },
@@ -661,12 +617,7 @@ export async function analysis(formData: FormData) {
                 create: [
                   {
                     name,
-                    value:
-                      typeof value === "object" &&
-                      value !== null &&
-                      "entrada_salida" in value
-                        ? `${value.entrada_salida} | Arribo: ${value.arribo} | Salida: ${value.salida}`
-                        : value,
+                    value: JSON.stringify(value),
                   },
                 ],
               },
@@ -679,7 +630,7 @@ export async function analysis(formData: FormData) {
               create: [
                 {
                   name: transport_data.external_context.apendice_3.name,
-                  value: transport_data.external_context.apendice_3.value,
+                  value: JSON.stringify(transport_data.external_context.apendice_3.value),
                 },
               ],
             },
@@ -691,7 +642,7 @@ export async function analysis(formData: FormData) {
               create: [
                 {
                   name: transport_data.external_context.apendice_10.name,
-                  value: transport_data.external_context.apendice_10.value,
+                  value: JSON.stringify(transport_data.external_context.apendice_10.value),
                 },
               ],
             },
@@ -735,8 +686,7 @@ export async function analysis(formData: FormData) {
                 create: [
                   {
                     name,
-                    value:
-                      typeof value === "string" ? value : JSON.stringify(value),
+                    value: JSON.stringify(value),
                   },
                 ],
               },
@@ -764,10 +714,7 @@ export async function analysis(formData: FormData) {
                 create: [
                   {
                     name,
-                    value:
-                      typeof value === "number"
-                        ? value.toString()
-                        : JSON.stringify(value),
+                    value: JSON.stringify(value),
                   },
                 ],
               },
