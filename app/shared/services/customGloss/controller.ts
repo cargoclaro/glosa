@@ -18,9 +18,12 @@ export async function analysis(formData: FormData) {
 
     const query_id = randomUUID();
 
-    const baseUrl = process.env.NODE_ENV === "development"
-      ? "http://host.docker.internal:8000"
-      : "https://cargo-claro-fastapi-6z19.onrender.com";
+    console.log("NODE_ENV", process.env.NODE_ENV);
+    const baseUrl =
+      process.env.NODE_ENV === "development"
+        ? "http://host.docker.internal:8000"
+        : "https://cargo-claro-fastapi-6z19.onrender.com";
+    console.log("baseUrl", baseUrl);
     const response = await fetch(
       `${baseUrl}/receive-pdf/${process.env.NODE_ENV}/${user_id}/${query_id}`,
       {
@@ -52,7 +55,16 @@ export async function analysis(formData: FormData) {
 
     // const jsonResponse = VICTOR_GLOSS_EXAMPLE;
 
-    const { pediment_number, operation_type, destination_origin, operation, gross_weight, invoice_data, transport_data, partidas } = jsonResponse.secciones_pedimento;
+    const {
+      pediment_number,
+      operation_type,
+      destination_origin,
+      operation,
+      gross_weight,
+      invoice_data,
+      transport_data,
+      partidas,
+    } = jsonResponse.secciones_pedimento;
 
     const pedimentNumberTab = {
       name: "N° de pedimento",
@@ -60,30 +72,40 @@ export async function analysis(formData: FormData) {
       fullContext: true,
       context: {
         create: pediment_number.provided_context.pedimento.flatMap(({ data }) =>
-          data.map(item => ({
+          data.map((item) => ({
             type: CustomGlossTabContextType.PROVIDED,
             origin: "pedimento",
             data: {
-              create: [{
-                name: item.name,
-                value: item.value.toString(),
-              }],
+              create: [
+                {
+                  name: item.name,
+                  value: item.value.toString(),
+                },
+              ],
             },
           }))
         ),
       },
       validations: {
-        create: pediment_number.validation_steps.map(({ name, description, llm_analysis, is_correct, actions_to_take }) => ({
-          name,
-          description,
-          llmAnalysis: llm_analysis,
-          isCorrect: is_correct,
-          actionsToTake: {
-            create: actions_to_take.map(({ step_description }) => ({
-              description: step_description,
-            })),
-          },
-        })),
+        create: pediment_number.validation_steps.map(
+          ({
+            name,
+            description,
+            llm_analysis,
+            is_correct,
+            actions_to_take,
+          }) => ({
+            name,
+            description,
+            llmAnalysis: llm_analysis,
+            isCorrect: is_correct,
+            actionsToTake: {
+              create: actions_to_take.map(({ step_description }) => ({
+                description: step_description,
+              })),
+            },
+          })
+        ),
       },
     };
 
@@ -93,50 +115,66 @@ export async function analysis(formData: FormData) {
       fullContext: true,
       context: {
         create: [
-          ...operation_type.provided_context.pedimento.data.map(({ name, value }) => ({
-            type: CustomGlossTabContextType.PROVIDED,
-            origin: "pedimento",
-            data: {
-              create: [{
-                name,
-                value,
-              }],
-            },
-          })),
+          ...operation_type.provided_context.pedimento.data.map(
+            ({ name, value }) => ({
+              type: CustomGlossTabContextType.PROVIDED,
+              origin: "pedimento",
+              data: {
+                create: [
+                  {
+                    name,
+                    value,
+                  },
+                ],
+              },
+            })
+          ),
           {
             type: CustomGlossTabContextType.EXTERNAL,
             origin: "apendice_2",
             data: {
-              create: [{
-                name: operation_type.external_context.apendice_2.name,
-                value: operation_type.external_context.apendice_2.value
-              }],
+              create: [
+                {
+                  name: operation_type.external_context.apendice_2.name,
+                  value: operation_type.external_context.apendice_2.value,
+                },
+              ],
             },
           },
           {
             type: CustomGlossTabContextType.EXTERNAL,
             origin: "apendice_16",
             data: {
-              create: [{
-                name: operation_type.external_context.apendice_16.name,
-                value: operation_type.external_context.apendice_16.value,
-              }],
+              create: [
+                {
+                  name: operation_type.external_context.apendice_16.name,
+                  value: operation_type.external_context.apendice_16.value,
+                },
+              ],
             },
           },
         ],
       },
       validations: {
-        create: pediment_number.validation_steps.map(({ name, description, llm_analysis, is_correct, actions_to_take }) => ({
-          name,
-          description,
-          llmAnalysis: llm_analysis,
-          isCorrect: is_correct,
-          actionsToTake: {
-            create: actions_to_take.map(({ step_description }) => ({
-              description: step_description,
-            })),
-          },
-        })),
+        create: pediment_number.validation_steps.map(
+          ({
+            name,
+            description,
+            llm_analysis,
+            is_correct,
+            actions_to_take,
+          }) => ({
+            name,
+            description,
+            llmAnalysis: llm_analysis,
+            isCorrect: is_correct,
+            actionsToTake: {
+              create: actions_to_take.map(({ step_description }) => ({
+                description: step_description,
+              })),
+            },
+          })
+        ),
       },
     };
 
@@ -146,40 +184,54 @@ export async function analysis(formData: FormData) {
       fullContext: true,
       context: {
         create: [
-          ...destination_origin.provided_context.pedimento.data.map(({ name, value }) => ({
-            type: CustomGlossTabContextType.PROVIDED,
-            origin: "pedimento",
-            data: {
-              create: [{
-                name,
-                value,
-              }],
-            },
-          })),
+          ...destination_origin.provided_context.pedimento.data.map(
+            ({ name, value }) => ({
+              type: CustomGlossTabContextType.PROVIDED,
+              origin: "pedimento",
+              data: {
+                create: [
+                  {
+                    name,
+                    value,
+                  },
+                ],
+              },
+            })
+          ),
           {
             type: CustomGlossTabContextType.EXTERNAL,
             origin: "apendice_15",
             data: {
-              create: [{
-                name: destination_origin.external_context.apendice_15.name,
-                value: destination_origin.external_context.apendice_15.value
-              }],
+              create: [
+                {
+                  name: destination_origin.external_context.apendice_15.name,
+                  value: destination_origin.external_context.apendice_15.value,
+                },
+              ],
             },
           },
         ],
       },
       validations: {
-        create: pediment_number.validation_steps.map(({ name, description, llm_analysis, is_correct, actions_to_take }) => ({
-          name,
-          description,
-          llmAnalysis: llm_analysis,
-          isCorrect: is_correct,
-          actionsToTake: {
-            create: actions_to_take.map(({ step_description }) => ({
-              description: step_description,
-            })),
-          },
-        })),
+        create: pediment_number.validation_steps.map(
+          ({
+            name,
+            description,
+            llm_analysis,
+            is_correct,
+            actions_to_take,
+          }) => ({
+            name,
+            description,
+            llmAnalysis: llm_analysis,
+            isCorrect: is_correct,
+            actionsToTake: {
+              create: actions_to_take.map(({ step_description }) => ({
+                description: step_description,
+              })),
+            },
+          })
+        ),
       },
     };
 
@@ -194,10 +246,13 @@ export async function analysis(formData: FormData) {
               type: CustomGlossTabContextType.PROVIDED,
               origin: "pedimento",
               data: {
-                create: [{
-                  name,
-                  value: typeof value === 'string' ? value : JSON.stringify(value),
-                }],
+                create: [
+                  {
+                    name,
+                    value:
+                      typeof value === "string" ? value : JSON.stringify(value),
+                  },
+                ],
               },
             }))
           ),
@@ -206,10 +261,13 @@ export async function analysis(formData: FormData) {
               type: CustomGlossTabContextType.PROVIDED,
               origin: "cove",
               data: {
-                create: [{
-                  name,
-                  value: typeof value === 'string' ? value : JSON.stringify(value),
-                }],
+                create: [
+                  {
+                    name,
+                    value:
+                      typeof value === "string" ? value : JSON.stringify(value),
+                  },
+                ],
               },
             }))
           ),
@@ -218,10 +276,13 @@ export async function analysis(formData: FormData) {
               type: CustomGlossTabContextType.PROVIDED,
               origin: "carta_318",
               data: {
-                create: [{
-                  name,
-                  value: typeof value === 'string' ? value : JSON.stringify(value),
-                }],
+                create: [
+                  {
+                    name,
+                    value:
+                      typeof value === "string" ? value : JSON.stringify(value),
+                  },
+                ],
               },
             }))
           ),
@@ -230,88 +291,114 @@ export async function analysis(formData: FormData) {
               type: CustomGlossTabContextType.PROVIDED,
               origin: "factura",
               data: {
-                create: [{
-                  name,
-                  value: typeof value === 'string' ? value : JSON.stringify(value),
-                }],
+                create: [
+                  {
+                    name,
+                    value:
+                      typeof value === "string" ? value : JSON.stringify(value),
+                  },
+                ],
               },
             }))
           ),
-          ...operation.inferred_context.flatMap(inferredItem => {
-            if ('pedimento' in inferredItem) {
+          ...operation.inferred_context.flatMap((inferredItem) => {
+            if ("pedimento" in inferredItem) {
               return inferredItem.pedimento.flatMap(({ data }) =>
                 data.map(({ name, value }) => ({
                   type: CustomGlossTabContextType.INFERRED,
                   origin: "pedimento",
                   data: {
-                    create: [{
-                      name,
-                      value,
-                    }],
+                    create: [
+                      {
+                        name,
+                        value,
+                      },
+                    ],
                   },
                 }))
               );
-            }
-            else if ('factura' in inferredItem) {
+            } else if ("factura" in inferredItem) {
               return inferredItem.factura.flatMap(({ data }) =>
                 data.map(({ name, value }) => ({
                   type: CustomGlossTabContextType.INFERRED,
                   origin: "factura",
                   data: {
-                    create: [{
-                      name,
-                      value,
-                    }],
+                    create: [
+                      {
+                        name,
+                        value,
+                      },
+                    ],
                   },
                 }))
               );
             }
             return [];
           }),
-          ...operation.external_context.diario_oficial_de_la_federacion.flatMap(({ name, value }) => ({
-            type: CustomGlossTabContextType.EXTERNAL,
-            origin: "diario_oficial_de_la_federacion",
-            data: {
-              create: [{
-                name,
-                value: value.toString(),
-              }],
-            },
-          })),
-          ...operation.external_context.apendice_3.flatMap(({ name, value }) => ({
-            type: CustomGlossTabContextType.EXTERNAL,
-            origin: "apendice_3",
-            data: {
-              create: [{
-                name,
-                value,
-              }],
-            },
-          })),
-          ...operation.external_context.apendice_14.flatMap(({ name, value }) => ({
-            type: CustomGlossTabContextType.EXTERNAL,
-            origin: "apendice_14",
-            data: {
-              create: [{
-                name,
-                value,
-              }],
-            },
-          })),
+          ...operation.external_context.diario_oficial_de_la_federacion.flatMap(
+            ({ name, value }) => ({
+              type: CustomGlossTabContextType.EXTERNAL,
+              origin: "diario_oficial_de_la_federacion",
+              data: {
+                create: [
+                  {
+                    name,
+                    value: value.toString(),
+                  },
+                ],
+              },
+            })
+          ),
+          ...operation.external_context.apendice_3.flatMap(
+            ({ name, value }) => ({
+              type: CustomGlossTabContextType.EXTERNAL,
+              origin: "apendice_3",
+              data: {
+                create: [
+                  {
+                    name,
+                    value,
+                  },
+                ],
+              },
+            })
+          ),
+          ...operation.external_context.apendice_14.flatMap(
+            ({ name, value }) => ({
+              type: CustomGlossTabContextType.EXTERNAL,
+              origin: "apendice_14",
+              data: {
+                create: [
+                  {
+                    name,
+                    value,
+                  },
+                ],
+              },
+            })
+          ),
         ],
       },
       validations: {
-        create: pediment_number.validation_steps.map(({ name, description, llm_analysis, is_correct, actions_to_take }) => ({
-          name,
-          description,
-          llmAnalysis: llm_analysis,
-          isCorrect: is_correct,
-          actionsToTake: {
-            create: actions_to_take.map(({ step_description }) => ({
-              description: step_description,
-            })),
-          },
-        })),
+        create: pediment_number.validation_steps.map(
+          ({
+            name,
+            description,
+            llm_analysis,
+            is_correct,
+            actions_to_take,
+          }) => ({
+            name,
+            description,
+            llmAnalysis: llm_analysis,
+            isCorrect: is_correct,
+            actionsToTake: {
+              create: actions_to_take.map(({ step_description }) => ({
+                description: step_description,
+              })),
+            },
+          })
+        ),
       },
     };
 
@@ -326,12 +413,19 @@ export async function analysis(formData: FormData) {
               type: CustomGlossTabContextType.PROVIDED,
               origin: "pedimento",
               data: {
-                create: [{
-                  name,
-                  value: Array.isArray(value) 
-                    ? value.map(item => `ID: ${item.id}, UMC: ${item.umc}, Cantidad UMC: ${item.cantidad_umc}`).join('; ')
-                    : value,
-                }],
+                create: [
+                  {
+                    name,
+                    value: Array.isArray(value)
+                      ? value
+                          .map(
+                            (item) =>
+                              `ID: ${item.id}, UMC: ${item.umc}, Cantidad UMC: ${item.cantidad_umc}`
+                          )
+                          .join("; ")
+                      : value,
+                  },
+                ],
               },
             }))
           ),
@@ -340,12 +434,19 @@ export async function analysis(formData: FormData) {
               type: CustomGlossTabContextType.PROVIDED,
               origin: "cove",
               data: {
-                create: [{
-                  name,
-                  value: Array.isArray(value) 
-                    ? value.map(item => `ID: ${item.id}, UMC: ${item.umc}, Cantidad UMC: ${item.cantidad_umc}`).join('; ')
-                    : value,
-                }],
+                create: [
+                  {
+                    name,
+                    value: Array.isArray(value)
+                      ? value
+                          .map(
+                            (item) =>
+                              `ID: ${item.id}, UMC: ${item.umc}, Cantidad UMC: ${item.cantidad_umc}`
+                          )
+                          .join("; ")
+                      : value,
+                  },
+                ],
               },
             }))
           ),
@@ -354,12 +455,19 @@ export async function analysis(formData: FormData) {
               type: CustomGlossTabContextType.PROVIDED,
               origin: "factura",
               data: {
-                create: [{
-                  name,
-                  value: Array.isArray(value) 
-                    ? value.map(item => `ID: ${item.id}, Peso Bruto: ${item.peso_bruto}, Peso Neto: ${item.peso_neto}`).join('; ')
-                    : value,
-                }],
+                create: [
+                  {
+                    name,
+                    value: Array.isArray(value)
+                      ? value
+                          .map(
+                            (item) =>
+                              `ID: ${item.id}, Peso Bruto: ${item.peso_bruto}, Peso Neto: ${item.peso_neto}`
+                          )
+                          .join("; ")
+                      : value,
+                  },
+                ],
               },
             }))
           ),
@@ -368,29 +476,44 @@ export async function analysis(formData: FormData) {
               type: CustomGlossTabContextType.PROVIDED,
               origin: "packing_list",
               data: {
-                create: [{
-                  name,
-                  value: Array.isArray(value) 
-                    ? value.map(item => `ID: ${item.id}, Peso Bruto: ${item.peso_bruto}, Peso Neto: ${item.peso_neto}`).join('; ')
-                    : value,
-                }],
+                create: [
+                  {
+                    name,
+                    value: Array.isArray(value)
+                      ? value
+                          .map(
+                            (item) =>
+                              `ID: ${item.id}, Peso Bruto: ${item.peso_bruto}, Peso Neto: ${item.peso_neto}`
+                          )
+                          .join("; ")
+                      : value,
+                  },
+                ],
               },
             }))
           ),
         ],
       },
       validations: {
-        create: pediment_number.validation_steps.map(({ name, description, llm_analysis, is_correct, actions_to_take }) => ({
-          name,
-          description,
-          llmAnalysis: llm_analysis,
-          isCorrect: is_correct,
-          actionsToTake: {
-            create: actions_to_take.map(({ step_description }) => ({
-              description: step_description,
-            })),
-          },
-        })),
+        create: pediment_number.validation_steps.map(
+          ({
+            name,
+            description,
+            llm_analysis,
+            is_correct,
+            actions_to_take,
+          }) => ({
+            name,
+            description,
+            llmAnalysis: llm_analysis,
+            isCorrect: is_correct,
+            actionsToTake: {
+              create: actions_to_take.map(({ step_description }) => ({
+                description: step_description,
+              })),
+            },
+          })
+        ),
       },
     };
 
@@ -405,15 +528,24 @@ export async function analysis(formData: FormData) {
               type: CustomGlossTabContextType.PROVIDED,
               origin: "pedimento",
               data: {
-                create: [{
-                  name,
-                  value: typeof value === 'string' ? value : 
-                    Array.isArray(value) ? value.map(item => 
-                      `Factura: ${item.num_factura}, Fecha: ${item.fecha_factura}, Incoterm: ${item.incoterm}, ` +
-                      `Moneda: ${item.moneda_factura}, Valor: ${item.valor_moneda_factura}, ` +
-                      `Factor: ${item.factor_moneda_factura}, Valor USD: ${item.valor_dolares_factura}`
-                    ).join('; ') : value,
-                }],
+                create: [
+                  {
+                    name,
+                    value:
+                      typeof value === "string"
+                        ? value
+                        : Array.isArray(value)
+                        ? value
+                            .map(
+                              (item) =>
+                                `Factura: ${item.num_factura}, Fecha: ${item.fecha_factura}, Incoterm: ${item.incoterm}, ` +
+                                `Moneda: ${item.moneda_factura}, Valor: ${item.valor_moneda_factura}, ` +
+                                `Factor: ${item.factor_moneda_factura}, Valor USD: ${item.valor_dolares_factura}`
+                            )
+                            .join("; ")
+                        : value,
+                  },
+                ],
               },
             }))
           ),
@@ -422,10 +554,12 @@ export async function analysis(formData: FormData) {
               type: CustomGlossTabContextType.PROVIDED,
               origin: "cove",
               data: {
-                create: [{
-                  name,
-                  value: value.toString(),
-                }],
+                create: [
+                  {
+                    name,
+                    value: value.toString(),
+                  },
+                ],
               },
             }))
           ),
@@ -434,12 +568,18 @@ export async function analysis(formData: FormData) {
               type: CustomGlossTabContextType.PROVIDED,
               origin: "carta_318",
               data: {
-                create: [{
-                  name,
-                  value: typeof value === 'object' && value !== null && 'valor' in value && 'moneda' in value
-                    ? `${value.valor} ${value.moneda}`
-                    : value,
-                }],
+                create: [
+                  {
+                    name,
+                    value:
+                      typeof value === "object" &&
+                      value !== null &&
+                      "valor" in value &&
+                      "moneda" in value
+                        ? `${value.valor} ${value.moneda}`
+                        : value,
+                  },
+                ],
               },
             }))
           ),
@@ -448,47 +588,65 @@ export async function analysis(formData: FormData) {
               type: CustomGlossTabContextType.PROVIDED,
               origin: "factura",
               data: {
-                create: [{
-                  name,
-                  value: value.toString(),
-                }],
+                create: [
+                  {
+                    name,
+                    value: value.toString(),
+                  },
+                ],
               },
             }))
           ),
-          ...invoice_data.external_context.diario_oficial_de_la_federacion.flatMap(({ name, value }) => ({
-            type: CustomGlossTabContextType.EXTERNAL,
-            origin: "diario_oficial_de_la_federacion",
-            data: {
-              create: [{
-                name,
-                value: value?.toString() || 'Sin valor',
-              }],
-            },
-          })),
-          ...invoice_data.external_context.validacion_rfc.map(({ rfc, tipo }) => ({
-            type: CustomGlossTabContextType.EXTERNAL,
-            origin: "validacion_rfc",
-            data: {
-              create: [{
-                name: rfc,
-                value: tipo,
-              }],
-            },
-          })),
+          ...invoice_data.external_context.diario_oficial_de_la_federacion.flatMap(
+            ({ name, value }) => ({
+              type: CustomGlossTabContextType.EXTERNAL,
+              origin: "diario_oficial_de_la_federacion",
+              data: {
+                create: [
+                  {
+                    name,
+                    value: value?.toString() || "Sin valor",
+                  },
+                ],
+              },
+            })
+          ),
+          ...invoice_data.external_context.validacion_rfc.map(
+            ({ rfc, tipo }) => ({
+              type: CustomGlossTabContextType.EXTERNAL,
+              origin: "validacion_rfc",
+              data: {
+                create: [
+                  {
+                    name: rfc,
+                    value: tipo,
+                  },
+                ],
+              },
+            })
+          ),
         ],
       },
       validations: {
-        create: pediment_number.validation_steps.map(({ name, description, llm_analysis, is_correct, actions_to_take }) => ({
-          name,
-          description,
-          llmAnalysis: llm_analysis,
-          isCorrect: is_correct,
-          actionsToTake: {
-            create: actions_to_take.map(({ step_description }) => ({
-              description: step_description,
-            })),
-          },
-        })),
+        create: pediment_number.validation_steps.map(
+          ({
+            name,
+            description,
+            llm_analysis,
+            is_correct,
+            actions_to_take,
+          }) => ({
+            name,
+            description,
+            llmAnalysis: llm_analysis,
+            isCorrect: is_correct,
+            actionsToTake: {
+              create: actions_to_take.map(({ step_description }) => ({
+                description: step_description,
+              })),
+            },
+          })
+        ),
       },
     };
 
@@ -503,12 +661,17 @@ export async function analysis(formData: FormData) {
               type: CustomGlossTabContextType.PROVIDED,
               origin: "pedimento",
               data: {
-                create: [{
-                  name,
-                  value: typeof value === 'object' && value !== null && 'entrada_salida' in value
-                    ? `${value.entrada_salida} | Arribo: ${value.arribo} | Salida: ${value.salida}`
-                    : value,
-                }],
+                create: [
+                  {
+                    name,
+                    value:
+                      typeof value === "object" &&
+                      value !== null &&
+                      "entrada_salida" in value
+                        ? `${value.entrada_salida} | Arribo: ${value.arribo} | Salida: ${value.salida}`
+                        : value,
+                  },
+                ],
               },
             }))
           ),
@@ -516,36 +679,48 @@ export async function analysis(formData: FormData) {
             type: CustomGlossTabContextType.EXTERNAL,
             origin: "apendice_3",
             data: {
-              create: [{
-                name: transport_data.external_context.apendice_3.name,
-                value: transport_data.external_context.apendice_3.value,
-              }],
+              create: [
+                {
+                  name: transport_data.external_context.apendice_3.name,
+                  value: transport_data.external_context.apendice_3.value,
+                },
+              ],
             },
           },
           {
             type: CustomGlossTabContextType.EXTERNAL,
             origin: "apendice_10",
             data: {
-              create: [{
-                name: transport_data.external_context.apendice_10.name,
-                value: transport_data.external_context.apendice_10.value,
-              }],
+              create: [
+                {
+                  name: transport_data.external_context.apendice_10.name,
+                  value: transport_data.external_context.apendice_10.value,
+                },
+              ],
             },
           },
         ],
       },
       validations: {
-        create: pediment_number.validation_steps.map(({ name, description, llm_analysis, is_correct, actions_to_take }) => ({
-          name,
-          description,
-          llmAnalysis: llm_analysis,
-          isCorrect: is_correct,
-          actionsToTake: {
-            create: actions_to_take.map(({ step_description }) => ({
-              description: step_description,
-            })),
-          },
-        })),
+        create: pediment_number.validation_steps.map(
+          ({
+            name,
+            description,
+            llm_analysis,
+            is_correct,
+            actions_to_take,
+          }) => ({
+            name,
+            description,
+            llmAnalysis: llm_analysis,
+            isCorrect: is_correct,
+            actionsToTake: {
+              create: actions_to_take.map(({ step_description }) => ({
+                description: step_description,
+              })),
+            },
+          })
+        ),
       },
     };
 
@@ -560,10 +735,13 @@ export async function analysis(formData: FormData) {
               type: CustomGlossTabContextType.PROVIDED,
               origin: "pedimento",
               data: {
-                create: [{
-                  name,
-                  value: typeof value === 'string' ? value : JSON.stringify(value),
-                }],
+                create: [
+                  {
+                    name,
+                    value:
+                      typeof value === "string" ? value : JSON.stringify(value),
+                  },
+                ],
               },
             }))
           ),
@@ -572,10 +750,12 @@ export async function analysis(formData: FormData) {
               type: CustomGlossTabContextType.PROVIDED,
               origin: "cove",
               data: {
-                create: [{
-                  name,
-                  value: JSON.stringify(value),
-                }],
+                create: [
+                  {
+                    name,
+                    value: JSON.stringify(value),
+                  },
+                ],
               },
             }))
           ),
@@ -584,27 +764,40 @@ export async function analysis(formData: FormData) {
               type: CustomGlossTabContextType.INFERRED,
               origin: "pedimento",
               data: {
-                create: [{
-                  name,
-                  value: typeof value === 'number' ? value.toString() : JSON.stringify(value),
-                }],
+                create: [
+                  {
+                    name,
+                    value:
+                      typeof value === "number"
+                        ? value.toString()
+                        : JSON.stringify(value),
+                  },
+                ],
               },
             }))
           ),
         ],
       },
       validations: {
-        create: pediment_number.validation_steps.map(({ name, description, llm_analysis, is_correct, actions_to_take }) => ({
-          name,
-          description,
-          llmAnalysis: llm_analysis,
-          isCorrect: is_correct,
-          actionsToTake: {
-            create: actions_to_take.map(({ step_description }) => ({
-              description: step_description,
-            })),
-          },
-        })),
+        create: pediment_number.validation_steps.map(
+          ({
+            name,
+            description,
+            llm_analysis,
+            is_correct,
+            actions_to_take,
+          }) => ({
+            name,
+            description,
+            llmAnalysis: llm_analysis,
+            isCorrect: is_correct,
+            actionsToTake: {
+              create: actions_to_take.map(({ step_description }) => ({
+                description: step_description,
+              })),
+            },
+          })
+        ),
       },
     };
 
@@ -629,19 +822,19 @@ export async function analysis(formData: FormData) {
         },
         alerts: {
           create: [
-            ...jsonResponse.alerts.high.map(alert => ({
+            ...jsonResponse.alerts.high.map((alert) => ({
               type: CustomGlossType.HIGH,
-              description: alert.validation_step_name
+              description: alert.validation_step_name,
             })),
-            ...jsonResponse.alerts.medium.map(alert => ({
+            ...jsonResponse.alerts.medium.map((alert) => ({
               type: CustomGlossType.MEDIUM,
-              description: alert.validation_step_name
+              description: alert.validation_step_name,
             })),
-            ...jsonResponse.alerts.low.map(alert => ({
+            ...jsonResponse.alerts.low.map((alert) => ({
               type: CustomGlossType.LOW,
-              description: alert.validation_step_name
-            }))
-          ]
+              description: alert.validation_step_name,
+            })),
+          ],
         },
         files: { create: jsonResponse.files },
       },
