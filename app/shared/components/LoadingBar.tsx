@@ -8,23 +8,30 @@ interface LoadingBarProps {
 
 const LoadingBar: React.FC<LoadingBarProps> = ({ duration = 200 }) => {
   const [progress, setProgress] = useState(0);
+  const [timeElapsed, setTimeElapsed] = useState(0);
 
   useEffect(() => {
     const interval = 1000;
-    const step = 100 / duration;
 
     const timer = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) {
+      setTimeElapsed((prevTime) => {
+        const newTime = prevTime + 1;
+        if (newTime >= duration) {
           clearInterval(timer);
-          return 100;
+          return duration;
         }
-        return prev + step;
+        return newTime;
       });
+
+      setProgress(easeOutExpo(timeElapsed / duration) * 100);
     }, interval);
 
     return () => clearInterval(timer);
-  }, [duration]);
+  }, [duration, timeElapsed]);
+
+  const easeOutExpo = (t: number) => {
+    return t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
+  };
 
   return (
     <div className="w-full h-4 bg-gray-200 rounded-lg overflow-hidden">
