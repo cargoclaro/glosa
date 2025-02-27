@@ -18,22 +18,19 @@ export async function analysis(formData: FormData) {
 
     const query_id = randomUUID();
 
-    console.log("NODE_ENV", process.env.NODE_ENV);
     const baseUrl =
       process.env.NODE_ENV === "development"
         ? "http://host.docker.internal:8000"
         : "https://cargo-claro-fastapi-6z19.onrender.com";
-    console.log("baseUrl", baseUrl);
-    const response = await fetch(
-      `${baseUrl}/receive-pdf/${process.env.NODE_ENV}/${user_id}/${query_id}`,
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${process.env["GLOSS_TOKEN"]}`,
-        },
-        body: formData,
-      }
-    );
+    const url = `${baseUrl}/receive-pdf/${process.env.NODE_ENV}/${user_id}/${query_id}`;
+    console.log("url", url);
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${process.env["GLOSS_TOKEN"]}`,
+      },
+      body: formData,
+    });
 
     if (!response.ok) {
       return {
