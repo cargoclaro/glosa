@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { cn } from "@/app/shared/utils/cn";
-import { Loading, Modal } from "@/app/shared/components";
+import { LoadingBar, Modal } from "@/app/shared/components";
 import { Document, Upload, XMark } from "@/app/shared/icons";
 import { useModal, useServerAction } from "@/app/shared/hooks";
 import { INITIAL_STATE_RESPONSE } from "@/app/shared/constants";
@@ -140,7 +140,7 @@ const GlossForm = () => {
         <div className="flex flex-col gap-2 items-center justify-center h-[430px]">
           {isLoading ? (
             <>
-              <Loading color="cargoClaro" size="size-20" />
+              <LoadingBar />
               <p className="text-xl text-center font-semibold">
                 Analizando los documentos... <br />
                 <small>
