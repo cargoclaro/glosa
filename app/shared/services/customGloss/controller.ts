@@ -340,7 +340,7 @@ export async function analysis(formData: FormData) {
                 create: [
                   {
                     name,
-                    value: value.toString(),
+                    value: value?.toString() || "Sin valor",
                   },
                 ],
               },
@@ -354,7 +354,7 @@ export async function analysis(formData: FormData) {
                 create: [
                   {
                     name,
-                    value,
+                    value: value?.toString() || "Sin valor",
                   },
                 ],
               },
@@ -368,7 +368,7 @@ export async function analysis(formData: FormData) {
                 create: [
                   {
                     name,
-                    value,
+                    value: value?.toString() || "Sin valor",
                   },
                 ],
               },
@@ -554,7 +554,7 @@ export async function analysis(formData: FormData) {
                 create: [
                   {
                     name,
-                    value: value.toString(),
+                    value: value?.toString() || "Sin valor",
                   },
                 ],
               },
