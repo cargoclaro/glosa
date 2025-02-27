@@ -95,7 +95,9 @@ export const schema = z.object({
           description: z.string(),
           llm_analysis: z.string(),
           is_correct: z.boolean(),
-          actions_to_take: z.array(z.unknown())
+          actions_to_take: z.array(
+            z.object({ id: z.number(), step_description: z.string() })
+          )
         })
       ),
       is_correct: z.boolean(),
@@ -279,6 +281,7 @@ export const schema = z.object({
       validation_steps: z.array(
         z.object({
           name: z.string(),
+          description: z.string(),
           llm_analysis: z.string(),
           is_correct: z.boolean(),
           actions_to_take: z.array(
@@ -387,6 +390,7 @@ export const schema = z.object({
       validation_steps: z.array(
         z.object({
           name: z.string(),
+          description: z.string(),
           llm_analysis: z.string(),
           is_correct: z.boolean(),
           actions_to_take: z.array(
@@ -484,6 +488,7 @@ export const schema = z.object({
       validation_steps: z.array(
         z.object({
           name: z.string(),
+          description: z.string(),
           llm_analysis: z.string(),
           is_correct: z.boolean(),
           actions_to_take: z.array(
@@ -531,6 +536,7 @@ export const schema = z.object({
       validation_steps: z.array(
         z.object({
           name: z.string(),
+          description: z.string(),
           llm_analysis: z.string(),
           is_correct: z.boolean(),
           actions_to_take: z.array(

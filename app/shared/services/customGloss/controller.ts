@@ -153,7 +153,7 @@ export async function analysis(formData: FormData) {
         ],
       },
       validations: {
-        create: pediment_number.validation_steps.map(
+        create: operation_type.validation_steps.map(
           ({
             name,
             description,
@@ -210,7 +210,7 @@ export async function analysis(formData: FormData) {
         ],
       },
       validations: {
-        create: pediment_number.validation_steps.map(
+        create: destination_origin.validation_steps.map(
           ({
             name,
             description,
@@ -377,7 +377,7 @@ export async function analysis(formData: FormData) {
         ],
       },
       validations: {
-        create: pediment_number.validation_steps.map(
+        create: operation.validation_steps.map(
           ({
             name,
             description,
@@ -492,7 +492,7 @@ export async function analysis(formData: FormData) {
         ],
       },
       validations: {
-        create: pediment_number.validation_steps.map(
+        create: gross_weight.validation_steps.map(
           ({
             name,
             description,
@@ -625,7 +625,7 @@ export async function analysis(formData: FormData) {
         ],
       },
       validations: {
-        create: pediment_number.validation_steps.map(
+        create: invoice_data.validation_steps.map(
           ({
             name,
             description,
@@ -699,7 +699,7 @@ export async function analysis(formData: FormData) {
         ],
       },
       validations: {
-        create: pediment_number.validation_steps.map(
+        create: transport_data.validation_steps.map(
           ({
             name,
             description,
@@ -776,7 +776,7 @@ export async function analysis(formData: FormData) {
         ],
       },
       validations: {
-        create: pediment_number.validation_steps.map(
+        create: partidas.validation_steps.map(
           ({
             name,
             description,
