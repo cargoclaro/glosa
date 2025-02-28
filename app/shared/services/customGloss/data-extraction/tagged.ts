@@ -23,7 +23,7 @@ export async function extractSchemaFromTaggedPDF(text: string, document: Documen
   else if (document === "factura") {
     return factura(text);
   }
-  else if (document === "carta_318") {
+  else if (document === "carta318") {
     return carta318(text);
   } 
   else if (document === "rrnas") {
@@ -35,10 +35,10 @@ export async function extractSchemaFromTaggedPDF(text: string, document: Documen
   else if (document === "cfdi") {
     return cfdi(text);
   }
-  else if (document === "carta_cesion_derechos") {
+  else if (document === "cartaCesionDeDerechos") {
     return cartaSesion(text);
   } 
-  else if (document === "lista_de_empaque") {
+  else if (document === "listaDeEmpaque") {
     return packingList(text);
   }
   else {

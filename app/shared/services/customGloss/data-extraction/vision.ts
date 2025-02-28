@@ -25,7 +25,7 @@ export async function extractTextFromImage(pdfFile: File, document: Document) {
   else if (document === "factura") {
     return extractFactura(base64Data);
   }
-  else if (document === "carta_318") {
+  else if (document === "carta318") {
     return extractCarta318(base64Data);
   } 
   else if (document === "rrnas") {
@@ -37,10 +37,10 @@ export async function extractTextFromImage(pdfFile: File, document: Document) {
   else if (document === "cfdi") {
     return extractCfdi(base64Data);
   }
-  else if (document === "carta_cesion_derechos") {
+  else if (document === "cartaCesionDeDerechos") {
     return extractCartaSesion(base64Data);
   } 
-  else if (document === "lista_de_empaque") {
+  else if (document === "listaDeEmpaque") {
     return extractPackingList(base64Data);
   }
   else {
