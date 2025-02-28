@@ -1,10 +1,10 @@
 import { generateObject } from "ai";
 import { wrapAISDKModel } from "langsmith/wrappers/vercel";
 import { openai } from "@ai-sdk/openai";
-import { invoiceSchema, carta318Schema, rrnaSchema, transportDocumentSchema, pedimentoSchema, packingListSchema, coveSchema, cfdiSchema, cartaSesionSchema, } from "./schemas/";
-import { Document } from "../classification";
+import { DocumentType } from "../classification";
+import type { z } from "zod";
 
-const systemPrompt = `
+const SYSTEM_PROMPT = `
   Eres un experto en esquematizar información estructurada de documentos aduaneros. Tu tarea es leer el texto proporcionado y extraer toda la información relevante con estructura.
 
   IMPORTANTE: 
@@ -16,174 +16,17 @@ const systemPrompt = `
   - Captura correctamente los montos y cantidades.
 `;
 
-export async function extractSchemaFromTaggedPDF(text: string, document: Document) {
-  if (document === "pedimento") {
-    return pedimento(text);
-  }
-  else if (document === "factura") {
-    return factura(text);
-  }
-  else if (document === "carta318") {
-    return carta318(text);
-  } 
-  else if (document === "rrnas") {
-    return rrnas(text);
-  }
-  else if (document === "cove") {
-    return cove(text);
-  } 
-  else if (document === "cfdi") {
-    return cfdi(text);
-  }
-  else if (document === "cartaCesionDeDerechos") {
-    return cartaSesion(text);
-  } 
-  else if (document === "listaDeEmpaque") {
-    return packingList(text);
-  }
-  else {
-    return transportDocument(text);
-  }
-}
-
-export async function pedimento(text: string) {
+export async function structureTaggedText<T>(text: string, schema: z.ZodType<T>, documentType: DocumentType) {
   const { object } = await generateObject({
     model: wrapAISDKModel(openai("gpt-4o"), {
-      name: `Extract schema from pedimento`,
+      name: `Extract schema from ${documentType}`,
       project_name: "glosa",
     }),
-    system: systemPrompt,
-    schema: pedimentoSchema,
+    system: SYSTEM_PROMPT,
+    schema,
     prompt: `
-      El tipo de documento es pedimento. Aqui esta el texto del tag:
-      ${text}
-    `,
-  });
-  return object;
-}
+      El tipo de documento es ${documentType}. Aqui esta el texto del tag del pdf:
 
-export async function factura(text: string) {
-  const { object } = await generateObject({
-    model: wrapAISDKModel(openai("gpt-4o"), {
-      name: `Extract schema from factura`,
-      project_name: "glosa",
-    }),
-    system: systemPrompt,
-    schema: invoiceSchema,
-    prompt: `
-      El tipo de documento es factura. Aqui esta el texto del tag:
-      ${text}
-    `,
-  });
-  return object;
-}
-
-export async function carta318(text: string) {
-  const { object } = await generateObject({
-    model: wrapAISDKModel(openai("gpt-4o"), {
-      name: `Extract schema from carta318`,
-      project_name: "glosa",
-    }),
-    system: systemPrompt,
-    schema: carta318Schema,
-    prompt: `
-      El tipo de documento es carta318. Aqui esta el texto del tag:
-      ${text}
-    `,
-  });
-  return object;
-}
-
-export async function rrnas(text: string) {
-  const { object } = await generateObject({
-    model: wrapAISDKModel(openai("gpt-4o"), {
-      name: `Extract schema from rrnas`,
-      project_name: "glosa",
-    }),
-    system: systemPrompt,
-    schema: rrnaSchema,
-    prompt: `
-      El tipo de documento es rrnas. Aqui esta el texto del tag:
-      ${text}
-    `,
-  });
-  return object;
-}
-
-export async function cove(text: string) {
-  const { object } = await generateObject({
-    model: wrapAISDKModel(openai("gpt-4o"), {
-      name: `Extract schema from cove`,
-      project_name: "glosa",
-    }),
-    system: systemPrompt,
-    schema: coveSchema,
-    prompt: `
-      El tipo de documento es cove. Aqui esta el texto del tag:
-      ${text}
-    `,
-  });
-  return object;
-}
-
-export async function cfdi(text: string) {
-  const { object } = await generateObject({
-    model: wrapAISDKModel(openai("gpt-4o"), {
-      name: `Extract schema from cfdi`,
-      project_name: "glosa",
-    }),
-    system: systemPrompt,
-    schema: cfdiSchema,
-    prompt: `
-      El tipo de documento es cfdi. Aqui esta el texto del tag:
-      ${text}
-    `,
-  });
-  return object;
-}
-
-export async function cartaSesion(text: string) {
-  const { object } = await generateObject({
-    model: wrapAISDKModel(openai("gpt-4o"), {
-      name: `Extract schema from cartaSesion`,
-      project_name: "glosa",
-    }),
-    system: systemPrompt,
-    schema: cartaSesionSchema,
-    prompt: `
-      El tipo de documento es cartaSesion. Aqui esta el texto del tag:
-      ${text}
-    `,
-  });
-  return object;
-}
-
-export async function packingList(text: string) {
-  const { object } = await generateObject({
-    model: wrapAISDKModel(openai("gpt-4o"), {
-      name: `Extract schema from packingList`,
-      project_name: "glosa",
-    }),
-    system: systemPrompt,
-    schema: packingListSchema,
-    prompt: `
-      El tipo de documento es packingList. Aqui esta el texto del tag:
-      ${text}
-    `,
-  });
-  return object;
-}
-
-export async function transportDocument(text: string) {
-  const { object } = await generateObject({
-    model: wrapAISDKModel(openai("gpt-4o"), {
-      name: `Extract schema from transportDocument`,
-      project_name: "glosa",
-    }),
-    system: systemPrompt,
-    schema: transportDocumentSchema,
-    prompt: `
-      El tipo de documento es transportDocument. Aqui esta el texto del tag:
       ${text}
     `,
   });

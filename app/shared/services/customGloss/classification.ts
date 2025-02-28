@@ -95,16 +95,14 @@ export async function classifyDocuments(uploadedFiles: (UploadedFileData & { ori
     };
   }));
 
-  // Now group the classifications by document type.
+  // Now group the classifications by document type, taking only the first file of each type.
   const groupedClassifications = classifications.reduce((acc, curr) => {
-    // If the key doesn't exist yet, initialize it with an empty array.
+    // Only set the value if it doesn't exist yet (keeping the first file of each type)
     if (!acc[curr.documentType]) {
-      acc[curr.documentType] = [];
+      acc[curr.documentType] = curr;
     }
-    // Push the current classified file into the correct group.
-    acc[curr.documentType].push(curr);
     return acc;
-  }, {} as Record<DocumentType, (UploadedFileData & { originalFile: File; documentType: DocumentType })[]>);
+  }, {} as Record<DocumentType, (UploadedFileData & { originalFile: File; documentType: DocumentType })>);
 
   return groupedClassifications;
 }
