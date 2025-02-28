@@ -63,7 +63,7 @@ export async function classifyDocuments(uploadedFiles: (UploadedFileData & { ori
 
     return {
       ...uploadedFile,
-      tipo_de_documento,
+      document: tipo_de_documento,
     };
   }));
 
