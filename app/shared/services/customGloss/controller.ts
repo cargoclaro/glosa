@@ -7,7 +7,6 @@ import { revalidatePath } from "next/cache";
 import { isAuthenticated } from "@/app/shared/services/auth";
 import { read, create, updateTabWithCustomGlossId } from "./model";
 import { CustomGlossType, CustomGlossTabContextType } from "@prisma/client";
-import { UTApi } from "uploadthing/server";
 import { anthropic } from '@ai-sdk/anthropic';
 import { generateObject } from 'ai';
 import { z } from 'zod';
@@ -15,6 +14,7 @@ import { config } from 'dotenv';
 import { wrapAISDKModel } from "langsmith/wrappers/vercel";
 import { traceable } from "langsmith/traceable";
 import { extractText, DocumentTypeEnum, DocumentTypeDescription } from "./text-extraction";
+import { uploadFiles } from "./upload-files";
 
 config();
 
@@ -26,31 +26,8 @@ const runGlosa = traceable(
       throw new Error("User ID is not a string");
     }
 
-    const utapi = new UTApi();
     const files = formData.getAll("files") as File[]; // TODO: We should use zod instead of this
-
-    const uploadedFiles = await utapi.uploadFiles(files);
-
-    // Check if any uploads failed
-    const failedUploads = uploadedFiles.filter(({ error }) => error !== null);
-    if (failedUploads.length > 0) {
-      return {
-        success: false,
-        message: `Error al subir ${failedUploads.length} archivo(s): ${failedUploads.map(f => f.error?.message || "Error desconocido").join(", ")}`,
-      };
-    }
-
-    // All uploads succeeded, we can safely use the data
-    const successfulUploads = uploadedFiles.map((result, index) => {
-      const originalFile = files[index];
-      if (!originalFile) {
-        throw new Error("Should never happen");
-      }
-      return {
-        ...result.data!,
-        originalFile
-      };
-    });
+    const successfulUploads = await uploadFiles(files);
 
     const classificationsAndTextExtractions = await Promise.all(successfulUploads.map(async (uploadedFile) => {
       const { object: { tipo_de_documento } } = await generateObject({
@@ -60,7 +37,7 @@ const runGlosa = traceable(
         }),
         system: `
           Eres un experto en análisis y clasificación de documentos aduaneros.
-          `,
+        `,
         schema: z.object({
           tipo_de_documento: z.enum(DocumentTypeEnum).describe(DocumentTypeDescription)
         }),

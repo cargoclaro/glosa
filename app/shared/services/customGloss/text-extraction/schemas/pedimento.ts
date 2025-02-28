@@ -1,8 +1,3 @@
-export const prompt = `
-- Identifica los datos del pedimento
-- Identifica con cuidado las múltiples fracciones que puede haber en el documento, para llenar adecuadamente toda la sección de partidas
-`;
-
 import { z } from "zod";
 
 /**

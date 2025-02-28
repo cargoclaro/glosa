@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { generateObject } from "ai";
 import { wrapAISDKModel } from "langsmith/wrappers/vercel";
 import { openai } from "@ai-sdk/openai";
-import { pedimentoSchema } from "./pedimento";
+import { pedimentoSchema } from "./schemas/pedimento";
 
 // Document type enum for centralized definition
 export const DocumentTypeEnum = [
@@ -125,11 +125,12 @@ IMPORTANTE:
         system: systemPrompt,
         schema: pedimentoSchema,
         prompt: `
+          - Identifica los datos del pedimento
           - Identifica con cuidado las múltiples fracciones que puede haber en el documento, para llenar adecuadamente toda la sección de partidas
 
           OCR text dump:
           ${text}
-        `
+        `,
       });
       return object;
     }
