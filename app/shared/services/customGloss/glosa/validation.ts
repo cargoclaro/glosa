@@ -1,8 +1,8 @@
 import { z } from "zod"
 
-export type Validation = z.infer<typeof validationSchema>;
+export type Validations = z.infer<typeof validationsSchema>;
 
-export const validationSchema = z.array(
+export const validationsSchema = z.array(
   z.object({
     name: z.string().describe(`Nombre de la validación`),
     llmAnalysis: z.string().describe(`Análisis de la validación realizado por el LLM`),
