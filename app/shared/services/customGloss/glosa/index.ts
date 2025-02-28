@@ -5,6 +5,6 @@ import { documentToSchema } from "../data-extraction";
 
 export async function glosa({
   pedimento,
-}: Record<DocumentType, z.infer<typeof documentToSchema[keyof typeof documentToSchema]>>) {
+}: Partial<Record<DocumentType, z.infer<typeof documentToSchema[keyof typeof documentToSchema]>>>) {
   const validations = await numeroDePedimentoValidations(pedimento);
 }
