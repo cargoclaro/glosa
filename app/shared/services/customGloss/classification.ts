@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { wrapAISDKModel } from "langsmith/wrappers/vercel";
 import { UploadedFileData } from 'uploadthing/types';
 
-export const documents = [
+export const documentTypes = [
   "pedimento",
   "documentoDeTransporte",
   "factura",
@@ -16,7 +16,7 @@ export const documents = [
   "cfdi"
 ] as const;
 
-export type Document = (typeof documents)[number];
+export type DocumentType = (typeof documentTypes)[number];
 
 export async function classifyDocuments(uploadedFiles: (UploadedFileData & { originalFile: File })[]) {
   const classifications = await Promise.all(uploadedFiles.map(async (uploadedFile) => {
@@ -32,7 +32,7 @@ export async function classifyDocuments(uploadedFiles: (UploadedFileData & { ori
         Busca elementos como números de pedimento, sellos digitales, datos de importador/exportador, detalles de mercancías, referencias a NOMs, etc. que identifiquen el tipo específico de documento.
       `,
       schema: z.object({
-        document: z.enum(documents).describe(`
+        document: z.enum(documentTypes).describe(`
           Tipo de documento aduanero:
           
           - pedimento: 
@@ -95,5 +95,16 @@ export async function classifyDocuments(uploadedFiles: (UploadedFileData & { ori
     };
   }));
 
-  return classifications;
+  // Now group the classifications by document type.
+  const groupedClassifications = classifications.reduce((acc, curr) => {
+    // If the key doesn't exist yet, initialize it with an empty array.
+    if (!acc[curr.document]) {
+      acc[curr.document] = [];
+    }
+    // Push the current classified file into the correct group.
+    acc[curr.document].push(curr);
+    return acc;
+  }, {} as Record<DocumentType, (UploadedFileData & { originalFile: File; document: DocumentType })[]>);
+
+  return groupedClassifications;
 }
