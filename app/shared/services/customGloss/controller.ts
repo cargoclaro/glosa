@@ -11,6 +11,7 @@ import { config } from 'dotenv';
 import { traceable } from "langsmith/traceable";
 import { uploadFiles } from "./upload-files";
 import { classifyDocuments } from "./classification";
+import { extractTextFromPDFs } from "./data-extraction";
 
 config();
 
@@ -25,6 +26,7 @@ const runGlosa = traceable(
     const files = formData.getAll("files") as File[]; // TODO: We should use zod instead of this
     const successfulUploads = await uploadFiles(files);
     const classifications = await classifyDocuments(successfulUploads);
+    const extractedTexts = await extractTextFromPDFs(classifications);
   },
   {
     name: "runGlosa",
