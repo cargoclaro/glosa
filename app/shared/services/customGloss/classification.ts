@@ -1,4 +1,4 @@
-import { anthropic } from '@ai-sdk/anthropic';
+import { google } from '@ai-sdk/google';
 import { generateObject } from 'ai';
 import { z } from 'zod';
 import { wrapAISDKModel } from "langsmith/wrappers/vercel";
@@ -21,7 +21,7 @@ export type Document = (typeof documents)[number];
 export async function classifyDocuments(uploadedFiles: (UploadedFileData & { originalFile: File })[]) {
   const classifications = await Promise.all(uploadedFiles.map(async (uploadedFile) => {
     const { object: { tipo_de_documento } } = await generateObject({
-      model: wrapAISDKModel(anthropic("claude-3-7-sonnet-20250219"), {
+      model: wrapAISDKModel(google("gemini-2.0-flash-001"), {
         name: `Classify ${uploadedFile.name}`,
         project_name: "glosa",
       }),
@@ -53,7 +53,7 @@ export async function classifyDocuments(uploadedFiles: (UploadedFileData & { ori
             },
             {
               type: 'file',
-              data: uploadedFile.ufsUrl,
+              data: `data:application/pdf;base64,${Buffer.from(await uploadedFile.originalFile.arrayBuffer()).toString('base64')}`,
               mimeType: 'application/pdf',
             },
           ],
