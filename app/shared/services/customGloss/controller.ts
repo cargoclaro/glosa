@@ -11,9 +11,14 @@ import { UTApi } from "uploadthing/server";
 import { anthropic } from '@ai-sdk/anthropic';
 import { generateObject } from 'ai';
 import { z } from 'zod';
+import { config } from 'dotenv';
+import { wrapAISDKModel } from "langsmith/wrappers/vercel";
+import { traceable } from "langsmith/traceable";
 
-export async function analysis(formData: FormData) {
-  try {
+config();
+
+const runGlosa = traceable(
+  async (formData: FormData) => {
     const session = await isAuthenticated();
     const user_id = session["userId"];
     if (typeof user_id !== "string") {
@@ -22,9 +27,9 @@ export async function analysis(formData: FormData) {
 
     const utapi = new UTApi();
     const files = formData.getAll("files") as File[]; // TODO: We should use zod instead of this
-    
+
     const uploadedFiles = await utapi.uploadFiles(files);
-    
+
     // Check if any uploads failed
     const failedUploads = uploadedFiles.filter(({ error }) => error !== null);
     if (failedUploads.length > 0) {
@@ -33,27 +38,30 @@ export async function analysis(formData: FormData) {
         message: `Error al subir ${failedUploads.length} archivo(s): ${failedUploads.map(f => f.error?.message || "Error desconocido").join(", ")}`,
       };
     }
-    
+
     // All uploads succeeded, we can safely use the data
     const successfulUploads = uploadedFiles.map(result => result.data!);
 
     const classifications = await Promise.all(successfulUploads.map(async (uploadedFile) => {
-      const { object: { tipo_de_documento} } = await generateObject({
-        model: anthropic("claude-3-5-sonnet-20241022"),
+      const { object: { tipo_de_documento } } = await generateObject({
+        model: wrapAISDKModel(anthropic("claude-3-5-sonnet-20241022"), {
+          name: `classification-${uploadedFile.name}`,
+          project_name: "glosa",
+        }),
         system: `
           Eres un experto en análisis y clasificación de documentos aduaneros.
           `,
         schema: z.object({
           tipo_de_documento: z.enum([
-            "pedimento", 
-            "documento_de_transporte", 
-            "factura", 
-            "carta_318", 
-            "carta_cesion_derechos", 
-            "cove", 
-            "noms", 
-            "rrnas", 
-            "lista_de_empaque", 
+            "pedimento",
+            "documento_de_transporte",
+            "factura",
+            "carta_318",
+            "carta_cesion_derechos",
+            "cove",
+            "noms",
+            "rrnas",
+            "lista_de_empaque",
             "cfdi"
           ]).describe(`
             Tipo de documento aduanero:
@@ -89,6 +97,22 @@ export async function analysis(formData: FormData) {
         tipo_de_documento,
       };
     }));
+  },
+  {
+    name: "runGlosa",
+    project_name: "glosa",
+  }
+);
+
+export async function analysis(formData: FormData) {
+  try {
+    const session = await isAuthenticated();
+    const user_id = session["userId"];
+    if (typeof user_id !== "string") {
+      throw new Error("User ID is not a string");
+    }
+
+    const glosa = await runGlosa(formData);
 
     const query_id = randomUUID();
 
@@ -600,9 +624,9 @@ export async function analysis(formData: FormData) {
                     name,
                     value:
                       typeof value === "object" &&
-                      value !== null &&
-                      "valor" in value &&
-                      "moneda" in value
+                        value !== null &&
+                        "valor" in value &&
+                        "moneda" in value
                         ? `${value.valor} ${value.moneda}`
                         : value,
                   },
