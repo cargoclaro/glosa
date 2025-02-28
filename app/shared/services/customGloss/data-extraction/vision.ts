@@ -1,8 +1,8 @@
 import { generateObject } from "ai";
 import { wrapAISDKModel } from "langsmith/wrappers/vercel";
 import { google } from "@ai-sdk/google";
-import { DocumentType } from "../classification";
 import type { z } from "zod";
+import { DocumentType } from "../classification";
 
 const SYSTEM_PROMPT = `
   Eres un experto en esquematizar información estructurada de documentos aduaneros a partir de imágenes. Tu tarea es analizar la imagen proporcionada y extraer toda la información relevante con estructura.
@@ -17,10 +17,10 @@ const SYSTEM_PROMPT = `
 `;
 
 export async function extractTextFromImage<T>(
-  pdfFile: File, 
-  documentType: DocumentType, 
+  pdfFile: File,
+  documentType: DocumentType,
   schema: z.ZodType<T>,
-): Promise<T> {
+) {
   const base64Data = Buffer.from(await pdfFile.arrayBuffer()).toString('base64');
   const { object } = await generateObject({
     model: wrapAISDKModel(google("gemini-2.0-flash-001"), {
@@ -46,6 +46,6 @@ export async function extractTextFromImage<T>(
       },
     ],
   });
-  
+
   return object;
 }

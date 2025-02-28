@@ -18,7 +18,7 @@ export const documentTypes = [
 
 export type DocumentType = (typeof documentTypes)[number];
 
-export async function classifyDocuments(uploadedFiles: (UploadedFileData & { originalFile: File })[]) {
+export async function classifyDocuments(uploadedFiles: (UploadedFileData & { originalFile: File })[]): Promise<Partial<Record<DocumentType, (UploadedFileData & { originalFile: File; documentType: DocumentType })>>> {
   const classifications = await Promise.all(uploadedFiles.map(async (uploadedFile) => {
     const { object: { documentType } } = await generateObject({
       model: wrapAISDKModel(google("gemini-2.0-flash-001"), {
@@ -102,7 +102,7 @@ export async function classifyDocuments(uploadedFiles: (UploadedFileData & { ori
       acc[curr.documentType] = curr;
     }
     return acc;
-  }, {} as Record<DocumentType, (UploadedFileData & { originalFile: File; documentType: DocumentType })>);
+  }, {} as Partial<Record<DocumentType, (UploadedFileData & { originalFile: File; documentType: DocumentType })>>);
 
   return groupedClassifications;
 }
