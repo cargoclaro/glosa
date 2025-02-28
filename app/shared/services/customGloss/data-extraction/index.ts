@@ -19,8 +19,8 @@ export const documentToSchema = {
 } as const;
 
 export async function extractTextFromPDFs(
-  classifications: Record<DocumentType, UploadedFileData & { originalFile: File; documentType: DocumentType }>
-): Promise<Record<DocumentType, z.infer<typeof documentToSchema[keyof typeof documentToSchema]>>> {
+  classifications: Partial<Record<DocumentType, UploadedFileData & { originalFile: File; documentType: DocumentType }>>
+) {
   const {
     factura,
     carta318,
