@@ -167,7 +167,7 @@ export async function analysis(formData: FormData) {
     }
 
     // Only use this for testing the migration from the python backend
-    const enableMigrationCode = false;
+    const enableMigrationCode = process.env["ENABLE_MIGRATION_CODE"];
     if (enableMigrationCode) {
       const glosa = await runGlosa(formData);
       return
