@@ -45,51 +45,51 @@ export async function extractTextFromPDFs(
     cfdiText,
     cartaCesionDeDerechosText
   ] = await Promise.all([
-    extractTextFromPDF(
+    factura ? extractTextFromPDF(
       factura.originalFile,
       factura.documentType,
       documentToSchema.factura
-    ),
-    extractTextFromPDF(
+    ) : null,
+    carta318 ? extractTextFromPDF(
       carta318.originalFile,
       carta318.documentType,
       documentToSchema.carta318
-    ),
-    extractTextFromPDF(
+    ) : null,
+    rrnas ? extractTextFromPDF(
       rrnas.originalFile,
       rrnas.documentType,
       documentToSchema.rrnas
-    ),
-    extractTextFromPDF(
+    ) : null,
+    documentoDeTransporte ? extractTextFromPDF(
       documentoDeTransporte.originalFile,
       documentoDeTransporte.documentType,
       documentToSchema.documentoDeTransporte
-    ),
-    extractTextFromPDF(
+    ) : null,
+    pedimento ? extractTextFromPDF(
       pedimento.originalFile,
       pedimento.documentType,
       documentToSchema.pedimento
-    ),
-    extractTextFromPDF(
+    ) : null,
+    listaDeEmpaque ? extractTextFromPDF(
       listaDeEmpaque.originalFile,
       listaDeEmpaque.documentType,
       documentToSchema.listaDeEmpaque
-    ),
-    extractTextFromPDF(
+    ) : null,
+    cove ? extractTextFromPDF(
       cove.originalFile,
       cove.documentType,
       documentToSchema.cove
-    ),
-    extractTextFromPDF(
+    ) : null,
+    cfdi ? extractTextFromPDF(
       cfdi.originalFile,
       cfdi.documentType,
       documentToSchema.cfdi
-    ),
-    extractTextFromPDF(
+    ) : null,
+    cartaCesionDeDerechos ? extractTextFromPDF(
       cartaCesionDeDerechos.originalFile,
       cartaCesionDeDerechos.documentType,
       documentToSchema.cartaCesionDeDerechos
-    )
+    ) : null
   ]);
 
   return {
