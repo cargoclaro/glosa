@@ -1,6 +1,6 @@
 import { z } from "zod"
 
-export const invoiceSchema = z.array(z
+export const invoiceSchema = z
   .object({
     invoice_number: z.string().describe("Invoice number"),
     invoice_date: z
@@ -84,5 +84,3 @@ export const invoiceSchema = z.array(z
       )
   })
   .describe("Data of an individual invoice")
-)
-  .describe("Set of detected invoices")

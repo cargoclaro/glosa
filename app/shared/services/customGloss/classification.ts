@@ -11,7 +11,6 @@ export const documents = [
   "carta_318",
   "carta_cesion_derechos",
   "cove",
-  "noms",
   "rrnas",
   "lista_de_empaque",
   "cfdi"
