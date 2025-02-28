@@ -18,8 +18,8 @@ const SYSTEM_PROMPT = `
 
 export async function structureTaggedText<T>(
   text: string,
-  documentType: DocumentType,
   schema: z.ZodType<T>,
+  documentType: DocumentType,
 ): Promise<T> {
   const { object } = await generateObject({
     model: wrapAISDKModel(openai("gpt-4o"), {
