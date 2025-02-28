@@ -1,5 +1,7 @@
 import { z } from "zod"
 
+export type Rrna = z.infer<typeof rrnaSchema>;
+
 export const rrnaSchema = z.object({
   regulation_number: z
     .string()

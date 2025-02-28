@@ -1,5 +1,7 @@
 import { z } from "zod"
 
+export type Pedimento = z.infer<typeof pedimentoSchema>;
+
 export const pedimentoSchema = z.object({
   encabezado_del_pedimento: z
     .object({

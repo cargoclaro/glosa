@@ -1,5 +1,7 @@
 import { z } from "zod"
 
+export type Cove = z.infer<typeof coveSchema>;
+
 export const coveSchema = z.object({
   acuse_valor: z
     .string()

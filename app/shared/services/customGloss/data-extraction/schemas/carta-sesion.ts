@@ -1,5 +1,7 @@
 import { z } from "zod"
 
+export type CartaSesion = z.infer<typeof cartaSesionSchema>;
+
 export const cartaSesionSchema = z.object({
   assignor: z
     .object({

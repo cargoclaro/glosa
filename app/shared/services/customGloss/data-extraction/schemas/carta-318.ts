@@ -1,5 +1,7 @@
 import { z } from "zod"
 
+export type Carta318 = z.infer<typeof carta318Schema>;
+
 export const carta318Schema = z.object({
   document_info: z
     .object({
