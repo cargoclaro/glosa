@@ -20,7 +20,7 @@ export type DocumentType = (typeof documentTypes)[number];
 
 export async function classifyDocuments(uploadedFiles: (UploadedFileData & { originalFile: File })[]) {
   const classifications = await Promise.all(uploadedFiles.map(async (uploadedFile) => {
-    const { object: { document } } = await generateObject({
+    const { object: { documentType } } = await generateObject({
       model: wrapAISDKModel(google("gemini-2.0-flash-001"), {
         name: `Classify ${uploadedFile.name}`,
         project_name: "glosa",
@@ -32,7 +32,7 @@ export async function classifyDocuments(uploadedFiles: (UploadedFileData & { ori
         Busca elementos como números de pedimento, sellos digitales, datos de importador/exportador, detalles de mercancías, referencias a NOMs, etc. que identifiquen el tipo específico de documento.
       `,
       schema: z.object({
-        document: z.enum(documentTypes).describe(`
+        documentType: z.enum(documentTypes).describe(`
           Tipo de documento aduanero:
           
           - pedimento: 
@@ -91,20 +91,20 @@ export async function classifyDocuments(uploadedFiles: (UploadedFileData & { ori
 
     return {
       ...uploadedFile,
-      document,
+      documentType,
     };
   }));
 
   // Now group the classifications by document type.
   const groupedClassifications = classifications.reduce((acc, curr) => {
     // If the key doesn't exist yet, initialize it with an empty array.
-    if (!acc[curr.document]) {
-      acc[curr.document] = [];
+    if (!acc[curr.documentType]) {
+      acc[curr.documentType] = [];
     }
     // Push the current classified file into the correct group.
-    acc[curr.document].push(curr);
+    acc[curr.documentType].push(curr);
     return acc;
-  }, {} as Record<DocumentType, (UploadedFileData & { originalFile: File; document: DocumentType })[]>);
+  }, {} as Record<DocumentType, (UploadedFileData & { originalFile: File; documentType: DocumentType })[]>);
 
   return groupedClassifications;
 }
