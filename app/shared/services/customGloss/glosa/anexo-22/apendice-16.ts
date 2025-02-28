@@ -1,0 +1,160 @@
+export const apendice16 = {
+  "Partidas": {
+    "Descripción": "Para cada una de las partidas del pedimento se deberán declarar los datos que a continuación se mencionan, conforme a la posición en que se encuentran en el encabezado de partidas del formato de pedimento.",
+    "Campos": [
+      {
+        "Número": 1,
+        "Campo": "SEC.",
+        "Descripción": "Número de la secuencia de la fracción en el pedimento."
+      },
+      {
+        "Número": 2,
+        "Campo": "FRACCIÓN",
+        "Descripción": "Fracción arancelaria aplicable a la mercancía según corresponda, conforme a la TIGIE.",
+        "Nota": "Tratándose de operaciones de tránsito, se asentará el código genérico 00000000.",
+        "Complemento": "En el caso del pedimento global complementario, se asentará el código genérico 99999999, únicamente en una partida."
+      },
+      {
+        "Número": 3,
+        "Campo": "SUBD. / NÚM. IDENTIFICACIÓN COMERCIAL",
+        "Descripción": "Se deberá declarar la clave de subdivisión cuando ésta sea requerida. Se deberá declarar el NICO que corresponda a la mercancía."
+      },
+      {
+        "Número": 4,
+        "Campo": "VINC.",
+        "Descripción": "Clave que especifica si el valor en aduana está influido por vinculaciones comerciales, financieras o de otra clase.",
+        "Opciones": {
+          "0": "No existe vinculación.",
+          "1": "Sí existe vinculación y no afecta el valor en aduana.",
+          "2": "Sí existe vinculación y afecta el valor en aduana."
+        },
+        "Nota": "Este campo no será obligatorio cuando se trate de operaciones de tránsito interno a la importación o tránsito internacional."
+      },
+      {
+        "Número": 5,
+        "Campo": "MET. VAL.",
+        "Descripción": "Clave del método de valoración de mercancías importadas, conforme al apéndice 11 del presente Anexo.",
+        "Nota": "Este campo no será obligatorio cuando se trate de operaciones de tránsito interno a la importación o tránsito internacional."
+      },
+      {
+        "Número": 6,
+        "Campo": "UMC.",
+        "Descripción": "Clave correspondiente a la unidad de medida de comercialización de las mercancías señaladas en el CFDI o documento equivalente.",
+        "Nota": "En los casos en que la unidad de medida no corresponda a alguna de las señaladas, se deberá asentar la clave correspondiente a la unidad de medida de aplicación de la TIGIE."
+      },
+      {
+        "Número": 7,
+        "Campo": "CANTIDAD UMC.",
+        "Descripción": "Cantidad de mercancías conforme a la unidad de medida de comercialización de acuerdo a lo señalado en el CFDI o documento equivalente.",
+        "Nota": "La cantidad deberá ser el resultado de la conversión de la unidad de medida declarada en el CFDI a la unidad de medida de la TIGIE."
+      },
+      {
+        "Número": 8,
+        "Campo": "UMT.",
+        "Descripción": "Clave correspondiente a la unidad de medida de aplicación de la TIGIE.",
+        "Nota": "Tratándose de operaciones de tránsito interno, este campo se dejará vacío."
+      },
+      {
+        "Número": 9,
+        "Campo": "CANTIDAD UMT",
+        "Descripción": "Cantidad correspondiente conforme a la unidad de medida de la TIGIE.",
+        "Nota": "Tratándose de operaciones de tránsito interno, este campo se dejará vacío."
+      },
+      {
+        "Número": 10,
+        "Campo": "P. V/C.",
+        "Descripción": "Clave del país que vende (en importación) o del país que compra (en exportación), conforme al apéndice 4 del presente Anexo.",
+        "Nota": "Este campo no será obligatorio cuando se trate de operaciones de tránsito."
+      },
+      {
+        "Número": 11,
+        "Campo": "P. O/D.",
+        "Descripción": "En importación, clave del país de la parte exportadora; en exportación, clave del país del destino final de la mercancía.",
+        "Nota": "Este campo no será obligatorio cuando se trate de operaciones de tránsito."
+      },
+      {
+        "Número": 12,
+        "Campo": "DESCRIPCIÓN",
+        "Descripción": "Descripción de la mercancía, la naturaleza y características técnicas y comerciales necesarias para determinar su clasificación arancelaria."
+      },
+      {
+        "Número": 13,
+        "Campo": "VAL. ADU/VAL. USD.",
+        "Descripción": "El valor en aduana de la mercancía expresado en moneda nacional, determinado conforme a la Ley.",
+        "Cálculo": "Este valor deberá ser igual al resultado de multiplicar el importe del precio pagado por el factor de prorrateo.",
+        "Exportación": "El valor comercial de la mercancía en dólares de los Estados Unidos de América."
+      },
+      {
+        "Número": 14,
+        "Campo": "IMP. PRECIO PAG./VALOR COMERCIAL.",
+        "Descripción": "Valor en moneda nacional de la mercancía, sin incluir fletes ni seguros.",
+        "Exportación": "Se deberá declarar el valor comercial.",
+        "IMMEX": "Incluir el valor de los insumos importados temporalmente más el valor agregado.",
+        "Nota": "Este campo no deberá considerar conceptos que no forman parte del valor en aduana."
+      },
+      {
+        "Número": 15,
+        "Campo": "PRECIO UNIT.",
+        "Descripción": "Importe de precio unitario, resultado de dividir el precio pagado entre la cantidad en unidades de comercialización.",
+        "Precios_Estimados": "Precio unitario en moneda nacional especificado en el CFDI.",
+        "Nota": "No será obligatorio cuando se trate de operaciones de tránsito interno."
+      },
+      {
+        "Número": 16,
+        "Campo": "VAL. AGREG.",
+        "Descripción": "Importe del valor agregado de exportación a las mercancías que retornen.",
+        "Nota": "En otro caso, no asentar datos (vacío)."
+      },
+      {
+        "Número": 17,
+        "Campo": "(VACÍO)",
+        "Descripción": "No asentar datos. (vacío)."
+      },
+      {
+        "Número": 18,
+        "Campo": "MARCA",
+        "Descripción": "El nombre de la marca de las mercancías.",
+        "Aplicación": "Importación de vehículos o cualquier otro producto que establezca el SAT."
+      },
+      {
+        "Número": 19,
+        "Campo": "MODELO",
+        "Descripción": "Modelo de las mercancías que se están importando.",
+        "Aplicación": "Tratándose de vehículos o cualquier otro producto que establezca la ANAM."
+      },
+      {
+        "Número": 20,
+        "Campo": "CÓDIGO PRODUCTO",
+        "Descripción": "Opcional."
+      },
+      {
+        "Número": 21,
+        "Campo": "CON.",
+        "Descripción": "Descripción abreviada de la contribución o aprovechamiento que aplique a nivel partida, conforme al apéndice 12 del presente Anexo."
+      },
+      {
+        "Número": 22,
+        "Campo": "TASA",
+        "Descripción": "Tasa aplicable a la contribución o aprovechamiento."
+      },
+      {
+        "Número": 23,
+        "Campo": "T. T.",
+        "Descripción": "Clave del tipo de tasa aplicable, conforme al apéndice 18 del presente Anexo.",
+        "Aranceles_Mixtos": "Se deberá declarar tanto la tasa porcentual como el arancel específico.",
+        "Descuento_TIGIE": "Se deberá declarar tanto arancel de TIGIE como la tasa o factor que se aplica."
+      },
+      {
+        "Número": 24,
+        "Campo": "F.P.",
+        "Descripción": "Clave de la forma de pago aplicable a la contribución, conforme al apéndice 13 del presente Anexo."
+      },
+      {
+        "Número": 25,
+        "Campo": "IMPORTE",
+        "Descripción": "Importe total en moneda nacional de la contribución y aprovechamientos.",
+        "Nota": "En extracción del régimen de depósito fiscal, se deberá actualizar conforme a la opción elegida en el pedimento."
+      }
+    ]
+  }
+} as const; 
