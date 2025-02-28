@@ -4,8 +4,7 @@ import { z } from 'zod';
 import { wrapAISDKModel } from "langsmith/wrappers/vercel";
 import { UploadedFileData } from 'uploadthing/types';
 
-// Document type enum for centralized definition
-export const DocumentTypeEnum = [
+export const documents = [
   "pedimento",
   "documento_de_transporte",
   "factura",
@@ -18,6 +17,8 @@ export const DocumentTypeEnum = [
   "cfdi"
 ] as const;
 
+export type Document = (typeof documents)[number];
+
 export async function classifyDocuments(uploadedFiles: (UploadedFileData & { originalFile: File })[]) {
   const classifications = await Promise.all(uploadedFiles.map(async (uploadedFile) => {
     const { object: { tipo_de_documento } } = await generateObject({
@@ -29,7 +30,7 @@ export async function classifyDocuments(uploadedFiles: (UploadedFileData & { ori
         Eres un experto en análisis y clasificación de documentos aduaneros.
       `,
       schema: z.object({
-        tipo_de_documento: z.enum(DocumentTypeEnum).describe(`
+        tipo_de_documento: z.enum(documents).describe(`
           Tipo de documento aduanero:
           - pedimento: Documento oficial de la aduana mexicana con números de pedimento (15-17 dígitos), campos de régimen aduanero, datos del importador/exportador, y sellos digitales.
           - documento_de_transporte: Puede ser Bill of Lading (B/L), guía aérea (AWB) o carta porte con detalles del envío, consignatario, transportista, origen/destino.
