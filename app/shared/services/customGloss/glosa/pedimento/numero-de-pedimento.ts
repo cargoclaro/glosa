@@ -4,7 +4,7 @@ import { generateObject } from "ai";
 import { wrapAISDKModel } from "langsmith/wrappers/vercel";
 import { openai } from "@ai-sdk/openai";
 
-export async function validateLongitud(pedimento: Pedimento) {
+async function validateLongitud(pedimento: Pedimento) {
   const numeroPedimento = pedimento.encabezado_del_pedimento?.num_pedimento;
   
   const validation = {
@@ -26,7 +26,7 @@ export async function validateLongitud(pedimento: Pedimento) {
   return object;
 }
 
-export async function validateAñoPedimento(pedimento: Pedimento) {
+async function validateAñoPedimento(pedimento: Pedimento) {
   const numeroPedimento = pedimento.encabezado_del_pedimento?.num_pedimento;
   
   const validation = {
