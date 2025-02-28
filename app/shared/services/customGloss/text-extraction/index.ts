@@ -5,35 +5,7 @@ import { generateObject } from "ai";
 import { wrapAISDKModel } from "langsmith/wrappers/vercel";
 import { openai } from "@ai-sdk/openai";
 import { pedimentoSchema } from "./schemas/pedimento";
-
-// Document type enum for centralized definition
-export const DocumentTypeEnum = [
-  "pedimento",
-  "documento_de_transporte",
-  "factura",
-  "carta_318",
-  "carta_cesion_derechos",
-  "cove",
-  "noms",
-  "rrnas",
-  "lista_de_empaque",
-  "cfdi"
-] as const;
-
-// Description for document types to be used with Zod schema
-export const DocumentTypeDescription = `
-  Tipo de documento aduanero:
-  - pedimento: Documento oficial de la aduana mexicana con números de pedimento (15-17 dígitos), campos de régimen aduanero, datos del importador/exportador, y sellos digitales.
-  - documento_de_transporte: Puede ser Bill of Lading (B/L), guía aérea (AWB) o carta porte con detalles del envío, consignatario, transportista, origen/destino.
-  - factura: Documento comercial con detalles de compra-venta internacional, información de vendedor/comprador, productos, precios, INCOTERMS.
-  - carta_318: Documento que certifica cumplimiento de NOMs para productos usados, con referencias a la regla 3.1.8.
-  - carta_cesion_derechos: Documento legal que transfiere derechos de importación/exportación entre partes.
-  - cove: Comprobante de Valor Electrónico que valida el valor de mercancías con formato específico del SAT.
-  - noms: Documentos que certifican cumplimiento de Normas Oficiales Mexicanas con números de certificado.
-  - rrnas: Documentos que certifican cumplimiento de regulaciones y restricciones no arancelarias.
-  - lista_de_empaque: Documento detallado del contenido físico del envío, con cantidad de bultos, pesos y dimensiones.
-  - cfdi: Comprobante Fiscal Digital por Internet, factura electrónica mexicana con UUID y sellos digitales SAT.
-`;
+import { DocumentTypeEnum } from "../classification";
 
 // Create a Zod enum schema that can be imported in other files
 export const DocumentTypeSchema = z.enum(DocumentTypeEnum);
