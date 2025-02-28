@@ -14,8 +14,50 @@ import { z } from 'zod';
 import { config } from 'dotenv';
 import { wrapAISDKModel } from "langsmith/wrappers/vercel";
 import { traceable } from "langsmith/traceable";
+import pdf from 'pdf-parse';
+import sharp from 'sharp';
 
 config();
+
+/**
+ * Preprocesses an image to improve OCR quality.
+ * 
+ * @param imageBuffer - Buffer containing the image data
+ * @returns Promise with the processed image buffer
+ */
+async function preprocessImage(imageBuffer: Buffer): Promise<Buffer> {
+  try {
+    // Target height for resize
+    const targetHeight = 2000;
+
+    // Get image metadata to calculate aspect ratio
+    const { width, height } = await sharp(imageBuffer).metadata();
+    if (!width || !height) {
+      throw new Error("Image metadata is missing width or height");
+    }
+    const aspectRatio = width / height;
+    const targetWidth = Math.round(targetHeight * aspectRatio);
+
+    // Process the image:
+    // 1. Convert to grayscale
+    // 2. Apply threshold (similar to adaptiveThreshold in OpenCV)
+    // 3. Denoise with median filter (approximation of fastNlMeansDenoising)
+    // 4. Resize with high-quality Lanczos resampling
+    return await sharp(imageBuffer)
+      .grayscale()
+      .threshold(128) // Simple threshold as Sharp doesn't have adaptive threshold
+      .median(3) // Apply median filter for denoising
+      .resize(targetWidth, targetHeight, {
+        kernel: sharp.kernel.lanczos3, // Similar to INTER_LANCZOS4
+        fit: 'fill'
+      })
+      .toBuffer();
+
+  } catch (error) {
+    console.error(`Error preprocessing image: ${error}`);
+    throw error;
+  }
+}
 
 const runGlosa = traceable(
   async (formData: FormData) => {
@@ -40,7 +82,10 @@ const runGlosa = traceable(
     }
 
     // All uploads succeeded, we can safely use the data
-    const successfulUploads = uploadedFiles.map(result => result.data!);
+    const successfulUploads = uploadedFiles.map((result, index) => ({
+      ...result.data!,
+      originalFile: files[index]  // Keep reference to the original file
+    }));
 
     const classifications = await Promise.all(successfulUploads.map(async (uploadedFile) => {
       const { object: { tipo_de_documento } } = await generateObject({
@@ -92,6 +137,15 @@ const runGlosa = traceable(
         ],
       });
 
+      if (!uploadedFile.originalFile) {
+        throw new Error("Should never happen");
+      }
+      const { text } = await pdf(Buffer.from(await uploadedFile.originalFile.arrayBuffer()));
+
+      if (text === "") {
+        const processedImage = await preprocessImage(Buffer.from(await uploadedFile.originalFile.arrayBuffer()));
+      }
+
       return {
         ...uploadedFile,
         tipo_de_documento,
@@ -112,8 +166,12 @@ export async function analysis(formData: FormData) {
       throw new Error("User ID is not a string");
     }
 
-    const glosa = await runGlosa(formData);
-
+    // Only use this for testing the migration from the python backend
+    const enableMigrationCode = false;
+    if (enableMigrationCode) {
+      const glosa = await runGlosa(formData);
+      return
+    }
     const query_id = randomUUID();
 
     const baseUrl =
