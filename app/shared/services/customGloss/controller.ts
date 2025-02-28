@@ -12,6 +12,7 @@ import { traceable } from "langsmith/traceable";
 import { uploadFiles } from "./upload-files";
 import { classifyDocuments } from "./classification";
 import { extractTextFromPDFs } from "./data-extraction";
+import { glosa } from "./glosa";
 
 config();
 
@@ -27,6 +28,7 @@ const runGlosa = traceable(
     const successfulUploads = await uploadFiles(files);
     const classifications = await classifyDocuments(successfulUploads);
     const extractedTexts = await extractTextFromPDFs(classifications);
+    const validations = await glosa(extractedTexts);
   },
   {
     name: "runGlosa",

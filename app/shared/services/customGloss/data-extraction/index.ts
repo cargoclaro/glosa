@@ -6,7 +6,7 @@ import type { z } from "zod";
 import { structureTaggedText } from "./tagged";
 import { UploadedFileData } from 'uploadthing/types';
 
-const documentToSchema = {
+export const documentToSchema = {
   "factura": invoiceSchema,
   "carta318": carta318Schema,
   "rrnas": rrnaSchema,
