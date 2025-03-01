@@ -4,7 +4,7 @@ import { generateObject } from "ai";
 import { wrapAISDKModel } from "langsmith/wrappers/vercel";
 import { openai } from "@ai-sdk/openai";
 
-async function validateRfcFormat(pedimento: Pedimento, cove: Cove, carta318: Carta318) {
+export async function validateRfcFormat(pedimento: Pedimento, cove: Cove, carta318: Carta318) {
   // Extract RFC values from documents
   const rfcPedimento = pedimento.datos_importador?.rfc;
   const rfcCove = cove?.datos_generales_destinatario?.rfc_destinatario;
@@ -31,7 +31,7 @@ async function validateRfcFormat(pedimento: Pedimento, cove: Cove, carta318: Car
   return object;
 }
 
-async function validateCesionDerechos(pedimento: Pedimento, cartaSesion: CartaSesion, carta318: Carta318) {
+export async function validateCesionDerechos(pedimento: Pedimento, cartaSesion: CartaSesion, carta318: Carta318) {
   // Extract values from documents
   const fechaEntradaPedimento = pedimento.fecha_entrada_presentacion;
   const rfcComercializadora = cartaSesion?.assignee?.identification_rfc;
@@ -61,7 +61,7 @@ async function validateCesionDerechos(pedimento: Pedimento, cartaSesion: CartaSe
   return object;
 }
 
-async function validateDatosImportador(pedimento: Pedimento, cove: Cove, carta318: Carta318) {
+export async function validateDatosImportador(pedimento: Pedimento, cove: Cove, carta318: Carta318) {
   // Extract values from documents
   const rfcPedimento = pedimento.datos_importador?.rfc;
   const rfcCove = cove?.datos_generales_destinatario?.rfc_destinatario;
@@ -103,7 +103,7 @@ async function validateDatosImportador(pedimento: Pedimento, cove: Cove, carta31
   return object;
 }
 
-async function validateDatosProveedor(pedimento: Pedimento, cove: Cove, carta318: Carta318) {
+export async function validateDatosProveedor(pedimento: Pedimento, cove: Cove, carta318: Carta318) {
   // Extract values from documents
   const nombreProveedorPedimento = pedimento.nombre_razon_social;
   const nombreProveedorCove = cove?.datos_generales_proveedor?.nombre_razon_social;
@@ -145,11 +145,11 @@ async function validateDatosProveedor(pedimento: Pedimento, cove: Cove, carta318
   return object;
 }
 
-async function validateFechasYFolios(pedimento: Pedimento, cove: Cove, invoice: Invoice, carta318: Carta318) {
+export async function validateFechasYFolios(pedimento: Pedimento, cove: Cove, invoice: Invoice, carta318: Carta318) {
   // Extract values from documents
   const fechaEntradaPedimento = pedimento.fecha_entrada_presentacion;
   const fechaExpedicionCove = cove?.fecha_expedicion;
-  const fechaExpedicionFactura = invoice?.fecha_expedicion;
+  const fechaExpedicionFactura = invoice?.invoice_date;
   const fechaExpedicionCarta318 = carta318?.document_info?.fecha;
   
   const numeroCovePedimento = pedimento.cove;
@@ -184,7 +184,7 @@ async function validateFechasYFolios(pedimento: Pedimento, cove: Cove, invoice: 
   return object;
 }
 
-async function validateMonedaYEquivalencia(pedimento: Pedimento, cove: Cove, carta318: Carta318, invoice: Invoice) {
+export async function validateMonedaYEquivalencia(pedimento: Pedimento, cove: Cove, carta318: Carta318, invoice: Invoice) {
  // Moneda
  const monedaPedimento = pedimento.datos_factura?.[0]?.moneda_factura;
  const monedaCove = cove?.datos_mercancia?.tipo_moneda;

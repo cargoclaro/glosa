@@ -6,7 +6,7 @@ import { generateObject } from "ai";
 import { wrapAISDKModel } from "langsmith/wrappers/vercel";
 import { openai } from "@ai-sdk/openai";
 
-async function validateTipoTransporte(pedimento: Pedimento) {
+export async function validateTipoTransporte(pedimento: Pedimento) {
   // Extract transport type from pedimento
   const tipoTransporteEntradaSalida = pedimento.medios_transporte?.entrada_salida;
   const tipoTransporteArribo = pedimento.medios_transporte?.arribo;
@@ -34,7 +34,7 @@ async function validateTipoTransporte(pedimento: Pedimento) {
   return object;
 }
 
-async function validateModalidadMedioTransporte(pedimento: Pedimento, transportDocument: TransportDocument) {
+export async function validateModalidadMedioTransporte(pedimento: Pedimento, transportDocument: TransportDocument) {
   // Extract transport means from pedimento
   const tipoTransporteEntradaSalida = pedimento.medios_transporte?.entrada_salida;
   
@@ -62,7 +62,7 @@ async function validateModalidadMedioTransporte(pedimento: Pedimento, transportD
   return object;
 }
 
-async function validateNumeroGuiaEmbarque(pedimento: Pedimento, transportDocument: TransportDocument) {
+export async function validateNumeroGuiaEmbarque(pedimento: Pedimento, transportDocument: TransportDocument) {
   // Extract guide/shipment number from pedimento
   const numeroGuiaEmbarque = pedimento.no_guia_embarque_id;
   
