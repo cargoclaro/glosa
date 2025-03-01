@@ -140,7 +140,7 @@ async function validateCalculoContribuciones(pedimento: Pedimento) {
 // Función para validar coincidencia de permisos e identificadores
 async function validatePermisosIdentificadores(pedimento: Pedimento) {
   // Extraer identificadores a nivel pedimento
-  const identificadoresPedimento = pedimento.identificadores_pedimento || [];
+  const identificadoresPedimento = pedimento.partidas? [];
   
   // Extraer partidas con identificadores
   const partidas = pedimento.partidas || [];
@@ -211,20 +211,4 @@ async function validateRegulacionesNoArancelarias(pedimento: Pedimento) {
   });
   
   return object;
-}
-
-// Función principal que ejecuta todas las validaciones
-export async function arancelesContribucionesValidations(pedimento: Pedimento) {
-  const invoice = pedimento.documentos?.factura;
-  
-  return [
-    await validatePreferenciaArancelaria(pedimento),
-    await validateCoherenciaUMC(pedimento, invoice),
-    await validateCoherenciaPeso(pedimento),
-    await validateCalculoDTA(pedimento),
-    await validateCalculoContribuciones(pedimento),
-    await validatePermisosIdentificadores(pedimento),
-    await validateRegulacionesArancelarias(pedimento),
-    await validateRegulacionesNoArancelarias(pedimento)
-  ];
 }
