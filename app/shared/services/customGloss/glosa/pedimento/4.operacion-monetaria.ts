@@ -4,12 +4,12 @@ import { generateObject } from "ai";
 import { wrapAISDKModel } from "langsmith/wrappers/vercel";
 import { openai } from "@ai-sdk/openai";
 import { TransportDocument } from "../../data-extraction/schemas";
-import { Carta318, carta318Schema } from "../../data-extraction/schemas/carta-318";
-import { Invoice, invoiceSchema } from "../../data-extraction/schemas/invoice";
+import { Carta318 } from "../../data-extraction/schemas/carta-318";
+import { Invoice } from "../../data-extraction/schemas/invoice";
 // TODO: Agregar DOF
 
 
-async function validateTransportDocumentEntryDate(pedimento: Pedimento, transportDocument: TransportDocument) {
+export async function validateTransportDocumentEntryDate(pedimento: Pedimento, transportDocument: TransportDocument) {
   const pedimentoEntryDate = pedimento.fecha_entrada_presentacion;
   const transportEntryDate = transportDocument.entry_date;
   const transportType = transportDocument.document_type;
@@ -35,7 +35,7 @@ async function validateTransportDocumentEntryDate(pedimento: Pedimento, transpor
   return object;
 }
 
-async function validateTipoCambio(pedimento: Pedimento) {
+export async function validateTipoCambio(pedimento: Pedimento) {
   const tipoCambio = pedimento.encabezado_del_pedimento?.tipo_cambio;
   const fechaEntrada = pedimento.fecha_entrada_presentacion;
   // TODO: Replace with actual DOF API integration
@@ -62,7 +62,7 @@ async function validateTipoCambio(pedimento: Pedimento) {
   return object;
 }
 
-async function validateIncrementables(pedimento: Pedimento, invoice: Invoice, carta318: Carta318, transportDocument: TransportDocument) {
+export async function validateIncrementables(pedimento: Pedimento, invoice: Invoice, carta318: Carta318, transportDocument: TransportDocument) {
   // Get incrementables from pedimento
   const incrementablesPedimento = {
     fletes: pedimento.incrementables?.fletes,
@@ -119,7 +119,7 @@ async function validateIncrementables(pedimento: Pedimento, invoice: Invoice, ca
   return object;
 }
 
-async function validateValoresPedimento(pedimento: Pedimento, invoice: Invoice, carta318: Carta318, transportDocument: TransportDocument, ) {
+export async function validateValoresPedimento(pedimento: Pedimento, invoice: Invoice, carta318: Carta318, transportDocument: TransportDocument) {
   // Extract monetary values from pedimento
   const valorAduana = pedimento.valores?.valor_aduana; // Customs value in MXN
   const valorComercial = pedimento.valores?.precio_pagado_valor_comercial; // Commercial value/paid price in MXN

@@ -12,7 +12,6 @@ import { traceable } from "langsmith/traceable";
 import { uploadFiles } from "./upload-files";
 import { classifyDocuments } from "./classification";
 import { extractTextFromPDFs } from "./data-extraction";
-import { glosa } from "./glosa";
 
 config();
 
@@ -27,8 +26,7 @@ const runGlosa = traceable(
     const files = formData.getAll("files") as File[]; // TODO: We should use zod instead of this
     const successfulUploads = await uploadFiles(files);
     const classifications = await classifyDocuments(successfulUploads);
-    const extractedTexts = await extractTextFromPDFs(classifications);
-    const validations = await glosa(extractedTexts);
+    await extractTextFromPDFs(classifications);
   },
   {
     name: "runGlosa",
@@ -47,7 +45,7 @@ export async function analysis(formData: FormData) {
     // Only use this for testing the migration from the python backend
     const enableMigrationCode = process.env["ENABLE_MIGRATION_CODE"];
     if (enableMigrationCode) {
-      const glosa = await runGlosa(formData);
+      await runGlosa(formData);
       return
     }
     const query_id = randomUUID();
