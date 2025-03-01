@@ -62,7 +62,7 @@ async function validateTipoCambio(pedimento: Pedimento) {
   return object;
 }
 
-async function validateIncrementables(pedimento: Pedimento, invoice: Invoice, carta318: Carta318, TransportDocument: TransportDocument) {
+async function validateIncrementables(pedimento: Pedimento, invoice: Invoice, carta318: Carta318, transportDocument: TransportDocument) {
   // Get incrementables from pedimento
   const incrementablesPedimento = {
     fletes: pedimento.incrementables?.fletes,
@@ -72,26 +72,38 @@ async function validateIncrementables(pedimento: Pedimento, invoice: Invoice, ca
   };
 
   // Get incrementables from facturas (invoices)
-  const incrementablesCarta318 = {
-    fletes: carta318.incrementables?.fletes,
-    seguros: carta318.incrementables?.seguros,
-    embalajes: carta318.incrementables?.embalajes,
-    otros: carta318.incrementables?.otros_incrementables
-  }));
+  const { detalle_facturacion: { incrementables: incrementablesCarta } } = carta318;
+  const incrementablesCarta318 = { 
+    fletes: incrementablesCarta?.fletes,
+    seguros: incrementablesCarta?.seguros,
+    embalajes: incrementablesCarta?.embalajes,
+    otros: incrementablesCarta?.otros
+  };
 
-  // Get incrementables from carta 318
-  const incrementablesCarta318 = pedimento.documentos?.carta_318?.detalle_facturacion?.incrementables;
+  const { incrementables: incrementablesInv } = invoice;
+  const incrementablesInvoice = { 
+    fletes: incrementablesInv?.fletes,
+    seguros: incrementablesInv?.seguros,
+    embalajes: incrementablesInv?.embalajes,
+    otros: incrementablesInv?.otros
+  };
   
   // Get incrementables from transport document
-  const documentoTransporte = pedimento.documentos?.documento_transporte?.incrementables;
+  const { costos_adicionales: { incrementables: incrementablesTransport } } = transportDocument;
+  const incrementablesTransportDocument = {
+    fletes: incrementablesTransport?.fletes,
+    seguros: incrementablesTransport?.seguros,
+    embalajes: incrementablesTransport?.embalajes,
+    otros: incrementablesTransport?.otros
+  };
   
   const validation = {
     name: "Incrementables",
     description: "Los incrementables son los servicios a los cuales se les puede cobrar impuestos. Para hacer la declaracion correcta, se necesita verificar que los valores de los incrementables en el pedimento seas validos conforme a la carta 318, factura o documento de transporte. Los incrementables pueden ser fletes, seguros, maniobras, entre otros. Tenemos que buscar una relación entre los valores del pedimento y los documentos que lo avalan. Argumenta por que los incrementables estan bien o mal, siempre buscando sostener tus respuestas.",
     incrementablesPedimento,
     incrementablesCarta318,
-    facturas,
-    documentoTransporte
+    incrementablesInvoice,
+    incrementablesTransportDocument
   };
 
   const { object } = await generateObject({
@@ -107,14 +119,70 @@ async function validateIncrementables(pedimento: Pedimento, invoice: Invoice, ca
   return object;
 }
 
-async function validateValoresPedimento(pedimento: Pedimento) {
-  const valorAduana = pedimento.operacion_monetaria?.valor_aduana;
-  const valorComercial = pedimento.operacion_monetaria?.valor_comercial;
-  const valorDolares = pedimento.operacion_monetaria?.valor_dolares;
-  const tipoCambio = pedimento.encabezado_del_pedimento?.tipo_cambio;
-  const incrementables = pedimento.operacion_monetaria?.incrementables;
-  const decrementables = pedimento.operacion_monetaria?.decrementables;
-  const facturas = pedimento.documentos?.facturas;
+async function validateValoresPedimento(pedimento: Pedimento, invoice: Invoice, carta318: Carta318, transportDocument: TransportDocument, ) {
+  // Extract monetary values from pedimento
+  const valorAduana = pedimento.valores?.valor_aduana; // Customs value in MXN
+  const valorComercial = pedimento.valores?.precio_pagado_valor_comercial; // Commercial value/paid price in MXN
+  const valorDolares = pedimento.valores?.valor_dolares; // Value in USD
+  const tipoCambio = pedimento.encabezado_del_pedimento?.tipo_cambio; // Exchange rate from pedimento
+  const tipoCambioDOF = 17.1234; // Official exchange rate from DOF (Diario Oficial de la Federación)
+
+  // Extract incrementables (costs that increase customs value) from pedimento
+  const incrementablesPedimento = {
+    fletes: pedimento.incrementables?.fletes, // Freight costs
+    seguros: pedimento.incrementables?.seguros, // Insurance costs
+    embalajes: pedimento.incrementables?.embalajes, // Packaging costs
+    otros: pedimento.incrementables?.otros_incrementables // Other incremental costs
+  };
+
+  // Extract incrementables from Carta 318 (customs value declaration)
+  const incrementablesCarta318 = {
+    fletes: carta318.detalle_facturacion?.incrementables?.fletes,
+    seguros: carta318.detalle_facturacion?.incrementables?.seguros,
+    embalajes: carta318.detalle_facturacion?.incrementables?.embalajes,
+    otros: carta318.detalle_facturacion?.incrementables?.otros
+  };
+
+  // Extract incrementables from commercial invoice
+  const incrementablesInvoice = {
+    fletes: invoice.incrementables?.fletes,
+    seguros: invoice.incrementables?.seguros,
+    embalajes: invoice.incrementables?.embalajes,
+    otros: invoice.incrementables?.otros
+  };
+
+  // Extract incrementables from transport document
+  const incrementablesTransportDocument = {
+    fletes: transportDocument.costos_adicionales?.incrementables?.fletes,
+    seguros: transportDocument.costos_adicionales?.incrementables?.seguros,
+    embalajes: transportDocument.costos_adicionales?.incrementables?.embalajes,
+    otros: transportDocument.costos_adicionales?.incrementables?.otros
+  };
+
+  // Group all incrementables for comparison
+  const incrementables = {
+    pedimento: incrementablesPedimento,
+    carta318: incrementablesCarta318,
+    invoice: incrementablesInvoice,
+    transportDocument: incrementablesTransportDocument
+  };
+
+  // Extract decrementables (costs that decrease customs value)
+  const decrementablesPedimento = pedimento.decrementables;
+  const decrementablesCarta318 = carta318.detalle_facturacion?.decrementables;
+  const decrementablesInvoice = invoice.decrementables;
+
+  // Group all decrementables for comparison
+  const decrementables = {
+    pedimento: decrementablesPedimento,
+    carta318: decrementablesCarta318,
+    invoice: decrementablesInvoice
+  };
+
+  // Extract commercial values from documents
+  const valorCarta318 = carta318.detalle_facturacion?.valor_comercial;
+  const valorInvoice = invoice.valor_comercial;
+
   
   const validation = {
     name: "Valores del pedimento",
@@ -125,7 +193,9 @@ async function validateValoresPedimento(pedimento: Pedimento) {
     tipoCambio,
     incrementables,
     decrementables,
-    facturas
+    valorCarta318,
+    valorInvoice,
+    tipoCambioDOF
   };
 
   const { object } = await generateObject({
@@ -141,14 +211,3 @@ async function validateValoresPedimento(pedimento: Pedimento) {
   return object;
 }
 
-export async function operacionMonetariaValidations(pedimento: Pedimento) {
-  const transportDocument = pedimento.documentos?.documento_transporte;
-  
-  return Promise.all([
-    validateFechaEntrada(pedimento),
-    validateTipoCambio(pedimento),
-    validateIncrementables(pedimento),
-    validateValoresPedimento(pedimento),
-    validateTransportDocumentEntryDate(pedimento, transportDocument)
-  ]);
-}
