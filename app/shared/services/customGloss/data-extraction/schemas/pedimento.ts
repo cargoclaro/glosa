@@ -27,7 +27,7 @@ export const pedimentoSchema = z.object({
         .string()
         .describe("3-letter code indicating customs regime (e.g., 'IMD')")
         .optional(),
-      destino: z
+      destino_origen: z
         .string()
         .describe("Single digit number indicating destination")
         .optional(),
