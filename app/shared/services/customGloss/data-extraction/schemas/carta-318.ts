@@ -45,15 +45,18 @@ export const carta318Schema = z.object({
       contenedores: z
         .array(z.string())
         .describe("Lista de números de contenedores, si aplica.")
-        .optional()
+        .optional(),
+      valor_factura: z
+        .number()
+        .describe("Valor total de la factura.")
     })
     .describe("Detalles relacionados con la factura asociada."),
-  importador: z
+  importador_exportador: z
     .object({
       nombre: z
         .string()
         .describe("Nombre o razón social del importador."),
-      direccion: z
+      domicilio: z
         .string()
         .describe("Dirección completa del importador."),
       rfc: z
@@ -61,10 +64,10 @@ export const carta318Schema = z.object({
         .describe("Identificador fiscal del importador (RFC)")
     })
     .describe("Información del importador."),
-  proveedor: z
+  proveedor_comprador: z
     .object({
       nombre: z.string().describe("Nombre o razón social del proveedor."),
-      direccion: z.string().describe("Dirección completa del proveedor."),
+      domicilio: z.string().describe("Dirección completa del proveedor."),
       tax_id: z.string().describe("Identificador fiscal del proveedor.")
     })
     .describe("Información del proveedor."),

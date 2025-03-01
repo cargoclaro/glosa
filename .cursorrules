@@ -2,3 +2,34 @@ Este es una glosa electrónica para agencias aduanales.
 
 Ten en cuenta el contexto de los anexos del pedimento, sus apendices, documentos como facturas, coves.
 Conceptos como identificadores, aranceles, NOMS's, etc.
+
+# Resumen de Nuestro Trabajo y Guía para Acelerar el Proceso
+
+Estamos desarrollando una glosa electrónica para agencias aduanales en México, específicamente trabajando en validaciones para pedimentos de importación/exportación. Nuestro enfoque actual está en la validación de pesos (bruto y neto) y bultos entre diferentes documentos aduaneros.
+
+## Para acelerar el proceso:
+
+### Instrucciones claras:
+1. **Especifica la ruta exacta** para acceder a los campos en cada esquema (sin usar condicionales)
+2. **Indica el nombre del archivo** donde se realizarán los cambios
+3. **Menciona los documentos involucrados** en cada validación (pedimento, factura, carta 318, etc.)
+4. **Describe claramente la validación** que deseas implementar
+
+### Formato sugerido para solicitudes:
+```
+Archivo: [ruta/al/archivo.ts]
+Validación: [nombre de la validación]
+Descripción: [descripción detallada]
+Documentos: [lista de documentos involucrados]
+Campos a extraer:
+- Documento1: campo1, campo2
+- Documento2: campo1, campo2
+```
+
+### Consideraciones importantes:
+- Los esquemas pueden tener diferentes nombres para conceptos similares (peso_bruto/gross_weight)
+- Debemos acceder directamente a los campos sin usar condicionales
+- Cada validación debe tener una descripción clara para el modelo AI
+- Las validaciones deben seguir la estructura del esquema `validationResultSchema`
+
+Con estas instrucciones, podemos desarrollar rápidamente las validaciones necesarias para la glosa electrónica aduanal.
