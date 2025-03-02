@@ -58,7 +58,7 @@ async function validateClavePedimento(pedimento: Pedimento) {
         }
       },
       [CustomGlossTabContextType.EXTERNAL]: {
-        pedimento: {
+        "apendices": {
           data: [{ name: "Apéndice 2", value: JSON.stringify(apendice2) }]
         }
       }
@@ -88,7 +88,7 @@ async function validateRegimen(pedimento: Pedimento) {
         }
       },
       [CustomGlossTabContextType.EXTERNAL]: {
-        pedimento: {
+        "apendices": {
           data: [{ name: "Apéndice 16", value: JSON.stringify(apendice16) }]
         }
       }
