@@ -3,39 +3,23 @@ import { validationResultSchema, SYSTEM_PROMPT } from "../../validation-result";
 import { generateObject } from "ai";
 import { wrapAISDKModel } from "langsmith/wrappers/vercel";
 import { openai } from "@ai-sdk/openai";
-import { Invoice } from "../../../data-extraction/schemas/invoice";
-import { Carta318 } from "../../../data-extraction/schemas/carta-318";
+import { Cfdi } from "../../../data-extraction/schemas";
 
 /**
- * Validates that the invoice number in the COVE document matches other documents for exports.
- * Different validation rules apply according to CFDI requirements.
+ * Validates that the invoice number in the COVE document matches the CFDI for exports.
  */
-export async function validateNumeroFactura(cove: Cove, invoice: Invoice, carta318?: Carta318) {
+export async function validateNumeroFactura(cove: Cove, cfdi: Cfdi) {
   // Extract invoice numbers from different sources
   const numeroFacturaCove = cove.numero_factura;
-  const numeroFacturaInvoice = invoice.invoice_number;
-  const numeroFacturaCarta318 = carta318?.factura?.numero_factura;
+  const numeroFacturaCfdi = cfdi.folio_fiscal;
 
   const validation = {
     name: "Número de Factura (Exportación)",
-    description: "El numero de factura esta en el CFDI y se puede encontrar como (Invoice Number, Invoice No, Invoice #). También puede venir en la carta CFDI. En caso de discrepancia, prevalece el número indicado en la carta CFDI.",
-    contexts: [
-      {
-        type: "PROVIDED",
-        origin: "cove",
-        data: [
-          {
-            name: "Numero de Factura",
-            value: numeroFacturaCove
-          }
-        ]
-      },
-    ],
+    description: "El número de factura del COVE debe coincidir con el folio fiscal del CFDI. En exportación, el CFDI es el documento de facturación oficial emitido por el exportador mexicano.",
     numeroFacturaCove,
-    numeroFacturaInvoice,
-    numeroFacturaCarta318,
+    numeroFacturaCfdi,
     tipoOperacion: "EXP"
-  } as const;
+  };
 
   const { object } = await generateObject({
     model: wrapAISDKModel(openai("gpt-4o"), {
@@ -47,28 +31,51 @@ export async function validateNumeroFactura(cove: Cove, invoice: Invoice, carta3
     prompt: `${JSON.stringify(validation, null, 2)}`,
   });
 
-  return {
-    contexts: validation.contexts,
-    validationResult: object
-  };
+  return object;
 }
 
 /**
- * Validates that the invoice date in the COVE document matches other documents for exports.
- * Different validation rules apply according to CFDI requirements.
+ * Validates that the invoice date in the COVE document matches the CFDI for exports.
  */
-export async function validateFechaExpedicion(cove: Cove, invoice: Invoice, carta318?: Carta318) {
+export async function validateFechaExpedicion(cove: Cove, cfdi: Cfdi) {
   // Extract invoice dates from different sources
   const fechaExpedicionCove = cove.fecha_expedicion;
-  const fechaExpedicionInvoice = invoice.invoice_date;
-  const fechaExpedicionCarta318 = carta318?.factura?.fecha_factura;
+  const fechaExpedicionCfdi = cfdi.fecha_emision;
 
   const validation = {
     name: "Fecha de Expedición (Exportación)",
-    description: "La fecha de expedicion viene en el CFDI como (Invoice Date, Date). También puede venir en la carta CFDI. En caso de discrepancia, prevalece la fecha indicada en la carta CFDI.",
+    description: "La fecha de expedición del COVE debe coincidir con la fecha de emisión del CFDI. En exportación, el CFDI es el documento de facturación oficial emitido por el exportador mexicano.",
     fechaExpedicionCove,
-    fechaExpedicionInvoice,
-    fechaExpedicionCarta318,
+    fechaExpedicionCfdi,
+    tipoOperacion: "EXP"
+  };
+
+  const { object } = await generateObject({
+    model: wrapAISDKModel(openai("gpt-4o"), {
+      name: `Validate ${validation.name}`,
+      project_name: "glosa",
+    }),
+    system: SYSTEM_PROMPT,
+    schema: validationResultSchema,
+    prompt: `${JSON.stringify(validation, null, 2)}`,
+  });
+
+  return object;
+}
+
+/**
+ * Validates that the RFC in the COVE document matches other documents for exports.
+ */
+export async function validateRfc(cove: Cove, cfdi: Cfdi) {
+  // Extract RFC values from different sources
+  const rfcCove = cove.datos_generales_destinatario?.rfc_destinatario;
+  const rfcCfdi = cfdi.emisor?.rfc;
+
+  const validation = {
+    name: "RFC (Exportación)",
+    description: "El RFC del destinatario en el COVE debe coincidir con el RFC del emisor en el CFDI. En exportación, el emisor del CFDI es la empresa mexicana que realiza la exportación.",
+    rfcCove,
+    rfcCfdi,
     tipoOperacion: "EXP"
   };
 
