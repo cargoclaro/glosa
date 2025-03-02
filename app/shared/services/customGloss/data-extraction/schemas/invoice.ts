@@ -8,6 +8,9 @@ export const invoiceSchema = z
     invoice_date: z
       .string()
       .describe("Invoice issue date in YYYY-MM-DD format or similar"),
+    fecha_expedicion: z
+      .string()
+      .describe("Fecha de expedición de la factura en formato YYYY-MM-DD"),
     currency_code: z
       .string()
       .describe("Currency code in ISO 4217 format, e.g., 'USD', 'MXN'"),

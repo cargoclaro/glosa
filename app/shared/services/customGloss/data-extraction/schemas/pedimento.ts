@@ -248,7 +248,7 @@ export const pedimentoSchema = z.object({
   no_guia_embarque_id: z
     .string()
     .describe(
-      "Shipment order number; alphanumeric; if none, leave blank; sometimes there could be two, identifiable with 'M' and 'H' for Master and House"
+      "Shipment order number; alphanumeric; if none, leave blank; sometimes there could be two, identifiable with 'M' and 'H' for Master and House."
     )
     .optional(),
   identificadores_pedimento: z
