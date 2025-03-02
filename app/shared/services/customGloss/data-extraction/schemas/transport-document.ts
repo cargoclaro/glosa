@@ -13,7 +13,7 @@ export const transportDocumentSchema = z.object({
     .describe(
       "The unique document number for the transport document. Example: 1000175MEX. In case of air transport, it is the House Air Waybill Number and Master Air Waybill Number. In case of sea transport, it is the Bill of Lading Number."
     ),
-  entry_date: z
+  date: z
     .string()
     .describe("The date of entry in YYYY-MM-DD format."),
   origin_country: z
