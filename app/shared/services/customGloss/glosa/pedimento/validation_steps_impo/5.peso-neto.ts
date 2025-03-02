@@ -1,6 +1,6 @@
 import { Pedimento } from "../../../data-extraction/schemas";
 import { glosar } from "../../validation-result";
-
+import { CustomGlossTabContextType } from "@prisma/client";
 import { TransportDocument } from "../../../data-extraction/schemas";
 import { Invoice } from "../../../data-extraction/schemas/invoice";
 import { PackingList } from "../../../data-extraction/schemas/packing-list";

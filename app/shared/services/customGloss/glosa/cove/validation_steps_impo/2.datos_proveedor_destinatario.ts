@@ -1,6 +1,6 @@
 import { Cove } from "../../../data-extraction/schemas/cove";
 import { glosar } from "../../validation-result";
-
+import { CustomGlossTabContextType } from "@prisma/client";
 import { Invoice } from "../../../data-extraction/schemas/invoice";
 import { Carta318 } from "../../../data-extraction/schemas/carta-318";
 

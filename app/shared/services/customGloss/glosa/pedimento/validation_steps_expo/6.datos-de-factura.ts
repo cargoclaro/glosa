@@ -1,6 +1,6 @@
 import { Pedimento, Cove, CartaSesion, Cfdi } from "../../../data-extraction/schemas";
 import { glosar } from "../../validation-result";
-
+import { CustomGlossTabContextType } from "@prisma/client";
 
 export async function validateRfcFormat(pedimento: Pedimento, cove: Cove, cfdi: Cfdi) {
   // Extract RFC values from documents

@@ -2,7 +2,7 @@ import { Pedimento, TransportDocument } from "../../../data-extraction/schemas";
 import { apendice10 } from "../../anexo-22/apendice_10";
 import { apendice3 } from "../../anexo-22/apendice_3";
 import { glosar } from "../../validation-result";
-
+import { CustomGlossTabContextType } from "@prisma/client";
 
 export async function validateTipoTransporte(pedimento: Pedimento) {
   // Extract transport type from pedimento

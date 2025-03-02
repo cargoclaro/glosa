@@ -1,6 +1,6 @@
 import { Pedimento, Carta318, Cove, CartaSesion, Invoice } from "../../../data-extraction/schemas";
 import { glosar } from "../../validation-result";
-
+import { CustomGlossTabContextType } from "@prisma/client";
 
 export async function validateRfcFormat(pedimento: Pedimento, cove: Cove, carta318: Carta318) {
   // Extract RFC values from documents

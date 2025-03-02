@@ -1,6 +1,6 @@
 import { Pedimento } from "../../../data-extraction/schemas";
 import { glosar } from "../../validation-result";
-
+import { CustomGlossTabContextType } from "@prisma/client";
 import { apendice15 } from "../../anexo-22/apendice-15";
 
 async function validateClaveApendice15(pedimento: Pedimento) {

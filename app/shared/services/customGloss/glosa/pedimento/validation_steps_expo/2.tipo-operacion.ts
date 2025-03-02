@@ -1,6 +1,6 @@
 import { Pedimento, TransportDocument } from "../../../data-extraction/schemas";
 import { glosar } from "../../validation-result";
-
+import { CustomGlossTabContextType } from "@prisma/client";
 import { apendice2 } from "../../anexo-22/apendice-2";
 import { apendice16 } from "../../anexo-22/apendice-16";
 

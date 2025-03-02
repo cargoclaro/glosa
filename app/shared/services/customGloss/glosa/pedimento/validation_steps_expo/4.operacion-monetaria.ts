@@ -1,6 +1,6 @@
 import { Pedimento } from "../../../data-extraction/schemas";
 import { glosar } from "../../validation-result";
-
+import { CustomGlossTabContextType } from "@prisma/client";
 import { TransportDocument } from "../../../data-extraction/schemas";
 import { Cfdi } from "../../../data-extraction/schemas/cfdi";
 import { Cove } from "../../../data-extraction/schemas/cove";
