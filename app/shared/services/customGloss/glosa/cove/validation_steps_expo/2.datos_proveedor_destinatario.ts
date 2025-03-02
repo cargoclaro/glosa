@@ -23,33 +23,23 @@ export async function validateDatosGeneralesProveedor(
   const validation = {
     name: "Datos generales del proveedor",
     description: "Verificar que los siguientes datos coincidan entre el COVE y el CFDI:\n\n• RFC\n• Razón social\n Si no hay RFC, el tipo de identificador que tenga (tax id, tax id number, tax id number, etc) debe de coincidir.",
-    contexts: [
-      {
+    contexts: {
+      cove: {
         type: CustomGlossTabContextType.PROVIDED,
-        origin: "cove",
-        data: [{ name: "Identificador", value: identificadorCove }]
+        data: [
+          { name: "Identificador", value: identificadorCove },
+          { name: "Tipo Identificador", value: tipoIdentificadorCove },
+          { name: "Nombre Razón Social", value: nombreRazonSocialCove }
+        ]
       },
-      {
+      cfdi: {
         type: CustomGlossTabContextType.PROVIDED,
-        origin: "cove",
-        data: [{ name: "Tipo Identificador", value: tipoIdentificadorCove }]
-      },
-      {
-        type: CustomGlossTabContextType.PROVIDED,
-        origin: "cove",
-        data: [{ name: "Nombre Razón Social", value: nombreRazonSocialCove }]
-      },
-      {
-        type: CustomGlossTabContextType.PROVIDED,
-        origin: "cfdi",
-        data: [{ name: "Nombre Razón Social", value: nombreRazonSocialCfdi }]
-      },
-      {
-        type: CustomGlossTabContextType.PROVIDED,
-        origin: "cfdi",
-        data: [{ name: "Identificador", value: identificadorCfdi }]
+        data: [
+          { name: "Nombre Razón Social", value: nombreRazonSocialCfdi },
+          { name: "Identificador", value: identificadorCfdi }
+        ]
       }
-    ]
+    }
   } as const;
 
   return await glosar(validation);
@@ -82,18 +72,16 @@ export async function validateDomicilioProveedor(
   const validation = {
     name: "Domicilio del proveedor",
     description: "Verificar que el domicilio fiscal del proveedor coincida entre el COVE y el CFDI:\n\n• Domicilio fiscal",
-    contexts: [
-      {
+    contexts: {
+      cove: {
         type: CustomGlossTabContextType.PROVIDED,
-        origin: "cove",
         data: [{ name: "Domicilio", value: domicilioCoveCompleto }]
       },
-      {
+      cfdi: {
         type: CustomGlossTabContextType.PROVIDED,
-        origin: "cfdi",
         data: [{ name: "Domicilio", value: domicilioCfdi }]
       }
-    ]
+    }
   } as const;
 
   return await glosar(validation);
@@ -118,28 +106,22 @@ export async function validateDatosGeneralesDestinatario(
   const validation = {
     name: "Datos generales del destinatario",
     description: "Verificar que los siguientes datos coincidan entre el COVE y el CFDI:\n\n• RFC\n• Razón social\n Si no hay RFC, el tipo de identificador que tenga (tax id, tax id number, tax id number, etc) debe de coincidir.",
-    contexts: [
-      {
+    contexts: {
+      cove: {
         type: CustomGlossTabContextType.PROVIDED,
-        origin: "cove",
-        data: [{ name: "RFC", value: rfcDestinatarioCove }]
+        data: [
+          { name: "RFC", value: rfcDestinatarioCove },
+          { name: "Nombre Razón Social", value: nombreRazonSocialCove }
+        ]
       },
-      {
+      cfdi: {
         type: CustomGlossTabContextType.PROVIDED,
-        origin: "cove",
-        data: [{ name: "Nombre Razón Social", value: nombreRazonSocialCove }]
-      },
-      {
-        type: CustomGlossTabContextType.PROVIDED,
-        origin: "cfdi",
-        data: [{ name: "Nombre Razón Social", value: nombreRazonSocialCfdi }]
-      },
-      {
-        type: CustomGlossTabContextType.PROVIDED,
-        origin: "cfdi",
-        data: [{ name: "RFC", value: rfcCfdi }]
+        data: [
+          { name: "Nombre Razón Social", value: nombreRazonSocialCfdi },
+          { name: "RFC", value: rfcCfdi }
+        ]
       }
-    ]
+    }
   } as const;
 
   return await glosar(validation);
@@ -172,18 +154,16 @@ export async function validateDomicilioDestinatario(
   const validation = {
     name: "Domicilio del destinatario",
     description: "Verificar que el domicilio fiscal del destinatario coincida entre el COVE y el CFDI:\n\n• Domicilio fiscal",
-    contexts: [
-      {
+    contexts: {
+      cove: {
         type: CustomGlossTabContextType.PROVIDED,
-        origin: "cove",
         data: [{ name: "Domicilio", value: domicilioCoveCompleto }]
       },
-      {
+      cfdi: {
         type: CustomGlossTabContextType.PROVIDED,
-        origin: "cfdi",
         data: [{ name: "Domicilio", value: domicilioCfdi }]
       }
-    ]
+    }
   } as const;
 
   return await glosar(validation);

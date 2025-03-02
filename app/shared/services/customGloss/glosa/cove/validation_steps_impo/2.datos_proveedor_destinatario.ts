@@ -26,38 +26,29 @@ export async function validateDatosGeneralesProveedor(
   const validation = {
     name: "Datos generales del proveedor",
     description: "Verificar que los siguientes datos coincidan entre el COVE y la factura/carta 318:\n\n• RFC\n• Razón social\n Si no hay RFC, el tipo de identificador que tenga (tax id, tax id number, tax id number, etc) debe de coincidir.",
-    contexts: [
-      {
+    contexts: {
+      cove: {
         type: CustomGlossTabContextType.PROVIDED,
-        origin: "cove",
-        data: [{ name: "Identificador", value: identificadorCove }]
+        data: [
+          { name: "Identificador", value: identificadorCove },
+          { name: "Tipo de identificador", value: tipoIdentificadorCove },
+          { name: "Nombre/Razón social", value: nombreRazonSocialCove }
+        ]
       },
-      {
+      factura: {
         type: CustomGlossTabContextType.PROVIDED,
-        origin: "cove",
-        data: [{ name: "Tipo de identificador", value: tipoIdentificadorCove }]
+        data: [
+          { name: "Nombre/Razón social", value: nombreRazonSocialInvoice }
+        ]
       },
-      {
+      carta318: {
         type: CustomGlossTabContextType.PROVIDED,
-        origin: "cove",
-        data: [{ name: "Nombre/Razón social", value: nombreRazonSocialCove }]
-      },
-      {
-        type: CustomGlossTabContextType.PROVIDED,
-        origin: "factura",
-        data: [{ name: "Nombre/Razón social", value: nombreRazonSocialInvoice }]
-      },
-      {
-        type: CustomGlossTabContextType.PROVIDED,
-        origin: "carta318",
-        data: [{ name: "Nombre/Razón social", value: nombreRazonSocialCarta318 }]
-      },
-      {
-        type: CustomGlossTabContextType.PROVIDED,
-        origin: "carta318",
-        data: [{ name: "Identificador", value: identificadorCarta318 }]
-      },
-    ],
+        data: [
+          { name: "Nombre/Razón social", value: nombreRazonSocialCarta318 },
+          { name: "Identificador", value: identificadorCarta318 }
+        ]
+      }
+    }
   } as const;
 
   return await glosar(validation);
@@ -92,23 +83,20 @@ export async function validateDomicilioProveedor(
   const validation = {
     name: "Domicilio del proveedor",
     description: "Verificar que el domicilio fiscal del proveedor coincida entre el COVE y la factura/carta 318:\n\n• Domicilio fiscal",
-    contexts: [
-      {
+    contexts: {
+      cove: {
         type: CustomGlossTabContextType.PROVIDED,
-        origin: "cove",
         data: [{ name: "Domicilio completo", value: domicilioCoveCompleto }]
       },
-      {
+      factura: {
         type: CustomGlossTabContextType.PROVIDED,
-        origin: "factura",
         data: [{ name: "Domicilio", value: domicilioInvoice }]
       },
-      {
+      carta318: {
         type: CustomGlossTabContextType.PROVIDED,
-        origin: "carta318",
         data: [{ name: "Domicilio", value: domicilioCarta318 }]
       }
-    ]
+    }
   } as const;
 
   return await glosar(validation);
@@ -135,33 +123,28 @@ export async function validateDatosGeneralesDestinatario(
   const validation = {
     name: "Datos generales del destinatario",
     description: "Verificar que los siguientes datos coincidan entre el COVE y la factura/carta 318:\n\n• RFC\n• Razón social\n Si no hay RFC, el tipo de identificador que tenga (tax id, tax id number, tax id number, etc) debe de coincidir.",
-    contexts: [
-      {
+    contexts: {
+      cove: {
         type: CustomGlossTabContextType.PROVIDED,
-        origin: "cove",
-        data: [{ name: "RFC Destinatario", value: rfcDestinatarioCove }]
+        data: [
+          { name: "RFC Destinatario", value: rfcDestinatarioCove },
+          { name: "Nombre/Razón social", value: nombreRazonSocialCove }
+        ]
       },
-      {
+      factura: {
         type: CustomGlossTabContextType.PROVIDED,
-        origin: "cove",
-        data: [{ name: "Nombre/Razón social", value: nombreRazonSocialCove }]
+        data: [
+          { name: "Nombre/Razón social", value: nombreRazonSocialInvoice }
+        ]
       },
-      {
+      carta318: {
         type: CustomGlossTabContextType.PROVIDED,
-        origin: "factura",
-        data: [{ name: "Nombre/Razón social", value: nombreRazonSocialInvoice }]
-      },
-      {
-        type: CustomGlossTabContextType.PROVIDED,
-        origin: "carta318",
-        data: [{ name: "Nombre/Razón social", value: nombreRazonSocialImportador }]
-      },
-      {
-        type: CustomGlossTabContextType.PROVIDED,
-        origin: "carta318",
-        data: [{ name: "RFC Importador", value: rfcImportador }]
+        data: [
+          { name: "Nombre/Razón social", value: nombreRazonSocialImportador },
+          { name: "RFC Importador", value: rfcImportador }
+        ]
       }
-    ]
+    }
   } as const;
 
   return await glosar(validation);
@@ -196,23 +179,20 @@ export async function validateDomicilioDestinatario(
   const validation = {
     name: "Domicilio del destinatario",
     description: "Verificar que el domicilio fiscal del destinatario coincida entre el COVE y la factura/carta 318:\n\n• Domicilio fiscal",
-    contexts: [
-      {
+    contexts: {
+      cove: {
         type: CustomGlossTabContextType.PROVIDED,
-        origin: "cove",
         data: [{ name: "Domicilio completo", value: domicilioCoveCompleto }]
       },
-      {
+      factura: {
         type: CustomGlossTabContextType.PROVIDED,
-        origin: "factura",
         data: [{ name: "Domicilio", value: domicilioInvoice }]
       },
-      {
+      carta318: {
         type: CustomGlossTabContextType.PROVIDED,
-        origin: "carta318",
         data: [{ name: "Domicilio", value: domicilioImportador }]
       }
-    ]
+    }
   } as const;
 
   return await glosar(validation);
