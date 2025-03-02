@@ -66,7 +66,7 @@ export async function validateTipoCambio(pedimento: Pedimento) {
   return await glosar(validation);
 }
 
-export async function validateIncrementables(pedimento: Pedimento, invoice: Invoice, carta318: Carta318, transportDocument: TransportDocument) {
+export async function validateIncrementables(pedimento: Pedimento, invoice: Invoice, transportDocument: TransportDocument, carta318?: Carta318) {
   // Get incrementables from pedimento
   const incrementablesPedimento = {
     fletes: pedimento.incrementables?.fletes,
@@ -74,9 +74,8 @@ export async function validateIncrementables(pedimento: Pedimento, invoice: Invo
     embalajes: pedimento.incrementables?.embalajes,
     otros: pedimento.incrementables?.otros_incrementables
   };
-
-  // Get incrementables from facturas (invoices)
-  const { detalle_facturacion: { incrementables: incrementablesCarta } } = carta318;
+  // Get incrementables from carta 318 (if available)
+  const incrementablesCarta = carta318?.detalle_facturacion?.incrementables;
   const incrementablesCarta318 = { 
     fletes: incrementablesCarta?.fletes,
     seguros: incrementablesCarta?.seguros,
@@ -133,7 +132,7 @@ export async function validateIncrementables(pedimento: Pedimento, invoice: Invo
   return await glosar(validation);
 }
 
-export async function validateValoresPedimento(pedimento: Pedimento, invoice: Invoice, carta318: Carta318, transportDocument: TransportDocument) {
+export async function validateValoresPedimento(pedimento: Pedimento, invoice: Invoice, transportDocument: TransportDocument, carta318?: Carta318) {
   // Extract monetary values from pedimento
   const valorAduana = pedimento.valores?.valor_aduana; // Customs value in MXN
   const valorComercial = pedimento.valores?.precio_pagado_valor_comercial; // Commercial value/paid price in MXN
@@ -151,10 +150,10 @@ export async function validateValoresPedimento(pedimento: Pedimento, invoice: In
 
   // Extract incrementables from Carta 318 (customs value declaration)
   const incrementablesCarta318 = {
-    fletes: carta318.detalle_facturacion?.incrementables?.fletes,
-    seguros: carta318.detalle_facturacion?.incrementables?.seguros,
-    embalajes: carta318.detalle_facturacion?.incrementables?.embalajes,
-    otros: carta318.detalle_facturacion?.incrementables?.otros
+    fletes: carta318?.detalle_facturacion?.incrementables?.fletes,
+    seguros: carta318?.detalle_facturacion?.incrementables?.seguros,
+    embalajes: carta318?.detalle_facturacion?.incrementables?.embalajes,
+    otros: carta318?.detalle_facturacion?.incrementables?.otros
   };
 
   // Extract incrementables from commercial invoice
@@ -183,7 +182,7 @@ export async function validateValoresPedimento(pedimento: Pedimento, invoice: In
 
   // Extract decrementables (costs that decrease customs value)
   const decrementablesPedimento = pedimento.decrementables;
-  const decrementablesCarta318 = carta318.detalle_facturacion?.decrementables;
+  const decrementablesCarta318 = carta318?.detalle_facturacion?.decrementables;
   const decrementablesInvoice = invoice.decrementables;
 
   // Group all decrementables for comparison
@@ -194,7 +193,7 @@ export async function validateValoresPedimento(pedimento: Pedimento, invoice: In
   };
 
   // Extract commercial values from documents
-  const valorCarta318 = carta318.detalle_facturacion?.valor_comercial;
+  const valorCarta318 = carta318?.detalle_facturacion?.valor_comercial;
   const valorInvoice = invoice.valor_comercial;
 
   
