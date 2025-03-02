@@ -3,7 +3,7 @@ import { validationResultSchema, SYSTEM_PROMPT } from "../../validation-result";
 import { generateObject } from "ai";
 import { wrapAISDKModel } from "langsmith/wrappers/vercel";
 import { openai } from "@ai-sdk/openai";
-import { Invoice } from "../../../data-extraction/schemas/invoice";
+import { Cfdi } from "../../../data-extraction/schemas";
 
 // Función para validar preferencia arancelaria y certificado de origen
 export async function validatePreferenciaArancelaria(pedimento: Pedimento) {
@@ -34,18 +34,18 @@ export async function validatePreferenciaArancelaria(pedimento: Pedimento) {
 }
 
 // Función para validar coherencia de UMC y cantidad UMC
-export async function validateCoherenciaUMC(pedimento: Pedimento, invoice: Invoice) {
+export async function validateCoherenciaUMC(pedimento: Pedimento, cfdi: Cfdi) {
   // Extraer partidas con información de UMC
   const partidas = pedimento.partidas || [];
   
-  // Extraer items de la factura
-  const itemsFactura = invoice?.items || [];
+  // Extraer items del CFDI
+  const conceptosCfdi = cfdi?.conceptos || [];
   
   const validation = {
     name: "Coherencia de UMC y cantidad UMC",
-    description: "Los campos UMC y cantidad UMC deben coincidir con los valores en la factura.",
+    description: "Los campos UMC y cantidad UMC deben coincidir con los valores en el CFDI.",
     partidas,
-    itemsFactura
+    conceptosCfdi
   };
 
   const { object } = await generateObject({
@@ -62,18 +62,26 @@ export async function validateCoherenciaUMC(pedimento: Pedimento, invoice: Invoi
 }
 
 // Función para validar coherencia de peso
-export async function validateCoherenciaPeso(pedimento: Pedimento) {
+export async function validateCoherenciaPeso(pedimento: Pedimento, cfdi: Cfdi) {
   // Extraer peso bruto del pedimento
   const pesoBrutoPedimento = pedimento.encabezado_del_pedimento?.peso_bruto;
+  
+  // Extraer peso bruto total del CFDI si está disponible
+  const pesoBrutoCfdi = cfdi?.peso_bruto_total;
   
   // Extraer partidas con información de peso
   const partidas = pedimento.partidas || [];
   
+  // Extraer conceptos del CFDI con pesos
+  const conceptosCfdi = cfdi?.conceptos || [];
+  
   const validation = {
     name: "Coherencia de peso",
-    description: "El peso de las partidas debe coincidir con el peso bruto del pedimento.",
+    description: "El peso de las partidas debe coincidir con el peso bruto del pedimento y el peso declarado en el CFDI.",
     pesoBrutoPedimento,
-    partidas
+    pesoBrutoCfdi,
+    partidas,
+    conceptosCfdi
   };
 
   const { object } = await generateObject({
@@ -114,14 +122,22 @@ export async function validateCalculoDTA(pedimento: Pedimento) {
 }
 
 // Función para validar cálculo de contribuciones
-export async function validateCalculoContribuciones(pedimento: Pedimento) {
+export async function validateCalculoContribuciones(pedimento: Pedimento, cfdi: Cfdi) {
   // Extraer partidas con contribuciones
   const partidas = pedimento.partidas || [];
   
+  // Extraer valor total del CFDI
+  const valorTotalCfdi = cfdi?.total;
+  
+  // Extraer conceptos del CFDI
+  const conceptosCfdi = cfdi?.conceptos || [];
+  
   const validation = {
     name: "Cálculo de contribuciones",
-    description: "Los valores de precio pagado, precio unitario, valor aduana, IGI, IVA y DTA deben coincidir con los calculados.",
-    partidas
+    description: "Los valores de precio pagado, precio unitario, valor aduana, IGI y DTA deben coincidir con los calculados. En exportación, verificar que el valor comercial coincida con el total del CFDI.",
+    partidas,
+    valorTotalCfdi,
+    conceptosCfdi
   };
 
   const { object } = await generateObject({
@@ -140,14 +156,14 @@ export async function validateCalculoContribuciones(pedimento: Pedimento) {
 // Función para validar coincidencia de permisos e identificadores
 export async function validatePermisosIdentificadores(pedimento: Pedimento) {
   // Extraer identificadores a nivel pedimento
-  const identificadoresPedimento = pedimento.partidas?.map((partida) => partida.identificadores) || [];
+  const identificadoresPedimento = pedimento.identificadores_pedimento || [];
   
   // Extraer partidas con identificadores
   const partidas = pedimento.partidas || [];
   
   const validation = {
     name: "Coincidencia de permisos e identificadores",
-    description: "Los permisos e identificadores en el pedimento deben existir en Taxfinder.",
+    description: "Los permisos e identificadores en el pedimento deben existir en Taxfinder y ser apropiados para una operación de exportación.",
     identificadoresPedimento,
     partidas
   };
@@ -172,7 +188,7 @@ export async function validateRegulacionesArancelarias(pedimento: Pedimento) {
   
   const validation = {
     name: "Regulaciones arancelarias",
-    description: "Verifica si existen regulaciones arancelarias que apliquen a la mercancía.",
+    description: "Verifica si existen regulaciones arancelarias que apliquen a la mercancía en un contexto de exportación.",
     partidas
   };
 
@@ -196,7 +212,7 @@ export async function validateRegulacionesNoArancelarias(pedimento: Pedimento) {
   
   const validation = {
     name: "Regulaciones no arancelarias",
-    description: "Verifica si existen regulaciones no arancelarias que apliquen a la mercancía.",
+    description: "Verifica si existen regulaciones no arancelarias que apliquen a la mercancía en un contexto de exportación, como permisos de SEMARNAT, COFEPRIS u otras dependencias para productos de exportación.",
     partidas
   };
 
