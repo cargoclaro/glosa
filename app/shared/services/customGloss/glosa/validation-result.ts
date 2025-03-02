@@ -18,17 +18,18 @@ const validationResultSchema = z.object({
 });
 
 export async function glosar(validation: {
-  name: string,
-  description: string,
+  name: string;
+  description: string;
   contexts: {
-    [origin: string]: {
-      type: CustomGlossTabContextType,
-      data: readonly {
-        name: string,
-        value: string | number | null | undefined
-      }[]
-    }
-  }
+    [key in CustomGlossTabContextType]?: {
+      [origin: string]: {
+        data: readonly {
+          name: string;
+          value: string | number | null | undefined;
+        }[];
+      };
+    };
+  };
 }) {
   const { object: glosaResult } = await generateObject({
     model: wrapAISDKModel(openai("gpt-4o"), {
