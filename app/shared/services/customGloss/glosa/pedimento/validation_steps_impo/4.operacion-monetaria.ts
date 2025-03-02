@@ -15,9 +15,21 @@ export async function validateTransportDocumentEntryDate(pedimento: Pedimento, t
   const validation = {
     name: "Fecha de entrada del documento de transporte",
     description: "La fecha de entrada del documento de transporte debe coincidir con la fecha de entrada del pedimento, considerando el tipo de transporte (AIR, SEA, LAND).",
-    pedimentoEntryDate,
-    transportEntryDate,
-    transportType
+    contexts: {
+      [CustomGlossTabContextType.PROVIDED]: {
+        pedimento: {
+          data: [
+            { name: "Fecha de entrada", value: pedimentoEntryDate }
+          ]
+        },
+        documentoDeTransporte: {
+          data: [
+            { name: "Fecha de entrada", value: transportEntryDate },
+            { name: "Tipo de documento de transporte", value: transportType }
+          ]
+        }
+      }
+    }
   } as const;
 
   return await glosar(validation);
@@ -32,9 +44,23 @@ export async function validateTipoCambio(pedimento: Pedimento) {
   const validation = {
     name: "Tipo de cambio",
     description: "El tipo de cambio del pedimento debe ser exactamente igual al publicado en el DOF el día hábil anterior a la fecha de entrada del pedimento.",
-    tipoCambio,
-    fechaEntrada,
-    tipoCambioDOF
+    contexts: {
+      [CustomGlossTabContextType.PROVIDED]: {
+        pedimento: {
+          data: [
+            { name: "Tipo de cambio", value: tipoCambio },
+            { name: "Fecha de entrada", value: fechaEntrada }
+          ]
+        }
+      },
+      [CustomGlossTabContextType.EXTERNAL]: {
+        dof: {
+          data: [
+            { name: "Tipo de cambio DOF", value: tipoCambioDOF }
+          ]
+        }
+      }
+    }
   } as const;
 
   return await glosar(validation);

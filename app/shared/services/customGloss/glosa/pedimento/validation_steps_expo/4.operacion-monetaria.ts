@@ -16,10 +16,26 @@ export async function validateFechaSalida(pedimento: Pedimento, transportDocumen
   const validation = {
     name: "Fecha de entrada",
     description: "La fecha de salida del pedimento debe ser la fecha de salida dada por el operador de la carga.",
-    pedimentoExitDate,
-    transportExitDate,
-    fechaoperador,
-    transportType
+    contexts: {
+      [CustomGlossTabContextType.PROVIDED]: {
+        pedimento: {
+          data: [
+            { name: "Fecha de salida", value: pedimentoExitDate }
+          ]
+        },
+        documentoDeTransporte: {
+          data: [
+            { name: "Fecha de salida", value: transportExitDate },
+            { name: "Tipo de documento de transporte", value: transportType }
+          ]
+        },
+        operador: {
+          data: [
+            { name: "Fecha de salida", value: fechaoperador }
+          ]
+        }
+      }
+    }
   } as const;
 
   return await glosar(validation);
@@ -34,9 +50,23 @@ export async function validateTipoCambio(pedimento: Pedimento) {
   const validation = {
     name: "Tipo de cambio",
     description: "El tipo de cambio debe ser exactamente igual al publicado en el DOF el día hábil anterior a la fecha de entrada.",
-    tipoCambio,
-    fechaSalida,
-    tipoCambioDOF
+    contexts: {
+      [CustomGlossTabContextType.PROVIDED]: {
+        pedimento: {
+          data: [
+            { name: "Tipo de cambio", value: tipoCambio },
+            { name: "Fecha de salida", value: fechaSalida }
+          ]
+        }
+      },
+      [CustomGlossTabContextType.EXTERNAL]: {
+        dof: {
+          data: [
+            { name: "Tipo de cambio DOF", value: tipoCambioDOF }
+          ]
+        }
+      }
+    }
   } as const;
 
   return await glosar(validation);
@@ -55,12 +85,28 @@ export async function validateValorComercial(pedimento: Pedimento, cfdi: Cfdi, c
   const validation = {
     name: "Valor comercial",
     description: "El valor comercial del pedimento debe ser el mismo que el valor comercial del CFDI y el valor comercial en el COVE. Si el valor en el cfdi o en el cove es en dolares, se debe de convertir a pesos mexicanos usando el tipo de cambio del pedimento.",
-    valorComercialPedimento,
-    valorComercialCFDI,
-    monedaCFDI,
-    valorComercialCOVE,
-    monedaCOVE,
-    tipoCambioPedimento
+    contexts: {
+      [CustomGlossTabContextType.PROVIDED]: {
+        pedimento: {
+          data: [
+            { name: "Valor comercial", value: valorComercialPedimento },
+            { name: "Tipo de cambio", value: tipoCambioPedimento }
+          ]
+        },
+        cfdi: {
+          data: [
+            { name: "Valor comercial", value: valorComercialCFDI },
+            { name: "Moneda", value: monedaCFDI }
+          ]
+        },
+        cove: {
+          data: [
+            { name: "Valor comercial", value: valorComercialCOVE },
+            { name: "Moneda", value: monedaCOVE }
+          ]
+        }
+      }
+    }
   } as const;
 
   return await glosar(validation);
@@ -80,13 +126,29 @@ export async function validateValorDolares(pedimento: Pedimento, cfdi: Cfdi, cov
   const validation = {
     name: "Valor dolares",
     description: "El valor en dólares del pedimento se calcula dividiendo el valor comercial entre el tipo de cambio del pedimento. Si el valor en el CFDI o en el COVE está en dólares, debe coincidir con el valor en dólares del pedimento.",
-    valorDolaresPedimento,
-    valorComercialPedimento,
-    tipoCambioPedimento,
-    valorComercialCFDI,
-    monedaCFDI,
-    valorComercialCOVE,
-    monedaCOVE
+    contexts: {
+      [CustomGlossTabContextType.PROVIDED]: {
+        pedimento: {
+          data: [
+            { name: "Valor en dólares", value: valorDolaresPedimento },
+            { name: "Valor comercial", value: valorComercialPedimento },
+            { name: "Tipo de cambio", value: tipoCambioPedimento }
+          ]
+        },
+        cfdi: {
+          data: [
+            { name: "Valor comercial", value: valorComercialCFDI },
+            { name: "Moneda", value: monedaCFDI }
+          ]
+        },
+        cove: {
+          data: [
+            { name: "Valor comercial", value: valorComercialCOVE },
+            { name: "Moneda", value: monedaCOVE }
+          ]
+        }
+      }
+    }
   } as const;
 
   return await glosar(validation);
