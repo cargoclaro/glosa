@@ -6,7 +6,7 @@ import { openai } from "@ai-sdk/openai";
 import { Invoice } from "../../../data-extraction/schemas/invoice";
 
 // Función para validar preferencia arancelaria y certificado de origen
-async function validatePreferenciaArancelaria(pedimento: Pedimento) {
+export async function validatePreferenciaArancelaria(pedimento: Pedimento) {
   // Extraer partidas con información de preferencia arancelaria
   const partidas = pedimento.partidas || [];
   
@@ -34,7 +34,7 @@ async function validatePreferenciaArancelaria(pedimento: Pedimento) {
 }
 
 // Función para validar coherencia de UMC y cantidad UMC
-async function validateCoherenciaUMC(pedimento: Pedimento, invoice: Invoice) {
+export async function validateCoherenciaUMC(pedimento: Pedimento, invoice: Invoice) {
   // Extraer partidas con información de UMC
   const partidas = pedimento.partidas || [];
   
@@ -62,7 +62,7 @@ async function validateCoherenciaUMC(pedimento: Pedimento, invoice: Invoice) {
 }
 
 // Función para validar coherencia de peso
-async function validateCoherenciaPeso(pedimento: Pedimento) {
+export async function validateCoherenciaPeso(pedimento: Pedimento) {
   // Extraer peso bruto del pedimento
   const pesoBrutoPedimento = pedimento.encabezado_del_pedimento?.peso_bruto;
   
@@ -90,7 +90,7 @@ async function validateCoherenciaPeso(pedimento: Pedimento) {
 }
 
 // Función para validar cálculo del prorrateo y DTA
-async function validateCalculoDTA(pedimento: Pedimento) {
+export async function validateCalculoDTA(pedimento: Pedimento) {
   // Extraer partidas con contribuciones
   const partidas = pedimento.partidas || [];
   
@@ -114,7 +114,7 @@ async function validateCalculoDTA(pedimento: Pedimento) {
 }
 
 // Función para validar cálculo de contribuciones
-async function validateCalculoContribuciones(pedimento: Pedimento) {
+export async function validateCalculoContribuciones(pedimento: Pedimento) {
   // Extraer partidas con contribuciones
   const partidas = pedimento.partidas || [];
   
@@ -138,9 +138,9 @@ async function validateCalculoContribuciones(pedimento: Pedimento) {
 }
 
 // Función para validar coincidencia de permisos e identificadores
-async function validatePermisosIdentificadores(pedimento: Pedimento) {
+export async function validatePermisosIdentificadores(pedimento: Pedimento) {
   // Extraer identificadores a nivel pedimento
-  const identificadoresPedimento = pedimento.partidas? [];
+  const identificadoresPedimento = pedimento.partidas?.map((partida) => partida.identificadores) || [];
   
   // Extraer partidas con identificadores
   const partidas = pedimento.partidas || [];
@@ -166,7 +166,7 @@ async function validatePermisosIdentificadores(pedimento: Pedimento) {
 }
 
 // Función para validar regulaciones arancelarias
-async function validateRegulacionesArancelarias(pedimento: Pedimento) {
+export async function validateRegulacionesArancelarias(pedimento: Pedimento) {
   // Extraer partidas con fracciones arancelarias
   const partidas = pedimento.partidas || [];
   
@@ -190,7 +190,7 @@ async function validateRegulacionesArancelarias(pedimento: Pedimento) {
 }
 
 // Función para validar regulaciones no arancelarias
-async function validateRegulacionesNoArancelarias(pedimento: Pedimento) {
+export async function validateRegulacionesNoArancelarias(pedimento: Pedimento) {
   // Extraer partidas con fracciones arancelarias
   const partidas = pedimento.partidas || [];
   
