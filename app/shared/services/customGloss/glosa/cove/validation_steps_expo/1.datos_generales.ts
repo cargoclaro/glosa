@@ -19,11 +19,23 @@ export async function validateNumeroFactura(cove: Cove, invoice: Invoice, carta3
   const validation = {
     name: "Número de Factura (Exportación)",
     description: "El numero de factura esta en el CFDI y se puede encontrar como (Invoice Number, Invoice No, Invoice #). También puede venir en la carta CFDI. En caso de discrepancia, prevalece el número indicado en la carta CFDI.",
+    contexts: [
+      {
+        type: "PROVIDED",
+        origin: "cove",
+        data: [
+          {
+            name: "Numero de Factura",
+            value: numeroFacturaCove
+          }
+        ]
+      },
+    ],
     numeroFacturaCove,
     numeroFacturaInvoice,
     numeroFacturaCarta318,
     tipoOperacion: "EXP"
-  };
+  } as const;
 
   const { object } = await generateObject({
     model: wrapAISDKModel(openai("gpt-4o"), {
@@ -35,7 +47,10 @@ export async function validateNumeroFactura(cove: Cove, invoice: Invoice, carta3
     prompt: `${JSON.stringify(validation, null, 2)}`,
   });
 
-  return object;
+  return {
+    contexts: validation.contexts,
+    validationResult: object
+  };
 }
 
 /**
