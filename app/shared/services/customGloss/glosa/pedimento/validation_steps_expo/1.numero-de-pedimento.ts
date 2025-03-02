@@ -34,7 +34,7 @@ async function validateAñoPedimento(pedimento: Pedimento) {
         }
       },
       [CustomGlossTabContextType.INFERRED]: {
-        pedimento: {
+        "codigo": {
           data: [{ name: "Año actual", value: añoActual }]
         }
       }
