@@ -3,59 +3,13 @@ import { validationResultSchema, SYSTEM_PROMPT } from "../../validation-result";
 import { generateObject } from "ai";
 import { wrapAISDKModel } from "langsmith/wrappers/vercel";
 import { openai } from "@ai-sdk/openai";
-import { Invoice } from "../../../data-extraction/schemas/invoice";
-import { Carta318 } from "../../../data-extraction/schemas/carta-318";
 import { Cfdi } from "../../../data-extraction/schemas/cfdi";
-
-/**
- * Validates that the supplier's general information in the COVE document matches the relevant document.
- * For imports: Compares with the invoice or Carta 318. In case of discrepancy, Carta 318 takes precedence.
- */
-export async function validateDatosGeneralesProveedor_IMP(
-  cove: Cove,
-  invoice: Invoice,
-  carta318?: Carta318
-) {
-  // Extract supplier data from different sources
-  const identificadorCove = cove.datos_generales_proveedor?.identificador;
-  const tipoIdentificadorCove = cove.datos_generales_proveedor?.tipo_identificador;
-  const nombreRazonSocialCove = cove.datos_generales_proveedor?.nombre_razon_social;
-
-  // Import: get data from Invoice and Carta318
-  const nombreRazonSocialInvoice = invoice.seller_details?.name;
-  const nombreRazonSocialCarta318 = carta318?.proveedor_comprador?.nombre;
-  const identificadorCarta318 = carta318?.proveedor_comprador?.tax_id;
-
-  const validation = {
-    name: "Datos generales del proveedor",
-    description: "Verificar que los siguientes datos coincidan entre el COVE y la factura/carta 318:\n\n• RFC\n• Razón social\n Si no hay RFC, el tipo de identificador que tenga (tax id, tax id number, tax id number, etc) debe de coincidir.",
-    identificadorCove,
-    tipoIdentificadorCove,
-    nombreRazonSocialCove,
-    nombreRazonSocialInvoice,
-    nombreRazonSocialCarta318,
-    identificadorCarta318,
-    tipoOperacion: "IMP"
-  };
-
-  const { object } = await generateObject({
-    model: wrapAISDKModel(openai("gpt-4o"), {
-      name: `Validate ${validation.name}`,
-      project_name: "glosa",
-    }),
-    system: SYSTEM_PROMPT,
-    schema: validationResultSchema,
-    prompt: `${JSON.stringify(validation, null, 2)}`,
-  });
-
-  return object;
-}
 
 /**
  * Validates that the supplier's general information in the COVE document matches the relevant document.
  * For exports: Compares with the CFDI.
  */
-export async function validateDatosGeneralesProveedor_EXP(
+export async function validateDatosGeneralesProveedor(
   cove: Cove,
   cfdi: Cfdi
 ) {
@@ -94,57 +48,9 @@ export async function validateDatosGeneralesProveedor_EXP(
 
 /**
  * Validates that the supplier's address in the COVE document matches the relevant document.
- * For imports: Compares with the invoice or Carta 318. In case of discrepancy, Carta 318 takes precedence.
- */
-export async function validateDomicilioProveedor_IMP(
-  cove: Cove,
-  invoice: Invoice,
-  carta318?: Carta318
-) {
-  // Extract supplier address data from different sources
-  const domicilioCove = cove.datos_generales_proveedor?.domicilio;
-
-  // Compose full address string for comparison
-  const domicilioCoveCompleto = domicilioCove ?
-    [
-      domicilioCove.calle,
-      domicilioCove.numero_exterior,
-      domicilioCove.colonia,
-      domicilioCove.codigo_postal,
-      domicilioCove.pais
-    ].filter(Boolean).join(' ') : '';
-
-  // Import: get data from Invoice and Carta318
-  const domicilioInvoice = invoice.seller_details?.address;
-  const domicilioCarta318 = carta318?.proveedor_comprador?.domicilio;
-
-  const validation = {
-    name: "Domicilio del proveedor",
-    description: "Verificar que el domicilio fiscal del proveedor coincida entre el COVE y la factura/carta 318:\n\n• Domicilio fiscal",
-    domicilioCoveCompleto,
-    domicilioInvoice,
-    domicilioCarta318,
-    tipoOperacion: "IMP"
-  };
-
-  const { object } = await generateObject({
-    model: wrapAISDKModel(openai("gpt-4o"), {
-      name: `Validate ${validation.name}`,
-      project_name: "glosa",
-    }),
-    system: SYSTEM_PROMPT,
-    schema: validationResultSchema,
-    prompt: `${JSON.stringify(validation, null, 2)}`,
-  });
-
-  return object;
-}
-
-/**
- * Validates that the supplier's address in the COVE document matches the relevant document.
  * For exports: Compares with the CFDI.
  */
-export async function validateDomicilioProveedor_EXP(
+export async function validateDomicilioProveedor(
   cove: Cove,
   cfdi: Cfdi
 ) {
@@ -187,51 +93,9 @@ export async function validateDomicilioProveedor_EXP(
 
 /**
  * Validates that the recipient's general information in the COVE document matches the relevant document.
- * For imports: Compares with the invoice or Carta 318. In case of discrepancy, Carta 318 takes precedence.
- */
-export async function validateDatosGeneralesDestinatario_IMP(
-  cove: Cove,
-  invoice: Invoice,
-  carta318?: Carta318
-) {
-  // Extract recipient data from different sources
-  const rfcDestinatarioCove = cove.datos_generales_destinatario?.rfc_destinatario;
-  const nombreRazonSocialCove = cove.datos_generales_destinatario?.nombre_razon_social;
-
-  // Import: get data from Invoice and Carta318
-  const nombreRazonSocialInvoice = invoice.bill_to?.name;
-  const nombreRazonSocialImportador = carta318?.importador_exportador?.nombre;
-  const rfcImportador = carta318?.importador_exportador?.rfc;
-
-  const validation = {
-    name: "Datos generales del destinatario",
-    description: "Verificar que los siguientes datos coincidan entre el COVE y la factura/carta 318:\n\n• RFC\n• Razón social\n Si no hay RFC, el tipo de identificador que tenga (tax id, tax id number, tax id number, etc) debe de coincidir.",
-    rfcDestinatarioCove,
-    nombreRazonSocialCove,
-    nombreRazonSocialInvoice,
-    nombreRazonSocialImportador,
-    rfcImportador,
-    tipoOperacion: "IMP"
-  };
-
-  const { object } = await generateObject({
-    model: wrapAISDKModel(openai("gpt-4o"), {
-      name: `Validate ${validation.name}`,
-      project_name: "glosa",
-    }),
-    system: SYSTEM_PROMPT,
-    schema: validationResultSchema,
-    prompt: `${JSON.stringify(validation, null, 2)}`,
-  });
-
-  return object;
-}
-
-/**
- * Validates that the recipient's general information in the COVE document matches the relevant document.
  * For exports: Compares with the CFDI.
  */
-export async function validateDatosGeneralesDestinatario_EXP(
+export async function validateDatosGeneralesDestinatario(
   cove: Cove,
   cfdi: Cfdi
 ) {
@@ -268,57 +132,9 @@ export async function validateDatosGeneralesDestinatario_EXP(
 
 /**
  * Validates that the recipient's address in the COVE document matches the relevant document.
- * For imports: Compares with the invoice or Carta 318. In case of discrepancy, Carta 318 takes precedence.
- */
-export async function validateDomicilioDestinatario_IMP(
-  cove: Cove,
-  invoice: Invoice,
-  carta318?: Carta318
-) {
-  // Extract recipient address data from different sources
-  const domicilioCove = cove.datos_generales_destinatario?.domicilio;
-
-  // Compose full address string for comparison
-  const domicilioCoveCompleto = domicilioCove ?
-    [
-      domicilioCove.calle,
-      domicilioCove.numero_exterior,
-      domicilioCove.colonia,
-      domicilioCove.codigo_postal,
-      domicilioCove.pais
-    ].filter(Boolean).join(' ') : '';
-
-  // Import: get data from Invoice and Carta318
-  const domicilioInvoice = invoice.bill_to?.address;
-  const domicilioImportador = carta318?.importador_exportador?.domicilio;
-
-  const validation = {
-    name: "Domicilio del destinatario",
-    description: "Verificar que el domicilio fiscal del destinatario coincida entre el COVE y la factura/carta 318:\n\n• Domicilio fiscal",
-    domicilioCoveCompleto,
-    domicilioInvoice,
-    domicilioImportador,
-    tipoOperacion: "IMP"
-  };
-
-  const { object } = await generateObject({
-    model: wrapAISDKModel(openai("gpt-4o"), {
-      name: `Validate ${validation.name}`,
-      project_name: "glosa",
-    }),
-    system: SYSTEM_PROMPT,
-    schema: validationResultSchema,
-    prompt: `${JSON.stringify(validation, null, 2)}`,
-  });
-
-  return object;
-}
-
-/**
- * Validates that the recipient's address in the COVE document matches the relevant document.
  * For exports: Compares with the CFDI.
  */
-export async function validateDomicilioDestinatario_EXP(
+export async function validateDomicilioDestinatario(
   cove: Cove,
   cfdi: Cfdi
 ) {
