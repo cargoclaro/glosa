@@ -3,6 +3,7 @@ import { glosar } from "../../validation-result";
 
 import { Carta318 } from "../../../data-extraction/schemas/carta-318";
 import { Cfdi } from "../../../data-extraction/schemas/cfdi";
+import { CustomGlossTabContextType } from "@prisma/client";
 
 /**
  * Validates that the merchandise details in the COVE document match the relevant document for exports.
@@ -85,14 +86,39 @@ export async function validateValorTotalDolares(
   const validation = {
     name: "Valor total en dolares",
     description: "Validar que el valor total en dólares cumpla con los siguientes criterios:\n\n• El valor total debe coincidir con el declarado en el CFDI y/o carta 3.1.8\n• Si el CFDI está en una moneda diferente a dólares, verificar que se haya realizado la conversión correcta usando el factor de equivalencia correspondiente\n• Revisar que el tipo de cambio utilizado coincida con el declarado en el área de observaciones del COVE\n• Validar que los cálculos de conversión sean correctos y precisos\n• En caso de discrepancia entre documentos, la carta 3.1.8 tiene prioridad sobre el CFDI",
-    valorTotalCove: valorTotalDolaresCove,
-    observacionesCove,
-    valorTotalCarta318,
-    monedaCarta318,
-    valorTotalCfdi,
-    monedaCfdi,
-    tipoOperacion: 'EXP'
-  };
+    contexts: [
+      {
+        type: CustomGlossTabContextType.PROVIDED,
+        origin: "cove",
+        data: [{ name: "Valor total en dolares", value: valorTotalDolaresCove }]
+      },
+      {
+        type: CustomGlossTabContextType.PROVIDED,
+        origin: "cove",
+        data: [{ name: "Observaciones", value: observacionesCove }]
+      },
+      {
+        type: CustomGlossTabContextType.PROVIDED,
+        origin: "carta318",
+        data: [{ name: "Valor total en dolares", value: valorTotalCarta318 }]
+      },
+      {
+        type: CustomGlossTabContextType.PROVIDED,
+        origin: "carta318",
+        data: [{ name: "Moneda", value: monedaCarta318 }]
+      },
+      {
+        type: CustomGlossTabContextType.PROVIDED,
+        origin: "cfdi",
+        data: [{ name: "Valor total", value: valorTotalCfdi }]
+      },
+      {
+        type: CustomGlossTabContextType.PROVIDED,
+        origin: "cfdi",
+        data: [{ name: "Moneda", value: monedaCfdi }]
+      }
+    ],
+  } as const;
 
   return await glosar(validation);
 }

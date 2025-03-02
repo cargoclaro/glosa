@@ -26,7 +26,7 @@ export async function validateNumeroFactura(cove: Cove, cfdi: Cfdi) {
         data: [{ name: "Número de Factura", value: numeroFacturaCfdi }]
       }
     ]
-  };
+  } as const;
 
   return await glosar(validation);
 }
@@ -54,7 +54,7 @@ export async function validateFechaExpedicion(cove: Cove, cfdi: Cfdi) {
         data: [{ name: "Fecha de Expedición", value: fechaExpedicionCfdi }]
       }
     ]
-  };
+  } as const;
 
   return await glosar(validation);
 }
@@ -82,7 +82,7 @@ export async function validateRfc(cove: Cove, cfdi: Cfdi) {
         data: [{ name: "RFC", value: rfcCfdi }]
       }
     ]
-  };
+  } as const;
 
   return await glosar(validation);
 }

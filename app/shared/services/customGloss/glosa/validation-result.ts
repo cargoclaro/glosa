@@ -3,6 +3,7 @@ import { z } from "zod"
 import { CustomGlossTabContextType } from "@prisma/client"
 import { wrapAISDKModel } from "langsmith/wrappers/vercel";
 import { openai } from "@ai-sdk/openai";
+import { DocumentType } from "../classification";
 
 const SYSTEM_PROMPT = `
 Eres un Glosador de inteligencia artificial en una agencia aduanal en México.
@@ -20,12 +21,12 @@ const validationResultSchema = z.object({
 export async function glosar(validation: {
   name: string,
   description: string,
-  contexts: {
+  contexts: readonly {
     type: CustomGlossTabContextType,
-    origin: string,
-    data: {
+    origin: DocumentType,
+    data: readonly {
       name: string,
-      value: string | null | undefined
+      value: string | number | null | undefined
     }[]
   }[]
 }) {

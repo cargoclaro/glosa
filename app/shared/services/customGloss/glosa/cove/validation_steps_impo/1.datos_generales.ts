@@ -1,6 +1,6 @@
 import { Cove } from "../../../data-extraction/schemas/cove";
 import { glosar } from "../../validation-result";
-
+import { CustomGlossTabContextType } from "@prisma/client";
 import { Invoice } from "../../../data-extraction/schemas/invoice";
 import { Carta318 } from "../../../data-extraction/schemas/carta-318";
 
@@ -17,12 +17,24 @@ export async function validateNumeroFactura(cove: Cove, invoice: Invoice, carta3
   const validation = {
     name: "Número de Factura (Importación)",
     description: "El número de factura del COVE debe coincidir con el número de factura en la factura comercial (puede aparecer como Invoice Number, Invoice No, Invoice #) o en la carta 318. En caso de discrepancia, prevalece el número indicado en la carta 318.",
-    numeroFacturaCove,
-    numeroFacturaInvoice,
-    numeroFacturaCarta318,
-    tipoOperacion: "IMP"
-  };
-
+    contexts: [
+      {
+        type: CustomGlossTabContextType.PROVIDED,
+        origin: "cove",
+        data: [{ name: "Número de Factura", value: numeroFacturaCove }]
+      },
+      {
+        type: CustomGlossTabContextType.PROVIDED,
+        origin: "factura",
+        data: [{ name: "Número de Factura", value: numeroFacturaInvoice }]
+      },
+      {
+        type: CustomGlossTabContextType.PROVIDED,
+        origin: "carta318",
+        data: [{ name: "Número de Factura", value: numeroFacturaCarta318 }]
+      }
+    ],
+  } as const;
   return await glosar(validation);
 }
 
@@ -39,11 +51,24 @@ export async function validateFechaExpedicion(cove: Cove, invoice: Invoice, cart
   const validation = {
     name: "Fecha de Expedición (Importación)",
     description: "La fecha de expedición del COVE debe coincidir con la fecha de la factura comercial (puede aparecer como Invoice Date, Date) o en la carta 318. En caso de discrepancia, prevalece la fecha indicada en la carta 318.",
-    fechaExpedicionCove,
-    fechaExpedicionInvoice,
-    fechaExpedicionCarta318,
-    tipoOperacion: "IMP"
-  };
+    contexts: [
+      {
+        type: CustomGlossTabContextType.PROVIDED,
+        origin: "cove",
+        data: [{ name: "Fecha de Expedición", value: fechaExpedicionCove }]
+      },
+      {
+        type: CustomGlossTabContextType.PROVIDED,
+        origin: "factura",
+        data: [{ name: "Fecha de Expedición", value: fechaExpedicionInvoice }]
+      },
+      {
+        type: CustomGlossTabContextType.PROVIDED,
+        origin: "carta318",
+        data: [{ name: "Fecha de Expedición", value: fechaExpedicionCarta318 }]
+      }
+    ]
+  } as const;
 
   return await glosar(validation);
 }
