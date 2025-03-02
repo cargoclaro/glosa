@@ -4,10 +4,10 @@ import { generateObject } from "ai";
 import { wrapAISDKModel } from "langsmith/wrappers/vercel";
 import { openai } from "@ai-sdk/openai";
 import { TransportDocument } from "../../../data-extraction/schemas";
-import { Invoice } from "../../../data-extraction/schemas/invoice";
+import { Cfdi } from "../../../data-extraction/schemas/cfdi";
 import { PackingList } from "../../../data-extraction/schemas/packing-list";
 
-export async function validatePesosYBultos(pedimento: Pedimento, transportDocument: TransportDocument, packingList: PackingList, invoice: Invoice) {
+  export async function validatePesosYBultos(pedimento: Pedimento, transportDocument: TransportDocument, packingList: PackingList, cfdi: Cfdi) {
   // Extract weight values from pedimento
   const pesoBrutoPedimento = pedimento.encabezado_del_pedimento?.peso_bruto;
   // Extract weight values from transport document
@@ -19,20 +19,20 @@ export async function validatePesosYBultos(pedimento: Pedimento, transportDocume
   const pesoBrutoPackingList = packingList?.totals?.total_gross_weight;
   const pesoNetoPackingList = packingList?.totals?.total_net_weight;
   
-  // Extract weight values from invoice
-  const pesoBrutoInvoice = invoice?.total_gross_weight;
-  const pesoNetoInvoice = invoice?.total_net_weight;
+  // Extract weight values from CFDI
+  const pesoBrutoCFDI = cfdi?.peso_bruto_total;
+  const pesoNetoCFDI = cfdi?.peso_neto_total;
   
   const validation = {
     name: "Validación de pesos y bultos",
-    description: "Para validar los pesos y bultos, sigue estos pasos detallados:\n\n1. Verifica que el peso bruto declarado en el pedimento sea igual o menor a alguno de los pesos declarados en el documento de transporte, packing list o factura.\n2. Asegúrate de que el peso bruto declarado en el pedimento coincida con el peso declarado en el documento de transporte, carta 318 o packing list. La relación entre estos pesos debe ser lógica y consistente.\n3. Comprueba que el peso neto declarado en el pedimento sea menor que el peso bruto y que sea consistente con los documentos soporte.\n4. Verifica que el número total de bultos coincida entre el pedimento, documento de transporte y/o CFDI",
+    description: "Para validar los pesos y bultos, sigue estos pasos detallados:\n\n1. Verifica que el peso bruto declarado en el pedimento sea igual o menor a alguno de los pesos declarados en el documento de transporte, packing list o CFDI.\n2. Asegúrate de que el peso bruto declarado en el pedimento coincida con el peso declarado en el documento de transporte, carta 318 o packing list. La relación entre estos pesos debe ser lógica y consistente.\n3. Comprueba que el peso neto declarado en el pedimento sea menor que el peso bruto y que sea consistente con los documentos soporte.\n4. Verifica que el número total de bultos coincida entre el pedimento, documento de transporte y/o CFDI",
     pesoBrutoPedimento,
     pesoBrutoTransportDocument,
     pesoNetoTransportDocument,
     pesoBrutoPackingList,
     pesoNetoPackingList,
-    pesoBrutoInvoice,
-    pesoNetoInvoice,
+    pesoBrutoCFDI,
+    pesoNetoCFDI,
     bultosTransportDocument,
   };
 
