@@ -25,7 +25,7 @@ export async function glosar(validation: {
       [origin: string]: {
         data: readonly {
           name: string;
-          value: string | number | null | undefined;
+          value: string | number | boolean | null | undefined;
         }[];
       };
     };
