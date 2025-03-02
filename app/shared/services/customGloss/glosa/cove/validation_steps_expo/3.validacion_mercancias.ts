@@ -57,7 +57,7 @@ export async function validateMercancias(
     mercanciasCarta318: mercanciasCarta318Formatted,
     mercanciasCfdi: mercanciasCfdiFormatted,
     tipoOperacion: 'EXP'
-  };
+  } as const;
 
   return await glosar(validation);
 }

@@ -17,7 +17,7 @@ export async function validateTipoTransporte(pedimento: Pedimento) {
     tipoTransporteArribo,
     tipoTransporteSalida,
     apendice10JSON: JSON.stringify(apendice10)
-  };
+  } as const;
 
   return await glosar(validation);
 }
@@ -35,7 +35,7 @@ export async function validateModalidadMedioTransporte(pedimento: Pedimento, tra
     tipoTransporteEntradaSalida,
     tipoDocumentoTransporte,
     apendice3JSON: JSON.stringify(apendice3)
-  };
+  } as const;
 
   return await glosar(validation);
 }
@@ -54,7 +54,7 @@ export async function validateNumeroGuiaEmbarque(pedimento: Pedimento, transport
     numeroDocumentoTransporte,
     tipoTransporte: pedimento.medios_transporte?.entrada_salida,
     tipoDocumentoTransporte: transportDocument?.document_type
-  };
+  } as const;
 
   return await glosar(validation);
 }

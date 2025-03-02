@@ -33,7 +33,7 @@ export async function validateDatosGeneralesProveedor(
     nombreRazonSocialCarta318,
     identificadorCarta318,
     tipoOperacion: "IMP"
-  };
+  } as const;
 
   return await glosar(validation);
 }
@@ -71,7 +71,7 @@ export async function validateDomicilioProveedor(
     domicilioInvoice,
     domicilioCarta318,
     tipoOperacion: "IMP"
-  };
+  } as const;
 
   return await glosar(validation);
 }

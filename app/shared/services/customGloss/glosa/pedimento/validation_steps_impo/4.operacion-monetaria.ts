@@ -18,7 +18,7 @@ export async function validateTransportDocumentEntryDate(pedimento: Pedimento, t
     pedimentoEntryDate,
     transportEntryDate,
     transportType
-  };
+  } as const;
 
   return await glosar(validation);
 }
@@ -35,7 +35,7 @@ export async function validateTipoCambio(pedimento: Pedimento) {
     tipoCambio,
     fechaEntrada,
     tipoCambioDOF
-  };
+  } as const;
 
   return await glosar(validation);
 }
@@ -82,7 +82,7 @@ export async function validateIncrementables(pedimento: Pedimento, invoice: Invo
     incrementablesCarta318,
     incrementablesInvoice,
     incrementablesTransportDocument
-  };
+  } as const;
 
   return await glosar(validation);
 }
@@ -164,7 +164,7 @@ export async function validateValoresPedimento(pedimento: Pedimento, invoice: In
     valorCarta318,
     valorInvoice,
     tipoCambioDOF
-  };
+  } as const;
 
   return await glosar(validation);
 }

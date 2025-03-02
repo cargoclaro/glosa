@@ -20,7 +20,7 @@ async function validateCoherenciaOrigenDestino(pedimento: Pedimento, transportDo
     observaciones: pedimento.observaciones_a_nivel_pedimento,
     origen,
     destino
-  };
+  } as const;
 
   return await glosar(validation);
 }
@@ -38,7 +38,7 @@ async function validateClavePedimento(pedimento: Pedimento) {
     tipoOperacion,
     clavePedimento,
     apendice2JSON: JSON.stringify(apendice2)
-  };
+  } as const;
 
   return await glosar(validation);
 }
@@ -56,7 +56,7 @@ async function validateRegimen(pedimento: Pedimento) {
     tipoOperacion,
     regimen,
     apendice16JSON: JSON.stringify(apendice16)
-  };
+  } as const;
 
   return await glosar(validation);
 }

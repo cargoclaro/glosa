@@ -14,7 +14,7 @@ export async function validateRfcFormat(pedimento: Pedimento, cove: Cove, cfdi: 
     rfcPedimento,
     rfcCove,
     rfcCfdi
-  };
+  } as const;
 
   return await glosar(validation);
 }
@@ -34,7 +34,7 @@ export async function validateCesionDerechos(pedimento: Pedimento, cartaSesion: 
     rfcExportadorCfdi,
     fechaEmisionCesion,
     existeCesionDerechos: !!cartaSesion
-  };
+  } as const;
 
   return await glosar(validation);
 }
@@ -66,7 +66,7 @@ export async function validateDatosImportador(pedimento: Pedimento, cove: Cove, 
     razonSocialCove,
     razonSocialCfdi,
     existeCfdi: !!cfdi
-  };
+  } as const;
 
   return await glosar(validation);
 }
@@ -98,7 +98,7 @@ export async function validateDatosProveedor(pedimento: Pedimento, cove: Cove, c
     idProveedorCove,
     idProveedorCfdi,
     existeCfdi: !!cfdi
-  };
+  } as const;
 
   return await glosar(validation);
 }
@@ -124,7 +124,7 @@ export async function validateFechasYFolios(pedimento: Pedimento, cove: Cove, cf
     numeroCovePedimento,
     numeroCove,
     numeroFolioCfdi
-  };
+  } as const;
 
   return await glosar(validation);
 }
@@ -161,7 +161,7 @@ export async function validateMonedaYEquivalencia(pedimento: Pedimento, cove: Co
     factorMonedaFactura,
     factorDof,
     tipoCambioDOF
-  };
+  } as const;
 
   return await glosar(validation);
 }

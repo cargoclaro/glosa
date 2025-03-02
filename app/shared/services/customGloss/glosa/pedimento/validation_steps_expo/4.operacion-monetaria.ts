@@ -20,7 +20,7 @@ export async function validateFechaSalida(pedimento: Pedimento, transportDocumen
     transportExitDate,
     fechaoperador,
     transportType
-  };
+  } as const;
 
   return await glosar(validation);
 }
@@ -37,7 +37,7 @@ export async function validateTipoCambio(pedimento: Pedimento) {
     tipoCambio,
     fechaSalida,
     tipoCambioDOF
-  };
+  } as const;
 
   return await glosar(validation);
 }
@@ -61,7 +61,7 @@ export async function validateValorComercial(pedimento: Pedimento, cfdi: Cfdi, c
     valorComercialCOVE,
     monedaCOVE,
     tipoCambioPedimento
-  };
+  } as const;
 
   return await glosar(validation);
 }
@@ -87,7 +87,7 @@ export async function validateValorDolares(pedimento: Pedimento, cfdi: Cfdi, cov
     monedaCFDI,
     valorComercialCOVE,
     monedaCOVE
-  };
+  } as const;
 
   return await glosar(validation);
 }

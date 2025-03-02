@@ -14,7 +14,7 @@ export async function validateRfcFormat(pedimento: Pedimento, cove: Cove, carta3
     rfcPedimento,
     rfcCove,
     rfcCarta318
-  };
+  } as const;
 
   return await glosar(validation);
 }
@@ -34,7 +34,7 @@ export async function validateCesionDerechos(pedimento: Pedimento, cartaSesion: 
     rfcImportadorCarta318,
     fechaEmisionCesion,
     existeCesionDerechos: !!cartaSesion
-  };
+  } as const;
 
   return await glosar(validation);
 }
@@ -66,7 +66,7 @@ export async function validateDatosImportador(pedimento: Pedimento, cove: Cove, 
     razonSocialCove,
     razonSocialCarta318,
     existeCarta318: !!carta318
-  };
+  } as const;
 
   return await glosar(validation);
 }
@@ -98,7 +98,7 @@ export async function validateDatosProveedor(pedimento: Pedimento, cove: Cove, c
     idProveedorCove,
     idProveedorCarta318,
     existeCarta318: !!carta318
-  };
+  } as const;
 
   return await glosar(validation);
 }
@@ -127,7 +127,7 @@ export async function validateFechasYFolios(pedimento: Pedimento, cove: Cove, in
     numeroCovePedimento,
     numeroCove,
     numeroFactura
-  };
+  } as const;
 
   return await glosar(validation);
 }
@@ -168,7 +168,7 @@ export async function validateMonedaYEquivalencia(pedimento: Pedimento, cove: Co
     factorMonedaFactura,
     factorDof,
     tipoCambioDOF
-  };
+  } as const;
 
   return await glosar(validation);
 }

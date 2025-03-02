@@ -32,7 +32,7 @@ import { PackingList } from "../../../data-extraction/schemas/packing-list";
     pesoBrutoCFDI,
     pesoNetoCFDI,
     bultosTransportDocument,
-  };
+  } as const;
 
   return await glosar(validation);
 }
@@ -49,7 +49,7 @@ export async function validateBultos(pedimento: Pedimento, transportDocument: Tr
     description: "El número total de bultos debe coincidir entre el pedimento y el documento de transporte. Si no hay documento de transporte, marcar como advertencia.",
     bultosPedimento,
     bultosTransportDocument,
-  };
+  } as const;
 
   return await glosar(validation);
 }

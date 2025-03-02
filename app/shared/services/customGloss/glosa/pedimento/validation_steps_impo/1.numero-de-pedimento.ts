@@ -9,7 +9,7 @@ async function validateLongitud(pedimento: Pedimento) {
     name: "Longitud",
     description: "El número de pedimento debe contar con 15 dígitos",
     numeroDelPedimento: numeroPedimento
-  };
+  } as const;
 
   return await glosar(validation);
 }
@@ -22,7 +22,7 @@ async function validateAñoPedimento(pedimento: Pedimento) {
     description: "El año del pedimento (inferido por los dígitos 1 y 2 del número del pedimento) debe ser iguales al año actual",
     numeroDelPedimento: numeroPedimento,
     añoActual: new Date().getFullYear()
-  };
+  } as const;
 
   return await glosar(validation);
 }

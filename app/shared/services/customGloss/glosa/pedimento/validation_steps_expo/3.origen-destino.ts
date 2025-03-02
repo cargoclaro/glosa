@@ -11,7 +11,7 @@ async function validateClaveApendice15(pedimento: Pedimento) {
     description: "La clave de destino/origen debe existir en el Apéndice 15",
     claveDestinoOrigen,
     apendice15JSON: JSON.stringify(apendice15)
-  };
+  } as const;
 
   return await glosar(validation);
 }

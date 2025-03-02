@@ -56,7 +56,7 @@ export async function validateMercancias(
     mercanciasCarta318: mercanciasCarta318Formatted,
     mercanciasInvoice: mercanciasInvoiceFormatted,
     tipoOperacion: 'IMP'
-  };
+  } as const;
 
   return await glosar(validation);
 }
@@ -92,7 +92,7 @@ export async function validateValorTotalDolares(
     valorTotalInvoice,
     monedaInvoice,
     tipoOperacion: 'IMP'
-  };
+  } as const;
 
   return await glosar(validation);
 }
