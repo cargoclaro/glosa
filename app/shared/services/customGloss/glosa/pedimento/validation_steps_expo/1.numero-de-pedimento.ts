@@ -8,7 +8,13 @@ async function validateLongitud(pedimento: Pedimento) {
   const validation = {
     name: "Longitud",
     description: "El número de pedimento debe contar con 15 dígitos",
-    numeroDelPedimento: numeroPedimento
+    contexts: [
+      {
+        type: CustomGlossTabContextType.PROVIDED,
+        origin: "pedimento",
+        data: [{ name: "Número de pedimento", value: numeroPedimento }]
+      }
+    ]
   } as const;
 
   return await glosar(validation);
@@ -16,12 +22,23 @@ async function validateLongitud(pedimento: Pedimento) {
 
 async function validateAñoPedimento(pedimento: Pedimento) {
   const numeroPedimento = pedimento.encabezado_del_pedimento?.num_pedimento;
+  const añoActual = new Date().getFullYear();
   
   const validation = {
     name: "Año del pedimento",
     description: "El año del pedimento (inferido por los dígitos 1 y 2 del número del pedimento) debe ser iguales al año actual",
-    numeroDelPedimento: numeroPedimento,
-    añoActual: new Date().getFullYear()
+    contexts: [
+      {
+        type: CustomGlossTabContextType.PROVIDED,
+        origin: "pedimento",
+        data: [{ name: "Número de pedimento", value: numeroPedimento }]
+      },
+      {
+        type: CustomGlossTabContextType.INFERRED,
+        origin: "pedimento",
+        data: [{ name: "Año actual", value: añoActual }]
+      }
+    ]
   } as const;
 
   return await glosar(validation);

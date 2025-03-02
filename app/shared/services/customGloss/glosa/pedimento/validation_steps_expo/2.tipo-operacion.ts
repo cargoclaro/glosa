@@ -12,14 +12,33 @@ async function validateCoherenciaOrigenDestino(pedimento: Pedimento, transportDo
   const tipoOperacion = pedimento.encabezado_del_pedimento?.tipo_oper;
   const origen = transportDoc?.origin_country;
   const destino = transportDoc?.destination_country;
+  const observaciones = pedimento.observaciones_a_nivel_pedimento;
   
   const validation = {
     name: "Coherencia con origen/destino",
     description: "El tipo de operación debe ser consistente con el origen y destino de las mercancías, es decir EXP (exportación) si origen es México, si no se pueden determinar los datos de origen y destino, ignorar y marcar como correcto.",
-    tipoOperacion,
-    observaciones: pedimento.observaciones_a_nivel_pedimento,
-    origen,
-    destino
+    contexts: [
+      {
+        type: CustomGlossTabContextType.PROVIDED,
+        origin: "pedimento",
+        data: [{ name: "Tipo de operación", value: tipoOperacion }]
+      },
+      {
+        type: CustomGlossTabContextType.PROVIDED,
+        origin: "pedimento",
+        data: [{ name: "Observaciones", value: observaciones }]
+      },
+      {
+        type: CustomGlossTabContextType.PROVIDED,
+        origin: "documentoDeTransporte",
+        data: [{ name: "País de origen", value: origen }]
+      },
+      {
+        type: CustomGlossTabContextType.PROVIDED,
+        origin: "documentoDeTransporte",
+        data: [{ name: "País de destino", value: destino }]
+      }
+    ]
   } as const;
 
   return await glosar(validation);
@@ -35,9 +54,23 @@ async function validateClavePedimento(pedimento: Pedimento) {
   const validation = {
     name: "Validación de clave de pedimento",
     description: "La clave de pedimento debe ser válida para el tipo de operación según el Apéndice 2",
-    tipoOperacion,
-    clavePedimento,
-    apendice2JSON: JSON.stringify(apendice2)
+    contexts: [
+      {
+        type: CustomGlossTabContextType.PROVIDED,
+        origin: "pedimento",
+        data: [{ name: "Tipo de operación", value: tipoOperacion }]
+      },
+      {
+        type: CustomGlossTabContextType.PROVIDED,
+        origin: "pedimento",
+        data: [{ name: "Clave de pedimento", value: clavePedimento }]
+      },
+      {
+        type: CustomGlossTabContextType.EXTERNAL,
+        origin: "pedimento",
+        data: [{ name: "Apéndice 2", value: JSON.stringify(apendice2) }]
+      }
+    ]
   } as const;
 
   return await glosar(validation);
@@ -53,9 +86,23 @@ async function validateRegimen(pedimento: Pedimento) {
   const validation = {
     name: "Validación de régimen",
     description: "El régimen debe ser válido para el tipo de operación según el Apéndice 16",
-    tipoOperacion,
-    regimen,
-    apendice16JSON: JSON.stringify(apendice16)
+    contexts: [
+      {
+        type: CustomGlossTabContextType.PROVIDED,
+        origin: "pedimento",
+        data: [{ name: "Tipo de operación", value: tipoOperacion }]
+      },
+      {
+        type: CustomGlossTabContextType.PROVIDED,
+        origin: "pedimento",
+        data: [{ name: "Régimen", value: regimen }]
+      },
+      {
+        type: CustomGlossTabContextType.EXTERNAL,
+        origin: "pedimento",
+        data: [{ name: "Apéndice 16", value: JSON.stringify(apendice16) }]
+      }
+    ]
   } as const;
 
   return await glosar(validation);
