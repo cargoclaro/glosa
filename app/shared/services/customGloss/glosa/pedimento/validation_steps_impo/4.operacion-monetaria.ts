@@ -11,7 +11,7 @@ import { Invoice } from "../../../data-extraction/schemas/invoice";
 
 export async function validateTransportDocumentEntryDate(pedimento: Pedimento, transportDocument: TransportDocument) {
   const pedimentoEntryDate = pedimento.fecha_entrada_presentacion;
-  const transportEntryDate = transportDocument.entry_date;
+  const transportEntryDate = transportDocument.date;
   const transportType = transportDocument.document_type;
   
   const validation = {
