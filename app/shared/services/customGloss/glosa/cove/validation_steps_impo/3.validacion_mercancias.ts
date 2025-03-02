@@ -52,10 +52,29 @@ export async function validateMercancias(
   const validation = {
     name: "Mercancias",
     description: "Validar que los siguientes datos de las mercancías en el COVE coincidan con los declarados en la Carta 3.1.8 (si existe) o en la factura comercial:\n\n• Descripción genérica de la mercancía\n• Cantidad en unidad de medida comercial (UMC)\n• Clave de unidad de medida comercial\n• Valor unitario\n• Valor total\n\nSi existe Carta 3.1.8, los datos declarados en ésta tienen prioridad sobre la factura comercial.",
-    mercanciasCove: mercanciasCoveFormatted,
-    mercanciasCarta318: mercanciasCarta318Formatted,
-    mercanciasInvoice: mercanciasInvoiceFormatted,
-    tipoOperacion: 'IMP'
+    contexts: {
+      [CustomGlossTabContextType.PROVIDED]: {
+        cove: {
+          data: [
+            { name: "Descripción", value: mercanciasCoveFormatted?.descripcion },
+            { name: "Cantidad", value: mercanciasCoveFormatted?.cantidad },
+            { name: "Unidad de medida", value: mercanciasCoveFormatted?.unidadMedida },
+            { name: "Valor unitario", value: mercanciasCoveFormatted?.valorUnitario },
+            { name: "Valor total", value: mercanciasCoveFormatted?.valorTotal }
+          ]
+        },
+        carta318: {
+          data: [
+            { name: "Mercancias", value: mercanciasCarta318Formatted }
+          ]
+        },
+        factura: {
+          data: [
+            { name: "Mercancias", value: mercanciasInvoiceFormatted }
+          ]
+        }
+      }
+    },
   } as const;
 
   return await glosar(validation);
