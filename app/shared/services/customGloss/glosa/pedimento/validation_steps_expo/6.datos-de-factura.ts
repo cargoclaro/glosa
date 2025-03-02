@@ -1,4 +1,4 @@
-import { Pedimento, Carta318, Cove, CartaSesion, Invoice, Cfdi } from "../../../data-extraction/schemas";
+import { Pedimento, Cove, CartaSesion, Cfdi } from "../../../data-extraction/schemas";
 import { validationResultSchema, SYSTEM_PROMPT } from "../../validation-result";
 import { generateObject } from "ai";
 import { wrapAISDKModel } from "langsmith/wrappers/vercel";
