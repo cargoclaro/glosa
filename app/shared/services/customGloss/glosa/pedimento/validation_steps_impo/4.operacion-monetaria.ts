@@ -104,10 +104,30 @@ export async function validateIncrementables(pedimento: Pedimento, invoice: Invo
   const validation = {
     name: "Incrementables",
     description: "Los incrementables son los servicios a los cuales se les puede cobrar impuestos. Para hacer la declaracion correcta, se necesita verificar que los valores de los incrementables en el pedimento seas validos conforme a la carta 318, factura o documento de transporte. Los incrementables pueden ser fletes, seguros, maniobras, entre otros. Tenemos que buscar una relación entre los valores del pedimento y los documentos que lo avalan. Argumenta por que los incrementables estan bien o mal, siempre buscando sostener tus respuestas.",
-    incrementablesPedimento,
-    incrementablesCarta318,
-    incrementablesInvoice,
-    incrementablesTransportDocument
+    contexts: {
+      [CustomGlossTabContextType.PROVIDED]: {
+        pedimento: {
+          data: [
+            { name: "Incrementables", value: incrementablesPedimento }
+          ]
+        },
+        carta318: {
+          data: [
+            { name: "Incrementables", value: incrementablesCarta318 }
+          ]
+        },
+        factura: {
+          data: [
+            { name: "Incrementables", value: incrementablesInvoice }
+          ]
+        },
+        transporte: {
+          data: [
+            { name: "Incrementables", value: incrementablesTransportDocument }
+          ]
+        }
+      }
+    }
   } as const;
 
   return await glosar(validation);
@@ -181,15 +201,45 @@ export async function validateValoresPedimento(pedimento: Pedimento, invoice: In
   const validation = {
     name: "Valores del pedimento",
     description: "Sigue estos pasos para validar correctamente los valores declarados. Piensa paso por paso antes de dar una respuesta, razonando con base en la información que se te proporciona. Usa datos para fundamentar tu respuesta, como si tuvieras que citar todos tus argumentos.\n\nPaso 1: Confirmar el Valor en dólares\n• Verifica si el Valor en dólares (valor aduana / tipo de cambio) declarado en el pedimento tiene sentido comparándolo con los datos proporcionados:\n• Valor de la factura.\n• Incrementables (en USD).\n• Razona si este valor es consistente con los datos dados. No realices cálculos, solo evalúa la coherencia.\n\nPaso 2: Validar el Valor comercial\n• Confirma si el Valor comercial declarado en el pedimento se alinea con el cálculo obtenido al restar a la aduana en MXN los incrementables en MXN, considerando que el valor aduana se obtiene al multiplicar el valor en dólares total (suma de incrementables convertidos a USD y factura en USD) por el tipo de cambio DOF.\n• Evalúa si la relación entre el Valor comercial y los demás valores proporcionados es razonable, considerando la coherencia de los datos.\n\nPaso 3: Verificar el Valor aduana\n• Verifica si el Valor aduana declarado en el pedimento tiene sentido con base en los datos dados:\n• Valor comercial.\n• Incrementables.\n• Decrementables.\n• Evalúa si el resultado final es consistente con lo esperado según la información.\n\nPaso 4: Explicar el resultado con lógica\n• Razona paso por paso por qué los valores tienen sentido o, si detectas alguna discrepancia, explica por qué puede haber un problema.\n• Ejemplo esperado de respuesta:\n\"El valor en dólares del pedimento es [x], hace sentido porque el valor de la factura ([y]) más los incrementables convertidos a USD da un total consistente. Al aplicar el tipo de cambio, el Valor aduana y el Valor comercial resultan coherentes con los datos proporcionados.\"\n\nNota: utiliza únicamente la información proporcionada para llegar a las conclusiones de manera lógica y detallada. Si necesitas realizar un cálculo para argumentar, hazlo. Siempre indica dónde está el problema y adjunta la data sobre el mismo.",
-    valorAduana,
-    valorComercial,
-    valorDolares,
-    tipoCambio,
-    incrementables,
-    decrementables,
-    valorCarta318,
-    valorInvoice,
-    tipoCambioDOF
+    contexts: {
+      [CustomGlossTabContextType.PROVIDED]: {
+        pedimento: {
+          data: [
+            { name: "Valor aduana", value: valorAduana },
+            { name: "Valor comercial", value: valorComercial },
+            { name: "Valor en dólares", value: valorDolares },
+            { name: "Tipo de cambio", value: tipoCambio }
+          ]
+        },
+        incrementables: {
+          data: [
+            { name: "Incrementables", value: incrementables }
+          ]
+        },
+        decrementables: {
+          data: [
+            { name: "Decrementables", value: decrementables }
+          ]
+        },
+        carta318: {
+          data: [
+            { name: "Valor comercial", value: valorCarta318 }
+          ]
+        },
+        factura: {
+          data: [
+            { name: "Valor comercial", value: valorInvoice }
+          ]
+        },
+      },
+      [CustomGlossTabContextType.EXTERNAL]: {
+        dof: {
+          data: [
+            { name: "Tipo de cambio DOF", value: tipoCambioDOF }
+          ]
+        }
+      }
+    }
   } as const;
 
   return await glosar(validation);
