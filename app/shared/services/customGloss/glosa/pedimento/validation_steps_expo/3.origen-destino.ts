@@ -9,18 +9,18 @@ async function validateClaveApendice15(pedimento: Pedimento) {
   const validation = {
     name: "Validación de clave",
     description: "La clave de destino/origen debe existir en el Apéndice 15",
-    contexts: [
-      {
-        type: CustomGlossTabContextType.PROVIDED,
-        origin: "pedimento",
-        data: [{ name: "Clave de destino/origen", value: claveDestinoOrigen }]
+    contexts: {
+      [CustomGlossTabContextType.PROVIDED]: {
+        pedimento: {
+          data: [{ name: "Clave de destino/origen", value: claveDestinoOrigen }]
+        }
       },
-      {
-        type: CustomGlossTabContextType.EXTERNAL,
-        origin: "pedimento",
-        data: [{ name: "Apéndice 15", value: JSON.stringify(apendice15) }]
+      [CustomGlossTabContextType.EXTERNAL]: {
+        "Apendices": {
+          data: [{ name: "Apéndice 15", value: JSON.stringify(apendice15) }]
+        }
       }
-    ]
+    }
   } as const;
 
   return await glosar(validation);
