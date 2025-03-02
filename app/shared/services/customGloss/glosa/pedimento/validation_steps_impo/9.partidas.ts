@@ -14,8 +14,16 @@ export async function validatePreferenciaArancelaria(pedimento: Pedimento) {
   const validation = {
     name: "Preferencia arancelaria y certificado de origen",
     description: "Verificación de preferencia arancelaria y certificado de origen:\n\n1. Regla general:\n   - Si existe preferencia arancelaria, debe existir certificado de origen\n\n2. Por tipo de tratado:\n   a) T-MEC:\n      - Verificar certificado de origen correspondiente\n   b) Unión Europea:\n      - Verificar método de acreditación:\n        i. Declaración en factura:\n           - Si valor < 6,000 EUR: Declaración en factura es válida\n           - Si valor > 6,000 EUR: Debe incluir número de exportador autorizado\n        ii. Certificado de circulación:\n           - Válido sin importar el valor de factura\n           - Requerido si no hay número de exportador en declaración.",
-    partidas,
-    identificadoresPedimento
+    contexts: {
+      [CustomGlossTabContextType.PROVIDED]: {
+        pedimento: {
+          data: [
+            { name: "Partidas", value: partidas },
+            { name: "Identificadores", value: identificadoresPedimento }
+          ]
+        }
+      }
+    }
   } as const;
 
   return await glosar(validation);
@@ -32,8 +40,20 @@ export async function validateCoherenciaUMC(pedimento: Pedimento, invoice: Invoi
   const validation = {
     name: "Coherencia de UMC y cantidad UMC",
     description: "Los campos UMC y cantidad UMC deben coincidir con los valores en la factura.",
-    partidas,
-    itemsFactura
+    contexts: {
+      [CustomGlossTabContextType.PROVIDED]: {
+        pedimento: {
+          data: [
+            { name: "Partidas", value: partidas }
+          ]
+        },
+        factura: {
+          data: [
+            { name: "Items", value: itemsFactura }
+          ]
+        }
+      }
+    }
   } as const;
 
   return await glosar(validation);
@@ -50,8 +70,16 @@ export async function validateCoherenciaPeso(pedimento: Pedimento) {
   const validation = {
     name: "Coherencia de peso",
     description: "El peso de las partidas debe coincidir con el peso bruto del pedimento.",
-    pesoBrutoPedimento,
-    partidas
+    contexts: {
+      [CustomGlossTabContextType.PROVIDED]: {
+        pedimento: {
+          data: [
+            { name: "Partidas", value: partidas },
+            { name: "Peso bruto", value: pesoBrutoPedimento }
+          ]
+        }
+      }
+    }
   } as const;
 
   return await glosar(validation);
@@ -65,7 +93,15 @@ export async function validateCalculoDTA(pedimento: Pedimento) {
   const validation = {
     name: "Cálculo del prorrateo y DTA",
     description: "El prorrateo y el DTA calculados deben coincidir con los declarados. En el caso de DTA en cuota fija, divide el DTA entre el número de secuencias.",
-    partidas
+    contexts: {
+      [CustomGlossTabContextType.PROVIDED]: {
+        pedimento: {
+          data: [
+            { name: "Partidas", value: partidas }
+          ]
+        }
+      }
+    }
   } as const;
 
   return await glosar(validation);
@@ -79,7 +115,15 @@ export async function validateCalculoContribuciones(pedimento: Pedimento) {
   const validation = {
     name: "Cálculo de contribuciones",
     description: "Los valores de precio pagado, precio unitario, valor aduana, IGI, IVA y DTA deben coincidir con los calculados.",
-    partidas
+    contexts: {
+      [CustomGlossTabContextType.PROVIDED]: {
+        pedimento: {
+          data: [
+            { name: "Partidas", value: partidas }
+          ]
+        }
+      }
+    }
   } as const;
 
   return await glosar(validation);
@@ -96,8 +140,16 @@ export async function validatePermisosIdentificadores(pedimento: Pedimento) {
   const validation = {
     name: "Coincidencia de permisos e identificadores",
     description: "Los permisos e identificadores en el pedimento deben existir en Taxfinder.",
-    identificadoresPedimento,
-    partidas
+    contexts: {
+      [CustomGlossTabContextType.PROVIDED]: {
+        pedimento: {
+          data: [
+            { name: "Partidas", value: partidas },
+            { name: "Identificadores", value: identificadoresPedimento }
+          ]
+        }
+      }
+    }
   } as const;
 
   return await glosar(validation);
@@ -111,7 +163,15 @@ export async function validateRegulacionesArancelarias(pedimento: Pedimento) {
   const validation = {
     name: "Regulaciones arancelarias",
     description: "Verifica si existen regulaciones arancelarias que apliquen a la mercancía.",
-    partidas
+    contexts: {
+      [CustomGlossTabContextType.PROVIDED]: {
+        pedimento: {
+          data: [
+            { name: "Partidas", value: partidas }
+          ]
+        }
+      }
+    }
   } as const;
 
   return await glosar(validation);
@@ -125,7 +185,15 @@ export async function validateRegulacionesNoArancelarias(pedimento: Pedimento) {
   const validation = {
     name: "Regulaciones no arancelarias",
     description: "Verifica si existen regulaciones no arancelarias que apliquen a la mercancía.",
-    partidas
+    contexts: {
+      [CustomGlossTabContextType.PROVIDED]: {
+        pedimento: {
+          data: [
+            { name: "Partidas", value: partidas }
+          ]
+        }
+      }
+    }
   } as const;
 
   return await glosar(validation);
