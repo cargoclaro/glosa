@@ -1,8 +1,6 @@
 import { Pedimento, Carta318, Cove, CartaSesion, Invoice } from "../../../data-extraction/schemas";
-import { validationResultSchema, SYSTEM_PROMPT } from "../../validation-result";
-import { generateObject } from "ai";
-import { wrapAISDKModel } from "langsmith/wrappers/vercel";
-import { openai } from "@ai-sdk/openai";
+import { glosar } from "../../validation-result";
+
 
 export async function validateRfcFormat(pedimento: Pedimento, cove: Cove, carta318: Carta318) {
   // Extract RFC values from documents
@@ -18,17 +16,7 @@ export async function validateRfcFormat(pedimento: Pedimento, cove: Cove, carta3
     rfcCarta318
   };
 
-  const { object } = await generateObject({
-    model: wrapAISDKModel(openai("gpt-4o"), {
-      name: `Validate ${validation.name}`,
-      project_name: "glosa",
-    }),
-    system: SYSTEM_PROMPT,
-    schema: validationResultSchema,
-    prompt: `${JSON.stringify(validation, null, 2)}`,
-  });
-  
-  return object;
+  return await glosar(validation);
 }
 
 export async function validateCesionDerechos(pedimento: Pedimento, cartaSesion: CartaSesion, carta318: Carta318) {
@@ -48,17 +36,7 @@ export async function validateCesionDerechos(pedimento: Pedimento, cartaSesion: 
     existeCesionDerechos: !!cartaSesion
   };
 
-  const { object } = await generateObject({
-    model: wrapAISDKModel(openai("gpt-4o"), {
-      name: `Validate ${validation.name}`,
-      project_name: "glosa",
-    }),
-    system: SYSTEM_PROMPT,
-    schema: validationResultSchema,
-    prompt: `${JSON.stringify(validation, null, 2)}`,
-  });
-  
-  return object;
+  return await glosar(validation);
 }
 
 export async function validateDatosImportador(pedimento: Pedimento, cove: Cove, carta318: Carta318) {
@@ -90,17 +68,7 @@ export async function validateDatosImportador(pedimento: Pedimento, cove: Cove, 
     existeCarta318: !!carta318
   };
 
-  const { object } = await generateObject({
-    model: wrapAISDKModel(openai("gpt-4o"), {
-      name: `Validate ${validation.name}`,
-      project_name: "glosa",
-    }),
-    system: SYSTEM_PROMPT,
-    schema: validationResultSchema,
-    prompt: `${JSON.stringify(validation, null, 2)}`,
-  });
-  
-  return object;
+  return await glosar(validation);
 }
 
 export async function validateDatosProveedor(pedimento: Pedimento, cove: Cove, carta318: Carta318) {
@@ -132,17 +100,7 @@ export async function validateDatosProveedor(pedimento: Pedimento, cove: Cove, c
     existeCarta318: !!carta318
   };
 
-  const { object } = await generateObject({
-    model: wrapAISDKModel(openai("gpt-4o"), {
-      name: `Validate ${validation.name}`,
-      project_name: "glosa",
-    }),
-    system: SYSTEM_PROMPT,
-    schema: validationResultSchema,
-    prompt: `${JSON.stringify(validation, null, 2)}`,
-  });
-  
-  return object;
+  return await glosar(validation);
 }
 
 export async function validateFechasYFolios(pedimento: Pedimento, cove: Cove, invoice: Invoice, carta318: Carta318) {
@@ -171,17 +129,7 @@ export async function validateFechasYFolios(pedimento: Pedimento, cove: Cove, in
     numeroFactura
   };
 
-  const { object } = await generateObject({
-    model: wrapAISDKModel(openai("gpt-4o"), {
-      name: `Validate ${validation.name}`,
-      project_name: "glosa",
-    }),
-    system: SYSTEM_PROMPT,
-    schema: validationResultSchema,
-    prompt: `${JSON.stringify(validation, null, 2)}`,
-  });
-  
-  return object;
+  return await glosar(validation);
 }
 
 export async function validateMonedaYEquivalencia(pedimento: Pedimento, cove: Cove, carta318: Carta318, invoice: Invoice) {
@@ -222,17 +170,7 @@ export async function validateMonedaYEquivalencia(pedimento: Pedimento, cove: Co
     tipoCambioDOF
   };
 
-  const { object } = await generateObject({
-    model: wrapAISDKModel(openai("gpt-4o"), {
-      name: `Validate ${validation.name}`,
-      project_name: "glosa",
-    }),
-    system: SYSTEM_PROMPT,
-    schema: validationResultSchema,
-    prompt: `${JSON.stringify(validation, null, 2)}`,
-  });
-  
-  return object;
+  return await glosar(validation);
 }
 
 

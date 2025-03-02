@@ -1,8 +1,6 @@
 import { Pedimento } from "../../../data-extraction/schemas";
-import { validationResultSchema, SYSTEM_PROMPT } from "../../validation-result";
-import { generateObject } from "ai";
-import { wrapAISDKModel } from "langsmith/wrappers/vercel";
-import { openai } from "@ai-sdk/openai";
+import { glosar } from "../../validation-result";
+
 import { Invoice } from "../../../data-extraction/schemas/invoice";
 
 // Función para validar preferencia arancelaria y certificado de origen
@@ -20,17 +18,7 @@ export async function validatePreferenciaArancelaria(pedimento: Pedimento) {
     identificadoresPedimento
   };
 
-  const { object } = await generateObject({
-    model: wrapAISDKModel(openai("gpt-4o"), {
-      name: `Validate ${validation.name}`,
-      project_name: "glosa",
-    }),
-    system: SYSTEM_PROMPT,
-    schema: validationResultSchema,
-    prompt: `${JSON.stringify(validation, null, 2)}`,
-  });
-  
-  return object;
+  return await glosar(validation);
 }
 
 // Función para validar coherencia de UMC y cantidad UMC
@@ -48,17 +36,7 @@ export async function validateCoherenciaUMC(pedimento: Pedimento, invoice: Invoi
     itemsFactura
   };
 
-  const { object } = await generateObject({
-    model: wrapAISDKModel(openai("gpt-4o"), {
-      name: `Validate ${validation.name}`,
-      project_name: "glosa",
-    }),
-    system: SYSTEM_PROMPT,
-    schema: validationResultSchema,
-    prompt: `${JSON.stringify(validation, null, 2)}`,
-  });
-  
-  return object;
+  return await glosar(validation);
 }
 
 // Función para validar coherencia de peso
@@ -76,17 +54,7 @@ export async function validateCoherenciaPeso(pedimento: Pedimento) {
     partidas
   };
 
-  const { object } = await generateObject({
-    model: wrapAISDKModel(openai("gpt-4o"), {
-      name: `Validate ${validation.name}`,
-      project_name: "glosa",
-    }),
-    system: SYSTEM_PROMPT,
-    schema: validationResultSchema,
-    prompt: `${JSON.stringify(validation, null, 2)}`,
-  });
-  
-  return object;
+  return await glosar(validation);
 }
 
 // Función para validar cálculo del prorrateo y DTA
@@ -100,17 +68,7 @@ export async function validateCalculoDTA(pedimento: Pedimento) {
     partidas
   };
 
-  const { object } = await generateObject({
-    model: wrapAISDKModel(openai("gpt-4o"), {
-      name: `Validate ${validation.name}`,
-      project_name: "glosa",
-    }),
-    system: SYSTEM_PROMPT,
-    schema: validationResultSchema,
-    prompt: `${JSON.stringify(validation, null, 2)}`,
-  });
-  
-  return object;
+  return await glosar(validation);
 }
 
 // Función para validar cálculo de contribuciones
@@ -124,17 +82,7 @@ export async function validateCalculoContribuciones(pedimento: Pedimento) {
     partidas
   };
 
-  const { object } = await generateObject({
-    model: wrapAISDKModel(openai("gpt-4o"), {
-      name: `Validate ${validation.name}`,
-      project_name: "glosa",
-    }),
-    system: SYSTEM_PROMPT,
-    schema: validationResultSchema,
-    prompt: `${JSON.stringify(validation, null, 2)}`,
-  });
-  
-  return object;
+  return await glosar(validation);
 }
 
 // Función para validar coincidencia de permisos e identificadores
@@ -152,17 +100,7 @@ export async function validatePermisosIdentificadores(pedimento: Pedimento) {
     partidas
   };
 
-  const { object } = await generateObject({
-    model: wrapAISDKModel(openai("gpt-4o"), {
-      name: `Validate ${validation.name}`,
-      project_name: "glosa",
-    }),
-    system: SYSTEM_PROMPT,
-    schema: validationResultSchema,
-    prompt: `${JSON.stringify(validation, null, 2)}`,
-  });
-  
-  return object;
+  return await glosar(validation);
 }
 
 // Función para validar regulaciones arancelarias
@@ -176,17 +114,7 @@ export async function validateRegulacionesArancelarias(pedimento: Pedimento) {
     partidas
   };
 
-  const { object } = await generateObject({
-    model: wrapAISDKModel(openai("gpt-4o"), {
-      name: `Validate ${validation.name}`,
-      project_name: "glosa",
-    }),
-    system: SYSTEM_PROMPT,
-    schema: validationResultSchema,
-    prompt: `${JSON.stringify(validation, null, 2)}`,
-  });
-  
-  return object;
+  return await glosar(validation);
 }
 
 // Función para validar regulaciones no arancelarias
@@ -200,15 +128,5 @@ export async function validateRegulacionesNoArancelarias(pedimento: Pedimento) {
     partidas
   };
 
-  const { object } = await generateObject({
-    model: wrapAISDKModel(openai("gpt-4o"), {
-      name: `Validate ${validation.name}`,
-      project_name: "glosa",
-    }),
-    system: SYSTEM_PROMPT,
-    schema: validationResultSchema,
-    prompt: `${JSON.stringify(validation, null, 2)}`,
-  });
-  
-  return object;
+  return await glosar(validation);
 }

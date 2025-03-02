@@ -1,8 +1,6 @@
 import { Cove } from "../../../data-extraction/schemas/cove";
-import { validationResultSchema, SYSTEM_PROMPT } from "../../validation-result";
-import { generateObject } from "ai";
-import { wrapAISDKModel } from "langsmith/wrappers/vercel";
-import { openai } from "@ai-sdk/openai";
+import { glosar } from "../../validation-result";
+
 import { Invoice } from "../../../data-extraction/schemas/invoice";
 import { Carta318 } from "../../../data-extraction/schemas/carta-318";
 
@@ -37,17 +35,7 @@ export async function validateDatosGeneralesProveedor(
     tipoOperacion: "IMP"
   };
 
-  const { object } = await generateObject({
-    model: wrapAISDKModel(openai("gpt-4o"), {
-      name: `Validate ${validation.name}`,
-      project_name: "glosa",
-    }),
-    system: SYSTEM_PROMPT,
-    schema: validationResultSchema,
-    prompt: `${JSON.stringify(validation, null, 2)}`,
-  });
-
-  return object;
+  return await glosar(validation);
 }
 
 /**
@@ -85,17 +73,7 @@ export async function validateDomicilioProveedor(
     tipoOperacion: "IMP"
   };
 
-  const { object } = await generateObject({
-    model: wrapAISDKModel(openai("gpt-4o"), {
-      name: `Validate ${validation.name}`,
-      project_name: "glosa",
-    }),
-    system: SYSTEM_PROMPT,
-    schema: validationResultSchema,
-    prompt: `${JSON.stringify(validation, null, 2)}`,
-  });
-
-  return object;
+  return await glosar(validation);
 }
 
 /**
@@ -127,17 +105,7 @@ export async function validateDatosGeneralesDestinatario(
     tipoOperacion: "IMP"
   };
 
-  const { object } = await generateObject({
-    model: wrapAISDKModel(openai("gpt-4o"), {
-      name: `Validate ${validation.name}`,
-      project_name: "glosa",
-    }),
-    system: SYSTEM_PROMPT,
-    schema: validationResultSchema,
-    prompt: `${JSON.stringify(validation, null, 2)}`,
-  });
-
-  return object;
+  return await glosar(validation);
 }
 
 /**
@@ -175,15 +143,5 @@ export async function validateDomicilioDestinatario(
     tipoOperacion: "IMP"
   };
 
-  const { object } = await generateObject({
-    model: wrapAISDKModel(openai("gpt-4o"), {
-      name: `Validate ${validation.name}`,
-      project_name: "glosa",
-    }),
-    system: SYSTEM_PROMPT,
-    schema: validationResultSchema,
-    prompt: `${JSON.stringify(validation, null, 2)}`,
-  });
-
-  return object;
+  return await glosar(validation);
 }

@@ -1,9 +1,7 @@
 import { Cove } from "../../../data-extraction/schemas/cove";
-import { validationResultSchema, SYSTEM_PROMPT } from "../../validation-result";
-import { generateObject } from "ai";
-import { wrapAISDKModel } from "langsmith/wrappers/vercel";
-import { openai } from "@ai-sdk/openai";
+import { glosar } from "../../validation-result";
 import { Cfdi } from "../../../data-extraction/schemas";
+import { CustomGlossTabContextType } from "@prisma/client";
 
 /**
  * Validates that the invoice number in the COVE document matches the CFDI for exports.
@@ -16,22 +14,21 @@ export async function validateNumeroFactura(cove: Cove, cfdi: Cfdi) {
   const validation = {
     name: "Número de Factura (Exportación)",
     description: "El número de factura del COVE debe coincidir con el folio fiscal del CFDI. En exportación, el CFDI es el documento de facturación oficial emitido por el exportador mexicano.",
-    numeroFacturaCove,
-    numeroFacturaCfdi,
-    tipoOperacion: "EXP"
+    contexts: [
+      {
+        type: CustomGlossTabContextType.PROVIDED,
+        origin: "cove",
+        data: [{ name: "Número de Factura", value: numeroFacturaCove }]
+      },
+      {
+        type: CustomGlossTabContextType.PROVIDED,
+        origin: "cfdi",
+        data: [{ name: "Número de Factura", value: numeroFacturaCfdi }]
+      }
+    ]
   };
 
-  const { object } = await generateObject({
-    model: wrapAISDKModel(openai("gpt-4o"), {
-      name: `Validate ${validation.name}`,
-      project_name: "glosa",
-    }),
-    system: SYSTEM_PROMPT,
-    schema: validationResultSchema,
-    prompt: `${JSON.stringify(validation, null, 2)}`,
-  });
-
-  return object;
+  return await glosar(validation);
 }
 
 /**
@@ -45,22 +42,21 @@ export async function validateFechaExpedicion(cove: Cove, cfdi: Cfdi) {
   const validation = {
     name: "Fecha de Expedición (Exportación)",
     description: "La fecha de expedición del COVE debe coincidir con la fecha de emisión del CFDI. En exportación, el CFDI es el documento de facturación oficial emitido por el exportador mexicano.",
-    fechaExpedicionCove,
-    fechaExpedicionCfdi,
-    tipoOperacion: "EXP"
+    contexts: [
+      {
+        type: CustomGlossTabContextType.PROVIDED,
+        origin: "cove",
+        data: [{ name: "Fecha de Expedición", value: fechaExpedicionCove }]
+      },
+      {
+        type: CustomGlossTabContextType.PROVIDED,
+        origin: "cfdi",
+        data: [{ name: "Fecha de Expedición", value: fechaExpedicionCfdi }]
+      }
+    ]
   };
 
-  const { object } = await generateObject({
-    model: wrapAISDKModel(openai("gpt-4o"), {
-      name: `Validate ${validation.name}`,
-      project_name: "glosa",
-    }),
-    system: SYSTEM_PROMPT,
-    schema: validationResultSchema,
-    prompt: `${JSON.stringify(validation, null, 2)}`,
-  });
-
-  return object;
+  return await glosar(validation);
 }
 
 /**
@@ -74,20 +70,19 @@ export async function validateRfc(cove: Cove, cfdi: Cfdi) {
   const validation = {
     name: "RFC (Exportación)",
     description: "El RFC del destinatario en el COVE debe coincidir con el RFC del emisor en el CFDI. En exportación, el emisor del CFDI es la empresa mexicana que realiza la exportación.",
-    rfcCove,
-    rfcCfdi,
-    tipoOperacion: "EXP"
+    contexts: [
+      {
+        type: CustomGlossTabContextType.PROVIDED,
+        origin: "cove",
+        data: [{ name: "RFC", value: rfcCove }]
+      },
+      {
+        type: CustomGlossTabContextType.PROVIDED,
+        origin: "cfdi",
+        data: [{ name: "RFC", value: rfcCfdi }]
+      }
+    ]
   };
 
-  const { object } = await generateObject({
-    model: wrapAISDKModel(openai("gpt-4o"), {
-      name: `Validate ${validation.name}`,
-      project_name: "glosa",
-    }),
-    system: SYSTEM_PROMPT,
-    schema: validationResultSchema,
-    prompt: `${JSON.stringify(validation, null, 2)}`,
-  });
-
-  return object;
+  return await glosar(validation);
 }

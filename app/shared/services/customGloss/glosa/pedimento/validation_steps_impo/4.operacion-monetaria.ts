@@ -1,8 +1,6 @@
 import { Pedimento } from "../../../data-extraction/schemas";
-import { validationResultSchema, SYSTEM_PROMPT } from "../../validation-result";
-import { generateObject } from "ai";
-import { wrapAISDKModel } from "langsmith/wrappers/vercel";
-import { openai } from "@ai-sdk/openai";
+import { glosar } from "../../validation-result";
+
 import { TransportDocument } from "../../../data-extraction/schemas";
 import { Carta318 } from "../../../data-extraction/schemas/carta-318";
 import { Invoice } from "../../../data-extraction/schemas/invoice";
@@ -22,17 +20,7 @@ export async function validateTransportDocumentEntryDate(pedimento: Pedimento, t
     transportType
   };
 
-  const { object } = await generateObject({
-    model: wrapAISDKModel(openai("gpt-4o"), {
-      name: `Validate ${validation.name}`,
-      project_name: "glosa",
-    }),
-    system: SYSTEM_PROMPT,
-    schema: validationResultSchema,
-    prompt: `${JSON.stringify(validation, null, 2)}`,
-  });
-  
-  return object;
+  return await glosar(validation);
 }
 
 export async function validateTipoCambio(pedimento: Pedimento) {
@@ -49,17 +37,7 @@ export async function validateTipoCambio(pedimento: Pedimento) {
     tipoCambioDOF
   };
 
-  const { object } = await generateObject({
-    model: wrapAISDKModel(openai("gpt-4o"), {
-      name: `Validate ${validation.name}`,
-      project_name: "glosa",
-    }),
-    system: SYSTEM_PROMPT,
-    schema: validationResultSchema,
-    prompt: `${JSON.stringify(validation, null, 2)}`,
-  });
-  
-  return object;
+  return await glosar(validation);
 }
 
 export async function validateIncrementables(pedimento: Pedimento, invoice: Invoice, carta318: Carta318, transportDocument: TransportDocument) {
@@ -106,17 +84,7 @@ export async function validateIncrementables(pedimento: Pedimento, invoice: Invo
     incrementablesTransportDocument
   };
 
-  const { object } = await generateObject({
-    model: wrapAISDKModel(openai("gpt-4o"), {
-      name: `Validate ${validation.name}`,
-      project_name: "glosa",
-    }),
-    system: SYSTEM_PROMPT,
-    schema: validationResultSchema,
-    prompt: `${JSON.stringify(validation, null, 2)}`,
-  });
-  
-  return object;
+  return await glosar(validation);
 }
 
 export async function validateValoresPedimento(pedimento: Pedimento, invoice: Invoice, carta318: Carta318, transportDocument: TransportDocument) {
@@ -198,16 +166,6 @@ export async function validateValoresPedimento(pedimento: Pedimento, invoice: In
     tipoCambioDOF
   };
 
-  const { object } = await generateObject({
-    model: wrapAISDKModel(openai("gpt-4o"), {
-      name: `Validate ${validation.name}`,
-      project_name: "glosa",
-    }),
-    system: SYSTEM_PROMPT,
-    schema: validationResultSchema,
-    prompt: `${JSON.stringify(validation, null, 2)}`,
-  });
-  
-  return object;
+  return await glosar(validation);
 }
 

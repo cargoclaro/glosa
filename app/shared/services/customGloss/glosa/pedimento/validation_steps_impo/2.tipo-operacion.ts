@@ -1,8 +1,6 @@
 import { Pedimento, TransportDocument } from "../../../data-extraction/schemas";
-import { validationResultSchema, SYSTEM_PROMPT } from "../../validation-result";
-import { generateObject } from "ai";
-import { wrapAISDKModel } from "langsmith/wrappers/vercel";
-import { openai } from "@ai-sdk/openai";
+import { glosar } from "../../validation-result";
+
 import { apendice2 } from "../../anexo-22/apendice-2";
 import { apendice16 } from "../../anexo-22/apendice-16";
 
@@ -24,17 +22,7 @@ async function validateCoherenciaOrigenDestino(pedimento: Pedimento, transportDo
     destino
   };
 
-  const { object } = await generateObject({
-    model: wrapAISDKModel(openai("gpt-4o"), {
-      name: `Validate ${validation.name}`,
-      project_name: "glosa",
-    }),
-    system: SYSTEM_PROMPT,
-    schema: validationResultSchema,
-    prompt: `${JSON.stringify(validation, null, 2)}`,
-  });
-  
-  return object;
+  return await glosar(validation);
 }
 
 /**
@@ -52,17 +40,7 @@ async function validateClavePedimento(pedimento: Pedimento) {
     apendice2JSON: JSON.stringify(apendice2)
   };
 
-  const { object } = await generateObject({
-    model: wrapAISDKModel(openai("gpt-4o"), {
-      name: `Validate ${validation.name}`,
-      project_name: "glosa",
-    }),
-    system: SYSTEM_PROMPT,
-    schema: validationResultSchema,
-    prompt: `${JSON.stringify(validation, null, 2)}`,
-  });
-  
-  return object;
+  return await glosar(validation);
 }
 
 /**
@@ -80,17 +58,7 @@ async function validateRegimen(pedimento: Pedimento) {
     apendice16JSON: JSON.stringify(apendice16)
   };
 
-  const { object } = await generateObject({
-    model: wrapAISDKModel(openai("gpt-4o"), {
-      name: `Validate ${validation.name}`,
-      project_name: "glosa",
-    }),
-    system: SYSTEM_PROMPT,
-    schema: validationResultSchema,
-    prompt: `${JSON.stringify(validation, null, 2)}`,
-  });
-  
-  return object;
+  return await glosar(validation);
 }
 
 /**

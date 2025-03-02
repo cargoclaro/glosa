@@ -1,8 +1,6 @@
 import { Cove } from "../../../data-extraction/schemas/cove";
-import { validationResultSchema, SYSTEM_PROMPT } from "../../validation-result";
-import { generateObject } from "ai";
-import { wrapAISDKModel } from "langsmith/wrappers/vercel";
-import { openai } from "@ai-sdk/openai";
+import { glosar } from "../../validation-result";
+
 import { Carta318 } from "../../../data-extraction/schemas/carta-318";
 import { Cfdi } from "../../../data-extraction/schemas/cfdi";
 
@@ -60,17 +58,7 @@ export async function validateMercancias(
     tipoOperacion: 'EXP'
   };
 
-  const { object } = await generateObject({
-    model: wrapAISDKModel(openai("gpt-4o"), {
-      name: `Validate ${validation.name}`,
-      project_name: "glosa",
-    }),
-    system: SYSTEM_PROMPT,
-    schema: validationResultSchema,
-    prompt: `${JSON.stringify(validation, null, 2)}`,
-  });
-
-  return object;
+  return await glosar(validation);
 }
 
 /**
@@ -106,15 +94,5 @@ export async function validateValorTotalDolares(
     tipoOperacion: 'EXP'
   };
 
-  const { object } = await generateObject({
-    model: wrapAISDKModel(openai("gpt-4o"), {
-      name: `Validate ${validation.name}`,
-      project_name: "glosa",
-    }),
-    system: SYSTEM_PROMPT,
-    schema: validationResultSchema,
-    prompt: `${JSON.stringify(validation, null, 2)}`,
-  });
-
-  return object;
+  return await glosar(validation);
 }

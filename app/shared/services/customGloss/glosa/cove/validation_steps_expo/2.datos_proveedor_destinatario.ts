@@ -1,9 +1,7 @@
 import { Cove } from "../../../data-extraction/schemas/cove";
-import { validationResultSchema, SYSTEM_PROMPT } from "../../validation-result";
-import { generateObject } from "ai";
-import { wrapAISDKModel } from "langsmith/wrappers/vercel";
-import { openai } from "@ai-sdk/openai";
+import { glosar } from "../../validation-result";
 import { Cfdi } from "../../../data-extraction/schemas/cfdi";
+import { CustomGlossTabContextType } from "@prisma/client";
 
 /**
  * Validates that the supplier's general information in the COVE document matches the relevant document.
@@ -25,25 +23,36 @@ export async function validateDatosGeneralesProveedor(
   const validation = {
     name: "Datos generales del proveedor",
     description: "Verificar que los siguientes datos coincidan entre el COVE y el CFDI:\n\n• RFC\n• Razón social\n Si no hay RFC, el tipo de identificador que tenga (tax id, tax id number, tax id number, etc) debe de coincidir.",
-    identificadorCove,
-    tipoIdentificadorCove,
-    nombreRazonSocialCove,
-    nombreRazonSocialCfdi,
-    identificadorCfdi,
-    tipoOperacion: "EXP"
+    contexts: [
+      {
+        type: CustomGlossTabContextType.PROVIDED,
+        origin: "cove",
+        data: [{ name: "Identificador", value: identificadorCove }]
+      },
+      {
+        type: CustomGlossTabContextType.PROVIDED,
+        origin: "cove",
+        data: [{ name: "Tipo Identificador", value: tipoIdentificadorCove }]
+      },
+      {
+        type: CustomGlossTabContextType.PROVIDED,
+        origin: "cove",
+        data: [{ name: "Nombre Razón Social", value: nombreRazonSocialCove }]
+      },
+      {
+        type: CustomGlossTabContextType.PROVIDED,
+        origin: "cfdi",
+        data: [{ name: "Nombre Razón Social", value: nombreRazonSocialCfdi }]
+      },
+      {
+        type: CustomGlossTabContextType.PROVIDED,
+        origin: "cfdi",
+        data: [{ name: "Identificador", value: identificadorCfdi }]
+      }
+    ]
   };
 
-  const { object } = await generateObject({
-    model: wrapAISDKModel(openai("gpt-4o"), {
-      name: `Validate ${validation.name}`,
-      project_name: "glosa",
-    }),
-    system: SYSTEM_PROMPT,
-    schema: validationResultSchema,
-    prompt: `${JSON.stringify(validation, null, 2)}`,
-  });
-
-  return object;
+  return await glosar(validation);
 }
 
 /**
@@ -78,17 +87,7 @@ export async function validateDomicilioProveedor(
     tipoOperacion: "EXP"
   };
 
-  const { object } = await generateObject({
-    model: wrapAISDKModel(openai("gpt-4o"), {
-      name: `Validate ${validation.name}`,
-      project_name: "glosa",
-    }),
-    system: SYSTEM_PROMPT,
-    schema: validationResultSchema,
-    prompt: `${JSON.stringify(validation, null, 2)}`,
-  });
-
-  return object;
+  return await glosar(validation);
 }
 
 /**
@@ -117,17 +116,7 @@ export async function validateDatosGeneralesDestinatario(
     tipoOperacion: "EXP"
   };
 
-  const { object } = await generateObject({
-    model: wrapAISDKModel(openai("gpt-4o"), {
-      name: `Validate ${validation.name}`,
-      project_name: "glosa",
-    }),
-    system: SYSTEM_PROMPT,
-    schema: validationResultSchema,
-    prompt: `${JSON.stringify(validation, null, 2)}`,
-  });
-
-  return object;
+  return await glosar(validation);
 }
 
 /**
@@ -162,15 +151,5 @@ export async function validateDomicilioDestinatario(
     tipoOperacion: "EXP"
   };
 
-  const { object } = await generateObject({
-    model: wrapAISDKModel(openai("gpt-4o"), {
-      name: `Validate ${validation.name}`,
-      project_name: "glosa",
-    }),
-    system: SYSTEM_PROMPT,
-    schema: validationResultSchema,
-    prompt: `${JSON.stringify(validation, null, 2)}`,
-  });
-
-  return object;
+  return await glosar(validation);
 } 

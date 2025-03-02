@@ -1,8 +1,6 @@
 import { Pedimento } from "../../../data-extraction/schemas";
-import { validationResultSchema, SYSTEM_PROMPT } from "../../validation-result";
-import { generateObject } from "ai";
-import { wrapAISDKModel } from "langsmith/wrappers/vercel";
-import { openai } from "@ai-sdk/openai";
+import { glosar } from "../../validation-result";
+
 import { TransportDocument } from "../../../data-extraction/schemas";
 import { Cfdi } from "../../../data-extraction/schemas/cfdi";
 import { Cove } from "../../../data-extraction/schemas/cove";
@@ -24,17 +22,7 @@ export async function validateFechaSalida(pedimento: Pedimento, transportDocumen
     transportType
   };
 
-  const { object } = await generateObject({
-    model: wrapAISDKModel(openai("gpt-4o"), {
-      name: `Validate ${validation.name}`,
-      project_name: "glosa",
-    }),
-    system: SYSTEM_PROMPT,
-    schema: validationResultSchema,
-    prompt: `${JSON.stringify(validation, null, 2)}`,
-  });
-  
-  return object;
+  return await glosar(validation);
 }
 
 export async function validateTipoCambio(pedimento: Pedimento) {
@@ -51,17 +39,7 @@ export async function validateTipoCambio(pedimento: Pedimento) {
     tipoCambioDOF
   };
 
-  const { object } = await generateObject({
-    model: wrapAISDKModel(openai("gpt-4o"), {
-      name: `Validate ${validation.name}`,
-      project_name: "glosa",
-    }),
-    system: SYSTEM_PROMPT,
-    schema: validationResultSchema,
-    prompt: `${JSON.stringify(validation, null, 2)}`,
-  });
-  
-  return object;
+  return await glosar(validation);
 }
 
 export async function validateValorComercial(pedimento: Pedimento, cfdi: Cfdi, cove: Cove) {
@@ -85,17 +63,7 @@ export async function validateValorComercial(pedimento: Pedimento, cfdi: Cfdi, c
     tipoCambioPedimento
   };
 
-  const { object } = await generateObject({
-    model: wrapAISDKModel(openai("gpt-4o"), {
-      name: `Validate ${validation.name}`,
-      project_name: "glosa",
-    }),
-    system: SYSTEM_PROMPT,
-    schema: validationResultSchema,
-    prompt: `${JSON.stringify(validation, null, 2)}`,
-  });
-  
-  return object;
+  return await glosar(validation);
 }
 
 export async function validateValorDolares(pedimento: Pedimento, cfdi: Cfdi, cove: Cove) {
@@ -121,17 +89,7 @@ export async function validateValorDolares(pedimento: Pedimento, cfdi: Cfdi, cov
     monedaCOVE
   };
 
-  const { object } = await generateObject({
-    model: wrapAISDKModel(openai("gpt-4o"), {
-      name: `Validate ${validation.name}`,
-      project_name: "glosa",
-    }),
-    system: SYSTEM_PROMPT,
-    schema: validationResultSchema,
-    prompt: `${JSON.stringify(validation, null, 2)}`,
-  });
-  
-  return object;
+  return await glosar(validation);
 }
 
 export async function operacionMonetariaValidations(pedimento: Pedimento, transportDocument: TransportDocument, cfdi: Cfdi, cove: Cove) {

@@ -1,8 +1,6 @@
 import { Pedimento } from "../../../data-extraction/schemas";
-import { validationResultSchema, SYSTEM_PROMPT } from "../../validation-result";
-import { generateObject } from "ai";
-import { wrapAISDKModel } from "langsmith/wrappers/vercel";
-import { openai } from "@ai-sdk/openai";
+import { glosar } from "../../validation-result";
+
 
 async function validateLongitud(pedimento: Pedimento) {
   const numeroPedimento = pedimento.encabezado_del_pedimento?.num_pedimento;
@@ -13,17 +11,7 @@ async function validateLongitud(pedimento: Pedimento) {
     numeroDelPedimento: numeroPedimento
   };
 
-  const { object } = await generateObject({
-    model: wrapAISDKModel(openai("gpt-4o"), {
-      name: `Validate ${validation.name}`,
-      project_name: "glosa",
-    }),
-    system: SYSTEM_PROMPT,
-    schema: validationResultSchema,
-    prompt: `${JSON.stringify(validation, null, 2)}`,
-  });
-  
-  return object;
+  return await glosar(validation);
 }
 
 async function validateAñoPedimento(pedimento: Pedimento) {
@@ -36,17 +24,7 @@ async function validateAñoPedimento(pedimento: Pedimento) {
     añoActual: new Date().getFullYear()
   };
 
-  const { object } = await generateObject({
-    model: wrapAISDKModel(openai("gpt-4o"), {
-      name: `Validate ${validation.name}`,
-      project_name: "glosa",
-    }),
-    system: SYSTEM_PROMPT,
-    schema: validationResultSchema,
-    prompt: `${JSON.stringify(validation, null, 2)}`,
-  });
-  
-  return object;
+  return await glosar(validation);
 }
 
 export async function numeroDePedimentoValidations(pedimento: Pedimento) {
