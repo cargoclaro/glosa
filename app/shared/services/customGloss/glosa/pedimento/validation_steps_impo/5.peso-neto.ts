@@ -24,14 +24,32 @@ export async function validatePesosYBultos(pedimento: Pedimento, transportDocume
   const validation = {
     name: "Validación de pesos y bultos",
     description: "Para validar los pesos y bultos, sigue estos pasos detallados:\n\n1. Verifica que el peso bruto declarado en el pedimento sea igual o menor a alguno de los pesos declarados en el documento de transporte, packing list o factura.\n2. Asegúrate de que el peso bruto declarado en el pedimento coincida con el peso declarado en el documento de transporte, carta 318 o packing list. La relación entre estos pesos debe ser lógica y consistente.\n3. Comprueba que el peso neto declarado en el pedimento sea menor que el peso bruto y que sea consistente con los documentos soporte.\n4. Verifica que el número total de bultos coincida entre el pedimento, documento de transporte y/o carta 3.1.8 / invoice.",
-    pesoBrutoPedimento,
-    pesoBrutoTransportDocument,
-    pesoNetoTransportDocument,
-    pesoBrutoPackingList,
-    pesoNetoPackingList,
-    pesoBrutoInvoice,
-    pesoNetoInvoice,
-    bultosTransportDocument,
+    contexts: {
+      [CustomGlossTabContextType.PROVIDED]: {
+        pedimento: {
+          data: [{ name: "Peso bruto", value: pesoBrutoPedimento }]
+        },
+        documentoDeTransporte: {
+          data: [
+            { name: "Peso bruto", value: pesoBrutoTransportDocument },
+            { name: "Peso neto", value: pesoNetoTransportDocument },
+            { name: "Número de bultos", value: bultosTransportDocument }
+          ]
+        },
+        listaDeEmpaque: {
+          data: [
+            { name: "Peso bruto", value: pesoBrutoPackingList },
+            { name: "Peso neto", value: pesoNetoPackingList }
+          ]
+        },
+        factura: {
+          data: [
+            { name: "Peso bruto", value: pesoBrutoInvoice },
+            { name: "Peso neto", value: pesoNetoInvoice }
+          ]
+        }
+      }
+    }
   } as const;
 
   return await glosar(validation);
@@ -47,8 +65,16 @@ export async function validateBultos(pedimento: Pedimento, transportDocument: Tr
   const validation = {
     name: "Coincidencia de bultos",
     description: "El número total de bultos debe coincidir entre el pedimento y el documento de transporte. Si no hay documento de transporte, marcar como advertencia.",
-    bultosPedimento,
-    bultosTransportDocument,
+    contexts: {
+      [CustomGlossTabContextType.PROVIDED]: {
+        pedimento: {
+          data: [{ name: "Número de bultos", value: bultosPedimento }]
+        },
+        documentoDeTransporte: {
+          data: [{ name: "Número de bultos", value: bultosTransportDocument }]
+        }
+      }
+    }
   } as const;
 
   return await glosar(validation);
