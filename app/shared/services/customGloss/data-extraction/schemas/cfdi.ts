@@ -41,7 +41,9 @@ export const cfdiSchema = z.object({
       unidad: z.string(),
       precio_unitario: z.number(),
       importe: z.number(),
-      objeto_impuesto: z.string().optional()
+      objeto_impuesto: z.string().optional(),
+      peso_neto: z.number().describe("Peso neto del producto en kilogramos").optional(),
+      peso_bruto: z.number().describe("Peso bruto del producto en kilogramos").optional()
     })
   ),
   subtotal: z.number().describe("Subtotal del comprobante."),
@@ -68,5 +70,8 @@ export const cfdiSchema = z.object({
     .string()
     .describe(
       "Un resumen detallado de todos los CFDIs procesados, incluyendo detalles de las transacciones y contexto que puede ser útil para un humano. Este campo es obligatorio y debe ser generado por el LLM, no está proporcionado en el documento."
-    )
+    ),
+  peso_neto_total: z.number().describe("Peso neto total de todos los productos en kilogramos").optional(),
+  peso_bruto_total: z.number().describe("Peso bruto total de todos los productos en kilogramos").optional(),
+  numero_bultos: z.number().describe("Número total de bultos en el envío").optional()
 })
