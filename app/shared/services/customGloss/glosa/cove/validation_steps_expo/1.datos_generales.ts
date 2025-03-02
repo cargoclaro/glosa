@@ -14,18 +14,16 @@ export async function validateNumeroFactura(cove: Cove, cfdi: Cfdi) {
   const validation = {
     name: "Número de Factura (Exportación)",
     description: "El número de factura del COVE debe coincidir con el folio fiscal del CFDI. En exportación, el CFDI es el documento de facturación oficial emitido por el exportador mexicano.",
-    contexts: [
-      {
+    contexts: {
+      cove: {
         type: CustomGlossTabContextType.PROVIDED,
-        origin: "cove",
         data: [{ name: "Número de Factura", value: numeroFacturaCove }]
       },
-      {
+      cfdi: {
         type: CustomGlossTabContextType.PROVIDED,
-        origin: "cfdi",
         data: [{ name: "Número de Factura", value: numeroFacturaCfdi }]
       }
-    ]
+    }
   } as const;
 
   return await glosar(validation);
@@ -42,18 +40,16 @@ export async function validateFechaExpedicion(cove: Cove, cfdi: Cfdi) {
   const validation = {
     name: "Fecha de Expedición (Exportación)",
     description: "La fecha de expedición del COVE debe coincidir con la fecha de emisión del CFDI. En exportación, el CFDI es el documento de facturación oficial emitido por el exportador mexicano.",
-    contexts: [
-      {
+    contexts: {
+      cove: {
         type: CustomGlossTabContextType.PROVIDED,
-        origin: "cove",
         data: [{ name: "Fecha de Expedición", value: fechaExpedicionCove }]
       },
-      {
+      cfdi: {
         type: CustomGlossTabContextType.PROVIDED,
-        origin: "cfdi",
         data: [{ name: "Fecha de Expedición", value: fechaExpedicionCfdi }]
       }
-    ]
+    }
   } as const;
 
   return await glosar(validation);
@@ -70,18 +66,16 @@ export async function validateRfc(cove: Cove, cfdi: Cfdi) {
   const validation = {
     name: "RFC (Exportación)",
     description: "El RFC del destinatario en el COVE debe coincidir con el RFC del emisor en el CFDI. En exportación, el emisor del CFDI es la empresa mexicana que realiza la exportación.",
-    contexts: [
-      {
+    contexts: {
+      cove: {
         type: CustomGlossTabContextType.PROVIDED,
-        origin: "cove",
         data: [{ name: "RFC", value: rfcCove }]
       },
-      {
+      cfdi: {
         type: CustomGlossTabContextType.PROVIDED,
-        origin: "cfdi",
         data: [{ name: "RFC", value: rfcCfdi }]
       }
-    ]
+    }
   } as const;
 
   return await glosar(validation);
