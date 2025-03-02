@@ -85,38 +85,28 @@ export async function validateValorTotalDolares(
   const validation = {
     name: "Valor total en dolares",
     description: "Validar que el valor total en dólares cumpla con los siguientes criterios:\n\n• El valor total debe coincidir con el declarado en la factura comercial y/o carta 3.1.8\n• Si la factura está en una moneda diferente a dólares, verificar que se haya realizado la conversión correcta usando el factor de equivalencia correspondiente\n• Revisar que el tipo de cambio utilizado coincida con el declarado en el área de observaciones del COVE\n• Validar que los cálculos de conversión sean correctos y precisos\n• En caso de discrepancia entre documentos, la carta 3.1.8 tiene prioridad sobre la factura comercial. Los valores comerciales del cove y la 318 no incluyen los fletes, se tiene que comparar todo con el COVE. El valor que se tiene que verificar es el valor del COVE contra la factura y 318.",
-    contexts: [
-      {
-        type: CustomGlossTabContextType.PROVIDED,
-        origin: "cove",
-        data: [{ name: "Valor total en dólares", value: valorTotalDolaresCove }]
-      },
-      {
-        type: CustomGlossTabContextType.PROVIDED,
-        origin: "cove",
-        data: [{ name: "Observaciones", value: observacionesCove }]
-      },
-      {
-        type: CustomGlossTabContextType.PROVIDED,
-        origin: "carta318",
-        data: [{ name: "Valor total", value: valorTotalCarta318 }]
-      },
-      {
-        type: CustomGlossTabContextType.PROVIDED,
-        origin: "carta318",
-        data: [{ name: "Moneda", value: monedaCarta318 }]
-      },
-      {
-        type: CustomGlossTabContextType.PROVIDED,
-        origin: "factura",
-        data: [{ name: "Valor total", value: valorTotalInvoice }]
-      },
-      {
-        type: CustomGlossTabContextType.PROVIDED,
-        origin: "factura",
-        data: [{ name: "Moneda", value: monedaInvoice }]
+    contexts: {
+      [CustomGlossTabContextType.PROVIDED]: {
+        cove: {
+          data: [
+            { name: "Valor total en dólares", value: valorTotalDolaresCove },
+            { name: "Observaciones", value: observacionesCove }
+          ]
+        },
+        carta318: {
+          data: [
+            { name: "Valor total", value: valorTotalCarta318 },
+            { name: "Moneda", value: monedaCarta318 }
+          ]
+        },
+        factura: {
+          data: [
+            { name: "Valor total", value: valorTotalInvoice },
+            { name: "Moneda", value: monedaInvoice }
+          ]
+        }
       }
-    ]
+    }
   } as const;
 
   return await glosar(validation);
