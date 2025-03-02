@@ -15,13 +15,13 @@ export async function validateNumeroFactura(cove: Cove, cfdi: Cfdi) {
     name: "Número de Factura (Exportación)",
     description: "El número de factura del COVE debe coincidir con el folio fiscal del CFDI. En exportación, el CFDI es el documento de facturación oficial emitido por el exportador mexicano.",
     contexts: {
-      cove: {
-        type: CustomGlossTabContextType.PROVIDED,
-        data: [{ name: "Número de Factura", value: numeroFacturaCove }]
-      },
-      cfdi: {
-        type: CustomGlossTabContextType.PROVIDED,
-        data: [{ name: "Número de Factura", value: numeroFacturaCfdi }]
+      [CustomGlossTabContextType.PROVIDED]: {
+        cove: {
+          data: [{ name: "Número de Factura", value: numeroFacturaCove }]
+        },
+        cfdi: {
+          data: [{ name: "Número de Factura", value: numeroFacturaCfdi }]
+        }
       }
     }
   } as const;
@@ -41,13 +41,13 @@ export async function validateFechaExpedicion(cove: Cove, cfdi: Cfdi) {
     name: "Fecha de Expedición (Exportación)",
     description: "La fecha de expedición del COVE debe coincidir con la fecha de emisión del CFDI. En exportación, el CFDI es el documento de facturación oficial emitido por el exportador mexicano.",
     contexts: {
-      cove: {
-        type: CustomGlossTabContextType.PROVIDED,
-        data: [{ name: "Fecha de Expedición", value: fechaExpedicionCove }]
-      },
-      cfdi: {
-        type: CustomGlossTabContextType.PROVIDED,
-        data: [{ name: "Fecha de Expedición", value: fechaExpedicionCfdi }]
+      [CustomGlossTabContextType.PROVIDED]: {
+        cove: {
+          data: [{ name: "Fecha de Expedición", value: fechaExpedicionCove }]
+        },
+        cfdi: {
+          data: [{ name: "Fecha de Expedición", value: fechaExpedicionCfdi }]
+        }
       }
     }
   } as const;
@@ -67,13 +67,13 @@ export async function validateRfc(cove: Cove, cfdi: Cfdi) {
     name: "RFC (Exportación)",
     description: "El RFC del destinatario en el COVE debe coincidir con el RFC del emisor en el CFDI. En exportación, el emisor del CFDI es la empresa mexicana que realiza la exportación.",
     contexts: {
-      cove: {
-        type: CustomGlossTabContextType.PROVIDED,
-        data: [{ name: "RFC", value: rfcCove }]
-      },
-      cfdi: {
-        type: CustomGlossTabContextType.PROVIDED,
-        data: [{ name: "RFC", value: rfcCfdi }]
+      [CustomGlossTabContextType.PROVIDED]: {
+        cove: {
+          data: [{ name: "RFC", value: rfcCove }]
+        },
+        cfdi: {
+          data: [{ name: "RFC", value: rfcCfdi }]
+        }
       }
     }
   } as const;

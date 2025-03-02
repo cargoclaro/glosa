@@ -18,17 +18,16 @@ export async function validateNumeroFactura(cove: Cove, invoice: Invoice, carta3
     name: "Número de Factura (Importación)",
     description: "El número de factura del COVE debe coincidir con el número de factura en la factura comercial (puede aparecer como Invoice Number, Invoice No, Invoice #) o en la carta 318. En caso de discrepancia, prevalece el número indicado en la carta 318.",
     contexts: {
-      cove: {
-        type: CustomGlossTabContextType.PROVIDED,
-        data: [{ name: "Número de Factura", value: numeroFacturaCove }]
-      },
-      factura: {
-        type: CustomGlossTabContextType.PROVIDED,
-        data: [{ name: "Número de Factura", value: numeroFacturaInvoice }]
-      },
-      carta318: {
-        type: CustomGlossTabContextType.PROVIDED,
-        data: [{ name: "Número de Factura", value: numeroFacturaCarta318 }]
+      [CustomGlossTabContextType.PROVIDED]: {
+        cove: {
+          data: [{ name: "Número de Factura", value: numeroFacturaCove }]
+        },
+        factura: {
+          data: [{ name: "Número de Factura", value: numeroFacturaInvoice }]
+        },
+        carta318: {
+          data: [{ name: "Número de Factura", value: numeroFacturaCarta318 }]
+        }
       }
     }
   } as const;
@@ -49,17 +48,16 @@ export async function validateFechaExpedicion(cove: Cove, invoice: Invoice, cart
     name: "Fecha de Expedición (Importación)",
     description: "La fecha de expedición del COVE debe coincidir con la fecha de la factura comercial (puede aparecer como Invoice Date, Date) o en la carta 318. En caso de discrepancia, prevalece la fecha indicada en la carta 318.",
     contexts: {
-      cove: {
-        type: CustomGlossTabContextType.PROVIDED,
-        data: [{ name: "Fecha de Expedición", value: fechaExpedicionCove }]
-      },
-      factura: {
-        type: CustomGlossTabContextType.PROVIDED,
-        data: [{ name: "Fecha de Expedición", value: fechaExpedicionInvoice }]
-      },
-      carta318: {
-        type: CustomGlossTabContextType.PROVIDED,
-        data: [{ name: "Fecha de Expedición", value: fechaExpedicionCarta318 }]
+      [CustomGlossTabContextType.PROVIDED]: {
+        cove: {
+          data: [{ name: "Fecha de Expedición", value: fechaExpedicionCove }]
+        },
+        factura: {
+          data: [{ name: "Fecha de Expedición", value: fechaExpedicionInvoice }]
+        },
+        carta318: {
+          data: [{ name: "Fecha de Expedición", value: fechaExpedicionCarta318 }]
+        }
       }
     }
   } as const;
