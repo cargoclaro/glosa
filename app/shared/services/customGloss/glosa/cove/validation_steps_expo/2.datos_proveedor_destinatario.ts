@@ -24,20 +24,20 @@ export async function validateDatosGeneralesProveedor(
     name: "Datos generales del proveedor",
     description: "Verificar que los siguientes datos coincidan entre el COVE y el CFDI:\n\n• RFC\n• Razón social\n Si no hay RFC, el tipo de identificador que tenga (tax id, tax id number, tax id number, etc) debe de coincidir.",
     contexts: {
-      cove: {
-        type: CustomGlossTabContextType.PROVIDED,
-        data: [
-          { name: "Identificador", value: identificadorCove },
-          { name: "Tipo Identificador", value: tipoIdentificadorCove },
-          { name: "Nombre Razón Social", value: nombreRazonSocialCove }
-        ]
-      },
-      cfdi: {
-        type: CustomGlossTabContextType.PROVIDED,
-        data: [
-          { name: "Nombre Razón Social", value: nombreRazonSocialCfdi },
-          { name: "Identificador", value: identificadorCfdi }
-        ]
+      [CustomGlossTabContextType.PROVIDED]: {
+        cove: {
+          data: [
+            { name: "Identificador", value: identificadorCove },
+            { name: "Tipo Identificador", value: tipoIdentificadorCove },
+            { name: "Nombre Razón Social", value: nombreRazonSocialCove }
+          ]
+        },
+        cfdi: {
+          data: [
+            { name: "Nombre Razón Social", value: nombreRazonSocialCfdi },
+            { name: "Identificador", value: identificadorCfdi }
+          ]
+        }
       }
     }
   } as const;
@@ -73,13 +73,13 @@ export async function validateDomicilioProveedor(
     name: "Domicilio del proveedor",
     description: "Verificar que el domicilio fiscal del proveedor coincida entre el COVE y el CFDI:\n\n• Domicilio fiscal",
     contexts: {
-      cove: {
-        type: CustomGlossTabContextType.PROVIDED,
-        data: [{ name: "Domicilio", value: domicilioCoveCompleto }]
-      },
-      cfdi: {
-        type: CustomGlossTabContextType.PROVIDED,
-        data: [{ name: "Domicilio", value: domicilioCfdi }]
+      [CustomGlossTabContextType.PROVIDED]: {
+        cove: {
+          data: [{ name: "Domicilio", value: domicilioCoveCompleto }]
+        },
+        cfdi: {
+          data: [{ name: "Domicilio", value: domicilioCfdi }]
+        }
       }
     }
   } as const;
@@ -107,19 +107,19 @@ export async function validateDatosGeneralesDestinatario(
     name: "Datos generales del destinatario",
     description: "Verificar que los siguientes datos coincidan entre el COVE y el CFDI:\n\n• RFC\n• Razón social\n Si no hay RFC, el tipo de identificador que tenga (tax id, tax id number, tax id number, etc) debe de coincidir.",
     contexts: {
-      cove: {
-        type: CustomGlossTabContextType.PROVIDED,
-        data: [
-          { name: "RFC", value: rfcDestinatarioCove },
-          { name: "Nombre Razón Social", value: nombreRazonSocialCove }
-        ]
-      },
-      cfdi: {
-        type: CustomGlossTabContextType.PROVIDED,
-        data: [
-          { name: "Nombre Razón Social", value: nombreRazonSocialCfdi },
-          { name: "RFC", value: rfcCfdi }
-        ]
+      [CustomGlossTabContextType.PROVIDED]: {
+        cove: {
+          data: [
+            { name: "RFC", value: rfcDestinatarioCove },
+            { name: "Nombre Razón Social", value: nombreRazonSocialCove }
+          ]
+        },
+        cfdi: {
+          data: [
+            { name: "Nombre Razón Social", value: nombreRazonSocialCfdi },
+            { name: "RFC", value: rfcCfdi }
+          ]
+        }
       }
     }
   } as const;
@@ -155,13 +155,13 @@ export async function validateDomicilioDestinatario(
     name: "Domicilio del destinatario",
     description: "Verificar que el domicilio fiscal del destinatario coincida entre el COVE y el CFDI:\n\n• Domicilio fiscal",
     contexts: {
-      cove: {
-        type: CustomGlossTabContextType.PROVIDED,
-        data: [{ name: "Domicilio", value: domicilioCoveCompleto }]
-      },
-      cfdi: {
-        type: CustomGlossTabContextType.PROVIDED,
-        data: [{ name: "Domicilio", value: domicilioCfdi }]
+      [CustomGlossTabContextType.PROVIDED]: {
+        cove: {
+          data: [{ name: "Domicilio", value: domicilioCoveCompleto }]
+        },
+        cfdi: {
+          data: [{ name: "Domicilio", value: domicilioCfdi }]
+        }
       }
     }
   } as const;
