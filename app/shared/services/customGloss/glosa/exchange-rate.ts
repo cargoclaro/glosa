@@ -2,7 +2,7 @@ const BANXICO_BASE_URL = 'https://www.banxico.org.mx/SieAPIRest/service/v1';
 
 import { z } from "zod"
 
-export const oportunoSchema = z.object({
+const oportunoSchema = z.object({
   bmx: z.object({
     series: z.array(
       z.object({
