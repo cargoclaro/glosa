@@ -48,6 +48,7 @@ import {
   validateRegulacionesArancelarias,
   validateRegulacionesNoArancelarias
 } from './pedimento/validation_steps_impo/9.partidas';
+import { traceable } from "langsmith/traceable";
 
 export async function glosaImpo({
   pedimento,
@@ -66,41 +67,105 @@ export async function glosaImpo({
   invoice?: Invoice;
   carta318?: Carta318;
 }) {
+  // Group and trace COVE-related validations
+  const tracedCoveValidations = traceable(
+    async () =>
+      Promise.all([
+        validateNumeroFactura(cove, invoice, carta318),
+        validateFechaExpedicion(cove, invoice, carta318),
+        validateDatosGeneralesProveedor(cove, invoice, carta318),
+        validateDomicilioProveedor(cove, invoice, carta318),
+        validateDatosGeneralesDestinatario(cove, invoice, carta318),
+        validateDomicilioDestinatario(cove, invoice, carta318),
+        validateMercancias(cove, invoice, carta318),
+        validateValorTotalDolares(cove, invoice, carta318),
+      ]),
+    { name: "CoveValidationsImpo" }
+  );
+
+  // Group and trace Pedimento validations (tipo-operacion & origen-destino)
+  const tracedPedimentoValidations = traceable(
+    async () =>
+      Promise.all([
+        validateCoherenciaOrigenDestino(pedimento, transportDocument),
+        validateClavePedimento(pedimento),
+        validateRegimen(pedimento),
+        validateClaveApendice15(pedimento),
+      ]),
+    { name: "PedimentoValidationsImpo" }
+  );
+
+  // Group and trace monetary validations (operacion-monetaria)
+  const tracedMonetaryValidations = traceable(
+    async () =>
+      Promise.all([
+        validateTransportDocumentEntryDate(pedimento, transportDocument),
+        validateTipoCambio(pedimento),
+        validateIncrementables(pedimento, invoice, transportDocument, carta318),
+        validateValoresPedimento(pedimento, invoice, transportDocument, carta318),
+      ]),
+    { name: "MonetaryValidationsImpo" }
+  );
+
+  // Group and trace peso-neto validations
+  const tracedPesoValidations = traceable(
+    async () =>
+      Promise.all([
+        validatePesosYBultos(pedimento, transportDocument, packingList, invoice),
+        validateBultos(pedimento, transportDocument),
+      ]),
+    { name: "PesoValidationsImpo" }
+  );
+
+  // Group and trace factura-related validations (datos-de-factura)
+  const tracedFacturaValidations = traceable(
+    async () =>
+      Promise.all([
+        validateRfcFormat(pedimento, cove, carta318),
+        validateCesionDerechos(pedimento, cartaSesion, carta318),
+        validateDatosImportador(pedimento, cove, carta318),
+        validateDatosProveedor(pedimento, cove, carta318),
+        validateFechasYFolios(pedimento, cove, invoice, carta318),
+        validateMonedaYEquivalencia(pedimento, cove, carta318, invoice),
+      ]),
+    { name: "FacturaValidationsImpo" }
+  );
+
+  // Group and trace transporte validations
+  const tracedTransporteValidations = traceable(
+    async () =>
+      Promise.all([
+        validateTipoTransporte(pedimento),
+        validateModalidadMedioTransporte(pedimento, transportDocument),
+        validateNumeroGuiaEmbarque(pedimento, transportDocument),
+      ]),
+    { name: "TransporteValidationsImpo" }
+  );
+
+  // Group and trace partidas validations
+  const tracedPartidasValidations = traceable(
+    async () =>
+      Promise.all([
+        validatePreferenciaArancelaria(pedimento),
+        validateCoherenciaUMC(pedimento, invoice),
+        validateCoherenciaPeso(pedimento),
+        validateCalculoDTA(pedimento),
+        validateCalculoContribuciones(pedimento),
+        validatePermisosIdentificadores(pedimento),
+        validateRegulacionesArancelarias(pedimento),
+        validateRegulacionesNoArancelarias(pedimento),
+      ]),
+    { name: "PartidasValidationsImpo" }
+  );
+
+  // Run all traced groups concurrently
   return Promise.all([
-    validateNumeroFactura(cove, invoice, carta318),
-    validateFechaExpedicion(cove, invoice, carta318),
-    validateDatosGeneralesProveedor(cove, invoice, carta318),
-    validateDomicilioProveedor(cove, invoice, carta318),
-    validateDatosGeneralesDestinatario(cove, invoice, carta318),
-    validateDomicilioDestinatario(cove, invoice, carta318),
-    validateMercancias(cove, invoice, carta318),
-    validateValorTotalDolares(cove, invoice, carta318),
-    validateCoherenciaOrigenDestino(pedimento, transportDocument),
-    validateClavePedimento(pedimento),
-    validateRegimen(pedimento),
-    validateClaveApendice15(pedimento),
-    validateTransportDocumentEntryDate(pedimento, transportDocument),
-    validateTipoCambio(pedimento),
-    validateIncrementables(pedimento, invoice, transportDocument, carta318),
-    validateValoresPedimento(pedimento, invoice, transportDocument, carta318),
-    validatePesosYBultos(pedimento, transportDocument, packingList, invoice),
-    validateBultos(pedimento, transportDocument),
-    validateRfcFormat(pedimento, cove, carta318),
-    validateCesionDerechos(pedimento, cartaSesion, carta318),
-    validateDatosImportador(pedimento, cove, carta318),
-    validateDatosProveedor(pedimento, cove, carta318),
-    validateFechasYFolios(pedimento, cove, invoice, carta318),
-    validateMonedaYEquivalencia(pedimento, cove, carta318, invoice),
-    validateTipoTransporte(pedimento),
-    validateModalidadMedioTransporte(pedimento, transportDocument),
-    validateNumeroGuiaEmbarque(pedimento, transportDocument),
-    validatePreferenciaArancelaria(pedimento),
-    validateCoherenciaUMC(pedimento, invoice),
-    validateCoherenciaPeso(pedimento),
-    validateCalculoDTA(pedimento),
-    validateCalculoContribuciones(pedimento),
-    validatePermisosIdentificadores(pedimento),
-    validateRegulacionesArancelarias(pedimento),
-    validateRegulacionesNoArancelarias(pedimento)
+    tracedCoveValidations(),
+    tracedPedimentoValidations(),
+    tracedMonetaryValidations(),
+    tracedPesoValidations(),
+    tracedFacturaValidations(),
+    tracedTransporteValidations(),
+    tracedPartidasValidations(),
   ]);
 }

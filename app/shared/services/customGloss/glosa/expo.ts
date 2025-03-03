@@ -49,6 +49,7 @@ import {
   validateRegulacionesArancelarias,
   validateRegulacionesNoArancelarias
 } from './pedimento/validation_steps_expo/9.partidas';
+import { traceable } from "langsmith/traceable";
 
 export async function glosaExpo({
   pedimento,
@@ -65,42 +66,88 @@ export async function glosaExpo({
   cfdi?: Cfdi;
   cartaSesion?: CartaSesion;
 }) {
+  // Group and trace the COVE validations
+  const tracedCoveValidations = traceable(
+    async () =>
+      Promise.all([
+        validateNumeroFactura(cove, cfdi),
+        validateFechaExpedicion(cove, cfdi),
+        validateRfc(cove, cfdi),
+        validateDatosGeneralesProveedor(cove, cfdi),
+        validateDomicilioProveedor(cove, cfdi),
+        validateDatosGeneralesDestinatario(cove, cfdi),
+        validateDomicilioDestinatario(cove, cfdi),
+        validateMercancias(cove, cfdi),
+        validateValorTotalDolares(cove, cfdi),
+      ]),
+    { name: "CoveValidations" }
+  );
+
+  // Group and trace the Pedimento validations
+  const tracedPedimentoValidations = traceable(
+    async () =>
+      Promise.all([
+        validateCoherenciaOrigenDestino(pedimento, transportDocument),
+        validateClavePedimento(pedimento),
+        validateRegimen(pedimento),
+        validateClaveApendice15(pedimento),
+        validateFechaSalida(pedimento, transportDocument),
+        validateTipoCambio(pedimento),
+        validateValorComercial(pedimento, cove, cfdi),
+        validateValorDolares(pedimento, cove, cfdi),
+        validatePesosYBultos(pedimento, transportDocument, packingList, cfdi),
+        validateBultos(pedimento, transportDocument),
+      ]),
+    { name: "PedimentoValidations" }
+  );
+
+  // Group and trace the factura-related validations
+  const tracedFacturaValidations = traceable(
+    async () =>
+      Promise.all([
+        validateRfcFormat(pedimento, cove, cfdi),
+        validateCesionDerechos(pedimento, cartaSesion, cfdi),
+        validateDatosImportador(pedimento, cove, cfdi),
+        validateDatosProveedor(pedimento, cove, cfdi),
+        validateFechasYFolios(pedimento, cove, cfdi),
+        validateMonedaYEquivalencia(pedimento, cove, cfdi),
+      ]),
+    { name: "FacturaValidations" }
+  );
+
+  // Group and trace the transporte validations
+  const tracedTransporteValidations = traceable(
+    async () =>
+      Promise.all([
+        validateTipoTransporte(pedimento),
+        validateModalidadMedioTransporte(pedimento, transportDocument),
+        validateNumeroGuiaEmbarque(pedimento, transportDocument),
+      ]),
+    { name: "TransporteValidations" }
+  );
+
+  // Group and trace the partidas validations
+  const tracedPartidasValidations = traceable(
+    async () =>
+      Promise.all([
+        validatePreferenciaArancelaria(pedimento),
+        validateCoherenciaUMC(pedimento, cfdi),
+        validateCoherenciaPeso(pedimento, cfdi),
+        validateCalculoDTA(pedimento),
+        validateCalculoContribuciones(pedimento, cfdi),
+        validatePermisosIdentificadores(pedimento),
+        validateRegulacionesArancelarias(pedimento),
+        validateRegulacionesNoArancelarias(pedimento),
+      ]),
+    { name: "PartidasValidations" }
+  );
+
+  // Run all traced groups concurrently
   return Promise.all([
-    validateNumeroFactura(cove, cfdi),
-    validateFechaExpedicion(cove, cfdi),
-    validateRfc(cove, cfdi),
-    validateDatosGeneralesProveedor(cove, cfdi),
-    validateDomicilioProveedor(cove, cfdi),
-    validateDatosGeneralesDestinatario(cove, cfdi),
-    validateDomicilioDestinatario(cove, cfdi),
-    validateMercancias(cove, cfdi),
-    validateValorTotalDolares(cove, cfdi),
-    validateCoherenciaOrigenDestino(pedimento, transportDocument),
-    validateClavePedimento(pedimento),
-    validateRegimen(pedimento),
-    validateClaveApendice15(pedimento),
-    validateFechaSalida(pedimento, transportDocument),
-    validateTipoCambio(pedimento),
-    validateValorComercial(pedimento, cove, cfdi),
-    validateValorDolares(pedimento, cove, cfdi),
-    validatePesosYBultos(pedimento, transportDocument, packingList, cfdi),
-    validateBultos(pedimento, transportDocument),
-    validateRfcFormat(pedimento, cove, cfdi),
-    validateCesionDerechos(pedimento, cartaSesion, cfdi),
-    validateDatosImportador(pedimento, cove, cfdi),
-    validateDatosProveedor(pedimento, cove, cfdi),
-    validateFechasYFolios(pedimento, cove, cfdi),
-    validateMonedaYEquivalencia(pedimento, cove, cfdi),
-    validateTipoTransporte(pedimento),
-    validateModalidadMedioTransporte(pedimento, transportDocument),
-    validateNumeroGuiaEmbarque(pedimento, transportDocument),
-    validatePreferenciaArancelaria(pedimento),
-    validateCoherenciaUMC(pedimento, cfdi),
-    validateCoherenciaPeso(pedimento, cfdi),
-    validateCalculoDTA(pedimento),
-    validateCalculoContribuciones(pedimento, cfdi),
-    validatePermisosIdentificadores(pedimento),
-    validateRegulacionesArancelarias(pedimento),
-    validateRegulacionesNoArancelarias(pedimento)
+    tracedCoveValidations(),
+    tracedPedimentoValidations(),
+    tracedFacturaValidations(),
+    tracedTransporteValidations(),
+    tracedPartidasValidations()
   ]);
 }
