@@ -2,6 +2,7 @@ const BANXICO_BASE_URL = 'https://www.banxico.org.mx/SieAPIRest/service/v1';
 
 import { z } from "zod"
 import { config } from "dotenv"
+import Holidays from 'date-holidays';
 
 config()
 
@@ -11,14 +12,42 @@ const oportunoSchema = z.object({
       z.object({
         idSerie: z.string(),
         titulo: z.string(),
-        datos: z.array(z.object({ fecha: z.string(), dato: z.string() })).length(1)
+        datos: z.array(z.object({ fecha: z.string(), dato: z.string() }))
       })
     ).length(1)
   })
 })
 
+/**
+ * Gets the previous business day (día hábil) in Mexico
+ * @param date Starting date to search from (defaults to current date)
+ * @param daysBack Number of business days to go back (defaults to 1)
+ * @returns Date object representing the previous business day
+ */
+export function getPreviousDiaHabil(date: Date = new Date(), daysBack: number = 2): Date {
+  const mexicoHolidays = new Holidays('MX');
+  // Create a copy of the input date to avoid modifying the original
+  const resultDate = new Date(date);
+  let businessDaysFound = 0;
+  
+  // Keep searching backward until we find the required number of business days
+  while (businessDaysFound < daysBack) {
+    // Move one day backward
+    resultDate.setDate(resultDate.getDate() - 1);
+    
+    // Check if this day is a business day
+    const isWeekend = resultDate.getDay() === 0 || resultDate.getDay() === 6;
+    const isHoliday = mexicoHolidays.isHoliday(resultDate);
+    
+    if (!isWeekend && !isHoliday) {
+      businessDaysFound++;
+    }
+  }
+  
+  return resultDate;
+}
 
-export async function getExchangeRate(currencyCode: "USD" | "EUR" | "GBP" = 'USD') {
+export async function getExchangeRate(fechaPedimento: Date, currencyCode: "USD" | "EUR" | "GBP" = 'USD') {
   // Map of common currency codes to their series IDs (pesos series)
   const currencySeries: Record<"USD" | "EUR" | "GBP", string> = {
     'USD': 'SF43718',
@@ -33,7 +62,10 @@ export async function getExchangeRate(currencyCode: "USD" | "EUR" | "GBP" = 'USD
     throw new Error('BANXICO_TOKEN is not set');
   }
 
-  const response = await fetch(`${BANXICO_BASE_URL}/series/${seriesId}/datos/oportuno`, {
+  const previousBusinessDay = getPreviousDiaHabil(fechaPedimento);
+  const previousBusinessDayString = previousBusinessDay.toISOString().split('T')[0];
+
+  const response = await fetch(`${BANXICO_BASE_URL}/series/${seriesId}/datos/${previousBusinessDayString}/${previousBusinessDayString}`, {
     method: 'get',
     headers: {
       'Accept': 'application/json',
