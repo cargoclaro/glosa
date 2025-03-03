@@ -82,9 +82,10 @@ const PedimentAnalysisNFinish = ({
           tabs={customGloss.tabs}
           onClick={handleFunction}
           tabInfoSelected={tabInfoSelected}
-          // document="/PEDIMENT500.pdf"
-          // document="/PEDIMENTO.pdf"
-          document={customGloss.files.find((doc) => doc.name === documentSelected)?.url || ""}
+          document={
+            customGloss.files.find((doc) => doc.name.includes(documentSelected))
+              ?.url || ""
+          }
         />
       </section>
       <section className="flex flex-col gap-4 col-span-1 sm:col-span-3 lg:col-span-1">
