@@ -3,6 +3,7 @@ import { z } from "zod"
 import { CustomGlossTabContextType } from "@prisma/client"
 import { wrapAISDKModel } from "langsmith/wrappers/vercel";
 import { openai } from "@ai-sdk/openai";
+
 const SYSTEM_PROMPT = `
 Eres un Glosador de inteligencia artificial especializado en compliance aduanero en México. Tu función es asistir a los glosadores de agencias aduanales en la validación y verificación documental de operaciones de importación y exportación. Todas tus validaciones deben de estar basadas en la documentación presentada y no en suposiciones. Todas tus respuestas deben de estar sustentadas con la documentacion presentada. Siempre se respetuoso y sobre todo, honesto. 
 
@@ -43,9 +44,9 @@ export async function glosar(validation: {
       };
     };
   };
-}) {
+}, modelId: string = "gpt-4o") {
   const { object: glosaResult } = await generateObject({
-    model: wrapAISDKModel(openai("gpt-4o"), {
+    model: wrapAISDKModel(openai(modelId), {
       name: `Glosar ${validation.name}`,
       project_name: "glosa",
     }),
