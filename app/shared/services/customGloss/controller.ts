@@ -81,7 +81,7 @@ export async function analysis(formData: FormData) {
               name: sectionName,
               isCorrect: validations.every(({ validation: { isValid } }) => isValid),
               fullContext: true,
-              contexts: {
+              context: {
                 create: validations.flatMap(({ contexts }) =>
                   // "contexts" is an object keyed by context type:
                   Object.entries(contexts).flatMap(([contextType, origins]) =>
