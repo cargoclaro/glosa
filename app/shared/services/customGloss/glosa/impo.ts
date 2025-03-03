@@ -3,7 +3,7 @@ import { tracedPedimentoValidationStepsImpo } from './pedimento/validation_steps
 import { tracedCoveValidationStepsImpo } from './cove/validation_steps_impo';
 import { traceable } from "langsmith/traceable";
 
-export const glosaExpo = traceable(
+export const glosaImpo = traceable(
   async ({
     pedimento,
     transportDocument,
