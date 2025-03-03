@@ -24,10 +24,11 @@ const oportunoSchema = z.object({
  * @param daysBack Number of business days to go back (defaults to 1)
  * @returns Date object representing the previous business day
  */
-export function getPreviousDiaHabil(date: Date = new Date(), daysBack: number = 2): Date {
+export function getPreviousDiaHabil(fechaPedimento: Date): Date {
+  const daysBack = 2;
   const mexicoHolidays = new Holidays('MX');
   // Create a copy of the input date to avoid modifying the original
-  const resultDate = new Date(date);
+  const resultDate = new Date(fechaPedimento);
   let businessDaysFound = 0;
   
   // Keep searching backward until we find the required number of business days
