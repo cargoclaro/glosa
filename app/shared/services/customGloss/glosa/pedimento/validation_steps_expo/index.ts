@@ -34,6 +34,6 @@ export const tracedPedimentoValidationStepsExpo = traceable(
       tracedRfcFormat({ pedimento, cove, ...(cfdi ? { cfdi } : {}), ...(cartaSesion ? { cartaSesion } : {}) }),
       tracedTipoTransporte({ pedimento, ...(transportDocument ? { transportDocument } : {}) }),
       tracedPartidas({ pedimento, ...(cfdi ? { cfdi } : {}) })
-    ]).then(results => results.flat()),
+    ]),
   { name: "Pedimento (Exportación)" }
 ); 

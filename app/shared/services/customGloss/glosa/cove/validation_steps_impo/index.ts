@@ -10,6 +10,6 @@ export const tracedCoveValidationStepsImpo = traceable(
       tracedDatosGenerales({ cove, ...(invoice ? { invoice } : {}), ...(carta318 ? { carta318 } : {}) }),
       tracedChooseDocument({ cove, ...(invoice ? { invoice } : {}), ...(carta318 ? { carta318 } : {}) }),
       tracedMercancias({ cove, ...(invoice ? { invoice } : {}), ...(carta318 ? { carta318 } : {}) }),
-    ]).then(results => results.flat()),
+    ]),
   { name: "COVE (Importación)" }
 );

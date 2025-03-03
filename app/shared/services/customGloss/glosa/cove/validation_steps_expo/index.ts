@@ -10,6 +10,6 @@ export const tracedCoveValidationStepsExpo = traceable(
       tracedDatosGenerales({ cove, ...(cfdi ? { cfdi } : {}) }),
       tracedProveedorDestinatario({ cove, ...(cfdi ? { cfdi } : {}) }),
       tracedMercancias({ cove, ...(invoice ? { invoice } : {}), ...(cfdi ? { cfdi } : {}) }),
-    ]).then(results => results.flat()),
+    ]),
   { name: "COVE (Exportación)" }
 );
