@@ -23,7 +23,6 @@ ejemplo 3: ⚠️ Se encontraron las siguientes discrepancias: \n1) El 'Domicili
 `;
 
 const validationResultSchema = z.object({
-  name: z.string().describe(`Nombre de la validación que identifica el tipo de verificación realizada`),
   contextSummary: z.string().describe(`Lista de documentos utilizados para la validación, incluyendo pedimentos, facturas, cartas porte, COVEs, u otros documentos aduanales relevantes. Debe enumerar específicamente cada documento consultado y su origen.`),
   llmAnalysis: z.string().describe(`Análisis detallado de la validación realizado por el LLM. Cada elemento debe comenzar con '✅' si es correcto, '⚠️' si hay advertencias, o '❌' si hay errores. Debe incluir una explicación paso a paso del proceso de validación, citando expresamente los valores específicos encontrados en cada documento del contexto. Si algún campo es null, debe indicar exactamente qué información falta y cómo afecta a la validación.`),
   isValid: z.boolean().describe(`Indicador booleano de si la validación es correcta (true) o si presenta errores o advertencias que requieren atención (false)`),
@@ -56,7 +55,11 @@ export async function glosar(validation: {
   });
 
   return {
-    validation: glosaResult,
+    validation: {
+      name: validation.name,
+      description: validation.description,
+      ...glosaResult
+    },
     contexts: validation.contexts
   };
 }

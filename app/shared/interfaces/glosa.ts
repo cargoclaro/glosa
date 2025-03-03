@@ -9,9 +9,6 @@ const flexibleStringSchema = z.union([
   z.null(),
 ]);
 
-// If a field is typically a single object but can also be null or array, unify them:
-const flexibleObjectSchema = z.union([z.object({}).passthrough(), z.null(), z.array(z.any())]);
-
 export const schema = z.object({
   importer_name: z.string(),
   summary: z.string(),

@@ -14,6 +14,7 @@ import { classifyDocuments } from "./classification";
 import { extractTextFromPDFs } from "./data-extraction";
 import { glosaImpo } from "./glosa/impo";
 import { glosaExpo } from "./glosa/expo";
+import prisma from "@/app/shared/services/prisma";
 
 config();
 
@@ -35,9 +36,17 @@ const runGlosa = traceable(
     }
     const operationType = pedimento.encabezado_del_pedimento?.tipo_oper;
     if (operationType === "IMP") {
-      return await glosaImpo(documents);
+      return {
+        gloss: await glosaImpo(documents),
+        successfulUploads,
+        importerName: pedimento.datos_importador?.razon_social,
+      };
     } else if (operationType === "EXP") {
-      return await glosaExpo(documents);
+      return {
+        gloss: await glosaExpo(documents),
+        successfulUploads,
+        importerName: pedimento.datos_importador?.razon_social,
+      };
     } else {
       throw new Error("El tipo de operación no es válido.");
     }
@@ -59,8 +68,61 @@ export async function analysis(formData: FormData) {
     // Only use this for testing the migration from the python backend
     const enableMigrationCode = process.env["ENABLE_MIGRATION_CODE"];
     if (enableMigrationCode) {
-      const glosaResults = await runGlosa(formData);
-      return
+      const { gloss, successfulUploads, importerName } = await runGlosa(formData);
+      const newCustomGloss = await prisma.customGloss.create({
+        data: {
+          user: { connect: { id: user_id } },
+          summary: "No se donde sale esto",
+          timeSaved: 20,
+          moneySaved: 1000,
+          importerName: importerName ?? "No se encontro la razon social del importador",
+          tabs: {
+            create: gloss.map(({ sectionName, validations }) => ({
+              name: sectionName,
+              isCorrect: validations.every(({ validation: { isValid } }) => isValid),
+              fullContext: true,
+              contexts: {
+                create: validations.flatMap(({ contexts }) =>
+                  // "contexts" is an object keyed by context type:
+                  Object.entries(contexts).flatMap(([contextType, origins]) =>
+                    // "origins" is an object keyed by origin string:
+                    Object.entries(origins).map(([origin, contextValue]) => ({
+                      type: contextType as CustomGlossTabContextType, // TODO: This is a hack to make the type checker happy
+                      origin,
+                      data: {
+                        create: contextValue.data.map(({ name, value }) => ({
+                          name,
+                          value: JSON.stringify(value),
+                        })),
+                      },
+                    }))
+                  )
+                ),
+              },
+              validations: {
+                create: validations.map(
+                  ({ validation: { name, description, llmAnalysis, isValid, actionsToTake } }) => ({
+                    name,
+                    description,
+                    llmAnalysis,
+                    isCorrect: isValid,
+                    actionsToTake: {
+                      create: actionsToTake.map((action) => ({
+                        description: action,
+                      })),
+                    },
+                  })
+                ),
+              },
+            })),
+          },
+          files: { create: successfulUploads.map(({ name, ufsUrl }) => ({ name, url: ufsUrl })) },
+        },
+      });
+      return {
+        success: true,
+        glossId: newCustomGloss.id,
+      };
     }
     const query_id = randomUUID();
 
