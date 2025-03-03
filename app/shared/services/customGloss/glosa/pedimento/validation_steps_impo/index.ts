@@ -9,7 +9,7 @@ import { tracedDatosDeFactura } from "./6.datos-de-factura";
 import { tracedTipoTransporte } from "./7.datos-del-transporte";
 import { tracedPartidas } from "./9.partidas";
 
-export const tracedPedimentoValidationStepsExpo = traceable(
+export const tracedPedimentoValidationStepsImpo = traceable(
   async ({ 
     pedimento, 
     cove,
@@ -35,5 +35,5 @@ export const tracedPedimentoValidationStepsExpo = traceable(
       tracedTipoTransporte({ pedimento, ...(transportDocument ? { transportDocument } : {}) }),
       tracedPartidas({ pedimento, ...(invoice ? { invoice } : {}) })
     ]).then(results => results.flat()),
-  { name: "Pedimento (Exportación)" }
+  { name: "Pedimento (Importación)" }
 ); 
