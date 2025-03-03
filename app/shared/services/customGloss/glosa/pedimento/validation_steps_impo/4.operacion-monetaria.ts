@@ -248,7 +248,7 @@ export async function validateValoresPedimento(pedimento: Pedimento, invoice?: I
 }
 
 export const tracedTransportDocumentEntryDate = traceable(
-  async (pedimento: Pedimento, invoice?: Invoice, transportDocument?: TransportDocument, carta318?: Carta318) =>
+  async ({ pedimento, invoice, transportDocument, carta318 }: { pedimento: Pedimento; invoice?: Invoice; transportDocument?: TransportDocument; carta318?: Carta318 }) =>
     Promise.all([
       validateTransportDocumentEntryDate(pedimento, transportDocument),
       validateTipoCambio(pedimento),

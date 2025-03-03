@@ -99,7 +99,7 @@ export async function validateRegimen(pedimento: Pedimento) {
 }
 
 export const tracedTipoOperacion = traceable(
-  async (pedimento: Pedimento, transportDoc?: TransportDocument) =>
+  async ({ pedimento, transportDoc }: { pedimento: Pedimento; transportDoc?: TransportDocument }) =>
     Promise.all([
       validateCoherenciaOrigenDestino(pedimento, transportDoc),
       validateClavePedimento(pedimento),

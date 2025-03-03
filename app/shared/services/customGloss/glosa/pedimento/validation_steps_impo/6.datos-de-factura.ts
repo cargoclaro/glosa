@@ -291,7 +291,7 @@ export async function validateMonedaYEquivalencia(pedimento: Pedimento, cove: Co
 }
 
 export const tracedDatosDeFactura = traceable(
-  async (pedimento: Pedimento, cove: Cove, carta318?: Carta318, invoice?: Invoice, cartaSesion?: CartaSesion) =>
+  async ({ pedimento, cove, carta318, invoice, cartaSesion }: { pedimento: Pedimento; cove: Cove; carta318?: Carta318; invoice?: Invoice; cartaSesion?: CartaSesion }) =>
     Promise.all([
       validateRfcFormat(pedimento, cove, carta318),
       validateCesionDerechos(pedimento, cartaSesion, carta318),

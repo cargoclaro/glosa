@@ -46,7 +46,7 @@ async function validateAñoPedimento(pedimento: Pedimento) {
 }
 
 export const tracedNumeroDePedimento = traceable(
-  async (pedimento: Pedimento) =>
+  async ({ pedimento }: { pedimento: Pedimento }) =>
     Promise.all([
       validateLongitud(pedimento),
       validateAñoPedimento(pedimento)

@@ -28,7 +28,7 @@ export async function validateClaveApendice15(pedimento: Pedimento) {
 }
 
 export const tracedClaveApendice15 = traceable(
-  async (pedimento: Pedimento) =>
+  async ({ pedimento }: { pedimento: Pedimento }) =>
     Promise.all([
       validateClaveApendice15(pedimento)
     ]),

@@ -201,7 +201,7 @@ export async function validateRegulacionesNoArancelarias(pedimento: Pedimento) {
 }
 
 export const tracedPartidas = traceable(
-  async (pedimento: Pedimento, invoice?: Invoice) =>
+  async ({ pedimento, invoice }: { pedimento: Pedimento; invoice?: Invoice }) =>
     Promise.all([
       validatePreferenciaArancelaria(pedimento),
       validateCoherenciaUMC(pedimento, invoice),

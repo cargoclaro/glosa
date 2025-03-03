@@ -159,7 +159,7 @@ export async function validateNumeroSerie(
 }
 
 export const tracedMercancias = traceable(
-  async (cove: Cove, invoice?: Invoice, cfdi?: Cfdi) =>
+  async ({ cove, invoice, cfdi }: { cove: Cove; invoice?: Invoice; cfdi?: Cfdi }) =>
     Promise.all([
       validateMercancias(cove, cfdi),
       validateValorTotalDolares(cove, cfdi),
