@@ -84,11 +84,7 @@ const PedimentAnalysisNFinish = ({
           tabInfoSelected={tabInfoSelected}
           // document="/PEDIMENT500.pdf"
           // document="/PEDIMENTO.pdf"
-          document={`https://cargo-claro-fastapi-6z19.onrender.com/proxy-file?url=${
-            customGloss.files.find((doc) =>
-              doc.name === documentSelected ? doc : null
-            )?.url || ""
-          }`}
+          document={customGloss.files.find((doc) => doc.name === documentSelected)?.url || ""}
         />
       </section>
       <section className="flex flex-col gap-4 col-span-1 sm:col-span-3 lg:col-span-1">
