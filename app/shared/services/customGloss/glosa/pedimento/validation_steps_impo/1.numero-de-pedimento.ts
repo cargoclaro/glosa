@@ -8,7 +8,7 @@ async function validateLongitud(pedimento: Pedimento) {
   
   const validation = {
     name: "Longitud",
-    description: "El número de pedimento debe contar con 15 dígitos. Los espacios en blanco no son dígitos.",
+    description: "El número de pedimento debe contar con 15 dígitos.",
     contexts: {
       [CustomGlossTabContextType.PROVIDED]: {
         pedimento: {

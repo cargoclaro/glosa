@@ -23,7 +23,7 @@ export async function structureTaggedText<T>(
   documentType: DocumentType,
 ): Promise<T> {
   const { object } = await generateObject({
-    model: wrapAISDKModel(google("gemini-2.0-flash-001"), {
+    model: wrapAISDKModel(openai("gpt-4o"), {
       name: `Extract schema from ${documentType}`,
       project_name: "glosa",
     }),
