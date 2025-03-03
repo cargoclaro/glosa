@@ -3,6 +3,7 @@ import { generateObject } from 'ai';
 import { z } from 'zod';
 import { wrapAISDKModel } from "langsmith/wrappers/vercel";
 import { UploadedFileData } from 'uploadthing/types';
+import { traceable } from 'langsmith/traceable';
 
 export const documentTypes = [
   "pedimento",
@@ -18,7 +19,7 @@ export const documentTypes = [
 
 export type DocumentType = (typeof documentTypes)[number];
 
-export async function classifyDocuments(
+async function classifyDocumentsParallel(
   uploadedFiles: (UploadedFileData & { originalFile: File })[]
 ) {
   const classifications = await Promise.all(uploadedFiles.map(async (uploadedFile) => {
@@ -108,3 +109,8 @@ export async function classifyDocuments(
 
   return groupedClassifications;
 }
+
+export const classifyDocuments = traceable(
+  classifyDocumentsParallel,
+  { name: 'classifications' }
+);

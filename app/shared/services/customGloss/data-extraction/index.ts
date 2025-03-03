@@ -5,6 +5,7 @@ import { extractTextFromImage } from "./vision";
 import type { z } from "zod";
 import { structureTaggedText } from "./tagged";
 import { UploadedFileData } from 'uploadthing/types';
+import { traceable } from 'langsmith/traceable';
 
 export const documentToSchema = {
   "factura": invoiceSchema,
@@ -18,7 +19,7 @@ export const documentToSchema = {
   "cartaCesionDeDerechos": cartaSesionSchema,
 } as const;
 
-export async function extractTextFromPDFs(
+async function extractTextFromPDFsParallel(
   classifications: Partial<Record<DocumentType, UploadedFileData & { originalFile: File; documentType: DocumentType }>>
 ) {
   const {
@@ -113,6 +114,11 @@ export async function extractTextFromPDFs(
     ...(cartaCesionDeDerechosText && { cartaCesionDeDerechos: cartaCesionDeDerechosText }),
   };
 }
+
+export const extractTextFromPDFs = traceable(
+  extractTextFromPDFsParallel,
+  { name: 'textExtraction' }
+);
 
 async function extractTextFromPDF<T>(originalFile: File, documentType: DocumentType, schema: z.ZodType<T>) {
   const text = await pdfToText(Buffer.from(await originalFile.arrayBuffer()));
