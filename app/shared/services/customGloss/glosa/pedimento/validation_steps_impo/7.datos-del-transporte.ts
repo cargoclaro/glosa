@@ -106,7 +106,7 @@ export async function validateNumeroGuiaEmbarque(pedimento: Pedimento, transport
 
 export const tracedTipoTransporte = traceable(
   async ({ pedimento, transportDocument }: { pedimento: Pedimento; transportDocument?: TransportDocument }) => {
-    const validationsPromise = Promise.all([
+    const validationsPromise = await Promise.all([
       validateTipoTransporte(pedimento),
       validateModalidadMedioTransporte(pedimento, transportDocument),
       validateNumeroGuiaEmbarque(pedimento, transportDocument)

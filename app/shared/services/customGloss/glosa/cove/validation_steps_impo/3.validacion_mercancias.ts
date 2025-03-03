@@ -191,7 +191,7 @@ export async function validateNumeroSerie(
 
 export const tracedMercancias = traceable(
   async ({ cove, invoice, carta318 }: { cove: Cove; invoice?: Invoice; carta318?: Carta318 }) => {
-    const validationsPromise = Promise.all([
+    const validationsPromise = await Promise.all([
       validateMercancias(cove, invoice, carta318),
       validateValorTotalDolares(cove, invoice, carta318),
       validateNumeroSerie(cove, invoice, carta318)
