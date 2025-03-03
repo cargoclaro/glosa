@@ -48,7 +48,7 @@ const runGlosa = traceable(
         importerName: pedimento.datos_importador?.razon_social,
       };
     } else {
-      throw new Error("El tipo de operación no es válido.");
+      throw new Error(`El tipo de operación ${operationType} no es válido.`);
     }
   },
   {
