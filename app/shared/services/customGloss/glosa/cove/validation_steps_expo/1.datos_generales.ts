@@ -6,10 +6,10 @@ import { CustomGlossTabContextType } from "@prisma/client";
 /**
  * Validates that the invoice number in the COVE document matches the CFDI for exports.
  */
-export async function validateNumeroFactura(cove: Cove, cfdi: Cfdi) {
+export async function validateNumeroFactura(cove: Cove, cfdi?: Cfdi) {
   // Extract invoice numbers from different sources
   const numeroFacturaCove = cove.numero_factura;
-  const numeroFacturaCfdi = cfdi.folio_fiscal;
+  const numeroFacturaCfdi = cfdi?.folio_fiscal;
 
   const validation = {
     name: "Número de Factura (Exportación)",
@@ -32,10 +32,10 @@ export async function validateNumeroFactura(cove: Cove, cfdi: Cfdi) {
 /**
  * Validates that the invoice date in the COVE document matches the CFDI for exports.
  */
-export async function validateFechaExpedicion(cove: Cove, cfdi: Cfdi) {
+export async function validateFechaExpedicion(cove: Cove, cfdi?: Cfdi) {
   // Extract invoice dates from different sources
   const fechaExpedicionCove = cove.fecha_expedicion;
-  const fechaExpedicionCfdi = cfdi.fecha_emision;
+  const fechaExpedicionCfdi = cfdi?.fecha_emision;
 
   const validation = {
     name: "Fecha de Expedición (Exportación)",
@@ -58,10 +58,10 @@ export async function validateFechaExpedicion(cove: Cove, cfdi: Cfdi) {
 /**
  * Validates that the RFC in the COVE document matches other documents for exports.
  */
-export async function validateRfc(cove: Cove, cfdi: Cfdi) {
+export async function validateRfc(cove: Cove, cfdi?: Cfdi) {
   // Extract RFC values from different sources
   const rfcCove = cove.datos_generales_destinatario?.rfc_destinatario;
-  const rfcCfdi = cfdi.emisor?.rfc;
+  const rfcCfdi = cfdi?.emisor?.rfc;
 
   const validation = {
     name: "RFC (Exportación)",

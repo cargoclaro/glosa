@@ -10,7 +10,7 @@ import { CustomGlossTabContextType } from "@prisma/client";
  */
 export async function validateMercancias(
   cove: Cove,
-  cfdi: Cfdi
+  cfdi?: Cfdi
 ) {
   // Extract merchandise data from COVE
   const datosMercanciaCove = cove.datos_mercancia;
@@ -67,7 +67,7 @@ export async function validateMercancias(
  */
 export async function validateValorTotalDolares(
   cove: Cove,
-  cfdi: Cfdi
+  cfdi?: Cfdi
 ) {
   // Extract total value from COVE
   const valorTotalDolaresCove = cove.datos_mercancia?.valor_total_dolares;

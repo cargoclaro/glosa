@@ -5,7 +5,7 @@ import { TransportDocument } from "../../../data-extraction/schemas";
 import { Cfdi } from "../../../data-extraction/schemas/cfdi";
 import { PackingList } from "../../../data-extraction/schemas/packing-list";
 
-export async function validatePesosYBultos(pedimento: Pedimento, transportDocument: TransportDocument, packingList: PackingList, cfdi: Cfdi) {
+export async function validatePesosYBultos(pedimento: Pedimento, transportDocument?: TransportDocument, packingList?: PackingList, cfdi?: Cfdi) {
   // Extract weight values from pedimento
   const pesoBrutoPedimento = pedimento.encabezado_del_pedimento?.peso_bruto;
   // Extract weight values from transport document
@@ -55,7 +55,7 @@ export async function validatePesosYBultos(pedimento: Pedimento, transportDocume
   return await glosar(validation);
 }
 
-export async function validateBultos(pedimento: Pedimento, transportDocument: TransportDocument) {
+export async function validateBultos(pedimento: Pedimento, transportDocument?: TransportDocument) {
   // Extract bultos values from pedimento
   const bultosPedimento = pedimento.identificadores_nivel_pedimento?.marcas_numeros_bultos;
   

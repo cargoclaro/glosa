@@ -7,10 +7,10 @@ import { Cove } from "../../../data-extraction/schemas/cove";
 // TODO: Agregar DOF y Dia de salida
 // TODO: Multiples mercancias, se tienen que sumar los valores de todas las mercancias
 
-export async function validateFechaSalida(pedimento: Pedimento, transportDocument: TransportDocument) {
+export async function validateFechaSalida(pedimento: Pedimento, transportDocument?: TransportDocument) {
   const pedimentoExitDate = pedimento.fecha_entrada_presentacion;
-  const transportExitDate = transportDocument.date;
-  const transportType = transportDocument.document_type;
+  const transportExitDate = transportDocument?.date;
+  const transportType = transportDocument?.document_type;
   const fechaoperador = "24/07/2025"; //Temporary hardcoded value
   
   const validation = {
@@ -72,12 +72,12 @@ export async function validateTipoCambio(pedimento: Pedimento) {
   return await glosar(validation);
 }
 
-export async function validateValorComercial(pedimento: Pedimento, cfdi: Cfdi, cove: Cove) {
+export async function validateValorComercial(pedimento: Pedimento, cove: Cove, cfdi?: Cfdi) {
   const valorComercialPedimento = pedimento.valores?.precio_pagado_valor_comercial;
   const tipoCambioPedimento = pedimento.encabezado_del_pedimento?.tipo_cambio;
   
-  const valorComercialCFDI = cfdi.total;
-  const monedaCFDI = cfdi.moneda;
+  const valorComercialCFDI = cfdi?.total;
+  const monedaCFDI = cfdi?.moneda;
   
   const valorComercialCOVE = cove.datos_mercancia.valor_total;
   const monedaCOVE = cove.datos_mercancia.tipo_moneda;
@@ -112,13 +112,13 @@ export async function validateValorComercial(pedimento: Pedimento, cfdi: Cfdi, c
   return await glosar(validation);
 }
 
-export async function validateValorDolares(pedimento: Pedimento, cfdi: Cfdi, cove: Cove) {
+export async function validateValorDolares(pedimento: Pedimento, cove: Cove, cfdi?: Cfdi) {
   const valorDolaresPedimento = pedimento.valores?.valor_dolares;
   const valorComercialPedimento = pedimento.valores?.precio_pagado_valor_comercial;
   const tipoCambioPedimento = pedimento.encabezado_del_pedimento?.tipo_cambio;
   
-  const valorComercialCFDI = cfdi.total;
-  const monedaCFDI = cfdi.moneda;
+  const valorComercialCFDI = cfdi?.total;
+  const monedaCFDI = cfdi?.moneda;
   
   const valorComercialCOVE = cove.datos_mercancia.valor_total;
   const monedaCOVE = cove.datos_mercancia.tipo_moneda;
@@ -153,13 +153,3 @@ export async function validateValorDolares(pedimento: Pedimento, cfdi: Cfdi, cov
 
   return await glosar(validation);
 }
-
-export async function operacionMonetariaValidations(pedimento: Pedimento, transportDocument: TransportDocument, cfdi: Cfdi, cove: Cove) {
-  return Promise.all([
-    validateFechaSalida(pedimento, transportDocument),
-    validateTipoCambio(pedimento),
-    validateValorComercial(pedimento, cfdi, cove),
-    validateValorDolares(pedimento, cfdi, cove)
-  ]);
-}
-

@@ -2,7 +2,7 @@ import { Pedimento, Cove, CartaSesion, Cfdi } from "../../../data-extraction/sch
 import { glosar } from "../../validation-result";
 import { CustomGlossTabContextType } from "@prisma/client";
 
-export async function validateRfcFormat(pedimento: Pedimento, cove: Cove, cfdi: Cfdi) {
+export async function validateRfcFormat(pedimento: Pedimento, cove: Cove, cfdi?: Cfdi) {
   // Extract RFC values from documents
   const rfcPedimento = pedimento.datos_importador?.rfc;
   const rfcCove = cove?.datos_generales_destinatario?.rfc_destinatario;
@@ -29,7 +29,7 @@ export async function validateRfcFormat(pedimento: Pedimento, cove: Cove, cfdi: 
   return await glosar(validation);
 }
 
-export async function validateCesionDerechos(pedimento: Pedimento, cartaSesion: CartaSesion, cfdi: Cfdi) {
+export async function validateCesionDerechos(pedimento: Pedimento, cartaSesion?: CartaSesion, cfdi?: Cfdi) {
   // Extract values from documents
   const fechaEntradaPedimento = pedimento.fecha_entrada_presentacion;
   const rfcComercializadora = cartaSesion?.assignee?.identification_rfc;
@@ -61,7 +61,7 @@ export async function validateCesionDerechos(pedimento: Pedimento, cartaSesion: 
   return await glosar(validation);
 }
 
-export async function validateDatosImportador(pedimento: Pedimento, cove: Cove, cfdi: Cfdi) {
+export async function validateDatosImportador(pedimento: Pedimento, cove: Cove, cfdi?: Cfdi) {
   // Extract values from documents
   const rfcPedimento = pedimento.datos_importador?.rfc;
   const rfcCove = cove?.datos_generales_destinatario?.rfc_destinatario;
@@ -117,7 +117,7 @@ export async function validateDatosImportador(pedimento: Pedimento, cove: Cove, 
   return await glosar(validation);
 }
 
-export async function validateDatosProveedor(pedimento: Pedimento, cove: Cove, cfdi: Cfdi) {
+export async function validateDatosProveedor(pedimento: Pedimento, cove: Cove, cfdi?: Cfdi) {
   // Extract values from documents
   const nombreProveedorPedimento = pedimento.nombre_razon_social;
   const nombreProveedorCove = cove?.datos_generales_proveedor?.nombre_razon_social;
@@ -173,7 +173,7 @@ export async function validateDatosProveedor(pedimento: Pedimento, cove: Cove, c
   return await glosar(validation);
 }
 
-export async function validateFechasYFolios(pedimento: Pedimento, cove: Cove, cfdi: Cfdi) {
+export async function validateFechasYFolios(pedimento: Pedimento, cove: Cove, cfdi?: Cfdi) {
   // Extract values from documents
   const fechaEntradaPedimento = pedimento.fecha_entrada_presentacion;
   const fechaExpedicionCove = cove?.fecha_expedicion;
@@ -215,7 +215,7 @@ export async function validateFechasYFolios(pedimento: Pedimento, cove: Cove, cf
   return await glosar(validation);
 }
 
-export async function validateMonedaYEquivalencia(pedimento: Pedimento, cove: Cove, cfdi: Cfdi) {
+export async function validateMonedaYEquivalencia(pedimento: Pedimento, cove: Cove, cfdi?: Cfdi) {
  // Moneda
  const monedaPedimento = pedimento.datos_factura?.[0]?.moneda_factura;
  const monedaCove = cove?.datos_mercancia?.tipo_moneda;

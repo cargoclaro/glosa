@@ -12,6 +12,8 @@ import { traceable } from "langsmith/traceable";
 import { uploadFiles } from "./upload-files";
 import { classifyDocuments } from "./classification";
 import { extractTextFromPDFs } from "./data-extraction";
+import { glosaImpo } from "./glosa/impo";
+import { glosaExpo } from "./glosa/expo";
 
 config();
 
@@ -26,7 +28,19 @@ const runGlosa = traceable(
     const files = formData.getAll("files") as File[]; // TODO: We should use zod instead of this
     const successfulUploads = await uploadFiles(files);
     const classifications = await classifyDocuments(successfulUploads);
-    await extractTextFromPDFs(classifications);
+    const documents = await extractTextFromPDFs(classifications);
+    const { pedimento, cove } = documents;
+    if (!pedimento || !cove) {
+      throw new Error("El pedimento y el cove son obligatorios para realizar la glosa electrónica.");
+    }
+    const operationType = pedimento.encabezado_del_pedimento?.tipo_oper;
+    if (operationType === "IMP") {
+      await glosaImpo(documents);
+    } else if (operationType === "EXP") {
+      await glosaExpo(documents);
+    } else {
+      throw new Error("El tipo de operación no es válido.");
+    }
   },
   {
     name: "runGlosa",

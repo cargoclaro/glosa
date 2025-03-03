@@ -49,7 +49,23 @@ import {
   validateRegulacionesNoArancelarias
 } from './pedimento/validation_steps_impo/9.partidas';
 
-export async function numeroDePedimentoValidations(pedimento: Pedimento, transportDocument: TransportDocument, packingList: PackingList, cove: Cove, cartaSesion: CartaSesion, invoice: Invoice, carta318?: Carta318) {
+export async function glosaImpo({
+  pedimento,
+  transportDocument,
+  packingList,
+  cove,
+  cartaSesion,
+  invoice,
+  carta318
+}: {
+  pedimento: Pedimento;
+  transportDocument?: TransportDocument;
+  packingList?: PackingList;
+  cove: Cove;
+  cartaSesion?: CartaSesion;
+  invoice?: Invoice;
+  carta318?: Carta318;
+}) {
   return Promise.all([
     validateNumeroFactura(cove, invoice, carta318),
     validateFechaExpedicion(cove, invoice, carta318),

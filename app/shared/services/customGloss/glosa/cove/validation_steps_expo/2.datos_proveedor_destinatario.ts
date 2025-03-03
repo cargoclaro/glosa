@@ -9,7 +9,7 @@ import { CustomGlossTabContextType } from "@prisma/client";
  */
 export async function validateDatosGeneralesProveedor(
   cove: Cove,
-  cfdi: Cfdi
+  cfdi?: Cfdi
 ) {
   // Extract supplier data from different sources
   const identificadorCove = cove.datos_generales_proveedor?.identificador;
@@ -51,7 +51,7 @@ export async function validateDatosGeneralesProveedor(
  */
 export async function validateDomicilioProveedor(
   cove: Cove,
-  cfdi: Cfdi
+  cfdi?: Cfdi
 ) {
   // Extract supplier address data from different sources
   const domicilioCove = cove.datos_generales_proveedor?.domicilio;
@@ -93,7 +93,7 @@ export async function validateDomicilioProveedor(
  */
 export async function validateDatosGeneralesDestinatario(
   cove: Cove,
-  cfdi: Cfdi
+  cfdi?: Cfdi
 ) {
   // Extract recipient data from different sources
   const rfcDestinatarioCove = cove.datos_generales_destinatario?.rfc_destinatario;
@@ -133,7 +133,7 @@ export async function validateDatosGeneralesDestinatario(
  */
 export async function validateDomicilioDestinatario(
   cove: Cove,
-  cfdi: Cfdi
+  cfdi?: Cfdi
 ) {
   // Extract recipient address data from different sources
   const domicilioCove = cove.datos_generales_destinatario?.domicilio;

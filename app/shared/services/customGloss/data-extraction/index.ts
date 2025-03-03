@@ -33,6 +33,15 @@ export async function extractTextFromPDFs(
     cartaCesionDeDerechos
   } = classifications;
   
+  // Check if required documents are present
+  if (!pedimento) {
+    throw new Error("Pedimento document is required");
+  }
+  
+  if (!cove) {
+    throw new Error("COVE document is required");
+  }
+  
   // Run all extraction operations in parallel instead of sequentially
   const [
     facturaText,
@@ -65,21 +74,21 @@ export async function extractTextFromPDFs(
       documentoDeTransporte.documentType,
       documentToSchema.documentoDeTransporte
     ) : null,
-    pedimento ? extractTextFromPDF(
+    extractTextFromPDF(
       pedimento.originalFile,
       pedimento.documentType,
       documentToSchema.pedimento
-    ) : null,
+    ),
     listaDeEmpaque ? extractTextFromPDF(
       listaDeEmpaque.originalFile,
       listaDeEmpaque.documentType,
       documentToSchema.listaDeEmpaque
     ) : null,
-    cove ? extractTextFromPDF(
+    extractTextFromPDF(
       cove.originalFile,
       cove.documentType,
       documentToSchema.cove
-    ) : null,
+    ),
     cfdi ? extractTextFromPDF(
       cfdi.originalFile,
       cfdi.documentType,
@@ -93,15 +102,15 @@ export async function extractTextFromPDFs(
   ]);
 
   return {
-    factura: facturaText,
-    carta318: carta318Text,
-    rrnas: rrnasText,
-    documentoDeTransporte: documentoDeTransporteText,
+    ...(facturaText && { factura: facturaText }),
+    ...(carta318Text && { carta318: carta318Text }),
+    ...(rrnasText && { rrnas: rrnasText }),
+    ...(documentoDeTransporteText && { documentoDeTransporte: documentoDeTransporteText }),
     pedimento: pedimentoText,
-    listaDeEmpaque: listaDeEmpaqueText,
+    ...(listaDeEmpaqueText && { listaDeEmpaque: listaDeEmpaqueText }),
     cove: coveText,
-    cfdi: cfdiText,
-    cartaCesionDeDerechos: cartaCesionDeDerechosText,
+    ...(cfdiText && { cfdi: cfdiText }),
+    ...(cartaCesionDeDerechosText && { cartaCesionDeDerechos: cartaCesionDeDerechosText }),
   };
 }
 

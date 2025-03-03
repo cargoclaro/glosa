@@ -14,14 +14,13 @@ import {
   validateMercancias,
   validateValorTotalDolares
 } from './cove/validation_steps_expo/3.validacion_mercancias';
-import { tipoOperacionValidations } from './pedimento/validation_steps_expo/2.tipo-operacion';
-import { origenDestinoOrigenValidations } from './pedimento/validation_steps_expo/3.origen-destino';
+import { validateCoherenciaOrigenDestino, validateClavePedimento, validateRegimen } from './pedimento/validation_steps_expo/2.tipo-operacion';
+import { validateClaveApendice15 } from './pedimento/validation_steps_expo/3.origen-destino';
 import { 
   validateFechaSalida,
   validateTipoCambio,
   validateValorComercial,
   validateValorDolares,
-  operacionMonetariaValidations
 } from './pedimento/validation_steps_expo/4.operacion-monetaria';
 import {
   validatePesosYBultos,
@@ -51,7 +50,21 @@ import {
   validateRegulacionesNoArancelarias
 } from './pedimento/validation_steps_expo/9.partidas';
 
-export async function numeroDePedimentoValidations(pedimento: Pedimento, transportDocument: TransportDocument, packingList: PackingList, cove: Cove, cfdi: Cfdi, cartaSesion: CartaSesion) {
+export async function glosaExpo({
+  pedimento,
+  transportDocument,
+  packingList,
+  cove,
+  cfdi,
+  cartaSesion
+}: {
+  pedimento: Pedimento;
+  transportDocument?: TransportDocument;
+  packingList?: PackingList;
+  cove: Cove;
+  cfdi?: Cfdi;
+  cartaSesion?: CartaSesion;
+}) {
   return Promise.all([
     validateNumeroFactura(cove, cfdi),
     validateFechaExpedicion(cove, cfdi),
@@ -62,13 +75,14 @@ export async function numeroDePedimentoValidations(pedimento: Pedimento, transpo
     validateDomicilioDestinatario(cove, cfdi),
     validateMercancias(cove, cfdi),
     validateValorTotalDolares(cove, cfdi),
-    tipoOperacionValidations(pedimento, transportDocument),
-    origenDestinoOrigenValidations(pedimento),
+    validateCoherenciaOrigenDestino(pedimento, transportDocument),
+    validateClavePedimento(pedimento),
+    validateRegimen(pedimento),
+    validateClaveApendice15(pedimento),
     validateFechaSalida(pedimento, transportDocument),
     validateTipoCambio(pedimento),
-    validateValorComercial(pedimento, cfdi, cove),
-    validateValorDolares(pedimento, cfdi, cove),
-    operacionMonetariaValidations(pedimento, transportDocument, cfdi, cove),
+    validateValorComercial(pedimento, cove, cfdi),
+    validateValorDolares(pedimento, cove, cfdi),
     validatePesosYBultos(pedimento, transportDocument, packingList, cfdi),
     validateBultos(pedimento, transportDocument),
     validateRfcFormat(pedimento, cove, cfdi),

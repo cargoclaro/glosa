@@ -30,7 +30,7 @@ export async function validatePreferenciaArancelaria(pedimento: Pedimento) {
 }
 
 // Función para validar coherencia de UMC y cantidad UMC
-export async function validateCoherenciaUMC(pedimento: Pedimento, cfdi: Cfdi) {
+export async function validateCoherenciaUMC(pedimento: Pedimento, cfdi?: Cfdi) {
   // Extraer partidas con información de UMC
   const partidas = pedimento.partidas || [];
   
@@ -60,7 +60,7 @@ export async function validateCoherenciaUMC(pedimento: Pedimento, cfdi: Cfdi) {
 }
 
 // Función para validar coherencia de peso
-export async function validateCoherenciaPeso(pedimento: Pedimento, cfdi: Cfdi) {
+export async function validateCoherenciaPeso(pedimento: Pedimento, cfdi?: Cfdi) {
   // Extraer peso bruto del pedimento
   const pesoBrutoPedimento = pedimento.encabezado_del_pedimento?.peso_bruto;
   
@@ -120,7 +120,7 @@ export async function validateCalculoDTA(pedimento: Pedimento) {
 }
 
 // Función para validar cálculo de contribuciones
-export async function validateCalculoContribuciones(pedimento: Pedimento, cfdi: Cfdi) {
+export async function validateCalculoContribuciones(pedimento: Pedimento, cfdi?: Cfdi) {
   // Extraer partidas con contribuciones
   const partidas = pedimento.partidas || [];
   
