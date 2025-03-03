@@ -92,7 +92,7 @@ export async function analysis(formData: FormData) {
                       data: {
                         create: contextValue.data.map(({ name, value }) => ({
                           name,
-                          value: JSON.stringify(value),
+                          value: value === undefined ? "N/A" : JSON.stringify(value),
                         })),
                       },
                     }))
