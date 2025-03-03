@@ -44,7 +44,7 @@ export async function glosar(validation: {
       };
     };
   };
-}, modelId: string = "gpt-4o") {
+}, modelId: "gpt-4o" | "o3-mini" = "gpt-4o") {
   const { object: glosaResult } = await generateObject({
     model: wrapAISDKModel(openai(modelId), {
       name: `Glosar ${validation.name}`,
