@@ -1,8 +1,8 @@
 import { Cove } from "../../../data-extraction/schemas/cove";
 import { glosar } from "../../validation-result";
-
 import { Cfdi } from "../../../data-extraction/schemas/cfdi";
 import { CustomGlossTabContextType } from "@prisma/client";
+import { Invoice } from "../../../data-extraction/schemas/invoice";
 
 /**
  * Validates that the merchandise details in the COVE document match the CFDI for exports.
@@ -92,6 +92,62 @@ export async function validateValorTotalDolares(
           data: [
             { name: "Valor total", value: valorTotalCfdi },
             { name: "Moneda", value: monedaCfdi }
+          ]
+        }
+      }
+    },
+  } as const;
+
+  return await glosar(validation);
+}
+/**
+ * Validates that the serial numbers of the merchandise match across documents.
+ * First checks Carta 318, then falls back to the invoice if not found in Carta 318.
+ * Serial numbers are not mandatory; if none exists, it's considered valid.
+ */
+export async function validateNumeroSerie(
+  cove: Cove,
+  invoice?: Invoice,
+  cfdi?: Cfdi
+) {
+  // Extract merchandise data from Carta 318 if available
+  const mercanciasCfdi = cfdi?.conceptos || [];
+
+  // Format Carta 318 merchandise data
+  const mercanciasCfdiFormatted = mercanciasCfdi.map(item => ({
+    descripcion: item.descripcion,
+    // Assuming serial numbers might be part of the description
+    // If there was a specific field for serial numbers, we'd use that instead
+  }));
+
+  // Extract merchandise data from invoice
+  const mercanciasInvoice = invoice?.items || [];
+
+  // Format invoice merchandise data
+  const mercanciasInvoiceFormatted = mercanciasInvoice.map(item => ({
+    descripcion: item.description,
+    // Similarly, assuming serial numbers might be in the description
+    // If there was a specific field for serial numbers, we'd use that instead
+  }));
+
+  const validation = {
+    name: "Numero de serie",
+    description: "Validar el número de serie de las mercancías siguiendo estos criterios:\n\n1. Revisar primero si el número de serie está declarado en la cfdi en la sección de mercancías\n\n2. Si no está en la cfdi, obtener el número de serie de la factura comercial\n\n3. El número de serie debe ser capturado exactamente como aparece en el documento correspondiente. No es obligatorio el número de serie, si no hay ninguno es por que no tenían para esa mercancía en específico. Si no hay números de serie marcar como válido.",
+    contexts: {
+      [CustomGlossTabContextType.PROVIDED]: {
+        cove: {
+          data: [
+            { name: "Descripción", value: cove.datos_mercancia?.descripcion_mercancia }
+          ]
+        },
+        cfdi: {
+          data: [
+            { name: "Mercancías", value: mercanciasCfdiFormatted }
+          ]
+        },
+        factura: {
+          data: [
+            { name: "Mercancías", value: mercanciasInvoiceFormatted }
           ]
         }
       }
