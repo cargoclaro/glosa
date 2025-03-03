@@ -198,12 +198,18 @@ export async function validateDomicilioDestinatario(
 }
 
 export const tracedChooseDocument = traceable(
-  async ({ cove, invoice, carta318 }: { cove: Cove; invoice?: Invoice, carta318?: Carta318 }) =>
-    Promise.all([
+  async ({ cove, invoice, carta318 }: { cove: Cove; invoice?: Invoice, carta318?: Carta318 }) => {
+    const validationsPromise = Promise.all([
       validateDatosGeneralesProveedor(cove, invoice, carta318),
       validateDomicilioProveedor(cove, invoice, carta318),
       validateDatosGeneralesDestinatario(cove, invoice, carta318),
       validateDomicilioDestinatario(cove, invoice, carta318),
-    ]),
+    ]);
+    
+    return {
+      sectionName: "Datos Proveedor Destinatario",
+      validations: validationsPromise
+    };
+  },
   { name: "Cove S2: Datos Proveedor Destinatario" }
 );

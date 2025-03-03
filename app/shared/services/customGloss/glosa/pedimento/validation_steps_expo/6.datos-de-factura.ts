@@ -276,15 +276,21 @@ export async function validateMonedaYEquivalencia(pedimento: Pedimento, cove: Co
 }
 
 export const tracedRfcFormat = traceable(
-  async ({ pedimento, cove, cfdi, cartaSesion }: { pedimento: Pedimento; cove: Cove; cfdi?: Cfdi; cartaSesion?: CartaSesion }) =>
-    Promise.all([
+  async ({ pedimento, cove, cfdi, cartaSesion }: { pedimento: Pedimento; cove: Cove; cfdi?: Cfdi; cartaSesion?: CartaSesion }) => {
+    const validationsPromise = Promise.all([
       validateRfcFormat(pedimento, cove, cfdi),
       validateCesionDerechos(pedimento, cartaSesion, cfdi),
       validateDatosImportador(pedimento, cove, cfdi),
       validateDatosProveedor(pedimento, cove, cfdi),
       validateFechasYFolios(pedimento, cove, cfdi),
       validateMonedaYEquivalencia(pedimento, cove, cfdi)
-    ]),
+    ]);
+    
+    return {
+      sectionName: "Datos de factura",
+      validations: validationsPromise
+    };
+  },
   { name: "Pedimento S6: Datos de factura" }
 );
 

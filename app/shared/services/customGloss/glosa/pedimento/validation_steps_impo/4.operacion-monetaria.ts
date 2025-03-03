@@ -248,12 +248,18 @@ export async function validateValoresPedimento(pedimento: Pedimento, invoice?: I
 }
 
 export const tracedTransportDocumentEntryDate = traceable(
-  async ({ pedimento, invoice, transportDocument, carta318 }: { pedimento: Pedimento; invoice?: Invoice; transportDocument?: TransportDocument; carta318?: Carta318 }) =>
-    Promise.all([
+  async ({ pedimento, invoice, transportDocument, carta318 }: { pedimento: Pedimento; invoice?: Invoice; transportDocument?: TransportDocument; carta318?: Carta318 }) => {
+    const validationsPromise = Promise.all([
       validateTransportDocumentEntryDate(pedimento, transportDocument),
       validateTipoCambio(pedimento),
       validateIncrementables(pedimento, invoice, transportDocument, carta318),
       validateValoresPedimento(pedimento, invoice, transportDocument, carta318)
-    ]),
+    ]);
+    
+    return {
+      sectionName: "Operación monetaria",
+      validations: validationsPromise
+    };
+  },
   { name: "Pedimento S4: Operación monetaria" }
 );

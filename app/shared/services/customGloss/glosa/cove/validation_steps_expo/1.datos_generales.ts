@@ -83,11 +83,17 @@ export async function validateRfc(cove: Cove, cfdi?: Cfdi) {
 }
 
 export const tracedDatosGenerales = traceable(
-  async ({ cove, cfdi }: { cove: Cove; cfdi?: Cfdi }) =>
-    Promise.all([
+  async ({ cove, cfdi }: { cove: Cove; cfdi?: Cfdi }) => {
+    const validationsPromise = Promise.all([
       validateNumeroFactura(cove, cfdi),
       validateFechaExpedicion(cove, cfdi),
       validateRfc(cove, cfdi),
-    ]),
+    ]);
+    
+    return {
+      sectionName: "Datos Generales",
+      validations: validationsPromise
+    };
+  },
   { name: "Cove S1: Datos Generales" }
 );

@@ -171,12 +171,18 @@ export async function validateDomicilioDestinatario(
 } 
 
 export const tracedProveedorDestinatario = traceable(
-  async ({ cove, cfdi }: { cove: Cove; cfdi?: Cfdi }) =>
-    Promise.all([
+  async ({ cove, cfdi }: { cove: Cove; cfdi?: Cfdi }) => {
+    const validationsPromise = Promise.all([
       validateDatosGeneralesProveedor(cove, cfdi),
       validateDomicilioProveedor(cove, cfdi),
       validateDatosGeneralesDestinatario(cove, cfdi),
       validateDomicilioDestinatario(cove, cfdi),
-    ]),
+    ]);
+    
+    return {
+      sectionName: "Datos Proveedor Destinatario",
+      validations: validationsPromise
+    };
+  },
   { name: "Cove S2: Datos Proveedor Destinatario" }
 );

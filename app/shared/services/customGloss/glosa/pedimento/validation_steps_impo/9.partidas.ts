@@ -201,8 +201,8 @@ export async function validateRegulacionesNoArancelarias(pedimento: Pedimento) {
 }
 
 export const tracedPartidas = traceable(
-  async ({ pedimento, invoice }: { pedimento: Pedimento; invoice?: Invoice }) =>
-    Promise.all([
+  async ({ pedimento, invoice }: { pedimento: Pedimento; invoice?: Invoice }) => {
+    const validationsPromise = Promise.all([
       validatePreferenciaArancelaria(pedimento),
       validateCoherenciaUMC(pedimento, invoice),
       validateCoherenciaPeso(pedimento),
@@ -211,6 +211,12 @@ export const tracedPartidas = traceable(
       validatePermisosIdentificadores(pedimento),
       validateRegulacionesArancelarias(pedimento),
       validateRegulacionesNoArancelarias(pedimento)
-    ]),
+    ]);
+    
+    return {
+      sectionName: "Partidas",
+      validations: validationsPromise
+    };
+  },
   { name: "Pedimento S9: Partidas" }
 );

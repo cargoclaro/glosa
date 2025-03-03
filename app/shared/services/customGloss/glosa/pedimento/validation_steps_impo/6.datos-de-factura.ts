@@ -291,14 +291,20 @@ export async function validateMonedaYEquivalencia(pedimento: Pedimento, cove: Co
 }
 
 export const tracedDatosDeFactura = traceable(
-  async ({ pedimento, cove, carta318, invoice, cartaSesion }: { pedimento: Pedimento; cove: Cove; carta318?: Carta318; invoice?: Invoice; cartaSesion?: CartaSesion }) =>
-    Promise.all([
+  async ({ pedimento, cove, carta318, invoice, cartaSesion }: { pedimento: Pedimento; cove: Cove; carta318?: Carta318; invoice?: Invoice; cartaSesion?: CartaSesion }) => {
+    const validationsPromise = Promise.all([
       validateRfcFormat(pedimento, cove, carta318),
       validateCesionDerechos(pedimento, cartaSesion, carta318),
       validateDatosImportador(pedimento, cove, carta318),
       validateDatosProveedor(pedimento, cove, carta318),
       validateFechasYFolios(pedimento, cove, invoice, carta318),
       validateMonedaYEquivalencia(pedimento, cove, carta318, invoice)
-    ]),
+    ]);
+    
+    return {
+      sectionName: "Datos de factura",
+      validations: validationsPromise
+    };
+  },
   { name: "Pedimento S6: Datos de factura" }
 );

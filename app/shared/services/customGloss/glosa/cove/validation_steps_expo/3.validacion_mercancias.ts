@@ -159,11 +159,17 @@ export async function validateNumeroSerie(
 }
 
 export const tracedMercancias = traceable(
-  async ({ cove, invoice, cfdi }: { cove: Cove; invoice?: Invoice; cfdi?: Cfdi }) =>
-    Promise.all([
+  async ({ cove, invoice, cfdi }: { cove: Cove; invoice?: Invoice; cfdi?: Cfdi }) => {
+    const validationsPromise = Promise.all([
       validateMercancias(cove, cfdi),
       validateValorTotalDolares(cove, cfdi),
       validateNumeroSerie(cove, invoice, cfdi)
-    ]),
+    ]);
+    
+    return {
+      sectionName: "Validación de mercancías",
+      validations: validationsPromise
+    };
+  },
   { name: "Cove S3: Validación de mercancías" }
 );

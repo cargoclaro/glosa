@@ -82,11 +82,17 @@ export async function validateBultos(pedimento: Pedimento, transportDocument?: T
 }
 
 export const tracedPesosYBultos = traceable(
-  async ({ pedimento, transportDocument, packingList, invoice }: { pedimento: Pedimento; transportDocument?: TransportDocument; packingList?: PackingList; invoice?: Invoice }) =>
-    Promise.all([
+  async ({ pedimento, transportDocument, packingList, invoice }: { pedimento: Pedimento; transportDocument?: TransportDocument; packingList?: PackingList; invoice?: Invoice }) => {
+    const validationsPromise = Promise.all([
       validatePesosYBultos(pedimento, transportDocument, packingList, invoice),
       validateBultos(pedimento, transportDocument)
-    ]),
+    ]);
+    
+    return {
+      sectionName: "Pesos y bultos",
+      validations: validationsPromise
+    };
+  },
   { name: "Pedimento S5: Pesos y bultos" }
 );
 

@@ -157,12 +157,18 @@ export async function validateValorDolares(pedimento: Pedimento, cove: Cove, cfd
 }
 
 export const tracedOperacionMonetaria = traceable(
-  async ({ pedimento, cove, transportDocument, cfdi }: { pedimento: Pedimento; cove: Cove; transportDocument?: TransportDocument; cfdi?: Cfdi }) =>
-    Promise.all([
+  async ({ pedimento, cove, transportDocument, cfdi }: { pedimento: Pedimento; cove: Cove; transportDocument?: TransportDocument; cfdi?: Cfdi }) => {
+    const validationsPromise = Promise.all([
       validateFechaSalida(pedimento, transportDocument),
       validateTipoCambio(pedimento),
       validateValorComercial(pedimento, cove, cfdi),
       validateValorDolares(pedimento, cove, cfdi)
-    ]),
+    ]);
+    
+    return {
+      sectionName: "Operación monetaria",
+      validations: validationsPromise
+    };
+  },
   { name: "Pedimento S4: Operación monetaria" }
 );

@@ -105,11 +105,17 @@ export async function validateNumeroGuiaEmbarque(pedimento: Pedimento, transport
 }
 
 export const tracedTipoTransporte = traceable(
-  async ({ pedimento, transportDocument }: { pedimento: Pedimento; transportDocument?: TransportDocument }) =>
-    Promise.all([
+  async ({ pedimento, transportDocument }: { pedimento: Pedimento; transportDocument?: TransportDocument }) => {
+    const validationsPromise = Promise.all([
       validateTipoTransporte(pedimento),
       validateModalidadMedioTransporte(pedimento, transportDocument),
       validateNumeroGuiaEmbarque(pedimento, transportDocument)
-    ]),
+    ]);
+    
+    return {
+      sectionName: "Datos del transporte",
+      validations: validationsPromise
+    };
+  },
   { name: "Pedimento S7: Datos del transporte" }
 );
