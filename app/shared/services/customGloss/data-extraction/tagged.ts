@@ -1,7 +1,6 @@
 import { generateObject } from "ai";
 import { wrapAISDKModel } from "langsmith/wrappers/vercel";
 import { openai } from "@ai-sdk/openai";
-import { google } from "@ai-sdk/google";
 import type { z } from "zod";
 import { DocumentType } from "../classification";
 
