@@ -3,6 +3,7 @@ import { glosar } from "../../validation-result";
 import { CustomGlossTabContextType } from "@prisma/client";
 import { Invoice } from "../../../data-extraction/schemas/invoice";
 import { Carta318 } from "../../../data-extraction/schemas/carta-318";
+import { traceable } from "langsmith/traceable";
 
 /**
  * Validates that the merchandise details in the COVE document match the relevant document for imports.
@@ -187,3 +188,13 @@ export async function validateNumeroSerie(
 
   return await glosar(validation);
 }
+
+export const tracedMercancias = traceable(
+  async (cove: Cove, invoice?: Invoice, carta318?: Carta318) =>
+    Promise.all([
+      validateMercancias(cove, invoice, carta318),
+      validateValorTotalDolares(cove, invoice, carta318),
+      validateNumeroSerie(cove, invoice, carta318)
+    ]),
+  { name: "Cove S3: Validación de mercancías" }
+);

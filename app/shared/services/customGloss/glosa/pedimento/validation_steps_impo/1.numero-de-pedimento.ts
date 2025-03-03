@@ -1,6 +1,7 @@
 import { Pedimento } from "../../../data-extraction/schemas";
 import { glosar } from "../../validation-result";
 import { CustomGlossTabContextType } from "@prisma/client";
+import { traceable } from "langsmith/traceable";
 
 async function validateLongitud(pedimento: Pedimento) {
   const numeroPedimento = pedimento.encabezado_del_pedimento?.num_pedimento;
@@ -44,9 +45,11 @@ async function validateAñoPedimento(pedimento: Pedimento) {
   return await glosar(validation);
 }
 
-export async function numeroDePedimentoValidations(pedimento: Pedimento) {
-  return Promise.all([
-    validateLongitud(pedimento),
-    validateAñoPedimento(pedimento)
-  ]);
-}
+export const tracedNumeroDePedimento = traceable(
+  async (pedimento: Pedimento) =>
+    Promise.all([
+      validateLongitud(pedimento),
+      validateAñoPedimento(pedimento)
+    ]),
+  { name: "Pedimento S1: Número de pedimento" }
+);

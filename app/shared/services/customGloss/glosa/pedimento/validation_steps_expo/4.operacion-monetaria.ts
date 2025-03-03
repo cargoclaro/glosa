@@ -4,6 +4,8 @@ import { CustomGlossTabContextType } from "@prisma/client";
 import { TransportDocument } from "../../../data-extraction/schemas";
 import { Cfdi } from "../../../data-extraction/schemas/cfdi";
 import { Cove } from "../../../data-extraction/schemas/cove";
+import { traceable } from "langsmith/traceable";
+
 // TODO: Agregar DOF y Dia de salida
 // TODO: Multiples mercancias, se tienen que sumar los valores de todas las mercancias
 
@@ -153,3 +155,14 @@ export async function validateValorDolares(pedimento: Pedimento, cove: Cove, cfd
 
   return await glosar(validation);
 }
+
+export const tracedOperacionMonetaria = traceable(
+  async (pedimento: Pedimento, cove: Cove, transportDocument?: TransportDocument, cfdi?: Cfdi) =>
+    Promise.all([
+      validateFechaSalida(pedimento, transportDocument),
+      validateTipoCambio(pedimento),
+      validateValorComercial(pedimento, cove, cfdi),
+      validateValorDolares(pedimento, cove, cfdi)
+    ]),
+  { name: "Pedimento S4: Operación monetaria" }
+);

@@ -4,6 +4,7 @@ import { CustomGlossTabContextType } from "@prisma/client";
 import { TransportDocument } from "../../../data-extraction/schemas";
 import { Cfdi } from "../../../data-extraction/schemas/cfdi";
 import { PackingList } from "../../../data-extraction/schemas/packing-list";
+import { traceable } from "langsmith/traceable";
 
 export async function validatePesosYBultos(pedimento: Pedimento, transportDocument?: TransportDocument, packingList?: PackingList, cfdi?: Cfdi) {
   // Extract weight values from pedimento
@@ -80,6 +81,12 @@ export async function validateBultos(pedimento: Pedimento, transportDocument?: T
   return await glosar(validation);
 }
 
-
-
+export const tracedPesosYBultos = traceable(
+  async (pedimento: Pedimento, transportDocument?: TransportDocument, packingList?: PackingList, cfdi?: Cfdi) =>
+    Promise.all([
+      validatePesosYBultos(pedimento, transportDocument, packingList, cfdi),
+      validateBultos(pedimento, transportDocument)
+    ]),
+  { name: "Pedimento S5: Pesos y bultos" }
+);
 

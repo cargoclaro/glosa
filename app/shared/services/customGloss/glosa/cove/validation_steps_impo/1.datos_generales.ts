@@ -3,6 +3,7 @@ import { glosar } from "../../validation-result";
 import { CustomGlossTabContextType } from "@prisma/client";
 import { Invoice } from "../../../data-extraction/schemas/invoice";
 import { Carta318 } from "../../../data-extraction/schemas/carta-318";
+import { traceable } from "langsmith/traceable";
 
 /**
  * Validates that the invoice number in the COVE document matches other documents for imports.
@@ -64,3 +65,12 @@ export async function validateFechaExpedicion(cove: Cove, invoice?: Invoice, car
 
   return await glosar(validation);
 }
+
+export const tracedDatosGenerales = traceable(
+  async ({ cove, invoice, carta318 }: { cove: Cove; invoice: Invoice, carta318: Carta318 }) =>
+    Promise.all([
+      validateNumeroFactura(cove, invoice, carta318),
+      validateFechaExpedicion(cove, invoice, carta318),
+    ]),
+  { name: "Cove S1: Datos Generales" }
+);

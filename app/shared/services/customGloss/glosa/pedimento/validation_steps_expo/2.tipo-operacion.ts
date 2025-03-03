@@ -3,6 +3,7 @@ import { glosar } from "../../validation-result";
 import { CustomGlossTabContextType } from "@prisma/client";
 import { apendice2 } from "../../anexo-22/apendice-2";
 import { apendice16 } from "../../anexo-22/apendice-16";
+import { traceable } from "langsmith/traceable";
 
 /**
  * Validates that the operation type is consistent with the origin/destination
@@ -96,3 +97,13 @@ export async function validateRegimen(pedimento: Pedimento) {
 
   return await glosar(validation);
 }
+
+export const tracedTipoOperacion = traceable(
+  async (pedimento: Pedimento, transportDoc?: TransportDocument) =>
+    Promise.all([
+      validateCoherenciaOrigenDestino(pedimento, transportDoc),
+      validateClavePedimento(pedimento),
+      validateRegimen(pedimento),
+    ]),
+  { name: "Pedimento S2: Tipo de operación" }
+);

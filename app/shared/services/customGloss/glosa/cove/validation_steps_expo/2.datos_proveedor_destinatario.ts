@@ -2,6 +2,7 @@ import { Cove } from "../../../data-extraction/schemas/cove";
 import { glosar } from "../../validation-result";
 import { Cfdi } from "../../../data-extraction/schemas/cfdi";
 import { CustomGlossTabContextType } from "@prisma/client";
+import { traceable } from "langsmith/traceable";
 
 /**
  * Validates that the supplier's general information in the COVE document matches the relevant document.
@@ -168,3 +169,14 @@ export async function validateDomicilioDestinatario(
 
   return await glosar(validation);
 } 
+
+export const tracedProveedorDestinatario = traceable(
+  async ({ cove, cfdi }: { cove: Cove; cfdi?: Cfdi }) =>
+    Promise.all([
+      validateDatosGeneralesProveedor(cove, cfdi),
+      validateDomicilioProveedor(cove, cfdi),
+      validateDatosGeneralesDestinatario(cove, cfdi),
+      validateDomicilioDestinatario(cove, cfdi),
+    ]),
+  { name: "Cove S2: Datos Proveedor Destinatario" }
+);

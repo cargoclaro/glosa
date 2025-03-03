@@ -2,6 +2,7 @@ import { Cove } from "../../../data-extraction/schemas/cove";
 import { glosar } from "../../validation-result";
 import { Cfdi } from "../../../data-extraction/schemas";
 import { CustomGlossTabContextType } from "@prisma/client";
+import { traceable } from "langsmith/traceable";
 
 /**
  * Validates that the invoice number in the COVE document matches the CFDI for exports.
@@ -80,3 +81,13 @@ export async function validateRfc(cove: Cove, cfdi?: Cfdi) {
 
   return await glosar(validation);
 }
+
+export const tracedDatosGenerales = traceable(
+  async ({ cove, cfdi }: { cove: Cove; cfdi?: Cfdi }) =>
+    Promise.all([
+      validateNumeroFactura(cove, cfdi),
+      validateFechaExpedicion(cove, cfdi),
+      validateRfc(cove, cfdi),
+    ]),
+  { name: "Cove S1: Datos Generales" }
+);

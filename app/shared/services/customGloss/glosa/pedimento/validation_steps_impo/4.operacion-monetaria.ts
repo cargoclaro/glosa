@@ -4,6 +4,8 @@ import { CustomGlossTabContextType } from "@prisma/client";
 import { TransportDocument } from "../../../data-extraction/schemas";
 import { Carta318 } from "../../../data-extraction/schemas/carta-318";
 import { Invoice } from "../../../data-extraction/schemas/invoice";
+import { traceable } from "langsmith/traceable";
+
 // TODO: Agregar DOF
 
 
@@ -245,3 +247,13 @@ export async function validateValoresPedimento(pedimento: Pedimento, invoice?: I
   return await glosar(validation);
 }
 
+export const tracedTransportDocumentEntryDate = traceable(
+  async (pedimento: Pedimento, invoice?: Invoice, transportDocument?: TransportDocument, carta318?: Carta318) =>
+    Promise.all([
+      validateTransportDocumentEntryDate(pedimento, transportDocument),
+      validateTipoCambio(pedimento),
+      validateIncrementables(pedimento, invoice, transportDocument, carta318),
+      validateValoresPedimento(pedimento, invoice, transportDocument, carta318)
+    ]),
+  { name: "Pedimento S4: Operación monetaria" }
+);

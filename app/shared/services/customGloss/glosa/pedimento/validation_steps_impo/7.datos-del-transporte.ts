@@ -3,6 +3,7 @@ import { apendice10 } from "../../anexo-22/apendice_10";
 import { apendice3 } from "../../anexo-22/apendice_3";
 import { glosar } from "../../validation-result";
 import { CustomGlossTabContextType } from "@prisma/client";
+import { traceable } from "langsmith/traceable";
 
 export async function validateTipoTransporte(pedimento: Pedimento) {
   // Extract transport type from pedimento
@@ -103,3 +104,12 @@ export async function validateNumeroGuiaEmbarque(pedimento: Pedimento, transport
   return await glosar(validation);
 }
 
+export const tracedTipoTransporte = traceable(
+  async (pedimento: Pedimento, transportDocument?: TransportDocument) =>
+    Promise.all([
+      validateTipoTransporte(pedimento),
+      validateModalidadMedioTransporte(pedimento, transportDocument),
+      validateNumeroGuiaEmbarque(pedimento, transportDocument)
+    ]),
+  { name: "Pedimento S7: Datos del transporte" }
+);

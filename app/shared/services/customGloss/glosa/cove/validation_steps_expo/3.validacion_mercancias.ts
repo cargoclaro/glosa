@@ -3,6 +3,7 @@ import { glosar } from "../../validation-result";
 import { Cfdi } from "../../../data-extraction/schemas/cfdi";
 import { CustomGlossTabContextType } from "@prisma/client";
 import { Invoice } from "../../../data-extraction/schemas/invoice";
+import { traceable } from "langsmith/traceable";
 
 /**
  * Validates that the merchandise details in the COVE document match the CFDI for exports.
@@ -156,3 +157,13 @@ export async function validateNumeroSerie(
 
   return await glosar(validation);
 }
+
+export const tracedMercancias = traceable(
+  async (cove: Cove, invoice?: Invoice, cfdi?: Cfdi) =>
+    Promise.all([
+      validateMercancias(cove, cfdi),
+      validateValorTotalDolares(cove, cfdi),
+      validateNumeroSerie(cove, invoice, cfdi)
+    ]),
+  { name: "Cove S3: Validación de mercancías" }
+);

@@ -2,6 +2,7 @@ import { Pedimento } from "../../../data-extraction/schemas";
 import { glosar } from "../../validation-result";
 import { CustomGlossTabContextType } from "@prisma/client";
 import { apendice15 } from "../../anexo-22/apendice-15";
+import { traceable } from "langsmith/traceable";
 
 export async function validateClaveApendice15(pedimento: Pedimento) {
   const claveDestinoOrigen = pedimento.encabezado_del_pedimento?.destino_origen;
@@ -25,3 +26,11 @@ export async function validateClaveApendice15(pedimento: Pedimento) {
 
   return await glosar(validation);
 }
+
+export const tracedClaveApendice15 = traceable(
+  async (pedimento: Pedimento) =>
+    Promise.all([
+      validateClaveApendice15(pedimento)
+    ]),
+  { name: "Pedimento S3: Clave de destino/origen" }
+);

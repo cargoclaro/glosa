@@ -1,6 +1,7 @@
 import { Pedimento, Cove, CartaSesion, Cfdi } from "../../../data-extraction/schemas";
 import { glosar } from "../../validation-result";
 import { CustomGlossTabContextType } from "@prisma/client";
+import { traceable } from "langsmith/traceable";
 
 export async function validateRfcFormat(pedimento: Pedimento, cove: Cove, cfdi?: Cfdi) {
   // Extract RFC values from documents
@@ -274,4 +275,16 @@ export async function validateMonedaYEquivalencia(pedimento: Pedimento, cove: Co
   return await glosar(validation);
 }
 
+export const tracedRfcFormat = traceable(
+  async (pedimento: Pedimento, cove: Cove, cfdi?: Cfdi, cartaSesion?: CartaSesion) =>
+    Promise.all([
+      validateRfcFormat(pedimento, cove, cfdi),
+      validateCesionDerechos(pedimento, cartaSesion, cfdi),
+      validateDatosImportador(pedimento, cove, cfdi),
+      validateDatosProveedor(pedimento, cove, cfdi),
+      validateFechasYFolios(pedimento, cove, cfdi),
+      validateMonedaYEquivalencia(pedimento, cove, cfdi)
+    ]),
+  { name: "Pedimento S6: Datos de factura" }
+);
 

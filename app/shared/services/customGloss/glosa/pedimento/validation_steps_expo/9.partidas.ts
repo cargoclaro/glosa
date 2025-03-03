@@ -2,6 +2,7 @@ import { Pedimento } from "../../../data-extraction/schemas";
 import { glosar } from "../../validation-result";
 import { CustomGlossTabContextType } from "@prisma/client";
 import { Cfdi } from "../../../data-extraction/schemas";
+import { traceable } from "langsmith/traceable";
 
 // Función para validar preferencia arancelaria y certificado de origen
 export async function validatePreferenciaArancelaria(pedimento: Pedimento) {
@@ -222,3 +223,18 @@ export async function validateRegulacionesNoArancelarias(pedimento: Pedimento) {
 
   return await glosar(validation);
 }
+
+export const tracedPartidas = traceable(
+  async (pedimento: Pedimento, cfdi?: Cfdi) =>
+    Promise.all([
+      validatePreferenciaArancelaria(pedimento),
+      validateCoherenciaUMC(pedimento, cfdi),
+      validateCoherenciaPeso(pedimento, cfdi),
+      validateCalculoDTA(pedimento),
+      validateCalculoContribuciones(pedimento, cfdi),
+      validatePermisosIdentificadores(pedimento),
+      validateRegulacionesArancelarias(pedimento),
+      validateRegulacionesNoArancelarias(pedimento)
+    ]),
+  { name: "Pedimento S9: Partidas" }
+);
