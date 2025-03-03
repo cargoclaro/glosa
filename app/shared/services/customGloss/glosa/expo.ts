@@ -66,43 +66,83 @@ export async function glosaExpo({
   cfdi?: Cfdi;
   cartaSesion?: CartaSesion;
 }) {
-  // Group and trace the COVE validations
-  const tracedCoveValidations = traceable(
+  // COVE validations - Section 1: datos_generales
+  const tracedCoveValidations_1 = traceable(
     async () =>
       Promise.all([
         validateNumeroFactura(cove, cfdi),
         validateFechaExpedicion(cove, cfdi),
         validateRfc(cove, cfdi),
+      ]),
+    { name: "1.datos_generales" }
+  );
+
+  // COVE validations - Section 2: datos_proveedor_destinatario
+  const tracedCoveValidations_2 = traceable(
+    async () =>
+      Promise.all([
         validateDatosGeneralesProveedor(cove, cfdi),
         validateDomicilioProveedor(cove, cfdi),
         validateDatosGeneralesDestinatario(cove, cfdi),
         validateDomicilioDestinatario(cove, cfdi),
+      ]),
+    { name: "2.datos_proveedor_destinatario" }
+  );
+
+  // COVE validations - Section 3: validacion_mercancias
+  const tracedCoveValidations_3 = traceable(
+    async () =>
+      Promise.all([
         validateMercancias(cove, cfdi),
         validateValorTotalDolares(cove, cfdi),
       ]),
-    { name: "CoveValidations" }
+    { name: "3.validacion_mercancias" }
   );
 
-  // Group and trace the Pedimento validations
-  const tracedPedimentoValidations = traceable(
+  // Pedimento validations - Section 2: tipo-operacion
+  const tracedPedimentoValidations_2 = traceable(
     async () =>
       Promise.all([
         validateCoherenciaOrigenDestino(pedimento, transportDocument),
         validateClavePedimento(pedimento),
         validateRegimen(pedimento),
+      ]),
+    { name: "2.tipo-operacion" }
+  );
+
+  // Pedimento validations - Section 3: origen-destino
+  const tracedPedimentoValidations_3 = traceable(
+    async () =>
+      Promise.all([
         validateClaveApendice15(pedimento),
+      ]),
+    { name: "3.origen-destino" }
+  );
+
+  // Pedimento validations - Section 4: operacion-monetaria
+  const tracedPedimentoValidations_4 = traceable(
+    async () =>
+      Promise.all([
         validateFechaSalida(pedimento, transportDocument),
         validateTipoCambio(pedimento),
         validateValorComercial(pedimento, cove, cfdi),
         validateValorDolares(pedimento, cove, cfdi),
+      ]),
+    { name: "4.operacion-monetaria" }
+  );
+
+  // Pedimento validations - Section 5: peso-neto
+  const tracedPedimentoValidations_5 = traceable(
+    async () =>
+      Promise.all([
         validatePesosYBultos(pedimento, transportDocument, packingList, cfdi),
         validateBultos(pedimento, transportDocument),
       ]),
-    { name: "PedimentoValidations" }
+    { name: "5.peso-neto" }
   );
 
-  // Group and trace the factura-related validations
-  const tracedFacturaValidations = traceable(
+  // Factura validations - Section 6: datos-de-factura
+  const tracedFacturaValidations_6 = traceable(
     async () =>
       Promise.all([
         validateRfcFormat(pedimento, cove, cfdi),
@@ -112,22 +152,22 @@ export async function glosaExpo({
         validateFechasYFolios(pedimento, cove, cfdi),
         validateMonedaYEquivalencia(pedimento, cove, cfdi),
       ]),
-    { name: "FacturaValidations" }
+    { name: "6.datos-de-factura" }
   );
 
-  // Group and trace the transporte validations
-  const tracedTransporteValidations = traceable(
+  // Transporte validations - Section 7: datos-del-transporte
+  const tracedTransporteValidations_7 = traceable(
     async () =>
       Promise.all([
         validateTipoTransporte(pedimento),
         validateModalidadMedioTransporte(pedimento, transportDocument),
         validateNumeroGuiaEmbarque(pedimento, transportDocument),
       ]),
-    { name: "TransporteValidations" }
+    { name: "7.datos-del-transporte" }
   );
 
-  // Group and trace the partidas validations
-  const tracedPartidasValidations = traceable(
+  // Partidas validations - Section 9: partidas
+  const tracedPartidasValidations_9 = traceable(
     async () =>
       Promise.all([
         validatePreferenciaArancelaria(pedimento),
@@ -139,15 +179,20 @@ export async function glosaExpo({
         validateRegulacionesArancelarias(pedimento),
         validateRegulacionesNoArancelarias(pedimento),
       ]),
-    { name: "PartidasValidations" }
+    { name: "9.partidas" }
   );
 
   // Run all traced groups concurrently
   return Promise.all([
-    tracedCoveValidations(),
-    tracedPedimentoValidations(),
-    tracedFacturaValidations(),
-    tracedTransporteValidations(),
-    tracedPartidasValidations()
+    tracedCoveValidations_1(),
+    tracedCoveValidations_2(),
+    tracedCoveValidations_3(),
+    tracedPedimentoValidations_2(),
+    tracedPedimentoValidations_3(),
+    tracedPedimentoValidations_4(),
+    tracedPedimentoValidations_5(),
+    tracedFacturaValidations_6(),
+    tracedTransporteValidations_7(),
+    tracedPartidasValidations_9()
   ]);
 }

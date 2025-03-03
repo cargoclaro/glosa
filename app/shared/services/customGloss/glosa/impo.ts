@@ -13,7 +13,11 @@ import {
   validateMercancias,
   validateValorTotalDolares
 } from './cove/validation_steps_impo/3.validacion_mercancias';
-import { validateCoherenciaOrigenDestino, validateClavePedimento, validateRegimen } from './pedimento/validation_steps_impo/2.tipo-operacion';
+import { 
+  validateCoherenciaOrigenDestino, 
+  validateClavePedimento, 
+  validateRegimen 
+} from './pedimento/validation_steps_impo/2.tipo-operacion';
 import { validateClaveApendice15 } from './pedimento/validation_steps_impo/3.origen-destino';
 import { 
   validateTransportDocumentEntryDate,
@@ -67,35 +71,63 @@ export async function glosaImpo({
   invoice?: Invoice;
   carta318?: Carta318;
 }) {
-  // Group and trace COVE-related validations
-  const tracedCoveValidations = traceable(
+  // COVE validations split by module sections
+
+  // Section 1: datos_generales validations
+  const tracedDatosGeneralesCove = traceable(
     async () =>
       Promise.all([
         validateNumeroFactura(cove, invoice, carta318),
         validateFechaExpedicion(cove, invoice, carta318),
+      ]),
+    { name: "1. datos_generales" }
+  );
+
+  // Section 2: datos_proveedor_destinatario validations
+  const tracedDatosProveedorDestinatarioCove = traceable(
+    async () =>
+      Promise.all([
         validateDatosGeneralesProveedor(cove, invoice, carta318),
         validateDomicilioProveedor(cove, invoice, carta318),
         validateDatosGeneralesDestinatario(cove, invoice, carta318),
         validateDomicilioDestinatario(cove, invoice, carta318),
+      ]),
+    { name: "2. datos_proveedor_destinatario" }
+  );
+
+  // Section 3: validacion_mercancias validations
+  const tracedMercanciasCove = traceable(
+    async () =>
+      Promise.all([
         validateMercancias(cove, invoice, carta318),
         validateValorTotalDolares(cove, invoice, carta318),
       ]),
-    { name: "CoveValidationsImpo" }
+    { name: "3. validacion_mercancias" }
   );
 
-  // Group and trace Pedimento validations (tipo-operacion & origen-destino)
-  const tracedPedimentoValidations = traceable(
+  // Pedimento validations split by module sections
+
+  // Section 2: tipo-operacion validations
+  const tracedTipoOperacionPedimento = traceable(
     async () =>
       Promise.all([
         validateCoherenciaOrigenDestino(pedimento, transportDocument),
         validateClavePedimento(pedimento),
         validateRegimen(pedimento),
-        validateClaveApendice15(pedimento),
       ]),
-    { name: "PedimentoValidationsImpo" }
+    { name: "2. tipo-operacion" }
   );
 
-  // Group and trace monetary validations (operacion-monetaria)
+  // Section 3: origen-destino validations
+  const tracedOrigenDestinoPedimento = traceable(
+    async () =>
+      Promise.all([
+        validateClaveApendice15(pedimento),
+      ]),
+    { name: "3. origen-destino" }
+  );
+
+  // Monetary validations (Section 4: operacion-monetaria)
   const tracedMonetaryValidations = traceable(
     async () =>
       Promise.all([
@@ -104,20 +136,20 @@ export async function glosaImpo({
         validateIncrementables(pedimento, invoice, transportDocument, carta318),
         validateValoresPedimento(pedimento, invoice, transportDocument, carta318),
       ]),
-    { name: "MonetaryValidationsImpo" }
+    { name: "4. operacion-monetaria" }
   );
 
-  // Group and trace peso-neto validations
+  // Peso validations (Section 5: peso-neto)
   const tracedPesoValidations = traceable(
     async () =>
       Promise.all([
         validatePesosYBultos(pedimento, transportDocument, packingList, invoice),
         validateBultos(pedimento, transportDocument),
       ]),
-    { name: "PesoValidationsImpo" }
+    { name: "5. peso-neto" }
   );
 
-  // Group and trace factura-related validations (datos-de-factura)
+  // Factura validations (Section 6: datos-de-factura)
   const tracedFacturaValidations = traceable(
     async () =>
       Promise.all([
@@ -128,10 +160,10 @@ export async function glosaImpo({
         validateFechasYFolios(pedimento, cove, invoice, carta318),
         validateMonedaYEquivalencia(pedimento, cove, carta318, invoice),
       ]),
-    { name: "FacturaValidationsImpo" }
+    { name: "6. datos-de-factura" }
   );
 
-  // Group and trace transporte validations
+  // Transporte validations (Section 7: datos-del-transporte)
   const tracedTransporteValidations = traceable(
     async () =>
       Promise.all([
@@ -139,10 +171,10 @@ export async function glosaImpo({
         validateModalidadMedioTransporte(pedimento, transportDocument),
         validateNumeroGuiaEmbarque(pedimento, transportDocument),
       ]),
-    { name: "TransporteValidationsImpo" }
+    { name: "7. datos-del-transporte" }
   );
 
-  // Group and trace partidas validations
+  // Partidas validations (Section 9: partidas)
   const tracedPartidasValidations = traceable(
     async () =>
       Promise.all([
@@ -155,13 +187,16 @@ export async function glosaImpo({
         validateRegulacionesArancelarias(pedimento),
         validateRegulacionesNoArancelarias(pedimento),
       ]),
-    { name: "PartidasValidationsImpo" }
+    { name: "9. partidas" }
   );
 
   // Run all traced groups concurrently
   return Promise.all([
-    tracedCoveValidations(),
-    tracedPedimentoValidations(),
+    tracedDatosGeneralesCove(),
+    tracedDatosProveedorDestinatarioCove(),
+    tracedMercanciasCove(),
+    tracedTipoOperacionPedimento(),
+    tracedOrigenDestinoPedimento(),
     tracedMonetaryValidations(),
     tracedPesoValidations(),
     tracedFacturaValidations(),
