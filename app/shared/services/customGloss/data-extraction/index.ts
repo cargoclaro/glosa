@@ -1,8 +1,7 @@
-import { pdfToText } from 'pdf-ts';
 import { DocumentType } from "../classification";
 import { invoiceSchema, carta318Schema, rrnaSchema, transportDocumentSchema, pedimentoSchema, packingListSchema, coveSchema, cfdiSchema, cartaSesionSchema } from "./schemas/";
 import { extractTextFromImage } from "./vision";
-import type { z } from "zod";
+import { z } from "zod";
 import { structureTaggedText } from "./tagged";
 import { UploadedFileData } from 'uploadthing/types';
 import { traceable } from 'langsmith/traceable';
@@ -120,12 +119,40 @@ export const extractTextFromPDFs = traceable(
   { name: 'textExtraction' }
 );
 
+const extractionResponseSchema = z.object({
+  text: z.string()
+});
+
 async function extractTextFromPDF<T>(originalFile: File, documentType: DocumentType, schema: z.ZodType<T>) {
-  const text = await pdfToText(Buffer.from(await originalFile.arrayBuffer()));
-  const isPdfEmpty = text === "";
+  const baseUrl =
+      process.env.NODE_ENV === "development"
+        ? "http://localhost:8000"
+        : "https://cargo-claro-fastapi-6z19.onrender.com";
+  const url = `${baseUrl}/extract-pdf-text`;
+
+  // Create form data and append the file
+  const formData = new FormData();
+  formData.append('file', originalFile);
+
+  const response = await fetch(url, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${process.env["GLOSS_TOKEN"]}`,
+    },
+    body: formData,
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to extract text: ${response.statusText}`);
+  }
+
+  const rawData = await response.json();
+  const data = extractionResponseSchema.parse(rawData);
+  const extractedText = data.text;
+  const isPdfEmpty = !extractedText || extractedText.trim() === "";
 
   if (isPdfEmpty) {
     return extractTextFromImage(originalFile, documentType, schema);
   }
-  return structureTaggedText(text, schema, documentType);
+  return structureTaggedText(extractedText, schema, documentType);
 }
