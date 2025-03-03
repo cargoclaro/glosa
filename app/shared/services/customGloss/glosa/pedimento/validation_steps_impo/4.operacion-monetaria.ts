@@ -7,10 +7,10 @@ import { Invoice } from "../../../data-extraction/schemas/invoice";
 // TODO: Agregar DOF
 
 
-export async function validateTransportDocumentEntryDate(pedimento: Pedimento, transportDocument: TransportDocument) {
+export async function validateTransportDocumentEntryDate(pedimento: Pedimento, transportDocument?: TransportDocument) {
   const pedimentoEntryDate = pedimento.fecha_entrada_presentacion;
-  const transportEntryDate = transportDocument.date;
-  const transportType = transportDocument.document_type;
+  const transportEntryDate = transportDocument?.date;
+  const transportType = transportDocument?.document_type;
   
   const validation = {
     name: "Fecha de entrada del documento de transporte",
@@ -66,7 +66,7 @@ export async function validateTipoCambio(pedimento: Pedimento) {
   return await glosar(validation);
 }
 
-export async function validateIncrementables(pedimento: Pedimento, invoice: Invoice, transportDocument: TransportDocument, carta318?: Carta318) {
+export async function validateIncrementables(pedimento: Pedimento, invoice?: Invoice, transportDocument?: TransportDocument, carta318?: Carta318) {
   // Get incrementables from pedimento
   const incrementablesPedimento = {
     fletes: pedimento.incrementables?.fletes,
@@ -83,7 +83,8 @@ export async function validateIncrementables(pedimento: Pedimento, invoice: Invo
     otros: incrementablesCarta?.otros
   };
 
-  const { incrementables: incrementablesInv } = invoice;
+  // Safely access incrementables from invoice if it exists
+  const incrementablesInv = invoice?.incrementables;
   const incrementablesInvoice = { 
     fletes: incrementablesInv?.fletes,
     seguros: incrementablesInv?.seguros,
@@ -92,7 +93,7 @@ export async function validateIncrementables(pedimento: Pedimento, invoice: Invo
   };
   
   // Get incrementables from transport document
-  const { costos_adicionales: { incrementables: incrementablesTransport } } = transportDocument;
+  const incrementablesTransport = transportDocument?.costos_adicionales?.incrementables;
   const incrementablesTransportDocument = {
     fletes: incrementablesTransport?.fletes,
     seguros: incrementablesTransport?.seguros,
@@ -132,7 +133,7 @@ export async function validateIncrementables(pedimento: Pedimento, invoice: Invo
   return await glosar(validation);
 }
 
-export async function validateValoresPedimento(pedimento: Pedimento, invoice: Invoice, transportDocument: TransportDocument, carta318?: Carta318) {
+export async function validateValoresPedimento(pedimento: Pedimento, invoice?: Invoice, transportDocument?: TransportDocument, carta318?: Carta318) {
   // Extract monetary values from pedimento
   const valorAduana = pedimento.valores?.valor_aduana; // Customs value in MXN
   const valorComercial = pedimento.valores?.precio_pagado_valor_comercial; // Commercial value/paid price in MXN
@@ -158,18 +159,18 @@ export async function validateValoresPedimento(pedimento: Pedimento, invoice: In
 
   // Extract incrementables from commercial invoice
   const incrementablesInvoice = {
-    fletes: invoice.incrementables?.fletes,
-    seguros: invoice.incrementables?.seguros,
-    embalajes: invoice.incrementables?.embalajes,
-    otros: invoice.incrementables?.otros
+    fletes: invoice?.incrementables?.fletes,
+    seguros: invoice?.incrementables?.seguros,
+    embalajes: invoice?.incrementables?.embalajes,
+    otros: invoice?.incrementables?.otros
   };
 
   // Extract incrementables from transport document
   const incrementablesTransportDocument = {
-    fletes: transportDocument.costos_adicionales?.incrementables?.fletes,
-    seguros: transportDocument.costos_adicionales?.incrementables?.seguros,
-    embalajes: transportDocument.costos_adicionales?.incrementables?.embalajes,
-    otros: transportDocument.costos_adicionales?.incrementables?.otros
+    fletes: transportDocument?.costos_adicionales?.incrementables?.fletes,
+    seguros: transportDocument?.costos_adicionales?.incrementables?.seguros,
+    embalajes: transportDocument?.costos_adicionales?.incrementables?.embalajes,
+    otros: transportDocument?.costos_adicionales?.incrementables?.otros
   };
 
   // Group all incrementables for comparison
@@ -183,7 +184,7 @@ export async function validateValoresPedimento(pedimento: Pedimento, invoice: In
   // Extract decrementables (costs that decrease customs value)
   const decrementablesPedimento = pedimento.decrementables;
   const decrementablesCarta318 = carta318?.detalle_facturacion?.decrementables;
-  const decrementablesInvoice = invoice.decrementables;
+  const decrementablesInvoice = invoice?.decrementables;
 
   // Group all decrementables for comparison
   const decrementables = {
@@ -194,7 +195,7 @@ export async function validateValoresPedimento(pedimento: Pedimento, invoice: In
 
   // Extract commercial values from documents
   const valorCarta318 = carta318?.detalle_facturacion?.valor_comercial;
-  const valorInvoice = invoice.valor_comercial;
+  const valorInvoice = invoice?.valor_comercial;
 
   
   const validation = {

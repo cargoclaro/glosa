@@ -29,7 +29,7 @@ export async function validateRfcFormat(pedimento: Pedimento, cove: Cove, carta3
   return await glosar(validation);
 }
 
-export async function validateCesionDerechos(pedimento: Pedimento, cartaSesion: CartaSesion, carta318?: Carta318) {
+export async function validateCesionDerechos(pedimento: Pedimento, cartaSesion?: CartaSesion, carta318?: Carta318) {
   // Extract values from documents
   const fechaEntradaPedimento = pedimento.fecha_entrada_presentacion;
   const rfcComercializadora = cartaSesion?.assignee?.identification_rfc;
@@ -173,7 +173,7 @@ export async function validateDatosProveedor(pedimento: Pedimento, cove: Cove, c
   return await glosar(validation);
 }
 
-export async function validateFechasYFolios(pedimento: Pedimento, cove: Cove, invoice: Invoice, carta318?: Carta318) {
+export async function validateFechasYFolios(pedimento: Pedimento, cove: Cove, invoice?: Invoice, carta318?: Carta318) {
   // Extract values from documents
   const fechaEntradaPedimento = pedimento.fecha_entrada_presentacion;
   const fechaExpedicionCove = cove?.fecha_expedicion;

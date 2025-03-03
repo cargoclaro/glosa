@@ -30,7 +30,7 @@ export async function validatePreferenciaArancelaria(pedimento: Pedimento) {
 }
 
 // Función para validar coherencia de UMC y cantidad UMC
-export async function validateCoherenciaUMC(pedimento: Pedimento, invoice: Invoice) {
+export async function validateCoherenciaUMC(pedimento: Pedimento, invoice?: Invoice) {
   // Extraer partidas con información de UMC
   const partidas = pedimento.partidas || [];
   

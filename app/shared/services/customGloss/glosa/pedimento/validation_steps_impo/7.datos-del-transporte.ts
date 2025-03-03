@@ -36,7 +36,7 @@ export async function validateTipoTransporte(pedimento: Pedimento) {
   return await glosar(validation);
 }
 
-export async function validateModalidadMedioTransporte(pedimento: Pedimento, transportDocument: TransportDocument) {
+export async function validateModalidadMedioTransporte(pedimento: Pedimento, transportDocument?: TransportDocument) {
   // Extract transport means from pedimento
   const tipoTransporteEntradaSalida = pedimento.medios_transporte?.entrada_salida;
   
@@ -72,7 +72,7 @@ export async function validateModalidadMedioTransporte(pedimento: Pedimento, tra
   return await glosar(validation);
 }
 
-export async function validateNumeroGuiaEmbarque(pedimento: Pedimento, transportDocument: TransportDocument) {
+export async function validateNumeroGuiaEmbarque(pedimento: Pedimento, transportDocument?: TransportDocument) {
   // Extract guide/shipment number from pedimento
   const numeroGuiaEmbarque = pedimento.no_guia_embarque_id;
   

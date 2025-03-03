@@ -10,7 +10,7 @@ import { Carta318 } from "../../../data-extraction/schemas/carta-318";
  */
 export async function validateMercancias(
   cove: Cove,
-  invoice: Invoice,
+  invoice?: Invoice,
   carta318?: Carta318
 ) {
   // Extract merchandise data from COVE
@@ -38,7 +38,7 @@ export async function validateMercancias(
   }));
 
   // Extract merchandise data from invoice
-  const mercanciasInvoice = invoice.items || [];
+  const mercanciasInvoice = invoice?.items || [];
 
   // Format invoice merchandise data
   const mercanciasInvoiceFormatted = mercanciasInvoice.map(item => ({
@@ -86,7 +86,7 @@ export async function validateMercancias(
  */
 export async function validateValorTotalDolares(
   cove: Cove,
-  invoice: Invoice,
+  invoice?: Invoice,
   carta318?: Carta318
 ) {
   // Extract total value from COVE
@@ -98,8 +98,8 @@ export async function validateValorTotalDolares(
   const monedaCarta318 = carta318?.detalle_facturacion?.valor_comercial?.moneda;
 
   // Extract total value and currency from invoice
-  const valorTotalInvoice = invoice.total_amount;
-  const monedaInvoice = invoice.currency_code;
+  const valorTotalInvoice = invoice?.total_amount;
+  const monedaInvoice = invoice?.currency_code;
 
   const validation = {
     name: "Valor total en dolares",

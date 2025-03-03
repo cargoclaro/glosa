@@ -3,7 +3,7 @@ import { glosar } from "../../validation-result";
 import { CustomGlossTabContextType } from "@prisma/client";
 import { apendice15 } from "../../anexo-22/apendice-15";
 
-async function validateClaveApendice15(pedimento: Pedimento) {
+export async function validateClaveApendice15(pedimento: Pedimento) {
   const claveDestinoOrigen = pedimento.encabezado_del_pedimento?.destino_origen;
   
   const validation = {
@@ -24,10 +24,4 @@ async function validateClaveApendice15(pedimento: Pedimento) {
   } as const;
 
   return await glosar(validation);
-}
-
-export async function origenDestinoOrigenValidations(pedimento: Pedimento) {
-  return Promise.all([
-    validateClaveApendice15(pedimento)
-  ]);
 }

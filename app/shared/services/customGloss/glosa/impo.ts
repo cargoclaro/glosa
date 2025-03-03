@@ -13,8 +13,8 @@ import {
   validateMercancias,
   validateValorTotalDolares
 } from './cove/validation_steps_impo/3.validacion_mercancias';
-import { tipoOperacionValidations } from './pedimento/validation_steps_impo/2.tipo-operacion';
-import { origenDestinoOrigenValidations } from './pedimento/validation_steps_impo/3.origen-destino';
+import { validateCoherenciaOrigenDestino, validateClavePedimento, validateRegimen } from './pedimento/validation_steps_impo/2.tipo-operacion';
+import { validateClaveApendice15 } from './pedimento/validation_steps_impo/3.origen-destino';
 import { 
   validateTransportDocumentEntryDate,
   validateTipoCambio,
@@ -75,8 +75,10 @@ export async function glosaImpo({
     validateDomicilioDestinatario(cove, invoice, carta318),
     validateMercancias(cove, invoice, carta318),
     validateValorTotalDolares(cove, invoice, carta318),
-    tipoOperacionValidations(pedimento),
-    origenDestinoOrigenValidations(pedimento),
+    validateCoherenciaOrigenDestino(pedimento, transportDocument),
+    validateClavePedimento(pedimento),
+    validateRegimen(pedimento),
+    validateClaveApendice15(pedimento),
     validateTransportDocumentEntryDate(pedimento, transportDocument),
     validateTipoCambio(pedimento),
     validateIncrementables(pedimento, invoice, transportDocument, carta318),

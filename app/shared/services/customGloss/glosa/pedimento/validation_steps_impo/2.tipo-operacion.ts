@@ -8,7 +8,7 @@ import { apendice16 } from "../../anexo-22/apendice-16";
  * Validates that the operation type is consistent with the origin/destination
  * If destination is Mexico, operation type should be IMP (import)
  */
-async function validateCoherenciaOrigenDestino(pedimento: Pedimento, transportDoc?: TransportDocument) {
+export async function validateCoherenciaOrigenDestino(pedimento: Pedimento, transportDoc?: TransportDocument) {
   const tipoOperacion = pedimento.encabezado_del_pedimento?.tipo_oper;
   const origen = transportDoc?.origin_country;
   const destino = transportDoc?.destination_country;
@@ -41,7 +41,7 @@ async function validateCoherenciaOrigenDestino(pedimento: Pedimento, transportDo
 /**
  * Validates that the pedimento key is valid for the operation type according to Appendix 2
  */
-async function validateClavePedimento(pedimento: Pedimento) {
+export async function validateClavePedimento(pedimento: Pedimento) {
   const tipoOperacion = pedimento.encabezado_del_pedimento?.tipo_oper;
   const clavePedimento = pedimento.encabezado_del_pedimento?.cve_pedim;
   
@@ -71,7 +71,7 @@ async function validateClavePedimento(pedimento: Pedimento) {
 /**
  * Validates that the regime is valid for the operation type according to Appendix 16
  */
-async function validateRegimen(pedimento: Pedimento) {
+export async function validateRegimen(pedimento: Pedimento) {
   const tipoOperacion = pedimento.encabezado_del_pedimento?.tipo_oper;
   const regimen = pedimento.encabezado_del_pedimento?.regimen;
   
@@ -97,14 +97,3 @@ async function validateRegimen(pedimento: Pedimento) {
 
   return await glosar(validation);
 }
-
-/**
- * Main function that runs all tipo-operacion validations
- */
-export async function tipoOperacionValidations(pedimento: Pedimento) {
-  return Promise.all([
-    validateCoherenciaOrigenDestino(pedimento),
-    validateClavePedimento(pedimento),
-    validateRegimen(pedimento)
-  ]);
-} 

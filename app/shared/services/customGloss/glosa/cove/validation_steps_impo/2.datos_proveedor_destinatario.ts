@@ -10,7 +10,7 @@ import { Carta318 } from "../../../data-extraction/schemas/carta-318";
  */
 export async function validateDatosGeneralesProveedor(
   cove: Cove,
-  invoice: Invoice,
+  invoice?: Invoice,
   carta318?: Carta318
 ) {
   // Extract supplier data from different sources
@@ -19,7 +19,7 @@ export async function validateDatosGeneralesProveedor(
   const nombreRazonSocialCove = cove.datos_generales_proveedor?.nombre_razon_social;
 
   // Import: get data from Invoice and Carta318
-  const nombreRazonSocialInvoice = invoice.seller_details?.name;
+  const nombreRazonSocialInvoice = invoice?.seller_details?.name;
   const nombreRazonSocialCarta318 = carta318?.proveedor_comprador?.nombre;
   const identificadorCarta318 = carta318?.proveedor_comprador?.tax_id;
 
@@ -59,7 +59,7 @@ export async function validateDatosGeneralesProveedor(
  */
 export async function validateDomicilioProveedor(
   cove: Cove,
-  invoice: Invoice,
+  invoice?: Invoice,
   carta318?: Carta318
 ) {
   // Extract supplier address data from different sources
@@ -76,7 +76,7 @@ export async function validateDomicilioProveedor(
     ].filter(Boolean).join(' ') : '';
 
   // Import: get data from Invoice and Carta318
-  const domicilioInvoice = invoice.seller_details?.address;
+  const domicilioInvoice = invoice?.seller_details?.address;
   const domicilioCarta318 = carta318?.proveedor_comprador?.domicilio;
 
   const validation = {
@@ -106,7 +106,7 @@ export async function validateDomicilioProveedor(
  */
 export async function validateDatosGeneralesDestinatario(
   cove: Cove,
-  invoice: Invoice,
+  invoice?: Invoice,
   carta318?: Carta318
 ) {
   // Extract recipient data from different sources
@@ -114,7 +114,7 @@ export async function validateDatosGeneralesDestinatario(
   const nombreRazonSocialCove = cove.datos_generales_destinatario?.nombre_razon_social;
 
   // Import: get data from Invoice and Carta318
-  const nombreRazonSocialInvoice = invoice.bill_to?.name;
+  const nombreRazonSocialInvoice = invoice?.bill_to?.name;
   const nombreRazonSocialImportador = carta318?.importador_exportador?.nombre;
   const rfcImportador = carta318?.importador_exportador?.rfc;
 
@@ -153,7 +153,7 @@ export async function validateDatosGeneralesDestinatario(
  */
 export async function validateDomicilioDestinatario(
   cove: Cove,
-  invoice: Invoice,
+  invoice?: Invoice,
   carta318?: Carta318
 ) {
   // Extract recipient address data from different sources
@@ -170,7 +170,7 @@ export async function validateDomicilioDestinatario(
     ].filter(Boolean).join(' ') : '';
 
   // Import: get data from Invoice and Carta318
-  const domicilioInvoice = invoice.bill_to?.address;
+  const domicilioInvoice = invoice?.bill_to?.address;
   const domicilioImportador = carta318?.importador_exportador?.domicilio;
 
   const validation = {
