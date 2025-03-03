@@ -1,6 +1,7 @@
 import { generateObject } from "ai";
 import { wrapAISDKModel } from "langsmith/wrappers/vercel";
 import { openai } from "@ai-sdk/openai";
+import { google } from "@ai-sdk/google";
 import type { z } from "zod";
 import { DocumentType } from "../classification";
 
@@ -22,7 +23,7 @@ export async function structureTaggedText<T>(
   documentType: DocumentType,
 ): Promise<T> {
   const { object } = await generateObject({
-    model: wrapAISDKModel(openai("gpt-4o"), {
+    model: wrapAISDKModel(google("gemini-2.0-flash-001"), {
       name: `Extract schema from ${documentType}`,
       project_name: "glosa",
     }),
