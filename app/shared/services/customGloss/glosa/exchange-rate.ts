@@ -18,13 +18,7 @@ const oportunoSchema = z.object({
   })
 })
 
-/**
- * Gets the previous business day (día hábil) in Mexico
- * @param date Starting date to search from (defaults to current date)
- * @param daysBack Number of business days to go back (defaults to 1)
- * @returns Date object representing the previous business day
- */
-export function getPreviousDiaHabil(fechaPedimento: Date): Date {
+function getPreviousDiaHabil(fechaPedimento: Date): Date {
   const daysBack = 2;
   const mexicoHolidays = new Holidays('MX');
   // Create a copy of the input date to avoid modifying the original
