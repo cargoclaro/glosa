@@ -1,6 +1,9 @@
 const BANXICO_BASE_URL = 'https://www.banxico.org.mx/SieAPIRest/service/v1';
 
 import { z } from "zod"
+import { config } from "dotenv"
+
+config()
 
 const oportunoSchema = z.object({
   bmx: z.object({
