@@ -35,9 +35,9 @@ const runGlosa = traceable(
     }
     const operationType = pedimento.encabezado_del_pedimento?.tipo_oper;
     if (operationType === "IMP") {
-      await glosaImpo(documents);
+      return await glosaImpo(documents);
     } else if (operationType === "EXP") {
-      await glosaExpo(documents);
+      return await glosaExpo(documents);
     } else {
       throw new Error("El tipo de operación no es válido.");
     }
@@ -59,7 +59,7 @@ export async function analysis(formData: FormData) {
     // Only use this for testing the migration from the python backend
     const enableMigrationCode = process.env["ENABLE_MIGRATION_CODE"];
     if (enableMigrationCode) {
-      await runGlosa(formData);
+      const glosaResults = await runGlosa(formData);
       return
     }
     const query_id = randomUUID();
