@@ -198,7 +198,7 @@ export async function validateDomicilioDestinatario(
 }
 
 export const tracedChooseDocument = traceable(
-  async ({ cove, invoice, carta318 }: { cove: Cove; invoice: Invoice, carta318: Carta318 }) =>
+  async ({ cove, invoice, carta318 }: { cove: Cove; invoice?: Invoice, carta318?: Carta318 }) =>
     Promise.all([
       validateDatosGeneralesProveedor(cove, invoice, carta318),
       validateDomicilioProveedor(cove, invoice, carta318),
