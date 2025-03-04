@@ -147,7 +147,7 @@ const Analysis = ({
   useEffect(() => {
     if (tabSelectedFromDocument !== "") {
       if (tabSelectedFromDocument === "NUM. PEDIMENTO:") {
-        handleTabClick("N° de pedimento");
+        handleTabClick("Número de pedimento");
       } else if (
         tabSelectedFromDocument === "T. OPER" ||
         tabSelectedFromDocument === "T.OPER" ||
@@ -160,7 +160,7 @@ const Analysis = ({
         tabSelectedFromDocument === "DESTINO:" ||
         tabSelectedFromDocument === "DESTINO/ORIGEN:"
       ) {
-        handleTabClick("Destino/Origen");
+        handleTabClick("Clave de destino/origen");
       } else if (
         tabSelectedFromDocument === "TIPO CAMBIO:" ||
         tabSelectedFromDocument === "VALOR DOLARES:" ||
@@ -168,19 +168,19 @@ const Analysis = ({
         tabSelectedFromDocument === "VAL.SEGUROS" ||
         tabSelectedFromDocument === "FECHAS"
       ) {
-        handleTabClick("Operación");
+        handleTabClick("Operación monetaria");
       } else if (tabSelectedFromDocument === "PESO BRUTO:") {
-        handleTabClick("Peso bruto");
+        handleTabClick("Pesos y bultos");
       } else if (
         tabSelectedFromDocument === "DATOS DEL IMPORTADOR/EXPORTADOR" ||
         tabSelectedFromDocument === "DATOS DEL IMPORTADOR / EXPORTADOR" ||
         tabSelectedFromDocument === "DATOS DEL PROVEEDOR O COMPRADOR"
       ) {
-        handleTabClick("Datos de la factura");
+        handleTabClick("Datos de factura");
       } else if (
         tabSelectedFromDocument === "DATOS DEL TRANSPORTE Y TRANSPORTISTA"
       ) {
-        handleTabClick("Datos de transporte");
+        handleTabClick("Datos del transporte");
       } else if (
         tabSelectedFromDocument === "PARTIDAS" ||
         tabSelectedFromDocument === "OBSERVACIONES A NIVEL PARTIDA"
