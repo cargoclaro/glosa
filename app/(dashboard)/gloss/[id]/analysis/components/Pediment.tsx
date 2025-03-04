@@ -157,7 +157,7 @@ const keywordPositions: Record<Keyword, IKeywordPosition> = {
 
 const keywordsConfig: Record<Keyword, string> = {
   // PEDIMENTO
-  "NUM. PEDIMENTO:": "N° de pedimento",
+  "NUM. PEDIMENTO:": "Número de pedimento",
 
   "T. OPER": "Tipo de operación",
   "T.OPER": "Tipo de operación",
@@ -165,22 +165,22 @@ const keywordsConfig: Record<Keyword, string> = {
   "TIPO OPER:": "Tipo de operación",
   "TIPO OPER.:": "Tipo de Ooperación",
 
-  "DESTINO:": "Destino/Origen",
-  "DESTINO/ORIGEN:": "Destino/Origen",
+  "DESTINO:": "Clave de destino/origen",
+  "DESTINO/ORIGEN:": "Clave de destino/origen",
 
-  "TIPO CAMBIO:": "Operación",
-  "VALOR DOLARES:": "Operación",
-  "VAL. SEGUROS": "Operación",
-  "VAL.SEGUROS": "Operación",
-  FECHAS: "Operación",
+  "TIPO CAMBIO:": "Operación monetaria",
+  "VALOR DOLARES:": "Operación monetaria",
+  "VAL. SEGUROS": "Operación monetaria",
+  "VAL.SEGUROS": "Operación monetaria",
+  FECHAS: "Operación monetaria",
 
-  "PESO BRUTO:": "Peso bruto",
+  "PESO BRUTO:": "Pesos y bultos",
 
-  "DATOS DEL IMPORTADOR/EXPORTADOR": "Datos de la factura",
-  "DATOS DEL IMPORTADOR / EXPORTADOR": "Datos de la factura",
-  "DATOS DEL PROVEEDOR O COMPRADOR": "Datos de la factura",
+  "DATOS DEL IMPORTADOR/EXPORTADOR": "Datos de factura",
+  "DATOS DEL IMPORTADOR / EXPORTADOR": "Datos de factura",
+  "DATOS DEL PROVEEDOR O COMPRADOR": "Datos de factura",
 
-  "DATOS DEL TRANSPORTE Y TRANSPORTISTA": "Datos de transporte",
+  "DATOS DEL TRANSPORTE Y TRANSPORTISTA": "Datos del transporte",
 
   PARTIDAS: "Partidas",
   "OBSERVACIONES A NIVEL PARTIDA": "Partidas",
