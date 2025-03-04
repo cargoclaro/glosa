@@ -61,7 +61,7 @@ const Analysis = ({
 }: IAnalysis) => {
   const scrollContainerRef = useRef<HTMLUListElement>(null);
   const { isOpen, openMenu, closeMenu, menuRef } = useModal(false);
-  const [tabSelected, setTabSelected] = useState("N° de pedimento");
+  const [tabSelected, setTabSelected] = useState("Número de pedimento");
 
   const [dataForDetail, setDataForDetail] = useState<
     tabs["validations"][number]
