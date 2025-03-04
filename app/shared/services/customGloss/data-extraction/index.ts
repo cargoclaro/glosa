@@ -102,15 +102,15 @@ async function extractTextFromPDFsParallel(
   ]);
 
   return {
-    ...(facturaText && { factura: facturaText }),
+    ...(facturaText && { invoice: facturaText }),
     ...(carta318Text && { carta318: carta318Text }),
     ...(rrnasText && { rrnas: rrnasText }),
-    ...(documentoDeTransporteText && { documentoDeTransporte: documentoDeTransporteText }),
+    ...(documentoDeTransporteText && { transportDocument: documentoDeTransporteText }),
     pedimento: pedimentoText,
-    ...(listaDeEmpaqueText && { listaDeEmpaque: listaDeEmpaqueText }),
+    ...(listaDeEmpaqueText && { packingList: listaDeEmpaqueText }),
     cove: coveText,
     ...(cfdiText && { cfdi: cfdiText }),
-    ...(cartaCesionDeDerechosText && { cartaCesionDeDerechos: cartaCesionDeDerechosText }),
+    ...(cartaCesionDeDerechosText && { cartaSesion: cartaCesionDeDerechosText }),
   };
 }
 
