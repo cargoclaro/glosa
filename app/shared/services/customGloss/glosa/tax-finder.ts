@@ -44,6 +44,52 @@ const taxfinderResponseSchema = z.object({
   }),
 });
 
+const clavesRegulacion = [
+  "TLC", "ACE", "FF", "RF", "IEPS", "ISAN", "ALADI", "PROSEC", "CC", "PE", "AC",
+  "AMX", "AE", "MT", "VU", "AP", "TIPAT", "PAD", "NOM", "ANX", "CM", "IMMEX",
+  "EMB", "OBS", "PROMOCAL", "LAL", "CICOPLAFEST", "INAH", "INBA", "INAINU",
+  "SAGARPA", "SE", "SEP", "SENER", "SG", "SHCP", "SEMARNAT", "SSA", "SEDENA",
+  "COMEXCA", "REIT", "EF", "CUL", "ETI", "LIGIE"
+] as const;
+
+type ClaveRegulacion = typeof clavesRegulacion[number];
+
+const articuloFundamentoLegalResponseSchema = z.object({
+  data: z.array(z.object({
+    articulo: z.object({
+      fragmento_dof: z.object({
+        descripcion: z.string(),
+      }),
+    }),
+  })),
+});
+
+
+async function getArticuloFundamentoLegal({ clave_acuerdo, clave_regulacion, clave_articulo }: {
+  clave_acuerdo: string,
+  clave_regulacion: ClaveRegulacion,
+  clave_articulo: string[]
+}) {
+  const TAXFINDER_API_KEY = process.env["TAXFINDER_API_KEY"];
+  if (!TAXFINDER_API_KEY) {
+    throw new Error("TAXFINDER_API_KEY is not set");
+  }
+
+  const response = await fetch(`${TAXFINDER_BASE_URL}api/articulos/consultar?clave_acuerdo=${clave_acuerdo}&clave_regulacion=${clave_regulacion}&clave_articulo=${clave_articulo.join(",")}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "reco-api-key": TAXFINDER_API_KEY,
+    },
+  });
+
+  const result = await response.json();
+
+  const parsedResult = articuloFundamentoLegalResponseSchema.parse(result);
+
+  return parsedResult;
+}
+
 /**
  * Input type for tax finder queries
  */
@@ -62,12 +108,12 @@ export async function getFraccionInfo({ fraccion, fechaDeEntrada, tipoDeOperacio
   if (!TAXFINDER_API_KEY) {
     throw new Error("TAXFINDER_API_KEY is not set");
   }
-  
+
   // Parse DD/MM/YYYY to Date object and then to YYYY-MM-DD
   const [day, month, year] = fechaDeEntrada.split('/');
   const date = new Date(`${year}-${month}-${day}`);
   const formattedDate = date.toISOString().split('T')[0];
-  
+
   const response = await fetch(`${TAXFINDER_BASE_URL}api/tel/consulta`, {
     method: "POST",
     headers: {
@@ -82,20 +128,22 @@ export async function getFraccionInfo({ fraccion, fechaDeEntrada, tipoDeOperacio
       tipo_operacion: tipoDeOperacion,
     })
   });
-  
+
   const result = await response.json();
-  
+
   // Save response to a JSON file with timestamp
   const fs = require('fs');
   const path = require('path');
   const timestamp = new Date().toISOString().replace(/:/g, '-');
   const fileName = `taxfinder-response-${fraccion}-${timestamp}.json`;
   const filePath = path.join(__dirname, fileName);
-  
+
   fs.writeFileSync(filePath, JSON.stringify(result, null, 2));
   console.log(`Response from TaxFinder API saved to: ${fileName}`);
-  
-  return result;
+
+  const parsedResult = taxfinderResponseSchema.parse(result);
+
+  return parsedResult;
 }
 
 // Example using DD/MM/YYYY format
