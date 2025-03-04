@@ -5,14 +5,25 @@ import { traceable } from "langsmith/traceable";
 
 async function validateLongitud(pedimento: Pedimento) {
   const numeroPedimento = pedimento.encabezado_del_pedimento?.num_pedimento;
+  const numeroPedimentoSinEspacios = numeroPedimento?.replace(/\s+/g, '') || '';
+  const longitud = numeroPedimentoSinEspacios.length;
   
   const validation = {
     name: "Longitud",
     description: "El número de pedimento debe contar con 15 dígitos.",
     contexts: {
-      [CustomGlossTabContextType.PROVIDED]: {
+      [CustomGlossTabContextType.INFERRED]: {
         pedimento: {
-          data: [{ name: "Número de pedimento", value: numeroPedimento }]
+          data: [
+            {
+              name: "Número de pedimento sin espacios",
+              value: numeroPedimentoSinEspacios
+            },
+            {
+              name: "Longitud",
+              value: longitud
+            }
+          ]
         }
       }
     }
@@ -23,20 +34,19 @@ async function validateLongitud(pedimento: Pedimento) {
 
 async function validateAñoPedimento(pedimento: Pedimento) {
   const numeroPedimento = pedimento.encabezado_del_pedimento?.num_pedimento;
+  const numeroPedimentoSinEspacios = numeroPedimento?.replace(/\s+/g, '') || '';
   const añoActual = new Date().getFullYear();
   
   const validation = {
     name: "Año del pedimento",
     description: "El año del pedimento (inferido por los dígitos 1 y 2 del número del pedimento) debe ser iguales al año actual",
     contexts: {
-      [CustomGlossTabContextType.PROVIDED]: {
-        pedimento: {
-          data: [{ name: "Número de pedimento", value: numeroPedimento }]
-        }
-      },
       [CustomGlossTabContextType.INFERRED]: {
         "codigo": {
-          data: [{ name: "Año actual", value: añoActual }]
+          data: [
+            { name: "Año actual", value: añoActual },
+            { name: "Número de pedimento sin espacios", value: numeroPedimentoSinEspacios }
+          ]
         }
       }
     }
