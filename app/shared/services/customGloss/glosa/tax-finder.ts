@@ -32,6 +32,14 @@ const taxfinderResponseSchema = z.object({
       fecha_entrada_vigor: z.string(),
       abrogado: z.boolean(),
       oid: z.string(),
+    }).optional(),
+    regulaciones_no_arancelarias: z.object({
+      normas: z.array(z.object({
+        clave_acuerdo: z.string(),
+        claves_articulos: z.array(z.string()),
+        descripcion: z.string(),
+        em_sanitaria_nom: z.string(),
+      })).optional(),
     }),
     extra: z.object({
       ligie_arancel: z.number(),
@@ -61,7 +69,7 @@ const articuloFundamentoLegalResponseSchema = z.object({
         descripcion: z.string(),
       }),
     }),
-  })),
+  })).length(1),
 });
 
 
@@ -87,7 +95,13 @@ async function getArticuloFundamentoLegal({ clave_acuerdo, clave_regulacion, cla
 
   const parsedResult = articuloFundamentoLegalResponseSchema.parse(result);
 
-  return parsedResult;
+  const fundamentoLegal = parsedResult.data[0]?.articulo.fragmento_dof.descripcion;
+
+  if (!fundamentoLegal) {
+    throw new Error("Fundamento legal not found");
+  }
+
+  return fundamentoLegal;
 }
 
 /**
@@ -131,19 +145,23 @@ export async function getFraccionInfo({ fraccion, fechaDeEntrada, tipoDeOperacio
 
   const result = await response.json();
 
-  // Save response to a JSON file with timestamp
-  const fs = require('fs');
-  const path = require('path');
-  const timestamp = new Date().toISOString().replace(/:/g, '-');
-  const fileName = `taxfinder-response-${fraccion}-${timestamp}.json`;
-  const filePath = path.join(__dirname, fileName);
-
-  fs.writeFileSync(filePath, JSON.stringify(result, null, 2));
-  console.log(`Response from TaxFinder API saved to: ${fileName}`);
-
   const parsedResult = taxfinderResponseSchema.parse(result);
 
-  return parsedResult;
+  const regulacionesNoArancelarias = parsedResult.data.regulaciones_no_arancelarias.normas ?? [];
+
+  const regulacionesNoArancelariasConFundamentoLegal = await Promise.all(regulacionesNoArancelarias.map(async (regulacion) => {
+    const { clave_acuerdo, claves_articulos } = regulacion;
+    const fundamentoLegal = await getArticuloFundamentoLegal({ clave_acuerdo, clave_regulacion: "NOM", clave_articulo: claves_articulos });
+    return {
+      ...regulacion,
+      fundamentoLegal
+    };
+  }));
+
+  return {
+    ...parsedResult,
+    regulacionesNoArancelarias: regulacionesNoArancelariasConFundamentoLegal
+  };
 }
 
 // Example using DD/MM/YYYY format
