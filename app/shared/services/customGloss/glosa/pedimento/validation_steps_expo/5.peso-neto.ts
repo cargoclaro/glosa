@@ -1,26 +1,12 @@
 import { Pedimento } from "../../../data-extraction/schemas";
 import { glosar } from "../../validation-result";
 import { CustomGlossTabContextType } from "@prisma/client";
-import { TransportDocument } from "../../../data-extraction/schemas";
-import { Cfdi } from "../../../data-extraction/schemas/cfdi";
-import { PackingList } from "../../../data-extraction/schemas/packing-list";
+import { TransportDocument, PackingList, Cfdi } from "../../../data-extraction/mkdown_schemas";
 import { traceable } from "langsmith/traceable";
 
 export async function validatePesosYBultos(pedimento: Pedimento, transportDocument?: TransportDocument, packingList?: PackingList, cfdi?: Cfdi) {
   // Extract weight values from pedimento
   const pesoBrutoPedimento = pedimento.encabezado_del_pedimento?.peso_bruto;
-  // Extract weight values from transport document
-  const pesoBrutoTransportDocument = transportDocument?.gross_weight;
-  const pesoNetoTransportDocument = transportDocument?.net_weight;
-  const bultosTransportDocument = transportDocument?.number_of_packages;
-  
-  // Extract weight values from packing list
-  const pesoBrutoPackingList = packingList?.totals?.total_gross_weight;
-  const pesoNetoPackingList = packingList?.totals?.total_net_weight;
-  
-  // Extract weight values from CFDI
-  const pesoBrutoCFDI = cfdi?.peso_bruto_total;
-  const pesoNetoCFDI = cfdi?.peso_neto_total;
   
   const validation = {
     name: "Validación de pesos y bultos",
@@ -32,21 +18,17 @@ export async function validatePesosYBultos(pedimento: Pedimento, transportDocume
         },
         documentoDeTransporte: {
           data: [
-            { name: "Peso bruto", value: pesoBrutoTransportDocument },
-            { name: "Peso neto", value: pesoNetoTransportDocument },
-            { name: "Número de bultos", value: bultosTransportDocument }
+            { name: "Transport Document", value: transportDocument }
           ]
         },
         listaDeEmpaque: {
           data: [
-            { name: "Peso bruto", value: pesoBrutoPackingList },
-            { name: "Peso neto", value: pesoNetoPackingList }
+            { name: "Packing List", value: packingList }
           ]
         },
         cfdi: {
           data: [
-            { name: "Peso bruto", value: pesoBrutoCFDI },
-            { name: "Peso neto", value: pesoNetoCFDI }
+            { name: "CFDI", value: cfdi }
           ]
         }
       }
@@ -60,9 +42,6 @@ export async function validateBultos(pedimento: Pedimento, transportDocument?: T
   // Extract bultos values from pedimento
   const bultosPedimento = pedimento.identificadores_nivel_pedimento?.marcas_numeros_bultos;
   
-  // Extract bultos values from transport document
-  const bultosTransportDocument = transportDocument?.number_of_packages;
-  
   const validation = {
     name: "Coincidencia de bultos",
     description: "El número total de bultos debe coincidir entre el pedimento y el documento de transporte. Si no hay documento de transporte, marcar como advertencia.",
@@ -72,7 +51,7 @@ export async function validateBultos(pedimento: Pedimento, transportDocument?: T
           data: [{ name: "Número de bultos", value: bultosPedimento }]
         },
         documentoDeTransporte: {
-          data: [{ name: "Número de bultos", value: bultosTransportDocument }]
+          data: [{ name: "Transport Document", value: transportDocument }]
         }
       }
     }

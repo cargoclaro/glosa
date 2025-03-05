@@ -1,8 +1,7 @@
-import { Cove } from "../../../data-extraction/schemas/cove";
+import { Cove } from "../../../data-extraction/schemas";
 import { glosar } from "../../validation-result";
 import { CustomGlossTabContextType } from "@prisma/client";
-import { Invoice } from "../../../data-extraction/schemas/invoice";
-import { Carta318 } from "../../../data-extraction/schemas/carta-318";
+import { Invoice, Carta318 } from "../../../data-extraction/mkdown_schemas";
 import { traceable } from "langsmith/traceable";
 
 /**
@@ -19,11 +18,6 @@ export async function validateDatosGeneralesProveedor(
   const tipoIdentificadorCove = cove.datos_generales_proveedor?.tipo_identificador;
   const nombreRazonSocialCove = cove.datos_generales_proveedor?.nombre_razon_social;
 
-  // Import: get data from Invoice and Carta318
-  const nombreRazonSocialInvoice = invoice?.seller_details?.name;
-  const nombreRazonSocialCarta318 = carta318?.proveedor_comprador?.nombre;
-  const identificadorCarta318 = carta318?.proveedor_comprador?.tax_id;
-
   const validation = {
     name: "Datos generales del proveedor",
     description: "Verificar que los siguientes datos coincidan entre el COVE y la factura/carta 318:\n\n• RFC\n• Razón social\n Si no hay RFC, el tipo de identificador que tenga (tax id, tax id number, tax id number, etc) debe de coincidir.",
@@ -38,13 +32,12 @@ export async function validateDatosGeneralesProveedor(
         },
         factura: {
           data: [
-            { name: "Nombre/Razón social", value: nombreRazonSocialInvoice }
+            { name: "Factura", value: invoice }
           ]
         },
         carta318: {
           data: [
-            { name: "Nombre/Razón social", value: nombreRazonSocialCarta318 },
-            { name: "Identificador", value: identificadorCarta318 }
+            { name: "Carta 318", value: carta318 }
           ]
         }
       }
@@ -76,10 +69,6 @@ export async function validateDomicilioProveedor(
       domicilioCove.pais
     ].filter(Boolean).join(' ') : '';
 
-  // Import: get data from Invoice and Carta318
-  const domicilioInvoice = invoice?.seller_details?.address;
-  const domicilioCarta318 = carta318?.proveedor_comprador?.domicilio;
-
   const validation = {
     name: "Domicilio del proveedor",
     description: "Verificar que el domicilio fiscal del proveedor coincida entre el COVE y la factura/carta 318:\n\n• Domicilio fiscal",
@@ -89,10 +78,10 @@ export async function validateDomicilioProveedor(
           data: [{ name: "Domicilio completo", value: domicilioCoveCompleto }]
         },
         factura: {
-          data: [{ name: "Domicilio", value: domicilioInvoice }]
+          data: [{ name: "Factura", value: invoice }]
         },
         carta318: {
-          data: [{ name: "Domicilio", value: domicilioCarta318 }]
+          data: [{ name: "Carta 318", value: carta318 }]
         }
       }
     }
@@ -114,11 +103,6 @@ export async function validateDatosGeneralesDestinatario(
   const rfcDestinatarioCove = cove.datos_generales_destinatario?.rfc_destinatario;
   const nombreRazonSocialCove = cove.datos_generales_destinatario?.nombre_razon_social;
 
-  // Import: get data from Invoice and Carta318
-  const nombreRazonSocialInvoice = invoice?.bill_to?.name;
-  const nombreRazonSocialImportador = carta318?.importador_exportador?.nombre;
-  const rfcImportador = carta318?.importador_exportador?.rfc;
-
   const validation = {
     name: "Datos generales del destinatario",
     description: "Verificar que los siguientes datos coincidan entre el COVE y la factura/carta 318:\n\n• RFC\n• Razón social\n Si no hay RFC, el tipo de identificador que tenga (tax id, tax id number, tax id number, etc) debe de coincidir.",
@@ -132,13 +116,12 @@ export async function validateDatosGeneralesDestinatario(
         },
         factura: {
           data: [
-            { name: "Nombre/Razón social", value: nombreRazonSocialInvoice }
+            { name: "Factura", value: invoice }
           ]
         },
         carta318: {
           data: [
-            { name: "Nombre/Razón social", value: nombreRazonSocialImportador },
-            { name: "RFC Importador", value: rfcImportador }
+            { name: "Carta 318", value: carta318 }
           ]
         }
       }
@@ -170,20 +153,16 @@ export async function validateDomicilioDestinatario(
       domicilioCove.pais
     ].filter(Boolean).join(' ') : '';
 
-  // Import: get data from Invoice and Carta318
-  const domicilioInvoice = invoice?.bill_to?.address;
-  const domicilioImportador = carta318?.importador_exportador?.domicilio;
-
   const validation = {
     name: "Domicilio del destinatario",
     description: "Verificar que el domicilio fiscal del destinatario coincida entre el COVE y la factura/carta 318:\n\n• Domicilio fiscal",
     contexts: {
       [CustomGlossTabContextType.PROVIDED]: {
         factura: {
-          data: [{ name: "Domicilio", value: domicilioInvoice }]
+          data: [{ name: "Factura", value: invoice }]
         },
         carta318: {
-          data: [{ name: "Domicilio", value: domicilioImportador }]
+          data: [{ name: "Carta 318", value: carta318 }]
         }
       },
       [CustomGlossTabContextType.INFERRED]: {

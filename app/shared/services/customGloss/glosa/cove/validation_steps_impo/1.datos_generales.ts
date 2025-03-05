@@ -1,8 +1,7 @@
-import { Cove } from "../../../data-extraction/schemas/cove";
+import { Cove } from "../../../data-extraction/schemas";
 import { glosar } from "../../validation-result";
 import { CustomGlossTabContextType } from "@prisma/client";
-import { Invoice } from "../../../data-extraction/schemas/invoice";
-import { Carta318 } from "../../../data-extraction/schemas/carta-318";
+import { Invoice, Carta318 } from "../../../data-extraction/mkdown_schemas";
 import { traceable } from "langsmith/traceable";
 
 /**
@@ -12,8 +11,6 @@ import { traceable } from "langsmith/traceable";
 export async function validateNumeroFactura(cove: Cove, invoice?: Invoice, carta318?: Carta318) {
   // Extract invoice numbers from different sources
   const numeroFacturaCove = cove.numero_factura;
-  const numeroFacturaInvoice = invoice?.invoice_number;
-  const numeroFacturaCarta318 = carta318?.factura?.numero_factura;
 
   const validation = {
     name: "Número de Factura (Importación)",
@@ -24,10 +21,10 @@ export async function validateNumeroFactura(cove: Cove, invoice?: Invoice, carta
           data: [{ name: "Número de Factura", value: numeroFacturaCove }]
         },
         factura: {
-          data: [{ name: "Número de Factura", value: numeroFacturaInvoice }]
+          data: [{ name: "Factura", value: invoice }]
         },
         carta318: {
-          data: [{ name: "Número de Factura", value: numeroFacturaCarta318 }]
+          data: [{ name: "Carta 318", value: carta318 }]
         }
       }
     }
@@ -42,8 +39,6 @@ export async function validateNumeroFactura(cove: Cove, invoice?: Invoice, carta
 export async function validateFechaExpedicion(cove: Cove, invoice?: Invoice, carta318?: Carta318) {
   // Extract invoice dates from different sources
   const fechaExpedicionCove = cove.fecha_expedicion;
-  const fechaExpedicionInvoice = invoice?.invoice_date;
-  const fechaExpedicionCarta318 = carta318?.factura?.fecha_factura;
 
   const validation = {
     name: "Fecha de Expedición (Importación)",
@@ -54,10 +49,10 @@ export async function validateFechaExpedicion(cove: Cove, invoice?: Invoice, car
           data: [{ name: "Fecha de Expedición", value: fechaExpedicionCove }]
         },
         factura: {
-          data: [{ name: "Fecha de Expedición", value: fechaExpedicionInvoice }]
+          data: [{ name: "Factura", value: invoice }]
         },
         carta318: {
-          data: [{ name: "Fecha de Expedición", value: fechaExpedicionCarta318 }]
+          data: [{ name: "Carta 318", value: carta318 }]
         }
       }
     }

@@ -1,6 +1,6 @@
-import { Cove } from "../../../data-extraction/schemas/cove";
+import { Cove } from "../../../data-extraction/schemas";
 import { glosar } from "../../validation-result";
-import { Cfdi } from "../../../data-extraction/schemas/cfdi";
+import { Cfdi } from "../../../data-extraction/mkdown_schemas";
 import { CustomGlossTabContextType } from "@prisma/client";
 import { traceable } from "langsmith/traceable";
 
@@ -17,10 +17,6 @@ export async function validateDatosGeneralesProveedor(
   const tipoIdentificadorCove = cove.datos_generales_proveedor?.tipo_identificador;
   const nombreRazonSocialCove = cove.datos_generales_proveedor?.nombre_razon_social;
 
-  // Export: get data from CFDI
-  const nombreRazonSocialCfdi = cfdi?.emisor?.nombre;
-  const identificadorCfdi = cfdi?.emisor?.rfc;
-
   const validation = {
     name: "Datos generales del proveedor",
     description: "Verificar que los siguientes datos coincidan entre el COVE y el CFDI:\n\n• RFC\n• Razón social\n Si no hay RFC, el tipo de identificador que tenga (tax id, tax id number, tax id number, etc) debe de coincidir.",
@@ -35,8 +31,7 @@ export async function validateDatosGeneralesProveedor(
         },
         cfdi: {
           data: [
-            { name: "Nombre Razón Social", value: nombreRazonSocialCfdi },
-            { name: "Identificador", value: identificadorCfdi }
+            { name: "CFDI", value: cfdi }
           ]
         }
       }
@@ -67,9 +62,6 @@ export async function validateDomicilioProveedor(
       domicilioCove.pais
     ].filter(Boolean).join(' ') : '';
 
-  // Export: get data from CFDI
-  const domicilioCfdi = cfdi?.emisor?.domicilio;
-
   const validation = {
     name: "Domicilio del proveedor",
     description: "Verificar que el domicilio fiscal del proveedor coincida entre el COVE y el CFDI:\n\n• Domicilio fiscal",
@@ -79,7 +71,7 @@ export async function validateDomicilioProveedor(
           data: [{ name: "Domicilio", value: domicilioCoveCompleto }]
         },
         cfdi: {
-          data: [{ name: "Domicilio", value: domicilioCfdi }]
+          data: [{ name: "CFDI", value: cfdi }]
         }
       }
     }
@@ -100,10 +92,6 @@ export async function validateDatosGeneralesDestinatario(
   const rfcDestinatarioCove = cove.datos_generales_destinatario?.rfc_destinatario;
   const nombreRazonSocialCove = cove.datos_generales_destinatario?.nombre_razon_social;
 
-  // Export: get data from CFDI
-  const nombreRazonSocialCfdi = cfdi?.receptor?.nombre;
-  const rfcCfdi = cfdi?.receptor?.rfc;
-
   const validation = {
     name: "Datos generales del destinatario",
     description: "Verificar que los siguientes datos coincidan entre el COVE y el CFDI:\n\n• RFC\n• Razón social\n Si no hay RFC, el tipo de identificador que tenga (tax id, tax id number, tax id number, etc) debe de coincidir.",
@@ -117,8 +105,7 @@ export async function validateDatosGeneralesDestinatario(
         },
         cfdi: {
           data: [
-            { name: "Nombre Razón Social", value: nombreRazonSocialCfdi },
-            { name: "RFC", value: rfcCfdi }
+            { name: "CFDI", value: cfdi }
           ]
         }
       }
@@ -149,9 +136,6 @@ export async function validateDomicilioDestinatario(
       domicilioCove.pais
     ].filter(Boolean).join(' ') : '';
 
-  // Export: get data from CFDI
-  const domicilioCfdi = cfdi?.receptor?.domicilio;
-
   const validation = {
     name: "Domicilio del destinatario",
     description: "Verificar que el domicilio fiscal del destinatario coincida entre el COVE y el CFDI:\n\n• Domicilio fiscal",
@@ -161,7 +145,7 @@ export async function validateDomicilioDestinatario(
           data: [{ name: "Domicilio", value: domicilioCoveCompleto }]
         },
         cfdi: {
-          data: [{ name: "Domicilio", value: domicilioCfdi }]
+          data: [{ name: "CFDI", value: cfdi }]
         }
       }
     }

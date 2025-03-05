@@ -30,11 +30,11 @@ export const tracedPedimentoValidationStepsExpo = traceable(
       tracedNumeroDePedimento({ pedimento }),
       tracedTipoOperacion({ pedimento }),
       tracedClaveApendice15({ pedimento }),
-      tracedOperacionMonetaria({ pedimento, cove, ...(transportDocument ? { transportDocument } : {}), ...(cfdi ? { cfdi } : {}) }),
-      tracedPesosYBultos({ pedimento, ...(transportDocument ? { transportDocument } : {}), ...(packingList ? { packingList } : {}), ...(cfdi ? { cfdi } : {}) }),
-      tracedRfcFormat({ pedimento, cove, ...(cfdi ? { cfdi } : {}), ...(cartaSesion ? { cartaSesion } : {}) }),
-      tracedTipoTransporte({ pedimento, ...(transportDocument ? { transportDocument } : {}) }),
-      tracedPartidas({ pedimento, ...(cfdi ? { cfdi } : {}) })
+      tracedOperacionMonetaria({ pedimento, cove, transportDocument, cfdi }),
+      tracedPesosYBultos({ pedimento, transportDocument, packingList, cfdi }),
+      tracedRfcFormat({ pedimento, cove, cfdi, cartaSesion }),
+      tracedTipoTransporte({ pedimento, transportDocument }),
+      tracedPartidas({ pedimento, cfdi })
     ]),
   { name: "Pedimento (Exportación)" }
 ); 

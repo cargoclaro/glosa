@@ -1,7 +1,7 @@
 import { Pedimento } from "../../../data-extraction/schemas";
 import { glosar } from "../../validation-result";
 import { CustomGlossTabContextType } from "@prisma/client";
-import { Invoice } from "../../../data-extraction/schemas/invoice";
+import { Invoice } from "../../../data-extraction/mkdown_schemas";
 import { traceable } from "langsmith/traceable";
 
 // Función para validar preferencia arancelaria y certificado de origen
@@ -35,9 +35,6 @@ export async function validateCoherenciaUMC(pedimento: Pedimento, invoice?: Invo
   // Extraer partidas con información de UMC
   const partidas = pedimento.partidas || [];
   
-  // Extraer items de la factura
-  const itemsFactura = invoice?.items || [];
-  
   const validation = {
     name: "Coherencia de UMC y cantidad UMC",
     description: "Los campos UMC y cantidad UMC deben coincidir con los valores en la factura.",
@@ -50,7 +47,7 @@ export async function validateCoherenciaUMC(pedimento: Pedimento, invoice?: Invo
         },
         factura: {
           data: [
-            { name: "Items", value: itemsFactura }
+            { name: "Factura", value: invoice }
           ]
         }
       }

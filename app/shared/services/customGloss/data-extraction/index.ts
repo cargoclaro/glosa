@@ -58,22 +58,18 @@ async function extractTextFromPDFsParallel(
     factura ? extractTextFromImage(
       factura.originalFile,
       factura.documentType,
-      documentToSchema.factura
     ) : null,
     carta318 ? extractTextFromImage(
       carta318.originalFile,
       carta318.documentType,
-      documentToSchema.carta318
     ) : null,
     rrnas ? extractTextFromImage(
       rrnas.originalFile,
       rrnas.documentType,
-      documentToSchema.rrnas
     ) : null,
     documentoDeTransporte ? extractTextFromImage(
       documentoDeTransporte.originalFile,
       documentoDeTransporte.documentType,
-      documentToSchema.documentoDeTransporte
     ) : null,
     extractTextFromPDF(
       pedimento.originalFile,
@@ -83,7 +79,6 @@ async function extractTextFromPDFsParallel(
     listaDeEmpaque ? extractTextFromImage(
       listaDeEmpaque.originalFile,
       listaDeEmpaque.documentType,
-      documentToSchema.listaDeEmpaque
     ) : null,
     extractTextFromPDF(
       cove.originalFile,
@@ -93,12 +88,10 @@ async function extractTextFromPDFsParallel(
     cfdi ? extractTextFromImage(
       cfdi.originalFile,
       cfdi.documentType,
-      documentToSchema.cfdi
     ) : null,
     cartaCesionDeDerechos ? extractTextFromImage(
       cartaCesionDeDerechos.originalFile,
       cartaCesionDeDerechos.documentType,
-      documentToSchema.cartaCesionDeDerechos
     ) : null
   ]);
 

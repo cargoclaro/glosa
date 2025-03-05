@@ -1,6 +1,6 @@
-import { Cove } from "../../../data-extraction/schemas/cove";
+import { Cove } from "../../../data-extraction/schemas";
 import { glosar } from "../../validation-result";
-import { Cfdi } from "../../../data-extraction/schemas";
+import { Cfdi } from "../../../data-extraction/mkdown_schemas";
 import { CustomGlossTabContextType } from "@prisma/client";
 import { traceable } from "langsmith/traceable";
 
@@ -10,7 +10,6 @@ import { traceable } from "langsmith/traceable";
 export async function validateNumeroFactura(cove: Cove, cfdi?: Cfdi) {
   // Extract invoice numbers from different sources
   const numeroFacturaCove = cove.numero_factura;
-  const numeroFacturaCfdi = cfdi?.folio_fiscal;
 
   const validation = {
     name: "Número de Factura (Exportación)",
@@ -21,7 +20,7 @@ export async function validateNumeroFactura(cove: Cove, cfdi?: Cfdi) {
           data: [{ name: "Número de Factura", value: numeroFacturaCove }]
         },
         cfdi: {
-          data: [{ name: "Número de Factura", value: numeroFacturaCfdi }]
+          data: [{ name: "CFDI", value: cfdi }]
         }
       }
     }
@@ -36,7 +35,6 @@ export async function validateNumeroFactura(cove: Cove, cfdi?: Cfdi) {
 export async function validateFechaExpedicion(cove: Cove, cfdi?: Cfdi) {
   // Extract invoice dates from different sources
   const fechaExpedicionCove = cove.fecha_expedicion;
-  const fechaExpedicionCfdi = cfdi?.fecha_emision;
 
   const validation = {
     name: "Fecha de Expedición (Exportación)",
@@ -47,7 +45,7 @@ export async function validateFechaExpedicion(cove: Cove, cfdi?: Cfdi) {
           data: [{ name: "Fecha de Expedición", value: fechaExpedicionCove }]
         },
         cfdi: {
-          data: [{ name: "Fecha de Expedición", value: fechaExpedicionCfdi }]
+          data: [{ name: "CFDI", value: cfdi }]
         }
       }
     }
@@ -62,7 +60,6 @@ export async function validateFechaExpedicion(cove: Cove, cfdi?: Cfdi) {
 export async function validateRfc(cove: Cove, cfdi?: Cfdi) {
   // Extract RFC values from different sources
   const rfcCove = cove.datos_generales_destinatario?.rfc_destinatario;
-  const rfcCfdi = cfdi?.emisor?.rfc;
 
   const validation = {
     name: "RFC (Exportación)",
@@ -73,7 +70,7 @@ export async function validateRfc(cove: Cove, cfdi?: Cfdi) {
           data: [{ name: "RFC", value: rfcCove }]
         },
         cfdi: {
-          data: [{ name: "RFC", value: rfcCfdi }]
+          data: [{ name: "CFDI", value: cfdi }]
         }
       }
     }

@@ -1,4 +1,5 @@
-import { Pedimento, Cove, CartaSesion, Cfdi } from "../../../data-extraction/schemas";
+import { Pedimento, Cove } from "../../../data-extraction/schemas";
+import { Cfdi, CartaSesion } from "../../../data-extraction/mkdown_schemas";
 import { glosar } from "../../validation-result";
 import { CustomGlossTabContextType } from "@prisma/client";
 import { traceable } from "langsmith/traceable";
@@ -7,7 +8,6 @@ export async function validateRfcFormat(pedimento: Pedimento, cove: Cove, cfdi?:
   // Extract RFC values from documents
   const rfcPedimento = pedimento.datos_importador?.rfc;
   const rfcCove = cove?.datos_generales_destinatario?.rfc_destinatario;
-  const rfcCfdi = cfdi?.emisor?.rfc;
   
   const validation = {
     name: "Validación de los RFC",
@@ -21,7 +21,7 @@ export async function validateRfcFormat(pedimento: Pedimento, cove: Cove, cfdi?:
           data: [{ name: "RFC destinatario", value: rfcCove }]
         },
         cfdi: {
-          data: [{ name: "RFC emisor", value: rfcCfdi }]
+          data: [{ name: "CFDI", value: cfdi }]
         }
       }
     }
@@ -33,9 +33,6 @@ export async function validateRfcFormat(pedimento: Pedimento, cove: Cove, cfdi?:
 export async function validateCesionDerechos(pedimento: Pedimento, cartaSesion?: CartaSesion, cfdi?: Cfdi) {
   // Extract values from documents
   const fechaEntradaPedimento = pedimento.fecha_entrada_presentacion;
-  const rfcComercializadora = cartaSesion?.assignee?.identification_rfc;
-  const rfcExportadorCfdi = cfdi?.emisor?.rfc;
-  const fechaEmisionCesion = cartaSesion?.fecha_emision;
   
   const validation = {
     name: "Validación de cesión de derechos y carta 3.1.8",
@@ -47,13 +44,11 @@ export async function validateCesionDerechos(pedimento: Pedimento, cartaSesion?:
         },
         cesionDeDerechos: {
           data: [
-            { name: "RFC comercializadora", value: rfcComercializadora },
-            { name: "Fecha de emisión", value: fechaEmisionCesion },
-            { name: "Existe cesión de derechos", value: !!cartaSesion }
+            { name: "Cesión de derechos", value: cartaSesion }
           ]
         },
         cfdi: {
-          data: [{ name: "RFC exportador", value: rfcExportadorCfdi }]
+          data: [{ name: "CFDI", value: cfdi }]
         }
       }
     }
@@ -66,7 +61,6 @@ export async function validateDatosImportador(pedimento: Pedimento, cove: Cove, 
   // Extract values from documents
   const rfcPedimento = pedimento.datos_importador?.rfc;
   const rfcCove = cove?.datos_generales_destinatario?.rfc_destinatario;
-  const rfcCfdi = cfdi?.emisor?.rfc;
   
   const domicilioPedimento = pedimento.datos_importador?.domicilio;
   const domicilioCove = cove?.datos_generales_destinatario?.domicilio;
@@ -78,11 +72,9 @@ export async function validateDatosImportador(pedimento: Pedimento, cove: Cove, 
       domicilioCove.codigo_postal,
       domicilioCove.pais
     ].filter(Boolean).join(' ') : '';
-  const domicilioCfdi = cfdi?.emisor?.domicilio;
   
   const razonSocialPedimento = pedimento.datos_importador?.razon_social;
   const razonSocialCove = cove?.datos_generales_destinatario?.nombre_razon_social;
-  const razonSocialCfdi = cfdi?.emisor?.nombre;
   
   const validation = {
     name: "Validación de datos del exportador",
@@ -105,10 +97,7 @@ export async function validateDatosImportador(pedimento: Pedimento, cove: Cove, 
         },
         cfdi: {
           data: [
-            { name: "RFC", value: rfcCfdi },
-            { name: "Domicilio", value: domicilioCfdi },
-            { name: "Razón social", value: razonSocialCfdi },
-            { name: "Existe CFDI", value: !!cfdi }
+            { name: "CFDI", value: cfdi }
           ]
         }
       }
@@ -122,7 +111,6 @@ export async function validateDatosProveedor(pedimento: Pedimento, cove: Cove, c
   // Extract values from documents
   const nombreProveedorPedimento = pedimento.nombre_razon_social;
   const nombreProveedorCove = cove?.datos_generales_proveedor?.nombre_razon_social;
-  const nombreProveedorCfdi = cfdi?.receptor?.nombre;
   
   const domicilioProveedorPedimento = pedimento.domicilio;
   const domicilioProveedorCove = cove?.datos_generales_proveedor?.domicilio;
@@ -134,11 +122,9 @@ export async function validateDatosProveedor(pedimento: Pedimento, cove: Cove, c
       domicilioProveedorCove.codigo_postal,
       domicilioProveedorCove.pais
     ].filter(Boolean).join(' ') : '';
-  const domicilioProveedorCfdi = cfdi?.receptor?.domicilio;
   
   const idProveedorPedimento = pedimento.id_fiscal;
   const idProveedorCove = cove?.datos_generales_proveedor?.identificador;
-  const idProveedorCfdi = cfdi?.receptor?.rfc;
   
   const validation = {
     name: "Validación de datos comerciales del comprador",
@@ -161,10 +147,7 @@ export async function validateDatosProveedor(pedimento: Pedimento, cove: Cove, c
         },
         cfdi: {
           data: [
-            { name: "Nombre/Razón social", value: nombreProveedorCfdi },
-            { name: "Domicilio", value: domicilioProveedorCfdi },
-            { name: "RFC", value: idProveedorCfdi },
-            { name: "Existe CFDI", value: !!cfdi }
+            { name: "CFDI", value: cfdi }
           ]
         }
       }
@@ -178,13 +161,9 @@ export async function validateFechasYFolios(pedimento: Pedimento, cove: Cove, cf
   // Extract values from documents
   const fechaEntradaPedimento = pedimento.fecha_entrada_presentacion;
   const fechaExpedicionCove = cove?.fecha_expedicion;
-  const fechaExpedicionCfdi = cfdi?.fecha_emision;
   
   const numeroCovePedimento = pedimento.cove;
   const numeroCove = cove?.acuse_valor;
-  
-  // Para CFDI necesitamos el folio fiscal
-  const numeroFolioCfdi = cfdi?.folio_fiscal;
 
   const validation = {
     name: "Validación de fechas de emisión, números de folio y COVE",
@@ -205,8 +184,7 @@ export async function validateFechasYFolios(pedimento: Pedimento, cove: Cove, cf
         },
         cfdi: {
           data: [
-            { name: "Fecha de expedición", value: fechaExpedicionCfdi },
-            { name: "Folio fiscal", value: numeroFolioCfdi }
+            { name: "CFDI", value: cfdi }
           ]
         }
       }
@@ -220,7 +198,6 @@ export async function validateMonedaYEquivalencia(pedimento: Pedimento, cove: Co
  // Moneda
  const monedaPedimento = pedimento.datos_factura?.[0]?.moneda_factura;
  const monedaCove = cove?.datos_mercancia?.tipo_moneda;
- const monedaCfdi = cfdi?.moneda;
 
  // Valores DOF
  const factorDof = 1.5;
@@ -229,7 +206,6 @@ export async function validateMonedaYEquivalencia(pedimento: Pedimento, cove: Co
     // Extract values from documents
   const valorDolaresPedimento = pedimento.datos_factura?.[0]?.valor_dolares_factura;
   const valorDolaresCove = cove?.datos_mercancia?.valor_total_dolares;
-  const valorDolaresCfdi = cfdi?.total;
   
   // Valor factura from pedimento:
   const valorFactura = pedimento.datos_factura?.[0]?.valor_moneda_factura;
@@ -256,8 +232,7 @@ export async function validateMonedaYEquivalencia(pedimento: Pedimento, cove: Co
         },
         cfdi: {
           data: [
-            { name: "Moneda", value: monedaCfdi },
-            { name: "Valor total", value: valorDolaresCfdi }
+            { name: "CFDI", value: cfdi }
           ]
         },
       },

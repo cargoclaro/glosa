@@ -1,9 +1,7 @@
-import { Pedimento } from "../../../data-extraction/schemas";
+import { Pedimento, Cove } from "../../../data-extraction/schemas";
 import { glosar } from "../../validation-result";
 import { CustomGlossTabContextType } from "@prisma/client";
-import { TransportDocument } from "../../../data-extraction/schemas";
-import { Cfdi } from "../../../data-extraction/schemas/cfdi";
-import { Cove } from "../../../data-extraction/schemas/cove";
+import { Cfdi, TransportDocument } from "../../../data-extraction/mkdown_schemas";
 import { traceable } from "langsmith/traceable";
 
 // TODO: Agregar DOF y Dia de salida
@@ -11,8 +9,6 @@ import { traceable } from "langsmith/traceable";
 
 export async function validateFechaSalida(pedimento: Pedimento, transportDocument?: TransportDocument) {
   const pedimentoExitDate = pedimento.fecha_entrada_presentacion;
-  const transportExitDate = transportDocument?.date;
-  const transportType = transportDocument?.document_type;
   const fechaoperador = "24/07/2025"; //Temporary hardcoded value
   
   const validation = {
@@ -27,8 +23,7 @@ export async function validateFechaSalida(pedimento: Pedimento, transportDocumen
         },
         documentoDeTransporte: {
           data: [
-            { name: "Fecha de salida", value: transportExitDate },
-            { name: "Tipo de documento de transporte", value: transportType }
+            { name: "Transport Document", value: transportDocument }
           ]
         },
         operador: {
@@ -78,9 +73,6 @@ export async function validateValorComercial(pedimento: Pedimento, cove: Cove, c
   const valorComercialPedimento = pedimento.valores?.precio_pagado_valor_comercial;
   const tipoCambioPedimento = pedimento.encabezado_del_pedimento?.tipo_cambio;
   
-  const valorComercialCFDI = cfdi?.total;
-  const monedaCFDI = cfdi?.moneda;
-  
   const valorComercialCOVE = cove.datos_mercancia.valor_total;
   const monedaCOVE = cove.datos_mercancia.tipo_moneda;
   
@@ -97,8 +89,7 @@ export async function validateValorComercial(pedimento: Pedimento, cove: Cove, c
         },
         cfdi: {
           data: [
-            { name: "Valor comercial", value: valorComercialCFDI },
-            { name: "Moneda", value: monedaCFDI }
+            { name: "CFDI", value: cfdi }
           ]
         },
         cove: {
@@ -119,9 +110,6 @@ export async function validateValorDolares(pedimento: Pedimento, cove: Cove, cfd
   const valorComercialPedimento = pedimento.valores?.precio_pagado_valor_comercial;
   const tipoCambioPedimento = pedimento.encabezado_del_pedimento?.tipo_cambio;
   
-  const valorComercialCFDI = cfdi?.total;
-  const monedaCFDI = cfdi?.moneda;
-  
   const valorComercialCOVE = cove.datos_mercancia.valor_total;
   const monedaCOVE = cove.datos_mercancia.tipo_moneda;
   
@@ -139,8 +127,7 @@ export async function validateValorDolares(pedimento: Pedimento, cove: Cove, cfd
         },
         cfdi: {
           data: [
-            { name: "Valor comercial", value: valorComercialCFDI },
-            { name: "Moneda", value: monedaCFDI }
+            { name: "CFDI", value: cfdi }
           ]
         },
         cove: {

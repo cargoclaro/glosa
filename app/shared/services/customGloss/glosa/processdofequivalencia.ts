@@ -1,6 +1,5 @@
 // processdofequivalencia.ts
 
-import fetch from 'node-fetch';
 import { load } from 'cheerio';
 import type { Element } from 'domhandler';
 

@@ -8,9 +8,9 @@ import { tracedMercancias } from "./3.validacion_mercancias";
 export const tracedCoveValidationStepsExpo = traceable(
   async ({ cove, cfdi, invoice }: { cove: Cove; cfdi?: Cfdi; invoice?: Invoice }) => 
     Promise.all([
-      tracedDatosGenerales({ cove, ...(cfdi ? { cfdi } : {}) }),
-      tracedProveedorDestinatario({ cove, ...(cfdi ? { cfdi } : {}) }),
-      tracedMercancias({ cove, ...(invoice ? { invoice } : {}), ...(cfdi ? { cfdi } : {}) }),
+      tracedDatosGenerales({ cove, cfdi }),
+      tracedProveedorDestinatario({ cove, cfdi }),
+      tracedMercancias({ cove, invoice, cfdi }),
     ]),
   { name: "COVE (Exportación)" }
 );

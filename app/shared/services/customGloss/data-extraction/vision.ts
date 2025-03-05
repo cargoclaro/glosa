@@ -2,12 +2,10 @@ import { generateText } from "ai";
 import { wrapAISDKModel } from "langsmith/wrappers/vercel";
 import { google } from "@ai-sdk/google";
 import { DocumentType } from "../classification";
-import { z } from "zod";
 
-export async function extractTextFromImage<T>(
+export async function extractTextFromImage(
   pdfFile: File,
   documentType: DocumentType,
-  schema: z.ZodType<T>,
 ) {
   const base64Data = Buffer.from(await pdfFile.arrayBuffer()).toString('base64');
   const { text } = await generateText({
