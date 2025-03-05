@@ -42,6 +42,7 @@ export async function validateModalidadMedioTransporte(pedimento: Pedimento, tra
   // Extract transport means from pedimento
   const tipoTransporteEntradaSalida = pedimento.medios_transporte?.entrada_salida;
   
+  const transportDocmkdown = transportDocument?.markdown_representation;
   const validation = {
     name: "Modalidad y medio de transporte",
     description: "La modalidad del documento de transporte y el medio de transporte deben ser coherentes entre sí. En transporte terrestre, puede no existir un documento de transporte, pero si lo hay, debe coincidir con el pedimento. Si la clave del medio de transporte es '7' (carretero) y no se proporciona modalidad de documento, esto es válido, pero se debe verificar que no falte información en documentos de transporte relacionados. Validar contra el apendice 3.",
@@ -54,7 +55,7 @@ export async function validateModalidadMedioTransporte(pedimento: Pedimento, tra
         },
         documentoDeTransporte: {
           data: [
-            { name: "Transport Document", value: transportDocument }
+            { name: "Transport Document", value: transportDocmkdown }
           ]
         }
       },
@@ -74,6 +75,7 @@ export async function validateModalidadMedioTransporte(pedimento: Pedimento, tra
 export async function validateNumeroGuiaEmbarque(pedimento: Pedimento, transportDocument?: TransportDocument) {
   // Extract guide/shipment number from pedimento
   const numeroGuiaEmbarque = pedimento.no_guia_embarque_id;
+  const transportDocmkdown = transportDocument?.markdown_representation;
   
   const validation = {
     name: "Número de guía o embarque",
@@ -88,7 +90,7 @@ export async function validateNumeroGuiaEmbarque(pedimento: Pedimento, transport
         },
         documentoDeTransporte: {
           data: [
-            { name: "Transport Document", value: transportDocument }
+            { name: "Transport Document", value: transportDocmkdown }
           ]
         }
       }

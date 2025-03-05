@@ -8,6 +8,7 @@ export async function validateRfcFormat(pedimento: Pedimento, cove: Cove, cfdi?:
   // Extract RFC values from documents
   const rfcPedimento = pedimento.datos_importador?.rfc;
   const rfcCove = cove?.datos_generales_destinatario?.rfc_destinatario;
+  const cfdiMkdown = cfdi?.markdown_representation;
   
   const validation = {
     name: "Validación de los RFC",
@@ -21,7 +22,7 @@ export async function validateRfcFormat(pedimento: Pedimento, cove: Cove, cfdi?:
           data: [{ name: "RFC destinatario", value: rfcCove }]
         },
         cfdi: {
-          data: [{ name: "CFDI", value: cfdi }]
+          data: [{ name: "CFDI", value: cfdiMkdown }]
         }
       }
     }
@@ -33,7 +34,9 @@ export async function validateRfcFormat(pedimento: Pedimento, cove: Cove, cfdi?:
 export async function validateCesionDerechos(pedimento: Pedimento, cartaSesion?: CartaSesion, cfdi?: Cfdi) {
   // Extract values from documents
   const fechaEntradaPedimento = pedimento.fecha_entrada_presentacion;
-  
+  const cfdiMkdown = cfdi?.markdown_representation;
+  const cartaSesionMkdown = cartaSesion?.markdown_representation;
+
   const validation = {
     name: "Validación de cesión de derechos y carta 3.1.8",
     description: "Si existe Cesión de Derechos:\n\nComparar:\n• RFC comercializadora vs. RFC importador en Carta 3.1.8\n• Fecha de emisión de la Cesión debe ser anterior a Fecha de entrada del Pedimento\n\nPrecedencia:\n• La Carta 3.1.8 anula cualquier discrepancia en Factura/COVE\n• Si no hay Cesión, omitir y marcar como válido",
@@ -44,11 +47,11 @@ export async function validateCesionDerechos(pedimento: Pedimento, cartaSesion?:
         },
         cesionDeDerechos: {
           data: [
-            { name: "Cesión de derechos", value: cartaSesion }
+            { name: "Cesión de derechos", value: cartaSesionMkdown }
           ]
         },
         cfdi: {
-          data: [{ name: "CFDI", value: cfdi }]
+          data: [{ name: "CFDI", value: cfdiMkdown }]
         }
       }
     }
@@ -76,6 +79,8 @@ export async function validateDatosImportador(pedimento: Pedimento, cove: Cove, 
   const razonSocialPedimento = pedimento.datos_importador?.razon_social;
   const razonSocialCove = cove?.datos_generales_destinatario?.nombre_razon_social;
   
+  const cfdiMkdown = cfdi?.markdown_representation;
+
   const validation = {
     name: "Validación de datos del exportador",
     description: "Validar que los siguientes campos coincidan literalmente entre documentos:\n\n• RFC: Debe coincidir entre Pedimento, CFDI y COVE (considerando exportador y comprador en exportación)\n• Domicilio fiscal: Debe coincidir entre Pedimento y CFDI para el exportador\n• Razón social: Debe coincidir entre Pedimento, CFDI y COVE",
@@ -97,7 +102,7 @@ export async function validateDatosImportador(pedimento: Pedimento, cove: Cove, 
         },
         cfdi: {
           data: [
-            { name: "CFDI", value: cfdi }
+            { name: "CFDI", value: cfdiMkdown }
           ]
         }
       }
@@ -125,6 +130,8 @@ export async function validateDatosProveedor(pedimento: Pedimento, cove: Cove, c
   
   const idProveedorPedimento = pedimento.id_fiscal;
   const idProveedorCove = cove?.datos_generales_proveedor?.identificador;
+
+  const cfdiMkdown = cfdi?.markdown_representation;
   
   const validation = {
     name: "Validación de datos comerciales del comprador",
@@ -147,7 +154,7 @@ export async function validateDatosProveedor(pedimento: Pedimento, cove: Cove, c
         },
         cfdi: {
           data: [
-            { name: "CFDI", value: cfdi }
+            { name: "CFDI", value: cfdiMkdown }
           ]
         }
       }
@@ -164,6 +171,8 @@ export async function validateFechasYFolios(pedimento: Pedimento, cove: Cove, cf
   
   const numeroCovePedimento = pedimento.cove;
   const numeroCove = cove?.acuse_valor;
+
+  const cfdiMkdown = cfdi?.markdown_representation;
 
   const validation = {
     name: "Validación de fechas de emisión, números de folio y COVE",
@@ -184,7 +193,7 @@ export async function validateFechasYFolios(pedimento: Pedimento, cove: Cove, cf
         },
         cfdi: {
           data: [
-            { name: "CFDI", value: cfdi }
+            { name: "CFDI", value: cfdiMkdown }
           ]
         }
       }
@@ -210,6 +219,8 @@ export async function validateMonedaYEquivalencia(pedimento: Pedimento, cove: Co
   // Valor factura from pedimento:
   const valorFactura = pedimento.datos_factura?.[0]?.valor_moneda_factura;
   const factorMonedaFactura = pedimento.datos_factura?.[0]?.factor_moneda_factura;
+
+  const cfdiMkdown = cfdi?.markdown_representation;
   
   const validation = {
     name: "Validación de moneda y factor de equivalencia",
@@ -232,7 +243,7 @@ export async function validateMonedaYEquivalencia(pedimento: Pedimento, cove: Co
         },
         cfdi: {
           data: [
-            { name: "CFDI", value: cfdi }
+            { name: "CFDI", value: cfdiMkdown }
           ]
         },
       },

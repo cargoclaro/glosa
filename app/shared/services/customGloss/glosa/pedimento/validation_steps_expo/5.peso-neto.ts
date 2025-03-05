@@ -7,7 +7,10 @@ import { traceable } from "langsmith/traceable";
 export async function validatePesosYBultos(pedimento: Pedimento, transportDocument?: TransportDocument, packingList?: PackingList, cfdi?: Cfdi) {
   // Extract weight values from pedimento
   const pesoBrutoPedimento = pedimento.encabezado_del_pedimento?.peso_bruto;
-  
+  const cfdiMkdown = cfdi?.markdown_representation;
+  const packingListMkdown = packingList?.markdown_representation;
+  const transportDocmkdown = transportDocument?.markdown_representation;
+
   const validation = {
     name: "Validación de pesos y bultos",
     description: "Para validar los pesos y bultos, sigue estos pasos detallados:\n\n1. Verifica que el peso bruto declarado en el pedimento sea igual o menor a alguno de los pesos declarados en el documento de transporte, packing list o CFDI.\n2. Asegúrate de que el peso bruto declarado en el pedimento coincida con el peso declarado en el documento de transporte, carta 318 o packing list. La relación entre estos pesos debe ser lógica y consistente.\n3. Comprueba que el peso neto declarado en el pedimento sea menor que el peso bruto y que sea consistente con los documentos soporte.\n4. Verifica que el número total de bultos coincida entre el pedimento, documento de transporte y/o CFDI",
@@ -18,17 +21,17 @@ export async function validatePesosYBultos(pedimento: Pedimento, transportDocume
         },
         documentoDeTransporte: {
           data: [
-            { name: "Transport Document", value: transportDocument }
+            { name: "Transport Document", value: transportDocmkdown }
           ]
         },
         listaDeEmpaque: {
           data: [
-            { name: "Packing List", value: packingList }
+            { name: "Packing List", value: packingListMkdown }
           ]
         },
         cfdi: {
           data: [
-            { name: "CFDI", value: cfdi }
+            { name: "CFDI", value: cfdiMkdown }
           ]
         }
       }
@@ -41,6 +44,7 @@ export async function validatePesosYBultos(pedimento: Pedimento, transportDocume
 export async function validateBultos(pedimento: Pedimento, transportDocument?: TransportDocument) {
   // Extract bultos values from pedimento
   const bultosPedimento = pedimento.identificadores_nivel_pedimento?.marcas_numeros_bultos;
+  const transportDocmkdown = transportDocument?.markdown_representation;
   
   const validation = {
     name: "Coincidencia de bultos",
@@ -51,7 +55,7 @@ export async function validateBultos(pedimento: Pedimento, transportDocument?: T
           data: [{ name: "Número de bultos", value: bultosPedimento }]
         },
         documentoDeTransporte: {
-          data: [{ name: "Transport Document", value: transportDocument }]
+          data: [{ name: "Transport Document", value: transportDocmkdown }]
         }
       }
     }

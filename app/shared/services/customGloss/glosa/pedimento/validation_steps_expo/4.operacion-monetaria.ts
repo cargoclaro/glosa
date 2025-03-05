@@ -75,6 +75,8 @@ export async function validateValorComercial(pedimento: Pedimento, cove: Cove, c
   
   const valorComercialCOVE = cove.datos_mercancia.valor_total;
   const monedaCOVE = cove.datos_mercancia.tipo_moneda;
+
+  const cfdiMkdown = cfdi?.markdown_representation;
   
   const validation = {
     name: "Valor comercial",
@@ -89,7 +91,7 @@ export async function validateValorComercial(pedimento: Pedimento, cove: Cove, c
         },
         cfdi: {
           data: [
-            { name: "CFDI", value: cfdi }
+            { name: "CFDI", value: cfdiMkdown }
           ]
         },
         cove: {
@@ -112,6 +114,8 @@ export async function validateValorDolares(pedimento: Pedimento, cove: Cove, cfd
   
   const valorComercialCOVE = cove.datos_mercancia.valor_total;
   const monedaCOVE = cove.datos_mercancia.tipo_moneda;
+
+  const cfdiMkdown = cfdi?.markdown_representation;
   
   const validation = {
     name: "Valor dolares",
@@ -127,7 +131,7 @@ export async function validateValorDolares(pedimento: Pedimento, cove: Cove, cfd
         },
         cfdi: {
           data: [
-            { name: "CFDI", value: cfdi }
+            { name: "CFDI", value: cfdiMkdown }
           ]
         },
         cove: {
