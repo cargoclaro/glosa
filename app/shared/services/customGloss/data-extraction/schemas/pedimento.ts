@@ -68,15 +68,15 @@ export const pedimentoSchema = z.object({
     .object({
       valor_dolares: z
         .number()
-        .describe("Value in USD with 2 decimal places")
+        .describe("Value in USD with 2 decimal places, always together it is never separated by commas, spaces or any other character")
         .optional(),
       valor_aduana: z
         .number()
-        .describe("Customs value in MXN")
+        .describe("Customs value in MXN, always together it is never separated by commas, spaces or any other character")
         .optional(),
       precio_pagado_valor_comercial: z
         .number()
-        .describe("Commercial value/paid price in MXN")
+        .describe("Commercial value/paid price in MXN, always together it is never separated by commas, spaces or any other character")
         .optional()
     })
     .describe("Values related to the transaction")
