@@ -1,4 +1,5 @@
-import { Pedimento, Cove, Cfdi, CartaSesion, TransportDocument, PackingList } from "../../../data-extraction/schemas";
+import { Pedimento, Cove } from "../../../data-extraction/schemas";
+import { TransportDocument, PackingList, Cfdi, CartaSesion } from "../../../data-extraction/mkdown_schemas";
 import { traceable } from "langsmith/traceable";
 import { tracedNumeroDePedimento } from "./1.numero-de-pedimento";
 import { tracedTipoOperacion } from "./2.tipo-operacion";

@@ -1,4 +1,5 @@
-import { Cove, Invoice, Carta318 } from "../../../data-extraction/schemas";
+import { Cove } from "../../../data-extraction/schemas";
+import { Invoice, Carta318 } from "../../../data-extraction/mkdown_schemas";
 import { traceable } from "langsmith/traceable";
 import { tracedDatosGenerales } from "./1.datos_generales";
 import { tracedChooseDocument } from "./2.datos_proveedor_destinatario";
