@@ -14,7 +14,8 @@ export const documentTypes = [
   "cove",
   "rrnas",
   "listaDeEmpaque",
-  "cfdi"
+  "cfdi",
+  "otros"
 ] as const;
 
 export type DocumentType = (typeof documentTypes)[number];
@@ -72,6 +73,9 @@ async function classifyDocumentsParallel(
           - cfdi: 
             Comprobante Fiscal Digital por Internet, factura electrónica mexicana 
             con UUID y sellos digitales SAT.
+
+          - otros:
+            Documentos que no se ajustan a los tipos anteriores. Ej. NOMs, etc.
         `)
       }),
       messages: [
