@@ -1,9 +1,9 @@
 import { Pedimento } from "../../../data-extraction/schemas";
 import { glosar } from "../../validation-result";
 import { CustomGlossTabContextType } from "@prisma/client";
-import { TransportDocument } from "../../../data-extraction/schemas";
-import { Carta318 } from "../../../data-extraction/schemas/carta-318";
-import { Invoice } from "../../../data-extraction/schemas/invoice";
+import { TransportDocument } from "../../../data-extraction/mkdown_schemas/transport-document";
+import { Carta318 } from "../../../data-extraction/mkdown_schemas/carta-318";
+import { Invoice } from "../../../data-extraction/mkdown_schemas/invoice";
 import { traceable } from "langsmith/traceable";
 
 // TODO: Agregar DOF
@@ -11,8 +11,8 @@ import { traceable } from "langsmith/traceable";
 
 export async function validateTransportDocumentEntryDate(pedimento: Pedimento, transportDocument?: TransportDocument) {
   const pedimentoEntryDate = pedimento.fecha_entrada_presentacion;
-  const transportEntryDate = transportDocument?.date;
-  const transportType = transportDocument?.document_type;
+  const transportDocmkdown = transportDocument?.markdown_representation;
+
   
   const validation = {
     name: "Fecha de entrada del documento de transporte",
@@ -26,8 +26,7 @@ export async function validateTransportDocumentEntryDate(pedimento: Pedimento, t
         },
         documentoDeTransporte: {
           data: [
-            { name: "Fecha de entrada", value: transportEntryDate },
-            { name: "Tipo de documento de transporte", value: transportType }
+            { name: "Documento de transporte", value: transportDocmkdown },
           ]
         }
       }
@@ -76,32 +75,11 @@ export async function validateIncrementables(pedimento: Pedimento, invoice?: Inv
     embalajes: pedimento.incrementables?.embalajes,
     otros: pedimento.incrementables?.otros_incrementables
   };
-  // Get incrementables from carta 318 (if available)
-  const incrementablesCarta = carta318?.detalle_facturacion?.incrementables;
-  const incrementablesCarta318 = { 
-    fletes: incrementablesCarta?.fletes,
-    seguros: incrementablesCarta?.seguros,
-    embalajes: incrementablesCarta?.embalajes,
-    otros: incrementablesCarta?.otros
-  };
 
-  // Safely access incrementables from invoice if it exists
-  const incrementablesInv = invoice?.incrementables;
-  const incrementablesInvoice = { 
-    fletes: incrementablesInv?.fletes,
-    seguros: incrementablesInv?.seguros,
-    embalajes: incrementablesInv?.embalajes,
-    otros: incrementablesInv?.otros
-  };
-  
-  // Get incrementables from transport document
-  const incrementablesTransport = transportDocument?.costos_adicionales?.incrementables;
-  const incrementablesTransportDocument = {
-    fletes: incrementablesTransport?.fletes,
-    seguros: incrementablesTransport?.seguros,
-    embalajes: incrementablesTransport?.embalajes,
-    otros: incrementablesTransport?.otros
-  };
+  // Update to use markdown representations
+  const carta318mkdown = carta318?.markdown_representation;
+  const invoicemkdown = invoice?.markdown_representation;
+  const transportDocmkdown = transportDocument?.markdown_representation;
   
   const validation = {
     name: "Incrementables",
@@ -115,17 +93,17 @@ export async function validateIncrementables(pedimento: Pedimento, invoice?: Inv
         },
         carta318: {
           data: [
-            { name: "Incrementables", value: incrementablesCarta318 }
+            { name: "Carta 318", value: carta318mkdown }
           ]
         },
         factura: {
           data: [
-            { name: "Incrementables", value: incrementablesInvoice }
+            { name: "Factura", value: invoicemkdown }
           ]
         },
         transporte: {
           data: [
-            { name: "Incrementables", value: incrementablesTransportDocument }
+            { name: "Documento de transporte", value: transportDocmkdown }
           ]
         }
       }
@@ -137,68 +115,16 @@ export async function validateIncrementables(pedimento: Pedimento, invoice?: Inv
 
 export async function validateValoresPedimento(pedimento: Pedimento, invoice?: Invoice, transportDocument?: TransportDocument, carta318?: Carta318) {
   // Extract monetary values from pedimento
-  const valorAduana = pedimento.valores?.valor_aduana; // Customs value in MXN
-  const valorComercial = pedimento.valores?.precio_pagado_valor_comercial; // Commercial value/paid price in MXN
-  const valorDolares = pedimento.valores?.valor_dolares; // Value in USD
-  const tipoCambio = pedimento.encabezado_del_pedimento?.tipo_cambio; // Exchange rate from pedimento
-  const tipoCambioDOF = 17.1234; // Official exchange rate from DOF (Diario Oficial de la Federación)
+  const valorAduana = pedimento.valores?.valor_aduana;
+  const valorComercial = pedimento.valores?.precio_pagado_valor_comercial;
+  const valorDolares = pedimento.valores?.valor_dolares;
+  const tipoCambio = pedimento.encabezado_del_pedimento?.tipo_cambio;
+  const tipoCambioDOF = 17.1234;
 
-  // Extract incrementables (costs that increase customs value) from pedimento
-  const incrementablesPedimento = {
-    fletes: pedimento.incrementables?.fletes, // Freight costs
-    seguros: pedimento.incrementables?.seguros, // Insurance costs
-    embalajes: pedimento.incrementables?.embalajes, // Packaging costs
-    otros: pedimento.incrementables?.otros_incrementables // Other incremental costs
-  };
-
-  // Extract incrementables from Carta 318 (customs value declaration)
-  const incrementablesCarta318 = {
-    fletes: carta318?.detalle_facturacion?.incrementables?.fletes,
-    seguros: carta318?.detalle_facturacion?.incrementables?.seguros,
-    embalajes: carta318?.detalle_facturacion?.incrementables?.embalajes,
-    otros: carta318?.detalle_facturacion?.incrementables?.otros
-  };
-
-  // Extract incrementables from commercial invoice
-  const incrementablesInvoice = {
-    fletes: invoice?.incrementables?.fletes,
-    seguros: invoice?.incrementables?.seguros,
-    embalajes: invoice?.incrementables?.embalajes,
-    otros: invoice?.incrementables?.otros
-  };
-
-  // Extract incrementables from transport document
-  const incrementablesTransportDocument = {
-    fletes: transportDocument?.costos_adicionales?.incrementables?.fletes,
-    seguros: transportDocument?.costos_adicionales?.incrementables?.seguros,
-    embalajes: transportDocument?.costos_adicionales?.incrementables?.embalajes,
-    otros: transportDocument?.costos_adicionales?.incrementables?.otros
-  };
-
-  // Group all incrementables for comparison
-  const incrementables = {
-    pedimento: incrementablesPedimento,
-    carta318: incrementablesCarta318,
-    invoice: incrementablesInvoice,
-    transportDocument: incrementablesTransportDocument
-  };
-
-  // Extract decrementables (costs that decrease customs value)
-  const decrementablesPedimento = pedimento.decrementables;
-  const decrementablesCarta318 = carta318?.detalle_facturacion?.decrementables;
-  const decrementablesInvoice = invoice?.decrementables;
-
-  // Group all decrementables for comparison
-  const decrementables = {
-    pedimento: decrementablesPedimento,
-    carta318: decrementablesCarta318,
-    invoice: decrementablesInvoice
-  };
-
-  // Extract commercial values from documents
-  const valorCarta318 = carta318?.detalle_facturacion?.valor_comercial;
-  const valorInvoice = invoice?.valor_comercial;
-
+  // Update to use markdown representations
+  const carta318mkdown = carta318?.markdown_representation;
+  const invoicemkdown = invoice?.markdown_representation;
+  const transportDocmkdown = transportDocument?.markdown_representation;
   
   const validation = {
     name: "Valores del pedimento",
@@ -213,26 +139,21 @@ export async function validateValoresPedimento(pedimento: Pedimento, invoice?: I
             { name: "Tipo de cambio", value: tipoCambio }
           ]
         },
-        incrementables: {
-          data: [
-            { name: "Incrementables", value: incrementables }
-          ]
-        },
-        decrementables: {
-          data: [
-            { name: "Decrementables", value: decrementables }
-          ]
-        },
         carta318: {
           data: [
-            { name: "Valor comercial", value: valorCarta318 }
+            { name: "Carta 318", value: carta318mkdown }
           ]
         },
         factura: {
           data: [
-            { name: "Valor comercial", value: valorInvoice }
+            { name: "Factura", value: invoicemkdown }
           ]
         },
+        transporte: {
+          data: [
+            { name: "Documento de transporte", value: transportDocmkdown }
+          ]
+        }
       },
       [CustomGlossTabContextType.EXTERNAL]: {
         dof: {

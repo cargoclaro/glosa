@@ -1,13 +1,15 @@
-import { Pedimento, Carta318, Cove, CartaSesion, Invoice } from "../../../data-extraction/schemas";
+import { Pedimento, Cove } from "../../../data-extraction/schemas";
+import { Carta318 } from "../../../data-extraction/mkdown_schemas/carta-318";
+import { CartaSesion } from "../../../data-extraction/mkdown_schemas/carta-sesion";
+import { Invoice } from "../../../data-extraction/mkdown_schemas/invoice";
 import { glosar } from "../../validation-result";
 import { CustomGlossTabContextType } from "@prisma/client";
 import { traceable } from "langsmith/traceable";
 
 export async function validateRfcFormat(pedimento: Pedimento, cove: Cove, carta318?: Carta318) {
-  // Extract RFC values from documents
   const rfcPedimento = pedimento.datos_importador?.rfc;
   const rfcCove = cove?.datos_generales_destinatario?.rfc_destinatario;
-  const rfcCarta318 = carta318?.importador_exportador?.rfc;
+  const carta318mkdown = carta318?.markdown_representation;
   
   const validation = {
     name: "Validación de los RFC",
@@ -21,7 +23,7 @@ export async function validateRfcFormat(pedimento: Pedimento, cove: Cove, carta3
           data: [{ name: "RFC", value: rfcCove }]
         },
         carta318: {
-          data: [{ name: "RFC", value: rfcCarta318 }]
+          data: [{ name: "Carta 318", value: carta318mkdown }]
         }
       }
     }
@@ -31,11 +33,9 @@ export async function validateRfcFormat(pedimento: Pedimento, cove: Cove, carta3
 }
 
 export async function validateCesionDerechos(pedimento: Pedimento, cartaSesion?: CartaSesion, carta318?: Carta318) {
-  // Extract values from documents
   const fechaEntradaPedimento = pedimento.fecha_entrada_presentacion;
-  const rfcComercializadora = cartaSesion?.assignee?.identification_rfc;
-  const rfcImportadorCarta318 = carta318?.importador_exportador?.rfc;
-  const fechaEmisionCesion = cartaSesion?.fecha_emision;
+  const cartaSesionmkdown = cartaSesion?.markdown_representation;
+  const carta318mkdown = carta318?.markdown_representation;
   
   const validation = {
     name: "Validación de cesión de derechos y carta 3.1.8",
@@ -47,13 +47,12 @@ export async function validateCesionDerechos(pedimento: Pedimento, cartaSesion?:
         },
         cartaSesion: {
           data: [
-            { name: "RFC comercializadora", value: rfcComercializadora },
-            { name: "Fecha de emisión", value: fechaEmisionCesion },
+            { name: "Carta sesión", value: cartaSesionmkdown },
             { name: "Existe cesión de derechos", value: !!cartaSesion }
           ]
         },
         carta318: {
-          data: [{ name: "RFC importador", value: rfcImportadorCarta318 }]
+          data: [{ name: "Carta 318", value: carta318mkdown }]
         }
       }
     }
@@ -63,13 +62,15 @@ export async function validateCesionDerechos(pedimento: Pedimento, cartaSesion?:
 }
 
 export async function validateDatosImportador(pedimento: Pedimento, cove: Cove, carta318?: Carta318) {
-  // Extract values from documents
   const rfcPedimento = pedimento.datos_importador?.rfc;
   const rfcCove = cove?.datos_generales_destinatario?.rfc_destinatario;
-  const rfcCarta318 = carta318?.importador_exportador?.rfc;
-  
   const domicilioPedimento = pedimento.datos_importador?.domicilio;
   const domicilioCove = cove?.datos_generales_destinatario?.domicilio;
+  const razonSocialPedimento = pedimento.datos_importador?.razon_social;
+  const razonSocialCove = cove?.datos_generales_destinatario?.nombre_razon_social;
+  
+  const carta318mkdown = carta318?.markdown_representation;
+  
   const domicilioCoveCompleto = domicilioCove ?
     [
       domicilioCove.calle,
@@ -78,11 +79,6 @@ export async function validateDatosImportador(pedimento: Pedimento, cove: Cove, 
       domicilioCove.codigo_postal,
       domicilioCove.pais
     ].filter(Boolean).join(' ') : '';
-  const domicilioCarta318 = carta318?.importador_exportador?.domicilio;
-  
-  const razonSocialPedimento = pedimento.datos_importador?.razon_social;
-  const razonSocialCove = cove?.datos_generales_destinatario?.nombre_razon_social;
-  const razonSocialCarta318 = carta318?.importador_exportador?.nombre;
   
   const validation = {
     name: "Validación de datos del importador",
@@ -105,9 +101,7 @@ export async function validateDatosImportador(pedimento: Pedimento, cove: Cove, 
         },
         carta318: {
           data: [
-            { name: "RFC", value: rfcCarta318 },
-            { name: "Domicilio", value: domicilioCarta318 },
-            { name: "Razón social", value: razonSocialCarta318 },
+            { name: "Carta 318", value: carta318mkdown },
             { name: "Existe carta 3.1.8", value: !!carta318 }
           ]
         }
@@ -119,13 +113,15 @@ export async function validateDatosImportador(pedimento: Pedimento, cove: Cove, 
 }
 
 export async function validateDatosProveedor(pedimento: Pedimento, cove: Cove, carta318?: Carta318) {
-  // Extract values from documents
   const nombreProveedorPedimento = pedimento.nombre_razon_social;
   const nombreProveedorCove = cove?.datos_generales_proveedor?.nombre_razon_social;
-  const nombreProveedorCarta318 = carta318?.proveedor_comprador?.nombre;
-  
   const domicilioProveedorPedimento = pedimento.domicilio;
   const domicilioProveedorCove = cove?.datos_generales_proveedor?.domicilio;
+  const idProveedorPedimento = pedimento.id_fiscal;
+  const idProveedorCove = cove?.datos_generales_proveedor?.identificador;
+  
+  const carta318mkdown = carta318?.markdown_representation;
+  
   const domicilioProveedorCoveCompleto = domicilioProveedorCove ?
     [
       domicilioProveedorCove.calle,
@@ -134,11 +130,6 @@ export async function validateDatosProveedor(pedimento: Pedimento, cove: Cove, c
       domicilioProveedorCove.codigo_postal,
       domicilioProveedorCove.pais
     ].filter(Boolean).join(' ') : '';
-  const domicilioProveedorCarta318 = carta318?.proveedor_comprador?.domicilio;
-  
-  const idProveedorPedimento = pedimento.id_fiscal;
-  const idProveedorCove = cove?.datos_generales_proveedor?.identificador;
-  const idProveedorCarta318 = carta318?.proveedor_comprador?.tax_id;
   
   const validation = {
     name: "Validación de datos comerciales del proveedor",
@@ -161,10 +152,7 @@ export async function validateDatosProveedor(pedimento: Pedimento, cove: Cove, c
         },
         carta318: {
           data: [
-            { name: "Nombre/Razón social", value: nombreProveedorCarta318 },
-            { name: "Domicilio", value: domicilioProveedorCarta318 },
-            { name: "ID Fiscal", value: idProveedorCarta318 },
-            { name: "Existe carta 3.1.8", value: !!carta318 }
+            { name: "Carta 318", value: carta318mkdown },
           ]
         }
       }
@@ -175,18 +163,13 @@ export async function validateDatosProveedor(pedimento: Pedimento, cove: Cove, c
 }
 
 export async function validateFechasYFolios(pedimento: Pedimento, cove: Cove, invoice?: Invoice, carta318?: Carta318) {
-  // Extract values from documents
   const fechaEntradaPedimento = pedimento.fecha_entrada_presentacion;
   const fechaExpedicionCove = cove?.fecha_expedicion;
-  const fechaExpedicionFactura = invoice?.invoice_date;
-  const fechaExpedicionCarta318 = carta318?.document_info?.fecha;
-  
   const numeroCovePedimento = pedimento.cove;
   const numeroCove = cove?.acuse_valor;
   
-  // Para invoice necesitaríamos saber la ruta exacta, pero asumimos que podría ser:
-  const numeroFactura = invoice?.invoice_number;
-
+  const invoicemkdown = invoice?.markdown_representation;
+  const carta318mkdown = carta318?.markdown_representation;
   
   const validation = {
     name: "Validación de fechas de emisión, números de folio y COVE",
@@ -206,15 +189,10 @@ export async function validateFechasYFolios(pedimento: Pedimento, cove: Cove, in
           ]
         },
         factura: {
-          data: [
-            { name: "Fecha de expedición", value: fechaExpedicionFactura },
-            { name: "Número de factura", value: numeroFactura }
-          ]
+          data: [{ name: "Factura", value: invoicemkdown }]
         },
         carta318: {
-          data: [
-            { name: "Fecha de expedición", value: fechaExpedicionCarta318 }
-          ]
+          data: [{ name: "Carta 318", value: carta318mkdown }]
         }
       }
     }
@@ -224,25 +202,18 @@ export async function validateFechasYFolios(pedimento: Pedimento, cove: Cove, in
 }
 
 export async function validateMonedaYEquivalencia(pedimento: Pedimento, cove: Cove, carta318?: Carta318, invoice?: Invoice) {
- // Moneda
- const monedaPedimento = pedimento.datos_factura?.[0]?.moneda_factura;
- const monedaCove = cove?.datos_mercancia?.tipo_moneda;
- const monedaCarta318 = carta318?.mercancias?.[0]?.moneda;
- const monedaFactura = invoice?.currency_code;
-
- // Valores DOF
- const factorDof = 1.5;
- const tipoCambioDOF = 17.1234;
-
-    // Extract values from documents
+  const monedaPedimento = pedimento.datos_factura?.[0]?.moneda_factura;
+  const monedaCove = cove?.datos_mercancia?.tipo_moneda;
   const valorDolaresPedimento = pedimento.datos_factura?.[0]?.valor_dolares_factura;
   const valorDolaresCove = cove?.datos_mercancia?.valor_total_dolares;
-  const valorDolaresCarta318 = carta318?.factura?.valor_factura;
-  const valorDolaresFactura = invoice?.total_amount;
-  
-  // Valor factura from pedimento:
   const valorFactura = pedimento.datos_factura?.[0]?.valor_moneda_factura;
   const factorMonedaFactura = pedimento.datos_factura?.[0]?.factor_moneda_factura;
+  
+  const carta318mkdown = carta318?.markdown_representation;
+  const invoicemkdown = invoice?.markdown_representation;
+  
+  const factorDof = 1.5;
+  const tipoCambioDOF = 17.1234;
   
   const validation = {
     name: "Validación de moneda y factor de equivalencia",
@@ -264,16 +235,10 @@ export async function validateMonedaYEquivalencia(pedimento: Pedimento, cove: Co
           ]
         },
         factura: {
-          data: [
-            { name: "Moneda", value: monedaFactura },
-            { name: "Valor total", value: valorDolaresFactura }
-          ]
+          data: [{ name: "Factura", value: invoicemkdown }]
         },
         carta318: {
-          data: [
-            { name: "Moneda", value: monedaCarta318 },
-            { name: "Valor en dólares", value: valorDolaresCarta318 }
-          ]
+          data: [{ name: "Carta 318", value: carta318mkdown }]
         }
       },
       [CustomGlossTabContextType.EXTERNAL]: {

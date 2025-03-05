@@ -1,26 +1,19 @@
 import { Pedimento } from "../../../data-extraction/schemas";
 import { glosar } from "../../validation-result";
 import { CustomGlossTabContextType } from "@prisma/client";
-import { TransportDocument } from "../../../data-extraction/schemas";
-import { Invoice } from "../../../data-extraction/schemas/invoice";
-import { PackingList } from "../../../data-extraction/schemas/packing-list";
+import { TransportDocument } from "../../../data-extraction/mkdown_schemas/transport-document";
+import { Invoice } from "../../../data-extraction/mkdown_schemas/invoice";
+import { PackingList } from "../../../data-extraction/mkdown_schemas/packing-list";
 import { traceable } from "langsmith/traceable";
 
 export async function validatePesosYBultos(pedimento: Pedimento, transportDocument?: TransportDocument, packingList?: PackingList, invoice?: Invoice) {
   // Extract weight values from pedimento
   const pesoBrutoPedimento = pedimento.encabezado_del_pedimento?.peso_bruto;
-  // Extract weight values from transport document
-  const pesoBrutoTransportDocument = transportDocument?.gross_weight;
-  const pesoNetoTransportDocument = transportDocument?.net_weight;
-  const bultosTransportDocument = transportDocument?.number_of_packages;
   
-  // Extract weight values from packing list
-  const pesoBrutoPackingList = packingList?.totals?.total_gross_weight;
-  const pesoNetoPackingList = packingList?.totals?.total_net_weight;
-  
-  // Extract weight values from invoice
-  const pesoBrutoInvoice = invoice?.total_gross_weight;
-  const pesoNetoInvoice = invoice?.total_net_weight;
+  // Get markdown representations
+  const transportDocmkdown = transportDocument?.markdown_representation;
+  const packingListmkdown = packingList?.markdown_representation;
+  const invoicemkdown = invoice?.markdown_representation;
   
   const validation = {
     name: "Validación de pesos y bultos",
@@ -28,25 +21,23 @@ export async function validatePesosYBultos(pedimento: Pedimento, transportDocume
     contexts: {
       [CustomGlossTabContextType.PROVIDED]: {
         pedimento: {
-          data: [{ name: "Peso bruto", value: pesoBrutoPedimento }]
+          data: [
+            { name: "Peso bruto", value: pesoBrutoPedimento }
+          ]
         },
         documentoDeTransporte: {
           data: [
-            { name: "Peso bruto", value: pesoBrutoTransportDocument },
-            { name: "Peso neto", value: pesoNetoTransportDocument },
-            { name: "Número de bultos", value: bultosTransportDocument }
+            { name: "Documento de transporte", value: transportDocmkdown }
           ]
         },
         listaDeEmpaque: {
           data: [
-            { name: "Peso bruto", value: pesoBrutoPackingList },
-            { name: "Peso neto", value: pesoNetoPackingList }
+            { name: "Lista de empaque", value: packingListmkdown }
           ]
         },
         factura: {
           data: [
-            { name: "Peso bruto", value: pesoBrutoInvoice },
-            { name: "Peso neto", value: pesoNetoInvoice }
+            { name: "Factura", value: invoicemkdown }
           ]
         }
       }
@@ -60,8 +51,8 @@ export async function validateBultos(pedimento: Pedimento, transportDocument?: T
   // Extract bultos values from pedimento
   const bultosPedimento = pedimento.identificadores_nivel_pedimento?.marcas_numeros_bultos;
   
-  // Extract bultos values from transport document
-  const bultosTransportDocument = transportDocument?.number_of_packages;
+  // Get markdown representation
+  const transportDocmkdown = transportDocument?.markdown_representation;
   
   const validation = {
     name: "Coincidencia de bultos",
@@ -69,10 +60,14 @@ export async function validateBultos(pedimento: Pedimento, transportDocument?: T
     contexts: {
       [CustomGlossTabContextType.PROVIDED]: {
         pedimento: {
-          data: [{ name: "Número de bultos", value: bultosPedimento }]
+          data: [
+            { name: "Número de bultos", value: bultosPedimento }
+          ]
         },
         documentoDeTransporte: {
-          data: [{ name: "Número de bultos", value: bultosTransportDocument }]
+          data: [
+            { name: "Documento de transporte", value: transportDocmkdown }
+          ]
         }
       }
     }

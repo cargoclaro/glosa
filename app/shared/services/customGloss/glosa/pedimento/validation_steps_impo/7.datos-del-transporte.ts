@@ -1,4 +1,5 @@
-import { Pedimento, TransportDocument } from "../../../data-extraction/schemas";
+import { Pedimento } from "../../../data-extraction/schemas";
+import { TransportDocument } from "../../../data-extraction/mkdown_schemas/transport-document";
 import { apendice10 } from "../../anexo-22/apendice_10";
 import { apendice3 } from "../../anexo-22/apendice_3";
 import { glosar } from "../../validation-result";
@@ -41,8 +42,8 @@ export async function validateModalidadMedioTransporte(pedimento: Pedimento, tra
   // Extract transport means from pedimento
   const tipoTransporteEntradaSalida = pedimento.medios_transporte?.entrada_salida;
   
-  // Extract document type from transport document
-  const tipoDocumentoTransporte = transportDocument?.document_type;
+  // Get markdown representation
+  const transportDocmkdown = transportDocument?.markdown_representation;
   
   const validation = {
     name: "Modalidad y medio de transporte",
@@ -56,7 +57,7 @@ export async function validateModalidadMedioTransporte(pedimento: Pedimento, tra
         },
         documentoDeTransporte: {
           data: [
-            { name: "Tipo de documento de transporte", value: tipoDocumentoTransporte }
+            { name: "Documento de transporte", value: transportDocmkdown }
           ]
         }
       },
@@ -77,8 +78,8 @@ export async function validateNumeroGuiaEmbarque(pedimento: Pedimento, transport
   // Extract guide/shipment number from pedimento
   const numeroGuiaEmbarque = pedimento.no_guia_embarque_id;
   
-  // Extract document number from transport document
-  const numeroDocumentoTransporte = transportDocument?.document_number;
+  // Get markdown representation
+  const transportDocmkdown = transportDocument?.markdown_representation;
   
   const validation = {
     name: "Número de guía o embarque",
@@ -93,8 +94,7 @@ export async function validateNumeroGuiaEmbarque(pedimento: Pedimento, transport
         },
         documentoDeTransporte: {
           data: [
-            { name: "Número de documento de transporte", value: numeroDocumentoTransporte },
-            { name: "Tipo de documento de transporte", value: transportDocument?.document_type }
+            { name: "Documento de transporte", value: transportDocmkdown }
           ]
         }
       }
