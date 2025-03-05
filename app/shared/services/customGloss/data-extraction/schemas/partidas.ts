@@ -2,14 +2,10 @@ import { z } from "zod"
 
 export const partidasSchema = z.array(z.object({
   sec: z.number().describe("Número de sección"),
-  fraccion: z
+  fraccion_y_nico: z
     .string()
-    .regex(new RegExp("^\\d{8}$"))
+    .regex(new RegExp("^\\d{10}$"))
     .describe("Fracción arancelaria"),
-  nico: z
-    .string()
-    .regex(new RegExp("^\\d{2}$"))
-    .describe("Número de identificación comercial"),
   vinc: z.enum(["0", "1"]).describe("Vínculo"),
   met_val: z.enum(["1"]).describe("Método de valoración"),
   umc: z.string().describe("Unidad de medida comercial"),
