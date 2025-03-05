@@ -224,11 +224,46 @@ Para evitar infracciones, se recomienda:
 
 Ejemplos de respuesta:
 
-ejemplo 1:⚠️ Hay un problema con las fechas. El sistema está tratando de comparar la fecha de salida del pedimento con la fecha que dio el operador. Sin embargo, solo tenemos la fecha de entrada que es '21/11/2024'. No podemos hacer la comparación porque nos falta saber la fecha de salida que dio el operador. Por favor, aclara si debemos revisar la fecha de entrada o la fecha de salida.
+// Ejemplos de respuestas estructuradas:
 
-ejemplo 2: ✅ En este paso se comprobó lo siguiente: 1) El 'Valor en dólares' del pedimento es de 11,761.12 USD, lo que es coherente con el 'Valor aduana' de 237,159.00 MXN al dividirlo por el tipo de cambio de 20.1647 (resultando aproximadamente 11,761.10 USD). 2) El 'Precio pagado/valor comercial' es de 218,164.00 MXN, el cual resulta de restar los incrementables en MXN (7,683.00 + 11,312.00 = 18,995.00 MXN) al Valor aduana (237,159.00 MXN), lo que es consistente. 3) Se observa coherencia en la relación de los valores declarados, demostrando que los datos presentados son lógicos y consistentes.
+// Ejemplo 1 - Advertencia por falta de datos
+⚠️ Advertencia: Datos incompletos para validación de fechas
+- Problema: No se puede realizar la comparación de fechas
+- Datos disponibles: Fecha de entrada = '21/11/2024'
+- Datos faltantes: Fecha de salida proporcionada por el operador
+- Acción requerida: Aclarar si se debe validar contra fecha de entrada o de salida
 
-ejemplo 3: ⚠️ Se encontraron las siguientes discrepancias: \n1) El 'Domicilio' en el Pedimento es 'KIRBY DR. Num. Ext. 8990 Num. Int. SUITE 220 CP 77054 HOUSTON,TX, USA', en el COVE es 'KIRBY DR. 3577 HOUSTON 77054 USA', y en la Carta 3.1.8 es 'KIRBY DR. 8990, SUITE 220 HOUSTON TEXAS, 77054, USA'. La discrepancia es en que el número exterior en el COVE es 3577 y en el pedimento y Carta 3.1.8 es 8990. La Carta 3.1.8 tiene prioridad, entonces por lo tanto no habría sanción por el número exterior. \n2) El 'Nombre/Razón social' y 'ID Fiscal' coinciden en todos los documentos.\n\nSe recomienda que el domicilio en el COVE sea el mismo que el del pedimento y Carta 3.1.8.
+// Ejemplo 2 - Validación exitosa de valores monetarios
+✅ Validación correcta de valores monetarios
+1. Valor en dólares:
+   - Declarado en pedimento: 11,761.12 USD
+   - Calculado: 237,159.00 MXN ÷ 20.1647 = ~11,761.10 USD
+   - Resultado: Coherente
+
+2. Precio pagado/valor comercial:
+   - Declarado: 218,164.00 MXN
+   - Cálculo:
+     * Valor aduana: 237,159.00 MXN
+     * Incrementables: 7,683.00 + 11,312.00 = 18,995.00 MXN
+     * Valor aduana - Incrementables = 218,164.00 MXN
+   - Resultado: Consistente
+
+3. Conclusión: Todos los valores declarados muestran coherencia y consistencia lógica
+
+// Ejemplo 3 - Advertencia por discrepancias en domicilios
+⚠️ Discrepancias encontradas en datos de domicilio
+
+1. Comparación de domicilios:
+   - Pedimento: "KIRBY DR. Num. Ext. 2200 Num. Int. SUITE 220 CP 77054 HOUSTON,TX, USA"
+   - COVE: "Nafta blvd. 3577 HOUSTON 01793 USA"
+   - Carta 3.1.8: "KIRBY DR. 8990, SUITE 220 HOUSTON TEXAS, 77054, USA"
+
+2. Discrepancias encontradas:
+   - Calle: Difiere en COVE ("Nafta blvd.") vs Pedimento/Carta 3.1.8 ("KIRBY DR.")
+   - Número exterior: Difiere en Pedimento (2200) vs Carta 3.1.8 (8990) y COVE (3577)
+   - Resolución: No hay sanción, la Carta 3.1.8 tiene precedencia sobre COVE
+
+Recomendación: Actualizar el domicilio en el COVE para que coincida con el pedimento y Carta 3.1.8
 
 `;
 

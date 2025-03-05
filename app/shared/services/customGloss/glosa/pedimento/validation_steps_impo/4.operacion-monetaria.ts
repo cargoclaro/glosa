@@ -18,7 +18,7 @@ export async function validateTransportDocumentEntryDate(pedimento: Pedimento, t
   
   const validation = {
     name: "Fecha de entrada del documento de transporte",
-    description: "La fecha de entrada del documento de transporte debe coincidir con la fecha de entrada del pedimento, considerando el tipo de transporte (AIR, SEA, LAND).",
+    description: "La fecha de entrada del documento de transporte ser anterior o igual a la fecha de entrada del pedimento. ",
     contexts: {
       [CustomGlossTabContextType.PROVIDED]: {
         pedimento: {
@@ -118,41 +118,28 @@ export async function validateIncrementables(pedimento: Pedimento, invoice?: Inv
     }
   } as const;
 
-  return await glosar(validation);
+  return await glosar(validation, "o3-mini");
 }
 
-export async function validateValoresPedimento(pedimento: Pedimento, invoice?: Invoice, transportDocument?: TransportDocument, carta318?: Carta318) {
-  // Extract monetary values from pedimento
-  const valorAduana = pedimento.valores?.valor_aduana;
-  const valorComercial = pedimento.valores?.precio_pagado_valor_comercial;
+async function validateValorDolares(pedimento: Pedimento, invoice?: Invoice, carta318?: Carta318) {
   const valorDolares = pedimento.valores?.valor_dolares;
   const tipoCambio = pedimento.encabezado_del_pedimento?.tipo_cambio;
-  const fechaEntrada = pedimento.fecha_entrada_presentacion;
-  const tipoCambioDOF = await getExchangeRate(new Date(fechaEntrada ?? new Date()));
+  const valorAduana = pedimento.valores?.valor_aduana;
   const observaciones = pedimento.observaciones_a_nivel_pedimento;
-
-  // Update to use markdown representations
-  const carta318mkdown = carta318?.markdown_representation;
   const invoicemkdown = invoice?.markdown_representation;
-  const transportDocmkdown = transportDocument?.markdown_representation;
-  
+  const carta318mkdown = carta318?.markdown_representation;
+
   const validation = {
-    name: "Valores del pedimento",
-    description: "Sigue estos pasos para validar correctamente los valores declarados. Piensa paso por paso antes de dar una respuesta, razonando con base en la información que se te proporciona. Usa datos para fundamentar tu respuesta, como si tuvieras que citar todos tus argumentos.\n\nPaso 1: Confirmar el Valor en dólares\n• Verifica si el Valor en dólares (valor aduana / tipo de cambio) declarado en el pedimento tiene sentido comparándolo con los datos proporcionados:\n• Valor de la factura.\n• Incrementables (en USD).\n• Razona si este valor es consistente con los datos dados. No realices cálculos, solo evalúa la coherencia.\n\nPaso 2: Validar el Valor comercial\n• Confirma si el Valor comercial declarado en el pedimento se alinea con el cálculo obtenido al restar a la aduana en MXN los incrementables en MXN, considerando que el valor aduana se obtiene al multiplicar el valor en dólares total (suma de incrementables convertidos a USD y factura en USD) por el tipo de cambio DOF.\n• Evalúa si la relación entre el Valor comercial y los demás valores proporcionados es razonable, considerando la coherencia de los datos.\n\nPaso 3: Verificar el Valor aduana\n• Verifica si el Valor aduana declarado en el pedimento tiene sentido con base en los datos dados:\n• Valor comercial.\n• Incrementables.\n• Decrementables.\n• Evalúa si el resultado final es consistente con lo esperado según la información.\n\nPaso 4: Explicar el resultado con lógica\n• Razona paso por paso por qué los valores tienen sentido o, si detectas alguna discrepancia, explica por qué puede haber un problema.\n• Ejemplo esperado de respuesta:\n\"El valor en dólares del pedimento es [x], hace sentido porque el valor de la factura ([y]) más los incrementables convertidos a USD da un total consistente. Al aplicar el tipo de cambio, el Valor aduana y el Valor comercial resultan coherentes con los datos proporcionados.\"\n\nNota: utiliza únicamente la información proporcionada para llegar a las conclusiones de manera lógica y detallada. Si necesitas realizar un cálculo para argumentar, hazlo. Siempre indica dónde está el problema y adjunta la data sobre el mismo.",
+    name: "Valor en dólares del pedimento",
+    description: "El valor en dólares declarado en el pedimento debe ser igual al valor aduana dividido entre el tipo de cambio (Valor USD = Valor Aduana MXN ÷ Tipo de Cambio). Este valor debe ser mayor a cero, coincidir con el valor comercial de la factura más los incrementables convertidos a USD, y estar redondeado a 2 decimales usando el tipo de cambio del pedimento.",
     contexts: {
       [CustomGlossTabContextType.PROVIDED]: {
         pedimento: {
           data: [
-            { name: "Valor aduana", value: valorAduana },
-            { name: "Valor comercial", value: valorComercial },
             { name: "Valor en dólares", value: valorDolares },
             { name: "Tipo de cambio", value: tipoCambio },
+            { name: "Valor aduana", value: valorAduana },
             { name: "Observaciones", value: observaciones }
-          ]
-        },
-        carta318: {
-          data: [
-            { name: "Carta 318", value: carta318mkdown }
           ]
         },
         factura: {
@@ -160,23 +147,95 @@ export async function validateValoresPedimento(pedimento: Pedimento, invoice?: I
             { name: "Factura", value: invoicemkdown }
           ]
         },
-        transporte: {
+        carta318: {
           data: [
-            { name: "Documento de transporte", value: transportDocmkdown }
-          ]
-        }
-      },
-      [CustomGlossTabContextType.EXTERNAL]: {
-        dof: {
-          data: [
-            { name: "Tipo de cambio DOF", value: tipoCambioDOF }
+            { name: "Carta 318", value: carta318mkdown }
           ]
         }
       }
     }
   } as const;
 
-  return await glosar(validation);
+  return await glosar(validation, "o3-mini");
+}
+
+async function validateValorComercial(pedimento: Pedimento, invoice?: Invoice, carta318?: Carta318) {
+  const valorComercial = pedimento.valores?.precio_pagado_valor_comercial;
+  const valorAduana = pedimento.valores?.valor_aduana;
+  const incrementables = pedimento.incrementables;
+  const observaciones = pedimento.observaciones_a_nivel_pedimento;
+  const invoicemkdown = invoice?.markdown_representation;
+  const carta318mkdown = carta318?.markdown_representation;
+
+  
+  const validation = {
+    name: "Valor comercial del pedimento",
+    description: "El valor comercial representa el precio pagado por la mercancía sin incluir incrementables (Valor Comercial = Valor Aduana - Total Incrementables), debe ser mayor a cero y menor o igual al valor aduana. La diferencia entre el valor aduana y el valor comercial debe corresponder exactamente a la suma de los incrementables declarados (fletes, seguros y otros), considerando cualquier decrementable aplicado y debe ser consistente con el valor declarado en la factura comercial.",
+    contexts: {
+      [CustomGlossTabContextType.PROVIDED]: {
+        pedimento: {
+          data: [
+            { name: "Valor comercial", value: valorComercial },
+            { name: "Valor aduana", value: valorAduana },
+            { name: "Incrementables", value: incrementables },
+            { name: "Observaciones", value: observaciones }
+          ]
+        },
+        factura: {
+          data: [
+            { name: "Factura", value: invoicemkdown }
+          ]
+        },
+        carta318: {
+          data: [
+            { name: "Carta 318", value: carta318mkdown }
+          ]
+        }
+      }
+    }
+  } as const;
+
+  return await glosar(validation, "o3-mini");
+}
+
+async function validateValorAduana(pedimento: Pedimento, invoice?: Invoice, carta318?: Carta318) {
+  const valorAduana = pedimento.valores?.valor_aduana;
+  const valorComercial = pedimento.valores?.precio_pagado_valor_comercial;
+  const incrementables = pedimento.incrementables;
+  const tipoCambio = pedimento.encabezado_del_pedimento?.tipo_cambio;
+  const observaciones = pedimento.observaciones_a_nivel_pedimento;
+  const invoicemkdown = invoice?.markdown_representation;
+  const carta318mkdown = carta318?.markdown_representation;
+
+  const validation = {
+    name: "Valor aduana del pedimento",
+    description: "El valor aduana es la base para el cálculo de contribuciones y debe calcularse como el valor comercial más los incrementables multiplicado por el tipo de cambio (Valor Aduana = (Valor Comercial + Total Incrementables) × Tipo de Cambio). Este valor debe ser mayor al valor comercial, y la diferencia debe corresponder exactamente a los incrementables declarados en el pedimento, carta 318 y documentos de transporte, considerando los decrementables aplicados y cualquier ajuste documentado en las observaciones.",
+    contexts: {
+      [CustomGlossTabContextType.PROVIDED]: {
+        pedimento: {
+          data: [
+            { name: "Valor aduana", value: valorAduana },
+            { name: "Valor comercial", value: valorComercial },
+            { name: "Incrementables", value: incrementables },
+            { name: "Tipo de cambio", value: tipoCambio },
+            { name: "Observaciones", value: observaciones }
+          ]
+        },
+        factura: {
+          data: [
+            { name: "Factura", value: invoicemkdown }
+          ]
+        },
+        carta318: {
+          data: [
+            { name: "Carta 318", value: carta318mkdown }
+          ]
+        }
+      }
+    }
+  } as const;
+
+  return await glosar(validation, "o3-mini");
 }
 
 export const tracedTransportDocumentEntryDate = traceable(
@@ -185,7 +244,9 @@ export const tracedTransportDocumentEntryDate = traceable(
       validateTransportDocumentEntryDate(pedimento, transportDocument),
       validateTipoCambio(pedimento),
       validateIncrementables(pedimento, invoice, transportDocument, carta318),
-      validateValoresPedimento(pedimento, invoice, transportDocument, carta318)
+      validateValorDolares(pedimento, invoice, carta318),
+      validateValorComercial(pedimento, invoice),
+      validateValorAduana(pedimento, invoice, carta318)
     ]);
     
     return {
