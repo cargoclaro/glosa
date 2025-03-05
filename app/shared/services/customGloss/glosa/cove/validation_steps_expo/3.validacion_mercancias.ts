@@ -14,7 +14,7 @@ export async function validateMercancias(
 ) {
   // Extract merchandise data from COVE
   const datosMercanciaCove = cove.datos_mercancia;
-
+  const cfdiMkdown = cfdi?.markdown_representation;
   // Create a simplified view of COVE merchandise data
   const mercanciasCoveFormatted = datosMercanciaCove ? {
     descripcion: datosMercanciaCove.descripcion_mercancia,
@@ -40,7 +40,7 @@ export async function validateMercancias(
         },
         cfdi: {
           data: [
-            { name: "CFDI", value: cfdi }
+            { name: "CFDI", value: cfdiMkdown }
           ]
         }
       }
@@ -60,7 +60,7 @@ export async function validateValorTotalDolares(
   // Extract total value from COVE
   const valorTotalDolaresCove = cove.datos_mercancia?.valor_total_dolares;
   const observacionesCove = cove.observaciones || '';
-
+  const cfdiMkdown = cfdi?.markdown_representation;
   const validation = {
     name: "Valor total en dolares",
     description: "Validar que el valor total en dólares cumpla con los siguientes criterios:\n\n• El valor total debe coincidir con el declarado en el CFDI\n• Si el CFDI está en una moneda diferente a dólares, verificar que se haya realizado la conversión correcta usando el factor de equivalencia correspondiente\n• Revisar que el tipo de cambio utilizado coincida con el declarado en el área de observaciones del COVE\n• Validar que los cálculos de conversión sean correctos y precisos",
@@ -74,7 +74,7 @@ export async function validateValorTotalDolares(
         },
         cfdi: {
           data: [
-            { name: "CFDI", value: cfdi }
+            { name: "CFDI", value: cfdiMkdown }
           ]
         }
       }
@@ -93,6 +93,10 @@ export async function validateNumeroSerie(
   invoice?: Invoice,
   cfdi?: Cfdi
 ) {
+  const numeroSerieCove = cove.datos_mercancia?.numero_serie;
+  const invoiceMkdown = invoice?.markdown_representation;
+  const cfdiMkdown = cfdi?.markdown_representation;
+
   const validation = {
     name: "Numero de serie",
     description: "Validar el número de serie de las mercancías siguiendo estos criterios:\n\n1. Revisar primero si el número de serie está declarado en la cfdi en la sección de mercancías\n\n2. Si no está en la cfdi, obtener el número de serie de la factura comercial\n\n3. El número de serie debe ser capturado exactamente como aparece en el documento correspondiente. No es obligatorio el número de serie, si no hay ninguno es por que no tenían para esa mercancía en específico. Si no hay números de serie marcar como válido.",
@@ -100,17 +104,18 @@ export async function validateNumeroSerie(
       [CustomGlossTabContextType.PROVIDED]: {
         cove: {
           data: [
-            { name: "Descripción", value: cove.datos_mercancia?.descripcion_mercancia }
+            { name: "Descripción", value: cove.datos_mercancia?.descripcion_mercancia },
+            { name: "Numero de serie", value: numeroSerieCove }
           ]
         },
         cfdi: {
           data: [
-            { name: "CFDI", value: cfdi }
+            { name: "CFDI", value: cfdiMkdown }
           ]
         },
         factura: {
           data: [
-            { name: "Factura", value: invoice }
+            { name: "Factura", value: invoiceMkdown }
           ]
         }
       }

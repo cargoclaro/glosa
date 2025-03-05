@@ -17,6 +17,8 @@ export async function validateDatosGeneralesProveedor(
   const identificadorCove = cove.datos_generales_proveedor?.identificador;
   const tipoIdentificadorCove = cove.datos_generales_proveedor?.tipo_identificador;
   const nombreRazonSocialCove = cove.datos_generales_proveedor?.nombre_razon_social;
+  const invoiceMkdown = invoice?.markdown_representation;
+  const carta318Mkdown = carta318?.markdown_representation;
 
   const validation = {
     name: "Datos generales del proveedor",
@@ -32,12 +34,12 @@ export async function validateDatosGeneralesProveedor(
         },
         factura: {
           data: [
-            { name: "Factura", value: invoice }
+            { name: "Factura", value: invoiceMkdown }
           ]
         },
         carta318: {
           data: [
-            { name: "Carta 318", value: carta318 }
+            { name: "Carta 318", value: carta318Mkdown }
           ]
         }
       }
@@ -69,6 +71,9 @@ export async function validateDomicilioProveedor(
       domicilioCove.pais
     ].filter(Boolean).join(' ') : '';
 
+  const invoiceMkdown = invoice?.markdown_representation;
+  const carta318Mkdown = carta318?.markdown_representation;
+
   const validation = {
     name: "Domicilio del proveedor",
     description: "Verificar que el domicilio fiscal del proveedor coincida entre el COVE y la factura/carta 318:\n\n• Domicilio fiscal",
@@ -78,10 +83,10 @@ export async function validateDomicilioProveedor(
           data: [{ name: "Domicilio completo", value: domicilioCoveCompleto }]
         },
         factura: {
-          data: [{ name: "Factura", value: invoice }]
+          data: [{ name: "Factura", value: invoiceMkdown }]
         },
         carta318: {
-          data: [{ name: "Carta 318", value: carta318 }]
+          data: [{ name: "Carta 318", value: carta318Mkdown }]
         }
       }
     }
@@ -102,6 +107,8 @@ export async function validateDatosGeneralesDestinatario(
   // Extract recipient data from different sources
   const rfcDestinatarioCove = cove.datos_generales_destinatario?.rfc_destinatario;
   const nombreRazonSocialCove = cove.datos_generales_destinatario?.nombre_razon_social;
+  const invoiceMkdown = invoice?.markdown_representation;
+  const carta318Mkdown = carta318?.markdown_representation;
 
   const validation = {
     name: "Datos generales del destinatario",
@@ -116,12 +123,12 @@ export async function validateDatosGeneralesDestinatario(
         },
         factura: {
           data: [
-            { name: "Factura", value: invoice }
+            { name: "Factura", value: invoiceMkdown }
           ]
         },
         carta318: {
           data: [
-            { name: "Carta 318", value: carta318 }
+            { name: "Carta 318", value: carta318Mkdown }
           ]
         }
       }
@@ -153,16 +160,19 @@ export async function validateDomicilioDestinatario(
       domicilioCove.pais
     ].filter(Boolean).join(' ') : '';
 
+  const invoiceMkdown = invoice?.markdown_representation;
+  const carta318Mkdown = carta318?.markdown_representation;
+
   const validation = {
     name: "Domicilio del destinatario",
     description: "Verificar que el domicilio fiscal del destinatario coincida entre el COVE y la factura/carta 318:\n\n• Domicilio fiscal",
     contexts: {
       [CustomGlossTabContextType.PROVIDED]: {
         factura: {
-          data: [{ name: "Factura", value: invoice }]
+          data: [{ name: "Factura", value: invoiceMkdown }]
         },
         carta318: {
-          data: [{ name: "Carta 318", value: carta318 }]
+          data: [{ name: "Carta 318", value: carta318Mkdown }]
         }
       },
       [CustomGlossTabContextType.INFERRED]: {

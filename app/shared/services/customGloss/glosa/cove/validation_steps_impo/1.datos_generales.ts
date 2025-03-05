@@ -11,6 +11,8 @@ import { traceable } from "langsmith/traceable";
 export async function validateNumeroFactura(cove: Cove, invoice?: Invoice, carta318?: Carta318) {
   // Extract invoice numbers from different sources
   const numeroFacturaCove = cove.numero_factura;
+  const invoiceMkdown = invoice?.markdown_representation;
+  const carta318Mkdown = carta318?.markdown_representation;
 
   const validation = {
     name: "Número de Factura (Importación)",
@@ -21,10 +23,10 @@ export async function validateNumeroFactura(cove: Cove, invoice?: Invoice, carta
           data: [{ name: "Número de Factura", value: numeroFacturaCove }]
         },
         factura: {
-          data: [{ name: "Factura", value: invoice }]
+          data: [{ name: "Factura", value: invoiceMkdown }]
         },
         carta318: {
-          data: [{ name: "Carta 318", value: carta318 }]
+          data: [{ name: "Carta 318", value: carta318Mkdown }]
         }
       }
     }
@@ -39,6 +41,8 @@ export async function validateNumeroFactura(cove: Cove, invoice?: Invoice, carta
 export async function validateFechaExpedicion(cove: Cove, invoice?: Invoice, carta318?: Carta318) {
   // Extract invoice dates from different sources
   const fechaExpedicionCove = cove.fecha_expedicion;
+  const invoiceMkdown = invoice?.markdown_representation;
+  const carta318Mkdown = carta318?.markdown_representation;
 
   const validation = {
     name: "Fecha de Expedición (Importación)",
@@ -49,10 +53,10 @@ export async function validateFechaExpedicion(cove: Cove, invoice?: Invoice, car
           data: [{ name: "Fecha de Expedición", value: fechaExpedicionCove }]
         },
         factura: {
-          data: [{ name: "Factura", value: invoice }]
+          data: [{ name: "Factura", value: invoiceMkdown }]
         },
         carta318: {
-          data: [{ name: "Carta 318", value: carta318 }]
+          data: [{ name: "Carta 318", value: carta318Mkdown }]
         }
       }
     }

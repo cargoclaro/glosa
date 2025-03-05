@@ -15,6 +15,8 @@ export async function validateMercancias(
 ) {
   // Extract merchandise data from COVE
   const datosMercanciaCove = cove.datos_mercancia;
+  const invoiceMkdown = invoice?.markdown_representation;
+  const carta318Mkdown = carta318?.markdown_representation;
 
   // Create a simplified view of COVE merchandise data
   const mercanciasCoveFormatted = datosMercanciaCove ? {
@@ -41,12 +43,12 @@ export async function validateMercancias(
         },
         carta318: {
           data: [
-            { name: "Carta 318", value: carta318 }
+            { name: "Carta 318", value: carta318Mkdown }
           ]
         },
         factura: {
           data: [
-            { name: "Factura", value: invoice }
+            { name: "Factura", value: invoiceMkdown }
           ]
         }
       }
@@ -68,6 +70,8 @@ export async function validateValorTotalDolares(
   // Extract total value from COVE
   const valorTotalDolaresCove = cove.datos_mercancia?.valor_total_dolares;
   const observacionesCove = cove.observaciones || '';
+  const invoiceMkdown = invoice?.markdown_representation;
+  const carta318Mkdown = carta318?.markdown_representation;
 
   const validation = {
     name: "Valor total en dolares",
@@ -82,12 +86,12 @@ export async function validateValorTotalDolares(
         },
         carta318: {
           data: [
-            { name: "Carta 318", value: carta318 }
+            { name: "Carta 318", value: carta318Mkdown }
           ]
         },
         factura: {
           data: [
-            { name: "Factura", value: invoice }
+            { name: "Factura", value: invoiceMkdown }
           ]
         }
       }
@@ -107,6 +111,10 @@ export async function validateNumeroSerie(
   invoice?: Invoice,
   carta318?: Carta318
 ) {
+  const numeroSerieCove = cove.datos_mercancia?.numero_serie;
+  const invoiceMkdown = invoice?.markdown_representation;
+  const carta318Mkdown = carta318?.markdown_representation;
+
   const validation = {
     name: "Numero de serie",
     description: "Validar el número de serie de las mercancías siguiendo estos criterios:\n\n1. Revisar primero si el número de serie está declarado en la carta 3.1.8 en la sección de mercancías\n\n2. Si no está en la carta 3.1.8, obtener el número de serie de la factura comercial\n\n3. El número de serie debe ser capturado exactamente como aparece en el documento correspondiente. No es obligatorio el número de serie, si no hay ninguno es por que no tenían para esa mercancía en específico. Si no hay números de serie marcar como válido.",
@@ -114,17 +122,18 @@ export async function validateNumeroSerie(
       [CustomGlossTabContextType.PROVIDED]: {
         cove: {
           data: [
-            { name: "Descripción", value: cove.datos_mercancia?.descripcion_mercancia }
+            { name: "Descripción", value: cove.datos_mercancia?.descripcion_mercancia },
+            { name: "Numero de serie", value: numeroSerieCove }
           ]
         },
         carta318: {
           data: [
-            { name: "Carta 318", value: carta318 }
+            { name: "Carta 318", value: carta318Mkdown }
           ]
         },
         factura: {
           data: [
-            { name: "Factura", value: invoice }
+            { name: "Factura", value: invoiceMkdown }
           ]
         }
       }

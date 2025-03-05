@@ -10,6 +10,7 @@ import { traceable } from "langsmith/traceable";
 export async function validateNumeroFactura(cove: Cove, cfdi?: Cfdi) {
   // Extract invoice numbers from different sources
   const numeroFacturaCove = cove.numero_factura;
+  const cfdiMkdown = cfdi?.markdown_representation;
 
   const validation = {
     name: "Número de Factura (Exportación)",
@@ -20,7 +21,7 @@ export async function validateNumeroFactura(cove: Cove, cfdi?: Cfdi) {
           data: [{ name: "Número de Factura", value: numeroFacturaCove }]
         },
         cfdi: {
-          data: [{ name: "CFDI", value: cfdi }]
+          data: [{ name: "CFDI", value: cfdiMkdown }]
         }
       }
     }
@@ -35,6 +36,7 @@ export async function validateNumeroFactura(cove: Cove, cfdi?: Cfdi) {
 export async function validateFechaExpedicion(cove: Cove, cfdi?: Cfdi) {
   // Extract invoice dates from different sources
   const fechaExpedicionCove = cove.fecha_expedicion;
+  const cfdiMkdown = cfdi?.markdown_representation;
 
   const validation = {
     name: "Fecha de Expedición (Exportación)",
@@ -45,7 +47,7 @@ export async function validateFechaExpedicion(cove: Cove, cfdi?: Cfdi) {
           data: [{ name: "Fecha de Expedición", value: fechaExpedicionCove }]
         },
         cfdi: {
-          data: [{ name: "CFDI", value: cfdi }]
+          data: [{ name: "CFDI", value: cfdiMkdown }]
         }
       }
     }
@@ -60,7 +62,7 @@ export async function validateFechaExpedicion(cove: Cove, cfdi?: Cfdi) {
 export async function validateRfc(cove: Cove, cfdi?: Cfdi) {
   // Extract RFC values from different sources
   const rfcCove = cove.datos_generales_destinatario?.rfc_destinatario;
-
+  const cfdiMkdown = cfdi?.markdown_representation;
   const validation = {
     name: "RFC (Exportación)",
     description: "El RFC del destinatario en el COVE debe coincidir con el RFC del emisor en el CFDI. En exportación, el emisor del CFDI es la empresa mexicana que realiza la exportación.",
@@ -70,7 +72,7 @@ export async function validateRfc(cove: Cove, cfdi?: Cfdi) {
           data: [{ name: "RFC", value: rfcCove }]
         },
         cfdi: {
-          data: [{ name: "CFDI", value: cfdi }]
+          data: [{ name: "CFDI", value: cfdiMkdown }]
         }
       }
     }
