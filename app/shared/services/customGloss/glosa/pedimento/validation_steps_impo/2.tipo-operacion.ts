@@ -45,6 +45,7 @@ export async function validateCoherenciaOrigenDestino(pedimento: Pedimento, tran
 export async function validateClavePedimento(pedimento: Pedimento) {
   const tipoOperacion = pedimento.encabezado_del_pedimento?.tipo_oper;
   const clavePedimento = pedimento.encabezado_del_pedimento?.cve_pedim;
+  const observaciones = pedimento.observaciones_a_nivel_pedimento;
   
   const validation = {
     name: "Validación de clave de pedimento",
@@ -54,7 +55,8 @@ export async function validateClavePedimento(pedimento: Pedimento) {
         pedimento: {
           data: [
             { name: "Tipo de operación", value: tipoOperacion },
-            { name: "Clave de pedimento", value: clavePedimento }
+            { name: "Clave de pedimento", value: clavePedimento },
+            { name: "Observaciones", value: observaciones }
           ]
         }
       },
@@ -75,6 +77,7 @@ export async function validateClavePedimento(pedimento: Pedimento) {
 export async function validateRegimen(pedimento: Pedimento) {
   const tipoOperacion = pedimento.encabezado_del_pedimento?.tipo_oper;
   const regimen = pedimento.encabezado_del_pedimento?.regimen;
+  const observaciones = pedimento.observaciones_a_nivel_pedimento;
   
   const validation = {
     name: "Validación de régimen",
@@ -84,7 +87,8 @@ export async function validateRegimen(pedimento: Pedimento) {
         pedimento: {
           data: [
             { name: "Tipo de operación", value: tipoOperacion },
-            { name: "Régimen", value: regimen }
+            { name: "Régimen", value: regimen },
+            { name: "Observaciones", value: observaciones }
           ]
         }
       },

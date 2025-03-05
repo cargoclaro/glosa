@@ -11,6 +11,7 @@ export async function validateTipoTransporte(pedimento: Pedimento) {
   const tipoTransporteEntradaSalida = pedimento.medios_transporte?.entrada_salida;
   const tipoTransporteArribo = pedimento.medios_transporte?.arribo;
   const tipoTransporteSalida = pedimento.medios_transporte?.salida;
+  const observaciones = pedimento.observaciones_a_nivel_pedimento;
   
   const validation = {
     name: "Clave del tipo de transporte",
@@ -21,7 +22,8 @@ export async function validateTipoTransporte(pedimento: Pedimento) {
           data: [
             { name: "Tipo de transporte (entrada/salida)", value: tipoTransporteEntradaSalida },
             { name: "Tipo de transporte (arribo)", value: tipoTransporteArribo },
-            { name: "Tipo de transporte (salida)", value: tipoTransporteSalida }
+            { name: "Tipo de transporte (salida)", value: tipoTransporteSalida },
+            { name: "Observaciones", value: observaciones }
           ]
         }
       },
@@ -41,6 +43,7 @@ export async function validateTipoTransporte(pedimento: Pedimento) {
 export async function validateModalidadMedioTransporte(pedimento: Pedimento, transportDocument?: TransportDocument) {
   // Extract transport means from pedimento
   const tipoTransporteEntradaSalida = pedimento.medios_transporte?.entrada_salida;
+  const observaciones = pedimento.observaciones_a_nivel_pedimento;
   
   // Get markdown representation
   const transportDocmkdown = transportDocument?.markdown_representation;
@@ -52,7 +55,8 @@ export async function validateModalidadMedioTransporte(pedimento: Pedimento, tra
       [CustomGlossTabContextType.PROVIDED]: {
         pedimento: {
           data: [
-            { name: "Tipo de transporte (entrada/salida)", value: tipoTransporteEntradaSalida }
+            { name: "Tipo de transporte (entrada/salida)", value: tipoTransporteEntradaSalida },
+            { name: "Observaciones", value: observaciones }
           ]
         },
         documentoDeTransporte: {
@@ -77,6 +81,7 @@ export async function validateModalidadMedioTransporte(pedimento: Pedimento, tra
 export async function validateNumeroGuiaEmbarque(pedimento: Pedimento, transportDocument?: TransportDocument) {
   // Extract guide/shipment number from pedimento
   const numeroGuiaEmbarque = pedimento.no_guia_embarque_id;
+  const observaciones = pedimento.observaciones_a_nivel_pedimento;
   
   // Get markdown representation
   const transportDocmkdown = transportDocument?.markdown_representation;
@@ -89,7 +94,8 @@ export async function validateNumeroGuiaEmbarque(pedimento: Pedimento, transport
         pedimento: {
           data: [
             { name: "Número de guía/embarque", value: numeroGuiaEmbarque },
-            { name: "Tipo de transporte", value: pedimento.medios_transporte?.entrada_salida }
+            { name: "Tipo de transporte", value: pedimento.medios_transporte?.entrada_salida },
+            { name: "Observaciones", value: observaciones }
           ]
         },
         documentoDeTransporte: {

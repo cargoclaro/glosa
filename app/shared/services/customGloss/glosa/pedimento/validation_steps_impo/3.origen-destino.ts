@@ -6,6 +6,7 @@ import { traceable } from "langsmith/traceable";
 
 export async function validateClaveApendice15(pedimento: Pedimento) {
   const claveDestinoOrigen = pedimento.encabezado_del_pedimento?.destino_origen;
+  const observaciones = pedimento.observaciones_a_nivel_pedimento;
   
   const validation = {
     name: "Validación de clave",
@@ -13,7 +14,10 @@ export async function validateClaveApendice15(pedimento: Pedimento) {
     contexts: {
       [CustomGlossTabContextType.PROVIDED]: {
         pedimento: {
-          data: [{ name: "Clave de destino/origen", value: claveDestinoOrigen }]
+          data: [
+            { name: "Clave de destino/origen", value: claveDestinoOrigen },
+            { name: "Observaciones", value: observaciones }
+          ]
         }
       },
       [CustomGlossTabContextType.EXTERNAL]: {

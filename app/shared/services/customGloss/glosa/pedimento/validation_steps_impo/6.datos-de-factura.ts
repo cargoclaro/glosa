@@ -10,6 +10,7 @@ export async function validateRfcFormat(pedimento: Pedimento, cove: Cove, carta3
   const rfcPedimento = pedimento.datos_importador?.rfc;
   const rfcCove = cove?.datos_generales_destinatario?.rfc_destinatario;
   const carta318mkdown = carta318?.markdown_representation;
+  const observaciones = pedimento.observaciones_a_nivel_pedimento;
   
   const validation = {
     name: "Validación de los RFC",
@@ -17,7 +18,10 @@ export async function validateRfcFormat(pedimento: Pedimento, cove: Cove, carta3
     contexts: {
       [CustomGlossTabContextType.PROVIDED]: {
         pedimento: {
-          data: [{ name: "RFC", value: rfcPedimento }]
+          data: [
+            { name: "RFC", value: rfcPedimento },
+            { name: "Observaciones", value: observaciones }
+          ]
         },
         cove: {
           data: [{ name: "RFC", value: rfcCove }]
@@ -36,6 +40,7 @@ export async function validateCesionDerechos(pedimento: Pedimento, cartaSesion?:
   const fechaEntradaPedimento = pedimento.fecha_entrada_presentacion;
   const cartaSesionmkdown = cartaSesion?.markdown_representation;
   const carta318mkdown = carta318?.markdown_representation;
+  const observaciones = pedimento.observaciones_a_nivel_pedimento;
   
   const validation = {
     name: "Validación de cesión de derechos y carta 3.1.8",
@@ -43,7 +48,10 @@ export async function validateCesionDerechos(pedimento: Pedimento, cartaSesion?:
     contexts: {
       [CustomGlossTabContextType.PROVIDED]: {
         pedimento: {
-          data: [{ name: "Fecha de entrada", value: fechaEntradaPedimento }]
+          data: [
+            { name: "Fecha de entrada", value: fechaEntradaPedimento },
+            { name: "Observaciones", value: observaciones }
+          ]
         },
         cartaSesion: {
           data: [
@@ -70,6 +78,7 @@ export async function validateDatosImportador(pedimento: Pedimento, cove: Cove, 
   const razonSocialCove = cove?.datos_generales_destinatario?.nombre_razon_social;
   
   const carta318mkdown = carta318?.markdown_representation;
+  const observaciones = pedimento.observaciones_a_nivel_pedimento;
   
   const domicilioCoveCompleto = domicilioCove ?
     [
@@ -89,7 +98,8 @@ export async function validateDatosImportador(pedimento: Pedimento, cove: Cove, 
           data: [
             { name: "RFC", value: rfcPedimento },
             { name: "Domicilio", value: domicilioPedimento },
-            { name: "Razón social", value: razonSocialPedimento }
+            { name: "Razón social", value: razonSocialPedimento },
+            { name: "Observaciones", value: observaciones }
           ]
         },
         cove: {
@@ -121,6 +131,7 @@ export async function validateDatosProveedor(pedimento: Pedimento, cove: Cove, c
   const idProveedorCove = cove?.datos_generales_proveedor?.identificador;
   
   const carta318mkdown = carta318?.markdown_representation;
+  const observaciones = pedimento.observaciones_a_nivel_pedimento;
   
   const domicilioProveedorCoveCompleto = domicilioProveedorCove ?
     [
@@ -140,7 +151,8 @@ export async function validateDatosProveedor(pedimento: Pedimento, cove: Cove, c
           data: [
             { name: "Nombre/Razón social", value: nombreProveedorPedimento },
             { name: "Domicilio", value: domicilioProveedorPedimento },
-            { name: "ID Fiscal", value: idProveedorPedimento }
+            { name: "ID Fiscal", value: idProveedorPedimento },
+            { name: "Observaciones", value: observaciones }
           ]
         },
         cove: {
@@ -170,6 +182,7 @@ export async function validateFechasYFolios(pedimento: Pedimento, cove: Cove, in
   
   const invoicemkdown = invoice?.markdown_representation;
   const carta318mkdown = carta318?.markdown_representation;
+  const observaciones = pedimento.observaciones_a_nivel_pedimento;
   
   const validation = {
     name: "Validación de fechas de emisión, números de folio y COVE",
@@ -179,7 +192,8 @@ export async function validateFechasYFolios(pedimento: Pedimento, cove: Cove, in
         pedimento: {
           data: [
             { name: "Fecha de entrada", value: fechaEntradaPedimento },
-            { name: "Número COVE", value: numeroCovePedimento }
+            { name: "Número COVE", value: numeroCovePedimento },
+            { name: "Observaciones", value: observaciones }
           ]
         },
         cove: {
@@ -215,6 +229,8 @@ export async function validateMonedaYEquivalencia(pedimento: Pedimento, cove: Co
   const factorDof = 1.5;
   const tipoCambioDOF = 17.1234;
   
+  const observaciones = pedimento.observaciones_a_nivel_pedimento;
+  
   const validation = {
     name: "Validación de moneda y factor de equivalencia",
     description: "Validar los siguientes aspectos:\n\nMoneda:\n• La moneda declarada debe coincidir entre:\n  - Factura\n  - COVE\n  - Carta 3.1.8\n\nCálculo en USD:\n• El valor en dólares del pedimento debe ser igual a:\n  - Valor de Factura multiplicado por Factor DOF\n• Se permite una tolerancia máxima de ±0.5%\n\nFactor DOF:\n• Debe corresponder al tipo de cambio publicado el día de la fecha de emisión de la Factura",
@@ -225,7 +241,8 @@ export async function validateMonedaYEquivalencia(pedimento: Pedimento, cove: Co
             { name: "Moneda", value: monedaPedimento },
             { name: "Valor en dólares", value: valorDolaresPedimento },
             { name: "Valor factura", value: valorFactura },
-            { name: "Factor moneda factura", value: factorMonedaFactura }
+            { name: "Factor moneda factura", value: factorMonedaFactura },
+            { name: "Observaciones", value: observaciones }
           ]
         },
         cove: {

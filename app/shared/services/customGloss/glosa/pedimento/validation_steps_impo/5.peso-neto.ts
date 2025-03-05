@@ -9,6 +9,7 @@ import { traceable } from "langsmith/traceable";
 export async function validatePesosYBultos(pedimento: Pedimento, transportDocument?: TransportDocument, packingList?: PackingList, invoice?: Invoice) {
   // Extract weight values from pedimento
   const pesoBrutoPedimento = pedimento.encabezado_del_pedimento?.peso_bruto;
+  const observaciones = pedimento.observaciones_a_nivel_pedimento;
   
   // Get markdown representations
   const transportDocmkdown = transportDocument?.markdown_representation;
@@ -22,7 +23,8 @@ export async function validatePesosYBultos(pedimento: Pedimento, transportDocume
       [CustomGlossTabContextType.PROVIDED]: {
         pedimento: {
           data: [
-            { name: "Peso bruto", value: pesoBrutoPedimento }
+            { name: "Peso bruto", value: pesoBrutoPedimento },
+            { name: "Observaciones", value: observaciones }
           ]
         },
         documentoDeTransporte: {
@@ -50,6 +52,7 @@ export async function validatePesosYBultos(pedimento: Pedimento, transportDocume
 export async function validateBultos(pedimento: Pedimento, transportDocument?: TransportDocument) {
   // Extract bultos values from pedimento
   const bultosPedimento = pedimento.identificadores_nivel_pedimento?.marcas_numeros_bultos;
+  const observaciones = pedimento.observaciones_a_nivel_pedimento;
   
   // Get markdown representation
   const transportDocmkdown = transportDocument?.markdown_representation;
@@ -61,7 +64,8 @@ export async function validateBultos(pedimento: Pedimento, transportDocument?: T
       [CustomGlossTabContextType.PROVIDED]: {
         pedimento: {
           data: [
-            { name: "Número de bultos", value: bultosPedimento }
+            { name: "Número de bultos", value: bultosPedimento },
+            { name: "Observaciones", value: observaciones }
           ]
         },
         documentoDeTransporte: {

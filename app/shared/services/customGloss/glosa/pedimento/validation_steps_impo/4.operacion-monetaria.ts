@@ -12,6 +12,7 @@ import { traceable } from "langsmith/traceable";
 export async function validateTransportDocumentEntryDate(pedimento: Pedimento, transportDocument?: TransportDocument) {
   const pedimentoEntryDate = pedimento.fecha_entrada_presentacion;
   const transportDocmkdown = transportDocument?.markdown_representation;
+  const observaciones = pedimento.observaciones_a_nivel_pedimento;
 
   
   const validation = {
@@ -21,7 +22,8 @@ export async function validateTransportDocumentEntryDate(pedimento: Pedimento, t
       [CustomGlossTabContextType.PROVIDED]: {
         pedimento: {
           data: [
-            { name: "Fecha de entrada", value: pedimentoEntryDate }
+            { name: "Fecha de entrada", value: pedimentoEntryDate },
+            { name: "Observaciones", value: observaciones }
           ]
         },
         documentoDeTransporte: {
@@ -39,6 +41,7 @@ export async function validateTransportDocumentEntryDate(pedimento: Pedimento, t
 export async function validateTipoCambio(pedimento: Pedimento) {
   const tipoCambio = pedimento.encabezado_del_pedimento?.tipo_cambio;
   const fechaEntrada = pedimento.fecha_entrada_presentacion;
+  const observaciones = pedimento.observaciones_a_nivel_pedimento;
   // TODO: Replace with actual DOF API integration
   const tipoCambioDOF = 17.1234; // Temporary hardcoded value
   
@@ -50,7 +53,8 @@ export async function validateTipoCambio(pedimento: Pedimento) {
         pedimento: {
           data: [
             { name: "Tipo de cambio", value: tipoCambio },
-            { name: "Fecha de entrada", value: fechaEntrada }
+            { name: "Fecha de entrada", value: fechaEntrada },
+            { name: "Observaciones", value: observaciones }
           ]
         }
       },
@@ -76,6 +80,7 @@ export async function validateIncrementables(pedimento: Pedimento, invoice?: Inv
     otros: pedimento.incrementables?.otros_incrementables
   };
   const tipoCambio = pedimento.encabezado_del_pedimento?.tipo_cambio;
+  const observaciones = pedimento.observaciones_a_nivel_pedimento;
   // Update to use markdown representations
   const carta318mkdown = carta318?.markdown_representation;
   const invoicemkdown = invoice?.markdown_representation;
@@ -89,7 +94,8 @@ export async function validateIncrementables(pedimento: Pedimento, invoice?: Inv
         pedimento: {
           data: [
             { name: "Incrementables", value: incrementablesPedimento },
-            { name: "Tipo de cambio", value: tipoCambio }
+            { name: "Tipo de cambio", value: tipoCambio },
+            { name: "Observaciones", value: observaciones }
           ]
         },
         carta318: {
@@ -121,6 +127,7 @@ export async function validateValoresPedimento(pedimento: Pedimento, invoice?: I
   const valorDolares = pedimento.valores?.valor_dolares;
   const tipoCambio = pedimento.encabezado_del_pedimento?.tipo_cambio;
   const tipoCambioDOF = 17.1234;
+  const observaciones = pedimento.observaciones_a_nivel_pedimento;
 
   // Update to use markdown representations
   const carta318mkdown = carta318?.markdown_representation;
@@ -137,7 +144,8 @@ export async function validateValoresPedimento(pedimento: Pedimento, invoice?: I
             { name: "Valor aduana", value: valorAduana },
             { name: "Valor comercial", value: valorComercial },
             { name: "Valor en dólares", value: valorDolares },
-            { name: "Tipo de cambio", value: tipoCambio }
+            { name: "Tipo de cambio", value: tipoCambio },
+            { name: "Observaciones", value: observaciones }
           ]
         },
         carta318: {
