@@ -11,76 +11,73 @@ export const pedimentoSchema = z.object({
         .describe(
           "A 15-digit number formatted as XX XX XXXX XXXXXXX (2 digits, 2 digits, 4 digits, 7 digits)"
         )
-        .optional(),
+        .nullable(),
       tipo_oper: z
         .string()
         .describe(
           "3-letter code indicating operation type (e.g., 'IMP' for imports)"
         )
-        .optional(),
+        .nullable(),
       cve_pedim: z
         .string()
         .describe(
           "2-character code (e.g., 'A1') indicating pedimento type"
         )
-        .optional(),
+        .nullable(),
       regimen: z
         .string()
         .describe("3-letter code indicating customs regime (e.g., 'IMD')")
-        .optional(),
+        .nullable(),
       destino_origen: z
         .string()
         .describe("Single digit number indicating destination")
-        .optional(),
+        .nullable(),
       tipo_cambio: z
         .number()
         .describe("Exchange rate with 5 decimal places (e.g., 16.86600)")
-        .optional(),
+        .nullable(),
       peso_bruto: z
         .number()
         .describe("Gross weight in kilograms with 3 decimal places")
-        .optional(),
+        .nullable(),
       aduana_entrada_salida: z
         .string()
         .describe("3-digit code indicating customs office")
-        .optional()
+        .nullable()
     })
-    .describe("Header information of the pedimento (customs document)")
-    .optional(),
+    .describe("Header information of the pedimento (customs document)"),
   medios_transporte: z
     .object({
       entrada_salida: z
         .string()
         .describe("Single digit code for entry/exit transport")
-        .optional(),
+        .nullable(),
       arribo: z
         .string()
         .describe("Single digit code for arrival transport")
-        .optional(),
+        .nullable(),
       salida: z
         .string()
         .describe("Single digit code for departure transport")
-        .optional()
+        .nullable()
     })
-    .describe("Transportation means")
-    .optional(),
+    .describe("Transportation means"),
   valores: z
     .object({
       valor_dolares: z
         .number()
         .describe("Value in USD with 2 decimal places, always together it is never separated by commas, spaces or any other character")
-        .optional(),
+        .nullable(),
       valor_aduana: z
         .number()
         .describe("Customs value in MXN, always together it is never separated by commas, spaces or any other character")
-        .optional(),
+        .nullable(),
       precio_pagado_valor_comercial: z
         .number()
         .describe("Commercial value/paid price in MXN, always together it is never separated by commas, spaces or any other character")
-        .optional()
+        .nullable()
     })
-    .describe("Values related to the transaction")
-    .optional(),
+    .describe("Values related to the transaction"),
   datos_importador: z
     .object({
       rfc: z
@@ -88,121 +85,117 @@ export const pedimentoSchema = z.object({
         .describe(
           "12-character RFC code for companies or 13 for individuals"
         )
-        .optional(),
+        .nullable(),
       curp: z
         .string()
         .describe("18-character CURP identifier (optional)")
-        .optional(),
+        .nullable(),
       razon_social: z
         .string()
         .describe("Company or individual's full legal name")
-        .optional(),
+        .nullable(),
       domicilio: z
         .string()
         .describe(
           "Complete address including street, number, postal code, city, and state"
         )
-        .optional()
+        .nullable()
     })
-    .describe("Importer information")
-    .optional(),
+    .describe("Importer information"),
   incrementables: z
     .object({
       val_seguros: z
         .number()
         .describe("Insurance value in MXN")
-        .optional(),
+        .nullable(),
       seguros: z
         .number()
         .describe("Insurance costs in MXN")
-        .optional(),
+        .nullable(),
       fletes: z
         .number()
         .describe("Freight costs in MXN")
-        .optional(),
+        .nullable(),
       embalajes: z
         .number()
         .describe("Packaging costs in MXN")
-        .optional(),
+        .nullable(),
       otros_incrementables: z
         .number()
         .describe("Other additional costs in MXN")
-        .optional()
+        .nullable()
     })
-    .describe("Additional costs to be added")
-    .optional(),
+    .describe("Additional costs to be added"),
   decrementables: z
     .object({
       transporte_decrementables: z
         .number()
         .describe("Deductible transport costs in MXN")
-        .optional(),
+        .nullable(),
       seguro_decrementables: z
         .number()
         .describe("Deductible insurance costs in MXN")
-        .optional(),
+        .nullable(),
       carga_decrementables: z
         .number()
         .describe("Deductible loading costs in MXN")
-        .optional(),
+        .nullable(),
       descarga_decrementables: z
         .number()
         .describe("Deductible unloading costs in MXN")
-        .optional(),
+        .nullable(),
       otros_decrementables: z
         .number()
         .describe("Other deductible costs in MXN")
-        .optional()
+        .nullable()
     })
-    .describe("Costs to be deducted")
-    .optional(),
+    .describe("Costs to be deducted"),
   fecha_entrada_presentacion: z
     .string()
     .describe("Date in DD/MM/YYYY format (e.g., '13/05/2024')")
-    .optional(),
+    .nullable(),
   identificadores_nivel_pedimento: z
     .object({
       clave_seccion_aduanera: z
         .string()
         .describe("Three-digit numeric code (shown as '470' in document)")
-        .optional(),
+        .nullable(),
       marcas_numeros_bultos: z
         .string()
         .describe(
           "Text field showing quantity and type of packages (e.g., 'S/M S/N 4 BULTOS')"
         )
-        .optional()
+        .nullable()
     })
-    .describe("Identifiers at the pedimento level")
-    .optional(),
+    .describe("Identifiers at the pedimento level"),
   id_fiscal: z
     .string()
     .describe(
       "Alphanumeric code representing the foreign invoice number; if none, leave blank"
     )
-    .optional(),
+    .nullable(),
   cove: z
     .string()
     .describe(
       "Alphanumeric code (shown as 'COVE'); important and has 11 characters"
     )
-    .optional(),
+    .nullable(),
   nombre_razon_social: z
     .string()
     .describe(
       "Company name in uppercase letters (e.g., 'SAIC MOTOR INTERNATIONAL CO., LTD')"
     )
-    .optional(),
+    .nullable(),
   domicilio: z
     .string()
     .describe(
       "Full address with specific format (e.g., 'YESHENG ROAD No. 188 No. Int. ROOM 429H, C.P. 200135, PILOT FREE TRADE ZONE SHANGHAI, CHINA (REPUBLICA POPULAR)')"
     )
-    .optional(),
+    .nullable(),
   vinculacion: z
     .string()
     .describe("Two-letter text field ('SI' or 'NO')")
-    .optional(),
+    .nullable(),
   datos_factura: z
     .array(
       z.object({
@@ -211,47 +204,46 @@ export const pedimentoSchema = z.object({
           .describe(
             "The Mexican invoice number; alphanumeric; if none, leave blank"
           )
-          .optional(),
+          .nullable(),
         fecha_factura: z
           .string()
           .describe("Date in DD/MM/YYYY format (e.g., '07/05/2024')")
-          .optional(),
+          .nullable(),
         incoterm: z
           .string()
           .describe("Three-letter code in uppercase (e.g., 'FCA')")
-          .optional(),
+          .nullable(),
         moneda_factura: z
           .string()
           .describe("Three-letter currency code (e.g., 'USD')")
-          .optional(),
+          .nullable(),
         valor_moneda_factura: z
           .number()
           .describe(
             "Decimal number with 2 decimal places (e.g., '1068.75')"
           )
-          .optional(),
+          .nullable(),
         factor_moneda_factura: z
           .number()
           .describe(
             "Decimal number with 8 decimal places (e.g., '1.00000000')"
           )
-          .optional(),
+          .nullable(),
         valor_dolares_factura: z
           .number()
           .describe("Value in USD with 2 decimal places")
-          .optional()
+          .nullable()
       })
     )
     .describe(
       "Array of invoices associated with the pedimento. There can be more than one, but it always should have all of the values. There should be a box per invoice."
-    )
-    .optional(),
+    ),
   no_guia_embarque_id: z
     .string()
     .describe(
       "Shipment order number; alphanumeric; if none, leave blank; sometimes there could be two, identifiable with 'M' and 'H' for Master and House."
     )
-    .optional(),
+    .nullable(),
   identificadores_pedimento: z
     .array(
       z.object({
@@ -260,39 +252,38 @@ export const pedimentoSchema = z.object({
           .describe(
             "Two-letter code in uppercase (e.g., 'CR', 'SO', 'ED')"
           )
-          .optional(),
+          .nullable(),
         complemento_1: z
           .string()
           .describe(
             "Alphanumeric value (e.g., '4', 'AA', '0438240ZDKJQ3')"
           )
-          .optional(),
+          .nullable(),
         complemento_2: z
           .string()
           .describe("Empty field if not provided")
-          .optional(),
+          .nullable(),
         complemento_3: z
           .string()
           .describe("Empty field if not provided")
-          .optional()
+          .nullable()
       })
     )
-    .describe("Array of pedimento-level identifiers")
-    .optional(),
+    .describe("Array of pedimento-level identifiers"),
   observaciones_a_nivel_pedimento: z
     .string()
     .describe(
       "The exact observations at the pedimento level. Transcribe the document as it is, without adding any additional information."
     )
-    .optional(),
+    .nullable(),
   document_summary: z
     .string()
     .describe(
       "A detailed summary of the document, including details about the rights being transferred and context that can be useful for a human."
     )
-    .optional(),
+    .nullable(),
   partidas: z
     .array(partidasSchema)
     .describe("Full array of partidas (one object per partida)")
-    .optional()
+    .nullable()
 })
