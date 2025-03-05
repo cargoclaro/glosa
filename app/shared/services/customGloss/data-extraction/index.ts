@@ -55,22 +55,22 @@ async function extractTextFromPDFsParallel(
     cfdiText,
     cartaCesionDeDerechosText
   ] = await Promise.all([
-    factura ? extractTextFromPDF(
+    factura ? extractTextFromImage(
       factura.originalFile,
       factura.documentType,
       documentToSchema.factura
     ) : null,
-    carta318 ? extractTextFromPDF(
+    carta318 ? extractTextFromImage(
       carta318.originalFile,
       carta318.documentType,
       documentToSchema.carta318
     ) : null,
-    rrnas ? extractTextFromPDF(
+    rrnas ? extractTextFromImage(
       rrnas.originalFile,
       rrnas.documentType,
       documentToSchema.rrnas
     ) : null,
-    documentoDeTransporte ? extractTextFromPDF(
+    documentoDeTransporte ? extractTextFromImage(
       documentoDeTransporte.originalFile,
       documentoDeTransporte.documentType,
       documentToSchema.documentoDeTransporte
@@ -80,7 +80,7 @@ async function extractTextFromPDFsParallel(
       pedimento.documentType,
       documentToSchema.pedimento
     ),
-    listaDeEmpaque ? extractTextFromPDF(
+    listaDeEmpaque ? extractTextFromImage(
       listaDeEmpaque.originalFile,
       listaDeEmpaque.documentType,
       documentToSchema.listaDeEmpaque
@@ -90,12 +90,12 @@ async function extractTextFromPDFsParallel(
       cove.documentType,
       documentToSchema.cove
     ),
-    cfdi ? extractTextFromPDF(
+    cfdi ? extractTextFromImage(
       cfdi.originalFile,
       cfdi.documentType,
       documentToSchema.cfdi
     ) : null,
-    cartaCesionDeDerechos ? extractTextFromPDF(
+    cartaCesionDeDerechos ? extractTextFromImage(
       cartaCesionDeDerechos.originalFile,
       cartaCesionDeDerechos.documentType,
       documentToSchema.cartaCesionDeDerechos
@@ -150,10 +150,5 @@ async function extractTextFromPDF<T>(originalFile: File, documentType: DocumentT
   const rawData = await response.json();
   const data = extractionResponseSchema.parse(rawData);
   const extractedText = data.text;
-  const isPdfEmpty = !extractedText || extractedText.trim() === "";
-
-  if (isPdfEmpty) {
-    return extractTextFromImage(originalFile, documentType, schema);
-  }
   return structureTaggedText(extractedText, schema, documentType);
 }

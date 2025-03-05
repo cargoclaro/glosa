@@ -33,5 +33,7 @@ export async function extractTextFromImage<T>(
     ],
   });
 
-  return text;
+  return {
+    markdown_representation: text,
+  };
 }
