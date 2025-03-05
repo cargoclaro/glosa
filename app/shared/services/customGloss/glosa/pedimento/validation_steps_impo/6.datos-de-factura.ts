@@ -5,6 +5,7 @@ import { Invoice } from "../../../data-extraction/mkdown_schemas/invoice";
 import { glosar } from "../../validation-result";
 import { CustomGlossTabContextType } from "@prisma/client";
 import { traceable } from "langsmith/traceable";
+import { getExchangeRate } from "../../exchange-rate";
 
 export async function validateRfcFormat(pedimento: Pedimento, cove: Cove, carta318?: Carta318) {
   const rfcPedimento = pedimento.datos_importador?.rfc;
@@ -222,12 +223,13 @@ export async function validateMonedaYEquivalencia(pedimento: Pedimento, cove: Co
   const valorDolaresCove = cove?.datos_mercancia?.valor_total_dolares;
   const valorFactura = pedimento.datos_factura?.[0]?.valor_moneda_factura;
   const factorMonedaFactura = pedimento.datos_factura?.[0]?.factor_moneda_factura;
+  const fechaEntrada = pedimento.fecha_entrada_presentacion;
   
   const carta318mkdown = carta318?.markdown_representation;
   const invoicemkdown = invoice?.markdown_representation;
   
-  const factorDof = 1.5;
-  const tipoCambioDOF = 17.1234;
+  const factorDof = 1;
+  const tipoCambioDOF = await getExchangeRate(new Date(fechaEntrada ?? new Date()));
   
   const observaciones = pedimento.observaciones_a_nivel_pedimento;
   

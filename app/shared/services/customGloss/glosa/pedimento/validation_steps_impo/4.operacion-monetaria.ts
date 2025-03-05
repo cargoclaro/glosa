@@ -5,6 +5,7 @@ import { TransportDocument } from "../../../data-extraction/mkdown_schemas/trans
 import { Carta318 } from "../../../data-extraction/mkdown_schemas/carta-318";
 import { Invoice } from "../../../data-extraction/mkdown_schemas/invoice";
 import { traceable } from "langsmith/traceable";
+import { getExchangeRate } from "../../exchange-rate";
 
 // TODO: Agregar DOF
 
@@ -43,7 +44,7 @@ export async function validateTipoCambio(pedimento: Pedimento) {
   const fechaEntrada = pedimento.fecha_entrada_presentacion;
   const observaciones = pedimento.observaciones_a_nivel_pedimento;
   // TODO: Replace with actual DOF API integration
-  const tipoCambioDOF = 17.1234; // Temporary hardcoded value
+  const tipoCambioDOF = await getExchangeRate(new Date(fechaEntrada ?? new Date())); // Temporary hardcoded value
   
   const validation = {
     name: "Tipo de cambio",
@@ -126,7 +127,8 @@ export async function validateValoresPedimento(pedimento: Pedimento, invoice?: I
   const valorComercial = pedimento.valores?.precio_pagado_valor_comercial;
   const valorDolares = pedimento.valores?.valor_dolares;
   const tipoCambio = pedimento.encabezado_del_pedimento?.tipo_cambio;
-  const tipoCambioDOF = 17.1234;
+  const fechaEntrada = pedimento.fecha_entrada_presentacion;
+  const tipoCambioDOF = await getExchangeRate(new Date(fechaEntrada ?? new Date()));
   const observaciones = pedimento.observaciones_a_nivel_pedimento;
 
   // Update to use markdown representations
