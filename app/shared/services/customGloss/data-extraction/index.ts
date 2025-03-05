@@ -71,7 +71,7 @@ async function extractTextFromPDFsParallel(
       documentoDeTransporte.originalFile,
       documentoDeTransporte.documentType,
     ) : null,
-    extractTextFromPDF(
+    extractTextFromPedimento(
       pedimento.originalFile,
       pedimento.documentType,
       documentToSchema.pedimento
@@ -144,4 +144,36 @@ async function extractTextFromPDF<T>(originalFile: File, documentType: DocumentT
   const data = extractionResponseSchema.parse(rawData);
   const extractedText = data.text;
   return structureTaggedText(extractedText, schema, documentType);
+}
+
+async function extractTextFromPedimento<T>(originalFile: File, documentType: DocumentType, schema: z.ZodType<T>) {
+  const baseUrl =
+      process.env.NODE_ENV === "development"
+        ? "http://localhost:8000"
+        : "https://cargo-claro-fastapi-6z19.onrender.com";
+  const url = `${baseUrl}/extract-pedimento`;
+
+  // Create form data and append the file
+  const formData = new FormData();
+  formData.append('file', originalFile);
+
+  const response = await fetch(url, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${process.env["GLOSS_TOKEN"]}`,
+    },
+    body: formData,
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to extract text: ${response.statusText}`);
+  }
+
+  const rawData = await response.json();
+  const extractionResponseSchema = z.object({
+    pedimento_sections: z.unknown(),
+    partidas: z.unknown(),
+  });
+  const data = extractionResponseSchema.parse(rawData);
+  return structureTaggedText(data, schema, documentType);
 }

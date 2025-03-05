@@ -17,7 +17,7 @@ const SYSTEM_PROMPT = `
 `;
 
 export async function structureTaggedText<T>(
-  text: string,
+  text: unknown,
   schema: z.ZodType<T>,
   documentType: DocumentType,
 ): Promise<T> {
@@ -31,7 +31,7 @@ export async function structureTaggedText<T>(
     prompt: `
       El tipo de documento es ${documentType}. Aqui esta el texto del tag del pdf:
 
-      ${text}
+      ${JSON.stringify(text, null, 2)}
     `,
   });
   return object;
