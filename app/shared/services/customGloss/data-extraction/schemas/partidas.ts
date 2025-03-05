@@ -1,6 +1,6 @@
 import { z } from "zod"
 
-export const partidasSchema = z.object({
+export const partidasSchema = z.array(z.object({
   sec: z.number().describe("Número de sección"),
   fraccion: z
     .string()
@@ -68,4 +68,4 @@ export const partidasSchema = z.object({
     .describe(
       "Un resumen detallado de la sección de partidas, incluyendo detalles clave sobre los bienes y contexto que puede ser útil para un humano. Este campo es obligatorio y debe ser generado por el LLM, no está proporcionado en el documento."
     )
-})
+}))
