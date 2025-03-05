@@ -127,7 +127,7 @@ const extractionResponseSchema = z.object({
 async function extractTextFromPDF<T>(originalFile: File, documentType: DocumentType, schema: z.ZodType<T>) {
   const baseUrl =
       process.env.NODE_ENV === "development"
-        ? "http://host.docker.internal:8000"
+        ? "http://localhost:8000"
         : "https://cargo-claro-fastapi-6z19.onrender.com";
   const url = `${baseUrl}/extract-pdf-text`;
 
