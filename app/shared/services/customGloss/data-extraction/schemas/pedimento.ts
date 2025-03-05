@@ -1,5 +1,6 @@
 import { z } from "zod"
 import { partidasSchema } from "./partidas"
+import { parse, isValid } from 'date-fns';
 
 export type Pedimento = z.infer<typeof pedimentoSchema>;
 
@@ -153,7 +154,22 @@ export const pedimentoSchema = z.object({
   fecha_entrada_presentacion: z
     .string()
     .describe("Date in DD/MM/YYYY format (e.g., '13/05/2024')")
-    .nullable(),
+    .nullable()
+    .transform((dateStr, ctx) => {
+      if (!dateStr) { return null; }
+      
+      const parsedDate = parse(dateStr, 'dd/MM/yyyy', new Date());
+      
+      if (!isValid(parsedDate)) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: `Invalid date format: ${dateStr}. Expected DD/MM/YYYY.`,
+        });
+        return null;
+      }
+      
+      return parsedDate;
+    }),
   identificadores_nivel_pedimento: z
     .object({
       clave_seccion_aduanera: z
