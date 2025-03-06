@@ -303,8 +303,9 @@ export async function glosar(validation: {
       validation: {
         name: validation.name,
         description: validation.description,
-        ...glosaResult
+        ...glosaResult,
       },
+      contexts: validation.contexts
     }
   }
   const { object: glosaResult } = await generateObject({
