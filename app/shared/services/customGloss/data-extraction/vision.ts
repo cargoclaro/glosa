@@ -2,17 +2,18 @@ import { generateText } from "ai";
 import { wrapAISDKModel } from "langsmith/wrappers/vercel";
 import { google } from "@ai-sdk/google";
 import { DocumentType } from "../classification";
-import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
+/* import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 import { HumanMessage } from "@langchain/core/messages";
 import { z } from "zod";
-import { sanitizeObjectStrings } from "../remove-null-bytes";
+import { sanitizeObjectStrings } from "../remove-null-bytes"; */
 
 export async function extractTextFromImage(
   pdfFile: File,
   documentType: DocumentType,
 ) {
   const base64Data = Buffer.from(await pdfFile.arrayBuffer()).toString('base64');
-  if (process.env["LANGCHAIN_MIGRATION_ENABLED"] === "true") {
+  // TODO: Figure out image prompts
+  /* if (process.env["LANGCHAIN_MIGRATION_ENABLED"] === "true") {
     const baseUrl = process.env["PYTHON_BACKEND_URL"];
     const url = `${baseUrl}/pdf-to-images`;
 
@@ -60,7 +61,7 @@ export async function extractTextFromImage(
     return {
       markdown_representation: sanitizeObjectStrings(content),
     };
-  }
+  } */
   const { text } = await generateText({
     model: wrapAISDKModel(google("gemini-2.0-flash-001"), {
       name: `Extract schema from ${documentType} pdf`,

@@ -291,7 +291,7 @@ export async function glosar(validation: {
       };
     };
   };
-}, modelId: "gpt-4o" | "o3-mini" | "gpt-4o-mini" | "gemini-2.0-flash-001" = "gpt-4o") {
+}, modelId: "gpt-4o" | "o3-mini" | "gpt-4o-mini" = "gpt-4o") {
   if (process.env["LANGCHAIN_MIGRATION_ENABLED"] === "true") {
     const model = new ChatOpenAI({
       model: modelId,
