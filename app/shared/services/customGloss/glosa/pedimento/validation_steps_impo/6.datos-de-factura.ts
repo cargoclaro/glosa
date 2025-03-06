@@ -145,7 +145,7 @@ export async function validateDatosProveedor(pedimento: Pedimento, cove: Cove, c
   
   const validation = {
     name: "Validación de datos comerciales del proveedor",
-    description: "Validar que los siguientes campos coincidan literalmente entre documentos:\n\nRFC: Debe coincidir entre Pedimento, Carta 3.1.8 y COVE.\nDomicilio fiscal: Debe coincidir entre Pedimento, Carta 3.1.8 (implícito) y Factura (importador).\nRazón social: Debe coincidir entre Pedimento, Carta 3.1.8 (implícito) y COVE.\nRegla de precedencia:\nSi la Carta 3.1.8 existe, sus datos tienen prioridad sobre Factura/COVE. Cualquier discrepancia en otros documentos se marca como error.",
+    description: "Validar que los siguientes campos coincidan entre documentos:\n\nTAX ID: Debe coincidir entre Pedimento, Carta 3.1.8 y COVE.\nDomicilio fiscal: Debe coincidir entre Pedimento, Carta 3.1.8 y Factura.\nRazón social: Debe coincidir entre Pedimento, Carta 3.1.8 (implícito) y COVE.\nRegla de precedencia:\nSi la Carta 3.1.8 existe, sus datos tienen prioridad sobre Factura/COVE. La idea es verificar que el tax id, domicilio y razón social, sea el mismo entre los documentos.",
     contexts: {
       [CustomGlossTabContextType.PROVIDED]: {
         pedimento: {

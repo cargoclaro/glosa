@@ -6,31 +6,36 @@ import { glosar } from "../../validation-result";
 import { CustomGlossTabContextType } from "@prisma/client";
 import { traceable } from "langsmith/traceable";
 
-export async function validateTipoTransporte(pedimento: Pedimento) {
+export async function validateTipoTransporte(pedimento: Pedimento, transportDocument?: TransportDocument) {
   // Extract transport type from pedimento
-  const tipoTransporteEntradaSalida = pedimento.medios_transporte?.entrada_salida;
-  const tipoTransporteArribo = pedimento.medios_transporte?.arribo;
-  const tipoTransporteSalida = pedimento.medios_transporte?.salida;
+  const tipoTransporte = pedimento.tipo_contenedor_vehiculo;
   const observaciones = pedimento.observaciones_a_nivel_pedimento;
-  
+  const tipoTransporteEntradaSalida = pedimento.medios_transporte?.entrada_salida;
+  const transportDocmkdown = transportDocument?.markdown_representation;
+
   const validation = {
     name: "Clave del tipo de transporte",
-    description: "La clave del tipo de transporte debe existir en el apéndice 10.",
+    description: "La clave del tipo de transporte debe existir en el apéndice 10. Debe hacer sentido con el tipo de transporte que se proporciona (apendice 3 para saber el tipo de transporte), si es un BL terrestre, debe de ser una clave de un vehículo terrestre, lo mismo para marítimo, ferroviario o aero. Analiza el documento de transporte para determinar que tipo de transporte hay. Si no hay documento de transporte y la clave del pedimento corresponde a algo terrestre, asume que esta bien, por que a veces en operaciones terrestre no se pone documento de transporte.",
     contexts: {
       [CustomGlossTabContextType.PROVIDED]: {
         pedimento: {
           data: [
+            { name: "Tipo de transporte", value: tipoTransporte },
+            { name: "Observaciones", value: observaciones },
             { name: "Tipo de transporte (entrada/salida)", value: tipoTransporteEntradaSalida },
-            { name: "Tipo de transporte (arribo)", value: tipoTransporteArribo },
-            { name: "Tipo de transporte (salida)", value: tipoTransporteSalida },
-            { name: "Observaciones", value: observaciones }
+          ]
+        },
+        documentoDeTransporte: {
+          data: [
+            { name: "Documento de transporte", value: transportDocmkdown }
           ]
         }
       },
       [CustomGlossTabContextType.EXTERNAL]: {
         apendices: {
           data: [
-            { name: "Apéndice 10", value: JSON.stringify(apendice10) }
+            { name: "Apéndice 10", value: JSON.stringify(apendice10) },
+            { name: "Apéndice 3", value: JSON.stringify(apendice3) }
           ]
         }
       }

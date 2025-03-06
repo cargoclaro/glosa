@@ -131,7 +131,7 @@ async function validateValorDolares(pedimento: Pedimento, invoice?: Invoice, car
 
   const validation = {
     name: "Valor en dólares del pedimento",
-    description: "El valor en dólares declarado en el pedimento debe ser igual al valor aduana dividido entre el tipo de cambio (Valor USD = Valor Aduana MXN ÷ Tipo de Cambio). Este valor debe ser mayor a cero, coincidir con el valor comercial de la factura más los incrementables convertidos a USD, y estar redondeado a 2 decimales usando el tipo de cambio del pedimento.",
+    description: "El valor en dólares declarado en el pedimento debe ser igual al valor aduana dividido entre el tipo de cambio (Valor USD = Valor Aduana MXN ÷ Tipo de Cambio). Este valor debe coincidir con el valor comercial de la factura más los incrementables convertidos a USD, y estar redondeado a 2 decimales usando el tipo de cambio del pedimento. Solamente valida que el valor dólares este bien, los ya se analizaron. ",
     contexts: {
       [CustomGlossTabContextType.PROVIDED]: {
         pedimento: {
@@ -170,7 +170,7 @@ async function validateValorComercial(pedimento: Pedimento, invoice?: Invoice, c
   
   const validation = {
     name: "Valor comercial del pedimento",
-    description: "El valor comercial representa el precio pagado por la mercancía sin incluir incrementables (Valor Comercial = Valor Aduana - Total Incrementables), debe ser mayor a cero y menor o igual al valor aduana. La diferencia entre el valor aduana y el valor comercial debe corresponder exactamente a la suma de los incrementables declarados (fletes, seguros y otros), considerando cualquier decrementable aplicado y debe ser consistente con el valor declarado en la factura comercial.",
+    description: "El valor comercial representa el precio pagado por la mercancía sin incluir incrementables (Valor Comercial = Valor Aduana - Total Incrementables) o el valor de la factura sin los incrementables. debe ser menor o igual al valor aduana. La diferencia entre el valor aduana y el valor comercial debe corresponder exactamente a la suma de los incrementables declarados (fletes, seguros y otros), considerando cualquier decrementables aplicado y debe ser consistente con el valor declarado en la factura comercial. Si existe un redondo hacía arriba en el valor declarado en el pedimento que sea mínimo marcalo como valido, donde hay más peligro es declarar menos. ",
     contexts: {
       [CustomGlossTabContextType.PROVIDED]: {
         pedimento: {

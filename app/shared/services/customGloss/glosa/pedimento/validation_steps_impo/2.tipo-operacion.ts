@@ -1,4 +1,5 @@
-import { Pedimento, TransportDocument } from "../../../data-extraction/schemas";
+import { Pedimento } from "../../../data-extraction/schemas";
+import { TransportDocument } from "../../../data-extraction/mkdown_schemas/transport-document";
 import { glosar } from "../../validation-result";
 import { CustomGlossTabContextType } from "@prisma/client";
 import { apendice2 } from "../../anexo-22/apendice-2";
@@ -11,9 +12,9 @@ import { traceable } from "langsmith/traceable";
  */
 export async function validateCoherenciaOrigenDestino(pedimento: Pedimento, transportDoc?: TransportDocument) {
   const tipoOperacion = pedimento.encabezado_del_pedimento?.tipo_oper;
-  const origen = transportDoc?.origin_country;
-  const destino = transportDoc?.destination_country;
   const observaciones = pedimento.observaciones_a_nivel_pedimento;
+
+  const transportDocmkdown = transportDoc?.markdown_representation;
   
   const validation = {
     name: "Coherencia con origen/destino",
@@ -28,8 +29,7 @@ export async function validateCoherenciaOrigenDestino(pedimento: Pedimento, tran
         },
         documentoDeTransporte: {
           data: [
-            { name: "País de origen", value: origen },
-            { name: "País de destino", value: destino }
+            { name: "Documento de transporte", value: transportDocmkdown },
           ]
         }
       }
