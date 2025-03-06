@@ -12,10 +12,7 @@ export async function extractTextFromImage(
 ) {
   const base64Data = Buffer.from(await pdfFile.arrayBuffer()).toString('base64');
   if (process.env["LANGCHAIN_MIGRATION_ENABLED"] === "true") {
-    const baseUrl =
-      process.env.NODE_ENV === "development"
-        ? "http://localhost:8000"
-        : "https://cargo-claro-fastapi-6z19.onrender.com";
+    const baseUrl = process.env["PYTHON_BACKEND_URL"];
     const url = `${baseUrl}/pdf-to-images`;
 
     // Create form data and append the file

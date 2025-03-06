@@ -118,10 +118,7 @@ const extractionResponseSchema = z.object({
 });
 
 async function extractTextFromPDF<T>(originalFile: File, documentType: DocumentType, schema: z.ZodType<T>) {
-  const baseUrl =
-      process.env.NODE_ENV === "development"
-        ? "http://localhost:8000"
-        : "https://cargo-claro-fastapi-6z19.onrender.com";
+  const baseUrl = process.env["PYTHON_BACKEND_URL"];
   const url = `${baseUrl}/extract-pdf-text`;
 
   // Create form data and append the file
@@ -146,11 +143,12 @@ async function extractTextFromPDF<T>(originalFile: File, documentType: DocumentT
   return structureTaggedText(extractedText, schema, documentType);
 }
 
-async function extractTextFromPedimento<T>(originalFile: File, documentType: DocumentType, schema: z.ZodType<T>) {
-  const baseUrl =
-      process.env.NODE_ENV === "development"
-        ? "http://localhost:8000"
-        : "https://cargo-claro-fastapi-6z19.onrender.com";
+async function extractTextFromPedimento<S extends z.ZodType>(
+  originalFile: File, 
+  documentType: DocumentType, 
+  schema: S
+): Promise<z.infer<S>> {
+  const baseUrl = process.env["PYTHON_BACKEND_URL"];
   const url = `${baseUrl}/extract-pedimento`;
 
   // Create form data and append the file
