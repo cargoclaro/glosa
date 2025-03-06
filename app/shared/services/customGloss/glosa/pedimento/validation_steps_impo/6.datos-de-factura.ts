@@ -34,7 +34,7 @@ export async function validateRfcFormat(pedimento: Pedimento, cove: Cove, carta3
     }
   } as const;
 
-  return await glosar(validation, "gemini-2.0-flash");
+  return await glosar(validation, "gemini-2.0-flash-001");
 }
 
 export async function validateCesionDerechos(pedimento: Pedimento, cartaSesion?: CartaSesion, carta318?: Carta318) {
