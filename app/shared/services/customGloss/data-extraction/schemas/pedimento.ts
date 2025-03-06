@@ -257,9 +257,13 @@ export const pedimentoSchema = z.object({
   no_guia_embarque_id: z
     .string()
     .describe(
-      "Shipment order number; alphanumeric; if none, leave blank; sometimes there could be two, identifiable with 'M' and 'H' for Master and House."
-    )
+      "The shipment order number is an alphanumeric identifier that varies by transport mode. For land transport, a single number is assigned like 123H456. Maritime transport gets one or two numbers per shipment, formatted for MLB ABCD12345678 and for HLB do not follow an strict format. Air transport can have either one or two numbers - a Master Air Waybill (e.g. 23456789) may or may not contain 'M' and/or a House Air Waybill (e.g. 87654321) may or may not contain 'H'."
+    ),
+  tipo_contenedor_vehiculo: z
+    .string()
+    .describe("Type of container or vehicle; value of 2 numbers. They range from 1 to 69")
     .nullable(),
+
   identificadores_pedimento: z
     .array(
       z.object({
