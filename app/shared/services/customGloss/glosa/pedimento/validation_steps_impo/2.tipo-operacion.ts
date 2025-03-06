@@ -10,11 +10,11 @@ import { traceable } from "langsmith/traceable";
  * Validates that the operation type is consistent with the origin/destination
  * If destination is Mexico, operation type should be IMP (import)
  */
-export async function validateCoherenciaOrigenDestino(pedimento: Pedimento, transportDoc?: TransportDocument) {
+export async function validateCoherenciaOrigenDestino(pedimento: Pedimento, transportDocument?: TransportDocument) {
   const tipoOperacion = pedimento.encabezado_del_pedimento?.tipo_oper;
   const observaciones = pedimento.observaciones_a_nivel_pedimento;
 
-  const transportDocmkdown = transportDoc?.markdown_representation;
+  const transportDocumentmkdown = transportDocument?.markdown_representation;
   
   const validation = {
     name: "Coherencia con origen/destino",
@@ -29,7 +29,7 @@ export async function validateCoherenciaOrigenDestino(pedimento: Pedimento, tran
         },
         "Documento de transporte": {
           data: [
-            { name: "Documento de transporte", value: transportDocmkdown },
+            { name: "Documento de transporte", value: transportDocumentmkdown },
           ]
         }
       }
@@ -104,9 +104,9 @@ export async function validateRegimen(pedimento: Pedimento) {
 }
 
 export const tracedTipoOperacion = traceable(
-  async ({ pedimento, transportDoc }: { pedimento: Pedimento; transportDoc?: TransportDocument }) => {
+  async ({ pedimento, transportDocument }: { pedimento: Pedimento; transportDocument?: TransportDocument }) => {
     const validationsPromise = await Promise.all([
-      validateCoherenciaOrigenDestino(pedimento, transportDoc),
+      validateCoherenciaOrigenDestino(pedimento, transportDocument),
       validateClavePedimento(pedimento),
       validateRegimen(pedimento)
     ]);
