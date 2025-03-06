@@ -2,12 +2,66 @@ import { generateText } from "ai";
 import { wrapAISDKModel } from "langsmith/wrappers/vercel";
 import { google } from "@ai-sdk/google";
 import { DocumentType } from "../classification";
+import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
+import { HumanMessage } from "@langchain/core/messages";
+import { z } from "zod";
 
 export async function extractTextFromImage(
   pdfFile: File,
   documentType: DocumentType,
 ) {
   const base64Data = Buffer.from(await pdfFile.arrayBuffer()).toString('base64');
+  if (process.env["LANGCHAIN_MIGRATION_ENABLED"] === "true") {
+    const baseUrl =
+      process.env.NODE_ENV === "development"
+        ? "http://localhost:8000"
+        : "https://cargo-claro-fastapi-6z19.onrender.com";
+    const url = `${baseUrl}/pdf-to-images`;
+
+    // Create form data and append the file
+    const formData = new FormData();
+    formData.append('file', pdfFile);
+
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${process.env["GLOSS_TOKEN"]}`,
+      },
+      body: formData,
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to extract text: ${response.statusText}`);
+    }
+
+    const rawData = await response.json();
+    const schema = z.object({
+      images: z.array(z.string()),
+    })
+    const images = schema.parse(rawData);
+    const model = new ChatGoogleGenerativeAI({
+      model: "gemini-2.0-flash",
+    });
+    const { content } = await model.invoke([
+      new HumanMessage(`El tipo de documento es ${documentType}. Transcribe la informacion de la imagen en formato markdown.`),
+      ...images.images.map((image) => new HumanMessage({
+        content: [
+          {
+            type: "image_url",
+            image_url: {
+              url: `data:image/png;base64,${image}`,
+            },
+          },
+        ],
+      })),
+    ]);
+    if (typeof content !== "string") {
+      throw new Error("Failed to extract text");
+    }
+    return {
+      markdown_representation: content,
+    };
+  }
   const { text } = await generateText({
     model: wrapAISDKModel(google("gemini-2.0-flash-001"), {
       name: `Extract schema from ${documentType} pdf`,
