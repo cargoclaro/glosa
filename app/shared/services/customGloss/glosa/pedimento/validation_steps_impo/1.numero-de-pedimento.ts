@@ -29,7 +29,7 @@ async function validateLongitud(pedimento: Pedimento) {
     }
   } as const;
 
-  return await glosar(validation, "gemini-2.0-flash-001");
+  return await glosar(validation, "gpt-4o-mini");
 }
 
 async function validateAñoPedimento(pedimento: Pedimento) {
@@ -52,7 +52,7 @@ async function validateAñoPedimento(pedimento: Pedimento) {
     }
   } as const;
 
-  return await glosar(validation, "gemini-2.0-flash-001");
+  return await glosar(validation, "gpt-4o-mini");
 }
 
 export const tracedNumeroDePedimento = traceable(

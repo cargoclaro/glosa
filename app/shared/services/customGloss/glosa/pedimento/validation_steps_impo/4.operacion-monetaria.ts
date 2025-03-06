@@ -69,7 +69,7 @@ export async function validateTipoCambio(pedimento: Pedimento) {
     }
   } as const;
 
-  return await glosar(validation, "gemini-2.0-flash-001");
+  return await glosar(validation, "gpt-4o-mini");
 }
 
 export async function validateIncrementables(pedimento: Pedimento, invoice?: Invoice, transportDocument?: TransportDocument, carta318?: Carta318) {

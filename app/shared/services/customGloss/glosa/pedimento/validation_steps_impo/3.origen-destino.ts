@@ -28,7 +28,7 @@ export async function validateClaveApendice15(pedimento: Pedimento) {
     }
   } as const;
 
-  return await glosar(validation, "gemini-2.0-flash-001");
+  return await glosar(validation, "gpt-4o-mini");
 }
 
 export const tracedClaveApendice15 = traceable(

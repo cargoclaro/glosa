@@ -53,7 +53,7 @@ export async function validatePesosYBultos(pedimento: Pedimento, transportDocume
     }
   } as const;
 
-  return await glosar(validation, "gemini-2.0-flash-001");
+  return await glosar(validation, "gpt-4o-mini");
 }
 
 export async function validateBultos(pedimento: Pedimento, transportDocument?: TransportDocument) {
