@@ -278,6 +278,27 @@ const GenericTabComponent = ({ data, handleClick }: IGenericTabComponent) => {
   return (
     <>
       <StatusHeader status={data.isCorrect} />
+      <SectionDivider title="Pasos de Validación" icon={<ArrowTrendingUp />} />
+      <DataListForSummaryCard
+        data={data.validations}
+        handleDetail={handleClick}
+      />
+      <SectionDivider title="Fuentes" icon={<DocMagniGlass />} />
+      <ul className="flex flex-col gap-1 mt-4 max-h-[160px] overflow-y-auto">
+        {uniqueOrigins.map((origin, index) => (
+          <li key={index} className="">
+            <p
+              title={origin}
+              className="w-full px-12 py-2 rounded-full text-center border truncate bg-purple-100 border-purple-400 inline-flex gap-1 justify-center items-center"
+            >
+              <span>
+                <Document />
+              </span>
+              {origin.toUpperCase()}
+            </p>
+          </li>
+        ))}
+      </ul>
       <SectionDivider title="Contexto" icon={<DocMagniGlass />} />
       <div className="max-h-[420px] overflow-y-auto my-5">
         <table className="w-full text-center">
@@ -304,27 +325,6 @@ const GenericTabComponent = ({ data, handleClick }: IGenericTabComponent) => {
           </tbody>
         </table>
       </div>
-      <SectionDivider title="Fuentes" icon={<DocMagniGlass />} />
-      <ul className="flex flex-col gap-1 mt-4 max-h-[160px] overflow-y-auto">
-        {uniqueOrigins.map((origin, index) => (
-          <li key={index} className="">
-            <p
-              title={origin}
-              className="w-full px-12 py-2 rounded-full text-center border truncate bg-purple-100 border-purple-400 inline-flex gap-1 justify-center items-center"
-            >
-              <span>
-                <Document />
-              </span>
-              {origin.toUpperCase()}
-            </p>
-          </li>
-        ))}
-      </ul>
-      <SectionDivider title="Pasos de Validación" icon={<ArrowTrendingUp />} />
-      <DataListForSummaryCard
-        data={data.validations}
-        handleDetail={handleClick}
-      />
       <div className="border-t border-t-black mb-4" />
       <VerifiedButton
         tabId={data.id}
