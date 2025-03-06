@@ -39,6 +39,7 @@ export async function extractTextFromImage(
     const images = schema.parse(rawData);
     const model = new ChatGoogleGenerativeAI({
       model: "gemini-2.0-flash",
+      maxOutputTokens: 2048,
     });
     const { content } = await model.invoke([
       new HumanMessage(`El tipo de documento es ${documentType}. Transcribe la informacion de la imagen en formato markdown.`),
