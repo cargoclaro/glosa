@@ -69,7 +69,7 @@ export async function validateTipoCambio(pedimento: Pedimento) {
     }
   } as const;
 
-  return await glosar(validation);
+  return await glosar(validation, "gemini-2.0-flash");
 }
 
 export async function validateIncrementables(pedimento: Pedimento, invoice?: Invoice, transportDocument?: TransportDocument, carta318?: Carta318) {
@@ -156,7 +156,7 @@ async function validateValorDolares(pedimento: Pedimento, invoice?: Invoice, car
     }
   } as const;
 
-  return await glosar(validation, "o3-mini");
+  return await glosar(validation, "gpt-4o-mini");
 }
 
 async function validateValorComercial(pedimento: Pedimento, invoice?: Invoice, carta318?: Carta318) {
@@ -195,7 +195,7 @@ async function validateValorComercial(pedimento: Pedimento, invoice?: Invoice, c
     }
   } as const;
 
-  return await glosar(validation, "o3-mini");
+  return await glosar(validation, "gpt-4o-mini");
 }
 
 async function validateValorAduana(pedimento: Pedimento, invoice?: Invoice, carta318?: Carta318) {
@@ -235,7 +235,7 @@ async function validateValorAduana(pedimento: Pedimento, invoice?: Invoice, cart
     }
   } as const;
 
-  return await glosar(validation, "o3-mini");
+  return await glosar(validation, "gpt-4o-mini");
 }
 
 export const tracedTransportDocumentEntryDate = traceable(

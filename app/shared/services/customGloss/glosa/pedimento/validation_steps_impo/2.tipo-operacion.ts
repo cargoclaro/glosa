@@ -36,7 +36,7 @@ export async function validateCoherenciaOrigenDestino(pedimento: Pedimento, tran
     }
   } as const;
 
-  return await glosar(validation);
+  return await glosar(validation, "gpt-4o-mini");
 }
 
 /**
@@ -68,7 +68,7 @@ export async function validateClavePedimento(pedimento: Pedimento) {
     }
   } as const;
 
-  return await glosar(validation);
+  return await glosar(validation, "gpt-4o-mini");
 }
 
 /**
@@ -100,7 +100,7 @@ export async function validateRegimen(pedimento: Pedimento) {
     }
   } as const;
 
-  return await glosar(validation);
+  return await glosar(validation, "gpt-4o-mini");
 }
 
 export const tracedTipoOperacion = traceable(

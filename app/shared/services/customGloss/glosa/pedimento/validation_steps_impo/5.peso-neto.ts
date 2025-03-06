@@ -53,7 +53,7 @@ export async function validatePesosYBultos(pedimento: Pedimento, transportDocume
     }
   } as const;
 
-  return await glosar(validation);
+  return await glosar(validation, "gemini-2.0-flash");
 }
 
 export async function validateBultos(pedimento: Pedimento, transportDocument?: TransportDocument) {
@@ -84,7 +84,7 @@ export async function validateBultos(pedimento: Pedimento, transportDocument?: T
     }
   } as const;
 
-  return await glosar(validation);
+  return await glosar(validation, "o3-mini");
 }
 
 export const tracedPesosYBultos = traceable(
