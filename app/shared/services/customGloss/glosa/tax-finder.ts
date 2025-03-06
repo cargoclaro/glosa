@@ -69,7 +69,7 @@ const articuloFundamentoLegalResponseSchema = z.object({
         descripcion: z.string(),
       }),
     }),
-  })).length(1),
+  })).min(1),
 });
 
 
@@ -143,26 +143,5 @@ export async function getFraccionInfo({ fraccion, fechaDeEntrada, tipoDeOperacio
     })
   });
 
-  const result = await response.json();
-
-  const parsedResult = taxfinderResponseSchema.parse(result);
-
-  const regulacionesNoArancelarias = parsedResult.data.regulaciones_no_arancelarias.normas ?? [];
-
-  const regulacionesNoArancelariasConFundamentoLegal = await Promise.all(regulacionesNoArancelarias.map(async (regulacion) => {
-    const { clave_acuerdo, claves_articulos } = regulacion;
-    const fundamentoLegal = await getArticuloFundamentoLegal({ clave_acuerdo, clave_regulacion: "NOM", clave_articulo: claves_articulos });
-    return {
-      ...regulacion,
-      fundamentoLegal
-    };
-  }));
-
-  return {
-    ...parsedResult,
-    regulacionesNoArancelarias: regulacionesNoArancelariasConFundamentoLegal
-  };
+  return taxfinderResponseSchema.parse(await response.json());
 }
-
-// Example using DD/MM/YYYY format
-getFraccionInfo({ fraccion: "22087002", fechaDeEntrada: "27/08/2024", tipoDeOperacion: "I" });
