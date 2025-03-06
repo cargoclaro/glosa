@@ -18,16 +18,16 @@ export async function validateRfcFormat(pedimento: Pedimento, cove: Cove, carta3
     description: "Validar que los RFC cumplan con los siguientes criterios:\n\n1. Formato válido:\n• RFC Moral: 12 caracteres (ej: ABC850101AAA)\n• RFC Física: 13 caracteres (ej: ABCD850101AAA)\n\n2. Consistencia entre documentos:\n• RFC del importador debe ser idéntico en Pedimento, COVE y Carta 3.1.8\n• Si hay Cesión de Derechos, el RFC de la comercializadora debe coincidir con el RFC del importador en la Carta 3.1.8",
     contexts: {
       [CustomGlossTabContextType.PROVIDED]: {
-        pedimento: {
+        "Pedimento": {
           data: [
             { name: "RFC", value: rfcPedimento },
             { name: "Observaciones", value: observaciones }
           ]
         },
-        cove: {
+        "COVE": {
           data: [{ name: "RFC", value: rfcCove }]
         },
-        carta318: {
+        "Carta 318": {
           data: [{ name: "Carta 318", value: carta318mkdown }]
         }
       }
@@ -48,19 +48,19 @@ export async function validateCesionDerechos(pedimento: Pedimento, cartaSesion?:
     description: "Si existe Cesión de Derechos:\n\nComparar:\n• RFC comercializadora vs. RFC importador en Carta 3.1.8\n• Fecha de emisión de la Cesión debe ser anterior a Fecha de entrada del Pedimento\n\nPrecedencia:\n• La Carta 3.1.8 anula cualquier discrepancia en Factura/COVE\n• Si no hay Cesión, omitir y marcar como válido",
     contexts: {
       [CustomGlossTabContextType.PROVIDED]: {
-        pedimento: {
+        "Pedimento": {
           data: [
             { name: "Fecha de entrada", value: fechaEntradaPedimento },
             { name: "Observaciones", value: observaciones }
           ]
         },
-        cartaSesion: {
+        "Carta sesión": {
           data: [
             { name: "Carta sesión", value: cartaSesionmkdown },
             { name: "Existe cesión de derechos", value: !!cartaSesion }
           ]
         },
-        carta318: {
+        "Carta 318": {
           data: [{ name: "Carta 318", value: carta318mkdown }]
         }
       }
@@ -95,7 +95,7 @@ export async function validateDatosImportador(pedimento: Pedimento, cove: Cove, 
     description: "Validar que los siguientes campos coincidan literalmente entre documentos:\n\nRFC: Debe coincidir entre Pedimento, Carta 3.1.8 y COVE.\nDomicilio fiscal: Debe coincidir entre Pedimento, Carta 3.1.8 (implícito) y Factura (importador).\nRazón social: Debe coincidir entre Pedimento, Carta 3.1.8 (implícito) y COVE.\nRegla de precedencia:\nSi la Carta 3.1.8 existe, sus datos tienen prioridad sobre Factura/COVE. Cualquier discrepancia en otros documentos se marca como error.",
     contexts: {
       [CustomGlossTabContextType.PROVIDED]: {
-        pedimento: {
+        "Pedimento": {
           data: [
             { name: "RFC", value: rfcPedimento },
             { name: "Domicilio", value: domicilioPedimento },
@@ -103,14 +103,14 @@ export async function validateDatosImportador(pedimento: Pedimento, cove: Cove, 
             { name: "Observaciones", value: observaciones }
           ]
         },
-        cove: {
+        "COVE": {
           data: [
             { name: "RFC", value: rfcCove },
             { name: "Domicilio", value: domicilioCoveCompleto },
             { name: "Razón social", value: razonSocialCove }
           ]
         },
-        carta318: {
+        "Carta 318": {
           data: [
             { name: "Carta 318", value: carta318mkdown },
             { name: "Existe carta 3.1.8", value: !!carta318 }
@@ -148,7 +148,7 @@ export async function validateDatosProveedor(pedimento: Pedimento, cove: Cove, c
     description: "Validar que los siguientes campos coincidan entre documentos:\n\nTAX ID: Debe coincidir entre Pedimento, Carta 3.1.8 y COVE.\nDomicilio fiscal: Debe coincidir entre Pedimento, Carta 3.1.8 y Factura.\nRazón social: Debe coincidir entre Pedimento, Carta 3.1.8 (implícito) y COVE.\nRegla de precedencia:\nSi la Carta 3.1.8 existe, sus datos tienen prioridad sobre Factura/COVE. La idea es verificar que el tax id, domicilio y razón social, sea el mismo entre los documentos.",
     contexts: {
       [CustomGlossTabContextType.PROVIDED]: {
-        pedimento: {
+        "Pedimento": {
           data: [
             { name: "Nombre/Razón social", value: nombreProveedorPedimento },
             { name: "Domicilio", value: domicilioProveedorPedimento },
@@ -156,14 +156,14 @@ export async function validateDatosProveedor(pedimento: Pedimento, cove: Cove, c
             { name: "Observaciones", value: observaciones }
           ]
         },
-        cove: {
+        "COVE": {
           data: [
             { name: "Nombre/Razón social", value: nombreProveedorCove },
             { name: "Domicilio", value: domicilioProveedorCoveCompleto },
             { name: "ID Fiscal", value: idProveedorCove }
           ]
         },
-        carta318: {
+        "Carta 318": {
           data: [
             { name: "Carta 318", value: carta318mkdown },
           ]
@@ -190,23 +190,23 @@ export async function validateFechasYFolios(pedimento: Pedimento, cove: Cove, in
     description: "Verificar secuencias lógicas y coincidencias exactas:\n\nFechas:\n• Fecha emisión Factura debe ser menor o igual a la Fecha entrada Pedimento\n• Fecha COVE debe ser igual a la Fecha Factura\n\nNúmeros:\n• Número COVE en el Pedimento debe ser igual al Número COVE en el COVE\n• Número Factura debe ser único y no repetido en otras operaciones",
     contexts: {
       [CustomGlossTabContextType.PROVIDED]: {
-        pedimento: {
+        "Pedimento": {
           data: [
             { name: "Fecha de entrada", value: fechaEntradaPedimento },
             { name: "Número COVE", value: numeroCovePedimento },
             { name: "Observaciones", value: observaciones }
           ]
         },
-        cove: {
+        "COVE": {
           data: [
             { name: "Fecha de expedición", value: fechaExpedicionCove },
             { name: "Número COVE", value: numeroCove }
           ]
         },
-        factura: {
+        "Factura": {
           data: [{ name: "Factura", value: invoicemkdown }]
         },
-        carta318: {
+        "Carta 318": {
           data: [{ name: "Carta 318", value: carta318mkdown }]
         }
       }
@@ -238,7 +238,7 @@ export async function validateMonedaYEquivalencia(pedimento: Pedimento, cove: Co
     description: "Validar los siguientes aspectos:\n\nMoneda:\n• La moneda declarada debe coincidir entre:\n  - Factura\n  - COVE\n  - Carta 3.1.8\n\nCálculo en USD:\n• El valor en dólares del pedimento debe ser igual a:\n  - Valor de Factura multiplicado por Factor DOF\n• Se permite una tolerancia máxima de ±0.5%\n\nFactor DOF:\n• Debe corresponder al tipo de cambio publicado el día de la fecha de emisión de la Factura",
     contexts: {
       [CustomGlossTabContextType.PROVIDED]: {
-        pedimento: {
+        "Pedimento": {
           data: [
             { name: "Moneda", value: monedaPedimento },
             { name: "Valor en dólares", value: valorDolaresPedimento },
@@ -247,21 +247,21 @@ export async function validateMonedaYEquivalencia(pedimento: Pedimento, cove: Co
             { name: "Observaciones", value: observaciones }
           ]
         },
-        cove: {
+        "COVE": {
           data: [
             { name: "Moneda", value: monedaCove },
             { name: "Valor en dólares", value: valorDolaresCove }
           ]
         },
-        factura: {
+        "Factura": {
           data: [{ name: "Factura", value: invoicemkdown }]
         },
-        carta318: {
+        "Carta 318": {
           data: [{ name: "Carta 318", value: carta318mkdown }]
         }
       },
       [CustomGlossTabContextType.EXTERNAL]: {
-        DOF: {
+        "Tipo de cambio DOF": {
           data: [
             { name: "Factor DOF", value: factorDof },
             { name: "Tipo de cambio DOF", value: tipoCambioDOF }

@@ -42,7 +42,7 @@ async function validateAñoPedimento(pedimento: Pedimento) {
     description: "El año del pedimento (inferido por los dígitos 1 y 2 del número del pedimento) debe ser iguales al año actual",
     contexts: {
       [CustomGlossTabContextType.INFERRED]: {
-        "codigo": {
+        "Pedimento": {
           data: [
             { name: "Año actual", value: añoActual },
             { name: "Número de pedimento sin espacios", value: numeroPedimentoSinEspacios }

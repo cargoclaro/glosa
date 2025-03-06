@@ -21,13 +21,13 @@ export async function validateCoherenciaOrigenDestino(pedimento: Pedimento, tran
     description: "El tipo de operación debe ser consistente con el origen y destino de las mercancías, es decir IMP (importación) si destino es México, si no se pueden determinar los datos de origen y destino, ignorar y marcar como correcto.",
     contexts: {
       [CustomGlossTabContextType.PROVIDED]: {
-        pedimento: {
+        "Pedimento": {
           data: [
             { name: "Tipo de operación", value: tipoOperacion },
             { name: "Observaciones", value: observaciones }
           ]
         },
-        documentoDeTransporte: {
+        "Documento de transporte": {
           data: [
             { name: "Documento de transporte", value: transportDocmkdown },
           ]
@@ -52,7 +52,7 @@ export async function validateClavePedimento(pedimento: Pedimento) {
     description: "La clave de pedimento debe ser válida para el tipo de operación según el Apéndice 2",
     contexts: {
       [CustomGlossTabContextType.PROVIDED]: {
-        pedimento: {
+        "Pedimento": {
           data: [
             { name: "Tipo de operación", value: tipoOperacion },
             { name: "Clave de pedimento", value: clavePedimento },
@@ -61,7 +61,7 @@ export async function validateClavePedimento(pedimento: Pedimento) {
         }
       },
       [CustomGlossTabContextType.EXTERNAL]: {
-        "apendices": {
+        "Anexo 22 -> Apendices": {
           data: [{ name: "Apéndice 2", value: JSON.stringify(apendice2) }]
         }
       }
@@ -84,7 +84,7 @@ export async function validateRegimen(pedimento: Pedimento) {
     description: "El régimen debe ser válido para el tipo de operación según el Apéndice 16",
     contexts: {
       [CustomGlossTabContextType.PROVIDED]: {
-        pedimento: {
+        "Pedimento": {
           data: [
             { name: "Tipo de operación", value: tipoOperacion },
             { name: "Régimen", value: regimen },
@@ -93,7 +93,7 @@ export async function validateRegimen(pedimento: Pedimento) {
         }
       },
       [CustomGlossTabContextType.EXTERNAL]: {
-        "apendices": {
+        "Anexo 22 -> Apendices": {
           data: [{ name: "Apéndice 16", value: JSON.stringify(apendice16) }]
         }
       }
