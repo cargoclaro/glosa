@@ -5,6 +5,7 @@ import { DocumentType } from "../classification";
 import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 import { HumanMessage } from "@langchain/core/messages";
 import { z } from "zod";
+import { sanitizeObjectStrings } from "../remove-null-bytes";
 
 export async function extractTextFromImage(
   pdfFile: File,
@@ -56,7 +57,7 @@ export async function extractTextFromImage(
       throw new Error("Failed to extract text");
     }
     return {
-      markdown_representation: content,
+      markdown_representation: sanitizeObjectStrings(content),
     };
   }
   const { text } = await generateText({
