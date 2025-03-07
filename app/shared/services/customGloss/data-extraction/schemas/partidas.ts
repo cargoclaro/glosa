@@ -1,6 +1,6 @@
 import { z } from "zod"
 
-export type Partidas = z.infer<typeof partidasSchema>;
+export type Partida = z.infer<typeof partidasSchema>;
 
 export const partidasSchema = z.object({
   sec: z.number().describe("Número de sección"),

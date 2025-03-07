@@ -1,4 +1,4 @@
-import { Pedimento, Cove } from "../../../data-extraction/schemas";
+import { Pedimento, Cove, Partida } from "../../../data-extraction/schemas";
 import { glosar } from "../../validation-result";
 import { CustomGlossTabContextType } from "@prisma/client";
 import { 
@@ -10,9 +10,10 @@ import { apendice7 } from "../../anexo-22/apendice_7";
 import { traceable } from "langsmith/traceable";
 
 // Función para validar preferencia arancelaria y certificado de origen
-export async function validateFraccionArancelaria(pedimento: Pedimento) {
+export async function validateFraccionArancelaria(partida: Partida,) {
   // Extraer partidas con información de fracción arancelaria
-  const partidas = pedimento.partidas || [];
+  const fraccionArancelaria = partida.fraccion_y_nico || "";
+
   
   const validation = {
     name: "Validación de fracción arancelaria",
@@ -21,7 +22,7 @@ export async function validateFraccionArancelaria(pedimento: Pedimento) {
       [CustomGlossTabContextType.PROVIDED]: {
         "Pedimento": {
           data: [
-            { name: "Partidas", value: partidas }
+            { name: "Fracción arancelaria", value: fraccionArancelaria }
           ]
         }
       },
@@ -39,9 +40,9 @@ export async function validateFraccionArancelaria(pedimento: Pedimento) {
 }
 
 // Función para validar coherencia de UMC y cantidad UMC
-export async function validateCoherenciaUMT(pedimento: Pedimento) {
+export async function validateCoherenciaUMT(partida: Partida) {
   // Extraer partidas con información de UMC
-  const partidas = pedimento.partidas || [];
+  const partidasUMT = partida.umt || "";
   
   const validation = {
     name: "Validación de unidad de medida de la tarifa",
@@ -50,7 +51,7 @@ export async function validateCoherenciaUMT(pedimento: Pedimento) {
       [CustomGlossTabContextType.PROVIDED]: {
         "Pedimento": {
           data: [
-            { name: "Partidas", value: partidas }
+            { name: "PartidasUMT", value: partidasUMT }
           ]
         }
       },
@@ -69,9 +70,9 @@ export async function validateCoherenciaUMT(pedimento: Pedimento) {
 
 
 // Función para validar coherencia de UMC
-export async function validateCoherenciaUMC(pedimento: Pedimento, cove?: Cove, carta318?: Carta318, invoice?: Invoice) {
+export async function validateCoherenciaUMC(partida: Partida, cove?: Cove, carta318?: Carta318, invoice?: Invoice) {
   // Extraer partidas con información de UMC
-  const partidas = pedimento.partidas || [];
+  const partidasUMC = partida.umc || "";
   const claveUmcCove = cove?.datos_mercancia?.clave_umc;
   const carta318mkdown = carta318?.markdown_representation;
   const invoicemkdown = invoice?.markdown_representation;
@@ -83,7 +84,7 @@ export async function validateCoherenciaUMC(pedimento: Pedimento, cove?: Cove, c
       [CustomGlossTabContextType.PROVIDED]: {
         "Pedimento": {
           data: [
-            { name: "Partidas", value: partidas }
+            { name: "PartidasUMC", value: partidasUMC }
           ]
         }
       },
@@ -116,16 +117,16 @@ export async function validateCoherenciaUMC(pedimento: Pedimento, cove?: Cove, c
 }
 
 // Función para validar el país de venta
-export async function validatePaisVenta(pedimento: Pedimento, invoice?: Invoice, packing?: PackingList) {
+export async function validatePaisVenta(partida: Partida, pedimento?: Pedimento, invoice?: Invoice, packing?: PackingList) {
   // Extraer el país de venta del pedimento
-  const partidas = pedimento.partidas 
+  const partidasPaisVentaCompra = partida.p_v_c || "";
   
   // Extraer el país de la dirección de facturación de la factura
   const invoicemkdown = invoice?.markdown_representation;
   
   // Extraer el país de la dirección de facturación del packing
   const packingmkdown = packing?.markdown_representation;
-  const observaciones = pedimento.observaciones_a_nivel_pedimento;
+  const observaciones = pedimento?.observaciones_a_nivel_pedimento;
   
   const validation = {
     name: "Validación del país de venta",
@@ -134,7 +135,7 @@ export async function validatePaisVenta(pedimento: Pedimento, invoice?: Invoice,
       [CustomGlossTabContextType.PROVIDED]: {
         "Pedimento": {
           data: [
-            { name: "Partidas", value: partidas },
+            { name: "PartidasPaisVentaCompra", value: partidasPaisVentaCompra },
             { name: "Observaciones", value: observaciones }
           ]
         },
@@ -156,16 +157,16 @@ export async function validatePaisVenta(pedimento: Pedimento, invoice?: Invoice,
 }
 
 // Función para validar el país de origen
-export async function validatePaisOrigen(pedimento: Pedimento, invoice?: Invoice, packing?: PackingList, carta318?: Carta318) {
+export async function validatePaisOrigen(partida: Partida, pedimento?: Pedimento, invoice?: Invoice, packing?: PackingList, carta318?: Carta318) {
   // Extraer el país de origen del pedimento
-  const paisOrigenPedimento = pedimento.partidas || [];
+  const paisOrigenDestino = partida.p_o_d || "";
   
   const packingmkdown = packing?.markdown_representation;
   const carta318mkdown = carta318?.markdown_representation;
   const invoicemkdown = invoice?.markdown_representation;
   
   
-  const observaciones = pedimento.observaciones_a_nivel_pedimento;
+  const observaciones = pedimento?.observaciones_a_nivel_pedimento;
   
   const validation = {
     name: "Validación del país de origen",
@@ -174,7 +175,7 @@ export async function validatePaisOrigen(pedimento: Pedimento, invoice?: Invoice
       [CustomGlossTabContextType.PROVIDED]: {
         "Pedimento": {
           data: [
-            { name: "País de origen", value: paisOrigenPedimento },
+            { name: "País de origen", value: paisOrigenDestino },
             { name: "Observaciones", value: observaciones }
           ]
         },
@@ -201,16 +202,16 @@ export async function validatePaisOrigen(pedimento: Pedimento, invoice?: Invoice
 }
 
 // Función para validar la descripción de la mercancía
-export async function validateDescripcionMercancia(pedimento: Pedimento, cove?: Cove, invoice?: Invoice, carta318?: Carta318) {
+export async function validateDescripcionMercancia(partida: Partida, pedimento?: Pedimento, cove?: Cove, invoice?: Invoice, carta318?: Carta318) {
   // Extraer la descripción de la mercancía del pedimento
-  const partidas = pedimento.partidas || [];
+  const partidasDescripcionMercancia = partida.descripcion || "";
   
   // Extraer la descripción de la mercancía del COVE, factura y carta 318
   const descripcionCove = cove?.datos_mercancia?.descripcion_mercancia;
   const invoicemkdown = invoice?.markdown_representation;
   const carta318mkdown = carta318?.markdown_representation;
   
-  const observaciones = pedimento.observaciones_a_nivel_pedimento;
+  const observaciones = pedimento?.observaciones_a_nivel_pedimento;
   
   const validation = {
     name: "Validación de descripción de mercancía",
@@ -219,7 +220,7 @@ export async function validateDescripcionMercancia(pedimento: Pedimento, cove?: 
       [CustomGlossTabContextType.PROVIDED]: {
         "Pedimento": {
           data: [
-            { name: "Partidas", value: partidas },
+            { name: "PartidasDescripcionMercancia", value: partidasDescripcionMercancia },
             { name: "Observaciones a nivel pedimento", value: observaciones }
           ]
         },
@@ -245,7 +246,7 @@ export async function validateDescripcionMercancia(pedimento: Pedimento, cove?: 
   return await glosar(validation);
 }
 
-export async function validatePedimento(pedimento: Pedimento) {
+export async function validatePedimento(pedimento: Pedimento, partida: Partida) {
   // Extract total values from pedimento
   const valorAduanaTotal = pedimento.valores?.valor_aduana || 0;
   const valorComercialTotal = pedimento.valores?.precio_pagado_valor_comercial || 0;
@@ -257,31 +258,29 @@ export async function validatePedimento(pedimento: Pedimento) {
   const dtaCalculado = valorAduanaTotal * tasaDTA;
   const dtaFinal = dtaCalculado < 500 ? 500 : dtaCalculado;
 
-  // Process each partida
-  const partidas = pedimento.partidas || [];
-  const partidasConCalculos = partidas.map(partida => {
-    const valorComercialPartida = partida.imp_precio_pag || 0;
-    const cantidadUMC = partida.cantidad_umc || 0;
+  // Values from partida
+  const valorComercialPartida = partida.imp_precio_pag || 0;
+  const cantidadUMC = partida.cantidad_umc || 0;
+  
 
-    // Calculate inferred values for the partida
-    const valorAduanaCalculado = prorrateo !== null ? Math.ceil(valorComercialPartida * prorrateo) : null;
-    const precioUnitarioCalculado = cantidadUMC !== 0 ? valorComercialPartida / cantidadUMC : null;
-    const tasaIGI = partida.contribuciones?.find(contribucion => contribucion.con === "IGI/IGE")?.tasa || 0;
-    const igiCalculado = valorAduanaCalculado !== null ? valorAduanaCalculado * (tasaIGI / 100) : null;
-    const dtaProrrateo = dtaFinal * ((valorAduanaCalculado || 0) / valorAduanaTotal);
-    const baseIVA = (valorAduanaCalculado || 0) + (igiCalculado || 0) + dtaProrrateo;
-    const tasaIVA = partida.contribuciones?.find(contribucion => contribucion.con === "IVA")?.tasa || 0.16;
-    const ivaCalculado = baseIVA * tasaIVA;
+  // Calculate inferred values for the partida
+  const valorAduanaCalculado = prorrateo !== null ? Math.ceil(valorComercialPartida * prorrateo) : null;
+  const precioUnitarioCalculado = cantidadUMC !== 0 ? valorComercialPartida / cantidadUMC : null;
+  const tasaIGI = partida.contribuciones?.find(contribucion => contribucion.con === "IGI/IGE")?.tasa || 0;
+  const igiCalculado = valorAduanaCalculado !== null ? valorAduanaCalculado * (tasaIGI / 100) : null;
+  const dtaProrrateo = dtaFinal * ((valorAduanaCalculado || 0) / valorAduanaTotal);
+  const baseIVA = (valorAduanaCalculado || 0) + (igiCalculado || 0) + dtaProrrateo;
+  const tasaIVA = partida.contribuciones?.find(contribucion => contribucion.con === "IVA")?.tasa || 0.16;
+  const ivaCalculado = baseIVA * tasaIVA;
 
-    // Return partida with calculated (inferred) values
-    return {
-      ...partida,
-      valorAduanaCalculado,
-      precioUnitarioCalculado,
-      igiCalculado,
-      ivaCalculado
-    };
-  });
+  // Return partida with calculated (inferred) values
+  const partidasConCalculos = {
+    ...partida,
+    valorAduanaCalculado,
+    precioUnitarioCalculado, 
+    igiCalculado,
+    ivaCalculado
+  };
 
   // Extract observations
   const observaciones = pedimento.observaciones_a_nivel_pedimento;
@@ -337,15 +336,15 @@ export async function validateNumerosSerie(pedimento: Pedimento, cove?: Cove) {
   return await glosar(validation);
 }
 export const tracedPartidas = traceable(
-  async ({ pedimento, invoice }: { pedimento: Pedimento; invoice?: Invoice }) => {
+  async ({ pedimento, invoice, cove, carta318, partida }: { pedimento: Pedimento; invoice?: Invoice, cove?: Cove, carta318?: Carta318, partida: Partida }) => {
     const validationsPromise = await Promise.all([
-      validateFraccionArancelaria(pedimento), // Fixed function name
-      validateCoherenciaUMC(pedimento, undefined, undefined, invoice), // Added missing params
-      validateCoherenciaUMT(pedimento), // Fixed function name
-      validatePaisVenta(pedimento, invoice), // Added existing validation
-      validatePaisOrigen(pedimento, invoice), // Added existing validation
-      validateDescripcionMercancia(pedimento, undefined, invoice), // Added existing validation
-      validateNumerosSerie(pedimento) // Added existing validation
+      validateFraccionArancelaria(partida),
+      validateCoherenciaUMC(partida, cove, carta318, invoice),
+      validateCoherenciaUMT(partida),
+      validatePaisVenta(partida, pedimento, invoice),
+      validatePaisOrigen(partida, pedimento, invoice),
+      validateDescripcionMercancia(partida, pedimento, cove, invoice, carta318),
+      validateNumerosSerie(pedimento, cove)
     ]);
     
     return {
