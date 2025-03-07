@@ -69,14 +69,11 @@ export async function validateCoherenciaUMT(pedimento: Pedimento) {
 }
 
 
-// AQUI ME QUEDE
-
-
 // Función para validar coherencia de UMC
-export async function validateCoherenciaUMC(pedimento: Pedimento) {
+export async function validateCoherenciaUMC(pedimento: Pedimento, cove?: Cove, carta318?: Carta318, invoice?: Invoice) {
   // Extraer partidas con información de UMC
   const partidas = pedimento.partidas || [];
-  const cove = cove?.datos_mercancia?
+  const claveUmcCove = cove?.datos_mercancia?.clave_umc;
   const carta318mkdown = carta318?.markdown_representation;
   const invoicemkdown = invoice?.markdown_representation;
 
@@ -93,11 +90,19 @@ export async function validateCoherenciaUMC(pedimento: Pedimento) {
       },
       "COVE": {
         data: [
-          { name: "COVE", value: covemkdown }
+          { name: "COVE", value: claveUmcCove }
         ]
       },
       "Factura": {
-      
+        data: [
+          { name: "Invoice", value: invoicemkdown }
+        ]
+      },
+      "Carta 318": {
+        data: [
+          { name: "Carta 318", value: carta318mkdown }
+        ]
+      },
       [CustomGlossTabContextType.EXTERNAL]: {
         "Apéndices": {
           data: [
@@ -121,7 +126,6 @@ export async function validatePaisVenta(pedimento: Pedimento, invoice?: Invoice,
   
   // Extraer el país de la dirección de facturación del packing
   const packingmkdown = packing?.markdown_representation;
-  
   const observaciones = pedimento.observaciones_a_nivel_pedimento;
   
   const validation = {
@@ -137,12 +141,12 @@ export async function validatePaisVenta(pedimento: Pedimento, invoice?: Invoice,
         },
         "Factura": {
           data: [
-            { name: "Factura", value: invoicemkdown }
+            { name: "Invoice", value: invoicemkdown }
           ]
         },
-        "Packing": {
+        "Packing List": {
           data: [
-            { name: "Lista de empaque", value: packingmkdown }
+            { name: "Packing List", value: packingmkdown }
           ]
         }
       }
@@ -153,15 +157,14 @@ export async function validatePaisVenta(pedimento: Pedimento, invoice?: Invoice,
 }
 
 // Función para validar el país de origen
-export async function validatePaisOrigen(pedimento: Pedimento, invoice?: Invoice, packing?: PackingList) {
+export async function validatePaisOrigen(pedimento: Pedimento, invoice?: Invoice, packing?: PackingList, carta318?: Carta318) {
   // Extraer el país de origen del pedimento
   const paisOrigenPedimento = pedimento.partidas || [];
   
-  // Extraer la leyenda "hecho en..." de la factura
-  const hechoEnFactura = invoice?.descripcion_mercancia?.includes(`hecho en ${paisOrigenPedimento}`);
+  const packingmkdown = packing?.markdown_representation;
+  const carta318mkdown = carta318?.markdown_representation;
+  const invoicemkdown = invoice?.markdown_representation;
   
-  // Extraer la leyenda "hecho en..." del packing
-  const hechoEnPacking = packing?.descripcion_mercancia?.includes(`hecho en ${paisOrigenPedimento}`);
   
   const observaciones = pedimento.observaciones_a_nivel_pedimento;
   
@@ -178,21 +181,22 @@ export async function validatePaisOrigen(pedimento: Pedimento, invoice?: Invoice
         },
         "Factura": {
           data: [
-            { name: "Hecho en factura", value: hechoEnFactura ? `hecho en ${paisOrigenPedimento}` : "No se encontró la leyenda 'hecho en...'" }
+            { name: "Invoice", value: invoicemkdown }
           ]
         },
         "Packing": {
           data: [
-            { name: "Hecho en packing", value: hechoEnPacking ? `hecho en ${paisOrigenPedimento}` : "No se encontró la leyenda 'hecho en...'" }
+            { name: "Packing List", value: packingmkdown }
+          ]
+        },
+        "Carta 318": {
+          data: [
+            { name: "Carta 318", value: carta318mkdown }
           ]
         }
       }
     }
   } as const;
-
-  if (!hechoEnFactura && !hechoEnPacking) {
-    console.warn(`Estas declarando que esta mercancía es de ${paisOrigenPedimento}, verifica que ostente la leyenda "hecho en ${paisOrigenPedimento}".`);
-  }
 
   return await glosar(validation);
 }
@@ -200,12 +204,12 @@ export async function validatePaisOrigen(pedimento: Pedimento, invoice?: Invoice
 // Función para validar la descripción de la mercancía
 export async function validateDescripcionMercancia(pedimento: Pedimento, cove?: Cove, invoice?: Invoice, carta318?: Carta318) {
   // Extraer la descripción de la mercancía del pedimento
-  const descripcionPedimento = pedimento.partidas?.map((partida) => partida.descripcion) || [];
+  const partidas = pedimento.partidas || [];
   
   // Extraer la descripción de la mercancía del COVE, factura y carta 318
   const descripcionCove = cove?.datos_mercancia?.descripcion_mercancia;
-  const descripcionFactura = invoice?.descripcion_mercancia;
-  const descripcionCarta318 = carta318?.descripcion_mercancia;
+  const invoicemkdown = invoice?.markdown_representation;
+  const carta318mkdown = carta318?.markdown_representation;
   
   const observaciones = pedimento.observaciones_a_nivel_pedimento;
   
@@ -216,8 +220,8 @@ export async function validateDescripcionMercancia(pedimento: Pedimento, cove?: 
       [CustomGlossTabContextType.PROVIDED]: {
         "Pedimento": {
           data: [
-            { name: "Descripción en pedimento", value: descripcionPedimento },
-            { name: "Observaciones", value: observaciones }
+            { name: "Partidas", value: partidas },
+            { name: "Observaciones a nivel pedimento", value: observaciones }
           ]
         },
         "COVE": {
@@ -227,12 +231,12 @@ export async function validateDescripcionMercancia(pedimento: Pedimento, cove?: 
         },
         "Factura": {
           data: [
-            { name: "Descripción en factura", value: descripcionFactura || "No se encontró descripción en factura" }
+            { name: "Invoice", value: invoicemkdown }
           ]
         },
         "Carta 318": {
           data: [
-            { name: "Descripción en carta 318", value: descripcionCarta318 || "No se encontró descripción en carta 318" }
+            { name: "Carta 318", value: carta318mkdown }
           ]
         }
       }
@@ -255,7 +259,7 @@ export async function validateProrrateoValorAduana(pedimento: Pedimento) {
   
   const validation = {
     name: "Prorrateo del valor aduana",
-    description: "Calcula el prorrateo del valor aduana dividiendo el valor aduana del pedimento entre el valor comercial.",
+    description: "Calcula el prorrateo del valor aduana dividiendo el valor aduana del pedimento entre el valor comercial. Multiplica el importe pagado valor comercial de la partida por el prorrateo y redondea hacia arriba al siguiente número entero para obtener el valor aduana de la partida.",
     contexts: {
       [CustomGlossTabContextType.PROVIDED]: {
         "Pedimento": {
