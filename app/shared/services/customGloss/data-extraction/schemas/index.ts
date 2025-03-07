@@ -3,6 +3,7 @@ export * from './carta-318';
 export * from './rrna';
 export * from './transport-document';
 export * from './pedimento';
+export * from './partidas';
 export * from './packing-list';
 export * from './cove';
 export * from './cfdi';
