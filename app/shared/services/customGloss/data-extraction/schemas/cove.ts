@@ -156,9 +156,9 @@ export const coveSchema = z.object({
         .number()
         .describe("Total value of the merchandise in USD, e.g., '1866.00'.")
         .optional(),
-      numero_serie: z
-        .string()
-        .describe("Serial number of the merchandise, e.g., '1234567890'.")
+      numeros_serie: z
+        .array(z.string())
+        .describe("Array of serial numbers for the merchandise, e.g., ['1234567890', '0987654321'].")
         .optional()
     })
     .describe("Details about the merchandise."),

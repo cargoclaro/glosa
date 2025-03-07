@@ -93,7 +93,7 @@ export async function validateNumeroSerie(
   invoice?: Invoice,
   cfdi?: Cfdi
 ) {
-  const numeroSerieCove = cove.datos_mercancia?.numero_serie;
+  const numeroSerieCove = cove.datos_mercancia?.numeros_serie;
   const invoiceMkdown = invoice?.markdown_representation;
   const cfdiMkdown = cfdi?.markdown_representation;
 

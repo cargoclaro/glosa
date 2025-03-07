@@ -111,7 +111,7 @@ export async function validateNumeroSerie(
   invoice?: Invoice,
   carta318?: Carta318
 ) {
-  const numeroSerieCove = cove.datos_mercancia?.numero_serie;
+  const numeroSerieCove = cove.datos_mercancia?.numeros_serie;
   const invoiceMkdown = invoice?.markdown_representation;
   const carta318Mkdown = carta318?.markdown_representation;
 
