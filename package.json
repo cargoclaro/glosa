@@ -44,6 +44,7 @@
     "dotenv": "^16.4.7",
     "geist": "^1.2.0",
     "jose": "^5.9.2",
+    "jsdom": "^26.0.0",
     "langchain": "^0.3.19",
     "langsmith": "^0.3.11",
     "lucide-react": "^0.447.0",
