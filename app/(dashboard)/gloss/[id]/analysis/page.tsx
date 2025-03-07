@@ -3,6 +3,7 @@ import { Alerts, Documents, PedimentAnalysisNFinish } from "./components";
 import type { Metadata } from "next";
 import prisma from "@/app/shared/services/prisma";
 import { isAuthenticated } from "@/app/shared/services/auth";
+import Link from "next/link";
 
 type IDynamicMetadata = {
   params: Promise<{ id: string }>;
@@ -65,6 +66,14 @@ const GlossIdAnalysis = async ({
   return (
     <article className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-4">
       <section className="flex flex-col gap-4">
+        <div className="mx-auto w-full">
+          <Link
+            href="/"
+            className="px-4 py-2 rounded-md border border-black text-sm hover:bg-gray-100 transition-colors duration-200"
+          >
+            Home
+          </Link>
+        </div>
         <Alerts data={customGloss.alerts} />
         <Documents data={customGloss.files} />
       </section>
