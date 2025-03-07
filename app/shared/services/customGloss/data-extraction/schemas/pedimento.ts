@@ -14,9 +14,9 @@ export const pedimentoSchema = z.object({
         )
         .nullable(),
       tipo_oper: z
-        .string()
+        .enum(["IMP", "EXP", "TRA"])
         .describe(
-          "3-letter code indicating operation type (e.g., 'IMP' for imports)"
+          "Tipo de operación: IMP (Importación), EXP (Exportación/retorno), TRA (Tránsitos)"
         )
         .nullable(),
       cve_pedim: z

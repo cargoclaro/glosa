@@ -1,20 +1,32 @@
 import { Pedimento, Cove, Partida } from "../../../data-extraction/schemas";
 import { glosar } from "../../validation-result";
 import { CustomGlossTabContextType } from "@prisma/client";
-import { 
+import {
   Invoice,
   PackingList,
-  Carta318 
+  Carta318
 } from "../../../data-extraction/mkdown_schemas";
 import { apendice7 } from "../../anexo-22/apendice_7";
 import { traceable } from "langsmith/traceable";
+import { getFraccionInfo } from "../../tax-finder";
 
 // Función para validar preferencia arancelaria y certificado de origen
-export async function validateFraccionArancelaria(partida: Partida,) {
+export async function validateFraccionArancelaria(partida: Partida, pedimento: Pedimento) {
   // Extraer partidas con información de fracción arancelaria
-  const fraccionArancelaria = partida.fraccion_y_nico || "";
+  const fraccion = partida.fraccion_y_nico || "";
+  const fechaDeEntrada = pedimento.fecha_entrada_presentacion;
+  const tipoDeOperacion = pedimento.encabezado_del_pedimento.tipo_oper;
+  let fraccionExiste = false;
+  if (fechaDeEntrada && tipoDeOperacion && tipoDeOperacion !== "TRA") {
+    try {
+      await getFraccionInfo({ fraccion, fechaDeEntrada, tipoDeOperacion });
+      fraccionExiste = true;
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
-  
+
   const validation = {
     name: "Validación de fracción arancelaria",
     description: "Verificar que la fracción arancelaria declarada en cada partida exista en el sistema de Tax Finder y coincida con la información del pedimento.",
@@ -22,14 +34,14 @@ export async function validateFraccionArancelaria(partida: Partida,) {
       [CustomGlossTabContextType.PROVIDED]: {
         "Pedimento": {
           data: [
-            { name: "Fracción arancelaria", value: fraccionArancelaria }
+            { name: "Fracción arancelaria", value: fraccion }
           ]
         }
       },
       [CustomGlossTabContextType.EXTERNAL]: {
         "Tax Finder": {
           data: [
-            { name: "Fracciones arancelarias", value: "Consulta al sistema Tax Finder" }
+            { name: "Existe", value: fraccionExiste ? "Si" : "No" }
           ]
         }
       }
@@ -40,10 +52,16 @@ export async function validateFraccionArancelaria(partida: Partida,) {
 }
 
 // Función para validar coherencia de UMC y cantidad UMC
-export async function validateCoherenciaUMT(partida: Partida) {
+export async function validateCoherenciaUMT(partida: Partida, pedimento: Pedimento) {
   // Extraer partidas con información de UMC
   const partidasUMT = partida.umt || "";
-  
+  const fraccion = partida.fraccion_y_nico;
+  const fechaDeEntrada = pedimento.fecha_entrada_presentacion;
+  const tipoDeOperacion = pedimento.encabezado_del_pedimento.tipo_oper;
+  if (!fechaDeEntrada || !tipoDeOperacion || tipoDeOperacion === "TRA") {
+    throw new Error("No se puede validar la unidad de medida de la tarifa, ya que no se tiene fecha de entrada o tipo de operación o es tránsito");
+  }
+  const { data: { arancel: { unidad_medida } } } = await getFraccionInfo({ fraccion, fechaDeEntrada, tipoDeOperacion });
   const validation = {
     name: "Validación de unidad de medida de la tarifa",
     description: "Validar la unidad de medida de la tarifa, es decir que la unidad de medida declarada en la partida sea la misma que le corresponde a esa fracción arancelaria, si son piezas, piezas. Checar contra el apendice 7 que dice que la medida esta bien.",
@@ -60,8 +78,13 @@ export async function validateCoherenciaUMT(partida: Partida) {
           data: [
             { name: "Apéndice 7", value: JSON.stringify(apendice7) }
           ]
+        },
+        "Tax Finder": {
+          data: [
+            { name: "Unidad de medida", value: JSON.stringify(unidad_medida, null, 2) }
+          ]
         }
-      }
+      },
     }
   } as const;
 
@@ -120,14 +143,14 @@ export async function validateCoherenciaUMC(partida: Partida, cove?: Cove, carta
 export async function validatePaisVenta(partida: Partida, pedimento?: Pedimento, invoice?: Invoice, packing?: PackingList) {
   // Extraer el país de venta del pedimento
   const partidasPaisVentaCompra = partida.p_v_c || "";
-  
+
   // Extraer el país de la dirección de facturación de la factura
   const invoicemkdown = invoice?.markdown_representation;
-  
+
   // Extraer el país de la dirección de facturación del packing
   const packingmkdown = packing?.markdown_representation;
   const observaciones = pedimento?.observaciones_a_nivel_pedimento;
-  
+
   const validation = {
     name: "Validación del país de venta",
     description: "Validar que el país de venta en el pedimento coincida con el país de la dirección de facturación en la factura y/o el packing.",
@@ -160,14 +183,14 @@ export async function validatePaisVenta(partida: Partida, pedimento?: Pedimento,
 export async function validatePaisOrigen(partida: Partida, pedimento?: Pedimento, invoice?: Invoice, packing?: PackingList, carta318?: Carta318) {
   // Extraer el país de origen del pedimento
   const paisOrigenDestino = partida.p_o_d || "";
-  
+
   const packingmkdown = packing?.markdown_representation;
   const carta318mkdown = carta318?.markdown_representation;
   const invoicemkdown = invoice?.markdown_representation;
-  
-  
+
+
   const observaciones = pedimento?.observaciones_a_nivel_pedimento;
-  
+
   const validation = {
     name: "Validación del país de origen",
     description: "Validar que el país de origen en el pedimento coincida con la leyenda 'hecho en...' en la factura o el packing. Si no se encuentra la leyenda, se debe imprimir una advertencia.",
@@ -205,14 +228,14 @@ export async function validatePaisOrigen(partida: Partida, pedimento?: Pedimento
 export async function validateDescripcionMercancia(partida: Partida, pedimento?: Pedimento, cove?: Cove, invoice?: Invoice, carta318?: Carta318) {
   // Extraer la descripción de la mercancía del pedimento
   const partidasDescripcionMercancia = partida.descripcion || "";
-  
+
   // Extraer la descripción de la mercancía del COVE, factura y carta 318
   const descripcionCove = cove?.datos_mercancia?.descripcion_mercancia;
   const invoicemkdown = invoice?.markdown_representation;
   const carta318mkdown = carta318?.markdown_representation;
-  
+
   const observaciones = pedimento?.observaciones_a_nivel_pedimento;
-  
+
   const validation = {
     name: "Validación de descripción de mercancía",
     description: "La descripción de la mercancía en el pedimento debe coincidir con la descripción en el COVE, factura o carta 318 para asegurar que se trata de la misma mercancía.",
@@ -246,6 +269,51 @@ export async function validateDescripcionMercancia(partida: Partida, pedimento?:
   return await glosar(validation);
 }
 
+export async function validateTarifasArancelarias(partida: Partida, pedimento: Pedimento) {
+  const fraccion = partida.fraccion_y_nico;
+  const fechaDeEntrada = pedimento.fecha_entrada_presentacion;
+  const tipoDeOperacion = pedimento.encabezado_del_pedimento.tipo_oper;
+  if (!fechaDeEntrada || !tipoDeOperacion || tipoDeOperacion === "TRA") {
+    throw new Error("No se puede validar la tarifa arancelaria, ya que no se tiene fecha de entrada o tipo de operación o es tránsito");
+  }
+  const { data: { iva, extra: { ligie_arancel, ieps_tasas } } } = await getFraccionInfo({ fraccion, fechaDeEntrada, tipoDeOperacion });
+
+  const tasasTaxFinder = {
+    iva: iva?.valor_iva || 0,
+    ligie_arancel,
+    ieps_tasas
+  }
+  
+  const tasasPartida = {
+    iva: partida.contribuciones?.find(contribucion => contribucion.con === "IVA")?.tasa || 0.16,
+    ligie_arancel: partida.contribuciones?.find(contribucion => contribucion.con === "IGI/IGE")?.tasa || 0,
+    ieps_tasas: partida.contribuciones?.find(contribucion => contribucion.con === "IEPS")?.tasa || 0
+  }
+
+  const validation = {
+    name: "Validación de tarifas arancelarias",
+    description: "Validar que las tarifas arancelarias declaradas en la partida coincidan con las tarifas arancelarias declaradas en el Tax Finder.",
+    contexts: {
+      [CustomGlossTabContextType.PROVIDED]: {
+        "Partida": {
+          data: [
+            { name: "Tasas Partida", value: JSON.stringify(tasasPartida, null, 2) }
+          ]
+        }
+      },
+      [CustomGlossTabContextType.EXTERNAL]: {
+        "Tax Finder": {
+          data: [
+            { name: "Tasas Tax Finder", value: JSON.stringify(tasasTaxFinder, null, 2) }
+          ]
+        }
+      }
+    }
+  } as const;
+
+  return await glosar(validation);
+}
+
 export async function validatePedimento(pedimento: Pedimento, partida: Partida) {
   // Extract total values from pedimento
   const valorAduanaTotal = pedimento.valores?.valor_aduana || 0;
@@ -261,7 +329,7 @@ export async function validatePedimento(pedimento: Pedimento, partida: Partida) 
   // Values from partida
   const valorComercialPartida = partida.imp_precio_pag || 0;
   const cantidadUMC = partida.cantidad_umc || 0;
-  
+
 
   // Calculate inferred values for the partida
   const valorAduanaCalculado = prorrateo !== null ? Math.ceil(valorComercialPartida * prorrateo) : null;
@@ -277,7 +345,7 @@ export async function validatePedimento(pedimento: Pedimento, partida: Partida) 
   const partidasConCalculos = {
     ...partida,
     valorAduanaCalculado,
-    precioUnitarioCalculado, 
+    precioUnitarioCalculado,
     igiCalculado,
     ivaCalculado
   };
@@ -313,7 +381,7 @@ export async function validatePedimento(pedimento: Pedimento, partida: Partida) 
 export async function validateNumerosSerie(pedimento: Pedimento, cove?: Cove) {
   const partidas = pedimento.partidas || [];
   const numerosSeriesCove = cove?.datos_mercancia?.numeros_serie || [];
-  
+
   const validation = {
     name: "Validación de números de serie, modelo y parte",
     description: "Verifica que los números de serie, modelo y parte declarados en el pedimento coincidan con los declarados en el COVE.",
@@ -338,15 +406,16 @@ export async function validateNumerosSerie(pedimento: Pedimento, cove?: Cove) {
 export const tracedPartidas = traceable(
   async ({ pedimento, invoice, cove, carta318, partida }: { pedimento: Pedimento; invoice?: Invoice, cove?: Cove, carta318?: Carta318, partida: Partida }) => {
     const validationsPromise = await Promise.all([
-      validateFraccionArancelaria(partida),
+      validateFraccionArancelaria(partida, pedimento),
       validateCoherenciaUMC(partida, cove, carta318, invoice),
-      validateCoherenciaUMT(partida),
+      validateCoherenciaUMT(partida, pedimento),
       validatePaisVenta(partida, pedimento, invoice),
       validatePaisOrigen(partida, pedimento, invoice),
       validateDescripcionMercancia(partida, pedimento, cove, invoice, carta318),
+      validateTarifasArancelarias(partida, pedimento),
       validateNumerosSerie(pedimento, cove)
     ]);
-    
+
     return {
       sectionName: "Partidas",
       validations: validationsPromise

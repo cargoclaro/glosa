@@ -1,5 +1,6 @@
 import { config } from "dotenv";
 import { z } from "zod";
+import { format } from "date-fns";
 
 config();
 
@@ -110,23 +111,23 @@ async function getArticuloFundamentoLegal({ clave_acuerdo, clave_regulacion, cla
 interface TaxFinderInput {
   /** consulta*: Texto de consulta, o fracción */
   fraccion: string;
-  /** fecha: Fecha de búsqueda en formato DD/MM/YYYY */
-  fechaDeEntrada: string;
-  /** tipo_operacion*: Tipo Operacion: Tipo operación I para importación, E para exportación */
-  tipoDeOperacion: "I" | "E";
+  /** fecha: Fecha como objeto Date */
+  fechaDeEntrada: Date;
+  /** tipo_operacion*: Tipo Operacion: Tipo operación IMP para importación, EXP para exportación */
+  tipoDeOperacion: "IMP" | "EXP";
 }
 
 export async function getFraccionInfo({ fraccion, fechaDeEntrada, tipoDeOperacion }: TaxFinderInput) {
+  // Convertir el tipo de operación del pedimento al formato esperado por Tax Finder
+  const tipoOperacionTaxFinder = tipoDeOperacion === "IMP" ? "I" : "E";
   const idioma = "es";
   const TAXFINDER_API_KEY = process.env["TAXFINDER_API_KEY"];
   if (!TAXFINDER_API_KEY) {
     throw new Error("TAXFINDER_API_KEY is not set");
   }
 
-  // Parse DD/MM/YYYY to Date object and then to YYYY-MM-DD
-  const [day, month, year] = fechaDeEntrada.split('/');
-  const date = new Date(`${year}-${month}-${day}`);
-  const formattedDate = date.toISOString().split('T')[0];
+  // Formatear la fecha como YYYY-MM-DD para la API
+  const formattedDate = format(fechaDeEntrada, "yyyy-MM-dd");
 
   const response = await fetch(`${TAXFINDER_BASE_URL}api/tel/consulta`, {
     method: "POST",
@@ -139,7 +140,7 @@ export async function getFraccionInfo({ fraccion, fechaDeEntrada, tipoDeOperacio
       fecha: formattedDate,
       extra: true,
       idioma,
-      tipo_operacion: tipoDeOperacion,
+      tipo_operacion: tipoOperacionTaxFinder,
     })
   });
 
