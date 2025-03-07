@@ -1,10 +1,9 @@
-import { Pedimento } from "../../../data-extraction/schemas";
+import { Pedimento, Cove } from "../../../data-extraction/schemas";
 import { glosar } from "../../validation-result";
 import { CustomGlossTabContextType } from "@prisma/client";
 import { 
   Invoice,
   PackingList,
-  Cove,
   Carta318 
 } from "../../../data-extraction/mkdown_schemas";
 import { apendice7 } from "../../anexo-22/apendice_7";
@@ -246,66 +245,60 @@ export async function validateDescripcionMercancia(pedimento: Pedimento, cove?: 
   return await glosar(validation);
 }
 
-// Función para validar el prorrateo del valor aduana
-export async function validateProrrateoValorAduana(pedimento: Pedimento) {
-  // Extraer el valor aduana y valor comercial del pedimento
-  const valorAduana = pedimento.valores?.valor_aduana;
-  const valorComercial = pedimento.valores?.precio_pagado_valor_comercial;
-  
-  // Calcular el prorrateo
-  const prorrateo = valorAduana && valorComercial ? valorAduana / valorComercial : null;
-  
-  const observaciones = pedimento.observaciones_a_nivel_pedimento;
-  
-  const validation = {
-    name: "Prorrateo del valor aduana",
-    description: "Calcula el prorrateo del valor aduana dividiendo el valor aduana del pedimento entre el valor comercial. Multiplica el importe pagado valor comercial de la partida por el prorrateo y redondea hacia arriba al siguiente número entero para obtener el valor aduana de la partida.",
-    contexts: {
-      [CustomGlossTabContextType.PROVIDED]: {
-        "Pedimento": {
-          data: [
-            { name: "Valor aduana", value: valorAduana },
-            { name: "Valor comercial", value: valorComercial },
-            { name: "Prorrateo", value: prorrateo },
-            { name: "Observaciones", value: observaciones }
-          ]
-        }
-      }
-    }
-  } as const;
+export async function validatePedimento(pedimento: Pedimento) {
+  // Extract total values from pedimento
+  const valorAduanaTotal = pedimento.valores?.valor_aduana || 0;
+  const valorComercialTotal = pedimento.valores?.precio_pagado_valor_comercial || 0;
+  const prorrateo = valorComercialTotal !== 0 ? valorAduanaTotal / valorComercialTotal : null;
 
-  return await glosar(validation);
-}
+  // Calculate DTA
+  const esActivoFijo = false;
+  const tasaDTA = esActivoFijo ? 0.00176 : 0.008;
+  const dtaCalculado = valorAduanaTotal * tasaDTA;
+  const dtaFinal = dtaCalculado < 500 ? 500 : dtaCalculado;
 
-// Función para calcular el valor aduana de la partida
-export async function calculateValorAduanaPartida(pedimento: Pedimento) {
-  // Extraer partidas del pedimento
+  // Process each partida
   const partidas = pedimento.partidas || [];
-  
-  // Extraer el prorrateo del pedimento
-  const valorAduana = pedimento.valores?.valor_aduana;
-  const valorComercial = pedimento.valores?.precio_pagado_valor_comercial;
-  const prorrateo = valorAduana && valorComercial ? valorAduana / valorComercial : null;
-  
-  const observaciones = pedimento.observaciones_a_nivel_pedimento;
-  
-  const valorAduanaPartidas = partidas.map(partida => {
-    const valorComercialPartida = partida.importe_pagado_valor_comercial;
-    const valorAduanaCalculado = prorrateo ? Math.ceil(valorComercialPartida * prorrateo) : null;
+  const partidasConCalculos = partidas.map(partida => {
+    const valorComercialPartida = partida.imp_precio_pag || 0;
+    const cantidadUMC = partida.cantidad_umc || 0;
+
+    // Calculate inferred values for the partida
+    const valorAduanaCalculado = prorrateo !== null ? Math.ceil(valorComercialPartida * prorrateo) : null;
+    const precioUnitarioCalculado = cantidadUMC !== 0 ? valorComercialPartida / cantidadUMC : null;
+    const tasaIGI = partida.contribuciones?.find(contribucion => contribucion.con === "IGI/IGE")?.tasa || 0;
+    const igiCalculado = valorAduanaCalculado !== null ? valorAduanaCalculado * (tasaIGI / 100) : null;
+    const dtaProrrateo = dtaFinal * ((valorAduanaCalculado || 0) / valorAduanaTotal);
+    const baseIVA = (valorAduanaCalculado || 0) + (igiCalculado || 0) + dtaProrrateo;
+    const tasaIVA = partida.contribuciones?.find(contribucion => contribucion.con === "IVA")?.tasa || 0.16;
+    const ivaCalculado = baseIVA * tasaIVA;
+
+    // Return partida with calculated (inferred) values
     return {
       ...partida,
-      valorAduanaCalculado
+      valorAduanaCalculado,
+      precioUnitarioCalculado,
+      igiCalculado,
+      ivaCalculado
     };
   });
 
+  // Extract observations
+  const observaciones = pedimento.observaciones_a_nivel_pedimento;
+
+  // Construct validation object
   const validation = {
-    name: "Cálculo del valor aduana de la partida",
-    description: "Multiplica el importe pagado valor comercial de la partida por el prorrateo y redondea hacia arriba al siguiente número entero para obtener el valor aduana de la partida.",
+    name: "Validación Calculos de Partidas",
+    description: `
+      Verifica que los valores de la partida sean los mismo que calculamos. 
+    `,
     contexts: {
       [CustomGlossTabContextType.PROVIDED]: {
         "Pedimento": {
           data: [
-            { name: "Partidas con valor aduana calculado", value: valorAduanaPartidas },
+            { name: "Prorrateo", value: prorrateo },
+            { name: "Partidas con cálculos inferidos", value: partidasConCalculos },
+            { name: "DTA calculado", value: dtaFinal },
             { name: "Observaciones", value: observaciones }
           ]
         }
@@ -313,138 +306,7 @@ export async function calculateValorAduanaPartida(pedimento: Pedimento) {
     }
   } as const;
 
-  return await glosar(validation);
-}
-
-// Función para validar el precio unitario
-export async function validatePrecioUnitario(pedimento: Pedimento) {
-  const partidas = pedimento.partidas || [];
-  
-  const preciosUnitarios = partidas.map(partida => ({
-    numeroPartida: partida.numero_partida,
-    valorComercial: partida.importe_pagado_valor_comercial,
-    cantidadUMC: partida.cantidad_umc,
-    precioUnitario: partida.importe_pagado_valor_comercial / partida.cantidad_umc
-  }));
-
-  const validation = {
-    name: "Validación de precio unitario",
-    description: "Verifica que el precio unitario sea correcto dividiendo el valor comercial entre la cantidad de unidad de medida comercial para cada partida.",
-    contexts: {
-      [CustomGlossTabContextType.PROVIDED]: {
-        "Pedimento": {
-          data: [
-            { name: "Cálculos de precio unitario", value: preciosUnitarios }
-          ]
-        }
-      }
-    }
-  } as const;
-
-  return await glosar(validation);
-}
-
-// Función para validar el cálculo del DTA
-export async function validateCalculoDTA(pedimento: Pedimento) {
-  const valorAduana = pedimento.valores?.valor_aduana || 0;
-  const tipoOperacion = pedimento.tipo_operacion;
-  const preferenciaArancelaria = pedimento.preferencia_arancelaria;
-  const esActivoFijo = pedimento.activo_fijo;
-  
-  let tasaDTA = 0.008; // Tasa general
-  if (esActivoFijo) {
-    tasaDTA = 0.00176;
-  }
-  
-  let dtaCalculado = valorAduana * tasaDTA;
-  
-  // Aplicar cuota fija mínima de 500 pesos
-  if (dtaCalculado < 500) {
-    dtaCalculado = 500;
-  }
-
-  const validation = {
-    name: "Validación del cálculo de DTA",
-    description: "Calcula el DTA según el tipo de operación: 0.008 para general, 0.00176 para activos fijos. Si el resultado es menor a 500 pesos, se aplica cuota fija de 500 pesos.",
-    contexts: {
-      [CustomGlossTabContextType.PROVIDED]: {
-        "Pedimento": {
-          data: [
-            { name: "Valor Aduana", value: valorAduana },
-            { name: "Tipo Operación", value: tipoOperacion },
-            { name: "Es Activo Fijo", value: esActivoFijo },
-            { name: "DTA Calculado", value: dtaCalculado }
-          ]
-        }
-      }
-    }
-  } as const;
-
-  return await glosar(validation);
-}
-
-// Función para validar el cálculo del IGI
-export async function validateCalculoIGI(pedimento: Pedimento) {
-  const partidas = pedimento.partidas || [];
-  
-  const calculosIGI = partidas.map(partida => ({
-    numeroPartida: partida.numero_partida,
-    fraccionArancelaria: partida.fraccion_arancelaria,
-    valorAduana: partida.valor_aduana,
-    tasaIGI: partida.tasa_igi,
-    igiCalculado: partida.valor_aduana * (partida.tasa_igi / 100)
-  }));
-
-  const validation = {
-    name: "Validación del cálculo de IGI",
-    description: "Calcula el IGI multiplicando el valor aduana por el porcentaje correspondiente según la fracción arancelaria de cada partida.",
-    contexts: {
-      [CustomGlossTabContextType.PROVIDED]: {
-        "Pedimento": {
-          data: [
-            { name: "Cálculos IGI", value: calculosIGI }
-          ]
-        }
-      }
-    }
-  } as const;
-
-  return await glosar(validation);
-}
-
-// Función para validar el cálculo del IVA
-export async function validateCalculoIVA(pedimento: Pedimento) {
-  const partidas = pedimento.partidas || [];
-  const dtaTotal = pedimento.contribuciones?.dta || 0;
-  
-  const calculosIVA = partidas.map(partida => {
-    const igiPartida = partida.valor_aduana * (partida.tasa_igi / 100);
-    const dtaProrrateo = dtaTotal * (partida.valor_aduana / (pedimento.valores?.valor_aduana || 1));
-    const baseIVA = partida.valor_aduana + igiPartida + dtaProrrateo;
-    const tasaIVA = partida.tasa_iva || 0.16; // 16% por defecto
-    
-    return {
-      numeroPartida: partida.numero_partida,
-      baseIVA,
-      tasaIVA,
-      ivaCalculado: baseIVA * tasaIVA
-    };
-  });
-
-  const validation = {
-    name: "Validación del cálculo de IVA",
-    description: "Calcula el IVA sumando el valor aduana, IGI y DTA prorrateado, multiplicado por la tasa de IVA correspondiente.",
-    contexts: {
-      [CustomGlossTabContextType.PROVIDED]: {
-        "Pedimento": {
-          data: [
-            { name: "Cálculos IVA", value: calculosIVA }
-          ]
-        }
-      }
-    }
-  } as const;
-
+  // Return result for LLM processing
   return await glosar(validation);
 }
 
@@ -474,18 +336,16 @@ export async function validateNumerosSerie(pedimento: Pedimento, cove?: Cove) {
 
   return await glosar(validation);
 }
-
 export const tracedPartidas = traceable(
   async ({ pedimento, invoice }: { pedimento: Pedimento; invoice?: Invoice }) => {
     const validationsPromise = await Promise.all([
-      validatePreferenciaArancelaria(pedimento),
-      validateCoherenciaUMC(pedimento, invoice),
-      validateCoherenciaPeso(pedimento),
-      validateCalculoDTA(pedimento),
-      validateCalculoContribuciones(pedimento),
-      validatePermisosIdentificadores(pedimento),
-      validateRegulacionesArancelarias(pedimento),
-      validateRegulacionesNoArancelarias(pedimento)
+      validateFraccionArancelaria(pedimento), // Fixed function name
+      validateCoherenciaUMC(pedimento, undefined, undefined, invoice), // Added missing params
+      validateCoherenciaUMT(pedimento), // Fixed function name
+      validatePaisVenta(pedimento, invoice), // Added existing validation
+      validatePaisOrigen(pedimento, invoice), // Added existing validation
+      validateDescripcionMercancia(pedimento, undefined, invoice), // Added existing validation
+      validateNumerosSerie(pedimento) // Added existing validation
     ]);
     
     return {
