@@ -56,8 +56,7 @@ export const partidasSchema = z.object({
           .describe("Tercer complemento")
           .optional()
       })
-    )
-    .optional(),
+    ),
   observaciones: z
     .array(z.string().describe("Observaciones adicionales"))
     .optional(),

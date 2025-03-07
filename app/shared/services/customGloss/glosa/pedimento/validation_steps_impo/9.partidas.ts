@@ -403,6 +403,40 @@ export async function validateNumerosSerie(pedimento: Pedimento, cove?: Cove) {
 
   return await glosar(validation);
 }
+
+import { IDENTIFICADORES } from "./identificadores";
+
+export async function validateIdentificadores(identificador: Partida["identificadores"][number]) {
+  if (!(identificador.clave in IDENTIFICADORES)) {
+    throw new Error(`Identificador ${identificador.clave} no encontrado`);
+  }
+  // Hack since TS doesn't narrow string types for some reason
+  const identificadorFundamentoLegal = IDENTIFICADORES[identificador.clave as keyof typeof IDENTIFICADORES];
+
+  const validation = {
+    name: "Validación de identificadores",
+    description: "Verifica que los complementos del identificador coincidan con los del apéndice 8. Solamente has una validación simple de data types, no hay necesidad de checar reglas o leyes extras, o usar logica condicional, es simplemente checar que el valor de los complementos sea posible que exista en el apéndice 8.",
+    contexts: {
+      [CustomGlossTabContextType.PROVIDED]: {
+        "Identificador": {
+          data: [
+            { name: "Identificador", value: JSON.stringify(identificador, null, 2) }
+          ]
+        }
+      },
+      [CustomGlossTabContextType.EXTERNAL]: {
+        "Identificadores Apéndice 8": {
+          data: [
+            { name: "Identificadores Apéndice 8", value: JSON.stringify(identificadorFundamentoLegal, null, 2) }
+          ]
+        }
+      }
+    }
+  } as const;
+
+  return await glosar(validation);
+}
+
 export const tracedPartidas = traceable(
   async ({ pedimento, invoice, cove, carta318, partida }: { pedimento: Pedimento; invoice?: Invoice, cove?: Cove, carta318?: Carta318, partida: Partida }) => {
     const validationsPromise = await Promise.all([
@@ -413,7 +447,8 @@ export const tracedPartidas = traceable(
       validatePaisOrigen(partida, pedimento, invoice),
       validateDescripcionMercancia(partida, pedimento, cove, invoice, carta318),
       validateTarifasArancelarias(partida, pedimento),
-      validateNumerosSerie(pedimento, cove)
+      validateNumerosSerie(pedimento, cove),
+      ...(partida.identificadores.map(identificador => validateIdentificadores(identificador)))
     ]);
 
     return {
