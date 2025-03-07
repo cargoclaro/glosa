@@ -5,25 +5,28 @@ import { Invoice } from "../../../data-extraction/mkdown_schemas";
 import { traceable } from "langsmith/traceable";
 
 // Función para validar preferencia arancelaria y certificado de origen
-export async function validatePreferenciaArancelaria(pedimento: Pedimento) {
-  // Extraer partidas con información de preferencia arancelaria
+export async function validateFraccionArancelaria(pedimento: Pedimento) {
+  // Extraer partidas con información de fracción arancelaria
   const partidas = pedimento.partidas || [];
-  
-  // Extraer identificadores a nivel pedimento para certificados de origen
-  const identificadoresPedimento = pedimento.identificadores_pedimento || [];
   
   const observaciones = pedimento.observaciones_a_nivel_pedimento;
   
   const validation = {
-    name: "Preferencia arancelaria y certificado de origen",
-    description: "Verificación de preferencia arancelaria y certificado de origen:\n\n1. Regla general:\n   - Si existe preferencia arancelaria, debe existir certificado de origen\n\n2. Por tipo de tratado:\n   a) T-MEC:\n      - Verificar certificado de origen correspondiente\n   b) Unión Europea:\n      - Verificar método de acreditación:\n        i. Declaración en factura:\n           - Si valor < 6,000 EUR: Declaración en factura es válida\n           - Si valor > 6,000 EUR: Debe incluir número de exportador autorizado\n        ii. Certificado de circulación:\n           - Válido sin importar el valor de factura\n           - Requerido si no hay número de exportador en declaración.",
+    name: "Validación de fracción arancelaria",
+    description: "Verificar que la fracción arancelaria declarada en cada partida exista en el sistema de Tax Finder y coincida con la información del pedimento.",
     contexts: {
       [CustomGlossTabContextType.PROVIDED]: {
         "Pedimento": {
           data: [
             { name: "Partidas", value: partidas },
-            { name: "Identificadores", value: identificadoresPedimento },
             { name: "Observaciones", value: observaciones }
+          ]
+        }
+      },
+      [CustomGlossTabContextType.EXTERNAL]: {
+        "Tax Finder": {
+          data: [
+            { name: "Fracciones arancelarias", value: "Consulta al sistema Tax Finder" }
           ]
         }
       }
@@ -34,15 +37,15 @@ export async function validatePreferenciaArancelaria(pedimento: Pedimento) {
 }
 
 // Función para validar coherencia de UMC y cantidad UMC
-export async function validateCoherenciaUMC(pedimento: Pedimento, invoice?: Invoice) {
+export async function validateCoherenciaUMT(pedimento: Pedimento) {
   // Extraer partidas con información de UMC
   const partidas = pedimento.partidas || [];
   
   const observaciones = pedimento.observaciones_a_nivel_pedimento;
   
   const validation = {
-    name: "Coherencia de UMC y cantidad UMC",
-    description: "Los campos UMC y cantidad UMC deben coincidir con los valores en la factura.",
+    name: "Validación de unidad de medida de la tarifa",
+    description: "Validar la unidad de medida de la tarifa, es decir que la unidad de medida declarada en la partida sea la misma que le corresponde a esa fracción arancelaria, si son piezas, piezas. Checar contra el apendice 7 que dice que la medida esta bien.",
     contexts: {
       [CustomGlossTabContextType.PROVIDED]: {
         "Pedimento": {
@@ -50,10 +53,12 @@ export async function validateCoherenciaUMC(pedimento: Pedimento, invoice?: Invo
             { name: "Partidas", value: partidas },
             { name: "Observaciones", value: observaciones }
           ]
-        },
-        "Factura": {
+        }
+      },
+      [CustomGlossTabContextType.EXTERNAL]: {
+        "Apéndices": {
           data: [
-            { name: "Factura", value: invoice }
+            { name: "Apéndice 7", value: "Catálogo de unidades de medida según fracción arancelaria" }
           ]
         }
       }
@@ -63,26 +68,29 @@ export async function validateCoherenciaUMC(pedimento: Pedimento, invoice?: Invo
   return await glosar(validation);
 }
 
-// Función para validar coherencia de peso
+// Función para validar coherencia de UMC
 export async function validateCoherenciaPeso(pedimento: Pedimento) {
-  // Extraer peso bruto del pedimento
-  const pesoBrutoPedimento = pedimento.encabezado_del_pedimento?.peso_bruto;
-  
-  // Extraer partidas con información de peso
+  // Extraer partidas con información de UMC
   const partidas = pedimento.partidas || [];
   
   const observaciones = pedimento.observaciones_a_nivel_pedimento;
   
   const validation = {
-    name: "Coherencia de peso",
-    description: "El peso de las partidas debe coincidir con el peso bruto del pedimento.",
+    name: "Validación de unidad de medida comercial",
+    description: "Validar la unidad de medida comercial, es decir que la unidad de medida declarada en la partida sea la misma que en factura y COVE. Debe corresponder con el Apéndice 7.",
     contexts: {
       [CustomGlossTabContextType.PROVIDED]: {
         "Pedimento": {
           data: [
             { name: "Partidas", value: partidas },
-            { name: "Peso bruto", value: pesoBrutoPedimento },
             { name: "Observaciones", value: observaciones }
+          ]
+        }
+      },
+      [CustomGlossTabContextType.EXTERNAL]: {
+        "Apéndices": {
+          data: [
+            { name: "Apéndice 7", value: "Catálogo de unidades de medida según fracción arancelaria" }
           ]
         }
       }
