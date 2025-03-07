@@ -352,5 +352,5 @@ export const tracedPartidas = traceable(
       validations: validationsPromise
     };
   },
-  { name: "Pedimento S9: Partidas" }
+  { name: "Fraccion" }
 );
