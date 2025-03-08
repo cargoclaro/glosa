@@ -74,7 +74,6 @@ const GlossIdAnalysis = async ({
             Home
           </Link>
         </div>
-        <Alerts data={customGloss.alerts} />
         <Documents data={customGloss.files} />
       </section>
       <PedimentAnalysisNFinish
