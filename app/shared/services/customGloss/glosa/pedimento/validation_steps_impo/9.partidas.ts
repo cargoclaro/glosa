@@ -105,22 +105,22 @@ export async function validateCoherenciaUMC(partida: Partida, cove?: Cove, carta
           data: [
             { name: "PartidasUMC", value: partidasUMC }
           ]
-        }
-      },
-      "COVE": {
-        data: [
-          { name: "COVE", value: claveUmcCove }
-        ]
-      },
-      "Factura": {
-        data: [
-          { name: "Invoice", value: invoicemkdown }
-        ]
-      },
-      "Carta 318": {
-        data: [
-          { name: "Carta 318", value: carta318mkdown }
-        ]
+        },
+        "COVE": {
+          data: [
+            { name: "COVE", value: claveUmcCove }
+          ]
+        },
+        "Factura": {
+          data: [
+            { name: "Invoice", value: invoicemkdown }
+          ]
+        },
+        "Carta 318": {
+          data: [
+            { name: "Carta 318", value: carta318mkdown }
+          ]
+        },
       },
       [CustomGlossTabContextType.EXTERNAL]: {
         "Apéndices": {
