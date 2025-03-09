@@ -34,7 +34,7 @@ export const tracedPedimentoValidationStepsImpo = traceable(
       tracedPesosYBultos({ pedimento, ...(transportDocument ? { transportDocument } : {}), ...(packingList ? { packingList } : {}), ...(invoice ? { invoice } : {}) }),
       tracedDatosDeFactura({ pedimento, cove, ...(carta318 ? { carta318 } : {}), ...(invoice ? { invoice } : {}) }),
       tracedTipoTransporte({ pedimento, ...(transportDocument ? { transportDocument } : {}) }),
-      ...(pedimento.partidas ? pedimento.partidas.map(partida => tracedPartidas({ pedimento, invoice, cove, carta318, partida })) : [])
+      ...(pedimento.partidas ? pedimento.partidas.map((partida, index) => tracedPartidas({ pedimento, invoice, cove, carta318, partida, partidaNumber: index + 1 })) : [])
     ]),
   { name: "Pedimento (Importación)" }
 ); 

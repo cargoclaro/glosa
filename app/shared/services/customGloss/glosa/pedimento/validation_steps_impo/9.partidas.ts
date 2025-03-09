@@ -440,7 +440,7 @@ export async function validateIdentificadores(identificador: Partida["identifica
 }
 
 export const tracedPartidas = traceable(
-  async ({ pedimento, invoice, cove, carta318, partida, packing }: { pedimento: Pedimento; invoice?: Invoice, cove?: Cove, carta318?: Carta318, partida: Partida, packing?: PackingList }) => {
+  async ({ pedimento, invoice, cove, carta318, partida, packing, partidaNumber }: { pedimento: Pedimento; invoice?: Invoice, cove?: Cove, carta318?: Carta318, partida: Partida, packing?: PackingList, partidaNumber: number }) => {
     const validationsPromise = await Promise.all([
       validateFraccionArancelaria(partida, pedimento),
       validateCoherenciaUMC(partida, cove, carta318, invoice),
@@ -455,7 +455,7 @@ export const tracedPartidas = traceable(
     ]);
 
     return {
-      sectionName: "Partidas",
+      sectionName: `Partida ${partidaNumber}`,
       validations: validationsPromise
     };
   },
