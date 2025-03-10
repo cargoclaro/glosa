@@ -341,7 +341,7 @@ export async function validateCalculosPartidas(pedimento: Pedimento, partida: Pa
   const igiCalculado = valorAduanaCalculado !== null ? valorAduanaCalculado * (tasaIGI / 100) : null;
   const dtaProrrateo = dtaFinal * ((valorAduanaCalculado || 0) / valorAduanaTotal);
   const baseIVA = (valorAduanaCalculado || 0) + (igiCalculado || 0) + dtaProrrateo;
-  const tasaIVA = partida.contribuciones?.find(contribucion => contribucion.con === "IVA")?.tasa || 0.16;
+  const tasaIVA = (partida.contribuciones?.find(contribucion => contribucion.con === "IVA")?.tasa || 16) / 100;
   const ivaCalculado = baseIVA * tasaIVA;
 
   // Construct validation object
