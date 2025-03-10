@@ -27,20 +27,6 @@ const Summary = () => {
           <GenericCard customClass="h-[140px]">
             <div className="flex justify-between gap-1">
               <p
-                title={formatCurrency(totalMoneySaved, "MXN")}
-                className="text-2xl font-bold truncate"
-              >
-                {formatCurrency(totalMoneySaved, "MXN")}
-              </p>
-              <div className="h-full p-3 rounded-full bg-yellow-100/60 text-yellow-400">
-                <CurrencyDollar />
-              </div>
-            </div>
-            <small>Ahorrado en multas</small>
-          </GenericCard>
-          <GenericCard customClass="h-[140px]">
-            <div className="flex justify-between gap-1">
-              <p
                 title={`${(totalTimeSaved / 60).toFixed(2)} horas`}
                 className="text-2xl font-bold truncate"
               >

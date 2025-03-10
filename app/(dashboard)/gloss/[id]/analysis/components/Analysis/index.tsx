@@ -299,32 +299,6 @@ const GenericTabComponent = ({ data, handleClick }: IGenericTabComponent) => {
           </li>
         ))}
       </ul>
-      <SectionDivider title="Contexto" icon={<DocMagniGlass />} />
-      <div className="max-h-[420px] overflow-y-auto my-5">
-        <table className="w-full text-center">
-          <tbody>
-            {data.context.flatMap((context, index) =>
-              context.data.map((item) => (
-                <tr
-                  key={item.id}
-                  className={cn(index % 2 === 0 && "bg-gray-100")}
-                >
-                  <td className="w-1/2 border-r border-r-black pr-2 py-2">
-                    <p title={item.name} className="line-clamp-1">
-                      {item.name}
-                    </p>
-                  </td>
-                  <td className="w-1/2 font-bold">
-                    <div title={item.value} className="pl-1 line-clamp-1">
-                      {formatValue(item.value)}
-                    </div>
-                  </td>
-                </tr>
-              ))
-            )}
-          </tbody>
-        </table>
-      </div>
       <div className="border-t border-t-black mb-4" />
       <VerifiedButton
         tabId={data.id}
