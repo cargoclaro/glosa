@@ -53,58 +53,6 @@ const taxfinderResponseSchema = z.object({
   }),
 });
 
-const clavesRegulacion = [
-  "TLC", "ACE", "FF", "RF", "IEPS", "ISAN", "ALADI", "PROSEC", "CC", "PE", "AC",
-  "AMX", "AE", "MT", "VU", "AP", "TIPAT", "PAD", "NOM", "ANX", "CM", "IMMEX",
-  "EMB", "OBS", "PROMOCAL", "LAL", "CICOPLAFEST", "INAH", "INBA", "INAINU",
-  "SAGARPA", "SE", "SEP", "SENER", "SG", "SHCP", "SEMARNAT", "SSA", "SEDENA",
-  "COMEXCA", "REIT", "EF", "CUL", "ETI", "LIGIE"
-] as const;
-
-type ClaveRegulacion = typeof clavesRegulacion[number];
-
-const articuloFundamentoLegalResponseSchema = z.object({
-  data: z.array(z.object({
-    articulo: z.object({
-      fragmento_dof: z.object({
-        descripcion: z.string(),
-      }),
-    }),
-  })).min(1),
-});
-
-
-async function getArticuloFundamentoLegal({ clave_acuerdo, clave_regulacion, clave_articulo }: {
-  clave_acuerdo: string,
-  clave_regulacion: ClaveRegulacion,
-  clave_articulo: string[]
-}) {
-  const TAXFINDER_API_KEY = process.env["TAXFINDER_API_KEY"];
-  if (!TAXFINDER_API_KEY) {
-    throw new Error("TAXFINDER_API_KEY is not set");
-  }
-
-  const response = await fetch(`${TAXFINDER_BASE_URL}api/articulos/consultar?clave_acuerdo=${clave_acuerdo}&clave_regulacion=${clave_regulacion}&clave_articulo=${clave_articulo.join(",")}`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      "reco-api-key": TAXFINDER_API_KEY,
-    },
-  });
-
-  const result = await response.json();
-
-  const parsedResult = articuloFundamentoLegalResponseSchema.parse(result);
-
-  const fundamentoLegal = parsedResult.data[0]?.articulo.fragmento_dof.descripcion;
-
-  if (!fundamentoLegal) {
-    throw new Error("Fundamento legal not found");
-  }
-
-  return fundamentoLegal;
-}
-
 /**
  * Input type for tax finder queries
  */
