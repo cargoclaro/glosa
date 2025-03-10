@@ -6,11 +6,7 @@ import todayIs from "@/app/shared/utils/today-is";
 // import NotificationsMenu from "./NotificationsMenu";
 import { usePathname } from "next/navigation";
 
-const Header = ({
-  image,
-}: {
-  image: string;
-}) => {
+const Header = () => {
   const pathname = usePathname();
   const isAnalysisPage = pathname.endsWith("analysis");
   return (
@@ -34,7 +30,7 @@ const Header = ({
                 <NotificationsMenu notifications={notifications} />
               </li> */}
               <li className="flex gap-2 items-center">
-                <ProfileMenu image={image} />
+                <ProfileMenu />
               </li>
             </ul>
           </li>
