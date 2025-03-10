@@ -210,7 +210,7 @@ async function validateValorAduana(pedimento: Pedimento, invoice?: Invoice, cart
 
   const validation = {
     name: "Valor aduana del pedimento",
-    description: "El valor aduana es la base para el cálculo de contribuciones y debe calcularse como el valor comercial más los incrementables multiplicado por el tipo de cambio (Valor Aduana = (Valor Comercial + Total Incrementables) × Tipo de Cambio). Este valor debe ser mayor al valor comercial, y la diferencia debe corresponder exactamente a los incrementables declarados en el pedimento, carta 318 y documentos de transporte, considerando los decrementables aplicados y cualquier ajuste documentado en las observaciones.",
+    description: "El valor aduana es la base para el cálculo de contribuciones y debe calcularse como el valor dolares más los incrementables multiplicado por el tipo de cambio (Valor Aduana = (Valor Dolares + Total Incrementables) × Tipo de Cambio). Este valor debe ser mayor o igual al valor comercial, y la diferencia debe corresponder exactamente a los incrementables declarados en el pedimento, carta 318 y documentos de transporte, considerando los decrementables aplicados y cualquier ajuste documentado en las observaciones.",
     contexts: {
       [CustomGlossTabContextType.PROVIDED]: {
         "Pedimento": {
@@ -236,7 +236,7 @@ async function validateValorAduana(pedimento: Pedimento, invoice?: Invoice, cart
     }
   } as const;
 
-  return await glosar(validation, "gpt-4o-mini");
+  return await glosar(validation, "o3-mini");
 }
 
 export const tracedTransportDocumentEntryDate = traceable(

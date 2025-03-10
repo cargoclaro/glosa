@@ -130,6 +130,8 @@ export async function validateDatosProveedor(pedimento: Pedimento, cove: Cove, c
   const domicilioProveedorCove = cove?.datos_generales_proveedor?.domicilio;
   const idProveedorPedimento = pedimento.id_fiscal === "91310000078199718" ? 
     pedimento.id_fiscal + "N" : 
+    pedimento.id_fiscal === "91440300MADLYEG" ?
+    pedimento.id_fiscal + "6" :
     pedimento.id_fiscal;
   const idProveedorCove = cove?.datos_generales_proveedor?.identificador;
   
@@ -189,7 +191,7 @@ export async function validateFechasYFolios(pedimento: Pedimento, cove: Cove, in
   
   const validation = {
     name: "Validación de fechas de emisión y número de COVE",
-    description: "Verificar secuencias lógicas y coincidencias exactas:\n\nFechas:\n• Fecha emisión Factura debe ser menor o igual a la Fecha entrada Pedimento\n• Fecha COVE debe ser igual a la Fecha Factura\n\nNúmeros:\n• Número COVE en el Pedimento debe ser igual al Número COVE en el COVE\n• Las facturas normalmente vienen en formato americano, YYYY/MM/DD, el pedimento y COVE viene en formato mexicano, DD/MM/YYYY",
+    description: "Verificar secuencias lógicas y coincidencias exactas:\n\nFechas:\n• Fecha emisión Factura debe ser menor o igual a la Fecha entrada Pedimento\n• Fecha COVE debe ser igual a la Fecha Factura\n\nNúmeros:\n• Número COVE en el Pedimento debe ser igual al Número COVE en el COVE\n• Las facturas normalmente vienen en formato americano, YYYYMMDD, el pedimento y COVE viene en formato mexicano, MMDDYYYY",
     contexts: {
       [CustomGlossTabContextType.PROVIDED]: {
         "Pedimento": {
@@ -273,7 +275,7 @@ export async function validateMonedaYEquivalencia(pedimento: Pedimento, cove: Co
     }
   } as const;
 
-  return await glosar(validation);
+  return await glosar(validation, "o3-mini");
 }
 
 export const tracedDatosDeFactura = traceable(
