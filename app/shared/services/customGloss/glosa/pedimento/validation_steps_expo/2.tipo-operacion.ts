@@ -17,7 +17,8 @@ export async function validateCoherenciaOrigenDestino(pedimento: Pedimento, tran
   
   const validation = {
     name: "Coherencia con origen/destino",
-    description: "El tipo de operación debe ser consistente con el origen y destino de las mercancías, es decir EXP (exportación) si origen es México, si no se pueden determinar los datos de origen y destino, ignorar y marcar como correcto.",
+    description: "Validación de que el tipo de operación sea consistente con el origen y destino de las mercancías",
+    prompt: "El tipo de operación debe ser consistente con el origen y destino de las mercancías, es decir EXP (exportación) si origen es México, si no se pueden determinar los datos de origen y destino, ignorar y marcar como correcto.",
     contexts: {
       [CustomGlossTabContextType.PROVIDED]: {
         pedimento: {
@@ -47,7 +48,8 @@ export async function validateClavePedimento(pedimento: Pedimento) {
   
   const validation = {
     name: "Validación de clave de pedimento",
-    description: "La clave de pedimento debe ser válida para el tipo de operación según el Apéndice 2",
+    description: "Verificación de que la clave de pedimento corresponda al tipo de operación",
+    prompt: "La clave de pedimento debe ser válida para el tipo de operación según el Apéndice 2",
     contexts: {
       [CustomGlossTabContextType.PROVIDED]: {
         pedimento: {
@@ -77,7 +79,8 @@ export async function validateRegimen(pedimento: Pedimento) {
   
   const validation = {
     name: "Validación de régimen",
-    description: "El régimen debe ser válido para el tipo de operación según el Apéndice 16",
+    description: "Verificación de que el régimen aduanero sea compatible con el tipo de operación",
+    prompt: "El régimen debe ser válido para el tipo de operación según el Apéndice 16",
     contexts: {
       [CustomGlossTabContextType.PROVIDED]: {
         pedimento: {

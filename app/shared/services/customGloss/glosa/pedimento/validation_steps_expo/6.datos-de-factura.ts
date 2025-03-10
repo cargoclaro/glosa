@@ -12,7 +12,8 @@ export async function validateRfcFormat(pedimento: Pedimento, cove: Cove, cfdi?:
   
   const validation = {
     name: "Validación de los RFC",
-    description: "Validar que los RFC cumplan con los siguientes criterios:\n\n1. Formato válido:\n• RFC Moral: 12 caracteres (ej: ABC850101AAA)\n• RFC Física: 13 caracteres (ej: ABCD850101AAA)\n\n2. Existencia real:\n• Consultar el RFC ante el SAT (servicio web)\n\n3. Consistencia entre documentos:\n• RFC del importador debe ser idéntico en Pedimento, COVE y Carta 3.1.8\n• Si hay Cesión de Derechos, el RFC de la comercializadora debe coincidir con el RFC del importador en la Carta 3.1.8",
+    description: "Verificación del formato correcto de los RFC y su consistencia entre los diferentes documentos aduaneros",
+    prompt: "Validar que los RFC cumplan con los siguientes criterios:\n\n1. Formato válido:\n• RFC Moral: 12 caracteres (ej: ABC850101AAA)\n• RFC Física: 13 caracteres (ej: ABCD850101AAA)\n\n2. Existencia real:\n• Consultar el RFC ante el SAT (servicio web)\n\n3. Consistencia entre documentos:\n• RFC del importador debe ser idéntico en Pedimento, COVE y Carta 3.1.8\n• Si hay Cesión de Derechos, el RFC de la comercializadora debe coincidir con el RFC del importador en la Carta 3.1.8",
     contexts: {
       [CustomGlossTabContextType.PROVIDED]: {
         pedimento: {
@@ -39,7 +40,8 @@ export async function validateCesionDerechos(pedimento: Pedimento, cartaSesion?:
 
   const validation = {
     name: "Validación de cesión de derechos y carta 3.1.8",
-    description: "Si existe Cesión de Derechos:\n\nComparar:\n• RFC comercializadora vs. RFC importador en Carta 3.1.8\n• Fecha de emisión de la Cesión debe ser anterior a Fecha de entrada del Pedimento\n\nPrecedencia:\n• La Carta 3.1.8 anula cualquier discrepancia en Factura/COVE\n• Si no hay Cesión, omitir y marcar como válido",
+    description: "Verificación de la consistencia entre la cesión de derechos y la carta 3.1.8, incluyendo RFC y fechas de emisión",
+    prompt: "Si existe Cesión de Derechos:\n\nComparar:\n• RFC comercializadora vs. RFC importador en Carta 3.1.8\n• Fecha de emisión de la Cesión debe ser anterior a Fecha de entrada del Pedimento\n\nPrecedencia:\n• La Carta 3.1.8 anula cualquier discrepancia en Factura/COVE\n• Si no hay Cesión, omitir y marcar como válido",
     contexts: {
       [CustomGlossTabContextType.PROVIDED]: {
         pedimento: {
@@ -83,7 +85,8 @@ export async function validateDatosImportador(pedimento: Pedimento, cove: Cove, 
 
   const validation = {
     name: "Validación de datos del exportador",
-    description: "Validar que los siguientes campos coincidan literalmente entre documentos:\n\n• RFC: Debe coincidir entre Pedimento, CFDI y COVE (considerando exportador y comprador en exportación)\n• Domicilio fiscal: Debe coincidir entre Pedimento y CFDI para el exportador\n• Razón social: Debe coincidir entre Pedimento, CFDI y COVE",
+    description: "Verificación de la coincidencia de RFC, domicilio fiscal y razón social del exportador entre el pedimento, CFDI y COVE",
+    prompt: "Validar que los siguientes campos coincidan literalmente entre documentos:\n\n• RFC: Debe coincidir entre Pedimento, CFDI y COVE (considerando exportador y comprador en exportación)\n• Domicilio fiscal: Debe coincidir entre Pedimento y CFDI para el exportador\n• Razón social: Debe coincidir entre Pedimento, CFDI y COVE",
     contexts: {
       [CustomGlossTabContextType.PROVIDED]: {
         pedimento: {
@@ -135,7 +138,8 @@ export async function validateDatosProveedor(pedimento: Pedimento, cove: Cove, c
   
   const validation = {
     name: "Validación de datos comerciales del comprador",
-    description: "Validar lo siguiente:\n\n• El valor comercial del pedimento debe ser exactamente el valor indicado en el CFDI (emitido en pesos mexicanos).\n• Los datos de facturación (número de folio fiscal del CFDI) deben coincidir entre Pedimento y CFDI.\n• Si se utiliza información de comercializadora, esta debe coincidir con la indicada en la cesión de derechos.",
+    description: "Verificación de la coincidencia del valor comercial y datos de facturación entre el pedimento y el CFDI",
+    prompt: "Validar lo siguiente:\n\n• El valor comercial del pedimento debe ser exactamente el valor indicado en el CFDI (emitido en pesos mexicanos).\n• Los datos de facturación (número de folio fiscal del CFDI) deben coincidir entre Pedimento y CFDI.\n• Si se utiliza información de comercializadora, esta debe coincidir con la indicada en la cesión de derechos.",
     contexts: {
       [CustomGlossTabContextType.PROVIDED]: {
         pedimento: {
@@ -176,7 +180,8 @@ export async function validateFechasYFolios(pedimento: Pedimento, cove: Cove, cf
 
   const validation = {
     name: "Validación de fechas de emisión, números de folio y COVE",
-    description: "Verificar que:\n\n• La fecha de emisión del CFDI sea menor o igual a la fecha de presentación ante aduana (fecha de entrada en expo).\n• La fecha del COVE coincida con la fecha del CFDI.\n• El número (folio fiscal) del CFDI sea único y coincida en Pedimento y en el documento COVE.",
+    description: "Verificación de la consistencia entre fechas de emisión de documentos, folios fiscales y números de COVE",
+    prompt: "Verificar que:\n\n• La fecha de emisión del CFDI sea menor o igual a la fecha de presentación ante aduana (fecha de entrada en expo).\n• La fecha del COVE coincida con la fecha del CFDI.\n• El número (folio fiscal) del CFDI sea único y coincida en Pedimento y en el documento COVE.",
     contexts: {
       [CustomGlossTabContextType.PROVIDED]: {
         pedimento: {
@@ -224,7 +229,8 @@ export async function validateMonedaYEquivalencia(pedimento: Pedimento, cove: Co
   
   const validation = {
     name: "Validación de moneda y factor de equivalencia",
-    description: "Validar los siguientes aspectos:\n\n• En exportación, el CFDI debe emitirse en pesos mexicanos y la moneda declarada en el COVE debe coincidir.\n\n• Para obtener el valor en dólares, se debe dividir el valor comercial (de la factura en pesos) entre el tipo de cambio correspondiente al día anterior a la presentación ante aduana.\n\n• Se permite una tolerancia máxima de ±0.5% en esta conversión.",
+    description: "Verificación de la moneda utilizada en el CFDI, su coincidencia con el COVE y la correcta conversión a dólares",
+    prompt: "Validar los siguientes aspectos:\n\n• En exportación, el CFDI debe emitirse en pesos mexicanos y la moneda declarada en el COVE debe coincidir.\n\n• Para obtener el valor en dólares, se debe dividir el valor comercial (de la factura en pesos) entre el tipo de cambio correspondiente al día anterior a la presentación ante aduana.\n\n• Se permite una tolerancia máxima de ±0.5% en esta conversión.",
     contexts: {
       [CustomGlossTabContextType.PROVIDED]: {
         pedimento: {
