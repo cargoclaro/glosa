@@ -60,7 +60,7 @@ export async function validateCoherenciaUMT(partida: Partida, pedimento: Pedimen
   const { data: { arancel: { unidad_medida } } } = await getFraccionInfo({ fraccion, fechaDeEntrada, tipoDeOperacion });
   const validation = {
     name: "Validación de unidad de medida de la tarifa",
-    description: "Validar la unidad de medida de la tarifa, es decir que la unidad de medida declarada en la partida sea la misma que le corresponde a esa fracción arancelaria, si son piezas, piezas. Checar contra el apendice 7 que dice que la medida esta bien.",
+    description: "Validar la unidad de medida de la tarifa de la partida, debe de existir en el apendice 7, que la unidad de medida de la tarifa sea la correspondiente para esa fracción arancelara de Tax Finder.",
     contexts: {
       [CustomGlossTabContextType.PROVIDED]: {
         "Pedimento": {
@@ -195,7 +195,7 @@ export async function validatePaisOrigen(partida: Partida, pedimento?: Pedimento
 
   const validation = {
     name: "Validación del país de origen",
-    description: "Validar que el país de origen en el pedimento coincida con la leyenda 'hecho en...' en la factura o el packing. Si no se encuentra la leyenda, se debe imprimir una advertencia.",
+    description: "Validar que el país de origen en el pedimento coincida con la leyenda 'hecho en...' en la factura o el packing. Si no se encuentra la leyenda, se debe imprimir una advertencia que diga que se busque en la mercancía fisica si tiene una leyenda que diga 'hecho en...'",
     contexts: {
       [CustomGlossTabContextType.PROVIDED]: {
         "Pedimento": {
