@@ -22,10 +22,7 @@ const AuthLayout = async ({ children }: { children: React.ReactNode }) => {
   return (
     <>
       <Sidebar />
-      <Header
-        image={user.imageUrl}
-        // notifications={myNotifications}
-      />
+      <Header />
       <Main>{children}</Main>
     </>
   );
