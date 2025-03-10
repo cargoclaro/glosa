@@ -1,11 +1,9 @@
 "use client";
 
-import formatCurrency from "@/app/shared/utils/format-currency";
 import { GenericCard, SummaryCardSkeleton } from "@/app/shared/components";
 import {
   Clock,
   CalendarDays,
-  CurrencyDollar,
   ClipboardDocumentList,
 } from "@/app/shared/icons";
 import { useAuth } from "@/app/shared/hooks";
@@ -14,8 +12,6 @@ import { getTimePassed } from "@/app/shared/utils/get-time-passed";
 const Summary = () => {
   const { user } = useAuth();
 
-  const totalMoneySaved =
-    user?.glosses.reduce((sum, gloss) => sum + gloss.moneySaved, 0) || 0;
   const totalTimeSaved =
     user?.glosses.reduce((sum, gloss) => sum + gloss.timeSaved, 0) || 0;
   const totalGlosses = user?.glosses.length ? user.glosses.length : 0;

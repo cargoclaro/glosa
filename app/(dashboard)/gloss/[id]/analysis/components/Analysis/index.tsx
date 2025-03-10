@@ -20,7 +20,6 @@ import type { ISharedState } from "@/app/shared/interfaces";
 import { markTabAsVerifiedByTabIdNCustomGlossID } from "@/app/shared/services/customGloss/controller";
 import { INITIAL_STATE_RESPONSE } from "@/app/shared/constants";
 import { Prisma } from "@prisma/client";
-import formatValue from "@/app/shared/utils/format-value-data";
 
 type tabs = Prisma.CustomGlossTabGetPayload<{
   include: {
