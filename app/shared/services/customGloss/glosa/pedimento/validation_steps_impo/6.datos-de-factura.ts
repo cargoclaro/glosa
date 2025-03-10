@@ -120,7 +120,7 @@ export async function validateDatosImportador(pedimento: Pedimento, cove: Cove, 
     }
   } as const;
 
-  return await glosar(validation);
+  return await glosar(validation, "o3-mini");
 }
 
 export async function validateDatosProveedor(pedimento: Pedimento, cove: Cove, carta318?: Carta318) {
@@ -189,7 +189,7 @@ export async function validateFechasYFolios(pedimento: Pedimento, cove: Cove, in
   
   const validation = {
     name: "Validación de fechas de emisión y número de COVE",
-    description: "Verificar secuencias lógicas y coincidencias exactas:\n\nFechas:\n• Fecha emisión Factura debe ser menor o igual a la Fecha entrada Pedimento\n• Fecha COVE debe ser igual a la Fecha Factura\n\nNúmeros:\n• Número COVE en el Pedimento debe ser igual al Número COVE en el COVE\n• Las facturas normalmente vienen en formato americano, YYYYMMDD, el pedimento y COVE viene en formato mexicano, MMDDYYYY",
+    description: "Verificar secuencias lógicas y coincidencias exactas:\n\nFechas:\n• Fecha emisión Factura debe ser menor o igual a la Fecha entrada Pedimento\n• Fecha COVE debe ser igual a la Fecha Factura\n\nNúmeros:\n• Número COVE en el Pedimento debe ser igual al Número COVE en el COVE\n• Las facturas normalmente vienen en formato americano, YYYY/MM/DD, el pedimento y COVE viene en formato mexicano, DD/MM/YYYY",
     contexts: {
       [CustomGlossTabContextType.PROVIDED]: {
         "Pedimento": {
@@ -215,7 +215,7 @@ export async function validateFechasYFolios(pedimento: Pedimento, cove: Cove, in
     }
   } as const;
 
-  return await glosar(validation);
+  return await glosar(validation, "o3-mini");
 }
 
 export async function validateMonedaYEquivalencia(pedimento: Pedimento, cove: Cove, carta318?: Carta318, invoice?: Invoice) {
