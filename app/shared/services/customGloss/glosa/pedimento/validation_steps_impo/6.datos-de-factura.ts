@@ -186,8 +186,8 @@ export async function validateFechasYFolios(pedimento: Pedimento, cove: Cove, in
   const observaciones = pedimento.observaciones_a_nivel_pedimento;
   
   const validation = {
-    name: "Validación de fechas de emisión, números de folio y COVE",
-    description: "Verificar secuencias lógicas y coincidencias exactas:\n\nFechas:\n• Fecha emisión Factura debe ser menor o igual a la Fecha entrada Pedimento\n• Fecha COVE debe ser igual a la Fecha Factura\n\nNúmeros:\n• Número COVE en el Pedimento debe ser igual al Número COVE en el COVE\n• Número Factura debe ser único y no repetido en otras operaciones",
+    name: "Validación de fechas de emisión y número de COVE",
+    description: "Verificar secuencias lógicas y coincidencias exactas:\n\nFechas:\n• Fecha emisión Factura debe ser menor o igual a la Fecha entrada Pedimento\n• Fecha COVE debe ser igual a la Fecha Factura\n\nNúmeros:\n• Número COVE en el Pedimento debe ser igual al Número COVE en el COVE\n• ",
     contexts: {
       [CustomGlossTabContextType.PROVIDED]: {
         "Pedimento": {
