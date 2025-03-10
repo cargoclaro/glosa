@@ -76,6 +76,7 @@ export async function validateDatosImportador(pedimento: Pedimento, cove: Cove, 
   const domicilioPedimento = pedimento.datos_importador?.domicilio;
   const domicilioCove = cove?.datos_generales_destinatario?.domicilio;
   const razonSocialPedimento = pedimento.datos_importador?.razon_social;
+  const razonSocialPedimentoImportado = pedimento.nombre_razon_social;
   const razonSocialCove = cove?.datos_generales_destinatario?.nombre_razon_social;
   
   const carta318mkdown = carta318?.markdown_representation;
@@ -100,6 +101,7 @@ export async function validateDatosImportador(pedimento: Pedimento, cove: Cove, 
             { name: "RFC", value: rfcPedimento },
             { name: "Domicilio", value: domicilioPedimento },
             { name: "Razón social", value: razonSocialPedimento },
+            { name: "Razón social importado", value: razonSocialPedimentoImportado },
             { name: "Observaciones", value: observaciones }
           ]
         },

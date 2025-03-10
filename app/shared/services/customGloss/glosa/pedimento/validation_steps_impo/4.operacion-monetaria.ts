@@ -75,8 +75,9 @@ export async function validateTipoCambio(pedimento: Pedimento) {
 export async function validateIncrementables(pedimento: Pedimento, invoice?: Invoice, transportDocument?: TransportDocument, carta318?: Carta318) {
   // Get incrementables from pedimento
   const incrementablesPedimento = {
-    fletes: pedimento.incrementables?.fletes,
+    val_seguros: pedimento.incrementables?.val_seguros,
     seguros: pedimento.incrementables?.seguros,
+    fletes: pedimento.incrementables?.fletes,
     embalajes: pedimento.incrementables?.embalajes,
     otros: pedimento.incrementables?.otros_incrementables
   };

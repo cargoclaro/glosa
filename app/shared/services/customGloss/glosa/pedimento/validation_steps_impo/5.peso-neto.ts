@@ -53,7 +53,7 @@ export async function validatePesosYBultos(pedimento: Pedimento, transportDocume
     }
   } as const;
 
-  return await glosar(validation, "gpt-4o-mini");
+  return await glosar(validation, "gpt-4o");
 }
 
 export async function validateBultos(pedimento: Pedimento, transportDocument?: TransportDocument) {
