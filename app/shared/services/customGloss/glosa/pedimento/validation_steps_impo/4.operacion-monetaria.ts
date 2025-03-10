@@ -18,7 +18,8 @@ export async function validateTransportDocumentEntryDate(pedimento: Pedimento, t
   
   const validation = {
     name: "Fecha de entrada del documento de transporte",
-    description: "La fecha de entrada del documento de transporte ser anterior o igual a la fecha de entrada del pedimento. ",
+    description: "Valida que la fecha del documento de transporte no sea posterior al pedimento",
+    prompt: "La fecha de entrada del documento de transporte ser anterior o igual a la fecha de entrada del pedimento. ",
     contexts: {
       [CustomGlossTabContextType.PROVIDED]: {
         "Pedimento": {
@@ -45,10 +46,10 @@ export async function validateTipoCambio(pedimento: Pedimento) {
   const observaciones = pedimento.observaciones_a_nivel_pedimento;
   // TODO: Replace with actual DOF API integration
   const tipoCambioDOF = await getExchangeRate(new Date(fechaEntrada ?? new Date())); // Temporary hardcoded value
-  
   const validation = {
     name: "Tipo de cambio",
-    description: "El tipo de cambio del pedimento debe ser exactamente igual al publicado en el DOF el día hábil anterior a la fecha de entrada del pedimento.",
+    description: "Valida que el tipo de cambio coincida con el DOF",
+    prompt: "El tipo de cambio del pedimento debe ser exactamente igual al publicado en el DOF el día hábil anterior a la fecha de entrada del pedimento.",
     contexts: {
       [CustomGlossTabContextType.PROVIDED]: {
         "Pedimento": {
@@ -90,7 +91,8 @@ export async function validateIncrementables(pedimento: Pedimento, invoice?: Inv
   
   const validation = {
     name: "Incrementables",
-    description: "Los incrementables son los servicios a los cuales se les puede cobrar impuestos. Para hacer la declaracion correcta, se necesita verificar que los valores de los incrementables en el pedimento seas validos conforme a la carta 318, factura o documento de transporte. Los incrementables pueden ser fletes, seguros, maniobras, entre otros. Tenemos que buscar una relación entre los valores del pedimento y los documentos que lo avalan. Argumenta por que los incrementables estan bien o mal, siempre buscando sostener tus respuestas. Si hay un valor en dolares de incrementables en la carta 318, factura o documento de transporte, se debe de multiplicar por el tipo de cambio del pedimento para obtener el valor en pesos mexicanos y poder compararlo contra los incrementables del pedimento. Los incoterms son codigos de 3 letras.",
+    description: "Valida que los valores de los incrementables declarados en el pedimento coincidan con los documentos que los avalan",
+    prompt: "Los incrementables son los servicios a los cuales se les puede cobrar impuestos. Para hacer la declaracion correcta, se necesita verificar que los valores de los incrementables en el pedimento seas validos conforme a la carta 318, factura o documento de transporte. Los incrementables pueden ser fletes, seguros, maniobras, entre otros. Tenemos que buscar una relación entre los valores del pedimento y los documentos que lo avalan. Argumenta por que los incrementables estan bien o mal, siempre buscando sostener tus respuestas. Si hay un valor en dolares de incrementables en la carta 318, factura o documento de transporte, se debe de multiplicar por el tipo de cambio del pedimento para obtener el valor en pesos mexicanos y poder compararlo contra los incrementables del pedimento. Los incoterms son codigos de 3 letras.",
     contexts: {
       [CustomGlossTabContextType.PROVIDED]: {
         "Pedimento": {
@@ -132,7 +134,8 @@ async function validateValorDolares(pedimento: Pedimento, invoice?: Invoice, car
 
   const validation = {
     name: "Valor en dólares del pedimento",
-    description: "El valor en dólares declarado en el pedimento debe ser igual al valor aduana dividido entre el tipo de cambio (Valor USD = Valor Aduana MXN ÷ Tipo de Cambio). Este valor debe coincidir con el valor comercial de la factura más los incrementables convertidos a USD, y estar redondeado a 2 decimales usando el tipo de cambio del pedimento. Solamente valida que el valor dólares este bien, los ya se analizaron. ",
+    description: "Valida que el valor en dólares del pedimento sea igual al valor aduana dividido entre el tipo de cambio",
+    prompt: "El valor en dólares declarado en el pedimento debe ser igual al valor aduana dividido entre el tipo de cambio (Valor USD = Valor Aduana MXN ÷ Tipo de Cambio). Este valor debe coincidir con el valor comercial de la factura más los incrementables convertidos a USD, y estar redondeado a 2 decimales usando el tipo de cambio del pedimento. Solamente valida que el valor dólares este bien, los ya se analizaron. ",
     contexts: {
       [CustomGlossTabContextType.PROVIDED]: {
         "Pedimento": {
@@ -171,7 +174,8 @@ async function validateValorComercial(pedimento: Pedimento, invoice?: Invoice, c
   
   const validation = {
     name: "Valor comercial del pedimento",
-    description: "El valor comercial representa el precio pagado por la mercancía sin incluir incrementables (Valor Comercial = Valor Aduana - Total Incrementables) o el valor de la factura sin los incrementables. debe ser menor o igual al valor aduana. La diferencia entre el valor aduana y el valor comercial debe corresponder exactamente a la suma de los incrementables declarados (fletes, seguros y otros), considerando cualquier decrementables aplicado y debe ser consistente con el valor declarado en la factura comercial. Si existe un redondo hacía arriba en el valor declarado en el pedimento que sea mínimo marcalo como valido, donde hay más peligro es declarar menos. ",
+    description: "Valida que el valor comercial sea igual al valor aduana menos los incrementables y que coincida con el valor de la factura",
+    prompt: "El valor comercial representa el precio pagado por la mercancía sin incluir incrementables (Valor Comercial = Valor Aduana - Total Incrementables) o el valor de la factura sin los incrementables. debe ser menor o igual al valor aduana. La diferencia entre el valor aduana y el valor comercial debe corresponder exactamente a la suma de los incrementables declarados (fletes, seguros y otros), considerando cualquier decrementables aplicado y debe ser consistente con el valor declarado en la factura comercial. Si existe un redondo hacía arriba en el valor declarado en el pedimento que sea mínimo marcalo como valido, donde hay más peligro es declarar menos. ",
     contexts: {
       [CustomGlossTabContextType.PROVIDED]: {
         "Pedimento": {
@@ -210,7 +214,8 @@ async function validateValorAduana(pedimento: Pedimento, invoice?: Invoice, cart
 
   const validation = {
     name: "Valor aduana del pedimento",
-    description: "El valor aduana es la base para el cálculo de contribuciones y debe calcularse como el valor dolares más los incrementables multiplicado por el tipo de cambio (Valor Aduana = (Valor Dolares + Total Incrementables) × Tipo de Cambio). Este valor debe ser mayor o igual al valor comercial, y la diferencia debe corresponder exactamente a los incrementables declarados en el pedimento, carta 318 y documentos de transporte, considerando los decrementables aplicados y cualquier ajuste documentado en las observaciones.",
+    description: "Valida que el valor aduana sea igual al valor en dólares más incrementables multiplicado por el tipo de cambio",
+    prompt: "El valor aduana es la base para el cálculo de contribuciones y debe calcularse como el valor dolares más los incrementables multiplicado por el tipo de cambio (Valor Aduana = (Valor Dolares + Total Incrementables) × Tipo de Cambio). Este valor debe ser mayor o igual al valor comercial, y la diferencia debe corresponder exactamente a los incrementables declarados en el pedimento, carta 318 y documentos de transporte, considerando los decrementables aplicados y cualquier ajuste documentado en las observaciones.",
     contexts: {
       [CustomGlossTabContextType.PROVIDED]: {
         "Pedimento": {
