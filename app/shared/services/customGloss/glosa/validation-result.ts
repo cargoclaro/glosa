@@ -71,6 +71,7 @@ const validationResultSchema = z.object({
 
 export async function glosar(validation: {
   name: string;
+  prompt: string;
   description: string;
   contexts: {
     [key in CustomGlossTabContextType]?: {

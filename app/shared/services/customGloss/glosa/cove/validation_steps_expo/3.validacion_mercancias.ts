@@ -26,7 +26,8 @@ export async function validateMercancias(
 
   const validation = {
     name: "Mercancias",
-    description: "Validar que los siguientes datos de las mercancías en el COVE coincidan con los declarados en el CFDI:\n\n• Descripción genérica de la mercancía\n• Cantidad en unidad de medida comercial (UMC)\n• Clave de unidad de medida comercial\n• Valor unitario\n• Valor total",
+    description: "Validación que compara los datos de las mercancías entre el COVE y el CFDI para asegurar que coincidan en operaciones de exportación, incluyendo descripción, cantidad, unidad de medida, valor unitario y valor total.",
+    prompt: "Validar que los siguientes datos de las mercancías en el COVE coincidan con los declarados en el CFDI:\n\n• Descripción genérica de la mercancía\n• Cantidad en unidad de medida comercial (UMC)\n• Clave de unidad de medida comercial\n• Valor unitario\n• Valor total",
     contexts: {
       [CustomGlossTabContextType.PROVIDED]: {
         cove: {
@@ -63,7 +64,8 @@ export async function validateValorTotalDolares(
   const cfdiMkdown = cfdi?.markdown_representation;
   const validation = {
     name: "Valor total en dolares",
-    description: "Validar que el valor total en dólares cumpla con los siguientes criterios:\n\n• El valor total debe coincidir con el declarado en el CFDI\n• Si el CFDI está en una moneda diferente a dólares, verificar que se haya realizado la conversión correcta usando el factor de equivalencia correspondiente\n• Revisar que el tipo de cambio utilizado coincida con el declarado en el área de observaciones del COVE\n• Validar que los cálculos de conversión sean correctos y precisos",
+    description: "Validación que compara el valor total en dólares declarado en el COVE con el valor en el CFDI, verificando la correcta conversión de moneda y el tipo de cambio utilizado cuando el CFDI está en una moneda diferente a dólares.",
+    prompt: "Validar que el valor total en dólares cumpla con los siguientes criterios:\n\n• El valor total debe coincidir con el declarado en el CFDI\n• Si el CFDI está en una moneda diferente a dólares, verificar que se haya realizado la conversión correcta usando el factor de equivalencia correspondiente\n• Revisar que el tipo de cambio utilizado coincida con el declarado en el área de observaciones del COVE\n• Validar que los cálculos de conversión sean correctos y precisos",
     contexts: {
       [CustomGlossTabContextType.PROVIDED]: {
         cove: {
@@ -99,7 +101,8 @@ export async function validateNumeroSerie(
 
   const validation = {
     name: "Numero de serie",
-    description: "Validar el número de serie de las mercancías siguiendo estos criterios:\n\n1. Revisar primero si el número de serie está declarado en la cfdi en la sección de mercancías\n\n2. Si no está en la cfdi, obtener el número de serie de la factura comercial\n\n3. El número de serie debe ser capturado exactamente como aparece en el documento correspondiente. No es obligatorio el número de serie, si no hay ninguno es por que no tenían para esa mercancía en específico. Si no hay números de serie marcar como válido.",
+    description: "Validación que compara el número de serie de las mercancías entre el COVE, el CFDI y la factura comercial, verificando que coincidan exactamente como aparecen en los documentos correspondientes. Los números de serie no son obligatorios y se consideran válidos si no existen.",
+    prompt: "Validar el número de serie de las mercancías siguiendo estos criterios:\n\n1. Revisar primero si el número de serie está declarado en la cfdi en la sección de mercancías\n\n2. Si no está en la cfdi, obtener el número de serie de la factura comercial\n\n3. El número de serie debe ser capturado exactamente como aparece en el documento correspondiente. No es obligatorio el número de serie, si no hay ninguno es por que no tenían para esa mercancía en específico. Si no hay números de serie marcar como válido.",
     contexts: {
       [CustomGlossTabContextType.PROVIDED]: {
         cove: {
