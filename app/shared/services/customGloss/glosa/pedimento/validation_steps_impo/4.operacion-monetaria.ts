@@ -90,7 +90,7 @@ export async function validateIncrementables(pedimento: Pedimento, invoice?: Inv
   
   const validation = {
     name: "Incrementables",
-    description: "Los incrementables son los servicios a los cuales se les puede cobrar impuestos. Para hacer la declaracion correcta, se necesita verificar que los valores de los incrementables en el pedimento seas validos conforme a la carta 318, factura o documento de transporte. Los incrementables pueden ser fletes, seguros, maniobras, entre otros. Tenemos que buscar una relación entre los valores del pedimento y los documentos que lo avalan. Argumenta por que los incrementables estan bien o mal, siempre buscando sostener tus respuestas. Si hay un valor en dolares de incrementables en la carta 318, factura o documento de transporte, se debe de multiplicar por el tipo de cambio del pedimento para obtener el valor en pesos mexicanos y poder compararlo contra los incrementables del pedimento.",
+    description: "Los incrementables son los servicios a los cuales se les puede cobrar impuestos. Para hacer la declaracion correcta, se necesita verificar que los valores de los incrementables en el pedimento seas validos conforme a la carta 318, factura o documento de transporte. Los incrementables pueden ser fletes, seguros, maniobras, entre otros. Tenemos que buscar una relación entre los valores del pedimento y los documentos que lo avalan. Argumenta por que los incrementables estan bien o mal, siempre buscando sostener tus respuestas. Si hay un valor en dolares de incrementables en la carta 318, factura o documento de transporte, se debe de multiplicar por el tipo de cambio del pedimento para obtener el valor en pesos mexicanos y poder compararlo contra los incrementables del pedimento. Los incoterms son codigos de 3 letras.",
     contexts: {
       [CustomGlossTabContextType.PROVIDED]: {
         "Pedimento": {
@@ -119,7 +119,7 @@ export async function validateIncrementables(pedimento: Pedimento, invoice?: Inv
     }
   } as const;
 
-  return await glosar(validation, "claude-3-7-sonnet-20250219");
+  return await glosar(validation, "o3-mini");
 }
 
 async function validateValorDolares(pedimento: Pedimento, invoice?: Invoice, carta318?: Carta318) {
@@ -157,7 +157,7 @@ async function validateValorDolares(pedimento: Pedimento, invoice?: Invoice, car
     }
   } as const;
 
-  return await glosar(validation, "gpt-4o-mini");
+  return await glosar(validation, "o3-mini");
 }
 
 async function validateValorComercial(pedimento: Pedimento, invoice?: Invoice, carta318?: Carta318) {
@@ -196,7 +196,7 @@ async function validateValorComercial(pedimento: Pedimento, invoice?: Invoice, c
     }
   } as const;
 
-  return await glosar(validation, "gpt-4o-mini");
+  return await glosar(validation, "o3-mini");
 }
 
 async function validateValorAduana(pedimento: Pedimento, invoice?: Invoice, carta318?: Carta318) {

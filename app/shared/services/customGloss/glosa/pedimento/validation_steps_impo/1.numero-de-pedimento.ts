@@ -39,7 +39,7 @@ async function validateAñoPedimento(pedimento: Pedimento) {
   
   const validation = {
     name: "Año del pedimento",
-    description: "El año del pedimento (inferido por los dígitos 1 y 2 del número del pedimento) debe ser iguales al año actual",
+    description: "El año del pedimento (inferido por los dígitos 1 y 2 del número del pedimento) debe ser iguales al año actual, deben de hacer sentido. ",
     contexts: {
       [CustomGlossTabContextType.INFERRED]: {
         "Pedimento": {
@@ -52,7 +52,7 @@ async function validateAñoPedimento(pedimento: Pedimento) {
     }
   } as const;
 
-  return await glosar(validation, "gpt-4o-mini");
+  return await glosar(validation, "gpt-4o");
 }
 
 export const tracedNumeroDePedimento = traceable(
