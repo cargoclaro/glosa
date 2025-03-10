@@ -118,7 +118,7 @@ export async function validateIncrementables(pedimento: Pedimento, invoice?: Inv
     }
   } as const;
 
-  return await glosar(validation, "o3-mini");
+  return await glosar(validation, "claude-3-7-sonnet-20250219");
 }
 
 async function validateValorDolares(pedimento: Pedimento, invoice?: Invoice, carta318?: Carta318) {
