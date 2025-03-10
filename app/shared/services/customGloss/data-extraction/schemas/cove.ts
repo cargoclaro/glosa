@@ -1,4 +1,5 @@
 import { z } from "zod"
+import { parse, isValid } from 'date-fns';
 
 export type Cove = z.infer<typeof coveSchema>;
 
@@ -30,8 +31,22 @@ export const coveSchema = z.object({
     .optional(),
   fecha_expedicion: z
     .string()
-    .describe("Date of issuance of the document in 'YYYY-MM-DD' format.")
-    .optional(),
+    .describe("Date of issuance of the document in 'DD-MM-YYYY' format.")
+    .transform((dateStr, ctx) => {
+      if (!dateStr) { return null; }
+      
+      const parsedDate = parse(dateStr, 'dd/MM/yyyy', new Date());
+      
+      if (!isValid(parsedDate)) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: `Invalid date format: ${dateStr}. Expected DD/MM/YYYY.`,
+        });
+        return null;
+      }
+      
+      return parsedDate;
+    }),
   observaciones: z
     .string()
     .describe("Additional observations noted in the document.")

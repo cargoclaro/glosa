@@ -117,7 +117,7 @@ const extractionResponseSchema = z.object({
   text: z.string()
 });
 
-async function extractTextFromPDF<T>(originalFile: File, documentType: DocumentType, schema: z.ZodType<T>) {
+async function extractTextFromPDF<T extends z.ZodType>(originalFile: File, documentType: DocumentType, schema: T) {
   const baseUrl = process.env["PYTHON_BACKEND_URL"];
   const url = `${baseUrl}/extract-pdf-text`;
 
