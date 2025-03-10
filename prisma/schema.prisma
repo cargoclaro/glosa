@@ -8,22 +8,6 @@ datasource db {
   directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
 }
 
-model User {
-  id           String @id @default(uuid())
-  name         String
-  email        String @unique
-  image        String @default("/assets/images/profilepic.webp")
-  password     String
-  lastName     String
-  patentNumber Int    @unique
-
-  // customs UserOnCustom[]
-  glosses CustomGloss[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
 // model UserOnCustom {
 //   user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 //   userId   String
@@ -52,21 +36,16 @@ enum OperationStatus {
 }
 
 model CustomGloss {
-  id              String          @id @default(uuid())
+  id              String             @id @default(uuid())
   summary         String
   timeSaved       Float
   moneySaved      Float
   importerName    String
-  operationStatus OperationStatus @default(IN_PROGRESS)
-
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId String
-  // custom   Custom @relation(fields: [customId], references: [id], onDelete: Cascade)
-  // customId String
-
-  tabs   CustomGlossTab[]
-  files  CustomGlossFile[]
-  alerts CustomGlossAlert[]
+  operationStatus OperationStatus    @default(IN_PROGRESS)
+  userId          String
+  tabs            CustomGlossTab[]
+  files           CustomGlossFile[]
+  alerts          CustomGlossAlert[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

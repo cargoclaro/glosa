@@ -1,18 +1,16 @@
 "use client";
 
 import { cn } from "@/app/shared/utils/cn";
-import { useAuth } from "@/app/shared/hooks";
 // import latLonToSvgCoords from "@/app/shared/utils/lat-lon-to-svg";
 
 const MexMap = () => {
-  const { user } = useAuth();
   return (
     <>
       <svg
         id="estados_mexico"
         viewBox="0 0 999 679"
         fill="currentColor"
-        className={cn(user ? "text-[#a4bac8]" : "text-gray-300 animate-pulse")}
+        className={cn("text-[#a4bac8]")}
       >
         <g id="g3014">
           <path

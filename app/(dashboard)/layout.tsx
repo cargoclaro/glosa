@@ -1,20 +1,9 @@
-import { isAuthenticated } from "../shared/services/auth";
-import prisma from "../shared/services/prisma";
 import { Header, Main, Sidebar } from "./components";
+import { currentUser } from '@clerk/nextjs/server'
 
 const AuthLayout = async ({ children }: { children: React.ReactNode }) => {
-  const session = await isAuthenticated();
-  const userId = session["userId"];
-  if (typeof userId !== "string") {
-    throw new Error("User ID is not a string");
-  }
-  const me = await prisma.user.findUnique({
-    where: { id: userId },
-    include: {
-      glosses: true,
-    },
-  });
-  if (!me) {
+  const user = await currentUser()
+  if (!user) {
     return <div>No se pudo obtener el usuario</div>;
   }
   // const myNotifications = [
@@ -34,7 +23,7 @@ const AuthLayout = async ({ children }: { children: React.ReactNode }) => {
     <>
       <Sidebar />
       <Header
-        user={me}
+        image={user.imageUrl}
         // notifications={myNotifications}
       />
       <Main>{children}</Main>

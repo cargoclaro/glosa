@@ -1,55 +1,55 @@
-"use client";
-
 import Image from "next/image";
-import { useAuth } from "@/app/shared/hooks";
-import { ProfileCardSkeleton, GenericCard } from "@/app/shared/components";
+import { GenericCard } from "@/app/shared/components";
+import { clerkClient, currentUser } from "@clerk/nextjs/server";
+import { auth } from "@clerk/nextjs/server";
 
-const MyInfo = () => {
-  const { user } = useAuth();
-
+async function MyInfo() {
+  const { orgId } = await auth.protect();
+  if (!orgId) {
+    return <div>No se pudo obtener la organización</div>;
+  }
+  const user = await currentUser()
+  if (!user) {
+    return <div>No se pudo obtener el usuario</div>;
+  }
+  const client = await clerkClient()
+  const { publicMetadata } = await client.organizations.getOrganization({
+    organizationId: orgId,
+  })
   return (
-    <>
-      {user ? (
-        <GenericCard>
-          <p className="font-bold text-center text-lg">
-            Patente:{" "}
-            <span className="font-normal">{"#" + user.patentNumber}</span>
-          </p>
-          <div className="flex justify-center mt-4">
-            <Image
-              src={user.image}
-              alt="User profile"
-              className="size-20 rounded-full"
-              width={64}
-              height={64}
-              priority
-            />
-          </div>
-          <h1 className="font-extrabold text-2xl">
-            {user.name + " " + user.lastName}
-          </h1>
-          {/* <div className="flex justify-start mt-2 text-xl">
-            <p className="font-semibold text-left mr-2">Aduanas:</p>
-            <ul
-              title={
-                user.customs &&
-                user.customs.map((custom) => custom.custom.city).join(", ")
-              }
-              className="flex flex-col sm:flex-row gap-1 truncate"
-            >
-              {user.customs.map((custom, index) => (
-                <li key={custom.customId}>
-                  {custom.custom.city}
-                  {index !== user.customs.length - 1 ? "," : ""}
-                </li>
-              ))}
-            </ul>
-          </div> */}
-        </GenericCard>
-      ) : (
-        <ProfileCardSkeleton />
-      )}
-    </>
+    <GenericCard>
+      <p className="font-bold text-center text-lg">
+        Patente:{" "}
+        <span className="font-normal">{"#" + publicMetadata?.patente}</span>
+      </p>
+      <div className="flex justify-center mt-4">
+        <Image
+          src={user.imageUrl}
+          alt="User profile"
+          className="size-20 rounded-full"
+          width={64}
+          height={64}
+          priority
+        />
+      </div>
+      {/* <div className="flex justify-start mt-2 text-xl">
+        <p className="font-semibold text-left mr-2">Aduanas:</p>
+        <ul
+          title={
+            user.customs &&
+            user.customs.map((custom) => custom.custom.city).join(", ")
+          }
+          className="flex flex-col sm:flex-row gap-1 truncate"
+        >
+          {user.customs.map((custom, index) => (
+            <li key={custom.customId}>
+              {custom.custom.city}
+              {index !== user.customs.length - 1 ? "," : ""}
+            </li>
+          ))}
+        </ul>
+      </div> */}
+    </GenericCard>
   );
 };
 

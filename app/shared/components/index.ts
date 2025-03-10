@@ -3,7 +3,7 @@ import { Button } from "./ui";
 import Loading from "./Loading";
 import LoadingBar from "./LoadingBar";
 import { Card404, GenericCard } from "./cards";
-import { ThemeComponent, AuthComponent } from "./providers";
+import { ThemeComponent } from "./providers";
 import { GenericInput, SubmitButton, GenericSearchInput } from "./Form";
 import {
   ProfileCardSkeleton,
@@ -20,7 +20,6 @@ export {
   GenericCard,
   GenericInput,
   SubmitButton,
-  AuthComponent,
   ThemeComponent,
   GenericSearchInput,
   ProfileCardSkeleton,

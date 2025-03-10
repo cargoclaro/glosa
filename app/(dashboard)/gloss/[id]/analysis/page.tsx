@@ -2,8 +2,8 @@ import { notFound } from "next/navigation";
 import { Documents, PedimentAnalysisNFinish } from "./components";
 import type { Metadata } from "next";
 import prisma from "@/app/shared/services/prisma";
-import { isAuthenticated } from "@/app/shared/services/auth";
 import Link from "next/link";
+import { auth } from "@clerk/nextjs/server";
 
 type IDynamicMetadata = {
   params: Promise<{ id: string }>;
@@ -24,11 +24,7 @@ const GlossIdAnalysis = async ({
 }: {
   params: { id: string };
 }) => {
-  const session = await isAuthenticated();
-  const userId = session["userId"];
-  if (typeof userId !== "string") {
-    throw new Error("User ID is not a string");
-  }
+  const { userId } = await auth.protect();
   const customGloss = await prisma.customGloss.findUnique({
     where: { id, userId },
     include: {
