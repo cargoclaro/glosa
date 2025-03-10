@@ -1,11 +1,9 @@
 "use client";
 
-import formatCurrency from "@/app/shared/utils/format-currency";
 import { GenericCard, SummaryCardSkeleton } from "@/app/shared/components";
 import {
   Clock,
   CalendarDays,
-  CurrencyDollar,
   ClipboardDocumentList,
 } from "@/app/shared/icons";
 import { useAuth } from "@/app/shared/hooks";
@@ -14,8 +12,6 @@ import { getTimePassed } from "@/app/shared/utils/get-time-passed";
 const Summary = () => {
   const { user } = useAuth();
 
-  const totalMoneySaved =
-    user?.glosses.reduce((sum, gloss) => sum + gloss.moneySaved, 0) || 0;
   const totalTimeSaved =
     user?.glosses.reduce((sum, gloss) => sum + gloss.timeSaved, 0) || 0;
   const totalGlosses = user?.glosses.length ? user.glosses.length : 0;
@@ -24,20 +20,6 @@ const Summary = () => {
     <div className="grid lg:grid-cols-2 gap-4">
       {user ? (
         <>
-          <GenericCard customClass="h-[140px]">
-            <div className="flex justify-between gap-1">
-              <p
-                title={formatCurrency(totalMoneySaved, "MXN")}
-                className="text-2xl font-bold truncate"
-              >
-                {formatCurrency(totalMoneySaved, "MXN")}
-              </p>
-              <div className="h-full p-3 rounded-full bg-yellow-100/60 text-yellow-400">
-                <CurrencyDollar />
-              </div>
-            </div>
-            <small>Ahorrado en multas</small>
-          </GenericCard>
           <GenericCard customClass="h-[140px]">
             <div className="flex justify-between gap-1">
               <p

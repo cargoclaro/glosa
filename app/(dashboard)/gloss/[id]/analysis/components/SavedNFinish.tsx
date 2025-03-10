@@ -1,30 +1,14 @@
 import Link from "next/link";
-import { GenericCard } from "@/app/shared/components";
-import formatCurrency from "@/app/shared/utils/format-currency";
-import { CurrencyDollar, RightArrow } from "@/app/shared/icons";
+import { RightArrow } from "@/app/shared/icons";
 
 interface ISavedNFinish {
   glossId: string;
   moneySaved: number;
 }
 
-const SavedNFinish = ({ glossId, moneySaved }: ISavedNFinish) => {
+const SavedNFinish = ({ glossId }: ISavedNFinish) => {
   return (
     <div className="flex flex-col gap-4">
-      <GenericCard>
-        <div className="flex justify-between gap-1">
-          <p
-            title={"+" + formatCurrency(moneySaved, "MXN")}
-            className="text-2xl font-bold truncate text-green-500"
-          >
-            {"+" + formatCurrency(moneySaved, "MXN")}
-          </p>
-          <div className="h-full p-3 rounded-full bg-green-500 text-white">
-            <CurrencyDollar />
-          </div>
-        </div>
-        <small>Ahorrado en multas</small>
-      </GenericCard>
       <div className="mx-auto">
         <Link
           href={`/gloss/${glossId}`}
