@@ -7,6 +7,55 @@ import { revalidatePath } from "next/cache";
 import { isAuthenticated } from "@/app/shared/services/auth";
 import { read, create, updateTabWithCustomGlossId } from "./model";
 import { CustomGlossType, CustomGlossTabContextType } from "@prisma/client";
+import { config } from 'dotenv';
+import { traceable } from "langsmith/traceable";
+import { uploadFiles } from "./upload-files";
+import { classifyDocuments } from "./classification";
+import { extractTextFromPDFs } from "./data-extraction";
+import { glosaImpo } from "./glosa/impo";
+import { glosaExpo } from "./glosa/expo";
+import prisma from "@/app/shared/services/prisma";
+
+config();
+
+const runGlosa = traceable(
+  async (formData: FormData) => {
+    const session = await isAuthenticated();
+    const user_id = session["userId"];
+    if (typeof user_id !== "string") {
+      throw new Error("User ID is not a string");
+    }
+
+    const files = formData.getAll("files") as File[]; // TODO: We should use zod instead of this
+    const successfulUploads = await uploadFiles(files);
+    const classifications = await classifyDocuments(successfulUploads);
+    const documents = await extractTextFromPDFs(classifications);
+    const { pedimento, cove } = documents;
+    if (!pedimento || !cove) {
+      throw new Error("El pedimento y el cove son obligatorios para realizar la glosa electrónica.");
+    }
+    const operationType = pedimento.encabezado_del_pedimento?.tipo_oper;
+    if (operationType === "IMP") {
+      return {
+        gloss: await glosaImpo(documents),
+        successfulUploads,
+        importerName: pedimento.datos_importador?.razon_social,
+      };
+    } else if (operationType === "EXP") {
+      return {
+        gloss: await glosaExpo(documents),
+        successfulUploads,
+        importerName: pedimento.datos_importador?.razon_social,
+      };
+    } else {
+      throw new Error(`El tipo de operación ${operationType} no es válido.`);
+    }
+  },
+  {
+    name: "runGlosa",
+    project_name: "glosa",
+  }
+);
 
 export async function analysis(formData: FormData) {
   try {
@@ -16,11 +65,70 @@ export async function analysis(formData: FormData) {
       throw new Error("User ID is not a string");
     }
 
+    // Only use this for testing the migration from the python backend
+    const enableMigrationCode = process.env["ENABLE_MIGRATION_CODE"];
+    if (enableMigrationCode) {
+      const { gloss, successfulUploads, importerName } = await runGlosa(formData);
+      const newCustomGloss = await prisma.customGloss.create({
+        data: {
+          user: { connect: { id: user_id } },
+          summary: "No se donde sale esto",
+          timeSaved: 20,
+          moneySaved: 1000,
+          importerName: importerName ?? "No se encontro la razon social del importador",
+          tabs: {
+            create: gloss.map(({ sectionName, validations }) => ({
+              name: sectionName,
+              isCorrect: validations.every(({ validation: { isValid } }) => isValid),
+              fullContext: true,
+              context: {
+                create: validations.flatMap(({ contexts }) =>
+                  // "contexts" is an object keyed by context type:
+                  Object.entries(contexts).flatMap(([contextType, origins]) =>
+                    // "origins" is an object keyed by origin string:
+                    Object.entries(origins).map(([origin, contextValue]) => ({
+                      type: contextType as CustomGlossTabContextType, // TODO: This is a hack to make the type checker happy
+                      origin,
+                      data: {
+                        create: contextValue.data.map(({ name, value }) => ({
+                          name,
+                          value: value === undefined ? "N/A" : JSON.stringify(value),
+                        })),
+                      },
+                    }))
+                  )
+                ),
+              },
+              validations: {
+                create: validations.map(
+                  ({ validation: { name, description, llmAnalysis, isValid, actionsToTake } }) => ({
+                    name,
+                    description,
+                    llmAnalysis,
+                    isCorrect: isValid,
+                    actionsToTake: {
+                      create: actionsToTake.map((action) => ({
+                        description: action,
+                      })),
+                    },
+                  })
+                ),
+              },
+            })),
+          },
+          files: { create: successfulUploads.map(({ name, ufsUrl }) => ({ name, url: ufsUrl })) },
+        },
+      });
+      return {
+        success: true,
+        glossId: newCustomGloss.id,
+      };
+    }
     const query_id = randomUUID();
 
     const baseUrl =
       process.env.NODE_ENV === "development"
-        ? "http://host.docker.internal:8000"
+        ? "http://localhost:8000"
         : "https://cargo-claro-fastapi-6z19.onrender.com";
     const url = `${baseUrl}/receive-pdf/${process.env.NODE_ENV}/${user_id}/${query_id}`;
     console.log("url", url);
@@ -76,7 +184,7 @@ export async function analysis(formData: FormData) {
               create: [
                 {
                   name: item.name,
-                  value: item.value.toString(),
+                  value: item.value?.toString() || "Sin valor",
                 },
               ],
             },
@@ -120,7 +228,7 @@ export async function analysis(formData: FormData) {
                 create: [
                   {
                     name,
-                    value,
+                    value: JSON.stringify(value),
                   },
                 ],
               },
@@ -133,7 +241,7 @@ export async function analysis(formData: FormData) {
               create: [
                 {
                   name: operation_type.external_context.apendice_2.name,
-                  value: operation_type.external_context.apendice_2.value,
+                  value: JSON.stringify(operation_type.external_context.apendice_2.value),
                 },
               ],
             },
@@ -145,7 +253,7 @@ export async function analysis(formData: FormData) {
               create: [
                 {
                   name: operation_type.external_context.apendice_16.name,
-                  value: operation_type.external_context.apendice_16.value,
+                  value: JSON.stringify(operation_type.external_context.apendice_16.value),
                 },
               ],
             },
@@ -153,7 +261,7 @@ export async function analysis(formData: FormData) {
         ],
       },
       validations: {
-        create: pediment_number.validation_steps.map(
+        create: operation_type.validation_steps.map(
           ({
             name,
             description,
@@ -189,7 +297,7 @@ export async function analysis(formData: FormData) {
                 create: [
                   {
                     name,
-                    value,
+                    value: JSON.stringify(value),
                   },
                 ],
               },
@@ -202,7 +310,7 @@ export async function analysis(formData: FormData) {
               create: [
                 {
                   name: destination_origin.external_context.apendice_15.name,
-                  value: destination_origin.external_context.apendice_15.value,
+                  value: JSON.stringify(destination_origin.external_context.apendice_15.value),
                 },
               ],
             },
@@ -210,7 +318,7 @@ export async function analysis(formData: FormData) {
         ],
       },
       validations: {
-        create: pediment_number.validation_steps.map(
+        create: destination_origin.validation_steps.map(
           ({
             name,
             description,
@@ -246,8 +354,7 @@ export async function analysis(formData: FormData) {
                 create: [
                   {
                     name,
-                    value:
-                      typeof value === "string" ? value : JSON.stringify(value),
+                    value: JSON.stringify(value),
                   },
                 ],
               },
@@ -261,8 +368,7 @@ export async function analysis(formData: FormData) {
                 create: [
                   {
                     name,
-                    value:
-                      typeof value === "string" ? value : JSON.stringify(value),
+                    value: JSON.stringify(value),
                   },
                 ],
               },
@@ -276,8 +382,7 @@ export async function analysis(formData: FormData) {
                 create: [
                   {
                     name,
-                    value:
-                      typeof value === "string" ? value : JSON.stringify(value),
+                    value: JSON.stringify(value),
                   },
                 ],
               },
@@ -291,8 +396,7 @@ export async function analysis(formData: FormData) {
                 create: [
                   {
                     name,
-                    value:
-                      typeof value === "string" ? value : JSON.stringify(value),
+                    value: JSON.stringify(value),
                   },
                 ],
               },
@@ -300,7 +404,7 @@ export async function analysis(formData: FormData) {
           ),
           ...operation.inferred_context.flatMap((inferredItem) => {
             if ("pedimento" in inferredItem) {
-              return inferredItem.pedimento.flatMap(({ data }) =>
+              return inferredItem.pedimento?.flatMap(({ data }) =>
                 data.map(({ name, value }) => ({
                   type: CustomGlossTabContextType.INFERRED,
                   origin: "pedimento",
@@ -308,14 +412,14 @@ export async function analysis(formData: FormData) {
                     create: [
                       {
                         name,
-                        value,
+                        value: JSON.stringify(value),
                       },
                     ],
                   },
                 }))
-              );
+              ) || [];
             } else if ("factura" in inferredItem) {
-              return inferredItem.factura.flatMap(({ data }) =>
+              return inferredItem.factura?.flatMap(({ data }) =>
                 data.map(({ name, value }) => ({
                   type: CustomGlossTabContextType.INFERRED,
                   origin: "factura",
@@ -323,12 +427,12 @@ export async function analysis(formData: FormData) {
                     create: [
                       {
                         name,
-                        value,
+                        value: JSON.stringify(value),
                       },
                     ],
                   },
                 }))
-              );
+              ) || [];
             }
             return [];
           }),
@@ -340,7 +444,7 @@ export async function analysis(formData: FormData) {
                 create: [
                   {
                     name,
-                    value: value.toString(),
+                    value: value?.toString() || "Sin valor",
                   },
                 ],
               },
@@ -354,7 +458,7 @@ export async function analysis(formData: FormData) {
                 create: [
                   {
                     name,
-                    value,
+                    value: value?.toString() || "Sin valor",
                   },
                 ],
               },
@@ -368,7 +472,7 @@ export async function analysis(formData: FormData) {
                 create: [
                   {
                     name,
-                    value,
+                    value: value?.toString() || "Sin valor",
                   },
                 ],
               },
@@ -377,7 +481,7 @@ export async function analysis(formData: FormData) {
         ],
       },
       validations: {
-        create: pediment_number.validation_steps.map(
+        create: operation.validation_steps.map(
           ({
             name,
             description,
@@ -413,14 +517,7 @@ export async function analysis(formData: FormData) {
                 create: [
                   {
                     name,
-                    value: Array.isArray(value)
-                      ? value
-                          .map(
-                            (item) =>
-                              `ID: ${item.id}, UMC: ${item.umc}, Cantidad UMC: ${item.cantidad_umc}`
-                          )
-                          .join("; ")
-                      : value,
+                    value: JSON.stringify(value),
                   },
                 ],
               },
@@ -434,14 +531,7 @@ export async function analysis(formData: FormData) {
                 create: [
                   {
                     name,
-                    value: Array.isArray(value)
-                      ? value
-                          .map(
-                            (item) =>
-                              `ID: ${item.id}, UMC: ${item.umc}, Cantidad UMC: ${item.cantidad_umc}`
-                          )
-                          .join("; ")
-                      : value,
+                    value: JSON.stringify(value),
                   },
                 ],
               },
@@ -455,14 +545,7 @@ export async function analysis(formData: FormData) {
                 create: [
                   {
                     name,
-                    value: Array.isArray(value)
-                      ? value
-                          .map(
-                            (item) =>
-                              `ID: ${item.id}, Peso Bruto: ${item.peso_bruto}, Peso Neto: ${item.peso_neto}`
-                          )
-                          .join("; ")
-                      : value,
+                    value: JSON.stringify(value),
                   },
                 ],
               },
@@ -476,14 +559,7 @@ export async function analysis(formData: FormData) {
                 create: [
                   {
                     name,
-                    value: Array.isArray(value)
-                      ? value
-                          .map(
-                            (item) =>
-                              `ID: ${item.id}, Peso Bruto: ${item.peso_bruto}, Peso Neto: ${item.peso_neto}`
-                          )
-                          .join("; ")
-                      : value,
+                    value: JSON.stringify(value),
                   },
                 ],
               },
@@ -492,7 +568,7 @@ export async function analysis(formData: FormData) {
         ],
       },
       validations: {
-        create: pediment_number.validation_steps.map(
+        create: gross_weight.validation_steps.map(
           ({
             name,
             description,
@@ -528,19 +604,7 @@ export async function analysis(formData: FormData) {
                 create: [
                   {
                     name,
-                    value:
-                      typeof value === "string"
-                        ? value
-                        : Array.isArray(value)
-                        ? value
-                            .map(
-                              (item) =>
-                                `Factura: ${item.num_factura}, Fecha: ${item.fecha_factura}, Incoterm: ${item.incoterm}, ` +
-                                `Moneda: ${item.moneda_factura}, Valor: ${item.valor_moneda_factura}, ` +
-                                `Factor: ${item.factor_moneda_factura}, Valor USD: ${item.valor_dolares_factura}`
-                            )
-                            .join("; ")
-                        : value,
+                    value: JSON.stringify(value),
                   },
                 ],
               },
@@ -554,7 +618,7 @@ export async function analysis(formData: FormData) {
                 create: [
                   {
                     name,
-                    value: value.toString(),
+                    value: value?.toString() || "Sin valor",
                   },
                 ],
               },
@@ -570,9 +634,9 @@ export async function analysis(formData: FormData) {
                     name,
                     value:
                       typeof value === "object" &&
-                      value !== null &&
-                      "valor" in value &&
-                      "moneda" in value
+                        value !== null &&
+                        "valor" in value &&
+                        "moneda" in value
                         ? `${value.valor} ${value.moneda}`
                         : value,
                   },
@@ -625,7 +689,7 @@ export async function analysis(formData: FormData) {
         ],
       },
       validations: {
-        create: pediment_number.validation_steps.map(
+        create: invoice_data.validation_steps.map(
           ({
             name,
             description,
@@ -661,12 +725,7 @@ export async function analysis(formData: FormData) {
                 create: [
                   {
                     name,
-                    value:
-                      typeof value === "object" &&
-                      value !== null &&
-                      "entrada_salida" in value
-                        ? `${value.entrada_salida} | Arribo: ${value.arribo} | Salida: ${value.salida}`
-                        : value,
+                    value: JSON.stringify(value),
                   },
                 ],
               },
@@ -679,7 +738,7 @@ export async function analysis(formData: FormData) {
               create: [
                 {
                   name: transport_data.external_context.apendice_3.name,
-                  value: transport_data.external_context.apendice_3.value,
+                  value: JSON.stringify(transport_data.external_context.apendice_3.value),
                 },
               ],
             },
@@ -691,7 +750,7 @@ export async function analysis(formData: FormData) {
               create: [
                 {
                   name: transport_data.external_context.apendice_10.name,
-                  value: transport_data.external_context.apendice_10.value,
+                  value: JSON.stringify(transport_data.external_context.apendice_10.value),
                 },
               ],
             },
@@ -699,7 +758,7 @@ export async function analysis(formData: FormData) {
         ],
       },
       validations: {
-        create: pediment_number.validation_steps.map(
+        create: transport_data.validation_steps.map(
           ({
             name,
             description,
@@ -735,8 +794,7 @@ export async function analysis(formData: FormData) {
                 create: [
                   {
                     name,
-                    value:
-                      typeof value === "string" ? value : JSON.stringify(value),
+                    value: JSON.stringify(value),
                   },
                 ],
               },
@@ -764,10 +822,7 @@ export async function analysis(formData: FormData) {
                 create: [
                   {
                     name,
-                    value:
-                      typeof value === "number"
-                        ? value.toString()
-                        : JSON.stringify(value),
+                    value: JSON.stringify(value),
                   },
                 ],
               },
@@ -776,7 +831,7 @@ export async function analysis(formData: FormData) {
         ],
       },
       validations: {
-        create: pediment_number.validation_steps.map(
+        create: partidas.validation_steps.map(
           ({
             name,
             description,

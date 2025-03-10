@@ -1,0 +1,124 @@
+**Principales Infracciones Derivadas del Reconocimiento Aduanero**
+
+## **Índice**
+1. Introducción
+2. Fundamentos jurídicos aplicables al despacho aduanero de mercancías
+3. Infracciones derivadas de la glosa del pedimento en el reconocimiento aduanero
+4. Infracciones derivadas de la revisión física en el reconocimiento aduanero
+5. Infracciones y sanciones derivadas de las facultades de comprobación
+6. Procedimientos administrativos aduaneros
+7. Recomendaciones
+
+---
+
+## **Introducción**
+### **Definiciones Claves**
+- **Sanción:** Consecuencia jurídica que el incumplimiento de un deber produce en relación con el obligado.
+- **Infracción:** Violación de una ley.
+
+### **El Rol del Agente Aduanal**
+El Agente Aduanal y la Agencia Aduanal son los intermediarios entre el importador/exportador y la autoridad aduanera. Deben asegurar el cumplimiento de las siguientes funciones:
+- Asegurar que el importador o exportador cuenta con los documentos necesarios.
+- Determinar la correcta clasificación arancelaria y NICO.
+- Determinar el régimen aduanero de las mercancías.
+- Suministrar información veráz y exacta.
+
+**Fundamento Legal:** Artículo 54 de la Ley Aduanera.
+
+---
+
+## **Fundamentos Jurídicos Aplicables al Despacho Aduanero**
+### **Documentos Anexos al Pedimento en Importación:**
+- Documento de valor y comercialización.
+- Documento de transporte.
+- Documentación de cumplimiento de regulaciones y restricciones no arancelarias.
+
+### **Documentos Anexos al Pedimento en Exportación:**
+- Documento de valor y comercialización.
+- Documentación de cumplimiento de regulaciones y restricciones no arancelarias.
+
+**Regulaciones relevantes:**
+- Ley Aduanera (Art. 36, 36-A).
+- Reglas Generales de Comercio Exterior.
+
+---
+
+## **Infracciones Derivadas de la Glosa del Pedimento**
+Se consideran infracciones:
+- Transmisión de información con datos inexactos o falsos.
+- Omisión de datos en documentos transmitidos.
+- Declaración incorrecta de la equivalencia para determinar el valor comercial y aduana del pedimento.
+- Incorrecta determinación de la base gravable.
+
+**Sanciones:**
+- Multas de $2,010.00 a $2,860.00 por cada documento.
+- Multas del 130% al 150% de los impuestos omitidos.
+
+**Fundamento Legal:**
+- Artículos 184 y 185 de la Ley Aduanera.
+- Anexo 19 de las Reglas Generales de Comercio Exterior.
+
+---
+
+## **Infracciones Derivadas de la Revisión Física**
+### **Clasificación Arancelaria Incorrecta**
+- Multas de $2,010.00 a $2,860.00.
+- Multas del 130% al 150% de los impuestos omitidos.
+
+### **Retención de Mercancías**
+Las mercancías pueden ser retenidas cuando:
+- No se acredite el cumplimiento de Normas Oficiales Mexicanas.
+- Se omita la presentación de la cuenta aduanera de garantía.
+
+### **Embargo Precautorio**
+Casos en los que se procede:
+- Mercancía no declarada o excedente en más del 10% del valor total.
+- Subvaluación de mercancías.
+- Domicilio fiscal falso o inexistente.
+
+**Fundamento Legal:**
+- Artículo 151 de la Ley Aduanera.
+- Reglas Generales de Comercio Exterior.
+
+---
+
+## **Infracciones y Sanciones Derivadas de las Facultades de Comprobación**
+Las autoridades aduaneras pueden imponer sanciones cuando:
+- Se transmiten documentos con datos falsos o inexactos.
+- Se omite la transmisión de documentos en tiempo y forma.
+- Se declara incorrectamente la base gravable.
+- Se transmite información errónea sobre el valor y comercialización de las mercancías.
+
+**Sanciones Aplicables:**
+- Multas de $4,260.00 a $6,390.00 en caso de omisión documental.
+- Multas del 130% al 150% sobre impuestos no pagados.
+
+**Fundamento Legal:**
+- Artículos 176, 178 y 184 de la Ley Aduanera.
+- Reglas Generales de Comercio Exterior (RGCE).
+
+---
+
+## **Procedimientos Administrativos Aduaneros**
+Las autoridades aduaneras pueden iniciar procedimientos de:
+- **Retención de mercancías:** Cuando no se acredita el cumplimiento de normas oficiales mexicanas.
+- **Embargo precautorio:** Cuando hay irregularidades graves en la documentación o declaración.
+- **Extensión del reconocimiento aduanero:** Cuando es necesario realizar investigaciones adicionales sobre la mercancía.
+
+**Fundamento Legal:**
+- Artículos 151 y 200 de la Ley Aduanera.
+
+---
+
+## **Recomendaciones**
+Para evitar infracciones, se recomienda:
+- Verificar el correcto llenado del pedimento.
+- Asegurar la exactitud de la información transmitida.
+- Realizar correctamente la clasificación arancelaria.
+- Confirmar el origen de las mercancías.
+- Usar la tabla de equivalencias de moneda correcta.
+- Verificar que la Unidad de Medida sea congruente con el peso declarado.
+- Identificar si las mercancías requieren cumplimiento de Normas Oficiales Mexicanas.
+
+**Conclusión:** El reconocimiento aduanero es un proceso crítico en el comercio exterior. El cumplimiento de las normativas y regulaciones ayuda a evitar sanciones y a garantizar un despacho aduanero eficiente.
+

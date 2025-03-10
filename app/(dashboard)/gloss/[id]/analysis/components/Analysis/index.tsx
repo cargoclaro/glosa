@@ -61,7 +61,7 @@ const Analysis = ({
 }: IAnalysis) => {
   const scrollContainerRef = useRef<HTMLUListElement>(null);
   const { isOpen, openMenu, closeMenu, menuRef } = useModal(false);
-  const [tabSelected, setTabSelected] = useState("N° de pedimento");
+  const [tabSelected, setTabSelected] = useState("Número de pedimento");
 
   const [dataForDetail, setDataForDetail] = useState<
     tabs["validations"][number]
@@ -147,7 +147,7 @@ const Analysis = ({
   useEffect(() => {
     if (tabSelectedFromDocument !== "") {
       if (tabSelectedFromDocument === "NUM. PEDIMENTO:") {
-        handleTabClick("N° de pedimento");
+        handleTabClick("Número de pedimento");
       } else if (
         tabSelectedFromDocument === "T. OPER" ||
         tabSelectedFromDocument === "T.OPER" ||
@@ -160,7 +160,7 @@ const Analysis = ({
         tabSelectedFromDocument === "DESTINO:" ||
         tabSelectedFromDocument === "DESTINO/ORIGEN:"
       ) {
-        handleTabClick("Destino/Origen");
+        handleTabClick("Clave de destino/origen");
       } else if (
         tabSelectedFromDocument === "TIPO CAMBIO:" ||
         tabSelectedFromDocument === "VALOR DOLARES:" ||
@@ -168,19 +168,19 @@ const Analysis = ({
         tabSelectedFromDocument === "VAL.SEGUROS" ||
         tabSelectedFromDocument === "FECHAS"
       ) {
-        handleTabClick("Operación");
+        handleTabClick("Operación monetaria");
       } else if (tabSelectedFromDocument === "PESO BRUTO:") {
-        handleTabClick("Peso bruto");
+        handleTabClick("Pesos y bultos");
       } else if (
         tabSelectedFromDocument === "DATOS DEL IMPORTADOR/EXPORTADOR" ||
         tabSelectedFromDocument === "DATOS DEL IMPORTADOR / EXPORTADOR" ||
         tabSelectedFromDocument === "DATOS DEL PROVEEDOR O COMPRADOR"
       ) {
-        handleTabClick("Datos de la factura");
+        handleTabClick("Datos de factura");
       } else if (
         tabSelectedFromDocument === "DATOS DEL TRANSPORTE Y TRANSPORTISTA"
       ) {
-        handleTabClick("Datos de transporte");
+        handleTabClick("Datos del transporte");
       } else if (
         tabSelectedFromDocument === "PARTIDAS" ||
         tabSelectedFromDocument === "OBSERVACIONES A NIVEL PARTIDA"
@@ -278,6 +278,27 @@ const GenericTabComponent = ({ data, handleClick }: IGenericTabComponent) => {
   return (
     <>
       <StatusHeader status={data.isCorrect} />
+      <SectionDivider title="Pasos de Validación" icon={<ArrowTrendingUp />} />
+      <DataListForSummaryCard
+        data={data.validations}
+        handleDetail={handleClick}
+      />
+      <SectionDivider title="Fuentes" icon={<DocMagniGlass />} />
+      <ul className="flex flex-col gap-1 mt-4 max-h-[160px] overflow-y-auto">
+        {uniqueOrigins.map((origin, index) => (
+          <li key={index} className="">
+            <p
+              title={origin}
+              className="w-full px-12 py-2 rounded-full text-center border truncate bg-purple-100 border-purple-400 inline-flex gap-1 justify-center items-center"
+            >
+              <span>
+                <Document />
+              </span>
+              {origin.toUpperCase()}
+            </p>
+          </li>
+        ))}
+      </ul>
       <SectionDivider title="Contexto" icon={<DocMagniGlass />} />
       <div className="max-h-[420px] overflow-y-auto my-5">
         <table className="w-full text-center">
@@ -304,27 +325,6 @@ const GenericTabComponent = ({ data, handleClick }: IGenericTabComponent) => {
           </tbody>
         </table>
       </div>
-      <SectionDivider title="Fuentes" icon={<DocMagniGlass />} />
-      <ul className="flex flex-col gap-1 mt-4 max-h-[160px] overflow-y-auto">
-        {uniqueOrigins.map((origin, index) => (
-          <li key={index} className="">
-            <p
-              title={origin}
-              className="w-full px-12 py-2 rounded-full text-center border truncate bg-purple-100 border-purple-400 inline-flex gap-1 justify-center items-center"
-            >
-              <span>
-                <Document />
-              </span>
-              {origin.toUpperCase()}
-            </p>
-          </li>
-        ))}
-      </ul>
-      <SectionDivider title="Pasos de Validación" icon={<ArrowTrendingUp />} />
-      <DataListForSummaryCard
-        data={data.validations}
-        handleDetail={handleClick}
-      />
       <div className="border-t border-t-black mb-4" />
       <VerifiedButton
         tabId={data.id}

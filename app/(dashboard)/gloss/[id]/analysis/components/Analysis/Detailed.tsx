@@ -50,7 +50,13 @@ const Detailed = ({ data }: { data: validation }) => {
       </h1>
       <div className="border rounded-md border-cargoClaroOrange p-2 flex flex-col gap-4">
         <h2>
-          Análisis: <span className="font-medium">{data.llmAnalysis}</span>
+          Análisis: <span className="font-medium">
+            {data.llmAnalysis ? 
+              <ReactMarkdown>
+                {data.llmAnalysis}
+              </ReactMarkdown>
+            : ''}
+          </span>
         </h2>
         <div>
           <h4>Acciones a realizar:</h4>
