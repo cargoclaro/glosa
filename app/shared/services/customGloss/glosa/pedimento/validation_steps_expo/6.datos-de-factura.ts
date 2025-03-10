@@ -206,7 +206,7 @@ export async function validateFechasYFolios(pedimento: Pedimento, cove: Cove, cf
 export async function validateMonedaYEquivalencia(pedimento: Pedimento, cove: Cove, cfdi?: Cfdi) {
  // Moneda
  const monedaPedimento = pedimento.datos_factura?.[0]?.moneda_factura;
- const monedaCove = cove?.datos_mercancia?.tipo_moneda;
+ const monedaCove = cove?.datos_mercancia?.[0]?.tipo_moneda;
 
  // Valores DOF
  const factorDof = 1.5;
@@ -214,7 +214,7 @@ export async function validateMonedaYEquivalencia(pedimento: Pedimento, cove: Co
 
     // Extract values from documents
   const valorDolaresPedimento = pedimento.datos_factura?.[0]?.valor_dolares_factura;
-  const valorDolaresCove = cove?.datos_mercancia?.valor_total_dolares;
+  const valorDolaresCove = cove?.datos_mercancia?.[0]?.valor_total_dolares;
   
   // Valor factura from pedimento:
   const valorFactura = pedimento.datos_factura?.[0]?.valor_moneda_factura;

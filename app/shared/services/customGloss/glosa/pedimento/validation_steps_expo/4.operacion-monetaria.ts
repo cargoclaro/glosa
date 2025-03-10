@@ -73,8 +73,8 @@ export async function validateValorComercial(pedimento: Pedimento, cove: Cove, c
   const valorComercialPedimento = pedimento.valores?.precio_pagado_valor_comercial;
   const tipoCambioPedimento = pedimento.encabezado_del_pedimento?.tipo_cambio;
   
-  const valorComercialCOVE = cove.datos_mercancia.valor_total;
-  const monedaCOVE = cove.datos_mercancia.tipo_moneda;
+  const valorComercialCOVE = cove.datos_mercancia[0]?.valor_total;
+  const monedaCOVE = cove.datos_mercancia[0]?.tipo_moneda;
 
   const cfdiMkdown = cfdi?.markdown_representation;
   
@@ -112,8 +112,8 @@ export async function validateValorDolares(pedimento: Pedimento, cove: Cove, cfd
   const valorComercialPedimento = pedimento.valores?.precio_pagado_valor_comercial;
   const tipoCambioPedimento = pedimento.encabezado_del_pedimento?.tipo_cambio;
   
-  const valorComercialCOVE = cove.datos_mercancia.valor_total;
-  const monedaCOVE = cove.datos_mercancia.tipo_moneda;
+  const valorComercialCOVE = cove.datos_mercancia[0]?.valor_total;
+  const monedaCOVE = cove.datos_mercancia[0]?.tipo_moneda;
 
   const cfdiMkdown = cfdi?.markdown_representation;
   

@@ -120,8 +120,7 @@ export const coveSchema = z.object({
         .optional()
     })
     .describe("General details about the recipient."),
-  datos_mercancia: z
-    .object({
+  datos_mercancia: z.array(z.object({
       descripcion_mercancia: z
         .string()
         .describe(
@@ -162,6 +161,7 @@ export const coveSchema = z.object({
         .optional()
     })
     .describe("Details about the merchandise."),
+  ),
   document_summary: z
     .string()
     .describe(

@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { Alerts, Documents, PedimentAnalysisNFinish } from "./components";
+import { Documents, PedimentAnalysisNFinish } from "./components";
 import type { Metadata } from "next";
 import prisma from "@/app/shared/services/prisma";
 import { isAuthenticated } from "@/app/shared/services/auth";

@@ -92,7 +92,7 @@ export async function validateCoherenciaUMT(partida: Partida, pedimento: Pedimen
 export async function validateCoherenciaUMC(partida: Partida, cove?: Cove, carta318?: Carta318, invoice?: Invoice) {
   // Extraer partidas con información de UMC
   const partidasUMC = partida.umc || "";
-  const claveUmcCove = cove?.datos_mercancia?.clave_umc;
+  const claveUmcCove = cove?.datos_mercancia?.[0]?.clave_umc;
   const carta318mkdown = carta318?.markdown_representation;
   const invoicemkdown = invoice?.markdown_representation;
 
@@ -232,7 +232,7 @@ export async function validateDescripcionMercancia(partida: Partida, pedimento?:
   const partidasDescripcionMercancia = partida.descripcion || "";
 
   // Extraer la descripción de la mercancía del COVE, factura y carta 318
-  const descripcionCove = cove?.datos_mercancia?.descripcion_mercancia;
+  const descripcionCove = cove?.datos_mercancia?.[0]?.descripcion_mercancia;
   const invoicemkdown = invoice?.markdown_representation;
   const carta318mkdown = carta318?.markdown_representation;
 
@@ -381,7 +381,7 @@ export async function validateCalculosPartidas(pedimento: Pedimento, partida: Pa
 export async function validateNumerosSerie(pedimento: Pedimento, partida: Partida, cove?: Cove) {
   const observaciones_partida = partida.observaciones;
   const observaciones_nivel_pedimento = pedimento?.observaciones_a_nivel_pedimento;
-  const numerosSeriesCove = cove?.datos_mercancia?.numeros_serie || [];
+  const numerosSeriesCove = cove?.datos_mercancia?.[0]?.numeros_serie || [];
 
   const validation = {
     name: "Validación de números de serie, modelo y parte",

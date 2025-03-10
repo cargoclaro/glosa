@@ -218,9 +218,9 @@ export async function validateFechasYFolios(pedimento: Pedimento, cove: Cove, in
 
 export async function validateMonedaYEquivalencia(pedimento: Pedimento, cove: Cove, carta318?: Carta318, invoice?: Invoice) {
   const monedaPedimento = pedimento.datos_factura?.[0]?.moneda_factura;
-  const monedaCove = cove?.datos_mercancia?.tipo_moneda;
+  const monedaCove = cove?.datos_mercancia?.[0]?.tipo_moneda;
   const valorDolaresPedimento = pedimento.datos_factura?.[0]?.valor_dolares_factura;
-  const valorDolaresCove = cove?.datos_mercancia?.valor_total_dolares;
+  const valorDolaresCove = cove?.datos_mercancia?.[0]?.valor_total_dolares;
   const valorFactura = pedimento.datos_factura?.[0]?.valor_moneda_factura;
   const factorMonedaFactura = pedimento.datos_factura?.[0]?.factor_moneda_factura;
   const fechaEntrada = pedimento.fecha_entrada_presentacion;

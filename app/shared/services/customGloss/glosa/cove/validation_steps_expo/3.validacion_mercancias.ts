@@ -17,11 +17,11 @@ export async function validateMercancias(
   const cfdiMkdown = cfdi?.markdown_representation;
   // Create a simplified view of COVE merchandise data
   const mercanciasCoveFormatted = datosMercanciaCove ? {
-    descripcion: datosMercanciaCove.descripcion_mercancia,
-    cantidad: datosMercanciaCove.cantidad_umc,
-    unidadMedida: datosMercanciaCove.clave_umc,
-    valorUnitario: datosMercanciaCove.valor_unitario,
-    valorTotal: datosMercanciaCove.valor_total
+    descripcion: datosMercanciaCove[0]?.descripcion_mercancia,
+    cantidad: datosMercanciaCove[0]?.cantidad_umc,
+    unidadMedida: datosMercanciaCove[0]?.clave_umc,
+    valorUnitario: datosMercanciaCove[0]?.valor_unitario,
+    valorTotal: datosMercanciaCove[0]?.valor_total
   } : undefined;
 
   const validation = {
@@ -58,7 +58,7 @@ export async function validateValorTotalDolares(
   cfdi?: Cfdi
 ) {
   // Extract total value from COVE
-  const valorTotalDolaresCove = cove.datos_mercancia?.valor_total_dolares;
+  const valorTotalDolaresCove = cove.datos_mercancia[0]?.valor_total_dolares;
   const observacionesCove = cove.observaciones || '';
   const cfdiMkdown = cfdi?.markdown_representation;
   const validation = {
@@ -93,7 +93,7 @@ export async function validateNumeroSerie(
   invoice?: Invoice,
   cfdi?: Cfdi
 ) {
-  const numeroSerieCove = cove.datos_mercancia?.numeros_serie;
+  const numeroSerieCove = cove.datos_mercancia[0]?.numeros_serie;
   const invoiceMkdown = invoice?.markdown_representation;
   const cfdiMkdown = cfdi?.markdown_representation;
 
@@ -104,7 +104,7 @@ export async function validateNumeroSerie(
       [CustomGlossTabContextType.PROVIDED]: {
         cove: {
           data: [
-            { name: "Descripción", value: cove.datos_mercancia?.descripcion_mercancia },
+            { name: "Descripción", value: cove.datos_mercancia[0]?.descripcion_mercancia },
             { name: "Numero de serie", value: numeroSerieCove }
           ]
         },
