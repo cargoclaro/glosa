@@ -174,7 +174,7 @@ export async function validateDatosProveedor(pedimento: Pedimento, cove: Cove, c
     }
   } as const;
 
-  return await glosar(validation);
+  return await glosar(validation, "o3-mini");
 }
 
 export async function validateFechasYFolios(pedimento: Pedimento, cove: Cove, invoice?: Invoice, carta318?: Carta318) {
