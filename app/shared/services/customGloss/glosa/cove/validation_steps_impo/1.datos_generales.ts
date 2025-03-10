@@ -43,14 +43,18 @@ export async function validateFechaExpedicion(cove: Cove, invoice?: Invoice, car
   const fechaExpedicionCove = cove.fecha_expedicion;
   const invoiceMkdown = invoice?.markdown_representation;
   const carta318Mkdown = carta318?.markdown_representation;
+  const currentDate = new Date();
 
   const validation = {
-    name: "Fecha de Expedición (Importación)",
-    description: "La fecha de expedición del COVE debe coincidir con la fecha de la factura comercial (puede aparecer como Invoice Date, Date) o en la carta 318. En caso de discrepancia, prevalece la fecha indicada en la carta 318.",
+    name: "Fecha de Expedición (Importación)", 
+    description: "La fecha de expedición del COVE debe coincidir con la fecha de la factura y/o Carta 318. En caso de discrepancia o que falte un documento, prevalece la fecha indicada en la carta 318. Las fechas pueden tener diferentes formatos, busca que si es logico, sea valido. Por ejemplo, si la fecha es 2025-08-01 y en la 318 es 08-01-2025, probablemente sean diferentes formatos pero la misma fecha, es muy poco probable que justo esten invertidos. ",
     contexts: {
       [CustomGlossTabContextType.PROVIDED]: {
         cove: {
-          data: [{ name: "Fecha de Expedición", value: fechaExpedicionCove }]
+          data: [
+            { name: "Fecha de Expedición", value: fechaExpedicionCove },
+            { name: "Fecha Actual", value: currentDate.toISOString() }
+          ]
         },
         factura: {
           data: [{ name: "Factura", value: invoiceMkdown }]
