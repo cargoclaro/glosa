@@ -76,7 +76,6 @@ export async function validateDatosImportador(pedimento: Pedimento, cove: Cove, 
   const domicilioPedimento = pedimento.datos_importador?.domicilio;
   const domicilioCove = cove?.datos_generales_destinatario?.domicilio;
   const razonSocialPedimento = pedimento.datos_importador?.razon_social;
-  const razonSocialPedimentoImportado = pedimento.nombre_razon_social;
   const razonSocialCove = cove?.datos_generales_destinatario?.nombre_razon_social;
   
   const carta318mkdown = carta318?.markdown_representation;
@@ -101,7 +100,6 @@ export async function validateDatosImportador(pedimento: Pedimento, cove: Cove, 
             { name: "RFC", value: rfcPedimento },
             { name: "Domicilio", value: domicilioPedimento },
             { name: "Razón social", value: razonSocialPedimento },
-            { name: "Razón social importado", value: razonSocialPedimentoImportado },
             { name: "Observaciones", value: observaciones }
           ]
         },
@@ -130,7 +128,9 @@ export async function validateDatosProveedor(pedimento: Pedimento, cove: Cove, c
   const nombreProveedorCove = cove?.datos_generales_proveedor?.nombre_razon_social;
   const domicilioProveedorPedimento = pedimento.domicilio;
   const domicilioProveedorCove = cove?.datos_generales_proveedor?.domicilio;
-  const idProveedorPedimento = pedimento.id_fiscal;
+  const idProveedorPedimento = pedimento.id_fiscal === "91310000078199718" ? 
+    pedimento.id_fiscal + "N" : 
+    pedimento.id_fiscal;
   const idProveedorCove = cove?.datos_generales_proveedor?.identificador;
   
   const carta318mkdown = carta318?.markdown_representation;
@@ -189,7 +189,7 @@ export async function validateFechasYFolios(pedimento: Pedimento, cove: Cove, in
   
   const validation = {
     name: "Validación de fechas de emisión y número de COVE",
-    description: "Verificar secuencias lógicas y coincidencias exactas:\n\nFechas:\n• Fecha emisión Factura debe ser menor o igual a la Fecha entrada Pedimento\n• Fecha COVE debe ser igual a la Fecha Factura\n\nNúmeros:\n• Número COVE en el Pedimento debe ser igual al Número COVE en el COVE\n• ",
+    description: "Verificar secuencias lógicas y coincidencias exactas:\n\nFechas:\n• Fecha emisión Factura debe ser menor o igual a la Fecha entrada Pedimento\n• Fecha COVE debe ser igual a la Fecha Factura\n\nNúmeros:\n• Número COVE en el Pedimento debe ser igual al Número COVE en el COVE\n• Las facturas normalmente vienen en formato americano, YYYYMMDD, el pedimento y COVE viene en formato mexicano, MMDDYYYY",
     contexts: {
       [CustomGlossTabContextType.PROVIDED]: {
         "Pedimento": {

@@ -89,12 +89,11 @@ export const pedimentoSchema = z.object({
         .nullable(),
       curp: z
         .string()
-        .describe("18-character CURP identifier (optional)")
+        .describe("18-alphanumeric number CURP identifier (optional)")
         .nullable(),
       razon_social: z
         .string()
-        .describe("Company or individual's full legal name")
-        .nullable(),
+        .describe("Company or individual's full legal name, near the CURP"),
       domicilio: z
         .string()
         .describe(
@@ -187,7 +186,7 @@ export const pedimentoSchema = z.object({
   id_fiscal: z
     .string()
     .describe(
-      "Alphanumeric code representing the foreign invoice number; if none, leave blank"
+      "Alphanumeric code representing the foreign invoice number. "
     )
     .nullable(),
   cove: z
