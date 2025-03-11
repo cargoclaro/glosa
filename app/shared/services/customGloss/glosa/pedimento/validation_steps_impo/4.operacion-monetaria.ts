@@ -83,6 +83,7 @@ export async function validateIncrementables(pedimento: Pedimento, invoice?: Inv
     otros: pedimento.incrementables?.otros_incrementables
   };
   const tipoCambio = pedimento.encabezado_del_pedimento?.tipo_cambio;
+  const precioPagadoValorComercial = pedimento.valores?.precio_pagado_valor_comercial;
   const observaciones = pedimento.observaciones_a_nivel_pedimento;
   // Update to use markdown representations
   const carta318mkdown = carta318?.markdown_representation;
@@ -92,13 +93,14 @@ export async function validateIncrementables(pedimento: Pedimento, invoice?: Inv
   const validation = {
     name: "Incrementables",
     description: "Valida que los valores de los incrementables declarados en el pedimento coincidan con los documentos que los avalan",
-    prompt: "Los incrementables son los servicios a los cuales se les puede cobrar impuestos. Para hacer la declaracion correcta, se necesita verificar que los valores de los incrementables en el pedimento seas validos conforme a la carta 318, factura o documento de transporte. Los incrementables pueden ser fletes, seguros, maniobras, entre otros. Tenemos que buscar una relación entre los valores del pedimento y los documentos que lo avalan. Argumenta por que los incrementables estan bien o mal, siempre buscando sostener tus respuestas. Si hay un valor en dolares de incrementables en la carta 318, factura o documento de transporte, se debe de multiplicar por el tipo de cambio del pedimento para obtener el valor en pesos mexicanos y poder compararlo contra los incrementables del pedimento. Los incoterms son codigos de 3 letras. El Val. Seguros es el valor que aseguran, debe de ser igual al valor comercial del pedimento. ",
+    prompt: "Los incrementables son los servicios a los cuales se les puede cobrar impuestos. Para hacer la declaracion correcta, se necesita verificar que los valores de los incrementables en el pedimento seas validos conforme a la carta 318, factura o documento de transporte. Los incrementables pueden ser fletes, seguros, maniobras, entre otros. Tenemos que buscar una relación entre los valores del pedimento y los documentos que lo avalan. Argumenta por que los incrementables estan bien o mal, siempre buscando sostener tus respuestas. Si hay un valor en dolares de incrementables en la carta 318, factura o documento de transporte, se debe de multiplicar por el tipo de cambio del pedimento para obtener el valor en pesos mexicanos y poder compararlo contra los incrementables del pedimento. Los incoterms son codigos de 3 letras. El Val. Seguros es el valor que aseguran, debe de ser igual al precio pagado / valor comercial del pedimento. ",
     contexts: {
       [CustomGlossTabContextType.PROVIDED]: {
         "Pedimento": {
           data: [
             { name: "Incrementables", value: incrementablesPedimento },
             { name: "Tipo de cambio", value: tipoCambio },
+            { name: "Precio pagado / valor comercial", value: precioPagadoValorComercial },
             { name: "Observaciones", value: observaciones }
           ]
         },
