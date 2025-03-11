@@ -185,6 +185,16 @@ const Analysis = ({
         tabSelectedFromDocument === "OBSERVACIONES A NIVEL PARTIDA"
       ) {
         handleTabClick("Partidas");
+      } else if (tabSelectedFromDocument === "Datos generales del proveedor") {
+        handleTabClick("Datos Generales");
+      } else if (
+        tabSelectedFromDocument === "Domicilio del proveedor" ||
+        tabSelectedFromDocument === "Datos generales del destinatario" ||
+        tabSelectedFromDocument === "Domicilio del destinatario"
+      ) {
+        handleTabClick("Datos Proveedor Destinatario");
+      } else if (tabSelectedFromDocument === "Datos de la mercancía") {
+        handleTabClick("Validación de mercancías");
       } else {
         handleTabClick(tabSelectedFromDocument);
       }

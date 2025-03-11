@@ -57,7 +57,7 @@ const keywords = [
   "Datos generales del destinatario",
   "Domicilio del destinatario",
 
-  "Datos de la Mercancía",
+  "Datos de la mercancía",
 ] as const; // Make this a const assertion to create a tuple of literal types
 
 // Define a type for the keywords
@@ -152,7 +152,7 @@ const keywordPositions: Record<Keyword, IKeywordPosition> = {
   "Datos generales del destinatario": { x: 0, y: -70, w: 380, h: 70 },
   "Domicilio del destinatario": { x: 0, y: -150, w: 415, h: 150 },
 
-  "Datos de la Mercancía": { x: 0, y: -70, w: 430, h: 60 },
+  "Datos de la mercancía": { x: 0, y: -70, w: 430, h: 60 },
 };
 
 const keywordsConfig: Record<Keyword, string> = {
@@ -189,12 +189,12 @@ const keywordsConfig: Record<Keyword, string> = {
   "No. de Factura": "Datos de la Mercancía",
   "Fecha Expedición": "Datos de la Mercancía",
 
-  "Datos generales del proveedor": "Datos del Proveedor",
-  "Domicilio del proveedor": "Datos del Proveedor",
-  "Datos generales del destinatario": "Datos del Destinatario",
-  "Domicilio del destinatario": "Datos del Destinatario",
+  "Datos generales del proveedor": "Datos Generales",
+  "Domicilio del proveedor": "Datos Proveedor Destinatario",
+  "Datos generales del destinatario": "Datos Proveedor Destinatario",
+  "Domicilio del destinatario": "Datos Proveedor Destinatario",
 
-  "Datos de la Mercancía": "Datos de la Mercancía",
+  "Datos de la mercancía": "Validación de mercancías",
 } as const;
 
 const Pediment = ({ tabs, document, onClick, tabInfoSelected }: IPediment) => {
