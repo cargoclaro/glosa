@@ -13,16 +13,13 @@ import { glosaImpo } from "./glosa/impo";
 import { glosaExpo } from "./glosa/expo";
 import prisma from "@/app/shared/services/prisma";
 import { auth } from "@clerk/nextjs/server";
+import { UploadedFileData } from "uploadthing/types";
+import { DocumentType } from "./classification";
 
 config();
 
 const runGlosa = traceable(
-  async (formData: FormData) => {
-    await auth.protect();
-
-    const files = formData.getAll("files") as File[]; // TODO: We should use zod instead of this
-    const successfulUploads = await uploadFiles(files);
-    const classifications = await classifyDocuments(successfulUploads);
+  async (classifications: Partial<Record<DocumentType, (UploadedFileData & { originalFile: File; documentType: DocumentType })>>) => {
     const documents = await extractTextFromPDFs(classifications);
     const { pedimento, cove } = documents;
     if (!pedimento || !cove) {
@@ -32,13 +29,11 @@ const runGlosa = traceable(
     if (operationType === "IMP") {
       return {
         gloss: await glosaImpo(documents),
-        successfulUploads,
         importerName: pedimento.datos_importador?.razon_social,
       };
     } else if (operationType === "EXP") {
       return {
         gloss: await glosaExpo(documents),
-        successfulUploads,
         importerName: pedimento.datos_importador?.razon_social,
       };
     } else {
@@ -54,9 +49,20 @@ const runGlosa = traceable(
 export async function analysis(formData: FormData) {
   try {
     const { userId } = await auth.protect();
+    const files = formData.getAll("files") as File[]; // TODO: We should use trpc instead of this
+    const successfulUploads = await uploadFiles(files);
+    const classifications = await classifyDocuments(successfulUploads);
+    // Now group the classifications by document type, taking only the first file of each type.
+    const groupedClassifications = classifications.reduce((acc, curr) => {
+      // Only set the value if it doesn't exist yet (keeping the first file of each type)
+      if (!acc[curr.documentType]) {
+        acc[curr.documentType] = curr;
+      }
+      return acc;
+    }, {} as Partial<Record<DocumentType, (UploadedFileData & { originalFile: File; documentType: DocumentType })>>);
 
     // Only use this for testing the migration from the python backend
-    const { gloss, successfulUploads, importerName } = await runGlosa(formData);
+    const { gloss, importerName } = await runGlosa(groupedClassifications);
     const newCustomGloss = await prisma.customGloss.create({
       data: {
         userId,
@@ -104,7 +110,7 @@ export async function analysis(formData: FormData) {
             },
           })),
         },
-        files: { create: successfulUploads.map(({ name, ufsUrl }) => ({ name, url: ufsUrl })) },
+        files: { create: classifications.map(({ name, ufsUrl, documentType }) => ({ name, url: ufsUrl, documentType })) },
       },
     });
     return {
@@ -117,36 +123,6 @@ export async function analysis(formData: FormData) {
       success: false,
       message: "Ocurrió un error interno",
     };
-  }
-}
-
-export async function getMyAnalysis() {
-  try {
-    const { userId } = await auth.protect();
-    return await read({ userId });
-  } catch (error) {
-    console.error(error);
-    return [];
-  }
-}
-
-export async function getMyAnalysisById(id: string) {
-  try {
-    const { userId } = await auth.protect();
-    return await read({ id, userId });
-  } catch (error) {
-    console.error(error);
-    return null;
-  }
-}
-
-export async function getRecentAnalysis() {
-  try {
-    const { userId } = await auth.protect();
-    return await read({ userId, recent: true });
-  } catch (error) {
-    console.error(error);
-    return [];
   }
 }
 

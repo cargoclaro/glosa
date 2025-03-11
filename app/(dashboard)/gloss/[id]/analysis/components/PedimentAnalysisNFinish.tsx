@@ -83,7 +83,7 @@ const PedimentAnalysisNFinish = ({
           onClick={handleFunction}
           tabInfoSelected={tabInfoSelected}
           document={
-            customGloss.files.find((doc) => doc.name.toLowerCase().includes(documentSelected.toLowerCase()))
+            customGloss.files.find((doc) => doc.documentType?.toLowerCase() === documentSelected.toLowerCase())
               ?.url || ""
           }
         />
