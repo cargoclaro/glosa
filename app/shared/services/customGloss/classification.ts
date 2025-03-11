@@ -1,7 +1,6 @@
 import { google } from '@ai-sdk/google';
 import { generateObject } from 'ai';
 import { z } from 'zod';
-import { wrapAISDKModel } from "langsmith/wrappers/vercel";
 import { UploadedFileData } from 'uploadthing/types';
 import { traceable } from 'langsmith/traceable';
 
@@ -25,10 +24,8 @@ async function classifyDocumentsParallel(
 ) {
   const classifications = await Promise.all(uploadedFiles.map(async (uploadedFile) => {
     const { object: { documentType } } = await generateObject({
-      model: wrapAISDKModel(google("gemini-2.0-flash-001"), {
-        name: `Classify ${uploadedFile.name}`,
-        project_name: "glosa",
-      }),
+      model: google("gemini-2.0-flash-001"),
+      experimental_telemetry: { isEnabled: true },
       system: `
         Eres un experto en análisis y clasificación de documentos aduaneros.
         

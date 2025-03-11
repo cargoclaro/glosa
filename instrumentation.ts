@@ -1,9 +1,9 @@
 import { registerOTel } from "@vercel/otel";
-import { AISDKExporter } from "langsmith/vercel";
-
+import { LangfuseExporter } from "langfuse-vercel";
+ 
 export function register() {
   registerOTel({
     serviceName: "glosa",
-    traceExporter: new AISDKExporter(),
+    traceExporter: new LangfuseExporter(),
   });
 }
