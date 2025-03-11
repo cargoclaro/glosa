@@ -26,6 +26,7 @@
     "@ai-sdk/anthropic": "^1.1.11",
     "@ai-sdk/google": "^1.1.17",
     "@ai-sdk/openai": "^1.1.15",
+    "@clerk/nextjs": "^6.12.4",
     "@langchain/anthropic": "^0.3.15",
     "@langchain/google-genai": "^0.1.10",
     "@langchain/openai": "^0.4.4",

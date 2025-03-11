@@ -22,7 +22,8 @@ export async function validateDatosGeneralesProveedor(
 
   const validation = {
     name: "Datos generales del proveedor",
-    description: "Verificar que los siguientes datos coincidan entre el COVE y la factura y/o carta 318, con que coicida en la 318, esta bien:\n\n• RFC\n• Razón social\n Si no hay RFC, el tipo de identificador que tenga (tax id, tax id number, tax id number, etc) debe de coincidir.",
+    description: "Validación que compara los datos generales del proveedor entre el COVE, la factura comercial y/o la carta 318, verificando que el RFC o identificador fiscal y la razón social coincidan en los documentos para operaciones de importación.",
+    prompt: "Verificar que los siguientes datos coincidan entre el COVE y la factura y/o carta 318, con que coicida en la 318, esta bien:\n\n• RFC\n• Razón social\n Si no hay RFC, el tipo de identificador que tenga (tax id, tax id number, tax id number, etc) debe de coincidir.",
     contexts: {
       [CustomGlossTabContextType.PROVIDED]: {
         cove: {
@@ -76,7 +77,8 @@ export async function validateDomicilioProveedor(
 
   const validation = {
     name: "Domicilio del proveedor",
-    description: "Verificar que el domicilio fiscal del proveedor coincida entre el COVE y la factura/carta 318:\n\n• Domicilio fiscal.",
+    description: "Validación que compara el domicilio fiscal del proveedor entre el COVE y la factura comercial o carta 318 para asegurar que coincidan en operaciones de importación. En caso de discrepancia, prevalece la información de la carta 318.",
+    prompt: "Verificar que el domicilio fiscal del proveedor coincida entre el COVE y la factura/carta 318:\n\n• Domicilio fiscal.",
     contexts: {
       [CustomGlossTabContextType.PROVIDED]: {
         cove: {
@@ -112,7 +114,8 @@ export async function validateDatosGeneralesDestinatario(
 
   const validation = {
     name: "Datos generales del destinatario",
-    description: "Verificar que los siguientes datos coincidan entre el COVE y la factura/carta 318:\n\n• TAXID\n• Razón social\n Si no hay TAXID, el tipo de identificador que tenga (tax id, tax id number, tax id number,) debe de coincidir.",
+    description: "Validación que compara los datos generales del destinatario entre el COVE y la factura comercial o carta 318 para asegurar que coincidan en operaciones de importación, incluyendo TAXID o identificador fiscal y razón social. En caso de discrepancia, prevalece la información de la carta 318.",
+    prompt: "Verificar que los siguientes datos coincidan entre el COVE y la factura/carta 318:\n\n• TAXID\n• Razón social\n Si no hay TAXID, el tipo de identificador que tenga (tax id, tax id number, tax id number,) debe de coincidir.",
     contexts: {
       [CustomGlossTabContextType.PROVIDED]: {
         cove: {
@@ -165,7 +168,8 @@ export async function validateDomicilioDestinatario(
 
   const validation = {
     name: "Domicilio del destinatario",
-    description: "Verificar que el domicilio fiscal del destinatario coincida entre el COVE y la factura/carta 318:\n\n• Domicilio fiscal",
+    description: "Validación que compara el domicilio fiscal del destinatario entre el COVE y la factura comercial o carta 318 para asegurar que coincidan en operaciones de importación. En caso de discrepancia, prevalece la información de la carta 318.",
+    prompt: "Verificar que el domicilio fiscal del destinatario coincida entre el COVE y la factura/carta 318:\n\n• Domicilio fiscal",
     contexts: {
       [CustomGlossTabContextType.PROVIDED]: {
         factura: {

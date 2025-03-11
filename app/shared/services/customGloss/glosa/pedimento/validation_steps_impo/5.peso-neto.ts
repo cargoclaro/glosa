@@ -20,7 +20,8 @@ export async function validatePesosYBultos(pedimento: Pedimento, transportDocume
   
   const validation = {
     name: "Validación de pesos y bultos",
-    description: "Para validar los pesos y bultos, sigue estos pasos detallados:\n\n1. Verifica que el peso bruto declarado en el pedimento sea igual o menor a alguno de los pesos declarados en el documento de transporte, packing list o factura.\n2. Asegúrate de que el peso bruto declarado en el pedimento coincida con el peso declarado en el documento de transporte, carta 318 o packing list. La relación entre estos pesos debe ser lógica y consistente.",
+    description: "Valida que los pesos y bultos declarados en el pedimento coincidan con los documentos anexos",
+    prompt: "Para validar los pesos y bultos, sigue estos pasos detallados:\n\n1. Verifica que el peso bruto declarado en el pedimento sea igual o menor a alguno de los pesos declarados en el documento de transporte, packing list o factura.\n2. Asegúrate de que el peso bruto declarado en el pedimento coincida con el peso declarado en el documento de transporte, carta 318 o packing list. La relación entre estos pesos debe ser lógica y consistente.",
     contexts: {
       [CustomGlossTabContextType.PROVIDED]: {
         "Pedimento": {
@@ -66,7 +67,8 @@ export async function validateBultos(pedimento: Pedimento, transportDocument?: T
   
   const validation = {
     name: "Coincidencia de bultos",
-    description: "El número total de bultos debe coincidir entre el pedimento y el documento de transporte. Si no hay documento de transporte, marcar como advertencia.",
+    description: "Valida que el número total de bultos coincida entre el pedimento y el documento de transporte",
+    prompt: "El número total de bultos debe coincidir entre el pedimento y el documento de transporte. Si no hay documento de transporte, marcar como advertencia.",
     contexts: {
       [CustomGlossTabContextType.PROVIDED]: {
         "Pedimento": {

@@ -1,33 +1,22 @@
-import { NextRequest, NextResponse } from "next/server";
+import { clerkMiddleware } from '@clerk/nextjs/server'
+import { NextResponse } from 'next/server'
 
-export function middleware(request: NextRequest) {
-  const session = request.cookies.get("glosa-session")?.value;
-  const pathname = request.nextUrl.pathname;
-
-  if (pathname === "/")
-    return NextResponse.redirect(new URL("/sign-in", request.url));
-
-  const protectedRoutes = ["/home", "/gloss"];
-
-  if (!session && protectedRoutes.some((route) => pathname.startsWith(route))) {
-    return NextResponse.redirect(new URL("/sign-in", request.url));
+export default clerkMiddleware(async (auth, req) => {
+  // Redirect from root to /home
+  if (req.nextUrl.pathname === '/') {
+    return NextResponse.redirect(new URL('/home', req.url))
   }
-
-  if (session) {
-    if (pathname === "/sign-in" || pathname === "/sign-up")
-      return NextResponse.redirect(new URL("/home", request.url));
-  }
-
-  return NextResponse.next();
-}
+  
+  // All routes are protected, landing page is in another domain
+  await auth.protect();
+  return
+});
 
 export const config = {
   matcher: [
-    "/",
-    "/home",
-    "/gloss",
-    "/sign-in",
-    "/sign-up",
-    "/((?!api|_next/static|_next/image|favicon.ico|profilepic.webp|robots.txt|sitemap.xml|sw.js|site.webmanifest|fonts|images|assets|icons).*)",
+    // Skip Next.js internals and all static files, unless found in search params
+    '/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
+    // Always run for API routes
+    '/(api|trpc)(.*)',
   ],
 };

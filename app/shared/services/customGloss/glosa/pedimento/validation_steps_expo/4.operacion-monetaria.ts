@@ -12,8 +12,9 @@ export async function validateFechaSalida(pedimento: Pedimento, transportDocumen
   const fechaoperador = "24/07/2025"; //Temporary hardcoded value
   
   const validation = {
-    name: "Fecha de entrada",
-    description: "La fecha de salida del pedimento debe ser la fecha de salida dada por el operador de la carga.",
+    name: "Fecha de salida",
+    description: "Validación de que la fecha de salida del pedimento coincida con la fecha proporcionada por el operador de carga",
+    prompt: "La fecha de salida del pedimento debe ser la fecha de salida dada por el operador de la carga.",
     contexts: {
       [CustomGlossTabContextType.PROVIDED]: {
         pedimento: {
@@ -46,7 +47,8 @@ export async function validateTipoCambio(pedimento: Pedimento) {
   
   const validation = {
     name: "Tipo de cambio",
-    description: "El tipo de cambio debe ser exactamente igual al publicado en el DOF el día hábil anterior a la fecha de entrada.",
+    description: "Verificación de que el tipo de cambio coincida con el publicado en el DOF",
+    prompt: "El tipo de cambio debe ser exactamente igual al publicado en el DOF el día hábil anterior a la fecha de entrada.",
     contexts: {
       [CustomGlossTabContextType.PROVIDED]: {
         pedimento: {
@@ -80,7 +82,8 @@ export async function validateValorComercial(pedimento: Pedimento, cove: Cove, c
   
   const validation = {
     name: "Valor comercial",
-    description: "El valor comercial del pedimento debe ser el mismo que el valor comercial del CFDI y el valor comercial en el COVE. Si el valor en el cfdi o en el cove es en dolares, se debe de convertir a pesos mexicanos usando el tipo de cambio del pedimento.",
+    description: "Verificación de que el valor comercial del pedimento coincida con el CFDI y COVE",
+    prompt: "El valor comercial del pedimento debe ser el mismo que el valor comercial del CFDI y el valor comercial en el COVE. Si el valor en el cfdi o en el cove es en dolares, se debe de convertir a pesos mexicanos usando el tipo de cambio del pedimento.",
     contexts: {
       [CustomGlossTabContextType.PROVIDED]: {
         pedimento: {
@@ -119,7 +122,8 @@ export async function validateValorDolares(pedimento: Pedimento, cove: Cove, cfd
   
   const validation = {
     name: "Valor dolares",
-    description: "El valor en dólares del pedimento se calcula dividiendo el valor comercial entre el tipo de cambio del pedimento. Si el valor en el CFDI o en el COVE está en dólares, debe coincidir con el valor en dólares del pedimento.",
+    description: "Verificación de que el valor en dólares del pedimento sea consistente con el valor comercial y tipo de cambio",
+    prompt: "El valor en dólares del pedimento se calcula dividiendo el valor comercial entre el tipo de cambio del pedimento. Si el valor en el CFDI o en el COVE está en dólares, debe coincidir con el valor en dólares del pedimento.",
     contexts: {
       [CustomGlossTabContextType.PROVIDED]: {
         pedimento: {

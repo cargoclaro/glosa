@@ -10,7 +10,8 @@ async function validateLongitud(pedimento: Pedimento) {
   
   const validation = {
     name: "Longitud",
-    description: "El número de pedimento debe contar con 15 dígitos.",
+    description: "Valida que el número de pedimento tenga 15 dígitos",
+    prompt: "El número de pedimento debe contar con 15 dígitos.",
     contexts: {
       [CustomGlossTabContextType.INFERRED]: {
         pedimento: {
@@ -39,7 +40,8 @@ async function validateAñoPedimento(pedimento: Pedimento) {
   
   const validation = {
     name: "Año del pedimento",
-    description: "El año del pedimento (inferido por los dígitos 1 y 2 del número del pedimento) debe ser iguales al año actual, deben de hacer sentido. ",
+    description: "Valida que los primeros dos dígitos del pedimento correspondan al año actual",
+    prompt: "El año del pedimento (inferido por los dígitos 1 y 2 del número del pedimento) debe ser iguales al año actual, deben de hacer sentido. ",
     contexts: {
       [CustomGlossTabContextType.INFERRED]: {
         "Pedimento": {

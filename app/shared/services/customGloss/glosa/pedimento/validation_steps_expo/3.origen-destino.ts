@@ -9,7 +9,8 @@ export async function validateClaveApendice15(pedimento: Pedimento) {
   
   const validation = {
     name: "Validación de clave",
-    description: "La clave de destino/origen debe existir en el Apéndice 15",
+    description: "Verificación de que la clave de destino/origen exista en el Apéndice 15",
+    prompt: "La clave de destino/origen debe existir en el Apéndice 15",
     contexts: {
       [CustomGlossTabContextType.PROVIDED]: {
         pedimento: {

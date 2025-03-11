@@ -25,7 +25,8 @@ export async function validateFraccionArancelaria(partida: Partida, pedimento: P
 
   const validation = {
     name: "Validación de fracción arancelaria",
-    description: "Verificar que la fracción arancelaria declarada en cada partida exista en el sistema de Tax Finder y coincida con la información del pedimento.",
+    description: "Verificación de que la fracción arancelaria declarada en cada partida exista en el sistema de Tax Finder y sea válida según la información del pedimento",
+    prompt: "Verificar que la fracción arancelaria declarada en cada partida exista en el sistema de Tax Finder y coincida con la información del pedimento.",
     contexts: {
       [CustomGlossTabContextType.PROVIDED]: {
         "Pedimento": {
@@ -60,7 +61,8 @@ export async function validateCoherenciaUMT(partida: Partida, pedimento: Pedimen
   const { data: { arancel: { unidad_medida } } } = await getFraccionInfo({ fraccion, fechaDeEntrada, tipoDeOperacion });
   const validation = {
     name: "Validación de unidad de medida de la tarifa",
-    description: "Validar la unidad de medida de la tarifa de la partida, debe de existir en el apendice 7, que la unidad de medida de la tarifa sea la correspondiente para esa fracción arancelara de Tax Finder.",
+    description: "Verificación de que la unidad de medida de la tarifa declarada en la partida exista en el apéndice 7 y corresponda con la fracción arancelaria en Tax Finder",
+    prompt: "Validar la unidad de medida de la tarifa de la partida, debe de existir en el apendice 7, que la unidad de medida de la tarifa sea la correspondiente para esa fracción arancelara de Tax Finder.",
     contexts: {
       [CustomGlossTabContextType.PROVIDED]: {
         "Pedimento": {
@@ -98,7 +100,8 @@ export async function validateCoherenciaUMC(partida: Partida, cove?: Cove, carta
 
   const validation = {
     name: "Validación de unidad de medida comercial",
-    description: "Validar la unidad de medida comercial, es decir que la unidad de medida declarada en la partida sea la misma que en factura y COVE. Debe corresponder con el Apéndice 7.",
+    description: "Verificación de que la unidad de medida comercial declarada en la partida coincida con la factura y COVE, y corresponda con el Apéndice 7",
+    prompt: "Validar la unidad de medida comercial, es decir que la unidad de medida declarada en la partida sea la misma que en factura y COVE. Debe corresponder con el Apéndice 7.",
     contexts: {
       [CustomGlossTabContextType.PROVIDED]: {
         "Pedimento": {
@@ -150,7 +153,8 @@ export async function validatePaisVenta(partida: Partida, pedimento?: Pedimento,
 
   const validation = {
     name: "Validación del país de venta",
-    description: "Validar que el país de venta en el pedimento coincida con el país de la dirección de facturación en la factura/carta 318 y/o el packing.",
+    description: "Verificación de que el país de venta declarado en el pedimento coincida con el país de la dirección de facturación en los documentos soporte",
+    prompt: "Validar que el país de venta en el pedimento coincida con el país de la dirección de facturación en la factura/carta 318 y/o el packing.",
     contexts: {
       [CustomGlossTabContextType.PROVIDED]: {
         "Pedimento": {
@@ -195,7 +199,8 @@ export async function validatePaisOrigen(partida: Partida, pedimento?: Pedimento
 
   const validation = {
     name: "Validación del país de origen",
-    description: "Validar que el país de origen en el pedimento coincida con la leyenda 'hecho en...' en la factura o el packing. Si no se encuentra la leyenda, se debe imprimir una advertencia que diga que se busque en la mercancía fisica si tiene una leyenda que diga 'hecho en...'",
+    description: "Verificación de que el país de origen declarado en el pedimento coincida con la leyenda 'hecho en...' en los documentos soporte",
+    prompt: "Validar que el país de origen en el pedimento coincida con la leyenda 'hecho en...' en la factura o el packing. Si no se encuentra la leyenda, se debe imprimir una advertencia que diga que se busque en la mercancía fisica si tiene una leyenda que diga 'hecho en...'",
     contexts: {
       [CustomGlossTabContextType.PROVIDED]: {
         "Pedimento": {
@@ -240,7 +245,8 @@ export async function validateDescripcionMercancia(partida: Partida, pedimento?:
 
   const validation = {
     name: "Validación de descripción de mercancía",
-    description: "La descripción de la mercancía en el pedimento debe coincidir con la descripción en el COVE, factura o carta 318 para asegurar que se trata de la misma mercancía.",
+    description: "Verificación de que la descripción de la mercancía en el pedimento coincida con la descripción en los documentos soporte",
+    prompt: "La descripción de la mercancía en el pedimento debe coincidir con la descripción en el COVE, factura o carta 318 para asegurar que se trata de la misma mercancía.",
     contexts: {
       [CustomGlossTabContextType.PROVIDED]: {
         "Pedimento": {
@@ -294,7 +300,8 @@ export async function validateTarifasArancelarias(partida: Partida, pedimento: P
 
   const validation = {
     name: "Validación de tarifas arancelarias",
-    description: "Validar que las tarifas arancelarias declaradas en la partida coincidan con las tarifas arancelarias declaradas en el Tax Finder.",
+    description: "Verificación de que las tarifas arancelarias declaradas en la partida coincidan con las tarifas vigentes en el Tax Finder",
+    prompt: "Validar que las tarifas arancelarias declaradas en la partida coincidan con las tarifas arancelarias declaradas en el Tax Finder.",
     contexts: {
       [CustomGlossTabContextType.PROVIDED]: {
         "Partida": {
@@ -346,9 +353,10 @@ export async function validateCalculosPartidas(pedimento: Pedimento, partida: Pa
 
   // Construct validation object
   const validation = {
-    name: "Validación Calculos de Partidas",
-    description: `
-      Verifica que los valores de la partida sean los mismo que calculamos. 
+    name: "Validación Cálculos de Partidas",
+    description: "Verificación de que los valores calculados para la partida coincidan con los valores declarados en el pedimento",
+    prompt: `
+      Verifica que los valores de la partida sean los mismos que calculamos. 
     `,
     contexts: {
       [CustomGlossTabContextType.PROVIDED]: {
@@ -385,7 +393,8 @@ export async function validateNumerosSerie(pedimento: Pedimento, partida: Partid
 
   const validation = {
     name: "Validación de números de serie, modelo y parte",
-    description: "Verifica que los números de serie, modelo y parte declarados en el pedimento coincidan con los declarados en el COVE. Si no hay valor es por que no se declararon los numeros de serie, modelo y parte. Da una advertencia de que no se declararon los numeros de serie, modelo y parte.",
+    description: "Verificación de que los números de serie, modelo y parte declarados en el pedimento coincidan con los declarados en el COVE",
+    prompt: "Verifica que los números de serie, modelo y parte declarados en el pedimento coincidan con los declarados en el COVE. Si no hay valor es por que no se declararon los numeros de serie, modelo y parte. Da una advertencia de que no se declararon los numeros de serie, modelo y parte.",
     contexts: {
       [CustomGlossTabContextType.PROVIDED]: {
         "Pedimento": {
@@ -417,7 +426,8 @@ export async function validateIdentificadores(identificador: Partida["identifica
 
   const validation = {
     name: "Validación de identificadores",
-    description: "Verifica que los complementos del identificador coincidan con los del apéndice 8. Solamente has una validación simple de data types, no hay necesidad de checar reglas o leyes extras, o usar logica condicional, es simplemente checar que el valor de los complementos sea posible que exista en el apéndice 8.",
+    description: "Verificación de que los complementos del identificador coincidan con los valores permitidos en el apéndice 8",
+    prompt: "Verifica que los complementos del identificador coincidan con los del apéndice 8. Solamente has una validación simple de data types, no hay necesidad de checar reglas o leyes extras, o usar logica condicional, es simplemente checar que el valor de los complementos sea posible que exista en el apéndice 8.",
     contexts: {
       [CustomGlossTabContextType.PROVIDED]: {
         "Identificador": {

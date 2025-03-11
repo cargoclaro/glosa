@@ -16,7 +16,8 @@ export async function validateNumeroFactura(cove: Cove, invoice?: Invoice, carta
 
   const validation = {
     name: "Número de Factura (Importación)",
-    description: "El número de factura del COVE debe coincidir con el número de factura en la factura comercial (puede aparecer como Invoice Number, Invoice No, Invoice #) o en la carta 318. En caso de discrepancia, prevalece el número indicado en la carta 318.",
+    description: "Validación que compara el número de factura del COVE con el número de factura en la factura comercial o en la carta 318 para asegurar que coincidan en operaciones de importación.",
+    prompt: "El número de factura del COVE debe coincidir con el número de factura en la factura comercial (puede aparecer como Invoice Number, Invoice No, Invoice #) o en la carta 318. En caso de discrepancia, prevalece el número indicado en la carta 318.",
     contexts: {
       [CustomGlossTabContextType.PROVIDED]: {
         cove: {
@@ -46,8 +47,9 @@ export async function validateFechaExpedicion(cove: Cove, invoice?: Invoice, car
   const currentDate = new Date();
 
   const validation = {
-    name: "Fecha de Expedición (Importación)", 
-    description: "La fecha de expedición del COVE debe coincidir con la fecha de la factura y/o Carta 318. En caso de discrepancia o que falte un documento, prevalece la fecha indicada en la carta 318. Las fechas pueden tener diferentes formatos, busca que si es logico, sea valido. Por ejemplo, si la fecha es 2025-08-01 y en la 318 es 08-01-2025, probablemente sean diferentes formatos pero la misma fecha, es muy poco probable que justo esten invertidos. ",
+    name: "Fecha de Expedición (Importación)",
+    description: "Validación que compara la fecha de expedición del COVE con la fecha de la factura comercial y/o Carta 318 para asegurar que coincidan en operaciones de importación, considerando que en caso de discrepancia prevalece la fecha indicada en la Carta 318.",
+    prompt: "La fecha de expedición del COVE debe coincidir con la fecha de la factura y/o Carta 318. En caso de discrepancia o que falte un documento, prevalece la fecha indicada en la carta 318. Las fechas pueden tener diferentes formatos, busca que si es logico, sea valido. Por ejemplo, si la fecha es 2025-08-01 y en la 318 es 08-01-2025, probablemente sean diferentes formatos pero la misma fecha, es muy poco probable que justo esten invertidos. ",
     contexts: {
       [CustomGlossTabContextType.PROVIDED]: {
         cove: {

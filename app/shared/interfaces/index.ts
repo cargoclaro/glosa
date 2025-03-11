@@ -1,5 +1,4 @@
 import type {
-  User,
   // Custom,
   CustomGloss,
   CustomGlossFile,
@@ -12,15 +11,6 @@ import type {
   CustomGlossTabValidationStep,
 } from "@prisma/client";
 
-export interface IUser extends User {
-  // customs: {
-  //   userId: string;
-  //   customId: string;
-  //   // custom: ICustom;
-  // }[];
-  glosses: ICustomGloss[];
-}
-
 // export interface ICustom extends Custom {
 //   users: {
 //     userId: string;
@@ -30,8 +20,6 @@ export interface IUser extends User {
 // }
 
 export interface ICustomGloss extends CustomGloss {
-  user: IUser;
-  // custom: ICustom;
   tabs: ICustomGlossTab[];
   files: ICustomGlossFile[];
   alerts: ICustomGlossAlert[];

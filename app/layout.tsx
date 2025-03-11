@@ -1,8 +1,9 @@
 import "./styles/globals.css";
 import { cn } from "@/app/shared/utils/cn";
 import { GeistSans } from "geist/font/sans";
-import { AuthComponent, ThemeComponent } from "@/app/shared/components";
+import { ThemeComponent } from "@/app/shared/components";
 import type { Metadata } from "next";
+import { ClerkProvider } from "@clerk/nextjs";
 
 export const dynamic = "force-dynamic";
 
@@ -35,7 +36,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <AuthComponent>{children}</AuthComponent>
+          <ClerkProvider>{children}</ClerkProvider>
         </ThemeComponent>
       </body>
     </html>

@@ -1,18 +1,14 @@
 import { Header, MyInfo, MexMap, Summary, GlossHistory } from "./components";
 import type { Metadata } from "next";
-import { isAuthenticated } from "@/app/shared/services/auth";
 import prisma from "@/app/shared/services/prisma";
+import { auth } from "@clerk/nextjs/server";
 
 export const metadata: Metadata = {
   title: "Administración",
 };
 
 const HomePage = async () => {
-  const session = await isAuthenticated();
-  const userId = session["userId"];
-  if (typeof userId !== "string") {
-    throw new Error("User ID is not a string");
-  }
+  const { userId } = await auth.protect();
   const myLatestGlosses = await prisma.customGloss.findMany({
     where: { userId },
     orderBy: { createdAt: "desc" },

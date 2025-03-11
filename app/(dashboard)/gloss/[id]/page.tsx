@@ -2,8 +2,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { LeftArrow } from "@/app/shared/icons";
 import type { Metadata } from "next";
-import { isAuthenticated } from "@/app/shared/services/auth";
 import prisma from "@/app/shared/services/prisma";
+import { auth } from "@clerk/nextjs/server";
 
 type IDynamicMetadata = {
   params: Promise<{ id: string }>;
@@ -20,11 +20,7 @@ export async function generateMetadata({
 }
 
 const GlossIdPage = async ({ params: { id } }: { params: { id: string } }) => {
-  const session = await isAuthenticated();
-  const userId = session["userId"];
-  if (typeof userId !== "string") {
-    throw new Error("User ID is not a string");
-  }
+  const { userId } = await auth.protect();
   const customGloss = await prisma.customGloss.findUnique({
     where: { id, userId },
     include: {
