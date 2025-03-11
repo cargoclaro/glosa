@@ -1,5 +1,4 @@
 import { generateText } from "ai";
-import { wrapAISDKModel } from "langsmith/wrappers/vercel";
 import { google } from "@ai-sdk/google";
 import { DocumentType } from "../classification";
 /* import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
@@ -63,10 +62,8 @@ export async function extractTextFromImage(
     };
   } */
   const { text } = await generateText({
-    model: wrapAISDKModel(google("gemini-2.0-flash-001"), {
-      name: `Extract schema from ${documentType} pdf`,
-      project_name: "glosa",
-    }),
+    model:  google("gemini-2.0-flash-001"),
+    experimental_telemetry: { isEnabled: true },
     messages: [
       {
         role: 'user',

@@ -1,13 +1,8 @@
 import { generateObject } from "ai";
 import { z } from "zod"
 import { CustomGlossTabContextType } from "@prisma/client"
-import { wrapAISDKModel } from "langsmith/wrappers/vercel";
 import { openai } from "@ai-sdk/openai";
 import { anthropic } from "@ai-sdk/anthropic";
-import { ChatOpenAI } from "@langchain/openai";
-import { SystemMessage, HumanMessage } from "@langchain/core/messages";
-import { sanitizeObjectStrings } from "../remove-null-bytes";
-import { ChatAnthropic } from "@langchain/anthropic";
 
 const SYSTEM_PROMPT = `
 Eres un Glosador de inteligencia artificial especializado en compliance aduanero en México. Tu función es asistir a los glosadores de agencias aduanales en la validación y verificación documental de operaciones de importación y exportación. Todas tus validaciones deben de estar basadas en la documentación presentada y no en suposiciones. Todas tus respuestas deben de estar sustentadas con la documentacion presentada. Siempre se respetuoso y sobre todo, honesto. 
@@ -84,49 +79,17 @@ export async function glosar(validation: {
     };
   };
 }, modelId: "gpt-4o" | "o3-mini" | "gpt-4o-mini" | "claude-3-7-sonnet-20250219" = "gpt-4o") {
-  if (process.env["LANGCHAIN_MIGRATION_ENABLED"] === "true") {
-    let model;
-    
-    if (modelId === "claude-3-7-sonnet-20250219") {
-      model = new ChatAnthropic({
-        model: "claude-3-7-sonnet-20250219",
-      }).withStructuredOutput(validationResultSchema);
-    } else {
-      model = new ChatOpenAI({
-        model: modelId,
-      }).withStructuredOutput(validationResultSchema);
-    }
-    
-    const glosaResult = await model.invoke([
-      new SystemMessage(SYSTEM_PROMPT),
-      new HumanMessage(JSON.stringify(validation, null, 2))
-    ]);
-    return {
-      validation: {
-        name: validation.name,
-        description: validation.description,
-        ...sanitizeObjectStrings(glosaResult),
-      },
-      contexts: validation.contexts
-    }
-  }
-
   // Use either OpenAI or Anthropic based on the modelId
   let aiModel;
   if (modelId === "claude-3-7-sonnet-20250219") {
-    aiModel = wrapAISDKModel(anthropic("claude-3-7-sonnet-20250219"), {
-      name: `Glosar ${validation.name}`,
-      project_name: "glosa",
-    });
+    aiModel = anthropic("claude-3-7-sonnet-20250219");
   } else {
-    aiModel = wrapAISDKModel(openai(modelId), {
-      name: `Glosar ${validation.name}`,
-      project_name: "glosa",
-    });
+    aiModel = openai(modelId);
   }
 
   const { object: glosaResult } = await generateObject({
     model: aiModel,
+    experimental_telemetry: { isEnabled: true },
     system: SYSTEM_PROMPT,
     schema: validationResultSchema,
     prompt: `${JSON.stringify(validation, null, 2)}`,
