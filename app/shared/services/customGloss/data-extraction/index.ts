@@ -10,7 +10,7 @@ import { traceable } from 'langsmith/traceable';
 export const documentToSchema = {
   "factura": invoiceSchema,
   "carta318": carta318Schema,
-  "rrnas": rrnaSchema,
+  "rrna": rrnaSchema,
   "documentoDeTransporte": transportDocumentSchema,
   "pedimento": pedimentoSchema,
   "listaDeEmpaque": packingListSchema,
@@ -25,7 +25,7 @@ async function extractTextFromPDFsParallel(
   const {
     factura,
     carta318,
-    rrnas,
+    rrna,
     documentoDeTransporte,
     pedimento,
     listaDeEmpaque,
@@ -63,9 +63,9 @@ async function extractTextFromPDFsParallel(
       carta318.originalFile,
       carta318.documentType,
     ) : null,
-    rrnas ? extractTextFromImage(
-      rrnas.originalFile,
-      rrnas.documentType,
+    rrna ? extractTextFromImage(
+      rrna.originalFile,
+      rrna.documentType,
     ) : null,
     documentoDeTransporte ? extractTextFromImage(
       documentoDeTransporte.originalFile,

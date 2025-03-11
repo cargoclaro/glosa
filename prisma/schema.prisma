@@ -72,9 +72,10 @@ model CustomGlossAlert {
 }
 
 model CustomGlossFile {
-  id   Int    @default(autoincrement())
-  name String
-  url  String
+  id           Int     @default(autoincrement())
+  name         String
+  url          String
+  documentType String?
 
   customGloss   CustomGloss @relation(fields: [customGlossId], references: [id], onDelete: Cascade)
   customGlossId String

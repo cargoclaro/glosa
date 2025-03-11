@@ -2,7 +2,6 @@ import { google } from '@ai-sdk/google';
 import { generateObject } from 'ai';
 import { z } from 'zod';
 import { UploadedFileData } from 'uploadthing/types';
-import { traceable } from 'langsmith/traceable';
 
 export const documentTypes = [
   "pedimento",
@@ -11,7 +10,7 @@ export const documentTypes = [
   "carta318",
   "cartaCesionDeDerechos",
   "cove",
-  "rrnas",
+  "rrna",
   "listaDeEmpaque",
   "cfdi",
   "otros"
@@ -19,10 +18,10 @@ export const documentTypes = [
 
 export type DocumentType = (typeof documentTypes)[number];
 
-async function classifyDocumentsParallel(
+export async function classifyDocuments(
   uploadedFiles: (UploadedFileData & { originalFile: File })[]
 ) {
-  const classifications = await Promise.all(uploadedFiles.map(async (uploadedFile) => {
+  return await Promise.all(uploadedFiles.map(async (uploadedFile) => {
     const { object: { documentType } } = await generateObject({
       model: google("gemini-2.0-flash-001"),
       experimental_telemetry: { isEnabled: true },
@@ -60,7 +59,7 @@ async function classifyDocumentsParallel(
             Comprobante de Valor Electrónico que valida el valor de mercancías 
             con formato específico del SAT.
           
-          - rrnas: 
+          - rrna: 
             Documentos que certifican cumplimiento de regulaciones y restricciones no arancelarias.
           
           - listaDeEmpaque: 
@@ -80,10 +79,6 @@ async function classifyDocumentsParallel(
           role: 'user',
           content: [
             {
-              type: 'text',
-              text: `Por favor, clasifica este documento aduanero.`,
-            },
-            {
               type: 'file',
               data: `data:application/pdf;base64,${Buffer.from(await uploadedFile.originalFile.arrayBuffer()).toString('base64')}`,
               mimeType: 'application/pdf',
@@ -98,20 +93,4 @@ async function classifyDocumentsParallel(
       documentType,
     };
   }));
-
-  // Now group the classifications by document type, taking only the first file of each type.
-  const groupedClassifications = classifications.reduce((acc, curr) => {
-    // Only set the value if it doesn't exist yet (keeping the first file of each type)
-    if (!acc[curr.documentType]) {
-      acc[curr.documentType] = curr;
-    }
-    return acc;
-  }, {} as Partial<Record<DocumentType, (UploadedFileData & { originalFile: File; documentType: DocumentType })>>);
-
-  return groupedClassifications;
 }
-
-export const classifyDocuments = traceable(
-  classifyDocumentsParallel,
-  { name: 'classifications' }
-);
