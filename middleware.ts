@@ -1,12 +1,6 @@
 import { clerkMiddleware } from '@clerk/nextjs/server'
-import { NextResponse } from 'next/server'
 
-export default clerkMiddleware(async (auth, req) => {
-  // Redirect from root to /home
-  if (req.nextUrl.pathname === '/') {
-    return NextResponse.redirect(new URL('/home', req.url))
-  }
-  
+export default clerkMiddleware(async (auth) => {
   // All routes are protected, landing page is in another domain
   await auth.protect();
   return
