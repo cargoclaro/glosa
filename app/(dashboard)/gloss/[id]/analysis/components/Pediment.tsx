@@ -102,10 +102,10 @@ const sharedConfigForTipoCambioNPesoBruto = {
 };
 
 const sharedConfigValSeguros = {
-  x: 0,
-  y: -10,
-  w: 335,
-  h: 10,
+  x: -22,
+  y: -12,
+  w: 355,
+  h: 12,
 };
 
 const keywordPositions: Record<Keyword, IKeywordPosition> = {
@@ -127,7 +127,7 @@ const keywordPositions: Record<Keyword, IKeywordPosition> = {
   "DESTINO/ORIGEN:": sharedConfigForDestino,
 
   "TIPO CAMBIO:": sharedConfigForTipoCambioNPesoBruto,
-  "VALOR DOLARES:": { x: 0, y: -18, w: 165, h: 18 },
+  "VALOR DOLARES:": { x: -2, y: -26, w: 165, h: 26 },
   "VAL. SEGUROS": sharedConfigValSeguros,
   "VAL.SEGUROS": sharedConfigValSeguros,
   FECHAS: { x: -50, y: -30, w: 100, h: 30 },
