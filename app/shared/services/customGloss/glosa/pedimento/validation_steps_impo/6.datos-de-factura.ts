@@ -196,7 +196,7 @@ export async function validateFechasYFolios(pedimento: Pedimento, cove: Cove, in
   const validation = {
     name: "Validación de fechas de emisión y número de COVE",
     description: "Valida que las fechas de emisión de los documentos sean consistentes y que el número de COVE coincida entre documentos",
-    prompt: "Verificar secuencias lógicas y coincidencias exactas:\n\nFechas:\n• Fecha emisión Factura debe ser menor o igual a la Fecha entrada Pedimento\n• Fecha COVE debe ser igual a la Fecha Factura\n\nNúmeros:\n• Número COVE en el Pedimento debe ser igual al Número COVE en el COVE\n• Las facturas normalmente vienen en formato americano, YYYY/MM/DD, el pedimento y COVE viene en formato mexicano, DD/MM/YYYY",
+    prompt: "Verificar secuencias lógicas\n\nFechas:\n• Fecha emisión Factura debe ser menor o igual a la Fecha entrada Pedimento\n• Fecha COVE debe ser igual a la Fecha Factura\n\nNúmeros:\n• Número COVE en el Pedimento debe ser igual al Número COVE en el COVE\n• Las facturas normalmente vienen en formato americano, YYYY/MM/DD, el pedimento y COVE viene en formato mexicano, DD/MM/YYYY, siempre revisa detalladamente los documentos propocionados",
     contexts: {
       [CustomGlossTabContextType.PROVIDED]: {
         "Pedimento": {
