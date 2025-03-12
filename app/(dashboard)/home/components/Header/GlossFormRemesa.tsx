@@ -24,11 +24,7 @@ const GlossFormRemesa = () => {
         formData.append("files", file);
       });
       const res = await glosarRemesa(formData);
-      if (res && res.success) {
-        window.location.href = `/gloss/${res.glossId}/analysis`;
-      } else {
-        setResponse(res);
-      }
+      setResponse(res);
     }
     setIsLoading(false);
     closeMenu();
@@ -57,7 +53,7 @@ const GlossFormRemesa = () => {
         Recuerda incluir todos los documentos relevantes a la operación <br />{" "}
         <span>(BL, Carta 3.1.8, etc.).</span>
       </p>
-      {response.message && <p className="text-red-500">{response.message}</p>}
+      {response.message && <p className={response.success ? "text-green-500" : "text-red-500"}>{response.message}</p>}
       <div className="mt-4">
         <label
           htmlFor="documents"

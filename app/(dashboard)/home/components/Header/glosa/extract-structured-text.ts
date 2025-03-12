@@ -1,7 +1,7 @@
 import { ClassifiedDocumentSet, StructuredDocumentSet } from "./types";
 import { XMLParser } from "fast-xml-parser";
 import { cfdiSchema, listaDeFacturasSchema } from "./schemas";
-import { google } from "@ai-sdk/google";
+import { anthropic } from "@ai-sdk/anthropic";
 import { generateObject } from "ai";
 import { Langfuse } from "langfuse";
 import { randomUUID } from "crypto";
@@ -14,7 +14,7 @@ langfuse.trace({
   name: "extract-structured-text",
 });
 
-export async function extractStructuredText({ cfdis, listaDeFacturas}: ClassifiedDocumentSet): Promise<StructuredDocumentSet> {
+export async function extractStructuredText({ cfdis, listaDeFacturas}: Pick<ClassifiedDocumentSet, 'cfdis' | 'listaDeFacturas'>): Promise<StructuredDocumentSet> {
   const parser = new XMLParser({
     ignoreAttributes: false,
     attributeNamePrefix: "",
@@ -25,7 +25,7 @@ export async function extractStructuredText({ cfdis, listaDeFacturas}: Classifie
     return cfdiData;
   }));
   const { object: listaDeFacturasData } = await generateObject({
-    model: google("gemini-2.0-flash-001"),
+    model: anthropic("claude-3-7-sonnet-20250219"),
     experimental_telemetry: {
       isEnabled: true,
       metadata: {
@@ -42,7 +42,7 @@ export async function extractStructuredText({ cfdis, listaDeFacturas}: Classifie
         content: [
           {
             type: 'file',
-            data: `data:${listaDeFacturas.type};base64,${Buffer.from(await listaDeFacturas.originalFile.arrayBuffer()).toString('base64')}`,
+            data: `${listaDeFacturas.ufsUrl}`,
             mimeType: listaDeFacturas.type,
           },
         ],
