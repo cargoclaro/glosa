@@ -64,13 +64,13 @@ export async function glosarRemesa(formData: FormData) {
     if (cfdiUUIDsNotInListaDeFacturas.length > 0) {
       return {
         success: false,
-        message: "Se encontraron cfdis que no están en la lista de facturas",
+        message: `Se encontraron cfdis que no están en la lista de facturas: ${cfdiUUIDsNotInListaDeFacturas.join(', ')}`,
       };
     }
     if (listaDeFacturasUUIDsNotInCfdis.length > 0) {
       return {
         success: false,
-        message: "Se encontraron facturas que no están en los cfdis",
+        message: `Se encontraron facturas que no están en los cfdis: ${listaDeFacturasUUIDsNotInCfdis.join(', ')}`,
       };
     }
 
