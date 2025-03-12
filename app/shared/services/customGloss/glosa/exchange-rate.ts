@@ -18,28 +18,25 @@ const oportunoSchema = z.object({
   })
 })
 
-function getPreviousDiaHabil(fechaPedimento: Date): Date {
-  const daysBack = 2;
+export function getPreviousDiaHabil(fechaPedimento: Date): Date {
   const mexicoHolidays = new Holidays('MX');
   // Create a copy of the input date to avoid modifying the original
   const resultDate = new Date(fechaPedimento);
-  let businessDaysFound = 0;
   
-  // Keep searching backward until we find the required number of business days
-  while (businessDaysFound < daysBack) {
+  // Keep going back one day at a time until we find a business day
+  do {
     // Move one day backward
     resultDate.setDate(resultDate.getDate() - 1);
     
-    // Check if this day is a business day
+    // Check if this day is a valid business day
     const isWeekend = resultDate.getDay() === 0 || resultDate.getDay() === 6;
     const isHoliday = mexicoHolidays.isHoliday(resultDate);
     
+    // If we found a business day (not weekend and not holiday), return it
     if (!isWeekend && !isHoliday) {
-      businessDaysFound++;
+      return resultDate;
     }
-  }
-  
-  return resultDate;
+  } while (true);  // Continue until we find a valid business day
 }
 
 export async function getExchangeRate(fechaPedimento: Date, currencyCode: "USD" | "EUR" | "GBP" = 'USD') {
@@ -76,4 +73,34 @@ export async function getExchangeRate(fechaPedimento: Date, currencyCode: "USD" 
   }
   
   return data.bmx.series[0].datos[0].dato;
+}
+
+async function main() {
+  try {
+    // Test with today's date
+    const today = new Date();
+    console.log('Testing exchange rates for:', today.toISOString().split('T')[0]);
+
+    // Test USD rate
+    console.log('\nTesting USD Exchange Rate:');
+    const usdRate = await getExchangeRate(today, 'USD');
+    console.log('USD Rate:', usdRate);
+
+    // Test EUR rate
+    console.log('\nTesting EUR Exchange Rate:');
+    const eurRate = await getExchangeRate(today, 'EUR');
+    console.log('EUR Rate:', eurRate);
+
+    // Test previous business day
+    const prevBusinessDay = getPreviousDiaHabil(today);
+    console.log('\nPrevious Business Day:', prevBusinessDay.toISOString().split('T')[0]);
+
+  } catch (error) {
+    console.error('Error:', error instanceof Error ? error.message : String(error));
+  }
+}
+
+// This is similar to Python's if __name__ == "__main__":
+if (require.main === module) {
+  main().catch(console.error);
 }

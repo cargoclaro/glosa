@@ -36,6 +36,7 @@ async function validateLongitud(pedimento: Pedimento) {
 async function validateAñoPedimento(pedimento: Pedimento) {
   const numeroPedimento = pedimento.encabezado_del_pedimento?.num_pedimento;
   const numeroPedimentoSinEspacios = numeroPedimento?.replace(/\s+/g, '') || '';
+  const añoPedimento = numeroPedimentoSinEspacios.slice(0, 2);
   const añoActual = new Date().getFullYear();
   
   const validation = {
@@ -47,7 +48,7 @@ async function validateAñoPedimento(pedimento: Pedimento) {
         "Pedimento": {
           data: [
             { name: "Año actual", value: añoActual },
-            { name: "Número de pedimento sin espacios", value: numeroPedimentoSinEspacios }
+            { name: "Año del pedimento", value: añoPedimento }
           ]
         }
       }

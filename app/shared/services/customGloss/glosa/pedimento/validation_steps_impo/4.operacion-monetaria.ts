@@ -44,8 +44,7 @@ export async function validateTipoCambio(pedimento: Pedimento) {
   const tipoCambio = pedimento.encabezado_del_pedimento?.tipo_cambio;
   const fechaEntrada = pedimento.fecha_entrada_presentacion;
   const observaciones = pedimento.observaciones_a_nivel_pedimento;
-  // TODO: Replace with actual DOF API integration
-  const tipoCambioDOF = await getExchangeRate(new Date(fechaEntrada ?? new Date())); // Temporary hardcoded value
+  const tipoCambioDOF = await getExchangeRate(new Date(fechaEntrada ?? new Date())); 
   const validation = {
     name: "Tipo de cambio",
     description: "Valida que el tipo de cambio coincida con el DOF",
