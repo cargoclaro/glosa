@@ -3,15 +3,6 @@ import { generateObject } from 'ai';
 import { z } from 'zod';
 import { UploadedFileData } from 'uploadthing/types';
 import { Langfuse } from "langfuse";
-import { randomUUID } from "crypto";
-
-const langfuse = new Langfuse();
-const parentTraceId = randomUUID();
- 
-langfuse.trace({
-  id: parentTraceId,
-  name: "classification",
-});
 
 const documentTypes = [
   "listaDeFacturas",
@@ -24,8 +15,14 @@ const documentTypes = [
 type DocumentType = (typeof documentTypes)[number];
 
 export async function classifyDocuments(
-  uploadedFiles: (UploadedFileData & { originalFile: File })[]
+  uploadedFiles: (UploadedFileData & { originalFile: File })[],
+  parentTraceId: string
 ) {
+  const langfuse = new Langfuse();
+  langfuse.trace({
+    id: parentTraceId,
+    name: "classification",
+  });
   return await Promise.all(uploadedFiles.map(async (uploadedFile) => {
     // We assume all xml files are cfdis
     if (uploadedFile.type === "text/xml") {

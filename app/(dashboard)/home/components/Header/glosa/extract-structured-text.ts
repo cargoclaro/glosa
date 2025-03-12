@@ -4,17 +4,16 @@ import { cfdiSchema, listaDeFacturasSchema } from "./schemas";
 import { google } from "@ai-sdk/google";
 import { generateObject } from "ai";
 import { Langfuse } from "langfuse";
-import { randomUUID } from "crypto";
 
-const langfuse = new Langfuse();
-const parentTraceId = randomUUID();
- 
-langfuse.trace({
-  id: parentTraceId,
-  name: "extract-structured-text",
-});
-
-export async function extractStructuredText({ cfdis, listaDeFacturas}: Pick<ClassifiedDocumentSet, 'cfdis' | 'listaDeFacturas'>): Promise<StructuredDocumentSet> {
+export async function extractStructuredText(
+  { cfdis, listaDeFacturas}: Pick<ClassifiedDocumentSet, 'cfdis' | 'listaDeFacturas'>,
+  parentTraceId: string
+): Promise<StructuredDocumentSet> {
+  const langfuse = new Langfuse();
+  langfuse.trace({
+    id: parentTraceId,
+    name: "extract-structured-text",
+  });
   const parser = new XMLParser({
     ignoreAttributes: false,
     attributeNamePrefix: "",

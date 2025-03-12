@@ -5,15 +5,18 @@ import { uploadFiles } from "./glosa/upload-files";
 import { classifyDocuments } from "./glosa/classification";
 import { auth } from "@clerk/nextjs/server";
 import { extractStructuredText } from "./glosa/extract-structured-text";
+import { randomUUID } from "crypto";
 
 config();
+
+const parentTraceId = randomUUID();
 
 export async function glosarRemesa(formData: FormData) {
   try {
     await auth.protect();
     const files = formData.getAll("files") as File[]; // TODO: We should use trpc instead of this
     const successfulUploads = await uploadFiles(files);
-    const classifications = await classifyDocuments(successfulUploads);
+    const classifications = await classifyDocuments(successfulUploads, parentTraceId);
 
     const otros = classifications.filter(doc => doc.documentType === 'otros');
 
@@ -52,7 +55,7 @@ export async function glosarRemesa(formData: FormData) {
       cfdis
     };
 
-    const structuredText = await extractStructuredText(groupedDocuments);
+    const structuredText = await extractStructuredText(groupedDocuments, parentTraceId);
 
     const cfdiUUIDs = structuredText.cfdis.map(cfdi => cfdi['cfdi:Comprobante']['cfdi:Complemento']['tfd:TimbreFiscalDigital'].UUID);
 
