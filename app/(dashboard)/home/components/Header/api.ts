@@ -42,6 +42,7 @@ export async function glosarRemesa(formData: FormData) {
     }
 
     const cfdis = classifications.filter(doc => doc.documentType === 'cfdi');
+    const facturas = classifications.filter(doc => doc.documentType === 'factura');
 
     if (cfdis.length === 0) {
       return {
@@ -49,17 +50,30 @@ export async function glosarRemesa(formData: FormData) {
         message: "No se encontró ningún cfdi",
       };
     }
+    if (facturas.length === 0) {
+      return {
+        success: false,
+        message: "No se encontró ninguna factura",
+      };
+    }
+
+    if (cfdis.length !== facturas.length) {
+      return {
+        success: false,
+        message: "El número de cfdis no coincide con el número de facturas",
+      };
+    }
 
     const groupedDocuments = {
       listaDeFacturas,
-      cfdis
+      cfdis,
+      facturas
     };
 
     const structuredText = await extractStructuredText(groupedDocuments, parentTraceId);
 
     const cfdiUUIDs = structuredText.cfdis.map(cfdi => cfdi['cfdi:Comprobante']['cfdi:Complemento']['tfd:TimbreFiscalDigital'].UUID);
-
-    const listaDeFacturasUUIDs = structuredText.listaDeFacturas.facturasUUIDs;
+    const listaDeFacturasUUIDs = structuredText.listaDeFacturas.map(factura => factura.facturaUUID);
 
     const cfdiUUIDsNotInListaDeFacturas = cfdiUUIDs.filter(uuid => !listaDeFacturasUUIDs.includes(uuid));
     const listaDeFacturasUUIDsNotInCfdis = listaDeFacturasUUIDs.filter(uuid => !cfdiUUIDs.includes(uuid));
@@ -75,6 +89,48 @@ export async function glosarRemesa(formData: FormData) {
         success: false,
         message: `Se encontraron facturas que no están en los cfdis: ${listaDeFacturasUUIDsNotInCfdis.join(', ')}`,
       };
+    }
+
+    const facturaCantidadTotal = structuredText.facturas.map(({ folioFiscal, cantidades }) => {
+      return {
+        folioFiscal,
+        cantidadTotal: cantidades.reduce((acc, cantidad) => acc + cantidad, 0),
+      };
+    });
+
+    const cfdiCantidadTotal = structuredText.cfdis.map((cfdi) => {
+      const uuid = cfdi['cfdi:Comprobante']['cfdi:Complemento']['tfd:TimbreFiscalDigital'].UUID;
+      const conceptos = cfdi['cfdi:Comprobante']['cfdi:Conceptos']['cfdi:Concepto'];
+      const cantidadTotal = conceptos.reduce((acc, concepto) => acc + Number(concepto.Cantidad), 0);
+      return {
+        folioFiscal: uuid,
+        cantidadTotal,
+      };
+    });
+    
+    const cantidadesTotalesPorFolio: Record<string, { facturaCantidadTotal: number, cfdiCantidadTotal: number }> = {};
+    
+    facturaCantidadTotal.forEach(({ folioFiscal, cantidadTotal }) => {
+      if (!cantidadesTotalesPorFolio[folioFiscal]) {
+        cantidadesTotalesPorFolio[folioFiscal] = { facturaCantidadTotal: 0, cfdiCantidadTotal: 0 };
+      }
+      cantidadesTotalesPorFolio[folioFiscal].facturaCantidadTotal = cantidadTotal;
+    });
+    
+    cfdiCantidadTotal.forEach(({ folioFiscal, cantidadTotal }) => {
+      if (!cantidadesTotalesPorFolio[folioFiscal]) {
+        cantidadesTotalesPorFolio[folioFiscal] = { facturaCantidadTotal: 0, cfdiCantidadTotal: 0 };
+      }
+      cantidadesTotalesPorFolio[folioFiscal].cfdiCantidadTotal = cantidadTotal;
+    });
+
+    for (const [folioFiscal, { facturaCantidadTotal, cfdiCantidadTotal }] of Object.entries(cantidadesTotalesPorFolio)) {
+      if (facturaCantidadTotal !== cfdiCantidadTotal) {
+        return {
+          success: false,
+          message: `Se encontraron diferencias en la cantidad total de la factura ${folioFiscal}: cantidad en factura ${facturaCantidadTotal}, cantidad en CFDI ${cfdiCantidadTotal}`,
+        };
+      }
     }
 
     return {

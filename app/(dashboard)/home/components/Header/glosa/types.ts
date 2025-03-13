@@ -1,5 +1,5 @@
 import { UploadedFileData } from "uploadthing/types";
-import { Cfdi, ListaDeFacturas } from "./schemas";
+import { Cfdi, ListaDeFacturas, Factura } from "./schemas";
 
 export interface ClassifiedDocumentSet {
   listaDeFacturas: UploadedFileData & { originalFile: File };
@@ -12,4 +12,5 @@ export interface ClassifiedDocumentSet {
 export interface StructuredDocumentSet {
   listaDeFacturas: ListaDeFacturas;
   cfdis: Cfdi[];
+  facturas: Factura[];
 }
