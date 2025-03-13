@@ -3,11 +3,15 @@ import { xmlParser } from "./xml-parser";
 import { cfdiSchema, listaDeFacturasSchema, facturaSchema } from "./schemas";
 import { google } from "@ai-sdk/google";
 import { generateObject } from "ai";
-
+import { Langfuse } from "langfuse";
 export async function extractStructuredText(
   { cfdis, listaDeFacturas, facturas }: Pick<ClassifiedDocumentSet, 'cfdis' | 'listaDeFacturas' | 'facturas'>,
   parentTraceId: string
 ): Promise<StructuredDocumentSet> {
+  const langfuse = new Langfuse();
+  langfuse.event({
+    name: "Extract and Structure",
+  });
   const cfdisData = await Promise.all(cfdis.map(async ({ originalFile, ufsUrl }) => {
     const xmlData = await originalFile.text();
     const cfdiData = cfdiSchema.safeParse(xmlParser.parse(xmlData, true));
@@ -20,6 +24,7 @@ export async function extractStructuredText(
     model: google("gemini-2.0-flash-001"),
     experimental_telemetry: {
       isEnabled: true,
+      functionId: listaDeFacturas.name,
       metadata: {
         langfuseTraceId: parentTraceId,
         langfuseUpdateParent: false, // Do not update the parent trace with execution results

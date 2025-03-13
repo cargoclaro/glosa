@@ -79,7 +79,7 @@ export async function glosarRemesa(formData: FormData) {
     const structuredText = await extractStructuredText(groupedDocuments, parentTraceId);
 
     // Array to accumulate all validation errors
-    const validationErrors: string[] = [];
+    const validationErrors = [];
 
     const cfdiUUIDs = structuredText.cfdis.map(cfdi => cfdi.Comprobante.Complemento.TimbreFiscalDigital.attributes.UUID);
     const listaDeFacturasUUIDs = structuredText.listaDeFacturas.map(factura => factura.facturaUUID);
