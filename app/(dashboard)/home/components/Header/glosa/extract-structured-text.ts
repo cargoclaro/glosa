@@ -18,10 +18,13 @@ export async function extractStructuredText(
     ignoreAttributes: false,
     attributeNamePrefix: "",
   });
-  const cfdisData = await Promise.all(cfdis.map(async ({ originalFile }) => {
+  const cfdisData = await Promise.all(cfdis.map(async ({ originalFile, ufsUrl }) => {
     const xmlData = await originalFile.text();
-    const cfdiData = cfdiSchema.parse(parser.parse(xmlData, true));
-    return cfdiData;
+    const cfdiData = cfdiSchema.safeParse(parser.parse(xmlData, true));
+    if (!cfdiData.success) {
+      throw new Error(`Error parsing cfdi: ${cfdiData.error.message}. XML URL: ${ufsUrl}`);
+    }
+    return cfdiData.data;
   }));
   const { object: listaDeFacturasData } = await generateObject({
     model: google("gemini-2.0-flash-001"),
