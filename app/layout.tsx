@@ -4,6 +4,7 @@ import { GeistSans } from "geist/font/sans";
 import { ThemeComponent } from "@/app/shared/components";
 import type { Metadata } from "next";
 import { ClerkProvider } from "@clerk/nextjs";
+import { esMX } from '@clerk/localizations'
 
 export const dynamic = "force-dynamic";
 
@@ -36,7 +37,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <ClerkProvider>{children}</ClerkProvider>
+          <ClerkProvider localization={esMX}>{children}</ClerkProvider>
         </ThemeComponent>
       </body>
     </html>
