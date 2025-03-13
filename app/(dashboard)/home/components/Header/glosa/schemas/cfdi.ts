@@ -1,18 +1,172 @@
 import { z } from "zod"
 
 export const cfdiSchema = z.object({
-  "?xml": z.object({ version: z.string(), encoding: z.string() }),
-  "cfdi:Comprobante": z.object({
-    "cfdi:Conceptos": z.object({
-      "cfdi:Concepto": z.array(z.object({
-        Cantidad: z.string(),
-      })),
+  Comprobante: z.object({
+    Emisor: z.object({
+      attributes: z.object({
+        Rfc: z.string(),
+        Nombre: z.string(),
+        RegimenFiscal: z.number()
+      })
     }),
-    "cfdi:Complemento": z.object({
-      "tfd:TimbreFiscalDigital": z.object({
-        UUID: z.string(),
+    Receptor: z.object({
+      attributes: z.object({
+        Rfc: z.string(),
+        Nombre: z.string(),
+        DomicilioFiscalReceptor: z.number(),
+        RegimenFiscalReceptor: z.number(),
+        ResidenciaFiscal: z.string(),
+        NumRegIdTrib: z.number(),
+        UsoCFDI: z.string()
+      })
+    }),
+    Conceptos: z.object({
+      Concepto: z.array(
+        z.object({
+          Impuestos: z.object({
+            Traslados: z.object({
+              Traslado: z.object({
+                attributes: z.object({
+                  Base: z.number(),
+                  Impuesto: z.number(),
+                  TipoFactor: z.string(),
+                  TasaOCuota: z.number(),
+                  Importe: z.number()
+                })
+              })
+            })
+          }),
+          attributes: z.object({
+            ObjetoImp: z.number(),
+            ClaveProdServ: z.number(),
+            NoIdentificacion: z.string(),
+            Cantidad: z.number(),
+            ClaveUnidad: z.string(),
+            Unidad: z.string(),
+            Descripcion: z.string(),
+            ValorUnitario: z.number(),
+            Importe: z.number()
+          })
+        })
+      )
+    }),
+    Impuestos: z.object({
+      Traslados: z.object({
+        Traslado: z.object({
+          attributes: z.object({
+            Base: z.number(),
+            Impuesto: z.number(),
+            TipoFactor: z.string(),
+            TasaOCuota: z.number(),
+            Importe: z.number()
+          })
+        })
       }),
+      attributes: z.object({ TotalImpuestosTrasladados: z.number() })
     }),
+    Complemento: z.object({
+      TimbreFiscalDigital: z.object({
+        attributes: z.object({
+          SelloSAT: z.string(),
+          NoCertificadoSAT: z.number(),
+          SelloCFD: z.string(),
+          FechaTimbrado: z.string(),
+          UUID: z.string(),
+          Version: z.number(),
+          RfcProvCertif: z.string(),
+          schemaLocation: z.string()
+        })
+      }),
+      ComercioExterior: z.object({
+        Emisor: z.object({
+          Domicilio: z.object({
+            attributes: z.object({
+              Calle: z.string(),
+              CodigoPostal: z.number(),
+              Municipio: z.number(),
+              Estado: z.string(),
+              Pais: z.string(),
+              Colonia: z.number()
+            })
+          })
+        }),
+        Receptor: z.object({
+          Domicilio: z.object({
+            attributes: z.object({
+              Calle: z.string(),
+              NumeroExterior: z.number(),
+              Colonia: z.string(),
+              Localidad: z.string(),
+              Municipio: z.string(),
+              Estado: z.string(),
+              CodigoPostal: z.number(),
+              Pais: z.string()
+            })
+          }),
+          attributes: z.object({ NumRegIdTrib: z.number() })
+        }),
+        Destinatario: z.object({
+          Domicilio: z.object({
+            attributes: z.object({
+              Calle: z.string(),
+              NumeroExterior: z.number(),
+              Colonia: z.string(),
+              Localidad: z.string(),
+              Municipio: z.string(),
+              Estado: z.string(),
+              CodigoPostal: z.number(),
+              Pais: z.string()
+            })
+          }),
+          attributes: z.object({ Nombre: z.string() })
+        }),
+        Mercancias: z.object({
+          Mercancia: z.array(
+            z.object({
+              DescripcionesEspecificas: z.object({
+                attributes: z.object({ Marca: z.string() })
+              }),
+              attributes: z.object({
+                NoIdentificacion: z.string(),
+                FraccionArancelaria: z.number(),
+                CantidadAduana: z.number(),
+                UnidadAduana: z.number(),
+                ValorUnitarioAduana: z.number(),
+                ValorDolares: z.number()
+              })
+            })
+          )
+        }),
+        attributes: z.object({
+          Version: z.number(),
+          ClaveDePedimento: z.string(),
+          CertificadoOrigen: z.number(),
+          Incoterm: z.string(),
+          TipoCambioUSD: z.number(),
+          TotalUSD: z.number()
+        })
+      })
+    }),
+    attributes: z.object({
+      schemaLocation: z.string(),
+      Version: z.number(),
+      Serie: z.string(),
+      Folio: z.number(),
+      Fecha: z.string(),
+      FormaPago: z.number(),
+      NoCertificado: z.number(),
+      Certificado: z.string(),
+      CondicionesDePago: z.string(),
+      SubTotal: z.number(),
+      Moneda: z.string(),
+      TipoCambio: z.number(),
+      Exportacion: z.number(),
+      Total: z.number(),
+      TipoDeComprobante: z.string(),
+      MetodoPago: z.string(),
+      LugarExpedicion: z.number(),
+      Sello: z.string()
+    })
   })
 })
 

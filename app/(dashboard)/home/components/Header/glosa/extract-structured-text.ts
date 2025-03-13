@@ -1,5 +1,5 @@
 import { ClassifiedDocumentSet, StructuredDocumentSet } from "./types";
-import { XMLParser } from "fast-xml-parser";
+import { xmlParser } from "./xml-parser";
 import { cfdiSchema, listaDeFacturasSchema, facturaSchema } from "./schemas";
 import { google } from "@ai-sdk/google";
 import { generateObject } from "ai";
@@ -14,13 +14,9 @@ export async function extractStructuredText(
     id: parentTraceId,
     name: "extract-structured-text",
   });
-  const parser = new XMLParser({
-    ignoreAttributes: false,
-    attributeNamePrefix: "",
-  });
   const cfdisData = await Promise.all(cfdis.map(async ({ originalFile, ufsUrl }) => {
     const xmlData = await originalFile.text();
-    const cfdiData = cfdiSchema.safeParse(parser.parse(xmlData, true));
+    const cfdiData = cfdiSchema.safeParse(xmlParser.parse(xmlData, true));
     if (!cfdiData.success) {
       throw new Error(`Error parsing cfdi: ${cfdiData.error.message}. XML URL: ${ufsUrl}`);
     }

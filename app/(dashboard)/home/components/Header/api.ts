@@ -72,7 +72,7 @@ export async function glosarRemesa(formData: FormData) {
 
     const structuredText = await extractStructuredText(groupedDocuments, parentTraceId);
 
-    const cfdiUUIDs = structuredText.cfdis.map(cfdi => cfdi['cfdi:Comprobante']['cfdi:Complemento']['tfd:TimbreFiscalDigital'].UUID);
+    const cfdiUUIDs = structuredText.cfdis.map(cfdi => cfdi.Comprobante.Complemento.TimbreFiscalDigital.attributes.UUID);
     const listaDeFacturasUUIDs = structuredText.listaDeFacturas.map(factura => factura.facturaUUID);
 
     const cfdiUUIDsNotInListaDeFacturas = cfdiUUIDs.filter(uuid => !listaDeFacturasUUIDs.includes(uuid));
@@ -99,9 +99,9 @@ export async function glosarRemesa(formData: FormData) {
     });
 
     const cfdiCantidadTotal = structuredText.cfdis.map((cfdi) => {
-      const uuid = cfdi['cfdi:Comprobante']['cfdi:Complemento']['tfd:TimbreFiscalDigital'].UUID;
-      const conceptos = cfdi['cfdi:Comprobante']['cfdi:Conceptos']['cfdi:Concepto'];
-      const cantidadTotal = conceptos.reduce((acc, concepto) => acc + Number(concepto.Cantidad), 0);
+      const uuid = cfdi.Comprobante.Complemento.TimbreFiscalDigital.attributes.UUID;
+      const conceptos = cfdi.Comprobante.Conceptos.Concepto;
+      const cantidadTotal = conceptos.reduce((acc, { attributes: { Cantidad } }) => acc + Cantidad, 0);
       return {
         folioFiscal: uuid,
         cantidadTotal,
