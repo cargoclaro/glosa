@@ -2,6 +2,7 @@ import { ClassifiedDocumentSet, StructuredDocumentSet } from "./types";
 import { xmlParser } from "./xml-parser";
 import { cfdiSchema, listaDeFacturasSchema, facturaSchema } from "./schemas";
 import { google } from "@ai-sdk/google";
+import { openai } from "@ai-sdk/openai";
 import { generateObject } from "ai";
 import { Langfuse } from "langfuse";
 export async function extractStructuredText(
@@ -49,7 +50,7 @@ export async function extractStructuredText(
   });
   const facturasData = await Promise.all(facturas.map(async (factura) => {
     const { object: facturaData } = await generateObject({
-      model: google("gemini-2.0-flash-001"),
+      model: openai.responses("gpt-4o-2024-11-20"),
       experimental_telemetry: {
         isEnabled: true,
         metadata: {

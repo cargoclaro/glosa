@@ -95,10 +95,10 @@ export async function glosarRemesa(formData: FormData) {
       validationErrors.push(`Se encontraron facturas que no están en los cfdis: ${listaDeFacturasUUIDsNotInCfdis.join(', ')}`);
     }
 
-    const facturaCantidadTotal = structuredText.facturas.map(({ folioFiscal, cantidades }) => {
+    const facturaCantidadTotal = structuredText.facturas.map(({ folioFiscal, mainTable }) => {
       return {
         folioFiscal,
-        cantidadTotal: cantidades.reduce((acc, cantidad) => acc + cantidad, 0),
+        cantidadTotal: mainTable.reduce((acc, { cantidad }) => acc + cantidad, 0),
       };
     });
     const cfdiCantidadTotal = structuredText.cfdis.map((cfdi) => {
