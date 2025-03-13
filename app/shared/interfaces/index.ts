@@ -69,7 +69,7 @@ export interface ICustomGlossTabValidationStepActionToTake
 
 export interface ISharedState {
   success: boolean;
-  message?: string;
+  message?: string | string[];
 }
 
 export interface ILoginState extends ISharedState {

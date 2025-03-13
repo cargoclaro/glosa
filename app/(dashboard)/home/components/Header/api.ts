@@ -78,6 +78,9 @@ export async function glosarRemesa(formData: FormData) {
 
     const structuredText = await extractStructuredText(groupedDocuments, parentTraceId);
 
+    // Array to accumulate all validation errors
+    const validationErrors: string[] = [];
+
     const cfdiUUIDs = structuredText.cfdis.map(cfdi => cfdi.Comprobante.Complemento.TimbreFiscalDigital.attributes.UUID);
     const listaDeFacturasUUIDs = structuredText.listaDeFacturas.map(factura => factura.facturaUUID);
 
@@ -85,16 +88,11 @@ export async function glosarRemesa(formData: FormData) {
     const listaDeFacturasUUIDsNotInCfdis = listaDeFacturasUUIDs.filter(uuid => !cfdiUUIDs.includes(uuid));
 
     if (cfdiUUIDsNotInListaDeFacturas.length > 0) {
-      return {
-        success: false,
-        message: `Se encontraron cfdis que no están en la lista de facturas: ${cfdiUUIDsNotInListaDeFacturas.join(', ')}`,
-      };
+      validationErrors.push(`Se encontraron cfdis que no están en la lista de facturas: ${cfdiUUIDsNotInListaDeFacturas.join(', ')}`);
     }
+    
     if (listaDeFacturasUUIDsNotInCfdis.length > 0) {
-      return {
-        success: false,
-        message: `Se encontraron facturas que no están en los cfdis: ${listaDeFacturasUUIDsNotInCfdis.join(', ')}`,
-      };
+      validationErrors.push(`Se encontraron facturas que no están en los cfdis: ${listaDeFacturasUUIDsNotInCfdis.join(', ')}`);
     }
 
     const facturaCantidadTotal = structuredText.facturas.map(({ folioFiscal, cantidades }) => {
@@ -103,7 +101,6 @@ export async function glosarRemesa(formData: FormData) {
         cantidadTotal: cantidades.reduce((acc, cantidad) => acc + cantidad, 0),
       };
     });
-
     const cfdiCantidadTotal = structuredText.cfdis.map((cfdi) => {
       const uuid = cfdi.Comprobante.Complemento.TimbreFiscalDigital.attributes.UUID;
       const conceptos = cfdi.Comprobante.Conceptos.Concepto;
@@ -114,29 +111,39 @@ export async function glosarRemesa(formData: FormData) {
       };
     });
     
-    const cantidadesTotalesPorFolio: Record<string, { facturaCantidadTotal: number, cfdiCantidadTotal: number }> = {};
-    
+    const cantidadesTotalesPorFolio: Record<string, { facturaCantidadTotal: number, cfdiCantidadTotal: number, listaDeFacturasCantidadTotal: number }> = {};
+   
+    structuredText.listaDeFacturas.forEach(({ facturaUUID, cantidadEnUMC }) => {
+      if (!cantidadesTotalesPorFolio[facturaUUID]) {
+        cantidadesTotalesPorFolio[facturaUUID] = { facturaCantidadTotal: 0, cfdiCantidadTotal: 0, listaDeFacturasCantidadTotal: 0 };
+      }
+      cantidadesTotalesPorFolio[facturaUUID].listaDeFacturasCantidadTotal = cantidadEnUMC;
+    });
     facturaCantidadTotal.forEach(({ folioFiscal, cantidadTotal }) => {
       if (!cantidadesTotalesPorFolio[folioFiscal]) {
-        cantidadesTotalesPorFolio[folioFiscal] = { facturaCantidadTotal: 0, cfdiCantidadTotal: 0 };
+        cantidadesTotalesPorFolio[folioFiscal] = { facturaCantidadTotal: 0, cfdiCantidadTotal: 0, listaDeFacturasCantidadTotal: 0 };
       }
       cantidadesTotalesPorFolio[folioFiscal].facturaCantidadTotal = cantidadTotal;
     });
-    
     cfdiCantidadTotal.forEach(({ folioFiscal, cantidadTotal }) => {
       if (!cantidadesTotalesPorFolio[folioFiscal]) {
-        cantidadesTotalesPorFolio[folioFiscal] = { facturaCantidadTotal: 0, cfdiCantidadTotal: 0 };
+        cantidadesTotalesPorFolio[folioFiscal] = { facturaCantidadTotal: 0, cfdiCantidadTotal: 0, listaDeFacturasCantidadTotal: 0 };
       }
       cantidadesTotalesPorFolio[folioFiscal].cfdiCantidadTotal = cantidadTotal;
     });
 
-    for (const [folioFiscal, { facturaCantidadTotal, cfdiCantidadTotal }] of Object.entries(cantidadesTotalesPorFolio)) {
+    for (const [folioFiscal, { facturaCantidadTotal, cfdiCantidadTotal, listaDeFacturasCantidadTotal }] of Object.entries(cantidadesTotalesPorFolio)) {
       if (facturaCantidadTotal !== cfdiCantidadTotal) {
-        return {
-          success: false,
-          message: `Se encontraron diferencias en la cantidad total de la factura ${folioFiscal}: cantidad en factura ${facturaCantidadTotal}, cantidad en CFDI ${cfdiCantidadTotal}`,
-        };
+        validationErrors.push(`Se encontraron diferencias en la cantidad total de la factura ${folioFiscal}: cantidad en lista de facturas ${listaDeFacturasCantidadTotal}, cantidad en factura ${facturaCantidadTotal}, cantidad en CFDI ${cfdiCantidadTotal}`);
       }
+    }
+
+    // Check if we have any validation errors
+    if (validationErrors.length > 0) {
+      return {
+        success: false,
+        message: validationErrors,
+      };
     }
 
     return {

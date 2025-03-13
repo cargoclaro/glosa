@@ -53,7 +53,19 @@ const GlossFormRemesa = () => {
         Recuerda incluir todos los documentos relevantes a la operación <br />{" "}
         <span>(BL, Carta 3.1.8, etc.).</span>
       </p>
-      {response.message && <p className={response.success ? "text-green-500" : "text-red-500"}>{response.message}</p>}
+      {response.message && (
+        <div className={`p-4 rounded-md ${response.success ? "bg-green-50 text-green-700" : "bg-red-50 text-red-700"}`}>
+          {Array.isArray(response.message) ? (
+            <ul className="list-disc pl-5 space-y-1">
+              {response.message.map((msg, index) => (
+                <li key={index} className="text-sm">{msg}</li>
+              ))}
+            </ul>
+          ) : (
+            <p className="text-sm">{response.message}</p>
+          )}
+        </div>
+      )}
       <div className="mt-4">
         <label
           htmlFor="documents"
