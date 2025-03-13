@@ -6,10 +6,16 @@ import { classifyDocuments } from "./glosa/classification";
 import { auth } from "@clerk/nextjs/server";
 import { extractStructuredText } from "./glosa/extract-structured-text";
 import { randomUUID } from "crypto";
+import { Langfuse } from "langfuse";
 
 config();
 
+const langfuse = new Langfuse();
 const parentTraceId = randomUUID();
+langfuse.trace({
+  id: parentTraceId,
+  name: "Glosa de Remesa de Exportación",
+});
 
 export async function glosarRemesa(formData: FormData) {
   try {
