@@ -1,6 +1,6 @@
 export const INITIAL_STATE_RESPONSE = {
   success: false,
-  message: "",
+  message: "" as string | string[],
   errors: {},
 };
 

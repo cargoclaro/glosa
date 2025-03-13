@@ -2,12 +2,18 @@ import { ClassifiedDocumentSet, StructuredDocumentSet } from "./types";
 import { xmlParser } from "./xml-parser";
 import { cfdiSchema, listaDeFacturasSchema, facturaSchema } from "./schemas";
 import { google } from "@ai-sdk/google";
+import { openai } from "@ai-sdk/openai";
 import { generateObject } from "ai";
-
+import { Langfuse } from "langfuse";
 export async function extractStructuredText(
   { cfdis, listaDeFacturas, facturas }: Pick<ClassifiedDocumentSet, 'cfdis' | 'listaDeFacturas' | 'facturas'>,
   parentTraceId: string
 ): Promise<StructuredDocumentSet> {
+  const langfuse = new Langfuse();
+  langfuse.event({
+    traceId: parentTraceId,
+    name: "Extract and Structure",
+  });
   const cfdisData = await Promise.all(cfdis.map(async ({ originalFile, ufsUrl }) => {
     const xmlData = await originalFile.text();
     const cfdiData = cfdiSchema.safeParse(xmlParser.parse(xmlData, true));
@@ -20,6 +26,7 @@ export async function extractStructuredText(
     model: google("gemini-2.0-flash-001"),
     experimental_telemetry: {
       isEnabled: true,
+      functionId: listaDeFacturas.name,
       metadata: {
         langfuseTraceId: parentTraceId,
         langfuseUpdateParent: false, // Do not update the parent trace with execution results
@@ -43,7 +50,7 @@ export async function extractStructuredText(
   });
   const facturasData = await Promise.all(facturas.map(async (factura) => {
     const { object: facturaData } = await generateObject({
-      model: google("gemini-2.0-flash-001"),
+      model: openai.responses("gpt-4o-2024-11-20"),
       experimental_telemetry: {
         isEnabled: true,
         metadata: {

@@ -2,6 +2,7 @@ import { google } from '@ai-sdk/google';
 import { generateObject } from 'ai';
 import { z } from 'zod';
 import { UploadedFileData } from 'uploadthing/types';
+import { Langfuse } from 'langfuse';
 
 const documentTypes = [
   "listaDeFacturas",
@@ -17,6 +18,11 @@ export async function classifyDocuments(
   uploadedFiles: (UploadedFileData & { originalFile: File })[],
   parentTraceId: string
 ) {
+  const langfuse = new Langfuse();
+  langfuse.event({
+    traceId: parentTraceId,
+    name: "Classification",
+  });
   return await Promise.all(uploadedFiles.map(async (uploadedFile) => {
     // We assume all xml files are cfdis
     if (uploadedFile.type === "text/xml") {
@@ -29,6 +35,7 @@ export async function classifyDocuments(
       model: google("gemini-2.0-flash-001"),
       experimental_telemetry: {
         isEnabled: true,
+        functionId: uploadedFile.name,
         metadata: {
           langfuseTraceId: parentTraceId,
           langfuseUpdateParent: false, // Do not update the parent trace with execution results
