@@ -1,17 +1,7 @@
-import { anthropic } from '@ai-sdk/anthropic';
+import { google } from '@ai-sdk/google';
 import { generateObject } from 'ai';
 import { z } from 'zod';
 import { UploadedFileData } from 'uploadthing/types';
-import { Langfuse } from "langfuse";
-import { randomUUID } from "crypto";
-
-const langfuse = new Langfuse();
-const parentTraceId = randomUUID();
- 
-langfuse.trace({
-  id: parentTraceId,
-  name: "classification",
-});
 
 const documentTypes = [
   "listaDeFacturas",
@@ -24,7 +14,8 @@ const documentTypes = [
 type DocumentType = (typeof documentTypes)[number];
 
 export async function classifyDocuments(
-  uploadedFiles: (UploadedFileData & { originalFile: File })[]
+  uploadedFiles: (UploadedFileData & { originalFile: File })[],
+  parentTraceId: string
 ) {
   return await Promise.all(uploadedFiles.map(async (uploadedFile) => {
     // We assume all xml files are cfdis
@@ -35,7 +26,7 @@ export async function classifyDocuments(
       };
     }
     const { object: { documentType } } = await generateObject({
-      model: anthropic("claude-3-7-sonnet-20250219"),
+      model: google("gemini-2.0-flash-001"),
       experimental_telemetry: {
         isEnabled: true,
         metadata: {
@@ -78,7 +69,7 @@ export async function classifyDocuments(
           content: [
             {
               type: 'file',
-              data: `${uploadedFile.ufsUrl}`,
+              data: `data:${uploadedFile.type};base64,${Buffer.from(await uploadedFile.originalFile.arrayBuffer()).toString('base64')}`,
               mimeType: uploadedFile.type,
             },
           ],
