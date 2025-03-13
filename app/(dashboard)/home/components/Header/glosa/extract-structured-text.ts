@@ -10,6 +10,7 @@ export async function extractStructuredText(
 ): Promise<StructuredDocumentSet> {
   const langfuse = new Langfuse();
   langfuse.event({
+    traceId: parentTraceId,
     name: "Extract and Structure",
   });
   const cfdisData = await Promise.all(cfdis.map(async ({ originalFile, ufsUrl }) => {

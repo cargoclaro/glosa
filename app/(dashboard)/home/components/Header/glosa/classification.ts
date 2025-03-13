@@ -20,6 +20,7 @@ export async function classifyDocuments(
 ) {
   const langfuse = new Langfuse();
   langfuse.event({
+    traceId: parentTraceId,
     name: "Classification",
   });
   return await Promise.all(uploadedFiles.map(async (uploadedFile) => {
