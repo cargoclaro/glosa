@@ -1,4 +1,4 @@
-import { anthropic } from '@ai-sdk/anthropic';
+import { google } from '@ai-sdk/google';
 import { generateObject } from 'ai';
 import { z } from 'zod';
 import { UploadedFileData } from 'uploadthing/types';
@@ -32,7 +32,7 @@ export async function classifyDocuments(
       };
     }
     const { object: { documentType } } = await generateObject({
-      model: anthropic("claude-3-7-sonnet-20250219"),
+      model: google("gemini-2.0-flash-001"),
       experimental_telemetry: {
         isEnabled: true,
         metadata: {
@@ -75,7 +75,7 @@ export async function classifyDocuments(
           content: [
             {
               type: 'file',
-              data: `${uploadedFile.ufsUrl}`,
+              data: `data:${uploadedFile.type};base64,${Buffer.from(await uploadedFile.originalFile.arrayBuffer()).toString('base64')}`,
               mimeType: uploadedFile.type,
             },
           ],
