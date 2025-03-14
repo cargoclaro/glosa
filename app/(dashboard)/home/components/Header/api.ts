@@ -95,46 +95,64 @@ export async function glosarRemesa(formData: FormData) {
       validationErrors.push(`Se encontraron facturas que no están en los cfdis: ${listaDeFacturasUUIDsNotInCfdis.join(', ')}`);
     }
 
-    const facturaCantidadTotal = structuredText.facturas.map(({ folioFiscal, mainTable }) => {
+    const facturaCantidadTotal = structuredText.facturas.map(({ folioFiscal, mainTable, fechaYHoraDeCertificacion }) => {
       return {
         folioFiscal,
         cantidadTotal: mainTable.reduce((acc, { cantidad }) => acc + cantidad, 0),
+        fechaYHoraDeCertificacion,
       };
     });
     const cfdiCantidadTotal = structuredText.cfdis.map((cfdi) => {
       const uuid = cfdi.Comprobante.Complemento.TimbreFiscalDigital.attributes.UUID;
+      const fechaYHoraDeCertificacion = cfdi.Comprobante.Complemento.TimbreFiscalDigital.attributes.FechaTimbrado;
       const conceptos = cfdi.Comprobante.Conceptos.Concepto;
       const cantidadTotal = conceptos.reduce((acc, { attributes: { Cantidad } }) => acc + Cantidad, 0);
       return {
         folioFiscal: uuid,
         cantidadTotal,
+        fechaYHoraDeCertificacion,
       };
     });
     
-    const cantidadesTotalesPorFolio: Record<string, { facturaCantidadTotal: number, cfdiCantidadTotal: number, listaDeFacturasCantidadTotal: number }> = {};
+    const datosFolio: Record<string, {
+      facturaCantidadTotal: number,
+      cfdiCantidadTotal: number,
+      listaDeFacturasCantidadTotal: number,
+      cfdiFechaYHoraDeCertificacion: string,
+      facturaFechaYHoraDeCertificacion: string,
+      listaDeFacturasFecha: string,
+    }> = {};
    
-    structuredText.listaDeFacturas.forEach(({ facturaUUID, cantidadEnUMC }) => {
-      if (!cantidadesTotalesPorFolio[facturaUUID]) {
-        cantidadesTotalesPorFolio[facturaUUID] = { facturaCantidadTotal: 0, cfdiCantidadTotal: 0, listaDeFacturasCantidadTotal: 0 };
+    structuredText.listaDeFacturas.forEach(({ facturaUUID, cantidadEnUMC, fecha }) => {
+      if (!datosFolio[facturaUUID]) {
+        datosFolio[facturaUUID] = { facturaCantidadTotal: 0, cfdiCantidadTotal: 0, listaDeFacturasCantidadTotal: 0, cfdiFechaYHoraDeCertificacion: "", facturaFechaYHoraDeCertificacion: "", listaDeFacturasFecha: "" };
       }
-      cantidadesTotalesPorFolio[facturaUUID].listaDeFacturasCantidadTotal = cantidadEnUMC;
+      datosFolio[facturaUUID].listaDeFacturasCantidadTotal = cantidadEnUMC;
+      datosFolio[facturaUUID].listaDeFacturasFecha = fecha;
     });
-    facturaCantidadTotal.forEach(({ folioFiscal, cantidadTotal }) => {
-      if (!cantidadesTotalesPorFolio[folioFiscal]) {
-        cantidadesTotalesPorFolio[folioFiscal] = { facturaCantidadTotal: 0, cfdiCantidadTotal: 0, listaDeFacturasCantidadTotal: 0 };
+    facturaCantidadTotal.forEach(({ folioFiscal, cantidadTotal, fechaYHoraDeCertificacion }) => {
+      if (!datosFolio[folioFiscal]) {
+        datosFolio[folioFiscal] = { facturaCantidadTotal: 0, cfdiCantidadTotal: 0, listaDeFacturasCantidadTotal: 0, cfdiFechaYHoraDeCertificacion: "", facturaFechaYHoraDeCertificacion: "", listaDeFacturasFecha: "" };
       }
-      cantidadesTotalesPorFolio[folioFiscal].facturaCantidadTotal = cantidadTotal;
+      datosFolio[folioFiscal].facturaCantidadTotal = cantidadTotal;
+      datosFolio[folioFiscal].facturaFechaYHoraDeCertificacion = fechaYHoraDeCertificacion;
     });
-    cfdiCantidadTotal.forEach(({ folioFiscal, cantidadTotal }) => {
-      if (!cantidadesTotalesPorFolio[folioFiscal]) {
-        cantidadesTotalesPorFolio[folioFiscal] = { facturaCantidadTotal: 0, cfdiCantidadTotal: 0, listaDeFacturasCantidadTotal: 0 };
+    cfdiCantidadTotal.forEach(({ folioFiscal, cantidadTotal, fechaYHoraDeCertificacion }) => {
+      if (!datosFolio[folioFiscal]) {
+        datosFolio[folioFiscal] = { facturaCantidadTotal: 0, cfdiCantidadTotal: 0, listaDeFacturasCantidadTotal: 0, cfdiFechaYHoraDeCertificacion: "", facturaFechaYHoraDeCertificacion: "", listaDeFacturasFecha: "" };
       }
-      cantidadesTotalesPorFolio[folioFiscal].cfdiCantidadTotal = cantidadTotal;
+      datosFolio[folioFiscal].cfdiCantidadTotal = cantidadTotal;
+      datosFolio[folioFiscal].cfdiFechaYHoraDeCertificacion = fechaYHoraDeCertificacion;
     });
 
-    for (const [folioFiscal, { facturaCantidadTotal, cfdiCantidadTotal, listaDeFacturasCantidadTotal }] of Object.entries(cantidadesTotalesPorFolio)) {
-      if (facturaCantidadTotal !== cfdiCantidadTotal) {
+    for (const [folioFiscal, { facturaCantidadTotal, cfdiCantidadTotal, listaDeFacturasCantidadTotal, facturaFechaYHoraDeCertificacion, cfdiFechaYHoraDeCertificacion, listaDeFacturasFecha }] of Object.entries(datosFolio)) {
+      if (new Set([facturaCantidadTotal, cfdiCantidadTotal, listaDeFacturasCantidadTotal]).size !== 1) {
         validationErrors.push(`Se encontraron diferencias en la cantidad total de la factura ${folioFiscal}: cantidad en lista de facturas ${listaDeFacturasCantidadTotal}, cantidad en factura ${facturaCantidadTotal}, cantidad en CFDI ${cfdiCantidadTotal}`);
+      }
+      // Convert listaDeFacturasFecha from DD/MM/YY to YY/MM/DD format
+      const formattedListaDeFacturasFecha = listaDeFacturasFecha.split('/').reverse().join('-');
+      if (new Set([facturaFechaYHoraDeCertificacion.split('T')[0], cfdiFechaYHoraDeCertificacion.split('T')[0], formattedListaDeFacturasFecha]).size !== 1) {
+        validationErrors.push(`Se encontraron diferencias en la fecha y hora de certificación de la factura ${folioFiscal}: fecha en lista de facturas ${formattedListaDeFacturasFecha}, fecha en factura ${facturaFechaYHoraDeCertificacion.split('T')[0]}, fecha en CFDI ${cfdiFechaYHoraDeCertificacion.split('T')[0]}`);
       }
     }
 
