@@ -88,8 +88,7 @@ export const cfdiSchema = z.object({
               CodigoPostal: z.number(),
               Municipio: z.number(),
               Estado: z.string(),
-              Pais: z.string(),
-              Colonia: z.number()
+              Pais: z.string()
             })
           })
         }),
@@ -98,7 +97,6 @@ export const cfdiSchema = z.object({
             attributes: z.object({
               Calle: z.string(),
               NumeroExterior: z.number(),
-              Colonia: z.string(),
               Localidad: z.string(),
               Municipio: z.string(),
               Estado: z.string(),
@@ -113,7 +111,6 @@ export const cfdiSchema = z.object({
             attributes: z.object({
               Calle: z.string(),
               NumeroExterior: z.number(),
-              Colonia: z.string(),
               Localidad: z.string(),
               Municipio: z.string(),
               Estado: z.string(),
@@ -126,9 +123,6 @@ export const cfdiSchema = z.object({
         Mercancias: z.object({
           Mercancia: z.array(
             z.object({
-              DescripcionesEspecificas: z.object({
-                attributes: z.object({ Marca: z.string() })
-              }),
               attributes: z.object({
                 NoIdentificacion: z.string(),
                 FraccionArancelaria: z.number(),
@@ -159,7 +153,6 @@ export const cfdiSchema = z.object({
       FormaPago: z.number(),
       NoCertificado: z.number(),
       Certificado: z.string(),
-      CondicionesDePago: z.string(),
       SubTotal: z.number(),
       Moneda: z.string(),
       TipoCambio: z.number(),

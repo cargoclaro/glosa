@@ -12,7 +12,7 @@ export const facturaSchema = z.object({
     .transform((fechaYHoraDeCertificacion) => {
       return moment(fechaYHoraDeCertificacion);
     }),
-  importeTotal: z.number().describe("It's the total amount of the factura. It appears under the table as 'Importe Total'"),
+  importeTotal: z.number().describe("It's the total amount of the factura. It appears under the table as the sum of the merchandises values"),
 });
 
 export type Factura = z.infer<typeof facturaSchema>;
