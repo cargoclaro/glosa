@@ -59,6 +59,7 @@
     "langfuse-vercel": "^3.36.0",
     "langsmith": "^0.3.11",
     "lucide-react": "^0.447.0",
+    "moment": "^2.30.1",
     "next": "^14.2.24",
     "next-themes": "^0.3.0",
     "pdf-lib": "^1.17.1",
