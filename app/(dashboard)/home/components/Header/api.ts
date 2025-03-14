@@ -7,6 +7,7 @@ import { auth } from "@clerk/nextjs/server";
 import { extractStructuredText } from "./glosa/extract-structured-text";
 import { randomUUID } from "crypto";
 import { Langfuse } from "langfuse";
+import moment from "moment";
 
 config();
 
@@ -118,28 +119,28 @@ export async function glosarRemesa(formData: FormData) {
       facturaCantidadTotal: number,
       cfdiCantidadTotal: number,
       listaDeFacturasCantidadTotal: number,
-      cfdiFechaYHoraDeCertificacion: string,
-      facturaFechaYHoraDeCertificacion: string,
-      listaDeFacturasFecha: string,
+      cfdiFechaYHoraDeCertificacion: moment.Moment,
+      facturaFechaYHoraDeCertificacion: moment.Moment,
+      listaDeFacturasFecha: moment.Moment,
     }> = {};
    
     structuredText.listaDeFacturas.forEach(({ facturaUUID, cantidadEnUMC, fecha }) => {
       if (!datosFolio[facturaUUID]) {
-        datosFolio[facturaUUID] = { facturaCantidadTotal: 0, cfdiCantidadTotal: 0, listaDeFacturasCantidadTotal: 0, cfdiFechaYHoraDeCertificacion: "", facturaFechaYHoraDeCertificacion: "", listaDeFacturasFecha: "" };
+        datosFolio[facturaUUID] = { facturaCantidadTotal: 0, cfdiCantidadTotal: 0, listaDeFacturasCantidadTotal: 0, cfdiFechaYHoraDeCertificacion: moment(), facturaFechaYHoraDeCertificacion: moment(), listaDeFacturasFecha: moment() };
       }
       datosFolio[facturaUUID].listaDeFacturasCantidadTotal = cantidadEnUMC;
       datosFolio[facturaUUID].listaDeFacturasFecha = fecha;
     });
     facturaCantidadTotal.forEach(({ folioFiscal, cantidadTotal, fechaYHoraDeCertificacion }) => {
       if (!datosFolio[folioFiscal]) {
-        datosFolio[folioFiscal] = { facturaCantidadTotal: 0, cfdiCantidadTotal: 0, listaDeFacturasCantidadTotal: 0, cfdiFechaYHoraDeCertificacion: "", facturaFechaYHoraDeCertificacion: "", listaDeFacturasFecha: "" };
+        datosFolio[folioFiscal] = { facturaCantidadTotal: 0, cfdiCantidadTotal: 0, listaDeFacturasCantidadTotal: 0, cfdiFechaYHoraDeCertificacion: moment(), facturaFechaYHoraDeCertificacion: moment(), listaDeFacturasFecha: moment() };
       }
       datosFolio[folioFiscal].facturaCantidadTotal = cantidadTotal;
       datosFolio[folioFiscal].facturaFechaYHoraDeCertificacion = fechaYHoraDeCertificacion;
     });
     cfdiCantidadTotal.forEach(({ folioFiscal, cantidadTotal, fechaYHoraDeCertificacion }) => {
       if (!datosFolio[folioFiscal]) {
-        datosFolio[folioFiscal] = { facturaCantidadTotal: 0, cfdiCantidadTotal: 0, listaDeFacturasCantidadTotal: 0, cfdiFechaYHoraDeCertificacion: "", facturaFechaYHoraDeCertificacion: "", listaDeFacturasFecha: "" };
+        datosFolio[folioFiscal] = { facturaCantidadTotal: 0, cfdiCantidadTotal: 0, listaDeFacturasCantidadTotal: 0, cfdiFechaYHoraDeCertificacion: moment(), facturaFechaYHoraDeCertificacion: moment(), listaDeFacturasFecha: moment() };
       }
       datosFolio[folioFiscal].cfdiCantidadTotal = cantidadTotal;
       datosFolio[folioFiscal].cfdiFechaYHoraDeCertificacion = fechaYHoraDeCertificacion;
@@ -149,10 +150,21 @@ export async function glosarRemesa(formData: FormData) {
       if (new Set([facturaCantidadTotal, cfdiCantidadTotal, listaDeFacturasCantidadTotal]).size !== 1) {
         validationErrors.push(`Se encontraron diferencias en la cantidad total de la factura ${folioFiscal}: cantidad en lista de facturas ${listaDeFacturasCantidadTotal}, cantidad en factura ${facturaCantidadTotal}, cantidad en CFDI ${cfdiCantidadTotal}`);
       }
-      // Convert listaDeFacturasFecha from DD/MM/YY to YY/MM/DD format
-      const formattedListaDeFacturasFecha = listaDeFacturasFecha.split('/').reverse().join('-');
-      if (new Set([facturaFechaYHoraDeCertificacion.split('T')[0], cfdiFechaYHoraDeCertificacion.split('T')[0], formattedListaDeFacturasFecha]).size !== 1) {
-        validationErrors.push(`Se encontraron diferencias en la fecha y hora de certificación de la factura ${folioFiscal}: fecha en lista de facturas ${formattedListaDeFacturasFecha}, fecha en factura ${facturaFechaYHoraDeCertificacion.split('T')[0]}, fecha en CFDI ${cfdiFechaYHoraDeCertificacion.split('T')[0]}`);
+
+      // Formatear con el formato visual (dd/MM/yyyy)
+      const facturaFechaSoloDate = facturaFechaYHoraDeCertificacion.format('DD/MM/YYYY');
+      const cfdiFechaSoloDate = cfdiFechaYHoraDeCertificacion.format('DD/MM/YYYY');
+      const listaFacturasFechaSoloDate = listaDeFacturasFecha.format('DD/MM/YYYY');
+      
+      // Verificar si las fechas son diferentes
+      const fechasSonDiferentes = new Set([
+        facturaFechaSoloDate,
+        cfdiFechaSoloDate,
+        listaFacturasFechaSoloDate
+      ]).size !== 1;
+      
+      if (fechasSonDiferentes) {
+        validationErrors.push(`Se encontraron diferencias en la fecha de la factura ${folioFiscal}: fecha en lista de facturas ${listaFacturasFechaSoloDate}, fecha en factura ${facturaFechaSoloDate}, fecha en CFDI ${cfdiFechaSoloDate}`);
       }
     }
 

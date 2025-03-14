@@ -1,4 +1,5 @@
 import { z } from "zod"
+import moment from 'moment'
 
 export const cfdiSchema = z.object({
   Comprobante: z.object({
@@ -70,7 +71,9 @@ export const cfdiSchema = z.object({
           SelloSAT: z.string(),
           NoCertificadoSAT: z.number(),
           SelloCFD: z.string(),
-          FechaTimbrado: z.string(),
+          FechaTimbrado: z.string().transform((fechaTimbrado) => {
+            return moment(fechaTimbrado);
+          }),
           UUID: z.string(),
           Version: z.number(),
           RfcProvCertif: z.string(),
