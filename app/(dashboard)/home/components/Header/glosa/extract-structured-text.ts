@@ -84,6 +84,7 @@ export async function extractStructuredText(
       model: openai.responses("gpt-4o-2024-11-20"),
       experimental_telemetry: {
         isEnabled: true,
+        functionId: reporteEDocumentRemesaConsolidado.name,
         metadata: {
           langfuseTraceId: parentTraceId,
           langfuseUpdateParent: false, // Do not update the parent trace with execution results
