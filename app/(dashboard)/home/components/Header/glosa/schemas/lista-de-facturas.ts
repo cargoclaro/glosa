@@ -9,6 +9,7 @@ export const listaDeFacturasSchema = z.array(z.object({
       return moment(fecha, 'DD/MM/YYYY');
     }),
   cantidadEnUMC: z.number().describe("Appears on a table as column name 'Cantidad en UMC'"),
+  valorFacturaEnDolares: z.number().describe("Appears on a table as column name 'Valor Factura en Dolares'"),
 }));
 
 export type ListaDeFacturas = z.infer<typeof listaDeFacturasSchema>;
