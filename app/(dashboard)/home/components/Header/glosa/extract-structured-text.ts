@@ -1,12 +1,14 @@
 import { ClassifiedDocumentSet, StructuredDocumentSet } from "./types";
 import { xmlParser } from "./xml-parser";
-import { cfdiSchema, listaDeFacturasSchema, facturaSchema } from "./schemas";
+import { cfdiSchema, listaDeFacturasSchema, facturaSchema, reportesRemesaSchema } from "./schemas";
 import { google } from "@ai-sdk/google";
 import { openai } from "@ai-sdk/openai";
 import { generateObject } from "ai";
 import { Langfuse } from "langfuse";
+import { extractPdfPages } from "./pdf-page-extractor";
+
 export async function extractStructuredText(
-  { cfdis, listaDeFacturas, facturas }: Pick<ClassifiedDocumentSet, 'cfdis' | 'listaDeFacturas' | 'facturas'>,
+  { cfdis, listaDeFacturas, facturas, reporteEDocumentRemesaConsolidado }: Pick<ClassifiedDocumentSet, 'cfdis' | 'listaDeFacturas' | 'facturas' | 'reporteEDocumentRemesaConsolidado'>,
   parentTraceId: string
 ): Promise<StructuredDocumentSet> {
   const langfuse = new Langfuse();
@@ -76,8 +78,46 @@ export async function extractStructuredText(
     });
     return facturaData;
   }))
+  const reporteEDocumentRemesaConsolidadoPdfPages = await extractPdfPages(await reporteEDocumentRemesaConsolidado.originalFile.arrayBuffer());
+  const reporteEDocumentRemesaConsolidadoData = await Promise.all(reporteEDocumentRemesaConsolidadoPdfPages.map(async (base64Page, index) => {
+    const { object: reporteRemesaItemData } = await generateObject({
+      model: openai.responses("gpt-4o-2024-11-20"),
+      experimental_telemetry: {
+        isEnabled: true,
+        metadata: {
+          langfuseTraceId: parentTraceId,
+          langfuseUpdateParent: false, // Do not update the parent trace with execution results
+          fileUrl: reporteEDocumentRemesaConsolidado.ufsUrl,
+          page: index + 1,
+        },
+      },
+      system: "Eres un experto en extraccion y estructuracion de datos de documentos aduaneros.",
+      schema: reportesRemesaSchema,
+      messages: [
+        {
+          role: 'user',
+          content: [
+            {
+              type: 'file',
+              data: `data:application/pdf;base64,${base64Page}`,
+              mimeType: "application/pdf",
+            },
+          ],
+        },
+      ],
+    });
+    return reporteRemesaItemData;
+  }));
   return {
     listaDeFacturas: listaDeFacturasData,
+    reporteRemesa: reporteEDocumentRemesaConsolidadoData.flatMap(reportArray => 
+      reportArray.reportesRemesa.flatMap(report => 
+        report.productos.map(producto => ({
+          ...producto,
+          factura: report.factura
+        }))
+      )
+    ),
     cfdis: cfdisData,
     facturas: facturasData,
   };

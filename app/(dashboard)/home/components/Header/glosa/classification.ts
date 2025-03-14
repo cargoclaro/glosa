@@ -56,7 +56,7 @@ export async function classifyDocuments(
             Es una lista de facturas de importacion/exportacion. Por alguna razon no hay formato oficial para este tipo de documentos. Literalmente dice formato "no oficial" en el documento.
           
           - reporteEDocumentRemesaConsolidado:
-            Es la representacion interna del COVE.
+            Es la representacion interna del COVE. Repite la informacion de todas las facturas, incluyendo mondeda, y unidad de medida.
 
           - packingList: 
             Documento detallado del contenido físico del envío, con cantidad de bultos, 

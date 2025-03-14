@@ -33,7 +33,9 @@ export async function glosarRemesa(formData: FormData) {
         message: "Se encontraron documentos no clasificables",
       };
     }
+
     const listasDeFacturas = classifications.filter(doc => doc.documentType === 'listaDeFacturas');
+    const reportesEDocumentRemesaConsolidado = classifications.filter(doc => doc.documentType === 'reporteEDocumentRemesaConsolidado');
 
     if (listasDeFacturas.length > 1) {
       return {
@@ -41,11 +43,26 @@ export async function glosarRemesa(formData: FormData) {
         message: "Se encontraron múltiples documentos de lista de facturas. Solo debe haber uno.",
       };
     }
-
+    if (reportesEDocumentRemesaConsolidado.length > 1) {
+      return {
+        success: false,
+        message: "Se encontraron múltiples documentos de reporte de documento de remesa consolidado. Solo debe haber uno.",
+      };
+    }
     const listaDeFacturas = listasDeFacturas[0];
+    const reporteEDocumentRemesaConsolidado = reportesEDocumentRemesaConsolidado[0];
 
     if (!listaDeFacturas) {
-      throw new Error("This check needs to happen due to noUncheckedIndexedAccess, but this code will NEVER be reached (;");
+      return {
+        success: false,
+        message: "No se encontró ningún documento de lista de facturas",
+      };
+    }
+    if (!reporteEDocumentRemesaConsolidado) {
+      return {
+        success: false,
+        message: "No se encontró ningún documento de reporte de documento de remesa consolidado",
+      };
     }
 
     const cfdis = classifications.filter(doc => doc.documentType === 'cfdi');
@@ -73,6 +90,7 @@ export async function glosarRemesa(formData: FormData) {
 
     const groupedDocuments = {
       listaDeFacturas,
+      reporteEDocumentRemesaConsolidado,
       cfdis,
       facturas
     };
