@@ -1,6 +1,6 @@
 {
   "$schema": "https://unpkg.com/knip@5/schema.json",
-  "ignore": ["src/ui/**", "public/pdf.worker.mjs"],
+  "ignore": ["src/ui/**", "public/pdf.worker.mjs", "app/(dashboard)/home/components/Header/glosa/xml-to-json.ts"],
   "ignoreDependencies": [
     "autoprefixer",
     "ultracite"
