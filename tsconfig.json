@@ -23,6 +23,6 @@
     },
     "allowJs": true
   },
-  "include": ["**/*.{ts,tsx,js}", "**/*.d.ts", ".next/types/**/*.ts"],
+  "include": ["**/*.{ts,tsx,js,mjs}", "**/*.d.ts", ".next/types/**/*.ts"],
   "exclude": ["node_modules"]
 }

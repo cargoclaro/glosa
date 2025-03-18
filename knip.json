@@ -5,7 +5,7 @@
     "public/pdf.worker.mjs",
     "app/(dashboard)/home/components/Header/glosa/xml-to-json.ts"
   ],
-  "ignoreDependencies": ["autoprefixer", "ultracite"],
+  "ignoreDependencies": ["ultracite"],
   "drizzle": {
     "config": ["drizzle.config.{ts,js,json}"]
   }
