@@ -1,4 +1,3 @@
-import Alerts from './Alerts';
 import Analysis from './Analysis';
 import Documents from './Documents';
 import Pediment from './Pediment';

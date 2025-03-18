@@ -72,23 +72,7 @@ export interface ISharedState {
   message?: string | string[];
 }
 
-interface ILoginState extends ISharedState {
-  errors?: {
-    email?: string;
-    password?: string;
-  };
-}
 
-interface IRegisterState extends ISharedState {
-  errors?: {
-    name?: string;
-    email?: string;
-    password?: string;
-    lastName?: string;
-    patentNumber?: string;
-    confirmPassword?: string;
-  };
-}
 
 export interface IGlossAnalysisState extends ISharedState {
   glossId?: string;

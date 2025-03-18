@@ -92,24 +92,3 @@ export const apendice7 = {
     },
   ],
 } as const;
-
-import { z } from 'zod';
-
-type Apendice7 = z.infer<typeof apendice7Schema>;
-
-const apendice7Schema = z.object({
-  Apéndice: z.literal('7'),
-  Título: z.literal('Unidades de medida'),
-  Unidades: z
-    .array(
-      z.object({
-        Clave: z
-          .string()
-          .describe('Código numérico que identifica la unidad de medida'),
-        Descripción: z
-          .string()
-          .describe('Nombre descriptivo de la unidad de medida'),
-      })
-    )
-    .describe('Lista de unidades de medida válidas para el comercio exterior'),
-});

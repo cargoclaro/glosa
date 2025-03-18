@@ -1,17 +1,6 @@
 'use server';
 
 import prisma from '@/shared/services/prisma';
-import type { Prisma } from '@prisma/client';
-
-async function create({
-  data,
-}: {
-  data: Prisma.CustomGlossCreateInput;
-}) {
-  return await prisma.customGloss.create({
-    data,
-  });
-}
 
 interface IRead {
   id?: string;
@@ -64,18 +53,6 @@ export async function read({ id, userId, recent }: IRead) {
   throw new Error('Should never happen');
 }
 
-async function update({
-  id,
-  data,
-}: {
-  id: string;
-  data: (typeof prisma.customGloss.update)['arguments']['data'];
-}) {
-  return await prisma.customGloss.update({
-    where: { id },
-    data,
-  });
-}
 
 export async function updateTabWithCustomGlossId({
   id,

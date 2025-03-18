@@ -19,7 +19,6 @@ const reporteRemesaSchema = z.object({
   factura: z.string().describe('Numero de factura, es un UUID'),
 });
 
-type ReporteRemesa = z.infer<typeof reporteRemesaSchema>;
 
 export const reportesRemesaSchema = z.object({
   reportesRemesa: z
@@ -27,4 +26,3 @@ export const reportesRemesaSchema = z.object({
     .describe('Lista de reportes de remesa, ya que puede haber más de uno'),
 });
 
-type ReportesRemesa = z.infer<typeof reportesRemesaSchema>;
