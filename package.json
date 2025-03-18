@@ -42,7 +42,6 @@
     "@prisma/client": "^6.4.1",
     "@radix-ui/react-slot": "^1.1.0",
     "@tanstack/react-table": "^8.20.5",
-    "@types/pdfjs-dist": "^2.10.377",
     "@vercel/otel": "^1.10.3",
     "ai": "^4.1.46",
     "bcrypt": "^5.1.1",
