@@ -19,10 +19,8 @@ const reporteRemesaSchema = z.object({
   factura: z.string().describe('Numero de factura, es un UUID'),
 });
 
-
 export const reportesRemesaSchema = z.object({
   reportesRemesa: z
     .array(reporteRemesaSchema)
     .describe('Lista de reportes de remesa, ya que puede haber más de uno'),
 });
-

@@ -60,10 +60,7 @@ async function validateCoherenciaUMC(pedimento: Pedimento, cfdi?: Cfdi) {
 }
 
 // Función para validar coherencia de peso
-async function validateCoherenciaPeso(
-  pedimento: Pedimento,
-  cfdi?: Cfdi
-) {
+async function validateCoherenciaPeso(pedimento: Pedimento, cfdi?: Cfdi) {
   // Extraer peso bruto del pedimento
   const pesoBrutoPedimento = pedimento.encabezado_del_pedimento?.peso_bruto;
 

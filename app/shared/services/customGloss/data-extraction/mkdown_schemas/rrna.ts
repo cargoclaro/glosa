@@ -1,6 +1,5 @@
 import { z } from 'zod';
 
-
 export const rrnaSchema = z.object({
   markdown_representation: z
     .string()

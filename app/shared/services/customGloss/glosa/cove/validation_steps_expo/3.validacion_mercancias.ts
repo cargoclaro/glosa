@@ -95,11 +95,7 @@ async function validateValorTotalDolares(cove: Cove, cfdi?: Cfdi) {
  * First checks Carta 318, then falls back to the invoice if not found in Carta 318.
  * Serial numbers are not mandatory; if none exists, it's considered valid.
  */
-async function validateNumeroSerie(
-  cove: Cove,
-  invoice?: Invoice,
-  cfdi?: Cfdi
-) {
+async function validateNumeroSerie(cove: Cove, invoice?: Invoice, cfdi?: Cfdi) {
   const numeroSerieCove = cove.datos_mercancia[0]?.numeros_serie;
   const invoiceMkdown = invoice?.markdown_representation;
   const cfdiMkdown = cfdi?.markdown_representation;

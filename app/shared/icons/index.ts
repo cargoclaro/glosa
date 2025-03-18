@@ -1,6 +1,5 @@
 import ArrowTrendingUp from './ArrowTrendingUp';
 import ArrowsUpDown from './ArrowsUpDown';
-import BellAlert from './BellAlert';
 import CalendarDays from './CalendarDays';
 import Check from './Check';
 import ClipboardDocumentList from './ClipboardDocumentList';
@@ -19,7 +18,6 @@ import RightDoubleChevron from './RightDoubleChevron';
 import Search from './Search';
 import Square2x2 from './Square2x2';
 import Upload from './Upload';
-import XBoxIcon from './XBox';
 import XMark from './XMark';
 
 export {
@@ -32,7 +30,7 @@ export {
   Search,
   Upload,
   
-  XBoxIcon,
+  
   GlobeAlt,
   Document,
   

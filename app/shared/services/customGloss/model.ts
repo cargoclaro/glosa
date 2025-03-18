@@ -53,7 +53,6 @@ export async function read({ id, userId, recent }: IRead) {
   throw new Error('Should never happen');
 }
 
-
 export async function updateTabWithCustomGlossId({
   id,
   data,

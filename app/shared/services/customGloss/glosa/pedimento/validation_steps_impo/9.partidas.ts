@@ -57,10 +57,7 @@ async function validateFraccionArancelaria(
 }
 
 // Función para validar coherencia de UMC y cantidad UMC
-async function validateCoherenciaUMT(
-  partida: Partida,
-  pedimento: Pedimento
-) {
+async function validateCoherenciaUMT(partida: Partida, pedimento: Pedimento) {
   // Extraer partidas con información de UMC
   const partidasUMT = partida.umt || '';
   const fraccion = partida.fraccion_y_nico;

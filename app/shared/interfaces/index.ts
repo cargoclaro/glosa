@@ -48,8 +48,7 @@ interface ICustomGlossTabContextData extends CustomGlossTabContextData {
   customGlossTabContext: ICustomGlossTabContext;
 }
 
-interface ICustomGlossTabValidationStep
-  extends CustomGlossTabValidationStep {
+interface ICustomGlossTabValidationStep extends CustomGlossTabValidationStep {
   customGlossTab?: ICustomGlossTab;
   parentStep?: ICustomGlossTabValidationStep;
   steps: ICustomGlossTabValidationStep[];
@@ -71,8 +70,6 @@ export interface ISharedState {
   success: boolean;
   message?: string | string[];
 }
-
-
 
 export interface IGlossAnalysisState extends ISharedState {
   glossId?: string;

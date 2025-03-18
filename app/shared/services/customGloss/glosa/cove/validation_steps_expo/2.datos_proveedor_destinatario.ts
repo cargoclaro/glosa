@@ -90,10 +90,7 @@ async function validateDomicilioProveedor(cove: Cove, cfdi?: Cfdi) {
  * Validates that the recipient's general information in the COVE document matches the relevant document.
  * For exports: Compares with the CFDI.
  */
-async function validateDatosGeneralesDestinatario(
-  cove: Cove,
-  cfdi?: Cfdi
-) {
+async function validateDatosGeneralesDestinatario(cove: Cove, cfdi?: Cfdi) {
   // Extract recipient data from different sources
   const rfcDestinatarioCove =
     cove.datos_generales_destinatario?.rfc_destinatario;

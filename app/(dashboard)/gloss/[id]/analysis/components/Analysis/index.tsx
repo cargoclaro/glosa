@@ -37,7 +37,6 @@ type tabs = Prisma.CustomGlossTabGetPayload<{
   };
 }>;
 
-
 interface IAnalysis {
   tabs: tabs[];
   tabSelectedFromDocument: string;

@@ -4,11 +4,4 @@ import Pediment from './Pediment';
 import PedimentAnalysisNFinish from './PedimentAnalysisNFinish';
 import SavedNFinish from './SavedNFinish';
 
-export {
-  
-  Pediment,
-  Analysis,
-  Documents,
-  SavedNFinish,
-  PedimentAnalysisNFinish,
-};
+export { Pediment, Analysis, Documents, SavedNFinish, PedimentAnalysisNFinish };
