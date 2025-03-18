@@ -14,6 +14,7 @@ import {
 import { coveSchema, pedimentoSchema } from './schemas/';
 import { structureTaggedText } from './tagged';
 import { extractTextFromImage } from './vision';
+import { Langfuse } from 'langfuse';
 
 const documentToSchema = {
   factura: invoiceSchema,
@@ -36,6 +37,11 @@ async function extractTextFromPDFsParallel(
   >,
   traceId: string
 ) {
+  const langfuse = new Langfuse();
+  langfuse.event({
+    traceId: traceId,
+    name: 'Text Extraction and Structuring',
+  });
   const {
     factura,
     carta318,

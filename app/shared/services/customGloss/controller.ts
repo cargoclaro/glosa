@@ -40,6 +40,10 @@ const runGlosa = traceable(
       );
     }
     const operationType = pedimento.encabezado_del_pedimento?.tipo_oper;
+    langfuse.event({
+      traceId,
+      name: 'Validation Steps',
+    });
     if (operationType === 'IMP') {
       return {
         gloss: await glosaImpo({ ...documents, traceId }),
