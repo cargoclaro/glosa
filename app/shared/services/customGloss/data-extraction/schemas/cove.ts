@@ -1,5 +1,5 @@
-import { isValid, parse } from 'date-fns';
 import { z } from 'zod';
+import moment from 'moment';
 
 export type Cove = z.infer<typeof coveSchema>;
 
@@ -17,7 +17,7 @@ export const coveSchema = z.object({
     .describe(
       "Indicates if the operation is related to invoices, e.g., 'SIN RELACIÓN DE FACTURAS'."
     )
-    .optional(),
+    .nullable(),
   numero_factura: z
     .string()
     .describe(
@@ -28,7 +28,7 @@ export const coveSchema = z.object({
     .describe(
       "Type of figure involved in the operation, e.g., 'Agente Aduanal'."
     )
-    .optional(),
+    .nullable(),
   fecha_expedicion: z
     .string()
     .describe("Date of issuance of the document in 'DD-MM-YYYY' format.")
@@ -37,9 +37,9 @@ export const coveSchema = z.object({
         return null;
       }
 
-      const parsedDate = parse(dateStr, 'dd/MM/yyyy', new Date());
+      const parsedDate = moment(dateStr, 'DD/MM/YYYY');
 
-      if (!isValid(parsedDate)) {
+      if (!parsedDate.isValid()) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
           message: `Invalid date format: ${dateStr}. Expected DD/MM/YYYY.`,
@@ -47,52 +47,47 @@ export const coveSchema = z.object({
         return null;
       }
 
-      return parsedDate;
+      return parsedDate.toDate();
     }),
   observaciones: z
     .string()
     .describe('Additional observations noted in the document.')
-    .optional(),
+    .nullable(),
   datos_generales_proveedor: z
     .object({
       tipo_identificador: z
         .string()
         .describe("Type of identifier, e.g., 'TAX ID' or 'RFC'.")
-        .optional(),
+        .nullable(),
       identificador: z
         .string()
         .describe("Identifier value, e.g., '131881870'.")
-        .optional(),
+        .nullable(),
       nombre_razon_social: z
         .string()
         .describe(
           "Supplier's name or business name, e.g., 'REVELL CHEMICALS INC.'."
         )
-        .optional(),
+        .nullable(),
       domicilio: z
         .object({
           calle: z
             .string()
-            .describe("Street name, e.g., 'MASON STREET'.")
-            .optional(),
+            .describe("Street name, e.g., 'MASON STREET'."),
           numero_exterior: z
             .string()
-            .describe("External number, e.g., '35'.")
-            .optional(),
+            .describe("External number, e.g., '35'."),
           codigo_postal: z
             .string()
-            .describe("Postal code, e.g., '06830'.")
-            .optional(),
+            .describe("Postal code, e.g., '06830'."),
           colonia: z
             .string()
             .describe(
               "Neighborhood or subdivision, e.g., 'GREENWICH CONNECTICUT'."
-            )
-            .optional(),
-          pais: z.string().describe("Country, e.g., 'USA'.").optional(),
+            ),
+          pais: z.string().describe("Country, e.g., 'USA'."),
         })
-        .describe("Supplier's address details.")
-        .optional(),
+        .describe("Supplier's address details."),
     })
     .describe('General details about the supplier.'),
   datos_generales_destinatario: z
@@ -100,32 +95,28 @@ export const coveSchema = z.object({
       rfc_destinatario: z
         .string()
         .describe("Recipient's RFC, e.g., 'TMM210726PZ7'.")
-        .optional(),
+        .nullable(),
       nombre_razon_social: z
         .string()
         .describe(
           "Recipient's name or business name, e.g., 'TARKETT MANUFACTURING MEXICO SA DE CV'."
         )
-        .optional(),
+        .nullable(),
       domicilio: z
         .object({
-          calle: z.string().describe("Street name, e.g., 'CANELA'.").optional(),
+          calle: z.string().describe("Street name, e.g., 'CANELA'."),
           numero_exterior: z
             .string()
-            .describe("External number, e.g., '229'.")
-            .optional(),
+            .describe("External number, e.g., '229'."),
           codigo_postal: z
             .string()
-            .describe("Postal code, e.g., '08400'.")
-            .optional(),
+            .describe("Postal code, e.g., '08400'."),
           colonia: z
             .string()
-            .describe("Neighborhood or subdivision, e.g., 'GRANJAS MEXICO'.")
-            .optional(),
-          pais: z.string().describe("Country, e.g., 'MEX'.").optional(),
+            .describe("Neighborhood or subdivision, e.g., 'GRANJAS MEXICO'."),
+          pais: z.string().describe("Country, e.g., 'MEX'."),
         })
-        .describe("Recipient's address details.")
-        .optional(),
+        .describe("Recipient's address details."),
     })
     .describe('General details about the recipient.'),
   datos_mercancia: z.array(
@@ -136,41 +127,41 @@ export const coveSchema = z.object({
           .describe(
             "Generic description of the merchandise, e.g., 'PIGMENTOS A BASE DE DIOXIDO DE TITANIO'."
           )
-          .optional(),
+          .nullable(),
         clave_umc: z
           .string()
           .describe("Code for the unit of measurement, e.g., 'POUND'.")
-          .optional(),
+          .nullable(),
         cantidad_umc: z
           .number()
           .describe(
             "Quantity of the merchandise in the specified unit of measurement, e.g., '11023.00'."
           )
-          .optional(),
+          .nullable(),
         tipo_moneda: z
           .string()
           .describe(
             "Type of currency used in the transaction, e.g., 'US Dollar'."
           )
-          .optional(),
+          .nullable(),
         valor_unitario: z
           .number()
           .describe("Unit value of the merchandise, e.g., '1.69'.")
-          .optional(),
+          .nullable(),
         valor_total: z
           .number()
           .describe("Total value of the merchandise, e.g., '18628.87'.")
-          .optional(),
+          .nullable(),
         valor_total_dolares: z
           .number()
           .describe("Total value of the merchandise in USD, e.g., '1866.00'.")
-          .optional(),
+          .nullable(),
         numeros_serie: z
           .array(z.string())
           .describe(
             "Array of serial numbers for the merchandise, e.g., ['1234567890', '0987654321']."
           )
-          .optional(),
+          .nullable(),
       })
       .describe('Details about the merchandise.')
   ),

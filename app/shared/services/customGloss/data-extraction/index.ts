@@ -1,6 +1,5 @@
 import { traceable } from 'langsmith/traceable';
 import type { UploadedFileData } from 'uploadthing/types';
-import { z } from 'zod';
 import type { DocumentType } from '../classification';
 import {
   carta318Schema,
@@ -12,9 +11,9 @@ import {
   transportDocumentSchema,
 } from './mkdown_schemas';
 import { coveSchema, pedimentoSchema } from './schemas/';
-import { structureTaggedText } from './tagged';
 import { extractTextFromImage } from './vision';
 import { Langfuse } from 'langfuse';
+import { extractTextFromImageOpenAI } from './vision-openai';
 
 const documentToSchema = {
   factura: invoiceSchema,
@@ -99,7 +98,7 @@ async function extractTextFromPDFsParallel(
           traceId
         )
       : null,
-    extractTextFromPedimento(
+    extractTextFromImageOpenAI(
       pedimento.originalFile,
       pedimento.documentType,
       documentToSchema.pedimento,
@@ -112,7 +111,7 @@ async function extractTextFromPDFsParallel(
           traceId
         )
       : null,
-    extractTextFromPDF(
+    extractTextFromImageOpenAI(
       cove.originalFile,
       cove.documentType,
       documentToSchema.cove,
@@ -150,72 +149,3 @@ async function extractTextFromPDFsParallel(
 export const extractTextFromPDFs = traceable(extractTextFromPDFsParallel, {
   name: 'textExtraction',
 });
-
-const extractionResponseSchema = z.object({
-  text: z.string(),
-});
-
-async function extractTextFromPDF<T extends z.ZodType>(
-  originalFile: File,
-  documentType: DocumentType,
-  schema: T,
-  traceId: string
-) {
-  const baseUrl = process.env['PYTHON_BACKEND_URL'];
-  const url = `${baseUrl}/extract-pdf-text`;
-
-  // Create form data and append the file
-  const formData = new FormData();
-  formData.append('file', originalFile);
-
-  const response = await fetch(url, {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${process.env['GLOSS_TOKEN']}`,
-    },
-    body: formData,
-  });
-
-  if (!response.ok) {
-    throw new Error(`Failed to extract text: ${response.statusText}`);
-  }
-
-  const rawData = await response.json();
-  const data = extractionResponseSchema.parse(rawData);
-  const extractedText = data.text;
-  return structureTaggedText(extractedText, schema, documentType, traceId);
-}
-
-async function extractTextFromPedimento<S extends z.ZodType>(
-  originalFile: File,
-  documentType: DocumentType,
-  schema: S,
-  traceId: string
-): Promise<z.infer<S>> {
-  const baseUrl = process.env['PYTHON_BACKEND_URL'];
-  const url = `${baseUrl}/extract-pedimento`;
-
-  // Create form data and append the file
-  const formData = new FormData();
-  formData.append('file', originalFile);
-
-  const response = await fetch(url, {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${process.env['GLOSS_TOKEN']}`,
-    },
-    body: formData,
-  });
-
-  if (!response.ok) {
-    throw new Error(`Failed to extract text: ${response.statusText}`);
-  }
-
-  const rawData = await response.json();
-  const extractionResponseSchema = z.object({
-    pedimento_sections: z.unknown(),
-    partidas: z.unknown(),
-  });
-  const data = extractionResponseSchema.parse(rawData);
-  return structureTaggedText(data, schema, documentType, traceId);
-}
