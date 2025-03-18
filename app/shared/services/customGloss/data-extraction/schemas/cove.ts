@@ -1,5 +1,5 @@
-import { z } from 'zod';
 import moment from 'moment';
+import { z } from 'zod';
 
 export type Cove = z.infer<typeof coveSchema>;
 
@@ -71,15 +71,9 @@ export const coveSchema = z.object({
         .nullable(),
       domicilio: z
         .object({
-          calle: z
-            .string()
-            .describe("Street name, e.g., 'MASON STREET'."),
-          numero_exterior: z
-            .string()
-            .describe("External number, e.g., '35'."),
-          codigo_postal: z
-            .string()
-            .describe("Postal code, e.g., '06830'."),
+          calle: z.string().describe("Street name, e.g., 'MASON STREET'."),
+          numero_exterior: z.string().describe("External number, e.g., '35'."),
+          codigo_postal: z.string().describe("Postal code, e.g., '06830'."),
           colonia: z
             .string()
             .describe(
@@ -105,12 +99,8 @@ export const coveSchema = z.object({
       domicilio: z
         .object({
           calle: z.string().describe("Street name, e.g., 'CANELA'."),
-          numero_exterior: z
-            .string()
-            .describe("External number, e.g., '229'."),
-          codigo_postal: z
-            .string()
-            .describe("Postal code, e.g., '08400'."),
+          numero_exterior: z.string().describe("External number, e.g., '229'."),
+          codigo_postal: z.string().describe("Postal code, e.g., '08400'."),
           colonia: z
             .string()
             .describe("Neighborhood or subdivision, e.g., 'GRANJAS MEXICO'."),

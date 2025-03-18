@@ -1,3 +1,4 @@
+import { Langfuse } from 'langfuse';
 import { traceable } from 'langsmith/traceable';
 import type { UploadedFileData } from 'uploadthing/types';
 import type { DocumentType } from '../classification';
@@ -12,7 +13,6 @@ import {
 } from './mkdown_schemas';
 import { coveSchema, pedimentoSchema } from './schemas/';
 import { extractTextFromImage } from './vision';
-import { Langfuse } from 'langfuse';
 import { extractTextFromImageOpenAI } from './vision-openai';
 
 const documentToSchema = {

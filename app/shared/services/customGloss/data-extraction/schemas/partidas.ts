@@ -4,9 +4,7 @@ export type Partida = z.infer<typeof partidasSchema>;
 
 export const partidasSchema = z.object({
   sec: z.number().describe('Número de sección'),
-  fraccion_y_nico: z
-    .string()
-    .describe('Fracción arancelaria'),
+  fraccion_y_nico: z.string().describe('Fracción arancelaria'),
   vinc: z.enum(['0', '1']).describe('Vínculo'),
   met_val: z.enum(['1']).describe('Método de valoración'),
   umc: z.string().describe('Unidad de medida comercial'),

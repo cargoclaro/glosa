@@ -73,7 +73,7 @@ importers:
         version: 3.37.0(ai@4.1.62(react@18.3.1)(zod@3.24.2))
       langsmith:
         specifier: ^0.3.14
-        version: 0.3.14(openai@4.87.3(ws@8.18.1)(zod@3.24.2))
+        version: 0.3.14(openai@4.87.4(ws@8.18.1)(zod@3.24.2))
       moment:
         specifier: ^2.30.1
         version: 2.30.1
@@ -84,8 +84,8 @@ importers:
         specifier: ^0.3.0
         version: 0.3.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       openai:
-        specifier: ^4.87.3
-        version: 4.87.3(ws@8.18.1)(zod@3.24.2)
+        specifier: ^4.87.4
+        version: 4.87.4(ws@8.18.1)(zod@3.24.2)
       pdf-lib:
         specifier: ^1.17.1
         version: 1.17.1
@@ -1640,8 +1640,8 @@ packages:
   mz@2.7.0:
     resolution: {integrity: sha512-z81GNO7nnYMEhrGh9LeymoE4+Yr0Wn5McHIZMK5cfQCl+NDX08sCZgUc9/6MHni9IWuFLm1Z3HTCXu2z9fN62Q==}
 
-  nanoid@3.3.10:
-    resolution: {integrity: sha512-vSJJTG+t/dIKAUhUDw/dLdZ9s//5OxcHqLaDWWrW4Cdq7o6tdLIczUkMXt2MBNmk6sJRZBZRXVixs7URY1CmIg==}
+  nanoid@3.3.11:
+    resolution: {integrity: sha512-N8SpfPUnUp1bK+PMYW8qSWdl9U+wwNWI4QKxOYDy9JAro3WMX7p2OeVRF9v+347pnakNevPmiHhNmZ2HbFA76w==}
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
 
@@ -1700,8 +1700,8 @@ packages:
     resolution: {integrity: sha512-RSn9F68PjH9HqtltsSnqYC1XXoWe9Bju5+213R98cNGttag9q9yAOTzdbsqvIa7aNm5WffBZFpWYr2aWrklWAw==}
     engines: {node: '>= 6'}
 
-  openai@4.87.3:
-    resolution: {integrity: sha512-d2D54fzMuBYTxMW8wcNmhT1rYKcTfMJ8t+4KjH2KtvYenygITiGBgHoIrzHwnDQWW+C5oCA+ikIR2jgPCFqcKQ==}
+  openai@4.87.4:
+    resolution: {integrity: sha512-lsfM20jZY4A0lNexfoUAkfmrEXxaTXvv8OKYicpeAJUNHObpRgkvC7pxPgMnB6gc9ID8OCwzzhEhBpNy69UR7w==}
     hasBin: true
     peerDependencies:
       ws: ^8.18.0
@@ -2312,7 +2312,7 @@ snapshots:
     dependencies:
       '@ai-sdk/provider': 1.0.11
       eventsource-parser: 3.0.0
-      nanoid: 3.3.10
+      nanoid: 3.3.11
       secure-json-parse: 2.7.0
     optionalDependencies:
       zod: 3.24.2
@@ -3502,7 +3502,7 @@ snapshots:
     dependencies:
       langfuse-core: 3.37.0
 
-  langsmith@0.3.14(openai@4.87.3(ws@8.18.1)(zod@3.24.2)):
+  langsmith@0.3.14(openai@4.87.4(ws@8.18.1)(zod@3.24.2)):
     dependencies:
       '@types/uuid': 10.0.0
       chalk: 4.1.2
@@ -3512,7 +3512,7 @@ snapshots:
       semver: 7.7.1
       uuid: 10.0.0
     optionalDependencies:
-      openai: 4.87.3(ws@8.18.1)(zod@3.24.2)
+      openai: 4.87.4(ws@8.18.1)(zod@3.24.2)
 
   lilconfig@3.1.3: {}
 
@@ -3802,7 +3802,7 @@ snapshots:
       object-assign: 4.1.1
       thenify-all: 1.6.0
 
-  nanoid@3.3.10: {}
+  nanoid@3.3.11: {}
 
   next-themes@0.3.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
@@ -3856,7 +3856,7 @@ snapshots:
 
   object-hash@3.0.0: {}
 
-  openai@4.87.3(ws@8.18.1)(zod@3.24.2):
+  openai@4.87.4(ws@8.18.1)(zod@3.24.2):
     dependencies:
       '@types/node': 18.19.80
       '@types/node-fetch': 2.6.12
@@ -3993,13 +3993,13 @@ snapshots:
 
   postcss@8.4.31:
     dependencies:
-      nanoid: 3.3.10
+      nanoid: 3.3.11
       picocolors: 1.1.1
       source-map-js: 1.2.1
 
   postcss@8.5.3:
     dependencies:
-      nanoid: 3.3.10
+      nanoid: 3.3.11
       picocolors: 1.1.1
       source-map-js: 1.2.1
 
