@@ -11,6 +11,7 @@ import { glosar } from '../../validation-result';
 // TODO: Multiples mercancias, se tienen que sumar los valores de todas las mercancias
 
 async function validateFechaSalida(
+  traceId: string,
   pedimento: Pedimento,
   transportDocument?: TransportDocument
 ) {
@@ -38,10 +39,10 @@ async function validateFechaSalida(
     },
   } as const;
 
-  return await glosar(validation);
+  return await glosar(validation, traceId);
 }
 
-async function validateTipoCambio(pedimento: Pedimento) {
+async function validateTipoCambio(traceId: string, pedimento: Pedimento) {
   const tipoCambio = pedimento.encabezado_del_pedimento?.tipo_cambio;
   const fechaSalida = pedimento.fecha_entrada_presentacion;
   // TODO: Replace with actual DOF API integration
@@ -70,10 +71,11 @@ async function validateTipoCambio(pedimento: Pedimento) {
     },
   } as const;
 
-  return await glosar(validation);
+  return await glosar(validation, traceId);
 }
 
 async function validateValorComercial(
+  traceId: string,
   pedimento: Pedimento,
   cove: Cove,
   cfdi?: Cfdi
@@ -114,10 +116,11 @@ async function validateValorComercial(
     },
   } as const;
 
-  return await glosar(validation);
+  return await glosar(validation, traceId);
 }
 
 async function validateValorDolares(
+  traceId: string,
   pedimento: Pedimento,
   cove: Cove,
   cfdi?: Cfdi
@@ -160,7 +163,7 @@ async function validateValorDolares(
     },
   } as const;
 
-  return await glosar(validation);
+  return await glosar(validation, traceId);
 }
 
 export const tracedOperacionMonetaria = traceable(
@@ -169,17 +172,19 @@ export const tracedOperacionMonetaria = traceable(
     cove,
     transportDocument,
     cfdi,
+    traceId,
   }: {
     pedimento: Pedimento;
     cove: Cove;
     transportDocument?: TransportDocument;
     cfdi?: Cfdi;
+    traceId: string;
   }) => {
     const validationsPromise = await Promise.all([
-      validateFechaSalida(pedimento, transportDocument),
-      validateTipoCambio(pedimento),
-      validateValorComercial(pedimento, cove, cfdi),
-      validateValorDolares(pedimento, cove, cfdi),
+      validateFechaSalida(traceId, pedimento, transportDocument),
+      validateTipoCambio(traceId, pedimento),
+      validateValorComercial(traceId, pedimento, cove, cfdi),
+      validateValorDolares(traceId, pedimento, cove, cfdi),
     ]);
 
     return {

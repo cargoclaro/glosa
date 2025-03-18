@@ -5,7 +5,10 @@ import type { Pedimento } from '../../../data-extraction/schemas';
 import { glosar } from '../../validation-result';
 
 // Función para validar preferencia arancelaria y certificado de origen
-async function validatePreferenciaArancelaria(pedimento: Pedimento) {
+async function validatePreferenciaArancelaria(
+  traceId: string,
+  pedimento: Pedimento
+) {
   // Extraer partidas con información de preferencia arancelaria
   const partidas = pedimento.partidas || [];
 
@@ -30,11 +33,15 @@ async function validatePreferenciaArancelaria(pedimento: Pedimento) {
     },
   } as const;
 
-  return await glosar(validation);
+  return await glosar(validation, traceId);
 }
 
 // Función para validar coherencia de UMC y cantidad UMC
-async function validateCoherenciaUMC(pedimento: Pedimento, cfdi?: Cfdi) {
+async function validateCoherenciaUMC(
+  traceId: string,
+  pedimento: Pedimento,
+  cfdi?: Cfdi
+) {
   // Extraer partidas con información de UMC
   const partidas = pedimento.partidas || [];
 
@@ -56,11 +63,15 @@ async function validateCoherenciaUMC(pedimento: Pedimento, cfdi?: Cfdi) {
     },
   } as const;
 
-  return await glosar(validation);
+  return await glosar(validation, traceId);
 }
 
 // Función para validar coherencia de peso
-async function validateCoherenciaPeso(pedimento: Pedimento, cfdi?: Cfdi) {
+async function validateCoherenciaPeso(
+  traceId: string,
+  pedimento: Pedimento,
+  cfdi?: Cfdi
+) {
   // Extraer peso bruto del pedimento
   const pesoBrutoPedimento = pedimento.encabezado_del_pedimento?.peso_bruto;
 
@@ -88,11 +99,14 @@ async function validateCoherenciaPeso(pedimento: Pedimento, cfdi?: Cfdi) {
     },
   } as const;
 
-  return await glosar(validation);
+  return await glosar(validation, traceId);
 }
 
 // Función para validar cálculo del prorrateo y DTA
-async function validateCalculoDTA(pedimento: Pedimento) {
+async function validateCalculoDTA(
+  traceId: string,
+  pedimento: Pedimento
+) {
   // Extraer partidas con contribuciones
   const partidas = pedimento.partidas || [];
 
@@ -111,11 +125,12 @@ async function validateCalculoDTA(pedimento: Pedimento) {
     },
   } as const;
 
-  return await glosar(validation);
+  return await glosar(validation, traceId);
 }
 
 // Función para validar cálculo de contribuciones
 async function validateCalculoContribuciones(
+  traceId: string,
   pedimento: Pedimento,
   cfdi?: Cfdi
 ) {
@@ -140,11 +155,14 @@ async function validateCalculoContribuciones(
     },
   } as const;
 
-  return await glosar(validation);
+  return await glosar(validation, traceId);
 }
 
 // Función para validar coincidencia de permisos e identificadores
-async function validatePermisosIdentificadores(pedimento: Pedimento) {
+async function validatePermisosIdentificadores(
+  traceId: string,
+  pedimento: Pedimento
+) {
   // Extraer identificadores a nivel pedimento
   const identificadoresPedimento = pedimento.identificadores_pedimento || [];
 
@@ -169,11 +187,14 @@ async function validatePermisosIdentificadores(pedimento: Pedimento) {
     },
   } as const;
 
-  return await glosar(validation);
+  return await glosar(validation, traceId);
 }
 
 // Función para validar regulaciones arancelarias
-async function validateRegulacionesArancelarias(pedimento: Pedimento) {
+async function validateRegulacionesArancelarias(
+  traceId: string,
+  pedimento: Pedimento
+) {
   // Extraer partidas con fracciones arancelarias
   const partidas = pedimento.partidas || [];
 
@@ -192,11 +213,14 @@ async function validateRegulacionesArancelarias(pedimento: Pedimento) {
     },
   } as const;
 
-  return await glosar(validation);
+  return await glosar(validation, traceId);
 }
 
 // Función para validar regulaciones no arancelarias
-async function validateRegulacionesNoArancelarias(pedimento: Pedimento) {
+async function validateRegulacionesNoArancelarias(
+  traceId: string,
+  pedimento: Pedimento
+) {
   // Extraer partidas con fracciones arancelarias
   const partidas = pedimento.partidas || [];
 
@@ -215,20 +239,24 @@ async function validateRegulacionesNoArancelarias(pedimento: Pedimento) {
     },
   } as const;
 
-  return await glosar(validation);
+  return await glosar(validation, traceId);
 }
 
 export const tracedPartidas = traceable(
-  async ({ pedimento, cfdi }: { pedimento: Pedimento; cfdi?: Cfdi }) => {
+  async ({
+    pedimento,
+    cfdi,
+    traceId,
+  }: { pedimento: Pedimento; cfdi?: Cfdi; traceId: string }) => {
     const validationsPromise = await Promise.all([
-      validatePreferenciaArancelaria(pedimento),
-      validateCoherenciaUMC(pedimento, cfdi),
-      validateCoherenciaPeso(pedimento, cfdi),
-      validateCalculoDTA(pedimento),
-      validateCalculoContribuciones(pedimento, cfdi),
-      validatePermisosIdentificadores(pedimento),
-      validateRegulacionesArancelarias(pedimento),
-      validateRegulacionesNoArancelarias(pedimento),
+      validatePreferenciaArancelaria(traceId, pedimento),
+      validateCoherenciaUMC(traceId, pedimento, cfdi),
+      validateCoherenciaPeso(traceId, pedimento, cfdi),
+      validateCalculoDTA(traceId, pedimento),
+      validateCalculoContribuciones(traceId, pedimento, cfdi),
+      validatePermisosIdentificadores(traceId, pedimento),
+      validateRegulacionesArancelarias(traceId, pedimento),
+      validateRegulacionesNoArancelarias(traceId, pedimento),
     ]);
 
     return {

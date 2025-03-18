@@ -13,6 +13,7 @@ import { glosar } from '../../validation-result';
  * If origin is Mexico, operation type should be EXP (export)
  */
 async function validateCoherenciaOrigenDestino(
+  traceId: string,
   pedimento: Pedimento,
   transportDoc?: TransportDocument
 ) {
@@ -45,13 +46,13 @@ async function validateCoherenciaOrigenDestino(
     },
   } as const;
 
-  return await glosar(validation);
+  return await glosar(validation, traceId);
 }
 
 /**
  * Validates that the pedimento key is valid for the operation type according to Appendix 2
  */
-async function validateClavePedimento(pedimento: Pedimento) {
+async function validateClavePedimento(traceId: string, pedimento: Pedimento) {
   const tipoOperacion = pedimento.encabezado_del_pedimento?.tipo_oper;
   const clavePedimento = pedimento.encabezado_del_pedimento?.cve_pedim;
 
@@ -78,13 +79,13 @@ async function validateClavePedimento(pedimento: Pedimento) {
     },
   } as const;
 
-  return await glosar(validation);
+  return await glosar(validation, traceId);
 }
 
 /**
  * Validates that the regime is valid for the operation type according to Appendix 16
  */
-async function validateRegimen(pedimento: Pedimento) {
+async function validateRegimen(traceId: string, pedimento: Pedimento) {
   const tipoOperacion = pedimento.encabezado_del_pedimento?.tipo_oper;
   const regimen = pedimento.encabezado_del_pedimento?.regimen;
 
@@ -111,18 +112,19 @@ async function validateRegimen(pedimento: Pedimento) {
     },
   } as const;
 
-  return await glosar(validation);
+  return await glosar(validation, traceId);
 }
 
 export const tracedTipoOperacion = traceable(
   async ({
     pedimento,
     transportDoc,
-  }: { pedimento: Pedimento; transportDoc?: TransportDocument }) => {
+    traceId,
+  }: { pedimento: Pedimento; transportDoc?: TransportDocument; traceId: string }) => {
     const validationsPromise = await Promise.all([
-      validateCoherenciaOrigenDestino(pedimento, transportDoc),
-      validateClavePedimento(pedimento),
-      validateRegimen(pedimento),
+      validateCoherenciaOrigenDestino(traceId, pedimento, transportDoc),
+      validateClavePedimento(traceId, pedimento),
+      validateRegimen(traceId, pedimento),
     ]);
 
     return {

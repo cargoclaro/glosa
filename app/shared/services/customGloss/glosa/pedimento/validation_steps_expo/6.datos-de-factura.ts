@@ -8,6 +8,7 @@ import type { Cove, Pedimento } from '../../../data-extraction/schemas';
 import { glosar } from '../../validation-result';
 
 async function validateRfcFormat(
+  traceId: string,
   pedimento: Pedimento,
   cove: Cove,
   cfdi?: Cfdi
@@ -38,10 +39,11 @@ async function validateRfcFormat(
     },
   } as const;
 
-  return await glosar(validation);
+  return await glosar(validation, traceId);
 }
 
 async function validateCesionDerechos(
+  traceId: string,
   pedimento: Pedimento,
   cartaSesion?: CartaSesion,
   cfdi?: Cfdi
@@ -72,10 +74,11 @@ async function validateCesionDerechos(
     },
   } as const;
 
-  return await glosar(validation);
+  return await glosar(validation, traceId);
 }
 
 async function validateDatosImportador(
+  traceId: string,
   pedimento: Pedimento,
   cove: Cove,
   cfdi?: Cfdi
@@ -133,10 +136,11 @@ async function validateDatosImportador(
     },
   } as const;
 
-  return await glosar(validation);
+  return await glosar(validation, traceId);
 }
 
 async function validateDatosProveedor(
+  traceId: string,
   pedimento: Pedimento,
   cove: Cove,
   cfdi?: Cfdi
@@ -194,10 +198,11 @@ async function validateDatosProveedor(
     },
   } as const;
 
-  return await glosar(validation);
+  return await glosar(validation, traceId);
 }
 
 async function validateFechasYFolios(
+  traceId: string,
   pedimento: Pedimento,
   cove: Cove,
   cfdi?: Cfdi
@@ -238,10 +243,11 @@ async function validateFechasYFolios(
     },
   } as const;
 
-  return await glosar(validation);
+  return await glosar(validation, traceId);
 }
 
 async function validateMonedaYEquivalencia(
+  traceId: string,
   pedimento: Pedimento,
   cove: Cove,
   cfdi?: Cfdi
@@ -303,7 +309,7 @@ async function validateMonedaYEquivalencia(
     },
   } as const;
 
-  return await glosar(validation);
+  return await glosar(validation, traceId);
 }
 
 export const tracedRfcFormat = traceable(
@@ -312,19 +318,21 @@ export const tracedRfcFormat = traceable(
     cove,
     cfdi,
     cartaSesion,
+    traceId,
   }: {
     pedimento: Pedimento;
     cove: Cove;
     cfdi?: Cfdi;
     cartaSesion?: CartaSesion;
+    traceId: string;
   }) => {
     const validationsPromise = await Promise.all([
-      validateRfcFormat(pedimento, cove, cfdi),
-      validateCesionDerechos(pedimento, cartaSesion, cfdi),
-      validateDatosImportador(pedimento, cove, cfdi),
-      validateDatosProveedor(pedimento, cove, cfdi),
-      validateFechasYFolios(pedimento, cove, cfdi),
-      validateMonedaYEquivalencia(pedimento, cove, cfdi),
+      validateRfcFormat(traceId, pedimento, cove, cfdi),
+      validateCesionDerechos(traceId, pedimento, cartaSesion, cfdi),
+      validateDatosImportador(traceId, pedimento, cove, cfdi),
+      validateDatosProveedor(traceId, pedimento, cove, cfdi),
+      validateFechasYFolios(traceId, pedimento, cove, cfdi),
+      validateMonedaYEquivalencia(traceId, pedimento, cove, cfdi),
     ]);
 
     return {

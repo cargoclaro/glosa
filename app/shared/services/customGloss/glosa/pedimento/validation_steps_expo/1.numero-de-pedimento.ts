@@ -3,7 +3,7 @@ import { traceable } from 'langsmith/traceable';
 import type { Pedimento } from '../../../data-extraction/schemas';
 import { glosar } from '../../validation-result';
 
-async function validateLongitud(pedimento: Pedimento) {
+async function validateLongitud(traceId: string, pedimento: Pedimento) {
   const numeroPedimento = pedimento.encabezado_del_pedimento?.num_pedimento;
   const numeroPedimentoSinEspacios = numeroPedimento?.replace(/\s+/g, '') || '';
   const longitud = numeroPedimentoSinEspacios.length;
@@ -30,10 +30,10 @@ async function validateLongitud(pedimento: Pedimento) {
     },
   } as const;
 
-  return await glosar(validation);
+  return await glosar(validation, traceId);
 }
 
-async function validateAñoPedimento(pedimento: Pedimento) {
+async function validateAñoPedimento(traceId: string, pedimento: Pedimento) {
   const numeroPedimento = pedimento.encabezado_del_pedimento?.num_pedimento;
   const numeroPedimentoSinEspacios = numeroPedimento?.replace(/\s+/g, '') || '';
   const añoActual = new Date().getFullYear();
@@ -61,14 +61,14 @@ async function validateAñoPedimento(pedimento: Pedimento) {
     },
   } as const;
 
-  return await glosar(validation);
+  return await glosar(validation, traceId);
 }
 
 export const tracedNumeroDePedimento = traceable(
-  async ({ pedimento }: { pedimento: Pedimento }) => {
+  async ({ pedimento, traceId }: { pedimento: Pedimento; traceId: string }) => {
     const validationsPromise = await Promise.all([
-      validateLongitud(pedimento),
-      validateAñoPedimento(pedimento),
+      validateLongitud(traceId, pedimento),
+      validateAñoPedimento(traceId, pedimento),
     ]);
 
     return {

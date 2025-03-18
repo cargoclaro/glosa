@@ -6,7 +6,7 @@ import { apendice3 } from '../../anexo-22/apendice_3';
 import { apendice10 } from '../../anexo-22/apendice_10';
 import { glosar } from '../../validation-result';
 
-async function validateTipoTransporte(pedimento: Pedimento) {
+async function validateTipoTransporte(traceId: string, pedimento: Pedimento) {
   // Extract transport type from pedimento
   const tipoTransporteEntradaSalida =
     pedimento.medios_transporte?.entrada_salida;
@@ -45,10 +45,11 @@ async function validateTipoTransporte(pedimento: Pedimento) {
     },
   } as const;
 
-  return await glosar(validation);
+  return await glosar(validation, traceId);
 }
 
 async function validateModalidadMedioTransporte(
+  traceId: string,
   pedimento: Pedimento,
   transportDocument?: TransportDocument
 ) {
@@ -85,10 +86,11 @@ async function validateModalidadMedioTransporte(
     },
   } as const;
 
-  return await glosar(validation);
+  return await glosar(validation, traceId);
 }
 
 async function validateNumeroGuiaEmbarque(
+  traceId: string,
   pedimento: Pedimento,
   transportDocument?: TransportDocument
 ) {
@@ -120,18 +122,19 @@ async function validateNumeroGuiaEmbarque(
     },
   } as const;
 
-  return await glosar(validation);
+  return await glosar(validation, traceId);
 }
 
 export const tracedTipoTransporte = traceable(
   async ({
     pedimento,
     transportDocument,
-  }: { pedimento: Pedimento; transportDocument?: TransportDocument }) => {
+    traceId,
+  }: { pedimento: Pedimento; transportDocument?: TransportDocument; traceId: string }) => {
     const validationsPromise = await Promise.all([
-      validateTipoTransporte(pedimento),
-      validateModalidadMedioTransporte(pedimento, transportDocument),
-      validateNumeroGuiaEmbarque(pedimento, transportDocument),
+      validateTipoTransporte(traceId, pedimento),
+      validateModalidadMedioTransporte(traceId, pedimento, transportDocument),
+      validateNumeroGuiaEmbarque(traceId, pedimento, transportDocument),
     ]);
 
     return {
