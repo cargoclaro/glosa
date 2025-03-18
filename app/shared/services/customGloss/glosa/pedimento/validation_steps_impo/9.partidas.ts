@@ -16,6 +16,7 @@ import { glosar } from '../../validation-result';
 
 // Función para validar preferencia arancelaria y certificado de origen
 async function validateFraccionArancelaria(
+  traceId: string,
   partida: Partida,
   pedimento: Pedimento
 ) {
@@ -53,11 +54,15 @@ async function validateFraccionArancelaria(
     },
   } as const;
 
-  return await glosar(validation, 'gpt-4o-mini');
+  return await glosar(validation, traceId, 'gpt-4o-mini');
 }
 
 // Función para validar coherencia de UMC y cantidad UMC
-async function validateCoherenciaUMT(partida: Partida, pedimento: Pedimento) {
+async function validateCoherenciaUMT(
+  traceId: string,
+  partida: Partida,
+  pedimento: Pedimento
+) {
   // Extraer partidas con información de UMC
   const partidasUMT = partida.umt || '';
   const fraccion = partida.fraccion_y_nico;
@@ -101,11 +106,12 @@ async function validateCoherenciaUMT(partida: Partida, pedimento: Pedimento) {
     },
   } as const;
 
-  return await glosar(validation, 'gpt-4o-mini');
+  return await glosar(validation, traceId, 'gpt-4o-mini');
 }
 
 // Función para validar coherencia de UMC
 async function validateCoherenciaUMC(
+  traceId: string,
   partida: Partida,
   cove?: Cove,
   carta318?: Carta318,
@@ -146,11 +152,12 @@ async function validateCoherenciaUMC(
     },
   } as const;
 
-  return await glosar(validation, 'gpt-4o-mini');
+  return await glosar(validation, traceId, 'gpt-4o-mini');
 }
 
 // Función para validar el país de venta
 async function validatePaisVenta(
+  traceId: string,
   partida: Partida,
   pedimento?: Pedimento,
   invoice?: Invoice,
@@ -195,11 +202,12 @@ async function validatePaisVenta(
     },
   } as const;
 
-  return await glosar(validation, 'gpt-4o-mini');
+  return await glosar(validation, traceId, 'gpt-4o-mini');
 }
 
 // Función para validar el país de origen
 async function validatePaisOrigen(
+  traceId: string,
   partida: Partida,
   pedimento?: Pedimento,
   invoice?: Invoice,
@@ -242,11 +250,12 @@ async function validatePaisOrigen(
     },
   } as const;
 
-  return await glosar(validation, 'gpt-4o-mini');
+  return await glosar(validation, traceId, 'gpt-4o-mini');
 }
 
 // Función para validar la descripción de la mercancía
 async function validateDescripcionMercancia(
+  traceId: string,
   partida: Partida,
   pedimento?: Pedimento,
   cove?: Cove,
@@ -298,10 +307,11 @@ async function validateDescripcionMercancia(
     },
   } as const;
 
-  return await glosar(validation, 'gpt-4o-mini');
+  return await glosar(validation, traceId, 'gpt-4o-mini');
 }
 
 async function validateTarifasArancelarias(
+  traceId: string,
   partida: Partida,
   pedimento: Pedimento
 ) {
@@ -370,10 +380,11 @@ async function validateTarifasArancelarias(
     },
   } as const;
 
-  return await glosar(validation, 'gpt-4o-mini');
+  return await glosar(validation, traceId, 'gpt-4o-mini');
 }
 
 async function validateCalculosPartidas(
+  traceId: string,
   pedimento: Pedimento,
   partida: Partida
 ) {
@@ -450,11 +461,12 @@ async function validateCalculosPartidas(
   } as const;
 
   // Return result for LLM processing
-  return await glosar(validation, 'gpt-4o-mini');
+  return await glosar(validation, traceId, 'gpt-4o-mini');
 }
 
 // Función para validar números de serie, modelo y parte
 async function validateNumerosSerie(
+  traceId: string,
   pedimento: Pedimento,
   partida: Partida,
   cove?: Cove
@@ -488,12 +500,13 @@ async function validateNumerosSerie(
     },
   } as const;
 
-  return await glosar(validation, 'gpt-4o-mini');
+  return await glosar(validation, traceId, 'gpt-4o-mini');
 }
 
 import { IDENTIFICADORES } from './identificadores';
 
 async function validateIdentificadores(
+  traceId: string,
   identificador: Partida['identificadores'][number]
 ) {
   if (!(identificador.clave in IDENTIFICADORES)) {
@@ -533,7 +546,7 @@ async function validateIdentificadores(
     },
   } as const;
 
-  return await glosar(validation, 'o3-mini');
+  return await glosar(validation, traceId, 'o3-mini');
 }
 
 export const tracedPartidas = traceable(
@@ -545,6 +558,7 @@ export const tracedPartidas = traceable(
     partida,
     packing,
     partidaNumber,
+    traceId,
   }: {
     pedimento: Pedimento;
     invoice?: Invoice;
@@ -553,19 +567,20 @@ export const tracedPartidas = traceable(
     partida: Partida;
     packing?: PackingList;
     partidaNumber: number;
+    traceId: string;
   }) => {
     const validationsPromise = await Promise.all([
-      validateFraccionArancelaria(partida, pedimento),
-      validateCoherenciaUMC(partida, cove, carta318, invoice),
-      validateCoherenciaUMT(partida, pedimento),
-      validatePaisVenta(partida, pedimento, invoice, packing, carta318),
-      validatePaisOrigen(partida, pedimento, invoice, packing, carta318),
-      validateDescripcionMercancia(partida, pedimento, cove, invoice, carta318),
-      validateTarifasArancelarias(partida, pedimento),
-      validateCalculosPartidas(pedimento, partida),
-      validateNumerosSerie(pedimento, partida, cove),
+      validateFraccionArancelaria(traceId, partida, pedimento),
+      validateCoherenciaUMC(traceId, partida, cove, carta318, invoice),
+      validateCoherenciaUMT(traceId, partida, pedimento),
+      validatePaisVenta(traceId, partida, pedimento, invoice, packing, carta318),
+      validatePaisOrigen(traceId, partida, pedimento, invoice, packing, carta318),
+      validateDescripcionMercancia(traceId, partida, pedimento, cove, invoice, carta318),
+      validateTarifasArancelarias(traceId, partida, pedimento),
+      validateCalculosPartidas(traceId, pedimento, partida),
+      validateNumerosSerie(traceId, pedimento, partida, cove),
       ...partida.identificadores.map((identificador) =>
-        validateIdentificadores(identificador)
+        validateIdentificadores(traceId, identificador)
       ),
     ]);
 

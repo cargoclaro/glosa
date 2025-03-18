@@ -8,6 +8,7 @@ import type { Pedimento } from '../../../data-extraction/schemas';
 import { glosar } from '../../validation-result';
 
 async function validatePesosYBultos(
+  traceId: string,
   pedimento: Pedimento,
   transportDocument?: TransportDocument,
   packingList?: PackingList,
@@ -56,10 +57,11 @@ async function validatePesosYBultos(
     },
   } as const;
 
-  return await glosar(validation, 'gpt-4o');
+  return await glosar(validation, traceId, 'gpt-4o');
 }
 
 async function validateBultos(
+  traceId: string,
   pedimento: Pedimento,
   transportDocument?: TransportDocument
 ) {
@@ -94,7 +96,7 @@ async function validateBultos(
     },
   } as const;
 
-  return await glosar(validation, 'o3-mini');
+  return await glosar(validation, traceId, 'o3-mini');
 }
 
 export const tracedPesosYBultos = traceable(
@@ -103,15 +105,17 @@ export const tracedPesosYBultos = traceable(
     transportDocument,
     packingList,
     invoice,
+    traceId,
   }: {
     pedimento: Pedimento;
     transportDocument?: TransportDocument;
     packingList?: PackingList;
     invoice?: Invoice;
+    traceId: string;
   }) => {
     const validationsPromise = await Promise.all([
-      validatePesosYBultos(pedimento, transportDocument, packingList, invoice),
-      validateBultos(pedimento, transportDocument),
+      validatePesosYBultos(traceId, pedimento, transportDocument, packingList, invoice),
+      validateBultos(traceId, pedimento, transportDocument),
     ]);
 
     return {

@@ -11,6 +11,7 @@ import { glosar } from '../../validation-result';
  * If destination is Mexico, operation type should be IMP (import)
  */
 async function validateCoherenciaOrigenDestino(
+  traceId: string,
   pedimento: Pedimento,
   transportDocument?: TransportDocument
 ) {
@@ -42,13 +43,16 @@ async function validateCoherenciaOrigenDestino(
     },
   } as const;
 
-  return await glosar(validation, 'gpt-4o-mini');
+  return await glosar(validation, traceId, 'gpt-4o-mini');
 }
 
 /**
  * Validates that the pedimento key is valid for the operation type according to Appendix 2
  */
-async function validateClavePedimento(pedimento: Pedimento) {
+async function validateClavePedimento(
+  traceId: string,
+  pedimento: Pedimento
+) {
   const tipoOperacion = pedimento.encabezado_del_pedimento?.tipo_oper;
   const clavePedimento = pedimento.encabezado_del_pedimento?.cve_pedim;
   const observaciones = pedimento.observaciones_a_nivel_pedimento;
@@ -77,13 +81,16 @@ async function validateClavePedimento(pedimento: Pedimento) {
     },
   } as const;
 
-  return await glosar(validation, 'gpt-4o-mini');
+  return await glosar(validation, traceId, 'gpt-4o-mini');
 }
 
 /**
  * Validates that the regime is valid for the operation type according to Appendix 16
  */
-async function validateRegimen(pedimento: Pedimento) {
+async function validateRegimen(
+  traceId: string,
+  pedimento: Pedimento
+) {
   const tipoOperacion = pedimento.encabezado_del_pedimento?.tipo_oper;
   const regimen = pedimento.encabezado_del_pedimento?.regimen;
   const observaciones = pedimento.observaciones_a_nivel_pedimento;
@@ -112,18 +119,19 @@ async function validateRegimen(pedimento: Pedimento) {
     },
   } as const;
 
-  return await glosar(validation, 'gpt-4o-mini');
+  return await glosar(validation, traceId, 'gpt-4o-mini');
 }
 
 export const tracedTipoOperacion = traceable(
   async ({
     pedimento,
     transportDocument,
-  }: { pedimento: Pedimento; transportDocument?: TransportDocument }) => {
+    traceId,
+  }: { pedimento: Pedimento; transportDocument?: TransportDocument; traceId: string }) => {
     const validationsPromise = await Promise.all([
-      validateCoherenciaOrigenDestino(pedimento, transportDocument),
-      validateClavePedimento(pedimento),
-      validateRegimen(pedimento),
+      validateCoherenciaOrigenDestino(traceId, pedimento, transportDocument),
+      validateClavePedimento(traceId, pedimento),
+      validateRegimen(traceId, pedimento),
     ]);
 
     return {

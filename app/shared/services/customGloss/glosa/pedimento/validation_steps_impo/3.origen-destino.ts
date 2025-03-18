@@ -4,7 +4,10 @@ import type { Pedimento } from '../../../data-extraction/schemas';
 import { apendice15 } from '../../anexo-22/apendice-15';
 import { glosar } from '../../validation-result';
 
-async function validateClaveApendice15(pedimento: Pedimento) {
+async function validateClaveApendice15(
+  traceId: string,
+  pedimento: Pedimento
+) {
   const claveDestinoOrigen = pedimento.encabezado_del_pedimento?.destino_origen;
   const observaciones = pedimento.observaciones_a_nivel_pedimento;
 
@@ -29,13 +32,13 @@ async function validateClaveApendice15(pedimento: Pedimento) {
     },
   } as const;
 
-  return await glosar(validation, 'gpt-4o-mini');
+  return await glosar(validation, traceId, 'gpt-4o-mini');
 }
 
 export const tracedClaveApendice15 = traceable(
-  async ({ pedimento }: { pedimento: Pedimento }) => {
+  async ({ pedimento, traceId }: { pedimento: Pedimento; traceId: string }) => {
     const validationsPromise = await Promise.all([
-      validateClaveApendice15(pedimento),
+      validateClaveApendice15(traceId, pedimento),
     ]);
 
     return {

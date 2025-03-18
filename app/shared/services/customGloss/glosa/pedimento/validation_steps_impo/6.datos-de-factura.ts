@@ -8,6 +8,7 @@ import { getExchangeRate } from '../../exchange-rate';
 import { glosar } from '../../validation-result';
 
 async function validateRfcFormat(
+  traceId: string,
   pedimento: Pedimento,
   cove: Cove,
   carta318?: Carta318
@@ -41,10 +42,11 @@ async function validateRfcFormat(
     },
   } as const;
 
-  return await glosar(validation, 'gpt-4o-mini');
+  return await glosar(validation, traceId, 'gpt-4o-mini');
 }
 
 async function validateCesionDerechos(
+  traceId: string,
   pedimento: Pedimento,
   cartaSesion?: CartaSesion,
   carta318?: Carta318
@@ -81,10 +83,11 @@ async function validateCesionDerechos(
     },
   } as const;
 
-  return await glosar(validation, 'o3-mini');
+  return await glosar(validation, traceId, 'o3-mini');
 }
 
 async function validateDatosImportador(
+  traceId: string,
   pedimento: Pedimento,
   cove: Cove,
   carta318?: Carta318
@@ -145,10 +148,11 @@ async function validateDatosImportador(
     },
   } as const;
 
-  return await glosar(validation, 'o3-mini');
+  return await glosar(validation, traceId, 'o3-mini');
 }
 
 async function validateDatosProveedor(
+  traceId: string,
   pedimento: Pedimento,
   cove: Cove,
   carta318?: Carta318
@@ -211,10 +215,11 @@ async function validateDatosProveedor(
     },
   } as const;
 
-  return await glosar(validation, 'o3-mini');
+  return await glosar(validation, traceId, 'o3-mini');
 }
 
 async function validateFechasYFolios(
+  traceId: string,
   pedimento: Pedimento,
   cove: Cove,
   invoice?: Invoice,
@@ -260,10 +265,11 @@ async function validateFechasYFolios(
     },
   } as const;
 
-  return await glosar(validation, 'o3-mini');
+  return await glosar(validation, traceId, 'o3-mini');
 }
 
 async function validateMonedaYEquivalencia(
+  traceId: string,
   pedimento: Pedimento,
   cove: Cove,
   carta318?: Carta318,
@@ -330,7 +336,7 @@ async function validateMonedaYEquivalencia(
     },
   } as const;
 
-  return await glosar(validation, 'o3-mini');
+  return await glosar(validation, traceId, 'o3-mini');
 }
 
 export const tracedDatosDeFactura = traceable(
@@ -340,20 +346,22 @@ export const tracedDatosDeFactura = traceable(
     carta318,
     invoice,
     cartaSesion,
+    traceId,
   }: {
     pedimento: Pedimento;
     cove: Cove;
     carta318?: Carta318;
     invoice?: Invoice;
     cartaSesion?: CartaSesion;
+    traceId: string;
   }) => {
     const validationsPromise = await Promise.all([
-      validateRfcFormat(pedimento, cove, carta318),
-      validateCesionDerechos(pedimento, cartaSesion, carta318),
-      validateDatosImportador(pedimento, cove, carta318),
-      validateDatosProveedor(pedimento, cove, carta318),
-      validateFechasYFolios(pedimento, cove, invoice, carta318),
-      validateMonedaYEquivalencia(pedimento, cove, carta318, invoice),
+      validateRfcFormat(traceId, pedimento, cove, carta318),
+      validateCesionDerechos(traceId, pedimento, cartaSesion, carta318),
+      validateDatosImportador(traceId, pedimento, cove, carta318),
+      validateDatosProveedor(traceId, pedimento, cove, carta318),
+      validateFechasYFolios(traceId, pedimento, cove, invoice, carta318),
+      validateMonedaYEquivalencia(traceId, pedimento, cove, carta318, invoice),
     ]);
 
     return {

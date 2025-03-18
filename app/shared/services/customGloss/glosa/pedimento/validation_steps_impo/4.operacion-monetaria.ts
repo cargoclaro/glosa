@@ -10,6 +10,7 @@ import { glosar } from '../../validation-result';
 // TODO: Agregar DOF
 
 async function validateTransportDocumentEntryDate(
+  traceId: string,
   pedimento: Pedimento,
   transportDocument?: TransportDocument
 ) {
@@ -40,10 +41,13 @@ async function validateTransportDocumentEntryDate(
     },
   } as const;
 
-  return await glosar(validation);
+  return await glosar(validation, traceId);
 }
 
-async function validateTipoCambio(pedimento: Pedimento) {
+async function validateTipoCambio(
+  traceId: string,
+  pedimento: Pedimento
+) {
   const tipoCambio = pedimento.encabezado_del_pedimento?.tipo_cambio;
   const fechaEntrada = pedimento.fecha_entrada_presentacion;
   const observaciones = pedimento.observaciones_a_nivel_pedimento;
@@ -73,10 +77,11 @@ async function validateTipoCambio(pedimento: Pedimento) {
     },
   } as const;
 
-  return await glosar(validation, 'gpt-4o-mini');
+  return await glosar(validation, traceId, 'gpt-4o-mini');
 }
 
 async function validateIncrementables(
+  traceId: string,
   pedimento: Pedimento,
   invoice?: Invoice,
   transportDocument?: TransportDocument,
@@ -133,10 +138,11 @@ async function validateIncrementables(
     },
   } as const;
 
-  return await glosar(validation, 'o3-mini');
+  return await glosar(validation, traceId, 'o3-mini');
 }
 
 async function validateValorDolares(
+  traceId: string,
   pedimento: Pedimento,
   invoice?: Invoice,
   carta318?: Carta318
@@ -174,10 +180,11 @@ async function validateValorDolares(
     },
   } as const;
 
-  return await glosar(validation, 'o3-mini');
+  return await glosar(validation, traceId, 'o3-mini');
 }
 
 async function validateValorComercial(
+  traceId: string,
   pedimento: Pedimento,
   invoice?: Invoice,
   carta318?: Carta318
@@ -215,10 +222,11 @@ async function validateValorComercial(
     },
   } as const;
 
-  return await glosar(validation, 'o3-mini');
+  return await glosar(validation, traceId, 'o3-mini');
 }
 
 async function validateValorAduana(
+  traceId: string,
   pedimento: Pedimento,
   invoice?: Invoice,
   carta318?: Carta318
@@ -258,7 +266,7 @@ async function validateValorAduana(
     },
   } as const;
 
-  return await glosar(validation, 'o3-mini');
+  return await glosar(validation, traceId, 'o3-mini');
 }
 
 export const tracedTransportDocumentEntryDate = traceable(
@@ -267,19 +275,21 @@ export const tracedTransportDocumentEntryDate = traceable(
     invoice,
     transportDocument,
     carta318,
+    traceId,
   }: {
     pedimento: Pedimento;
     invoice?: Invoice;
     transportDocument?: TransportDocument;
     carta318?: Carta318;
+    traceId: string;
   }) => {
     const validationsPromise = await Promise.all([
-      validateTransportDocumentEntryDate(pedimento, transportDocument),
-      validateTipoCambio(pedimento),
-      validateIncrementables(pedimento, invoice, transportDocument, carta318),
-      validateValorDolares(pedimento, invoice, carta318),
-      validateValorComercial(pedimento, invoice),
-      validateValorAduana(pedimento, invoice, carta318),
+      validateTransportDocumentEntryDate(traceId, pedimento, transportDocument),
+      validateTipoCambio(traceId, pedimento),
+      validateIncrementables(traceId, pedimento, invoice, transportDocument, carta318),
+      validateValorDolares(traceId, pedimento, invoice, carta318),
+      validateValorComercial(traceId, pedimento, invoice, carta318),
+      validateValorAduana(traceId, pedimento, invoice, carta318),
     ]);
 
     return {
