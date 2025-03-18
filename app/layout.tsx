@@ -1,19 +1,19 @@
-import "./styles/globals.css";
-import { cn } from "@/shared/utils/cn";
-import { GeistSans } from "geist/font/sans";
-import { ThemeComponent } from "@/shared/components";
-import type { Metadata } from "next";
-import { ClerkProvider } from "@clerk/nextjs";
-import { esMX } from '@clerk/localizations'
+import './styles/globals.css';
+import { ThemeComponent } from '@/shared/components';
+import { cn } from '@/shared/utils/cn';
+import { esMX } from '@clerk/localizations';
+import { ClerkProvider } from '@clerk/nextjs';
+import { GeistSans } from 'geist/font/sans';
+import type { Metadata } from 'next';
 
-export const dynamic = "force-dynamic";
+export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: {
-    template: "%s | Cargo Claro",
-    default: "Cargo Claro",
+    template: '%s | Cargo Claro',
+    default: 'Cargo Claro',
   },
-  description: "Conectamos a Transfers con Agencias Aduanales.",
+  description: 'Conectamos a Transfers con Agencias Aduanales.',
 };
 
 export default function RootLayout({
@@ -27,7 +27,7 @@ export default function RootLayout({
       <body
         suppressHydrationWarning
         className={cn(
-          "bg-[#f8f9fd] w-full min-h-screen max-w-[1440px] mx-auto",
+          'mx-auto min-h-screen w-full max-w-[1440px] bg-[#f8f9fd]',
           GeistSans.className
         )}
       >

@@ -1,9 +1,9 @@
-import { notFound } from "next/navigation";
-import { Documents, PedimentAnalysisNFinish } from "./components";
-import type { Metadata } from "next";
-import prisma from "@/shared/services/prisma";
-import Link from "next/link";
-import { auth } from "@clerk/nextjs/server";
+import prisma from '@/shared/services/prisma';
+import { auth } from '@clerk/nextjs/server';
+import type { Metadata } from 'next';
+import Link from 'next/link';
+import { notFound } from 'next/navigation';
+import { Documents, PedimentAnalysisNFinish } from './components';
 
 type IDynamicMetadata = {
   params: Promise<{ id: string }>;
@@ -60,12 +60,12 @@ const GlossIdAnalysis = async ({
   if (!customGloss) notFound();
 
   return (
-    <article className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+    <article className="grid grid-cols-1 gap-4 sm:grid-cols-3 lg:grid-cols-4">
       <section className="flex flex-col gap-4">
         <div className="mx-auto w-full">
           <Link
             href="/"
-            className="px-4 py-2 rounded-md border border-black text-sm hover:bg-gray-100 transition-colors duration-200"
+            className="rounded-md border border-black px-4 py-2 text-sm transition-colors duration-200 hover:bg-gray-100"
           >
             Home
           </Link>

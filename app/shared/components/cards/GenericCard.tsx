@@ -1,4 +1,4 @@
-import { cn } from "@/shared/utils/cn";
+import { cn } from '@/shared/utils/cn';
 
 interface IGenericCard {
   customClass?: string;
@@ -7,7 +7,7 @@ interface IGenericCard {
 
 const GenericCard = ({ customClass, children }: IGenericCard) => {
   return (
-    <section className={cn("bg-white p-4 rounded-2xl shadow-md", customClass)}>
+    <section className={cn('rounded-2xl bg-white p-4 shadow-md', customClass)}>
       {children}
     </section>
   );

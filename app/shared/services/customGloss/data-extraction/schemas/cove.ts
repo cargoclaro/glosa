@@ -1,5 +1,5 @@
-import { z } from "zod"
-import { parse, isValid } from 'date-fns';
+import { isValid, parse } from 'date-fns';
+import { z } from 'zod';
 
 export type Cove = z.infer<typeof coveSchema>;
 
@@ -33,10 +33,12 @@ export const coveSchema = z.object({
     .string()
     .describe("Date of issuance of the document in 'DD-MM-YYYY' format.")
     .transform((dateStr, ctx) => {
-      if (!dateStr) { return null; }
-      
+      if (!dateStr) {
+        return null;
+      }
+
       const parsedDate = parse(dateStr, 'dd/MM/yyyy', new Date());
-      
+
       if (!isValid(parsedDate)) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
@@ -44,12 +46,12 @@ export const coveSchema = z.object({
         });
         return null;
       }
-      
+
       return parsedDate;
     }),
   observaciones: z
     .string()
-    .describe("Additional observations noted in the document.")
+    .describe('Additional observations noted in the document.')
     .optional(),
   datos_generales_proveedor: z
     .object({
@@ -87,15 +89,12 @@ export const coveSchema = z.object({
               "Neighborhood or subdivision, e.g., 'GREENWICH CONNECTICUT'."
             )
             .optional(),
-          pais: z
-            .string()
-            .describe("Country, e.g., 'USA'.")
-            .optional()
+          pais: z.string().describe("Country, e.g., 'USA'.").optional(),
         })
         .describe("Supplier's address details.")
-        .optional()
+        .optional(),
     })
-    .describe("General details about the supplier."),
+    .describe('General details about the supplier.'),
   datos_generales_destinatario: z
     .object({
       rfc_destinatario: z
@@ -110,10 +109,7 @@ export const coveSchema = z.object({
         .optional(),
       domicilio: z
         .object({
-          calle: z
-            .string()
-            .describe("Street name, e.g., 'CANELA'.")
-            .optional(),
+          calle: z.string().describe("Street name, e.g., 'CANELA'.").optional(),
           numero_exterior: z
             .string()
             .describe("External number, e.g., '229'.")
@@ -126,60 +122,61 @@ export const coveSchema = z.object({
             .string()
             .describe("Neighborhood or subdivision, e.g., 'GRANJAS MEXICO'.")
             .optional(),
-          pais: z
-            .string()
-            .describe("Country, e.g., 'MEX'.")
-            .optional()
+          pais: z.string().describe("Country, e.g., 'MEX'.").optional(),
         })
         .describe("Recipient's address details.")
-        .optional()
+        .optional(),
     })
-    .describe("General details about the recipient."),
-  datos_mercancia: z.array(z.object({
-      descripcion_mercancia: z
-        .string()
-        .describe(
-          "Generic description of the merchandise, e.g., 'PIGMENTOS A BASE DE DIOXIDO DE TITANIO'."
-        )
-        .optional(),
-      clave_umc: z
-        .string()
-        .describe("Code for the unit of measurement, e.g., 'POUND'.")
-        .optional(),
-      cantidad_umc: z
-        .number()
-        .describe(
-          "Quantity of the merchandise in the specified unit of measurement, e.g., '11023.00'."
-        )
-        .optional(),
-      tipo_moneda: z
-        .string()
-        .describe(
-          "Type of currency used in the transaction, e.g., 'US Dollar'."
-        )
-        .optional(),
-      valor_unitario: z
-        .number()
-        .describe("Unit value of the merchandise, e.g., '1.69'.")
-        .optional(),
-      valor_total: z
-        .number()
-        .describe("Total value of the merchandise, e.g., '18628.87'.")
-        .optional(),
-      valor_total_dolares: z
-        .number()
-        .describe("Total value of the merchandise in USD, e.g., '1866.00'.")
-        .optional(),
-      numeros_serie: z
-        .array(z.string())
-        .describe("Array of serial numbers for the merchandise, e.g., ['1234567890', '0987654321'].")
-        .optional()
-    })
-    .describe("Details about the merchandise."),
+    .describe('General details about the recipient.'),
+  datos_mercancia: z.array(
+    z
+      .object({
+        descripcion_mercancia: z
+          .string()
+          .describe(
+            "Generic description of the merchandise, e.g., 'PIGMENTOS A BASE DE DIOXIDO DE TITANIO'."
+          )
+          .optional(),
+        clave_umc: z
+          .string()
+          .describe("Code for the unit of measurement, e.g., 'POUND'.")
+          .optional(),
+        cantidad_umc: z
+          .number()
+          .describe(
+            "Quantity of the merchandise in the specified unit of measurement, e.g., '11023.00'."
+          )
+          .optional(),
+        tipo_moneda: z
+          .string()
+          .describe(
+            "Type of currency used in the transaction, e.g., 'US Dollar'."
+          )
+          .optional(),
+        valor_unitario: z
+          .number()
+          .describe("Unit value of the merchandise, e.g., '1.69'.")
+          .optional(),
+        valor_total: z
+          .number()
+          .describe("Total value of the merchandise, e.g., '18628.87'.")
+          .optional(),
+        valor_total_dolares: z
+          .number()
+          .describe("Total value of the merchandise in USD, e.g., '1866.00'.")
+          .optional(),
+        numeros_serie: z
+          .array(z.string())
+          .describe(
+            "Array of serial numbers for the merchandise, e.g., ['1234567890', '0987654321']."
+          )
+          .optional(),
+      })
+      .describe('Details about the merchandise.')
   ),
   document_summary: z
     .string()
     .describe(
-      "Un resumen detallado del documento COVE, incluyendo detalles de la transacción y contexto que puede ser útil para un humano. Este campo es obligatorio y debe ser generado por el LLM, no está proporcionado en el documento."
-    )
-})
+      'Un resumen detallado del documento COVE, incluyendo detalles de la transacción y contexto que puede ser útil para un humano. Este campo es obligatorio y debe ser generado por el LLM, no está proporcionado en el documento.'
+    ),
+});

@@ -1,16 +1,16 @@
-import { cn } from "@/shared/utils/cn";
+import { cn } from '@/shared/utils/cn';
 
 interface IGenericSearchInputProps {
   id?: string;
   ariaLabel?: string;
   type:
-    | "text"
-    | "number"
-    | "checkbox"
-    | "select"
-    | "date"
-    | "email"
-    | "password";
+    | 'text'
+    | 'number'
+    | 'checkbox'
+    | 'select'
+    | 'date'
+    | 'email'
+    | 'password';
   value: string;
   checked?: boolean;
   onChange: (value: string) => void;
@@ -35,14 +35,14 @@ const GenericSearchInput: React.FC<IGenericSearchInputProps> = ({
   min,
   max,
   options = [],
-  labelClassName = "",
-  inputClassName = "",
+  labelClassName = '',
+  inputClassName = '',
 }) => {
   const commonProps = {
     id,
     value,
     className: cn(
-      "w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm focus:ring-cargoClaroOrange focus:border-cargoClaroOrange p-2.5",
+      'w-full border border-gray-300 bg-gray-50 p-2.5 text-gray-900 text-sm focus:border-cargoClaroOrange focus:ring-cargoClaroOrange',
       inputClassName
     ),
   };
@@ -52,13 +52,13 @@ const GenericSearchInput: React.FC<IGenericSearchInputProps> = ({
       {id && (
         <label
           htmlFor={id}
-          className={cn("w-full mx-2 text-gray-500", labelClassName)}
+          className={cn('mx-2 w-full text-gray-500', labelClassName)}
         >
           {ariaLabel}
         </label>
       )}
 
-      {type === "select" ? (
+      {type === 'select' ? (
         <select
           aria-label={ariaLabel}
           onChange={(e) => onChange(e.target.value)}
@@ -79,7 +79,7 @@ const GenericSearchInput: React.FC<IGenericSearchInputProps> = ({
           max={max}
           checked={checked}
           onChange={(e) =>
-            type === "checkbox"
+            type === 'checkbox'
               ? onChange(e.target.checked.toString())
               : onChange(e.target.value)
           }

@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from 'react';
 
 interface LoadingBarProps {
   duration?: number;
@@ -34,7 +34,7 @@ const LoadingBar: React.FC<LoadingBarProps> = ({ duration = 200 }) => {
   };
 
   return (
-    <div className="w-full h-4 bg-gray-200 rounded-lg overflow-hidden">
+    <div className="h-4 w-full overflow-hidden rounded-lg bg-gray-200">
       <div
         className="h-full bg-cargoClaroOrange transition-all"
         style={{ width: `${progress}%` }}

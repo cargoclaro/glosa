@@ -1,7 +1,7 @@
 // "use client";
 
-import Bell from "@/shared/icons/Bell";
-import { useModal } from "@/shared/hooks";
+import { useModal } from '@/shared/hooks';
+import Bell from '@/shared/icons/Bell';
 
 interface INotificationsMenu {
   notifications: object;
@@ -19,7 +19,7 @@ const NotificationsMenu = ({ notifications }: INotificationsMenu) => {
       {isOpen && (
         <div
           aria-roledescription="menu"
-          className="z-20 origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow"
+          className="absolute right-0 z-20 mt-2 w-56 origin-top-right rounded-md shadow"
         >
           {/* ALL NOTIFICATIONS */}
         </div>

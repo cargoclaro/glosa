@@ -1,34 +1,34 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { cn } from "@/shared/utils/cn";
-import {
-  Search,
-  Funnel,
-  LeftChevron,
-  RightChevron,
-  LeftDoubleChevron,
-  RightDoubleChevron,
-} from "@/shared/icons";
 import {
   Table,
-  TableRow,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
-} from "@/shared/components/ui/table";
+  TableRow,
+} from '@/shared/components/ui/table';
 import {
-  ColumnDef,
+  Funnel,
+  LeftChevron,
+  LeftDoubleChevron,
+  RightChevron,
+  RightDoubleChevron,
+  Search,
+} from '@/shared/icons';
+import { cn } from '@/shared/utils/cn';
+import {
+  type ColumnDef,
+  type ColumnFiltersState,
+  type SortingState,
   flexRender,
-  SortingState,
-  useReactTable,
   getCoreRowModel,
-  getSortedRowModel,
-  ColumnFiltersState,
   getFilteredRowModel,
   getPaginationRowModel,
-} from "@tanstack/react-table";
+  getSortedRowModel,
+  useReactTable,
+} from '@tanstack/react-table';
+import { useState } from 'react';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -39,7 +39,7 @@ export default function GlossDataTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
-  const [globalFilter, setGlobalFilter] = useState("");
+  const [globalFilter, setGlobalFilter] = useState('');
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
@@ -62,8 +62,8 @@ export default function GlossDataTable<TData, TValue>({
 
   return (
     <section>
-      <h2 className="text-xl font-semibold">Busca tus Expedientes</h2>
-      <div className="flex flex-col md:flex-row gap-2 py-2">
+      <h2 className="font-semibold text-xl">Busca tus Expedientes</h2>
+      <div className="flex flex-col gap-2 py-2 md:flex-row">
         <div className="relative">
           <label
             htmlFor="globalFilter"
@@ -77,7 +77,7 @@ export default function GlossDataTable<TData, TValue>({
             value={table.getState().globalFilter}
             placeholder="Buscar por nombre de importador"
             onChange={(event) => setGlobalFilter(event.target.value)}
-            className="w-full md:w-80 h-10 pl-10 pr-3 text-sm border rounded-md"
+            className="h-10 w-full rounded-md border pr-3 pl-10 text-sm md:w-80"
           />
         </div>
         <div className="relative">
@@ -90,14 +90,16 @@ export default function GlossDataTable<TData, TValue>({
           <select
             id="operationStatusSelect"
             aria-label="operationStatusSelect"
-            className="w-full h-10 pl-10 text-sm border rounded-md"
+            className="h-10 w-full rounded-md border pl-10 text-sm"
             defaultValue={(() => {
-              const filterValue = table.getColumn("operationStatus")?.getFilterValue();
-              return typeof filterValue === "string" ? filterValue : "";
+              const filterValue = table
+                .getColumn('operationStatus')
+                ?.getFilterValue();
+              return typeof filterValue === 'string' ? filterValue : '';
             })()}
             onChange={(event) =>
               table
-                .getColumn("operationStatus")
+                .getColumn('operationStatus')
                 ?.setFilterValue(event.target.value)
             }
           >
@@ -131,7 +133,7 @@ export default function GlossDataTable<TData, TValue>({
             table.getRowModel().rows.map((row) => (
               <TableRow
                 key={row.id}
-                data-state={row.getIsSelected() && "selected"}
+                data-state={row.getIsSelected() && 'selected'}
               >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id}>
@@ -149,11 +151,11 @@ export default function GlossDataTable<TData, TValue>({
           )}
         </TableBody>
       </Table>
-      <div className="flex justify-between gap-2 mt-4">
-        <p className="text-sm font-medium">
-          {"Página " +
+      <div className="mt-4 flex justify-between gap-2">
+        <p className="font-medium text-sm">
+          {'Página ' +
             (table.getState().pagination.pageIndex + 1) +
-            " de " +
+            ' de ' +
             table.getPageCount()}
         </p>
         <div className="flex items-center justify-end space-x-2">
@@ -162,10 +164,10 @@ export default function GlossDataTable<TData, TValue>({
             onClick={() => table.setPageIndex(0)}
             disabled={!table.getCanPreviousPage()}
             className={cn(
-              "p-2 text-white rounded-md",
-              !table.getCanPreviousPage() && "bg-gray-300 cursor-not-allowed",
+              'rounded-md p-2 text-white',
+              !table.getCanPreviousPage() && 'cursor-not-allowed bg-gray-300',
               table.getCanPreviousPage() &&
-                "bg-cargoClaroOrange hover:bg-cargoClaroOrange-hover"
+                'bg-cargoClaroOrange hover:bg-cargoClaroOrange-hover'
             )}
           >
             <LeftDoubleChevron />
@@ -175,10 +177,10 @@ export default function GlossDataTable<TData, TValue>({
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
             className={cn(
-              "p-2 text-white rounded-md",
-              !table.getCanPreviousPage() && "bg-gray-300 cursor-not-allowed",
+              'rounded-md p-2 text-white',
+              !table.getCanPreviousPage() && 'cursor-not-allowed bg-gray-300',
               table.getCanPreviousPage() &&
-                "bg-cargoClaroOrange hover:bg-cargoClaroOrange-hover"
+                'bg-cargoClaroOrange hover:bg-cargoClaroOrange-hover'
             )}
           >
             <LeftChevron />
@@ -188,10 +190,10 @@ export default function GlossDataTable<TData, TValue>({
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
             className={cn(
-              "p-2 text-white rounded-md",
-              !table.getCanNextPage() && "bg-gray-300 cursor-not-allowed",
+              'rounded-md p-2 text-white',
+              !table.getCanNextPage() && 'cursor-not-allowed bg-gray-300',
               table.getCanNextPage() &&
-                "bg-cargoClaroOrange hover:bg-cargoClaroOrange-hover"
+                'bg-cargoClaroOrange hover:bg-cargoClaroOrange-hover'
             )}
           >
             <RightChevron />
@@ -201,10 +203,10 @@ export default function GlossDataTable<TData, TValue>({
             onClick={() => table.setPageIndex(table.getPageCount() - 1)}
             disabled={!table.getCanNextPage()}
             className={cn(
-              "p-2 text-white rounded-md",
-              !table.getCanNextPage() && "bg-gray-300 cursor-not-allowed",
+              'rounded-md p-2 text-white',
+              !table.getCanNextPage() && 'cursor-not-allowed bg-gray-300',
               table.getCanNextPage() &&
-                "bg-cargoClaroOrange hover:bg-cargoClaroOrange-hover"
+                'bg-cargoClaroOrange hover:bg-cargoClaroOrange-hover'
             )}
           >
             <RightDoubleChevron />

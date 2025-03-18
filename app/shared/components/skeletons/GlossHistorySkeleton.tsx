@@ -1,16 +1,16 @@
 const GlossHistorySkeleton = () => {
   return (
-    <div className="bg-white rounded-lg shadow-md p-6">
-      <div className="h-4 bg-gray-300 rounded-full w-64 animate-pulse mb-4"></div>
-      <div className="h-0.5 bg-gray-300 rounded-full w-full animate-pulse mb-4"></div>
-      <div className="flex flex-col gap-4 animate-pulse">
+    <div className="rounded-lg bg-white p-6 shadow-md">
+      <div className="mb-4 h-4 w-64 animate-pulse rounded-full bg-gray-300"></div>
+      <div className="mb-4 h-0.5 w-full animate-pulse rounded-full bg-gray-300"></div>
+      <div className="flex animate-pulse flex-col gap-4">
         {Array.from({ length: 3 }).map((_, index) => (
           <div key={index} className="flex justify-between gap-2 p-2">
             <div className="flex flex-col gap-2">
-              <div className="h-3 bg-gray-300 rounded-full w-44"></div>
-              <div className="h-2 bg-gray-300 rounded-full w-20"></div>
+              <div className="h-3 w-44 rounded-full bg-gray-300"></div>
+              <div className="h-2 w-20 rounded-full bg-gray-300"></div>
             </div>
-            <div className="size-8 bg-gray-300 rounded-xl"></div>
+            <div className="size-8 rounded-xl bg-gray-300"></div>
           </div>
         ))}
       </div>

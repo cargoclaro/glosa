@@ -1,4 +1,4 @@
-import { cn } from "@/shared/utils/cn";
+import { cn } from '@/shared/utils/cn';
 
 interface ILoading {
   size?: string;
@@ -6,21 +6,21 @@ interface ILoading {
 }
 
 const fillColorMap: { [key: string]: string } = {
-  red: "fill-red-600",
-  blue: "fill-blue-600",
-  green: "fill-green-600",
-  cargoClaro: "fill-cargoClaroOrange",
+  red: 'fill-red-600',
+  blue: 'fill-blue-600',
+  green: 'fill-green-600',
+  cargoClaro: 'fill-cargoClaroOrange',
 };
 
 const Loading: React.FC<ILoading> = ({
-  size = "size-6",
-  color = "cargoClaro",
+  size = 'size-6',
+  color = 'cargoClaro',
 }) => {
   return (
     <div role="status" aria-hidden="true" className="px-4">
       <svg
         aria-hidden="true"
-        className={cn("text-gray-200 animate-spin", size, fillColorMap[color])}
+        className={cn('animate-spin text-gray-200', size, fillColorMap[color])}
         viewBox="0 0 100 101"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"

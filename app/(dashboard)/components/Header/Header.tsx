@@ -1,27 +1,25 @@
-"use client";
+'use client';
 
-import { cn } from "@/shared/utils/cn";
-import ProfileMenu from "./ProfileMenu";
-import todayIs from "@/shared/utils/today-is";
+import { cn } from '@/shared/utils/cn';
+import todayIs from '@/shared/utils/today-is';
 // import NotificationsMenu from "./NotificationsMenu";
-import { usePathname } from "next/navigation";
+import { usePathname } from 'next/navigation';
+import ProfileMenu from './ProfileMenu';
 
 const Header = () => {
   const pathname = usePathname();
-  const isAnalysisPage = pathname.endsWith("analysis");
+  const isAnalysisPage = pathname.endsWith('analysis');
   return (
     <header
       className={cn(
-        "sticky top-0 z-10 bg-[#f8f9fd]",
-        isAnalysisPage && "hidden"
+        'sticky top-0 z-10 bg-[#f8f9fd]',
+        isAnalysisPage && 'hidden'
       )}
     >
-      <nav className="sm:ml-48 p-4">
-        <ul className="w-full flex justify-between items-center gap-4">
+      <nav className="p-4 sm:ml-48">
+        <ul className="flex w-full items-center justify-between gap-4">
           <li className="flex flex-col gap-0">
-            <p className="font-semibold">
-              Bienvenido
-            </p>
+            <p className="font-semibold">Bienvenido</p>
             <small className="text-gray-500">{todayIs(new Date())}</small>
           </li>
           <li>
@@ -29,7 +27,7 @@ const Header = () => {
               {/* <li className="flex items-center">
                 <NotificationsMenu notifications={notifications} />
               </li> */}
-              <li className="flex gap-2 items-center">
+              <li className="flex items-center gap-2">
                 <ProfileMenu />
               </li>
             </ul>

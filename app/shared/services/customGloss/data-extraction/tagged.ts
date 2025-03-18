@@ -1,16 +1,15 @@
-import { generateObject } from "ai";
-import { openai } from "@ai-sdk/openai";
-import type { z } from "zod";
-import { DocumentType } from "../classification";
-
+import { openai } from '@ai-sdk/openai';
+import { generateObject } from 'ai';
+import type { z } from 'zod';
+import type { DocumentType } from '../classification';
 
 export async function structureTaggedText<T>(
   text: unknown,
   schema: z.ZodType<T>,
-  documentType: DocumentType,
+  documentType: DocumentType
 ): Promise<T> {
   const { object } = await generateObject({
-    model: openai("gpt-4o"),
+    model: openai('gpt-4o'),
     experimental_telemetry: { isEnabled: true },
     schema,
     prompt: `

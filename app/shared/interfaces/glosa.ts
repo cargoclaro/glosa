@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 // Helper for ensuring we can handle string/array/number/null in typical error spots
 // Adjust as needed (sometimes you really want more precise shapes).
@@ -75,7 +75,10 @@ export const schema = z.object({
       }),
       external_context: z.object({
         apendice_2: z.object({ name: z.string(), value: flexibleStringSchema }),
-        apendice_16: z.object({ name: z.string(), value: flexibleStringSchema }),
+        apendice_16: z.object({
+          name: z.string(),
+          value: flexibleStringSchema,
+        }),
       }),
       validation_steps: z.array(
         z.object({
@@ -112,7 +115,10 @@ export const schema = z.object({
         ),
       }),
       external_context: z.object({
-        apendice_15: z.object({ name: z.string(), value: flexibleStringSchema }),
+        apendice_15: z.object({
+          name: z.string(),
+          value: flexibleStringSchema,
+        }),
       }),
       validation_steps: z.array(
         z.object({
@@ -301,24 +307,28 @@ export const schema = z.object({
       // allow objects that might contain either or both, optional:
       inferred_context: z.array(
         z.object({
-          pedimento: z.array(
-            z.object({
-              document_id: z.string(),
-              document_summary: z.string(),
-              data: z.array(
-                z.object({ name: z.string(), value: flexibleStringSchema })
-              ),
-            })
-          ).optional(),
-          factura: z.array(
-            z.object({
-              document_id: z.string(),
-              document_summary: z.string(),
-              data: z.array(
-                z.object({ name: z.string(), value: flexibleStringSchema })
-              ),
-            })
-          ).optional(),
+          pedimento: z
+            .array(
+              z.object({
+                document_id: z.string(),
+                document_summary: z.string(),
+                data: z.array(
+                  z.object({ name: z.string(), value: flexibleStringSchema })
+                ),
+              })
+            )
+            .optional(),
+          factura: z
+            .array(
+              z.object({
+                document_id: z.string(),
+                document_summary: z.string(),
+                data: z.array(
+                  z.object({ name: z.string(), value: flexibleStringSchema })
+                ),
+              })
+            )
+            .optional(),
         })
       ),
       external_context: z.object({
@@ -609,7 +619,10 @@ export const schema = z.object({
       }),
       external_context: z.object({
         apendice_3: z.object({ name: z.string(), value: flexibleStringSchema }),
-        apendice_10: z.object({ name: z.string(), value: flexibleStringSchema }),
+        apendice_10: z.object({
+          name: z.string(),
+          value: flexibleStringSchema,
+        }),
       }),
       validation_steps: z.array(
         z.object({
@@ -660,9 +673,15 @@ export const schema = z.object({
                       identificadores: z.array(
                         z.object({
                           clave: z.string(),
-                          complemento1: z.union([z.string(), z.null()]).optional(),
-                          complemento2: z.union([z.string(), z.null()]).optional(),
-                          complemento3: z.union([z.string(), z.null()]).optional(),
+                          complemento1: z
+                            .union([z.string(), z.null()])
+                            .optional(),
+                          complemento2: z
+                            .union([z.string(), z.null()])
+                            .optional(),
+                          complemento3: z
+                            .union([z.string(), z.null()])
+                            .optional(),
                         })
                       ),
                       contribuciones: z.array(
@@ -864,13 +883,25 @@ export const schema = z.object({
   }),
   files: z.array(z.object({ name: z.string(), url: z.string() })),
   alerts: z.object({
-    high: z.array(z.object({ id: z.number(), validation_step_name: z.string() })),
-    medium: z.array(z.object({ id: z.number(), validation_step_name: z.string() })),
-    low: z.array(z.object({ id: z.number(), validation_step_name: z.string() })),
+    high: z.array(
+      z.object({ id: z.number(), validation_step_name: z.string() })
+    ),
+    medium: z.array(
+      z.object({ id: z.number(), validation_step_name: z.string() })
+    ),
+    low: z.array(
+      z.object({ id: z.number(), validation_step_name: z.string() })
+    ),
   }),
   cove_alerts: z.object({
-    high: z.array(z.object({ id: z.number(), validation_step_name: z.string() })),
-    medium: z.array(z.object({ id: z.number(), validation_step_name: z.string() })),
-    low: z.array(z.object({ id: z.number(), validation_step_name: z.string() })),
+    high: z.array(
+      z.object({ id: z.number(), validation_step_name: z.string() })
+    ),
+    medium: z.array(
+      z.object({ id: z.number(), validation_step_name: z.string() })
+    ),
+    low: z.array(
+      z.object({ id: z.number(), validation_step_name: z.string() })
+    ),
   }),
 });

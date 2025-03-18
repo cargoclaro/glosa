@@ -1,10 +1,10 @@
-import { cn } from "@/shared/utils/cn";
-import type { IGenericIcon } from "@/shared/interfaces";
+import type { IGenericIcon } from '@/shared/interfaces';
+import { cn } from '@/shared/utils/cn';
 
 const colorMap: { [key: string]: string } = {
-  red: "text-red-500",
-  gray: "text-gray-500",
-  green: "text-green-500",
+  red: 'text-red-500',
+  gray: 'text-gray-500',
+  green: 'text-green-500',
 };
 
 interface IUpload extends IGenericIcon {
@@ -12,9 +12,9 @@ interface IUpload extends IGenericIcon {
 }
 
 const Upload = ({
-  size = "size-6",
-  color = "gray",
-  customClass = "",
+  size = 'size-6',
+  color = 'gray',
+  customClass = '',
   strokeWidth = 1.5,
 }: IUpload) => {
   return (

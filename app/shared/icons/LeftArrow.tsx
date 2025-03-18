@@ -1,9 +1,9 @@
-import { cn } from "@/shared/utils/cn";
-import type { IGenericIcon } from "@/shared/interfaces";
+import type { IGenericIcon } from '@/shared/interfaces';
+import { cn } from '@/shared/utils/cn';
 
 const LeftArrow = ({
-  size = "size-6",
-  customClass = "",
+  size = 'size-6',
+  customClass = '',
   strokeWidth = 1.5,
 }: IGenericIcon) => {
   return (

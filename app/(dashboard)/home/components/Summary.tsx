@@ -1,13 +1,9 @@
-import { GenericCard } from "@/shared/components";
-import {
-  Clock,
-  CalendarDays,
-  ClipboardDocumentList,
-} from "@/shared/icons";
-import { getTimePassed } from "@/shared/utils/get-time-passed";
-import { auth } from "@clerk/nextjs/server";
-import prisma from "@/shared/services/prisma";
-import { currentUser } from "@clerk/nextjs/server";
+import { GenericCard } from '@/shared/components';
+import { CalendarDays, ClipboardDocumentList, Clock } from '@/shared/icons';
+import prisma from '@/shared/services/prisma';
+import { getTimePassed } from '@/shared/utils/get-time-passed';
+import { auth } from '@clerk/nextjs/server';
+import { currentUser } from '@clerk/nextjs/server';
 
 const Summary = async () => {
   const { userId } = await auth.protect();
@@ -20,20 +16,23 @@ const Summary = async () => {
       userId,
     },
   });
-  const totalTimeSaved = glosses.reduce((sum, gloss) => sum + gloss.timeSaved, 0);
+  const totalTimeSaved = glosses.reduce(
+    (sum, gloss) => sum + gloss.timeSaved,
+    0
+  );
   const totalGlosses = glosses.length;
 
   return (
-    <div className="grid lg:grid-cols-2 gap-4">
+    <div className="grid gap-4 lg:grid-cols-2">
       <GenericCard customClass="h-[140px]">
         <div className="flex justify-between gap-1">
           <p
             title={`${(totalTimeSaved / 60).toFixed(2)} horas`}
-            className="text-2xl font-bold truncate"
+            className="truncate font-bold text-2xl"
           >
             {(totalTimeSaved / 60).toFixed(2)} horas
           </p>
-          <div className="h-full p-3 rounded-full bg-blue-100/60 text-blue-400">
+          <div className="h-full rounded-full bg-blue-100/60 p-3 text-blue-400">
             <Clock />
           </div>
         </div>
@@ -41,13 +40,10 @@ const Summary = async () => {
       </GenericCard>
       <GenericCard customClass="h-[140px]">
         <div className="flex justify-between gap-1">
-          <p
-            title={`${totalGlosses}`}
-            className="text-2xl font-bold truncate"
-          >
+          <p title={`${totalGlosses}`} className="truncate font-bold text-2xl">
             {totalGlosses}
           </p>
-          <div className="h-full p-3 rounded-full bg-green-100/60 text-green-400">
+          <div className="h-full rounded-full bg-green-100/60 p-3 text-green-400">
             <ClipboardDocumentList />
           </div>
         </div>
@@ -57,11 +53,11 @@ const Summary = async () => {
         <div className="flex justify-between gap-1">
           <p
             title={`${getTimePassed({ pastDate: new Date(user.createdAt) })}`}
-            className="text-2xl font-bold truncate"
+            className="truncate font-bold text-2xl"
           >
             {getTimePassed({ pastDate: new Date(user.createdAt) })}
           </p>
-          <div className="h-full p-3 rounded-full bg-purple-100/60 text-purple-400">
+          <div className="h-full rounded-full bg-purple-100/60 p-3 text-purple-400">
             <CalendarDays />
           </div>
         </div>

@@ -1,14 +1,14 @@
-import { XMLParser } from "fast-xml-parser";
+import { XMLParser } from 'fast-xml-parser';
 
 const alwaysArray = [
-  "Comprobante.Conceptos.Concepto",
-  "Comprobante.Complemento.ComercioExterior.Mercancias.Mercancia",
+  'Comprobante.Conceptos.Concepto',
+  'Comprobante.Complemento.ComercioExterior.Mercancias.Mercancia',
 ];
 
 export const xmlParser = new XMLParser({
   allowBooleanAttributes: true,
-  attributeNamePrefix : "",
-  attributesGroupName : "attributes",
+  attributeNamePrefix: '',
+  attributesGroupName: 'attributes',
   ignoreAttributes: false,
   ignoreDeclaration: true,
   ignorePiTags: true,

@@ -1,6 +1,6 @@
-import { generateText } from "ai";
-import { google } from "@ai-sdk/google";
-import { DocumentType } from "../classification";
+import { google } from '@ai-sdk/google';
+import { generateText } from 'ai';
+import type { DocumentType } from '../classification';
 /* import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 import { HumanMessage } from "@langchain/core/messages";
 import { z } from "zod";
@@ -8,9 +8,11 @@ import { sanitizeObjectStrings } from "../remove-null-bytes"; */
 
 export async function extractTextFromImage(
   pdfFile: File,
-  documentType: DocumentType,
+  documentType: DocumentType
 ) {
-  const base64Data = Buffer.from(await pdfFile.arrayBuffer()).toString('base64');
+  const base64Data = Buffer.from(await pdfFile.arrayBuffer()).toString(
+    'base64'
+  );
   // TODO: Figure out image prompts
   /* if (process.env["LANGCHAIN_MIGRATION_ENABLED"] === "true") {
     const baseUrl = process.env["PYTHON_BACKEND_URL"];
@@ -62,7 +64,7 @@ export async function extractTextFromImage(
     };
   } */
   const { text } = await generateText({
-    model:  google("gemini-2.0-flash-001"),
+    model: google('gemini-2.0-flash-001'),
     experimental_telemetry: { isEnabled: true },
     messages: [
       {
@@ -70,7 +72,7 @@ export async function extractTextFromImage(
         content: [
           {
             type: 'text',
-            text: `El tipo de documento es ${documentType}. Transcribe la informacion de la imagen en formato markdown.`
+            text: `El tipo de documento es ${documentType}. Transcribe la informacion de la imagen en formato markdown.`,
           },
           {
             type: 'file',

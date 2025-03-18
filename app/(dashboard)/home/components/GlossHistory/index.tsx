@@ -1,32 +1,30 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { RightArrow } from "@/shared/icons";
-import { GenericCard } from "@/shared/components";
-import { CustomGloss } from "@prisma/client";
+import { GenericCard } from '@/shared/components';
+import { RightArrow } from '@/shared/icons';
+import type { CustomGloss } from '@prisma/client';
+import Link from 'next/link';
 
 const GlossHistory = ({ history }: { history: CustomGloss[] }) => {
   return (
     <GenericCard>
-      <h1 className=" font-semibold text-xl">
-        Historial Reciente de Glosas
-      </h1>
-      <div className="border-t border-gray-300 my-2" />
+      <h1 className=" font-semibold text-xl">Historial Reciente de Glosas</h1>
+      <div className="my-2 border-gray-300 border-t" />
       {history && history.length > 0 ? (
         <ul className="flex flex-col gap-2">
           {history.map((gloss) => (
             <li key={gloss.id}>
               <Link
                 href={`/gloss/${gloss.id}`}
-                className="flex justify-between items-center group hover:bg-gray-50 p-2 rounded-xl"
+                className="group flex items-center justify-between rounded-xl p-2 hover:bg-gray-50"
               >
                 <div>
-                  <p className="text-lg">{"Operación #" + gloss.id}</p>
+                  <p className="text-lg">{'Operación #' + gloss.id}</p>
                   <small className="text-base text-gray-500">
                     {gloss.importerName}
                   </small>
                 </div>
-                <div className="p-2 text-white bg-cargoClaroOrange group-hover:bg-cargoClaroOrange-hover rounded-xl">
+                <div className="rounded-xl bg-cargoClaroOrange p-2 text-white group-hover:bg-cargoClaroOrange-hover">
                   <RightArrow size="size-4" strokeWidth={4} />
                 </div>
               </Link>

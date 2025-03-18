@@ -3,16 +3,21 @@ import * as path from 'path';
 import { JSDOM } from 'jsdom';
 import { z } from 'zod';
 
-const identificadoresSchema = z.record(z.string(), z.object({
-  descripcion: z.string(),
-  nivel: z.string(),
-  supuesto: z.string(),
-  complementos: z.array(z.object({
-    complemento_1: z.string(),
-    complemento_2: z.string(),
-    complemento_3: z.string(),
-  })),
-}));
+const identificadoresSchema = z.record(
+  z.string(),
+  z.object({
+    descripcion: z.string(),
+    nivel: z.string(),
+    supuesto: z.string(),
+    complementos: z.array(
+      z.object({
+        complemento_1: z.string(),
+        complemento_2: z.string(),
+        complemento_3: z.string(),
+      })
+    ),
+  })
+);
 
 // Definir tipo para el objeto de identificadores
 type IdentificadorData = {
@@ -55,12 +60,13 @@ export async function loadHtmlFile(filePath: string) {
 
     // Extraer la información de cada fila
     // Primero extraemos los datos de todas las filas
-    const allRowsData = trElements.map(tr => {
+    const allRowsData = trElements.map((tr) => {
       // Obtener todas las celdas de la fila
       const cells = Array.from(tr.querySelectorAll('td'));
 
       // Extraer el texto dentro de los elementos p de cada celda
-      const identifierCell = cells[0]?.querySelector('p')?.textContent?.trim() || '';
+      const identifierCell =
+        cells[0]?.querySelector('p')?.textContent?.trim() || '';
 
       // Definir el regex para capturar solo el código del identificador (2 letras/números)
       const identifierRegex = /^([A-Z0-9]{2})\s*[-–]/;
@@ -70,11 +76,15 @@ export async function loadHtmlFile(filePath: string) {
       const clave = identifierMatch ? identifierMatch[1] : '';
       const descripcion = identifierCell.replace(identifierRegex, '').trim();
 
-      const nivel = cells[1]?.querySelector('p strong')?.textContent?.trim() || '';
+      const nivel =
+        cells[1]?.querySelector('p strong')?.textContent?.trim() || '';
       const supuesto = cells[2]?.querySelector('p')?.textContent?.trim() || '';
-      const complemento_1 = cells[3]?.querySelector('p')?.textContent?.trim() || '';
-      const complemento_2 = cells[4]?.querySelector('p')?.textContent?.trim() || '';
-      const complemento_3 = cells[5]?.querySelector('p')?.textContent?.trim() || '';
+      const complemento_1 =
+        cells[3]?.querySelector('p')?.textContent?.trim() || '';
+      const complemento_2 =
+        cells[4]?.querySelector('p')?.textContent?.trim() || '';
+      const complemento_3 =
+        cells[5]?.querySelector('p')?.textContent?.trim() || '';
 
       return {
         clave,
@@ -83,7 +93,7 @@ export async function loadHtmlFile(filePath: string) {
         supuesto,
         complemento_1,
         complemento_2,
-        complemento_3
+        complemento_3,
       };
     });
 
@@ -92,7 +102,7 @@ export async function loadHtmlFile(filePath: string) {
     const levelPData: Record<string, IdentificadorData> = {};
     let inGSection = false;
     let currentIdentifier: IdentificadorData | null = null;
-    let currentClave = "";
+    let currentClave = '';
 
     for (let i = 0; i < allRowsData.length; i++) {
       const row = allRowsData[i];
@@ -118,11 +128,13 @@ export async function loadHtmlFile(filePath: string) {
             descripcion: row.descripcion,
             nivel: row.nivel,
             supuesto: row.supuesto,
-            complementos: [{
-              complemento_1: row.complemento_1,
-              complemento_2: row.complemento_2,
-              complemento_3: row.complemento_3,
-            }]
+            complementos: [
+              {
+                complemento_1: row.complemento_1,
+                complemento_2: row.complemento_2,
+                complemento_3: row.complemento_3,
+              },
+            ],
           };
           levelPData[currentClave] = currentIdentifier;
         } else if (
@@ -153,11 +165,13 @@ export async function loadHtmlFile(filePath: string) {
               descripcion: row.descripcion,
               nivel: row.nivel,
               supuesto: row.supuesto,
-              complementos: [{
-                complemento_1: row.complemento_1,
-                complemento_2: row.complemento_2,
-                complemento_3: row.complemento_3,
-              }]
+              complementos: [
+                {
+                  complemento_1: row.complemento_1,
+                  complemento_2: row.complemento_2,
+                  complemento_3: row.complemento_3,
+                },
+              ],
             };
             levelPData[currentClave] = currentIdentifier;
           }
@@ -167,16 +181,18 @@ export async function loadHtmlFile(filePath: string) {
 
     const parsedData = identificadoresSchema.parse(levelPData);
 
-    console.log(`Se encontraron ${Object.keys(parsedData).length} identificadores (después de agrupar filas múltiples)`);
-    
+    console.log(
+      `Se encontraron ${Object.keys(parsedData).length} identificadores (después de agrupar filas múltiples)`
+    );
+
     // Guardar los datos como una constante en un archivo TypeScript
     const tsContent = `// Archivo generado automáticamente
 export const IDENTIFICADORES = ${JSON.stringify(parsedData, null, 2)} as const;
 `;
-    
+
     fs.writeFileSync('identificadores.ts', tsContent);
     console.log('Datos guardados como constante en identificadores.ts');
-    
+
     return parsedData;
   } catch (error) {
     console.error(`Error al cargar el archivo HTML: ${error}`);

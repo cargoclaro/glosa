@@ -1,5 +1,5 @@
-import GenericInput from "./GenericInput";
-import SubmitButton from "./SubmitButton";
-import GenericSearchInput from "./GenericSearchInput";
+import GenericInput from './GenericInput';
+import GenericSearchInput from './GenericSearchInput';
+import SubmitButton from './SubmitButton';
 
 export { GenericInput, SubmitButton, GenericSearchInput };

@@ -1,4 +1,4 @@
-import { cn } from "@/shared/utils/cn";
+import { cn } from '@/shared/utils/cn';
 
 interface IGenericInput {
   id: string;
@@ -36,8 +36,8 @@ const GenericInput: React.FC<IGenericInput> = ({
   defaultValue,
   defaultChecked,
   placeholder,
-  className = "",
-  labelClassName = "",
+  className = '',
+  labelClassName = '',
   error,
   onChange,
 }) => {
@@ -47,14 +47,14 @@ const GenericInput: React.FC<IGenericInput> = ({
     autoComplete,
     onChange,
     defaultValue,
-    "aria-label": ariaLabel,
+    'aria-label': ariaLabel,
     className: cn(
-      "border p-2.5 text-sm rounded-lg focus:outline-none",
-      type === "checkbox" ? "cursor-pointer" : "w-full",
+      'rounded-lg border p-2.5 text-sm focus:outline-none',
+      type === 'checkbox' ? 'cursor-pointer' : 'w-full',
       className,
       error
-        ? "bg-red-50 text-red-900 placeholder-red-700 border-red-500 focus:border-red-700"
-        : "bg-gray-50 text-gray-900 border-gray-300 focus:border-gray-500"
+        ? 'border-red-500 bg-red-50 text-red-900 placeholder-red-700 focus:border-red-700'
+        : 'border-gray-300 bg-gray-50 text-gray-900 focus:border-gray-500'
     ),
   };
 
@@ -63,9 +63,9 @@ const GenericInput: React.FC<IGenericInput> = ({
       <label htmlFor={id} className={labelClassName}>
         {ariaLabel}
       </label>
-      {type === "textarea" ? (
+      {type === 'textarea' ? (
         <textarea placeholder={placeholder} rows={rows} {...commonProps} />
-      ) : type === "select" && options ? (
+      ) : type === 'select' && options ? (
         <select {...commonProps}>
           <option value="">{placeholder}</option>
           {options.map((option) => (

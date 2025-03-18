@@ -1,8 +1,8 @@
-import { generateObject } from "ai";
-import { z } from "zod"
-import { CustomGlossTabContextType } from "@prisma/client"
-import { openai } from "@ai-sdk/openai";
-import { anthropic } from "@ai-sdk/anthropic";
+import { anthropic } from '@ai-sdk/anthropic';
+import { openai } from '@ai-sdk/openai';
+import type { CustomGlossTabContextType } from '@prisma/client';
+import { generateObject } from 'ai';
+import { z } from 'zod';
 
 const SYSTEM_PROMPT = `
 Eres un Glosador de inteligencia artificial especializado en compliance aduanero en México. Tu función es asistir a los glosadores de agencias aduanales en la validación y verificación documental de operaciones de importación y exportación. Todas tus validaciones deben de estar basadas en la documentación presentada y no en suposiciones. Todas tus respuestas deben de estar sustentadas con la documentacion presentada. Siempre se respetuoso y sobre todo, honesto. 
@@ -57,32 +57,59 @@ Recomendación: Actualizar el domicilio en el COVE para que coincida con el pedi
 `;
 
 const validationResultSchema = z.object({
-  contextSummary: z.string().describe(`Lista de documentos utilizados para la validación, incluyendo pedimentos, facturas, cartas porte, COVEs, u otros documentos aduanales relevantes. Debe enumerar específicamente cada documento consultado y su origen.`),
-  llmAnalysis: z.string().describe(`Cada elemento debe comenzar con '✅' si es correcto, '⚠️' si hay advertencias, o '❌' si hay errores. Enseña tu razonamiento para llegar al resultado. La información se debe de dar en formato mkdown y que sea facil de leer para un humano`),
-  isValid: z.boolean().describe(`Indicador booleano de si la validación es correcta (true) o si presenta errores o advertencias que requieren atención (false)`),
-  actionsToTake: z.array(z.string()).describe(`Lista detallada de acciones concretas a tomar en caso de que la validación no sea correcta. Cada acción debe ser específica, factible y directamente relacionada con los problemas identificados en el análisis. Puede incluir solicitudes de documentación adicional, correcciones a realizar, o consultas específicas que deban hacerse.`),
-  summary: z.string().describe(`Resumen final conciso pero completo con todos los hallazgos encontrados en los pasos de validación. Debe sintetizar los puntos clave del análisis, destacar las discrepancias principales y mencionar el resultado global de la validación. Utilizar lenguaje claro y directo apropiado para un glosador aduanal.`)
+  contextSummary: z
+    .string()
+    .describe(
+      `Lista de documentos utilizados para la validación, incluyendo pedimentos, facturas, cartas porte, COVEs, u otros documentos aduanales relevantes. Debe enumerar específicamente cada documento consultado y su origen.`
+    ),
+  llmAnalysis: z
+    .string()
+    .describe(
+      `Cada elemento debe comenzar con '✅' si es correcto, '⚠️' si hay advertencias, o '❌' si hay errores. Enseña tu razonamiento para llegar al resultado. La información se debe de dar en formato mkdown y que sea facil de leer para un humano`
+    ),
+  isValid: z
+    .boolean()
+    .describe(
+      `Indicador booleano de si la validación es correcta (true) o si presenta errores o advertencias que requieren atención (false)`
+    ),
+  actionsToTake: z
+    .array(z.string())
+    .describe(
+      `Lista detallada de acciones concretas a tomar en caso de que la validación no sea correcta. Cada acción debe ser específica, factible y directamente relacionada con los problemas identificados en el análisis. Puede incluir solicitudes de documentación adicional, correcciones a realizar, o consultas específicas que deban hacerse.`
+    ),
+  summary: z
+    .string()
+    .describe(
+      `Resumen final conciso pero completo con todos los hallazgos encontrados en los pasos de validación. Debe sintetizar los puntos clave del análisis, destacar las discrepancias principales y mencionar el resultado global de la validación. Utilizar lenguaje claro y directo apropiado para un glosador aduanal.`
+    ),
 });
 
-export async function glosar(validation: {
-  name: string;
-  prompt: string;
-  description: string;
-  contexts: {
-    [key in CustomGlossTabContextType]?: {
-      [origin: string]: {
-        data: readonly {
-          name: string;
-          value: unknown;
-        }[];
+export async function glosar(
+  validation: {
+    name: string;
+    prompt: string;
+    description: string;
+    contexts: {
+      [key in CustomGlossTabContextType]?: {
+        [origin: string]: {
+          data: readonly {
+            name: string;
+            value: unknown;
+          }[];
+        };
       };
     };
-  };
-}, modelId: "gpt-4o" | "o3-mini" | "gpt-4o-mini" | "claude-3-7-sonnet-20250219" = "gpt-4o") {
+  },
+  modelId:
+    | 'gpt-4o'
+    | 'o3-mini'
+    | 'gpt-4o-mini'
+    | 'claude-3-7-sonnet-20250219' = 'gpt-4o'
+) {
   // Use either OpenAI or Anthropic based on the modelId
   let aiModel;
-  if (modelId === "claude-3-7-sonnet-20250219") {
-    aiModel = anthropic("claude-3-7-sonnet-20250219");
+  if (modelId === 'claude-3-7-sonnet-20250219') {
+    aiModel = anthropic('claude-3-7-sonnet-20250219');
   } else {
     aiModel = openai(modelId);
   }
@@ -99,8 +126,8 @@ export async function glosar(validation: {
     validation: {
       name: validation.name,
       description: validation.description,
-      ...glosaResult
+      ...glosaResult,
     },
-    contexts: validation.contexts
+    contexts: validation.contexts,
   };
 }

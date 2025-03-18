@@ -1,5 +1,5 @@
-import Link from "next/link";
-import { RightArrow } from "@/shared/icons";
+import { RightArrow } from '@/shared/icons';
+import Link from 'next/link';
 
 interface ISavedNFinish {
   glossId: string;
@@ -12,10 +12,10 @@ const SavedNFinish = ({ glossId }: ISavedNFinish) => {
       <div className="mx-auto">
         <Link
           href={`/gloss/${glossId}`}
-          className="px-12 py-2 rounded-md border border-black text-sm relative hover:bg-gray-100 transition-colors duration-200"
+          className="relative rounded-md border border-black px-12 py-2 text-sm transition-colors duration-200 hover:bg-gray-100"
         >
           Terminar
-          <span className="absolute right-1 top-1">
+          <span className="absolute top-1 right-1">
             <RightArrow />
           </span>
         </Link>

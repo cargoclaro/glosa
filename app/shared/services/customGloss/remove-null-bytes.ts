@@ -7,15 +7,15 @@ export function sanitizeObjectStrings<T>(obj: T): T {
   if (obj === null || obj === undefined) {
     return obj;
   }
-  
+
   if (typeof obj === 'string') {
     return obj.replace(/\0/g, '') as unknown as T;
   }
-  
+
   if (Array.isArray(obj)) {
-    return obj.map(item => sanitizeObjectStrings(item)) as unknown as T;
+    return obj.map((item) => sanitizeObjectStrings(item)) as unknown as T;
   }
-  
+
   if (typeof obj === 'object') {
     const result: Record<string, unknown> = {};
     for (const key in obj) {
@@ -25,6 +25,6 @@ export function sanitizeObjectStrings<T>(obj: T): T {
     }
     return result as unknown as T;
   }
-  
+
   return obj;
 }

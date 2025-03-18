@@ -1,46 +1,47 @@
 export const apendice15 = {
-  "Apéndice": "15",
-  "Título": "Destinos de mercancía",
-  "Destinos": [
+  Apéndice: '15',
+  Título: 'Destinos de mercancía',
+  Destinos: [
     {
-      "Clave": "1", 
-      "Descripción": "Estado de Baja California y parcial de Sonora."
+      Clave: '1',
+      Descripción: 'Estado de Baja California y parcial de Sonora.',
     },
     {
-      "Clave": "2",
-      "Descripción": "Estado de Baja California Sur."
+      Clave: '2',
+      Descripción: 'Estado de Baja California Sur.',
     },
     {
-      "Clave": "3", 
-      "Descripción": "Estado de Quintana Roo."
+      Clave: '3',
+      Descripción: 'Estado de Quintana Roo.',
     },
     {
-      "Clave": "5",
-      "Descripción": "Municipio de Salina Cruz, Oaxaca."
+      Clave: '5',
+      Descripción: 'Municipio de Salina Cruz, Oaxaca.',
     },
     {
-      "Clave": "6",
-      "Descripción": "Municipio de Cananea, Sonora."
+      Clave: '6',
+      Descripción: 'Municipio de Cananea, Sonora.',
     },
     {
-      "Clave": "7",
-      "Descripción": "Franja Fronteriza Norte."
+      Clave: '7',
+      Descripción: 'Franja Fronteriza Norte.',
     },
     {
-      "Clave": "8",
-      "Descripción": "Franja Fronteriza Sur, Colindante con Guatemala."
+      Clave: '8',
+      Descripción: 'Franja Fronteriza Sur, Colindante con Guatemala.',
     },
     {
-      "Clave": "9",
-      "Descripción": "Interior del País."
+      Clave: '9',
+      Descripción: 'Interior del País.',
     },
     {
-      "Clave": "10",
-      "Descripción": "Municipio de Caborca, Sonora."
+      Clave: '10',
+      Descripción: 'Municipio de Caborca, Sonora.',
     },
     {
-      "Clave": "11",
-      "Descripción": "Región Fronteriza de Chetumal, en la localidad de Chetumal, en el Municipio de Othón P. Blanco, Quintana Roo."
-    }
-  ]
+      Clave: '11',
+      Descripción:
+        'Región Fronteriza de Chetumal, en la localidad de Chetumal, en el Municipio de Othón P. Blanco, Quintana Roo.',
+    },
+  ],
 } as const;

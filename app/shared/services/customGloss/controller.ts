@@ -1,37 +1,46 @@
-"use server";
+'use server';
 
-import { redirect } from "next/navigation";
-import { revalidatePath } from "next/cache";
-import { read, updateTabWithCustomGlossId } from "./model";
-import { CustomGlossTabContextType } from "@prisma/client";
+import prisma from '@/shared/services/prisma';
+import { auth } from '@clerk/nextjs/server';
+import type { CustomGlossTabContextType } from '@prisma/client';
 import { config } from 'dotenv';
-import { traceable } from "langsmith/traceable";
-import { uploadFiles } from "./upload-files";
-import { classifyDocuments } from "./classification";
-import { extractTextFromPDFs } from "./data-extraction";
-import { glosaImpo } from "./glosa/impo";
-import { glosaExpo } from "./glosa/expo";
-import prisma from "@/shared/services/prisma";
-import { auth } from "@clerk/nextjs/server";
-import { UploadedFileData } from "uploadthing/types";
-import { DocumentType } from "./classification";
+import { traceable } from 'langsmith/traceable';
+import { revalidatePath } from 'next/cache';
+import { redirect } from 'next/navigation';
+import type { UploadedFileData } from 'uploadthing/types';
+import { classifyDocuments } from './classification';
+import type { DocumentType } from './classification';
+import { extractTextFromPDFs } from './data-extraction';
+import { glosaExpo } from './glosa/expo';
+import { glosaImpo } from './glosa/impo';
+import { read, updateTabWithCustomGlossId } from './model';
+import { uploadFiles } from './upload-files';
 
 config();
 
 const runGlosa = traceable(
-  async (classifications: Partial<Record<DocumentType, (UploadedFileData & { originalFile: File; documentType: DocumentType })>>) => {
+  async (
+    classifications: Partial<
+      Record<
+        DocumentType,
+        UploadedFileData & { originalFile: File; documentType: DocumentType }
+      >
+    >
+  ) => {
     const documents = await extractTextFromPDFs(classifications);
     const { pedimento, cove } = documents;
     if (!pedimento || !cove) {
-      throw new Error("El pedimento y el cove son obligatorios para realizar la glosa electrónica.");
+      throw new Error(
+        'El pedimento y el cove son obligatorios para realizar la glosa electrónica.'
+      );
     }
     const operationType = pedimento.encabezado_del_pedimento?.tipo_oper;
-    if (operationType === "IMP") {
+    if (operationType === 'IMP') {
       return {
         gloss: await glosaImpo(documents),
         importerName: pedimento.datos_importador?.razon_social,
       };
-    } else if (operationType === "EXP") {
+    } else if (operationType === 'EXP') {
       return {
         gloss: await glosaExpo(documents),
         importerName: pedimento.datos_importador?.razon_social,
@@ -41,39 +50,50 @@ const runGlosa = traceable(
     }
   },
   {
-    name: "runGlosa",
-    project_name: "glosa",
+    name: 'runGlosa',
+    project_name: 'glosa',
   }
 );
 
 export async function analysis(formData: FormData) {
   try {
     const { userId } = await auth.protect();
-    const files = formData.getAll("files") as File[]; // TODO: We should use trpc instead of this
+    const files = formData.getAll('files') as File[]; // TODO: We should use trpc instead of this
     const successfulUploads = await uploadFiles(files);
     const classifications = await classifyDocuments(successfulUploads);
     // Now group the classifications by document type, taking only the first file of each type.
-    const groupedClassifications = classifications.reduce((acc, curr) => {
-      // Only set the value if it doesn't exist yet (keeping the first file of each type)
-      if (!acc[curr.documentType]) {
-        acc[curr.documentType] = curr;
-      }
-      return acc;
-    }, {} as Partial<Record<DocumentType, (UploadedFileData & { originalFile: File; documentType: DocumentType })>>);
+    const groupedClassifications = classifications.reduce(
+      (acc, curr) => {
+        // Only set the value if it doesn't exist yet (keeping the first file of each type)
+        if (!acc[curr.documentType]) {
+          acc[curr.documentType] = curr;
+        }
+        return acc;
+      },
+      {} as Partial<
+        Record<
+          DocumentType,
+          UploadedFileData & { originalFile: File; documentType: DocumentType }
+        >
+      >
+    );
 
     // Only use this for testing the migration from the python backend
     const { gloss, importerName } = await runGlosa(groupedClassifications);
     const newCustomGloss = await prisma.customGloss.create({
       data: {
         userId,
-        summary: "No se donde sale esto",
+        summary: 'No se donde sale esto',
         timeSaved: 20,
         moneySaved: 1000,
-        importerName: importerName ?? "No se encontro la razon social del importador",
+        importerName:
+          importerName ?? 'No se encontro la razon social del importador',
         tabs: {
           create: gloss.map(({ sectionName, validations }) => ({
             name: sectionName,
-            isCorrect: validations.every(({ validation: { isValid } }) => isValid),
+            isCorrect: validations.every(
+              ({ validation: { isValid } }) => isValid
+            ),
             fullContext: true,
             context: {
               create: validations.flatMap(({ contexts }) =>
@@ -86,7 +106,8 @@ export async function analysis(formData: FormData) {
                     data: {
                       create: contextValue.data.map(({ name, value }) => ({
                         name,
-                        value: value === undefined ? "N/A" : JSON.stringify(value),
+                        value:
+                          value === undefined ? 'N/A' : JSON.stringify(value),
                       })),
                     },
                   }))
@@ -95,7 +116,15 @@ export async function analysis(formData: FormData) {
             },
             validations: {
               create: validations.map(
-                ({ validation: { name, description, llmAnalysis, isValid, actionsToTake } }) => ({
+                ({
+                  validation: {
+                    name,
+                    description,
+                    llmAnalysis,
+                    isValid,
+                    actionsToTake,
+                  },
+                }) => ({
                   name,
                   description,
                   llmAnalysis,
@@ -110,7 +139,13 @@ export async function analysis(formData: FormData) {
             },
           })),
         },
-        files: { create: classifications.map(({ name, ufsUrl, documentType }) => ({ name, url: ufsUrl, documentType })) },
+        files: {
+          create: classifications.map(({ name, ufsUrl, documentType }) => ({
+            name,
+            url: ufsUrl,
+            documentType,
+          })),
+        },
       },
     });
     return {
@@ -121,7 +156,7 @@ export async function analysis(formData: FormData) {
     console.error(error);
     return {
       success: false,
-      message: "Ocurrió un error interno",
+      message: 'Ocurrió un error interno',
     };
   }
 }
@@ -139,7 +174,7 @@ export async function markTabAsVerifiedByTabIdNCustomGlossID({
     const customGloss = await read({ id: customGlossId, userId });
 
     if (!customGloss) {
-      throw new Error("Gloss not found");
+      throw new Error('Gloss not found');
     }
 
     await updateTabWithCustomGlossId({
@@ -153,7 +188,7 @@ export async function markTabAsVerifiedByTabIdNCustomGlossID({
     console.error(error);
     return {
       success: false,
-      message: "Ocurrió un error interno",
+      message: 'Ocurrió un error interno',
     };
   }
   revalidatePath(`/gloss/${customGlossId}/analysis`);

@@ -1,28 +1,28 @@
-import Image from "next/image";
-import { GenericCard } from "@/shared/components";
-import { clerkClient, currentUser } from "@clerk/nextjs/server";
-import { auth } from "@clerk/nextjs/server";
+import { GenericCard } from '@/shared/components';
+import { clerkClient, currentUser } from '@clerk/nextjs/server';
+import { auth } from '@clerk/nextjs/server';
+import Image from 'next/image';
 
 async function MyInfo() {
   const { orgId } = await auth.protect();
   if (!orgId) {
     return <div>No se pudo obtener la organización</div>;
   }
-  const user = await currentUser()
+  const user = await currentUser();
   if (!user) {
     return <div>No se pudo obtener el usuario</div>;
   }
-  const client = await clerkClient()
+  const client = await clerkClient();
   const { publicMetadata } = await client.organizations.getOrganization({
     organizationId: orgId,
-  })
+  });
   return (
     <GenericCard>
-      <p className="font-bold text-center text-lg">
-        Patente:{" "}
-        <span className="font-normal">{"#" + publicMetadata?.patente}</span>
+      <p className="text-center font-bold text-lg">
+        Patente:{' '}
+        <span className="font-normal">{'#' + publicMetadata?.patente}</span>
       </p>
-      <div className="flex justify-center mt-4">
+      <div className="mt-4 flex justify-center">
         <Image
           src={user.imageUrl}
           alt="User profile"
@@ -51,6 +51,6 @@ async function MyInfo() {
       </div> */}
     </GenericCard>
   );
-};
+}
 
 export default MyInfo;

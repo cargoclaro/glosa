@@ -1,7 +1,8 @@
-import { writeFileSync } from "fs";
-import { xmlParser } from "./xml-parser";
+import { writeFileSync } from 'fs';
+import { xmlParser } from './xml-parser';
 
-const xmlUrl = "https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15KAM1Uj24cxAwqMmpsYVRUeW6jkbtTlr5Qf7D"
+const xmlUrl =
+  'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15KAM1Uj24cxAwqMmpsYVRUeW6jkbtTlr5Qf7D';
 
 async function parseXml() {
   const file = await fetch(xmlUrl);

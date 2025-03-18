@@ -1,19 +1,19 @@
 import { google } from '@ai-sdk/google';
 import { generateObject } from 'ai';
+import type { UploadedFileData } from 'uploadthing/types';
 import { z } from 'zod';
-import { UploadedFileData } from 'uploadthing/types';
 
 export const documentTypes = [
-  "pedimento",
-  "documentoDeTransporte",
-  "factura",
-  "carta318",
-  "cartaCesionDeDerechos",
-  "cove",
-  "rrna",
-  "listaDeEmpaque",
-  "cfdi",
-  "otros"
+  'pedimento',
+  'documentoDeTransporte',
+  'factura',
+  'carta318',
+  'cartaCesionDeDerechos',
+  'cove',
+  'rrna',
+  'listaDeEmpaque',
+  'cfdi',
+  'otros',
 ] as const;
 
 export type DocumentType = (typeof documentTypes)[number];
@@ -21,18 +21,21 @@ export type DocumentType = (typeof documentTypes)[number];
 export async function classifyDocuments(
   uploadedFiles: (UploadedFileData & { originalFile: File })[]
 ) {
-  return await Promise.all(uploadedFiles.map(async (uploadedFile) => {
-    const { object: { documentType } } = await generateObject({
-      model: google("gemini-2.0-flash-001"),
-      experimental_telemetry: { isEnabled: true },
-      system: `
+  return await Promise.all(
+    uploadedFiles.map(async (uploadedFile) => {
+      const {
+        object: { documentType },
+      } = await generateObject({
+        model: google('gemini-2.0-flash-001'),
+        experimental_telemetry: { isEnabled: true },
+        system: `
         Eres un experto en análisis y clasificación de documentos aduaneros.
         
         Tu tarea es analizar la imagen del documento y determinar exactamente qué tipo de documento aduanero es basado en su contenido, formato y elementos específicos. 
         Busca elementos como números de pedimento, sellos digitales, datos de importador/exportador, detalles de mercancías, referencias a NOMs, etc. que identifiquen el tipo específico de documento.
       `,
-      schema: z.object({
-        documentType: z.enum(documentTypes).describe(`
+        schema: z.object({
+          documentType: z.enum(documentTypes).describe(`
           Tipo de documento aduanero:
           
           - pedimento: 
@@ -72,25 +75,26 @@ export async function classifyDocuments(
 
           - otros:
             Documentos que no se ajustan a los tipos anteriores. Ej. NOMs, etc.
-        `)
-      }),
-      messages: [
-        {
-          role: 'user',
-          content: [
-            {
-              type: 'file',
-              data: `data:application/pdf;base64,${Buffer.from(await uploadedFile.originalFile.arrayBuffer()).toString('base64')}`,
-              mimeType: 'application/pdf',
-            },
-          ],
-        },
-      ],
-    });
+        `),
+        }),
+        messages: [
+          {
+            role: 'user',
+            content: [
+              {
+                type: 'file',
+                data: `data:application/pdf;base64,${Buffer.from(await uploadedFile.originalFile.arrayBuffer()).toString('base64')}`,
+                mimeType: 'application/pdf',
+              },
+            ],
+          },
+        ],
+      });
 
-    return {
-      ...uploadedFile,
-      documentType,
-    };
-  }));
+      return {
+        ...uploadedFile,
+        documentType,
+      };
+    })
+  );
 }

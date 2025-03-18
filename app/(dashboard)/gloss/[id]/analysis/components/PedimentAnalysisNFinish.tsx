@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { Pediment, Analysis, SavedNFinish } from ".";
-import { CustomGlossFile } from "@prisma/client";
-import { Prisma } from "@prisma/client";
+import type { CustomGlossFile } from '@prisma/client';
+import type { Prisma } from '@prisma/client';
+import { useState } from 'react';
+import { Analysis, Pediment, SavedNFinish } from '.';
 
 type tabs = Prisma.CustomGlossTabGetPayload<{
   include: {
@@ -39,15 +39,15 @@ const PedimentAnalysisNFinish = ({
 }: {
   customGloss: IPedimentAnalysisNFinish;
 }) => {
-  const [documentSelected, setDocumentSelected] = useState("PEDIMENTO");
-  const [tabSelectedFromDocument, setTabSelectedFromDocument] = useState("");
+  const [documentSelected, setDocumentSelected] = useState('PEDIMENTO');
+  const [tabSelectedFromDocument, setTabSelectedFromDocument] = useState('');
   const customGlossTabs = customGloss.tabs;
   if (customGlossTabs.length === 0) {
-    throw new Error("No tabs found");
+    throw new Error('No tabs found');
   }
   const customGlossTab = customGlossTabs[0];
   if (!customGlossTab) {
-    throw new Error("No tab found");
+    throw new Error('No tab found');
   }
   const { name, isCorrect, isVerified } = customGlossTab;
   const [tabInfoSelected, setTabInfoSelected] = useState<ITabInfoSelected>({
@@ -63,19 +63,19 @@ const PedimentAnalysisNFinish = ({
   return (
     <>
       <section className="sm:col-span-2">
-        <div className="flex gap-2 justify-between items-center mb-2">
-          <h2 className="text-2xl font-bold text-gray-800">
-            {documentSelected === "PEDIMENTO" ? "Pedimento" : "COVE"}
+        <div className="mb-2 flex items-center justify-between gap-2">
+          <h2 className="font-bold text-2xl text-gray-800">
+            {documentSelected === 'PEDIMENTO' ? 'Pedimento' : 'COVE'}
           </h2>
           <button
             onClick={() =>
               setDocumentSelected(
-                documentSelected === "PEDIMENTO" ? "COVE" : "PEDIMENTO"
+                documentSelected === 'PEDIMENTO' ? 'COVE' : 'PEDIMENTO'
               )
             }
-            className="px-4 py-2 rounded-md shadow-black/50 shadow-md border border-white text-sm bg-cargoClaroOrange hover:bg-cargoClaroOrange-hover text-white"
+            className="rounded-md border border-white bg-cargoClaroOrange px-4 py-2 text-sm text-white shadow-black/50 shadow-md hover:bg-cargoClaroOrange-hover"
           >
-            Cambiar a {documentSelected === "PEDIMENTO" ? "COVE" : "Pedimento"}
+            Cambiar a {documentSelected === 'PEDIMENTO' ? 'COVE' : 'Pedimento'}
           </button>
         </div>
         <Pediment
@@ -83,12 +83,15 @@ const PedimentAnalysisNFinish = ({
           onClick={handleFunction}
           tabInfoSelected={tabInfoSelected}
           document={
-            customGloss.files.find((doc) => doc.documentType?.toLowerCase() === documentSelected.toLowerCase())
-              ?.url || ""
+            customGloss.files.find(
+              (doc) =>
+                doc.documentType?.toLowerCase() ===
+                documentSelected.toLowerCase()
+            )?.url || ''
           }
         />
       </section>
-      <section className="flex flex-col gap-4 col-span-1 sm:col-span-3 lg:col-span-1">
+      <section className="col-span-1 flex flex-col gap-4 sm:col-span-3 lg:col-span-1">
         <Analysis
           tabs={customGloss.tabs}
           setTabInfoSelected={setTabInfoSelected}

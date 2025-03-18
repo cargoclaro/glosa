@@ -1,15 +1,15 @@
 import type {
   // Custom,
   CustomGloss,
-  CustomGlossFile,
   CustomGlossAlert,
+  CustomGlossFile,
   CustomGlossTab,
   CustomGlossTabContext,
   CustomGlossTabContextData,
+  CustomGlossTabValidationStep,
   CustomGlossTabValidationStepActionToTake,
   CustomGlossTabValidationStepResources,
-  CustomGlossTabValidationStep,
-} from "@prisma/client";
+} from '@prisma/client';
 
 // export interface ICustom extends Custom {
 //   users: {

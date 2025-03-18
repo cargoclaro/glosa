@@ -1,14 +1,14 @@
 const ProfileCardSkeleton = () => {
   return (
-    <div className="flex flex-col justify-between w-full bg-white rounded-lg shadow-md p-6">
-      <div className="flex flex-col justify-between items-center gap-2 mb-4 animate-pulse">
-        <div className="h-3 bg-gray-300 rounded-full w-32 mb-3"></div>
-        <div className="size-20 bg-gray-300 rounded-full"></div>
+    <div className="flex w-full flex-col justify-between rounded-lg bg-white p-6 shadow-md">
+      <div className="mb-4 flex animate-pulse flex-col items-center justify-between gap-2">
+        <div className="mb-3 h-3 w-32 rounded-full bg-gray-300"></div>
+        <div className="size-20 rounded-full bg-gray-300"></div>
       </div>
-      <div className="h-4 bg-gray-300 rounded-full w-64 animate-pulse"></div>
-      <div className="flex gap-2 mt-2 animate-pulse">
-        <div className="h-3 bg-gray-300 rounded-full w-36"></div>
-        <div className="h-3 bg-gray-300 rounded-full w-80"></div>
+      <div className="h-4 w-64 animate-pulse rounded-full bg-gray-300"></div>
+      <div className="mt-2 flex animate-pulse gap-2">
+        <div className="h-3 w-36 rounded-full bg-gray-300"></div>
+        <div className="h-3 w-80 rounded-full bg-gray-300"></div>
       </div>
     </div>
   );

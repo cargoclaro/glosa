@@ -1,46 +1,40 @@
 {
-	"name": "glosa",
-	"image": "mcr.microsoft.com/devcontainers/universal:2-linux",
-	"postCreateCommand": "pnpm install",
-	"features": {
-		"ghcr.io/devcontainers-extra/features/pnpm:2": {}
-	},
-	"customizations": {
-		"vscode": {
-			"settings": {
-				"editor.linkedEditing": true,
-				"editor.defaultFormatter": "biomejs.biome",
-				"files.associations": {
-					"*.css": "tailwindcss"
-				},
-				"editor.quickSuggestions": {
-					"strings": "on"
-				},
-				"emmet.showExpandedAbbreviation": "never",
-				"typescript.tsdk": "node_modules/typescript/lib",
-				"cursor.general.enableShadowWorkspace": true,
-				"tailwindCSS.experimental.classRegex": [
-					[
-						"cva\\(([^)]*)\\)",
-						"[\"'`]([^\"'`]*).*?[\"'`]"
-					],
-					[
-						"cx\\(([^)]*)\\)",
-						"(?:'|\"|`)([^']*)(?:'|\"|`)"
-					]
-				],
-				"cSpell.language": "en,es"
-			},
-			"extensions": [
-				"bradlc.vscode-tailwindcss",
-				"yoavbls.pretty-ts-errors",
-				"vscode-icons-team.vscode-icons",
-				"mylesmurphy.prettify-ts",
-				"streetsidesoftware.code-spell-checker",
-				"streetsidesoftware.code-spell-checker-spanish",
-				"biomejs.biome",
-				"prisma.prisma"
-			]
-		}
-	}
+  "name": "glosa",
+  "image": "mcr.microsoft.com/devcontainers/universal:2-linux",
+  "postCreateCommand": "pnpm install",
+  "features": {
+    "ghcr.io/devcontainers-extra/features/pnpm:2": {}
+  },
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "editor.linkedEditing": true,
+        "editor.defaultFormatter": "biomejs.biome",
+        "files.associations": {
+          "*.css": "tailwindcss"
+        },
+        "editor.quickSuggestions": {
+          "strings": "on"
+        },
+        "emmet.showExpandedAbbreviation": "never",
+        "typescript.tsdk": "node_modules/typescript/lib",
+        "cursor.general.enableShadowWorkspace": true,
+        "tailwindCSS.experimental.classRegex": [
+          ["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
+          ["cx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"]
+        ],
+        "cSpell.language": "en,es"
+      },
+      "extensions": [
+        "bradlc.vscode-tailwindcss",
+        "yoavbls.pretty-ts-errors",
+        "vscode-icons-team.vscode-icons",
+        "mylesmurphy.prettify-ts",
+        "streetsidesoftware.code-spell-checker",
+        "streetsidesoftware.code-spell-checker-spanish",
+        "biomejs.biome",
+        "prisma.prisma"
+      ]
+    }
+  }
 }

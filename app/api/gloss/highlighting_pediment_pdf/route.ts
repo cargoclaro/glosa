@@ -1,13 +1,13 @@
-import fs from "fs";
-import path from "path";
-import fontkit from "@pdf-lib/fontkit";
-import { PDFDocument, rgb } from "pdf-lib";
-import { NextRequest, NextResponse } from "next/server";
+import fs from 'fs';
+import path from 'path';
+import fontkit from '@pdf-lib/fontkit';
+import { type NextRequest, NextResponse } from 'next/server';
+import { PDFDocument, rgb } from 'pdf-lib';
 
 export async function POST(req: NextRequest) {
   console.log(req.body);
   try {
-    const pdfPath = path.join(process.cwd(), "public/pedimento_format.pdf");
+    const pdfPath = path.join(process.cwd(), 'public/pedimento_format.pdf');
     const existingPdfBytes = fs.readFileSync(pdfPath);
 
     const pdfDoc = await PDFDocument.load(existingPdfBytes);
@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
 
     const fontPath = path.join(
       process.cwd(),
-      "public/fonts/NotoEmoji-Bold.ttf"
+      'public/fonts/NotoEmoji-Bold.ttf'
     );
     const pages = pdfDoc.getPages();
     const fontBytes = fs.readFileSync(fontPath);
@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
 
     const page = pages[0];
     if (!page) {
-      throw new Error("No page found");
+      throw new Error('No page found');
     }
     const { height } = page.getSize();
 
@@ -41,17 +41,17 @@ export async function POST(req: NextRequest) {
       height: 8,
       opacity: 0.2,
       borderWidth: 0.5,
-      color: colors["CHECKED"],
-      borderColor: colors["CHECKED"],
+      color: colors['CHECKED'],
+      borderColor: colors['CHECKED'],
     });
 
     //   WARNING
-    page.drawText("⚠️", {
+    page.drawText('⚠️', {
       x: 90,
       y: height - 100,
       size: 6,
       font: customFont,
-      color: colors["WARNING"],
+      color: colors['WARNING'],
     });
     page.drawRectangle({
       x: 101,
@@ -60,17 +60,17 @@ export async function POST(req: NextRequest) {
       height: 8,
       opacity: 0.2,
       borderWidth: 0.5,
-      color: colors["WARNING"],
-      borderColor: colors["WARNING"],
+      color: colors['WARNING'],
+      borderColor: colors['WARNING'],
     });
 
     //   ERROR
-    page.drawText("❌", {
+    page.drawText('❌', {
       x: 90,
       y: height - 117.5,
       size: 6,
       font: customFont,
-      color: colors["ERROR"],
+      color: colors['ERROR'],
     });
     page.drawRectangle({
       x: 101,
@@ -79,21 +79,21 @@ export async function POST(req: NextRequest) {
       height: 8,
       opacity: 0.2,
       borderWidth: 0.5,
-      color: colors["ERROR"],
-      borderColor: colors["ERROR"],
+      color: colors['ERROR'],
+      borderColor: colors['ERROR'],
     });
 
     const pdfBytes = await pdfDoc.save();
     const outputPath = path.join(
       process.cwd(),
-      "public",
-      "pedimento_format_modified.pdf"
+      'public',
+      'pedimento_format_modified.pdf'
     );
     fs.writeFileSync(outputPath, pdfBytes);
 
-    return new NextResponse("PDF modified", { status: 200 });
+    return new NextResponse('PDF modified', { status: 200 });
   } catch (error) {
     console.error(error);
-    return new NextResponse("Internal error", { status: 500 });
+    return new NextResponse('Internal error', { status: 500 });
   }
 }

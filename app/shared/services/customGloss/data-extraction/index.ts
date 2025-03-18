@@ -1,26 +1,39 @@
-import { DocumentType } from "../classification";
-import { pedimentoSchema, coveSchema } from "./schemas/";
-import { transportDocumentSchema, invoiceSchema, carta318Schema, rrnaSchema, packingListSchema, cfdiSchema, cartaSesionSchema } from "./mkdown_schemas";
-import { extractTextFromImage } from "./vision";
-import { z } from "zod";
-import { structureTaggedText } from "./tagged";
-import { UploadedFileData } from 'uploadthing/types';
 import { traceable } from 'langsmith/traceable';
+import type { UploadedFileData } from 'uploadthing/types';
+import { z } from 'zod';
+import type { DocumentType } from '../classification';
+import {
+  carta318Schema,
+  cartaSesionSchema,
+  cfdiSchema,
+  invoiceSchema,
+  packingListSchema,
+  rrnaSchema,
+  transportDocumentSchema,
+} from './mkdown_schemas';
+import { coveSchema, pedimentoSchema } from './schemas/';
+import { structureTaggedText } from './tagged';
+import { extractTextFromImage } from './vision';
 
 export const documentToSchema = {
-  "factura": invoiceSchema,
-  "carta318": carta318Schema,
-  "rrna": rrnaSchema,
-  "documentoDeTransporte": transportDocumentSchema,
-  "pedimento": pedimentoSchema,
-  "listaDeEmpaque": packingListSchema,
-  "cove": coveSchema,
-  "cfdi": cfdiSchema,
-  "cartaCesionDeDerechos": cartaSesionSchema,
+  factura: invoiceSchema,
+  carta318: carta318Schema,
+  rrna: rrnaSchema,
+  documentoDeTransporte: transportDocumentSchema,
+  pedimento: pedimentoSchema,
+  listaDeEmpaque: packingListSchema,
+  cove: coveSchema,
+  cfdi: cfdiSchema,
+  cartaCesionDeDerechos: cartaSesionSchema,
 } as const;
 
 async function extractTextFromPDFsParallel(
-  classifications: Partial<Record<DocumentType, UploadedFileData & { originalFile: File; documentType: DocumentType }>>
+  classifications: Partial<
+    Record<
+      DocumentType,
+      UploadedFileData & { originalFile: File; documentType: DocumentType }
+    >
+  >
 ) {
   const {
     factura,
@@ -31,18 +44,18 @@ async function extractTextFromPDFsParallel(
     listaDeEmpaque,
     cove,
     cfdi,
-    cartaCesionDeDerechos
+    cartaCesionDeDerechos,
   } = classifications;
-  
+
   // Check if required documents are present
   if (!pedimento) {
-    throw new Error("Pedimento document is required");
+    throw new Error('Pedimento document is required');
   }
-  
+
   if (!cove) {
-    throw new Error("COVE document is required");
+    throw new Error('COVE document is required');
   }
-  
+
   // Run all extraction operations in parallel instead of sequentially
   const [
     facturaText,
@@ -53,72 +66,77 @@ async function extractTextFromPDFsParallel(
     listaDeEmpaqueText,
     coveText,
     cfdiText,
-    cartaCesionDeDerechosText
+    cartaCesionDeDerechosText,
   ] = await Promise.all([
-    factura ? extractTextFromImage(
-      factura.originalFile,
-      factura.documentType,
-    ) : null,
-    carta318 ? extractTextFromImage(
-      carta318.originalFile,
-      carta318.documentType,
-    ) : null,
-    rrna ? extractTextFromImage(
-      rrna.originalFile,
-      rrna.documentType,
-    ) : null,
-    documentoDeTransporte ? extractTextFromImage(
-      documentoDeTransporte.originalFile,
-      documentoDeTransporte.documentType,
-    ) : null,
+    factura
+      ? extractTextFromImage(factura.originalFile, factura.documentType)
+      : null,
+    carta318
+      ? extractTextFromImage(carta318.originalFile, carta318.documentType)
+      : null,
+    rrna ? extractTextFromImage(rrna.originalFile, rrna.documentType) : null,
+    documentoDeTransporte
+      ? extractTextFromImage(
+          documentoDeTransporte.originalFile,
+          documentoDeTransporte.documentType
+        )
+      : null,
     extractTextFromPedimento(
       pedimento.originalFile,
       pedimento.documentType,
       documentToSchema.pedimento
     ),
-    listaDeEmpaque ? extractTextFromImage(
-      listaDeEmpaque.originalFile,
-      listaDeEmpaque.documentType,
-    ) : null,
+    listaDeEmpaque
+      ? extractTextFromImage(
+          listaDeEmpaque.originalFile,
+          listaDeEmpaque.documentType
+        )
+      : null,
     extractTextFromPDF(
       cove.originalFile,
       cove.documentType,
       documentToSchema.cove
     ),
-    cfdi ? extractTextFromImage(
-      cfdi.originalFile,
-      cfdi.documentType,
-    ) : null,
-    cartaCesionDeDerechos ? extractTextFromImage(
-      cartaCesionDeDerechos.originalFile,
-      cartaCesionDeDerechos.documentType,
-    ) : null
+    cfdi ? extractTextFromImage(cfdi.originalFile, cfdi.documentType) : null,
+    cartaCesionDeDerechos
+      ? extractTextFromImage(
+          cartaCesionDeDerechos.originalFile,
+          cartaCesionDeDerechos.documentType
+        )
+      : null,
   ]);
 
   return {
     ...(facturaText && { invoice: facturaText }),
     ...(carta318Text && { carta318: carta318Text }),
     ...(rrnasText && { rrnas: rrnasText }),
-    ...(documentoDeTransporteText && { transportDocument: documentoDeTransporteText }),
+    ...(documentoDeTransporteText && {
+      transportDocument: documentoDeTransporteText,
+    }),
     pedimento: pedimentoText,
     ...(listaDeEmpaqueText && { packingList: listaDeEmpaqueText }),
     cove: coveText,
     ...(cfdiText && { cfdi: cfdiText }),
-    ...(cartaCesionDeDerechosText && { cartaSesion: cartaCesionDeDerechosText }),
+    ...(cartaCesionDeDerechosText && {
+      cartaSesion: cartaCesionDeDerechosText,
+    }),
   };
 }
 
-export const extractTextFromPDFs = traceable(
-  extractTextFromPDFsParallel,
-  { name: 'textExtraction' }
-);
-
-const extractionResponseSchema = z.object({
-  text: z.string()
+export const extractTextFromPDFs = traceable(extractTextFromPDFsParallel, {
+  name: 'textExtraction',
 });
 
-async function extractTextFromPDF<T extends z.ZodType>(originalFile: File, documentType: DocumentType, schema: T) {
-  const baseUrl = process.env["PYTHON_BACKEND_URL"];
+const extractionResponseSchema = z.object({
+  text: z.string(),
+});
+
+async function extractTextFromPDF<T extends z.ZodType>(
+  originalFile: File,
+  documentType: DocumentType,
+  schema: T
+) {
+  const baseUrl = process.env['PYTHON_BACKEND_URL'];
   const url = `${baseUrl}/extract-pdf-text`;
 
   // Create form data and append the file
@@ -126,9 +144,9 @@ async function extractTextFromPDF<T extends z.ZodType>(originalFile: File, docum
   formData.append('file', originalFile);
 
   const response = await fetch(url, {
-    method: "POST",
+    method: 'POST',
     headers: {
-      Authorization: `Bearer ${process.env["GLOSS_TOKEN"]}`,
+      Authorization: `Bearer ${process.env['GLOSS_TOKEN']}`,
     },
     body: formData,
   });
@@ -144,11 +162,11 @@ async function extractTextFromPDF<T extends z.ZodType>(originalFile: File, docum
 }
 
 async function extractTextFromPedimento<S extends z.ZodType>(
-  originalFile: File, 
-  documentType: DocumentType, 
+  originalFile: File,
+  documentType: DocumentType,
   schema: S
 ): Promise<z.infer<S>> {
-  const baseUrl = process.env["PYTHON_BACKEND_URL"];
+  const baseUrl = process.env['PYTHON_BACKEND_URL'];
   const url = `${baseUrl}/extract-pedimento`;
 
   // Create form data and append the file
@@ -156,9 +174,9 @@ async function extractTextFromPedimento<S extends z.ZodType>(
   formData.append('file', originalFile);
 
   const response = await fetch(url, {
-    method: "POST",
+    method: 'POST',
     headers: {
-      Authorization: `Bearer ${process.env["GLOSS_TOKEN"]}`,
+      Authorization: `Bearer ${process.env['GLOSS_TOKEN']}`,
     },
     body: formData,
   });

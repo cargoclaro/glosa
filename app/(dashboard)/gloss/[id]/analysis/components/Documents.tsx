@@ -1,12 +1,12 @@
-import Link from "next/link";
-import { Document } from "@/shared/icons";
-import { GenericCard } from "@/shared/components";
-import { CustomGlossFile } from "@prisma/client";
+import { GenericCard } from '@/shared/components';
+import { Document } from '@/shared/icons';
+import type { CustomGlossFile } from '@prisma/client';
+import Link from 'next/link';
 
 const Documents = ({ data }: { data: CustomGlossFile[] }) => {
   return (
     <GenericCard customClass="">
-      <h1 className="flex justify-center items-center gap-2 font-semibold pb-2 border-b border-black">
+      <h1 className="flex items-center justify-center gap-2 border-black border-b pb-2 font-semibold">
         <Document />
         Documentos
       </h1>
@@ -15,7 +15,7 @@ const Documents = ({ data }: { data: CustomGlossFile[] }) => {
           <li
             key={doc.id}
             title={`Ver documento ${doc.name}`}
-            className="rounded-md p-1 border border-black truncate text-sm text-center hover:bg-gray-200 transition-colors duration-200"
+            className="truncate rounded-md border border-black p-1 text-center text-sm transition-colors duration-200 hover:bg-gray-200"
           >
             <Link href={doc.url} target="_blank" rel="noreferrer">
               <p>{doc.name}</p>

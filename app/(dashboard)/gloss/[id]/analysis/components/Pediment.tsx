@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import * as pdfjs from "pdfjs-dist";
-import { cn } from "@/shared/utils/cn";
-import { GenericCard } from "@/shared/components";
-import React, { useEffect, useRef, useState } from "react";
-import { LeftChevron, RightChevron } from "@/shared/icons";
-import type { TextItem } from "pdfjs-dist/types/src/display/api";
-import { ITabInfoSelected } from "./PedimentAnalysisNFinish";
-import { CustomGlossTab } from "@prisma/client";
+import { GenericCard } from '@/shared/components';
+import { LeftChevron, RightChevron } from '@/shared/icons';
+import { cn } from '@/shared/utils/cn';
+import type { CustomGlossTab } from '@prisma/client';
+import * as pdfjs from 'pdfjs-dist';
+import type { TextItem } from 'pdfjs-dist/types/src/display/api';
+import { useEffect, useRef, useState } from 'react';
+import type { ITabInfoSelected } from './PedimentAnalysisNFinish';
 
-pdfjs.GlobalWorkerOptions.workerSrc = "/pdf.worker.mjs";
+pdfjs.GlobalWorkerOptions.workerSrc = '/pdf.worker.mjs';
 
 interface IPediment {
   document: string;
@@ -20,44 +20,44 @@ interface IPediment {
 
 const keywords = [
   // PEDIMENTO
-  "NUM. PEDIMENTO:",
+  'NUM. PEDIMENTO:',
 
-  "T. OPER",
-  "T.OPER",
-  "TIPO OPER",
-  "TIPO OPER:",
-  "TIPO OPER.:",
+  'T. OPER',
+  'T.OPER',
+  'TIPO OPER',
+  'TIPO OPER:',
+  'TIPO OPER.:',
 
-  "DESTINO:",
-  "DESTINO/ORIGEN:",
+  'DESTINO:',
+  'DESTINO/ORIGEN:',
 
-  "TIPO CAMBIO:",
-  "VALOR DOLARES:",
-  "VAL. SEGUROS",
-  "VAL.SEGUROS",
-  "FECHAS", // ⚠️ WARNING ⚠️
+  'TIPO CAMBIO:',
+  'VALOR DOLARES:',
+  'VAL. SEGUROS',
+  'VAL.SEGUROS',
+  'FECHAS', // ⚠️ WARNING ⚠️
 
-  "PESO BRUTO:",
+  'PESO BRUTO:',
 
-  "DATOS DEL IMPORTADOR/EXPORTADOR",
-  "DATOS DEL IMPORTADOR / EXPORTADOR",
-  "DATOS DEL PROVEEDOR O COMPRADOR",
+  'DATOS DEL IMPORTADOR/EXPORTADOR',
+  'DATOS DEL IMPORTADOR / EXPORTADOR',
+  'DATOS DEL PROVEEDOR O COMPRADOR',
 
-  "DATOS DEL TRANSPORTE Y TRANSPORTISTA",
+  'DATOS DEL TRANSPORTE Y TRANSPORTISTA',
 
-  "PARTIDAS",
-  "OBSERVACIONES A NIVEL PARTIDA",
+  'PARTIDAS',
+  'OBSERVACIONES A NIVEL PARTIDA',
 
   // COVE
-  "No. de Factura",
-  "Fecha Expedición",
+  'No. de Factura',
+  'Fecha Expedición',
 
-  "Datos generales del proveedor",
-  "Domicilio del proveedor",
-  "Datos generales del destinatario",
-  "Domicilio del destinatario",
+  'Datos generales del proveedor',
+  'Domicilio del proveedor',
+  'Datos generales del destinatario',
+  'Domicilio del destinatario',
 
-  "Datos de la mercancía",
+  'Datos de la mercancía',
 ] as const; // Make this a const assertion to create a tuple of literal types
 
 // Define a type for the keywords
@@ -110,91 +110,91 @@ const sharedConfigValSeguros = {
 
 const keywordPositions: Record<Keyword, IKeywordPosition> = {
   // PEDIMENTO
-  "NUM. PEDIMENTO:": {
+  'NUM. PEDIMENTO:': {
     x: 0,
     y: (currentPage) => (currentPage !== 1 ? -15 : 0),
     w: 90,
     h: (currentPage) => (currentPage !== 1 ? 15 : 0),
   },
 
-  "T. OPER": sharedConfigForTipoOper,
-  "T.OPER": sharedConfigForTipoOper,
-  "TIPO OPER": sharedConfigForTipoOper,
-  "TIPO OPER:": sharedConfigForTipoOper,
-  "TIPO OPER.:": sharedConfigForTipoOper,
+  'T. OPER': sharedConfigForTipoOper,
+  'T.OPER': sharedConfigForTipoOper,
+  'TIPO OPER': sharedConfigForTipoOper,
+  'TIPO OPER:': sharedConfigForTipoOper,
+  'TIPO OPER.:': sharedConfigForTipoOper,
 
-  "DESTINO:": sharedConfigForDestino,
-  "DESTINO/ORIGEN:": sharedConfigForDestino,
+  'DESTINO:': sharedConfigForDestino,
+  'DESTINO/ORIGEN:': sharedConfigForDestino,
 
-  "TIPO CAMBIO:": sharedConfigForTipoCambioNPesoBruto,
-  "VALOR DOLARES:": { x: -2, y: -26, w: 165, h: 26 },
-  "VAL. SEGUROS": sharedConfigValSeguros,
-  "VAL.SEGUROS": sharedConfigValSeguros,
+  'TIPO CAMBIO:': sharedConfigForTipoCambioNPesoBruto,
+  'VALOR DOLARES:': { x: -2, y: -26, w: 165, h: 26 },
+  'VAL. SEGUROS': sharedConfigValSeguros,
+  'VAL.SEGUROS': sharedConfigValSeguros,
   FECHAS: { x: -50, y: -30, w: 100, h: 30 },
 
-  "PESO BRUTO:": sharedConfigForTipoCambioNPesoBruto,
+  'PESO BRUTO:': sharedConfigForTipoCambioNPesoBruto,
 
-  "DATOS DEL IMPORTADOR/EXPORTADOR": sharedConfigForDatosImportador,
-  "DATOS DEL IMPORTADOR / EXPORTADOR": sharedConfigForDatosImportador,
-  "DATOS DEL PROVEEDOR O COMPRADOR": { x: -210, y: -30, w: 400, h: 30 },
+  'DATOS DEL IMPORTADOR/EXPORTADOR': sharedConfigForDatosImportador,
+  'DATOS DEL IMPORTADOR / EXPORTADOR': sharedConfigForDatosImportador,
+  'DATOS DEL PROVEEDOR O COMPRADOR': { x: -210, y: -30, w: 400, h: 30 },
 
-  "DATOS DEL TRANSPORTE Y TRANSPORTISTA": { x: 0, y: -110, w: 370, h: 110 },
+  'DATOS DEL TRANSPORTE Y TRANSPORTISTA': { x: 0, y: -110, w: 370, h: 110 },
 
   PARTIDAS: { x: -255, y: -80, w: 510, h: 80 },
-  "OBSERVACIONES A NIVEL PARTIDA": { x: -135, y: 50, w: 410, h: -70 },
+  'OBSERVACIONES A NIVEL PARTIDA': { x: -135, y: 50, w: 410, h: -70 },
 
   // COVE
-  "No. de Factura": { x: 0, y: -18, w: 153, h: 18 },
-  "Fecha Expedición": { x: 0, y: -18, w: 182, h: 18 },
+  'No. de Factura': { x: 0, y: -18, w: 153, h: 18 },
+  'Fecha Expedición': { x: 0, y: -18, w: 182, h: 18 },
 
-  "Datos generales del proveedor": { x: 0, y: -65, w: 390, h: 65 },
-  "Domicilio del proveedor": { x: 0, y: -145, w: 425, h: 145 },
-  "Datos generales del destinatario": { x: 0, y: -70, w: 380, h: 70 },
-  "Domicilio del destinatario": { x: 0, y: -150, w: 415, h: 150 },
+  'Datos generales del proveedor': { x: 0, y: -65, w: 390, h: 65 },
+  'Domicilio del proveedor': { x: 0, y: -145, w: 425, h: 145 },
+  'Datos generales del destinatario': { x: 0, y: -70, w: 380, h: 70 },
+  'Domicilio del destinatario': { x: 0, y: -150, w: 415, h: 150 },
 
-  "Datos de la mercancía": { x: 0, y: -70, w: 430, h: 60 },
+  'Datos de la mercancía': { x: 0, y: -70, w: 430, h: 60 },
 };
 
 const keywordsConfig: Record<Keyword, string> = {
   // PEDIMENTO
-  "NUM. PEDIMENTO:": "Número de pedimento",
+  'NUM. PEDIMENTO:': 'Número de pedimento',
 
-  "T. OPER": "Tipo de operación",
-  "T.OPER": "Tipo de operación",
-  "TIPO OPER": "Tipo de operación",
-  "TIPO OPER:": "Tipo de operación",
-  "TIPO OPER.:": "Tipo de Ooperación",
+  'T. OPER': 'Tipo de operación',
+  'T.OPER': 'Tipo de operación',
+  'TIPO OPER': 'Tipo de operación',
+  'TIPO OPER:': 'Tipo de operación',
+  'TIPO OPER.:': 'Tipo de Ooperación',
 
-  "DESTINO:": "Clave de destino/origen",
-  "DESTINO/ORIGEN:": "Clave de destino/origen",
+  'DESTINO:': 'Clave de destino/origen',
+  'DESTINO/ORIGEN:': 'Clave de destino/origen',
 
-  "TIPO CAMBIO:": "Operación monetaria",
-  "VALOR DOLARES:": "Operación monetaria",
-  "VAL. SEGUROS": "Operación monetaria",
-  "VAL.SEGUROS": "Operación monetaria",
-  FECHAS: "Operación monetaria",
+  'TIPO CAMBIO:': 'Operación monetaria',
+  'VALOR DOLARES:': 'Operación monetaria',
+  'VAL. SEGUROS': 'Operación monetaria',
+  'VAL.SEGUROS': 'Operación monetaria',
+  FECHAS: 'Operación monetaria',
 
-  "PESO BRUTO:": "Pesos y bultos",
+  'PESO BRUTO:': 'Pesos y bultos',
 
-  "DATOS DEL IMPORTADOR/EXPORTADOR": "Datos de factura",
-  "DATOS DEL IMPORTADOR / EXPORTADOR": "Datos de factura",
-  "DATOS DEL PROVEEDOR O COMPRADOR": "Datos de factura",
+  'DATOS DEL IMPORTADOR/EXPORTADOR': 'Datos de factura',
+  'DATOS DEL IMPORTADOR / EXPORTADOR': 'Datos de factura',
+  'DATOS DEL PROVEEDOR O COMPRADOR': 'Datos de factura',
 
-  "DATOS DEL TRANSPORTE Y TRANSPORTISTA": "Datos del transporte",
+  'DATOS DEL TRANSPORTE Y TRANSPORTISTA': 'Datos del transporte',
 
-  PARTIDAS: "Partidas",
-  "OBSERVACIONES A NIVEL PARTIDA": "Partidas",
+  PARTIDAS: 'Partidas',
+  'OBSERVACIONES A NIVEL PARTIDA': 'Partidas',
 
   // COVE
-  "No. de Factura": "Datos de la Mercancía",
-  "Fecha Expedición": "Datos de la Mercancía",
+  'No. de Factura': 'Datos de la Mercancía',
+  'Fecha Expedición': 'Datos de la Mercancía',
 
-  "Datos generales del proveedor": "Datos Generales",
-  "Domicilio del proveedor": "Datos Proveedor Destinatario",
-  "Datos generales del destinatario": "Datos Proveedor Destinatario",
-  "Domicilio del destinatario": "Datos Proveedor Destinatario",
+  'Datos generales del proveedor': 'Datos Generales',
+  'Domicilio del proveedor': 'Datos Proveedor Destinatario',
+  'Datos generales del destinatario': 'Datos Proveedor Destinatario',
+  'Domicilio del destinatario': 'Datos Proveedor Destinatario',
 
-  "Datos de la mercancía": "Validación de mercancías",
+  'Datos de la mercancía': 'Validación de mercancías',
 } as const;
 
 const Pediment = ({ tabs, document, onClick, tabInfoSelected }: IPediment) => {
@@ -218,7 +218,7 @@ const Pediment = ({ tabs, document, onClick, tabInfoSelected }: IPediment) => {
         setIsLoading(false); // Finaliza la carga
       },
       (reason) => {
-        console.error("Error loading PDF: ", reason);
+        console.error('Error loading PDF: ', reason);
         setErrorDetected(true);
         setIsLoading(false); // Finaliza la carga incluso si hay un error
       }
@@ -238,7 +238,7 @@ const Pediment = ({ tabs, document, onClick, tabInfoSelected }: IPediment) => {
       const viewport = page.getViewport({ scale });
 
       const canvas = canvasRef.current;
-      const context = canvas.getContext("2d");
+      const context = canvas.getContext('2d');
       if (!context) return;
 
       canvas.width = viewport.width;
@@ -264,7 +264,7 @@ const Pediment = ({ tabs, document, onClick, tabInfoSelected }: IPediment) => {
       }[] = [];
 
       textContent.items
-        .filter((item): item is TextItem => "str" in item)
+        .filter((item): item is TextItem => 'str' in item)
         .forEach((item) => {
           const text = item.str;
           if (isKeyword(text)) {
@@ -337,10 +337,10 @@ const Pediment = ({ tabs, document, onClick, tabInfoSelected }: IPediment) => {
         });
       };
 
-      canvas.addEventListener("click", handleClick);
+      canvas.addEventListener('click', handleClick);
 
       return () => {
-        canvas.removeEventListener("click", handleClick);
+        canvas.removeEventListener('click', handleClick);
       };
     };
 
@@ -362,24 +362,24 @@ const Pediment = ({ tabs, document, onClick, tabInfoSelected }: IPediment) => {
   return (
     <GenericCard>
       {isLoading ? (
-        <div className="flex justify-center items-center w-full h-80">
-          <p className="text-gray-500 text-center">Cargando documento...</p>
+        <div className="flex h-80 w-full items-center justify-center">
+          <p className="text-center text-gray-500">Cargando documento...</p>
         </div>
       ) : errorDetected ? (
-        <div className="flex justify-center items-center w-full h-80">
-          <p className="text-red-500 text-center">
+        <div className="flex h-80 w-full items-center justify-center">
+          <p className="text-center text-red-500">
             No se pudo cargar el documento
           </p>
         </div>
       ) : (
         <>
-          <div className="flex justify-between items-center gap-2">
+          <div className="flex items-center justify-between gap-2">
             <button
               className={cn(
-                "rounded-full p-2",
+                'rounded-full p-2',
                 currentPage <= 1
-                  ? "bg-gray-200 text-gray-500"
-                  : "bg-gray-500 text-white"
+                  ? 'bg-gray-200 text-gray-500'
+                  : 'bg-gray-500 text-white'
               )}
               onClick={goToPrevPage}
               disabled={currentPage <= 1}
@@ -391,10 +391,10 @@ const Pediment = ({ tabs, document, onClick, tabInfoSelected }: IPediment) => {
             </p>
             <button
               className={cn(
-                "rounded-full p-2",
+                'rounded-full p-2',
                 currentPage >= numPages
-                  ? "bg-gray-200 text-gray-500"
-                  : "bg-gray-500 text-white"
+                  ? 'bg-gray-200 text-gray-500'
+                  : 'bg-gray-500 text-white'
               )}
               onClick={goToNextPage}
               disabled={currentPage >= numPages}
@@ -416,9 +416,9 @@ function getKeywordConfig(text: Keyword, currentPage: number) {
 
   return {
     x: config.x,
-    y: typeof config.y === "function" ? config.y(currentPage) : config.y,
-    w: typeof config.w === "function" ? config.w(currentPage) : config.w,
-    h: typeof config.h === "function" ? config.h(currentPage) : config.h,
+    y: typeof config.y === 'function' ? config.y(currentPage) : config.y,
+    w: typeof config.w === 'function' ? config.w(currentPage) : config.w,
+    h: typeof config.h === 'function' ? config.h(currentPage) : config.h,
   };
 }
 
@@ -427,17 +427,17 @@ const getStrokeStyle = (text: Keyword, tabs: CustomGlossTab[]) => {
 
   const tab = tabs.find((tab) => tab.name === tabName);
   return tab?.isCorrect || tab?.isVerified
-    ? "rgb(81,174,57)"
-    : "rgb(235,202,98)";
+    ? 'rgb(81,174,57)'
+    : 'rgb(235,202,98)';
 };
 
 const getFillStyle = (text: Keyword, tabInfoSelected: ITabInfoSelected) => {
   const tabName = keywordsConfig[text];
-  if (!tabName || tabInfoSelected.name !== tabName) return "transparent";
+  if (!tabName || tabInfoSelected.name !== tabName) return 'transparent';
 
   return tabInfoSelected.isCorrect || tabInfoSelected.isVerified
-    ? "rgba(81,174,57,0.5)"
-    : "rgba(235,202,98,0.5)";
+    ? 'rgba(81,174,57,0.5)'
+    : 'rgba(235,202,98,0.5)';
 };
 
 function isKeyword(text: string): text is Keyword {

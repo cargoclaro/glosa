@@ -1,9 +1,9 @@
-import { clerkMiddleware } from '@clerk/nextjs/server'
+import { clerkMiddleware } from '@clerk/nextjs/server';
 
 export default clerkMiddleware(async (auth) => {
   // All routes are protected, landing page is in another domain
   await auth.protect();
-  return
+  return;
 });
 
 export const config = {

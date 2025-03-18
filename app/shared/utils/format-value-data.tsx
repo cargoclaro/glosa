@@ -1,7 +1,7 @@
 const formatValue = (value: unknown) => {
-  if (value === null || value === undefined) return "N/A";
+  if (value === null || value === undefined) return 'N/A';
 
-  if (typeof value === "string") {
+  if (typeof value === 'string') {
     try {
       const parsed = JSON.parse(value);
       return formatValue(parsed);
@@ -10,7 +10,7 @@ const formatValue = (value: unknown) => {
     }
   }
 
-  if (typeof value === "number") {
+  if (typeof value === 'number') {
     return value.toString();
   }
 
@@ -24,9 +24,9 @@ const formatValue = (value: unknown) => {
     );
   }
 
-  if (typeof value === "object") {
+  if (typeof value === 'object') {
     return (
-      <div className="p-2 overflow-y-auto">
+      <div className="overflow-y-auto p-2">
         {Object.entries(value).map(([key, val], index) => (
           <div key={index} className="mb-1">
             <strong>{key}:</strong> {formatValue(val)}

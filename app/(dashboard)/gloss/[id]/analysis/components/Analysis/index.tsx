@@ -1,25 +1,25 @@
-"use client";
+'use client';
 
-import Detailed from "./Detailed";
-import { cn } from "@/shared/utils/cn";
-import { useModal, useServerAction } from "@/shared/hooks";
-import { GenericCard, Modal } from "@/shared/components";
-import { ITabInfoSelected } from "../PedimentAnalysisNFinish";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { GenericCard, Modal } from '@/shared/components';
+import { INITIAL_STATE_RESPONSE } from '@/shared/constants';
+import { useModal, useServerAction } from '@/shared/hooks';
 import {
-  Check,
-  RightArrow,
-  LeftChevron,
-  RightChevron,
-  DocMagniGlass,
   ArrowTrendingUp,
-  ExclamationTriangle,
+  Check,
+  DocMagniGlass,
   Document,
-} from "@/shared/icons";
-import type { ISharedState } from "@/shared/interfaces";
-import { markTabAsVerifiedByTabIdNCustomGlossID } from "@/shared/services/customGloss/controller";
-import { INITIAL_STATE_RESPONSE } from "@/shared/constants";
-import { Prisma } from "@prisma/client";
+  ExclamationTriangle,
+  LeftChevron,
+  RightArrow,
+  RightChevron,
+} from '@/shared/icons';
+import type { ISharedState } from '@/shared/interfaces';
+import { markTabAsVerifiedByTabIdNCustomGlossID } from '@/shared/services/customGloss/controller';
+import { cn } from '@/shared/utils/cn';
+import type { Prisma } from '@prisma/client';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import type { ITabInfoSelected } from '../PedimentAnalysisNFinish';
+import Detailed from './Detailed';
 
 type tabs = Prisma.CustomGlossTabGetPayload<{
   include: {
@@ -60,27 +60,27 @@ const Analysis = ({
 }: IAnalysis) => {
   const scrollContainerRef = useRef<HTMLUListElement>(null);
   const { isOpen, openMenu, closeMenu, menuRef } = useModal(false);
-  const [tabSelected, setTabSelected] = useState("Número de pedimento");
+  const [tabSelected, setTabSelected] = useState('Número de pedimento');
 
   const [dataForDetail, setDataForDetail] = useState<
-    tabs["validations"][number]
+    tabs['validations'][number]
   >({
     id: 0,
-    name: "",
-    description: "",
-    llmAnalysis: "",
+    name: '',
+    description: '',
+    llmAnalysis: '',
     isCorrect: true,
     resources: [],
     actionsToTake: [],
     createdAt: new Date(),
     updatedAt: new Date(),
-    customGlossTabId: "",
+    customGlossTabId: '',
     steps: [],
-    fraccion: "",
+    fraccion: '',
     parentStepId: 0,
   });
 
-  const handleDetail = (data: tabs["validations"][number]) => {
+  const handleDetail = (data: tabs['validations'][number]) => {
     setDataForDetail(data);
     openMenu();
   };
@@ -89,7 +89,7 @@ const Analysis = ({
     if (scrollContainerRef.current) {
       const container = scrollContainerRef.current;
       const tabWidth = container.firstElementChild?.clientWidth || 100;
-      container.scrollTo({ left: index * (tabWidth + 16), behavior: "smooth" });
+      container.scrollTo({ left: index * (tabWidth + 16), behavior: 'smooth' });
     }
   };
 
@@ -144,57 +144,57 @@ const Analysis = ({
   );
 
   useEffect(() => {
-    if (tabSelectedFromDocument !== "") {
-      if (tabSelectedFromDocument === "NUM. PEDIMENTO:") {
-        handleTabClick("Número de pedimento");
+    if (tabSelectedFromDocument !== '') {
+      if (tabSelectedFromDocument === 'NUM. PEDIMENTO:') {
+        handleTabClick('Número de pedimento');
       } else if (
-        tabSelectedFromDocument === "T. OPER" ||
-        tabSelectedFromDocument === "T.OPER" ||
-        tabSelectedFromDocument === "TIPO OPER" ||
-        tabSelectedFromDocument === "TIPO OPER:" ||
-        tabSelectedFromDocument === "TIPO OPER.:"
+        tabSelectedFromDocument === 'T. OPER' ||
+        tabSelectedFromDocument === 'T.OPER' ||
+        tabSelectedFromDocument === 'TIPO OPER' ||
+        tabSelectedFromDocument === 'TIPO OPER:' ||
+        tabSelectedFromDocument === 'TIPO OPER.:'
       ) {
-        handleTabClick("Tipo de operación");
+        handleTabClick('Tipo de operación');
       } else if (
-        tabSelectedFromDocument === "DESTINO:" ||
-        tabSelectedFromDocument === "DESTINO/ORIGEN:"
+        tabSelectedFromDocument === 'DESTINO:' ||
+        tabSelectedFromDocument === 'DESTINO/ORIGEN:'
       ) {
-        handleTabClick("Clave de destino/origen");
+        handleTabClick('Clave de destino/origen');
       } else if (
-        tabSelectedFromDocument === "TIPO CAMBIO:" ||
-        tabSelectedFromDocument === "VALOR DOLARES:" ||
-        tabSelectedFromDocument === "VAL. SEGUROS" ||
-        tabSelectedFromDocument === "VAL.SEGUROS" ||
-        tabSelectedFromDocument === "FECHAS"
+        tabSelectedFromDocument === 'TIPO CAMBIO:' ||
+        tabSelectedFromDocument === 'VALOR DOLARES:' ||
+        tabSelectedFromDocument === 'VAL. SEGUROS' ||
+        tabSelectedFromDocument === 'VAL.SEGUROS' ||
+        tabSelectedFromDocument === 'FECHAS'
       ) {
-        handleTabClick("Operación monetaria");
-      } else if (tabSelectedFromDocument === "PESO BRUTO:") {
-        handleTabClick("Pesos y bultos");
+        handleTabClick('Operación monetaria');
+      } else if (tabSelectedFromDocument === 'PESO BRUTO:') {
+        handleTabClick('Pesos y bultos');
       } else if (
-        tabSelectedFromDocument === "DATOS DEL IMPORTADOR/EXPORTADOR" ||
-        tabSelectedFromDocument === "DATOS DEL IMPORTADOR / EXPORTADOR" ||
-        tabSelectedFromDocument === "DATOS DEL PROVEEDOR O COMPRADOR"
+        tabSelectedFromDocument === 'DATOS DEL IMPORTADOR/EXPORTADOR' ||
+        tabSelectedFromDocument === 'DATOS DEL IMPORTADOR / EXPORTADOR' ||
+        tabSelectedFromDocument === 'DATOS DEL PROVEEDOR O COMPRADOR'
       ) {
-        handleTabClick("Datos de factura");
+        handleTabClick('Datos de factura');
       } else if (
-        tabSelectedFromDocument === "DATOS DEL TRANSPORTE Y TRANSPORTISTA"
+        tabSelectedFromDocument === 'DATOS DEL TRANSPORTE Y TRANSPORTISTA'
       ) {
-        handleTabClick("Datos del transporte");
+        handleTabClick('Datos del transporte');
       } else if (
-        tabSelectedFromDocument === "PARTIDAS" ||
-        tabSelectedFromDocument === "OBSERVACIONES A NIVEL PARTIDA"
+        tabSelectedFromDocument === 'PARTIDAS' ||
+        tabSelectedFromDocument === 'OBSERVACIONES A NIVEL PARTIDA'
       ) {
-        handleTabClick("Partidas");
-      } else if (tabSelectedFromDocument === "Datos generales del proveedor") {
-        handleTabClick("Datos Generales");
+        handleTabClick('Partidas');
+      } else if (tabSelectedFromDocument === 'Datos generales del proveedor') {
+        handleTabClick('Datos Generales');
       } else if (
-        tabSelectedFromDocument === "Domicilio del proveedor" ||
-        tabSelectedFromDocument === "Datos generales del destinatario" ||
-        tabSelectedFromDocument === "Domicilio del destinatario"
+        tabSelectedFromDocument === 'Domicilio del proveedor' ||
+        tabSelectedFromDocument === 'Datos generales del destinatario' ||
+        tabSelectedFromDocument === 'Domicilio del destinatario'
       ) {
-        handleTabClick("Datos Proveedor Destinatario");
-      } else if (tabSelectedFromDocument === "Datos de la mercancía") {
-        handleTabClick("Validación de mercancías");
+        handleTabClick('Datos Proveedor Destinatario');
+      } else if (tabSelectedFromDocument === 'Datos de la mercancía') {
+        handleTabClick('Validación de mercancías');
       } else {
         handleTabClick(tabSelectedFromDocument);
       }
@@ -209,14 +209,14 @@ const Analysis = ({
       <GenericCard>
         <div className="relative w-full">
           <button
-            className="absolute top-0 left-0 rounded-full p-1 shadow-md bg-white/70 hover:bg-white/90 transition-colors duration-200"
+            className="absolute top-0 left-0 rounded-full bg-white/70 p-1 shadow-md transition-colors duration-200 hover:bg-white/90"
             onClick={handlePrevious}
           >
             <LeftChevron />
           </button>
           <ul
             ref={scrollContainerRef}
-            style={{ scrollbarWidth: "none" }}
+            style={{ scrollbarWidth: 'none' }}
             className="flex gap-4 overflow-x-scroll font-semibold"
           >
             {tabs.map((tab) => (
@@ -229,7 +229,7 @@ const Analysis = ({
             ))}
           </ul>
           <button
-            className="absolute top-0 right-0 rounded-full p-1 shadow-md bg-white/70 hover:bg-white/90 transition-colors duration-200"
+            className="absolute top-0 right-0 rounded-full bg-white/70 p-1 shadow-md transition-colors duration-200 hover:bg-white/90"
             onClick={handleNext}
           >
             <RightChevron />
@@ -264,10 +264,10 @@ const GenericTabLi = ({ title, active, onClick }: IGenericTabLi) => (
       title={title}
       onClick={onClick}
       className={cn(
-        "border-b-2 min-w-64 text-center pb-2 hover:border-cargoClaroOrange-hover hover:text-cargoClaroOrange-hover",
+        'min-w-64 border-b-2 pb-2 text-center hover:border-cargoClaroOrange-hover hover:text-cargoClaroOrange-hover',
         active
-          ? "border-cargoClaroOrange text-cargoClaroOrange"
-          : "border-black"
+          ? 'border-cargoClaroOrange text-cargoClaroOrange'
+          : 'border-black'
       )}
     >
       <p className="line-clamp-1">{title}</p>
@@ -277,7 +277,7 @@ const GenericTabLi = ({ title, active, onClick }: IGenericTabLi) => (
 
 interface IGenericTabComponent {
   data: tabs;
-  handleClick: (data: tabs["validations"][number]) => void;
+  handleClick: (data: tabs['validations'][number]) => void;
 }
 
 const GenericTabComponent = ({ data, handleClick }: IGenericTabComponent) => {
@@ -293,12 +293,12 @@ const GenericTabComponent = ({ data, handleClick }: IGenericTabComponent) => {
         handleDetail={handleClick}
       />
       <SectionDivider title="Fuentes" icon={<DocMagniGlass />} />
-      <ul className="flex flex-col gap-1 mt-4 max-h-[160px] overflow-y-auto">
+      <ul className="mt-4 flex max-h-[160px] flex-col gap-1 overflow-y-auto">
         {uniqueOrigins.map((origin, index) => (
           <li key={index} className="">
             <p
               title={origin}
-              className="w-full px-12 py-2 rounded-full text-center border truncate bg-purple-100 border-purple-400 inline-flex gap-1 justify-center items-center"
+              className="inline-flex w-full items-center justify-center gap-1 truncate rounded-full border border-purple-400 bg-purple-100 px-12 py-2 text-center"
             >
               <span>
                 <Document />
@@ -308,7 +308,7 @@ const GenericTabComponent = ({ data, handleClick }: IGenericTabComponent) => {
           </li>
         ))}
       </ul>
-      <div className="border-t border-t-black mb-4" />
+      <div className="mb-4 border-t border-t-black" />
       <VerifiedButton
         tabId={data.id}
         isVerified={data.isVerified}
@@ -326,7 +326,7 @@ interface ISectionDivider {
 const SectionDivider = ({ title, icon }: ISectionDivider) => (
   <>
     <DashedLine customClass="mt-4" />
-    <p className="flex gap-1 items-center justify-center font-bold py-2">
+    <p className="flex items-center justify-center gap-1 py-2 font-bold">
       <span>{icon}</span>
       {title}
     </p>
@@ -367,14 +367,14 @@ const VerifiedButton = ({
         disabled={isVerified}
         onClick={() => handleVerify()}
         className={cn(
-          "px-12 py-2 rounded-md shadow-black/50 shadow-md border border-white text-sm",
-          isLoading && "cursor-not-allowed opacity-50",
+          'rounded-md border border-white px-12 py-2 text-sm shadow-black/50 shadow-md',
+          isLoading && 'cursor-not-allowed opacity-50',
           isVerified
-            ? "bg-gray-300 cursor-not-allowed text-gray-900"
-            : "bg-cargoClaroOrange hover:bg-cargoClaroOrange-hover text-white"
+            ? 'cursor-not-allowed bg-gray-300 text-gray-900'
+            : 'bg-cargoClaroOrange text-white hover:bg-cargoClaroOrange-hover'
         )}
       >
-        {isVerified ? "Análisis Verificado" : "Marcar como verificado"}
+        {isVerified ? 'Análisis Verificado' : 'Marcar como verificado'}
       </button>
     </div>
   );
@@ -382,25 +382,25 @@ const VerifiedButton = ({
 
 const StatusHeader = ({ status }: { status: boolean }) => (
   <h2
-    title={status ? "El análisis fue correcto" : "El análisis no fue correcto"}
+    title={status ? 'El análisis fue correcto' : 'El análisis no fue correcto'}
     className={cn(
-      "mt-4 px-12 py-2 rounded-full text-center border truncate",
+      'mt-4 truncate rounded-full border px-12 py-2 text-center',
       status
-        ? "bg-green-100 border-green-400"
-        : "bg-yellow-100 border-yellow-400"
+        ? 'border-green-400 bg-green-100'
+        : 'border-yellow-400 bg-yellow-100'
     )}
   >
-    {status ? "Todo parece bien" : "Verificar datos"}
+    {status ? 'Todo parece bien' : 'Verificar datos'}
   </h2>
 );
 
-const DashedLine = ({ customClass = "" }: { customClass?: string }) => (
-  <div className={cn("border-dashed border-b border-b-black", customClass)} />
+const DashedLine = ({ customClass = '' }: { customClass?: string }) => (
+  <div className={cn('border-b border-b-black border-dashed', customClass)} />
 );
 
 interface IDataListForSummaryCard {
-  data: tabs["validations"];
-  handleDetail: (data: tabs["validations"][number]) => void;
+  data: tabs['validations'];
+  handleDetail: (data: tabs['validations'][number]) => void;
 }
 
 const DataListForSummaryCard = ({
@@ -408,16 +408,16 @@ const DataListForSummaryCard = ({
   handleDetail,
 }: IDataListForSummaryCard) => {
   return (
-    <ul className="my-4 flex flex-col gap-4 max-h-[300px] overflow-y-auto overflow-x-hidden">
+    <ul className="my-4 flex max-h-[300px] flex-col gap-4 overflow-y-auto overflow-x-hidden">
       {data.map((item) => (
         <li
           key={item.id}
           onClick={() => handleDetail(item)}
           className={cn(
-            "flex flex-col sm:flex-row lg:flex-col xl:flex-row items-center justify-between gap-2 rounded-lg p-2 border text-sm group cursor-pointer",
+            'group flex cursor-pointer flex-col items-center justify-between gap-2 rounded-lg border p-2 text-sm sm:flex-row lg:flex-col xl:flex-row',
             item.isCorrect
-              ? "bg-green-100/50 hover:bg-green-100/80 border-green-500 text-green-500"
-              : "bg-yellow-100/50 hover:bg-yellow-100/80 border-yellow-500 text-yellow-500"
+              ? 'border-green-500 bg-green-100/50 text-green-500 hover:bg-green-100/80'
+              : 'border-yellow-500 bg-yellow-100/50 text-yellow-500 hover:bg-yellow-100/80'
           )}
         >
           {item.isCorrect ? (
@@ -429,11 +429,11 @@ const DataListForSummaryCard = ({
               <ExclamationTriangle />
             </span>
           )}
-          <p className="text-black font-semibold">
-            {item.name + ": "}
+          <p className="font-semibold text-black">
+            {item.name + ': '}
             <span className="font-normal">{item.description}</span>
           </p>
-          <span className="text-black p-1 rounded-full border-2 border-black group-hover:animate-pulse animate-infinite">
+          <span className="animate-infinite rounded-full border-2 border-black p-1 text-black group-hover:animate-pulse">
             <RightArrow size="size-4" strokeWidth={4} />
           </span>
         </li>

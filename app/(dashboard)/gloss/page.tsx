@@ -1,10 +1,10 @@
-import { GlossDataTable, GlossDataTableColumns } from "./components";
-import type { Metadata } from "next";
-import prisma from "@/shared/services/prisma";
-import { auth } from "@clerk/nextjs/server";
+import prisma from '@/shared/services/prisma';
+import { auth } from '@clerk/nextjs/server';
+import type { Metadata } from 'next';
+import { GlossDataTable, GlossDataTableColumns } from './components';
 
 export const metadata: Metadata = {
-  title: "Operaciones",
+  title: 'Operaciones',
 };
 
 const GlossPage = async () => {

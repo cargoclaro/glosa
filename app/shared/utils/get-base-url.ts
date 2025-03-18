@@ -1,10 +1,10 @@
-"use server";
+'use server';
 
-import { headers } from "next/headers";
+import { headers } from 'next/headers';
 
 function getBaseUrl() {
-  const host = headers().get("host") ?? "localhost:3000";
-  const port = headers().get("x-forwarded-proto") ?? "http";
+  const host = headers().get('host') ?? 'localhost:3000';
+  const port = headers().get('x-forwarded-proto') ?? 'http';
   return `${port}://${host}`;
 }
 

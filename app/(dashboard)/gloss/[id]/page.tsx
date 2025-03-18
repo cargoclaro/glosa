@@ -1,8 +1,8 @@
-import Link from "next/link";
-import { notFound } from "next/navigation";
-import { LeftArrow } from "@/shared/icons";
-import type { Metadata } from "next";
-import prisma from "@/shared/services/prisma";
+import { LeftArrow } from '@/shared/icons';
+import prisma from '@/shared/services/prisma';
+import type { Metadata } from 'next';
+import Link from 'next/link';
+import { notFound } from 'next/navigation';
 
 type IDynamicMetadata = {
   params: Promise<{ id: string }>;
@@ -45,7 +45,7 @@ const GlossIdPage = async ({ params: { id } }: { params: { id: string } }) => {
 
   return (
     <article>
-      <h1 className="text-2xl font-bold">
+      <h1 className="font-bold text-2xl">
         <Link className="inline-flex items-center gap-2" href="/gloss">
           <span>
             <LeftArrow strokeWidth={3} />
@@ -53,12 +53,12 @@ const GlossIdPage = async ({ params: { id } }: { params: { id: string } }) => {
           Mis Operaciones
         </Link>
       </h1>
-      <div className="flex flex-col gap-4 mt-4">
+      <div className="mt-4 flex flex-col gap-4">
         <p>{customGloss.summary}</p>
         <p>
           <Link
             href={`/gloss/${id}/analysis`}
-            className="px-12 py-2 rounded-md shadow-black/50 shadow-md border border-white text-sm bg-cargoClaroOrange hover:bg-cargoClaroOrange-hover text-white"
+            className="rounded-md border border-white bg-cargoClaroOrange px-12 py-2 text-sm text-white shadow-black/50 shadow-md hover:bg-cargoClaroOrange-hover"
           >
             Ver análisis
           </Link>

@@ -1,7 +1,7 @@
-"use server";
+'use server';
 
-import prisma from "@/shared/services/prisma";
-import { Prisma } from "@prisma/client";
+import prisma from '@/shared/services/prisma';
+import type { Prisma } from '@prisma/client';
 
 export async function create({
   data,
@@ -50,7 +50,7 @@ export async function read({ id, userId, recent }: IRead) {
   if (userId && recent) {
     return await prisma.customGloss.findMany({
       where: { userId },
-      orderBy: { createdAt: "desc" },
+      orderBy: { createdAt: 'desc' },
       take: 3,
     });
   }
@@ -61,7 +61,7 @@ export async function read({ id, userId, recent }: IRead) {
     });
   }
 
-  throw new Error("Should never happen");
+  throw new Error('Should never happen');
 }
 
 export async function update({
@@ -69,7 +69,7 @@ export async function update({
   data,
 }: {
   id: string;
-  data: (typeof prisma.customGloss.update)["arguments"]["data"];
+  data: (typeof prisma.customGloss.update)['arguments']['data'];
 }) {
   return await prisma.customGloss.update({
     where: { id },
@@ -84,7 +84,7 @@ export async function updateTabWithCustomGlossId({
 }: {
   id: string;
   customGlossId: string;
-  data: (typeof prisma.customGlossTab.update)["arguments"]["data"];
+  data: (typeof prisma.customGlossTab.update)['arguments']['data'];
 }) {
   return await prisma.customGlossTab.update({
     where: { id, customGlossId },
