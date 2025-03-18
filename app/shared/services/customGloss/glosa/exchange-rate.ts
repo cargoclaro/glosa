@@ -20,7 +20,7 @@ const oportunoSchema = z.object({
   }),
 });
 
-export function getPreviousDiaHabil(fechaPedimento: Date): Date {
+function getPreviousDiaHabil(fechaPedimento: Date): Date {
   const mexicoHolidays = new Holidays('MX');
   // Create a copy of the input date to avoid modifying the original
   const resultDate = new Date(fechaPedimento);

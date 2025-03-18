@@ -12,7 +12,7 @@ import { glosar } from '../../validation-result';
  * Validates that the operation type is consistent with the origin/destination
  * If origin is Mexico, operation type should be EXP (export)
  */
-export async function validateCoherenciaOrigenDestino(
+async function validateCoherenciaOrigenDestino(
   pedimento: Pedimento,
   transportDoc?: TransportDocument
 ) {
@@ -51,7 +51,7 @@ export async function validateCoherenciaOrigenDestino(
 /**
  * Validates that the pedimento key is valid for the operation type according to Appendix 2
  */
-export async function validateClavePedimento(pedimento: Pedimento) {
+async function validateClavePedimento(pedimento: Pedimento) {
   const tipoOperacion = pedimento.encabezado_del_pedimento?.tipo_oper;
   const clavePedimento = pedimento.encabezado_del_pedimento?.cve_pedim;
 
@@ -84,7 +84,7 @@ export async function validateClavePedimento(pedimento: Pedimento) {
 /**
  * Validates that the regime is valid for the operation type according to Appendix 16
  */
-export async function validateRegimen(pedimento: Pedimento) {
+async function validateRegimen(pedimento: Pedimento) {
   const tipoOperacion = pedimento.encabezado_del_pedimento?.tipo_oper;
   const regimen = pedimento.encabezado_del_pedimento?.regimen;
 

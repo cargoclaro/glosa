@@ -7,7 +7,7 @@ import type {
 import type { Cove, Pedimento } from '../../../data-extraction/schemas';
 import { glosar } from '../../validation-result';
 
-export async function validateRfcFormat(
+async function validateRfcFormat(
   pedimento: Pedimento,
   cove: Cove,
   cfdi?: Cfdi
@@ -41,7 +41,7 @@ export async function validateRfcFormat(
   return await glosar(validation);
 }
 
-export async function validateCesionDerechos(
+async function validateCesionDerechos(
   pedimento: Pedimento,
   cartaSesion?: CartaSesion,
   cfdi?: Cfdi
@@ -75,7 +75,7 @@ export async function validateCesionDerechos(
   return await glosar(validation);
 }
 
-export async function validateDatosImportador(
+async function validateDatosImportador(
   pedimento: Pedimento,
   cove: Cove,
   cfdi?: Cfdi
@@ -136,7 +136,7 @@ export async function validateDatosImportador(
   return await glosar(validation);
 }
 
-export async function validateDatosProveedor(
+async function validateDatosProveedor(
   pedimento: Pedimento,
   cove: Cove,
   cfdi?: Cfdi
@@ -197,7 +197,7 @@ export async function validateDatosProveedor(
   return await glosar(validation);
 }
 
-export async function validateFechasYFolios(
+async function validateFechasYFolios(
   pedimento: Pedimento,
   cove: Cove,
   cfdi?: Cfdi
@@ -241,7 +241,7 @@ export async function validateFechasYFolios(
   return await glosar(validation);
 }
 
-export async function validateMonedaYEquivalencia(
+async function validateMonedaYEquivalencia(
   pedimento: Pedimento,
   cove: Cove,
   cfdi?: Cfdi

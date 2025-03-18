@@ -8,7 +8,7 @@ import { glosar } from '../../validation-result';
  * Validates that the supplier's general information in the COVE document matches the relevant document.
  * For exports: Compares with the CFDI.
  */
-export async function validateDatosGeneralesProveedor(cove: Cove, cfdi?: Cfdi) {
+async function validateDatosGeneralesProveedor(cove: Cove, cfdi?: Cfdi) {
   // Extract supplier data from different sources
   const identificadorCove = cove.datos_generales_proveedor?.identificador;
   const tipoIdentificadorCove =
@@ -46,7 +46,7 @@ export async function validateDatosGeneralesProveedor(cove: Cove, cfdi?: Cfdi) {
  * Validates that the supplier's address in the COVE document matches the relevant document.
  * For exports: Compares with the CFDI.
  */
-export async function validateDomicilioProveedor(cove: Cove, cfdi?: Cfdi) {
+async function validateDomicilioProveedor(cove: Cove, cfdi?: Cfdi) {
   // Extract supplier address data from different sources
   const domicilioCove = cove.datos_generales_proveedor?.domicilio;
 
@@ -90,7 +90,7 @@ export async function validateDomicilioProveedor(cove: Cove, cfdi?: Cfdi) {
  * Validates that the recipient's general information in the COVE document matches the relevant document.
  * For exports: Compares with the CFDI.
  */
-export async function validateDatosGeneralesDestinatario(
+async function validateDatosGeneralesDestinatario(
   cove: Cove,
   cfdi?: Cfdi
 ) {
@@ -129,7 +129,7 @@ export async function validateDatosGeneralesDestinatario(
  * Validates that the recipient's address in the COVE document matches the relevant document.
  * For exports: Compares with the CFDI.
  */
-export async function validateDomicilioDestinatario(cove: Cove, cfdi?: Cfdi) {
+async function validateDomicilioDestinatario(cove: Cove, cfdi?: Cfdi) {
   // Extract recipient address data from different sources
   const domicilioCove = cove.datos_generales_destinatario?.domicilio;
 

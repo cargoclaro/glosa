@@ -4,7 +4,7 @@ import type { Pedimento } from '../../../data-extraction/schemas';
 import { apendice15 } from '../../anexo-22/apendice-15';
 import { glosar } from '../../validation-result';
 
-export async function validateClaveApendice15(pedimento: Pedimento) {
+async function validateClaveApendice15(pedimento: Pedimento) {
   const claveDestinoOrigen = pedimento.encabezado_del_pedimento?.destino_origen;
 
   const validation = {

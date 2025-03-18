@@ -3,7 +3,7 @@ import { generateObject } from 'ai';
 import type { UploadedFileData } from 'uploadthing/types';
 import { z } from 'zod';
 
-export const documentTypes = [
+const documentTypes = [
   'pedimento',
   'documentoDeTransporte',
   'factura',

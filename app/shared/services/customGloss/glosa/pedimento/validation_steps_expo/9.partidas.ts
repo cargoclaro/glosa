@@ -5,7 +5,7 @@ import type { Pedimento } from '../../../data-extraction/schemas';
 import { glosar } from '../../validation-result';
 
 // Función para validar preferencia arancelaria y certificado de origen
-export async function validatePreferenciaArancelaria(pedimento: Pedimento) {
+async function validatePreferenciaArancelaria(pedimento: Pedimento) {
   // Extraer partidas con información de preferencia arancelaria
   const partidas = pedimento.partidas || [];
 
@@ -34,7 +34,7 @@ export async function validatePreferenciaArancelaria(pedimento: Pedimento) {
 }
 
 // Función para validar coherencia de UMC y cantidad UMC
-export async function validateCoherenciaUMC(pedimento: Pedimento, cfdi?: Cfdi) {
+async function validateCoherenciaUMC(pedimento: Pedimento, cfdi?: Cfdi) {
   // Extraer partidas con información de UMC
   const partidas = pedimento.partidas || [];
 
@@ -60,7 +60,7 @@ export async function validateCoherenciaUMC(pedimento: Pedimento, cfdi?: Cfdi) {
 }
 
 // Función para validar coherencia de peso
-export async function validateCoherenciaPeso(
+async function validateCoherenciaPeso(
   pedimento: Pedimento,
   cfdi?: Cfdi
 ) {
@@ -95,7 +95,7 @@ export async function validateCoherenciaPeso(
 }
 
 // Función para validar cálculo del prorrateo y DTA
-export async function validateCalculoDTA(pedimento: Pedimento) {
+async function validateCalculoDTA(pedimento: Pedimento) {
   // Extraer partidas con contribuciones
   const partidas = pedimento.partidas || [];
 
@@ -118,7 +118,7 @@ export async function validateCalculoDTA(pedimento: Pedimento) {
 }
 
 // Función para validar cálculo de contribuciones
-export async function validateCalculoContribuciones(
+async function validateCalculoContribuciones(
   pedimento: Pedimento,
   cfdi?: Cfdi
 ) {
@@ -147,7 +147,7 @@ export async function validateCalculoContribuciones(
 }
 
 // Función para validar coincidencia de permisos e identificadores
-export async function validatePermisosIdentificadores(pedimento: Pedimento) {
+async function validatePermisosIdentificadores(pedimento: Pedimento) {
   // Extraer identificadores a nivel pedimento
   const identificadoresPedimento = pedimento.identificadores_pedimento || [];
 
@@ -176,7 +176,7 @@ export async function validatePermisosIdentificadores(pedimento: Pedimento) {
 }
 
 // Función para validar regulaciones arancelarias
-export async function validateRegulacionesArancelarias(pedimento: Pedimento) {
+async function validateRegulacionesArancelarias(pedimento: Pedimento) {
   // Extraer partidas con fracciones arancelarias
   const partidas = pedimento.partidas || [];
 
@@ -199,7 +199,7 @@ export async function validateRegulacionesArancelarias(pedimento: Pedimento) {
 }
 
 // Función para validar regulaciones no arancelarias
-export async function validateRegulacionesNoArancelarias(pedimento: Pedimento) {
+async function validateRegulacionesNoArancelarias(pedimento: Pedimento) {
   // Extraer partidas con fracciones arancelarias
   const partidas = pedimento.partidas || [];
 

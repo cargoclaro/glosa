@@ -95,9 +95,9 @@ export const apendice7 = {
 
 import { z } from 'zod';
 
-export type Apendice7 = z.infer<typeof apendice7Schema>;
+type Apendice7 = z.infer<typeof apendice7Schema>;
 
-export const apendice7Schema = z.object({
+const apendice7Schema = z.object({
   Apéndice: z.literal('7'),
   Título: z.literal('Unidades de medida'),
   Unidades: z

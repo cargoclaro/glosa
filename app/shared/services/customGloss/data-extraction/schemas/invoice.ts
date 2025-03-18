@@ -1,8 +1,8 @@
 import { z } from 'zod';
 
-export type Invoice = z.infer<typeof invoiceSchema>;
+type Invoice = z.infer<typeof invoiceSchema>;
 
-export const invoiceSchema = z
+const invoiceSchema = z
   .object({
     invoice_number: z.string().describe('Invoice number'),
     invoice_date: z

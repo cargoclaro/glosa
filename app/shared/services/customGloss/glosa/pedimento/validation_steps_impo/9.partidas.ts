@@ -15,7 +15,7 @@ import { getFraccionInfo } from '../../tax-finder';
 import { glosar } from '../../validation-result';
 
 // Función para validar preferencia arancelaria y certificado de origen
-export async function validateFraccionArancelaria(
+async function validateFraccionArancelaria(
   partida: Partida,
   pedimento: Pedimento
 ) {
@@ -57,7 +57,7 @@ export async function validateFraccionArancelaria(
 }
 
 // Función para validar coherencia de UMC y cantidad UMC
-export async function validateCoherenciaUMT(
+async function validateCoherenciaUMT(
   partida: Partida,
   pedimento: Pedimento
 ) {
@@ -108,7 +108,7 @@ export async function validateCoherenciaUMT(
 }
 
 // Función para validar coherencia de UMC
-export async function validateCoherenciaUMC(
+async function validateCoherenciaUMC(
   partida: Partida,
   cove?: Cove,
   carta318?: Carta318,
@@ -153,7 +153,7 @@ export async function validateCoherenciaUMC(
 }
 
 // Función para validar el país de venta
-export async function validatePaisVenta(
+async function validatePaisVenta(
   partida: Partida,
   pedimento?: Pedimento,
   invoice?: Invoice,
@@ -202,7 +202,7 @@ export async function validatePaisVenta(
 }
 
 // Función para validar el país de origen
-export async function validatePaisOrigen(
+async function validatePaisOrigen(
   partida: Partida,
   pedimento?: Pedimento,
   invoice?: Invoice,
@@ -249,7 +249,7 @@ export async function validatePaisOrigen(
 }
 
 // Función para validar la descripción de la mercancía
-export async function validateDescripcionMercancia(
+async function validateDescripcionMercancia(
   partida: Partida,
   pedimento?: Pedimento,
   cove?: Cove,
@@ -304,7 +304,7 @@ export async function validateDescripcionMercancia(
   return await glosar(validation, 'gpt-4o-mini');
 }
 
-export async function validateTarifasArancelarias(
+async function validateTarifasArancelarias(
   partida: Partida,
   pedimento: Pedimento
 ) {
@@ -376,7 +376,7 @@ export async function validateTarifasArancelarias(
   return await glosar(validation, 'gpt-4o-mini');
 }
 
-export async function validateCalculosPartidas(
+async function validateCalculosPartidas(
   pedimento: Pedimento,
   partida: Partida
 ) {
@@ -457,7 +457,7 @@ export async function validateCalculosPartidas(
 }
 
 // Función para validar números de serie, modelo y parte
-export async function validateNumerosSerie(
+async function validateNumerosSerie(
   pedimento: Pedimento,
   partida: Partida,
   cove?: Cove
@@ -496,7 +496,7 @@ export async function validateNumerosSerie(
 
 import { IDENTIFICADORES } from './identificadores';
 
-export async function validateIdentificadores(
+async function validateIdentificadores(
   identificador: Partida['identificadores'][number]
 ) {
   if (!(identificador.clave in IDENTIFICADORES)) {

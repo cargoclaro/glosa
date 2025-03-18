@@ -7,7 +7,7 @@ import { glosar } from '../../validation-result';
 /**
  * Validates that the invoice number in the COVE document matches the CFDI for exports.
  */
-export async function validateNumeroFactura(cove: Cove, cfdi?: Cfdi) {
+async function validateNumeroFactura(cove: Cove, cfdi?: Cfdi) {
   // Extract invoice numbers from different sources
   const numeroFacturaCove = cove.numero_factura;
   const cfdiMkdown = cfdi?.markdown_representation;
@@ -36,7 +36,7 @@ export async function validateNumeroFactura(cove: Cove, cfdi?: Cfdi) {
 /**
  * Validates that the invoice date in the COVE document matches the CFDI for exports.
  */
-export async function validateFechaExpedicion(cove: Cove, cfdi?: Cfdi) {
+async function validateFechaExpedicion(cove: Cove, cfdi?: Cfdi) {
   // Extract invoice dates from different sources
   const fechaExpedicionCove = cove.fecha_expedicion;
   const cfdiMkdown = cfdi?.markdown_representation;
@@ -65,7 +65,7 @@ export async function validateFechaExpedicion(cove: Cove, cfdi?: Cfdi) {
 /**
  * Validates that the RFC in the COVE document matches other documents for exports.
  */
-export async function validateRfc(cove: Cove, cfdi?: Cfdi) {
+async function validateRfc(cove: Cove, cfdi?: Cfdi) {
   // Extract RFC values from different sources
   const rfcCove = cove.datos_generales_destinatario?.rfc_destinatario;
   const cfdiMkdown = cfdi?.markdown_representation;

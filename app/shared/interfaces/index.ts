@@ -19,36 +19,36 @@ import type {
 //   }[];
 // }
 
-export interface ICustomGloss extends CustomGloss {
+interface ICustomGloss extends CustomGloss {
   tabs: ICustomGlossTab[];
   files: ICustomGlossFile[];
   alerts: ICustomGlossAlert[];
 }
 
-export interface ICustomGlossAlert extends CustomGlossAlert {
+interface ICustomGlossAlert extends CustomGlossAlert {
   customGloss: ICustomGloss;
 }
 
-export interface ICustomGlossFile extends CustomGlossFile {
+interface ICustomGlossFile extends CustomGlossFile {
   customGloss: ICustomGloss;
 }
 
-export interface ICustomGlossTab extends CustomGlossTab {
+interface ICustomGlossTab extends CustomGlossTab {
   customGloss: ICustomGloss;
   context: ICustomGlossTabContext[];
   validations: ICustomGlossTabValidationStep[];
 }
 
-export interface ICustomGlossTabContext extends CustomGlossTabContext {
+interface ICustomGlossTabContext extends CustomGlossTabContext {
   customGlossTab: ICustomGlossTab;
   data: ICustomGlossTabContextData[];
 }
 
-export interface ICustomGlossTabContextData extends CustomGlossTabContextData {
+interface ICustomGlossTabContextData extends CustomGlossTabContextData {
   customGlossTabContext: ICustomGlossTabContext;
 }
 
-export interface ICustomGlossTabValidationStep
+interface ICustomGlossTabValidationStep
   extends CustomGlossTabValidationStep {
   customGlossTab?: ICustomGlossTab;
   parentStep?: ICustomGlossTabValidationStep;
@@ -57,12 +57,12 @@ export interface ICustomGlossTabValidationStep
   actionsToTake: ICustomGlossTabValidationStepActionToTake[];
 }
 
-export interface ICustomGlossTabValidationStepResources
+interface ICustomGlossTabValidationStepResources
   extends CustomGlossTabValidationStepResources {
   customGlossTabValidationStep: ICustomGlossTabValidationStep;
 }
 
-export interface ICustomGlossTabValidationStepActionToTake
+interface ICustomGlossTabValidationStepActionToTake
   extends CustomGlossTabValidationStepActionToTake {
   customGlossTabValidationStep: ICustomGlossTabValidationStep;
 }
@@ -72,14 +72,14 @@ export interface ISharedState {
   message?: string | string[];
 }
 
-export interface ILoginState extends ISharedState {
+interface ILoginState extends ISharedState {
   errors?: {
     email?: string;
     password?: string;
   };
 }
 
-export interface IRegisterState extends ISharedState {
+interface IRegisterState extends ISharedState {
   errors?: {
     name?: string;
     email?: string;

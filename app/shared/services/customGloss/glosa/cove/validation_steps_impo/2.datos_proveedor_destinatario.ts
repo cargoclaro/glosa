@@ -11,7 +11,7 @@ import { glosar } from '../../validation-result';
  * Validates that the supplier's general information in the COVE document matches the relevant document.
  * For imports: Compares with the invoice or Carta 318. In case of discrepancy, Carta 318 takes precedence.
  */
-export async function validateDatosGeneralesProveedor(
+async function validateDatosGeneralesProveedor(
   cove: Cove,
   invoice?: Invoice,
   carta318?: Carta318
@@ -57,7 +57,7 @@ export async function validateDatosGeneralesProveedor(
  * Validates that the supplier's address in the COVE document matches the relevant document.
  * For imports: Compares with the invoice or Carta 318. In case of discrepancy, Carta 318 takes precedence.
  */
-export async function validateDomicilioProveedor(
+async function validateDomicilioProveedor(
   cove: Cove,
   invoice?: Invoice,
   carta318?: Carta318
@@ -109,7 +109,7 @@ export async function validateDomicilioProveedor(
  * Validates that the recipient's general information in the COVE document matches the relevant document.
  * For imports: Compares with the invoice or Carta 318. In case of discrepancy, Carta 318 takes precedence.
  */
-export async function validateDatosGeneralesDestinatario(
+async function validateDatosGeneralesDestinatario(
   cove: Cove,
   invoice?: Invoice,
   carta318?: Carta318
@@ -153,7 +153,7 @@ export async function validateDatosGeneralesDestinatario(
  * Validates that the recipient's address in the COVE document matches the relevant document.
  * For imports: Compares with the invoice or Carta 318. In case of discrepancy, Carta 318 takes precedence.
  */
-export async function validateDomicilioDestinatario(
+async function validateDomicilioDestinatario(
   cove: Cove,
   invoice?: Invoice,
   carta318?: Carta318

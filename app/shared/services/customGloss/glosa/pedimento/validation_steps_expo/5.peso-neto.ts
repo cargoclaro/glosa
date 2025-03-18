@@ -8,7 +8,7 @@ import type {
 import type { Pedimento } from '../../../data-extraction/schemas';
 import { glosar } from '../../validation-result';
 
-export async function validatePesosYBultos(
+async function validatePesosYBultos(
   pedimento: Pedimento,
   transportDocument?: TransportDocument,
   packingList?: PackingList,
@@ -47,7 +47,7 @@ export async function validatePesosYBultos(
   return await glosar(validation);
 }
 
-export async function validateBultos(
+async function validateBultos(
   pedimento: Pedimento,
   transportDocument?: TransportDocument
 ) {

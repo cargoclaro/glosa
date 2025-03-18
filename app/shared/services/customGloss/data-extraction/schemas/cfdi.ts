@@ -1,8 +1,8 @@
 import { z } from 'zod';
 
-export type Cfdi = z.infer<typeof cfdiSchema>;
+type Cfdi = z.infer<typeof cfdiSchema>;
 
-export const cfdiSchema = z.object({
+const cfdiSchema = z.object({
   folio_fiscal: z.string().describe('Folio fiscal del CFDI.'),
   certificado_sat: z.string().describe('Certificado del SAT.'),
   fecha_certificacion: z.string().describe('Fecha y hora de certificación.'),

@@ -1,8 +1,8 @@
 import { z } from 'zod';
 
-export type PackingList = z.infer<typeof packingListSchema>;
+type PackingList = z.infer<typeof packingListSchema>;
 
-export const packingListSchema = z.object({
+const packingListSchema = z.object({
   exporter: z.object({
     name: z.string().describe('Full name of the exporting company'),
     address: z.string().describe('Complete address of the exporter'),

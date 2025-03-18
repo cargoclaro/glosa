@@ -10,7 +10,7 @@ import { glosar } from '../../validation-result';
 // TODO: Agregar DOF y Dia de salida
 // TODO: Multiples mercancias, se tienen que sumar los valores de todas las mercancias
 
-export async function validateFechaSalida(
+async function validateFechaSalida(
   pedimento: Pedimento,
   transportDocument?: TransportDocument
 ) {
@@ -41,7 +41,7 @@ export async function validateFechaSalida(
   return await glosar(validation);
 }
 
-export async function validateTipoCambio(pedimento: Pedimento) {
+async function validateTipoCambio(pedimento: Pedimento) {
   const tipoCambio = pedimento.encabezado_del_pedimento?.tipo_cambio;
   const fechaSalida = pedimento.fecha_entrada_presentacion;
   // TODO: Replace with actual DOF API integration
@@ -73,7 +73,7 @@ export async function validateTipoCambio(pedimento: Pedimento) {
   return await glosar(validation);
 }
 
-export async function validateValorComercial(
+async function validateValorComercial(
   pedimento: Pedimento,
   cove: Cove,
   cfdi?: Cfdi
@@ -117,7 +117,7 @@ export async function validateValorComercial(
   return await glosar(validation);
 }
 
-export async function validateValorDolares(
+async function validateValorDolares(
   pedimento: Pedimento,
   cove: Cove,
   cfdi?: Cfdi

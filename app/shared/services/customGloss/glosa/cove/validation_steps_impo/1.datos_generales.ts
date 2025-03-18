@@ -11,7 +11,7 @@ import { glosar } from '../../validation-result';
  * Validates that the invoice number in the COVE document matches other documents for imports.
  * In case of discrepancy, the Carta 318's invoice number takes precedence.
  */
-export async function validateNumeroFactura(
+async function validateNumeroFactura(
   cove: Cove,
   invoice?: Invoice,
   carta318?: Carta318
@@ -48,7 +48,7 @@ export async function validateNumeroFactura(
  * Validates that the invoice date in the COVE document matches other documents for imports.
  * In case of discrepancy, the Carta 318's date takes precedence.
  */
-export async function validateFechaExpedicion(
+async function validateFechaExpedicion(
   cove: Cove,
   invoice?: Invoice,
   carta318?: Carta318

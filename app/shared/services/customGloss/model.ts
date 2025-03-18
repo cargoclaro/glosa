@@ -3,7 +3,7 @@
 import prisma from '@/shared/services/prisma';
 import type { Prisma } from '@prisma/client';
 
-export async function create({
+async function create({
   data,
 }: {
   data: Prisma.CustomGlossCreateInput;
@@ -64,7 +64,7 @@ export async function read({ id, userId, recent }: IRead) {
   throw new Error('Should never happen');
 }
 
-export async function update({
+async function update({
   id,
   data,
 }: {

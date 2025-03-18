@@ -1,6 +1,6 @@
 {
   "$schema": "https://unpkg.com/knip@5/schema.json",
-  "ignore": ["src/ui/**"],
+  "ignore": ["src/ui/**", "public/pdf.worker.mjs"],
   "ignoreDependencies": [
     "autoprefixer",
     "ultracite"

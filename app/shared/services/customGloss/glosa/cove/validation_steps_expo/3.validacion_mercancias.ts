@@ -8,7 +8,7 @@ import { glosar } from '../../validation-result';
  * Validates that the merchandise details in the COVE document match the CFDI for exports.
  * Compares merchandise details between COVE and CFDI.
  */
-export async function validateMercancias(cove: Cove, cfdi?: Cfdi) {
+async function validateMercancias(cove: Cove, cfdi?: Cfdi) {
   // Extract merchandise data from COVE
   const datosMercanciaCove = cove.datos_mercancia;
   const cfdiMkdown = cfdi?.markdown_representation;
@@ -62,7 +62,7 @@ export async function validateMercancias(cove: Cove, cfdi?: Cfdi) {
 /**
  * Validates that the total value in dollars in the COVE document matches the CFDI for exports.
  */
-export async function validateValorTotalDolares(cove: Cove, cfdi?: Cfdi) {
+async function validateValorTotalDolares(cove: Cove, cfdi?: Cfdi) {
   // Extract total value from COVE
   const valorTotalDolaresCove = cove.datos_mercancia[0]?.valor_total_dolares;
   const observacionesCove = cove.observaciones || '';
@@ -95,7 +95,7 @@ export async function validateValorTotalDolares(cove: Cove, cfdi?: Cfdi) {
  * First checks Carta 318, then falls back to the invoice if not found in Carta 318.
  * Serial numbers are not mandatory; if none exists, it's considered valid.
  */
-export async function validateNumeroSerie(
+async function validateNumeroSerie(
   cove: Cove,
   invoice?: Invoice,
   cfdi?: Cfdi

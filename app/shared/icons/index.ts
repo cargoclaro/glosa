@@ -30,31 +30,31 @@ import XBoxIcon from './XBox';
 import XMark from './XMark';
 
 export {
-  Bell,
-  Cog8,
+  
+  
   Clock,
   XMark,
   Check,
   Funnel,
   Search,
   Upload,
-  UserIcon,
+  
   XBoxIcon,
   GlobeAlt,
   Document,
-  TrashIcon,
+  
   Square2x2,
   LeftArrow,
   BellAlert,
   RightArrow,
-  DownChevron,
+  
   LeftChevron,
   ArrowsUpDown,
   RightChevron,
   CalendarDays,
   DocMagniGlass,
-  DoorArrowRight,
-  CurrencyDollar,
+  
+  
   ArrowTrendingUp,
   LeftDoubleChevron,
   RightDoubleChevron,

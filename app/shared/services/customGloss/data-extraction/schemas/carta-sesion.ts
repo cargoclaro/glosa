@@ -1,8 +1,8 @@
 import { z } from 'zod';
 
-export type CartaSesion = z.infer<typeof cartaSesionSchema>;
+type CartaSesion = z.infer<typeof cartaSesionSchema>;
 
-export const cartaSesionSchema = z.object({
+const cartaSesionSchema = z.object({
   assignor: z
     .object({
       name: z.string().describe('Full name of the assignor.'),

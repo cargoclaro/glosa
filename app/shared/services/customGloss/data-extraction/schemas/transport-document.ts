@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 export type TransportDocument = z.infer<typeof transportDocumentSchema>;
 
-export const transportDocumentSchema = z.object({
+const transportDocumentSchema = z.object({
   document_type: z
     .enum(['AIR', 'SEA', 'LAND'])
     .describe(

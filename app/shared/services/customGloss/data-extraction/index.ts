@@ -15,7 +15,7 @@ import { coveSchema, pedimentoSchema } from './schemas/';
 import { structureTaggedText } from './tagged';
 import { extractTextFromImage } from './vision';
 
-export const documentToSchema = {
+const documentToSchema = {
   factura: invoiceSchema,
   carta318: carta318Schema,
   rrna: rrnaSchema,

@@ -6,7 +6,7 @@ import { apendice3 } from '../../anexo-22/apendice_3';
 import { apendice10 } from '../../anexo-22/apendice_10';
 import { glosar } from '../../validation-result';
 
-export async function validateTipoTransporte(
+async function validateTipoTransporte(
   pedimento: Pedimento,
   transportDocument?: TransportDocument
 ) {
@@ -55,7 +55,7 @@ export async function validateTipoTransporte(
   return await glosar(validation);
 }
 
-export async function validateModalidadMedioTransporte(
+async function validateModalidadMedioTransporte(
   pedimento: Pedimento,
   transportDocument?: TransportDocument
 ) {
@@ -101,7 +101,7 @@ export async function validateModalidadMedioTransporte(
   return await glosar(validation);
 }
 
-export async function validateNumeroGuiaEmbarque(
+async function validateNumeroGuiaEmbarque(
   pedimento: Pedimento,
   transportDocument?: TransportDocument
 ) {

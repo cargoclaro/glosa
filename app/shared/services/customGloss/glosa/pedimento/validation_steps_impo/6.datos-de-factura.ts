@@ -7,7 +7,7 @@ import type { Cove, Pedimento } from '../../../data-extraction/schemas';
 import { getExchangeRate } from '../../exchange-rate';
 import { glosar } from '../../validation-result';
 
-export async function validateRfcFormat(
+async function validateRfcFormat(
   pedimento: Pedimento,
   cove: Cove,
   carta318?: Carta318
@@ -44,7 +44,7 @@ export async function validateRfcFormat(
   return await glosar(validation, 'gpt-4o-mini');
 }
 
-export async function validateCesionDerechos(
+async function validateCesionDerechos(
   pedimento: Pedimento,
   cartaSesion?: CartaSesion,
   carta318?: Carta318
@@ -84,7 +84,7 @@ export async function validateCesionDerechos(
   return await glosar(validation, 'o3-mini');
 }
 
-export async function validateDatosImportador(
+async function validateDatosImportador(
   pedimento: Pedimento,
   cove: Cove,
   carta318?: Carta318
@@ -148,7 +148,7 @@ export async function validateDatosImportador(
   return await glosar(validation, 'o3-mini');
 }
 
-export async function validateDatosProveedor(
+async function validateDatosProveedor(
   pedimento: Pedimento,
   cove: Cove,
   carta318?: Carta318
@@ -214,7 +214,7 @@ export async function validateDatosProveedor(
   return await glosar(validation, 'o3-mini');
 }
 
-export async function validateFechasYFolios(
+async function validateFechasYFolios(
   pedimento: Pedimento,
   cove: Cove,
   invoice?: Invoice,
@@ -263,7 +263,7 @@ export async function validateFechasYFolios(
   return await glosar(validation, 'o3-mini');
 }
 
-export async function validateMonedaYEquivalencia(
+async function validateMonedaYEquivalencia(
   pedimento: Pedimento,
   cove: Cove,
   carta318?: Carta318,

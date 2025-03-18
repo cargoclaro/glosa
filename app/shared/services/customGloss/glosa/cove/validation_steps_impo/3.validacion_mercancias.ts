@@ -11,7 +11,7 @@ import { glosar } from '../../validation-result';
  * Validates that the merchandise details in the COVE document match the relevant document for imports.
  * Compares with the invoice or Carta 318. In case of discrepancy, Carta 318 takes precedence.
  */
-export async function validateMercancias(
+async function validateMercancias(
   cove: Cove,
   invoice?: Invoice,
   carta318?: Carta318
@@ -75,7 +75,7 @@ export async function validateMercancias(
  * Validates that the total value in dollars in the COVE document matches the relevant document for imports.
  * Compares with the invoice or Carta 318. In case of discrepancy, Carta 318 takes precedence.
  */
-export async function validateValorTotalDolares(
+async function validateValorTotalDolares(
   cove: Cove,
   invoice?: Invoice,
   carta318?: Carta318
@@ -118,7 +118,7 @@ export async function validateValorTotalDolares(
  * First checks Carta 318, then falls back to the invoice if not found in Carta 318.
  * Serial numbers are not mandatory; if none exists, it's considered valid.
  */
-export async function validateNumeroSerie(
+async function validateNumeroSerie(
   cove: Cove,
   invoice?: Invoice,
   carta318?: Carta318

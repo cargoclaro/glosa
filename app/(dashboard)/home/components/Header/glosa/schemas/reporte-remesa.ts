@@ -12,14 +12,14 @@ const reporteRemesaItemSchema = z.object({
 
 export type ReporteRemesaItem = z.infer<typeof reporteRemesaItemSchema>;
 
-export const reporteRemesaSchema = z.object({
+const reporteRemesaSchema = z.object({
   productos: z
     .array(reporteRemesaItemSchema)
     .describe('Lista de productos en el reporte de remesa'),
   factura: z.string().describe('Numero de factura, es un UUID'),
 });
 
-export type ReporteRemesa = z.infer<typeof reporteRemesaSchema>;
+type ReporteRemesa = z.infer<typeof reporteRemesaSchema>;
 
 export const reportesRemesaSchema = z.object({
   reportesRemesa: z
@@ -27,4 +27,4 @@ export const reportesRemesaSchema = z.object({
     .describe('Lista de reportes de remesa, ya que puede haber más de uno'),
 });
 
-export type ReportesRemesa = z.infer<typeof reportesRemesaSchema>;
+type ReportesRemesa = z.infer<typeof reportesRemesaSchema>;

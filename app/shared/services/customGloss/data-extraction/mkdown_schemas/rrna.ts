@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export type Rrna = z.infer<typeof rrnaSchema>;
+type Rrna = z.infer<typeof rrnaSchema>;
 
 export const rrnaSchema = z.object({
   markdown_representation: z

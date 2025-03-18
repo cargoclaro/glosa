@@ -9,7 +9,7 @@ import { glosar } from '../../validation-result';
 
 // TODO: Agregar DOF
 
-export async function validateTransportDocumentEntryDate(
+async function validateTransportDocumentEntryDate(
   pedimento: Pedimento,
   transportDocument?: TransportDocument
 ) {
@@ -43,7 +43,7 @@ export async function validateTransportDocumentEntryDate(
   return await glosar(validation);
 }
 
-export async function validateTipoCambio(pedimento: Pedimento) {
+async function validateTipoCambio(pedimento: Pedimento) {
   const tipoCambio = pedimento.encabezado_del_pedimento?.tipo_cambio;
   const fechaEntrada = pedimento.fecha_entrada_presentacion;
   const observaciones = pedimento.observaciones_a_nivel_pedimento;
@@ -76,7 +76,7 @@ export async function validateTipoCambio(pedimento: Pedimento) {
   return await glosar(validation, 'gpt-4o-mini');
 }
 
-export async function validateIncrementables(
+async function validateIncrementables(
   pedimento: Pedimento,
   invoice?: Invoice,
   transportDocument?: TransportDocument,

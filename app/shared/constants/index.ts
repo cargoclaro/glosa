@@ -4,7 +4,7 @@ export const INITIAL_STATE_RESPONSE = {
   errors: {},
 };
 
-export const ANOTHER_VICTOR_GLOSS_EXAMPLE = {
+const ANOTHER_VICTOR_GLOSS_EXAMPLE = {
   importer_name: 'SACC ASESORES ADUANEROS EN COMERCIO EXTERIOR, SA DE CV',
   summary:
     "Se encontraron 4 errores críticos, 7 advertencias y 0 observaciones menores.\n\nLa operación se trata de una importación definitiva a México, identificada con el tipo de operación 'IMP' y la clave de pedimento 'A1'. Aunque la longitud del número de pedimento es correcta, hay un error en el año, lo que podría implicar problemas de validación. El destino de la mercancía es correcto, sin errores en su designación como 'Interior del País'. Sin embargo, hay áreas que requieren atención inmediata: el valor en dólares del pedimento presenta errores significativos en relación con los incrementales y la factura, lo que sugiere una revisión de cálculos. La falta de peso neto impide una validación completa, mientras que el peso bruto presenta una discrepancia menor que debe investigarse. En cuanto a los datos de la factura, hay errores críticos, como la falta de fechas, monedas y otros datos comerciales esenciales, que son necesarios para una validación adecuada. En el transporte, hay discrepancias en la clave de tipo y en el número de guía, requiriendo corrección. Finalmente, las partidas presentan incoherencias en peso, permisos, y regulaciones arancelarias, lo que demanda una revisión exhaustiva para asegurar el cumplimiento.",
@@ -2046,7 +2046,7 @@ export const ANOTHER_VICTOR_GLOSS_EXAMPLE = {
   },
 };
 
-export const LAST_VICTOR_GLOSS_EXAMPLE = {
+const LAST_VICTOR_GLOSS_EXAMPLE = {
   importer_name: 'SACC ASESORES ADUANEROS EN COMERCIO EXTERIOR, SA DE CV',
   summary:
     'Se encontraron 3 errores críticos, 10 advertencias y 0 observaciones menores.\n\nLa operación analizada presenta varios aspectos que requieren atención inmediata para asegurar su validez y consistencia. El número de pedimento tiene un error crítico en el año, ya que figura 2021 en lugar del actual, 2025. En el tipo de operación, aunque no se afecta la validación final, se recomienda una revisión manual futura debido a la falta de datos sobre el origen y destino de las mercancías. En cuanto a la operación, hay inconsistencias en el tipo de cambio y los incrementables, ya que los valores de fletes difieren en el pedimento y las cartas 3.1.8. Estas discrepancias deben ser verificadas y ajustadas. En el peso bruto, aunque los pasos de validación son correctos, se recomienda obtener el documento de transporte y el peso neto para confirmar la precisión. La sección de datos de factura muestra consistencia en general, pero un error crítico es la falta de fecha de emisión en la cesión de derechos, que necesita ser corregida. También se requiere validar el tipo de cambio aplicable. En los datos de transporte, la clave del tipo de transporte es correcta, sin embargo, hay advertencias y un error crítico por la falta de información sobre la modalidad de transporte y la falta de documentación para validar el número de guía o embarque, que deben ser corregidos antes de continuar. En conclusión, las áreas que requieren atención inmediata son la corrección del año del pedimento, la verificación del tipo de cambio y los incrementables, la obtención de documentos faltantes para validación de pesos y transporte, y la corrección de la fecha de emisión en la cesión de derechos.',

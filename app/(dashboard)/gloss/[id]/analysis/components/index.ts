@@ -6,7 +6,7 @@ import PedimentAnalysisNFinish from './PedimentAnalysisNFinish';
 import SavedNFinish from './SavedNFinish';
 
 export {
-  Alerts,
+  
   Pediment,
   Analysis,
   Documents,

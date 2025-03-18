@@ -37,7 +37,7 @@ type tabs = Prisma.CustomGlossTabGetPayload<{
   };
 }>;
 
-export interface ICommonDataForDetail {
+interface ICommonDataForDetail {
   id: number;
   title: string;
   status: string;
