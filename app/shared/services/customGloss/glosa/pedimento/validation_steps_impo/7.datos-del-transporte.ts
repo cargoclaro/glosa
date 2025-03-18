@@ -149,7 +149,11 @@ export const tracedTipoTransporte = traceable(
     pedimento,
     transportDocument,
     traceId,
-  }: { pedimento: Pedimento; transportDocument?: TransportDocument; traceId: string }) => {
+  }: {
+    pedimento: Pedimento;
+    transportDocument?: TransportDocument;
+    traceId: string;
+  }) => {
     const validationsPromise = await Promise.all([
       validateTipoTransporte(traceId, pedimento, transportDocument),
       validateModalidadMedioTransporte(traceId, pedimento, transportDocument),

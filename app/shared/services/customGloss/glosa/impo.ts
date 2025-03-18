@@ -17,7 +17,7 @@ export const glosaImpo = traceable(
     cove,
     invoice,
     carta318,
-    traceId
+    traceId,
   }: {
     pedimento: Pedimento;
     transportDocument?: TransportDocument;
@@ -35,7 +35,7 @@ export const glosaImpo = traceable(
         packingList,
         invoice,
         carta318,
-        traceId
+        traceId,
       }),
       tracedCoveValidationStepsImpo({ cove, invoice, carta318, traceId }),
     ]).then((results) => results.flat()),

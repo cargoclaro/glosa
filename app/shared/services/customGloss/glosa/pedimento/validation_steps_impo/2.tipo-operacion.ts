@@ -49,10 +49,7 @@ async function validateCoherenciaOrigenDestino(
 /**
  * Validates that the pedimento key is valid for the operation type according to Appendix 2
  */
-async function validateClavePedimento(
-  traceId: string,
-  pedimento: Pedimento
-) {
+async function validateClavePedimento(traceId: string, pedimento: Pedimento) {
   const tipoOperacion = pedimento.encabezado_del_pedimento?.tipo_oper;
   const clavePedimento = pedimento.encabezado_del_pedimento?.cve_pedim;
   const observaciones = pedimento.observaciones_a_nivel_pedimento;
@@ -87,10 +84,7 @@ async function validateClavePedimento(
 /**
  * Validates that the regime is valid for the operation type according to Appendix 16
  */
-async function validateRegimen(
-  traceId: string,
-  pedimento: Pedimento
-) {
+async function validateRegimen(traceId: string, pedimento: Pedimento) {
   const tipoOperacion = pedimento.encabezado_del_pedimento?.tipo_oper;
   const regimen = pedimento.encabezado_del_pedimento?.regimen;
   const observaciones = pedimento.observaciones_a_nivel_pedimento;
@@ -127,7 +121,11 @@ export const tracedTipoOperacion = traceable(
     pedimento,
     transportDocument,
     traceId,
-  }: { pedimento: Pedimento; transportDocument?: TransportDocument; traceId: string }) => {
+  }: {
+    pedimento: Pedimento;
+    transportDocument?: TransportDocument;
+    traceId: string;
+  }) => {
     const validationsPromise = await Promise.all([
       validateCoherenciaOrigenDestino(traceId, pedimento, transportDocument),
       validateClavePedimento(traceId, pedimento),

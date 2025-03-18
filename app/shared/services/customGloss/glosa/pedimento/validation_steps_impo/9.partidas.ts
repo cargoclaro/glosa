@@ -573,9 +573,30 @@ export const tracedPartidas = traceable(
       validateFraccionArancelaria(traceId, partida, pedimento),
       validateCoherenciaUMC(traceId, partida, cove, carta318, invoice),
       validateCoherenciaUMT(traceId, partida, pedimento),
-      validatePaisVenta(traceId, partida, pedimento, invoice, packing, carta318),
-      validatePaisOrigen(traceId, partida, pedimento, invoice, packing, carta318),
-      validateDescripcionMercancia(traceId, partida, pedimento, cove, invoice, carta318),
+      validatePaisVenta(
+        traceId,
+        partida,
+        pedimento,
+        invoice,
+        packing,
+        carta318
+      ),
+      validatePaisOrigen(
+        traceId,
+        partida,
+        pedimento,
+        invoice,
+        packing,
+        carta318
+      ),
+      validateDescripcionMercancia(
+        traceId,
+        partida,
+        pedimento,
+        cove,
+        invoice,
+        carta318
+      ),
       validateTarifasArancelarias(traceId, partida, pedimento),
       validateCalculosPartidas(traceId, pedimento, partida),
       validateNumerosSerie(traceId, pedimento, partida, cove),

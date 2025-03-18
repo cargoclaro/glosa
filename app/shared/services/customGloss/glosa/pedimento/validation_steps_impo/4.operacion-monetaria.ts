@@ -44,10 +44,7 @@ async function validateTransportDocumentEntryDate(
   return await glosar(validation, traceId);
 }
 
-async function validateTipoCambio(
-  traceId: string,
-  pedimento: Pedimento
-) {
+async function validateTipoCambio(traceId: string, pedimento: Pedimento) {
   const tipoCambio = pedimento.encabezado_del_pedimento?.tipo_cambio;
   const fechaEntrada = pedimento.fecha_entrada_presentacion;
   const observaciones = pedimento.observaciones_a_nivel_pedimento;
@@ -286,7 +283,13 @@ export const tracedTransportDocumentEntryDate = traceable(
     const validationsPromise = await Promise.all([
       validateTransportDocumentEntryDate(traceId, pedimento, transportDocument),
       validateTipoCambio(traceId, pedimento),
-      validateIncrementables(traceId, pedimento, invoice, transportDocument, carta318),
+      validateIncrementables(
+        traceId,
+        pedimento,
+        invoice,
+        transportDocument,
+        carta318
+      ),
       validateValorDolares(traceId, pedimento, invoice, carta318),
       validateValorComercial(traceId, pedimento, invoice, carta318),
       validateValorAduana(traceId, pedimento, invoice, carta318),

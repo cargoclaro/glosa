@@ -66,14 +66,14 @@ export async function extractTextFromImage(
   } */
   const { text } = await generateText({
     model: google('gemini-2.0-flash-001'),
-    experimental_telemetry: { 
+    experimental_telemetry: {
       isEnabled: true,
       functionId: `extract_${documentType}`,
       metadata: {
         langfuseTraceId: traceId,
         langfuseUpdateParent: false,
-        documentType
-      }
+        documentType,
+      },
     },
     messages: [
       {

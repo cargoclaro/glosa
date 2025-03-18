@@ -41,7 +41,7 @@ export async function classifyDocuments(
         object: { documentType },
       } = await generateObject({
         model: google('gemini-2.0-flash-001'),
-        experimental_telemetry: { 
+        experimental_telemetry: {
           isEnabled: true,
           functionId: uploadedFile.name,
           metadata: {

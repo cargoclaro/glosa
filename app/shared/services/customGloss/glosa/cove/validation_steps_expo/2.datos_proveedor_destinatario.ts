@@ -8,7 +8,11 @@ import { glosar } from '../../validation-result';
  * Validates that the supplier's general information in the COVE document matches the relevant document.
  * For exports: Compares with the CFDI.
  */
-async function validateDatosGeneralesProveedor(traceId: string, cove: Cove, cfdi?: Cfdi) {
+async function validateDatosGeneralesProveedor(
+  traceId: string,
+  cove: Cove,
+  cfdi?: Cfdi
+) {
   // Extract supplier data from different sources
   const identificadorCove = cove.datos_generales_proveedor?.identificador;
   const tipoIdentificadorCove =
@@ -46,7 +50,11 @@ async function validateDatosGeneralesProveedor(traceId: string, cove: Cove, cfdi
  * Validates that the supplier's address in the COVE document matches the relevant document.
  * For exports: Compares with the CFDI.
  */
-async function validateDomicilioProveedor(traceId: string, cove: Cove, cfdi?: Cfdi) {
+async function validateDomicilioProveedor(
+  traceId: string,
+  cove: Cove,
+  cfdi?: Cfdi
+) {
   // Extract supplier address data from different sources
   const domicilioCove = cove.datos_generales_proveedor?.domicilio;
 
@@ -90,7 +98,11 @@ async function validateDomicilioProveedor(traceId: string, cove: Cove, cfdi?: Cf
  * Validates that the recipient's general information in the COVE document matches the relevant document.
  * For exports: Compares with the CFDI.
  */
-async function validateDatosGeneralesDestinatario(traceId: string, cove: Cove, cfdi?: Cfdi) {
+async function validateDatosGeneralesDestinatario(
+  traceId: string,
+  cove: Cove,
+  cfdi?: Cfdi
+) {
   // Extract recipient data from different sources
   const rfcDestinatarioCove =
     cove.datos_generales_destinatario?.rfc_destinatario;
@@ -126,7 +138,11 @@ async function validateDatosGeneralesDestinatario(traceId: string, cove: Cove, c
  * Validates that the recipient's address in the COVE document matches the relevant document.
  * For exports: Compares with the CFDI.
  */
-async function validateDomicilioDestinatario(traceId: string, cove: Cove, cfdi?: Cfdi) {
+async function validateDomicilioDestinatario(
+  traceId: string,
+  cove: Cove,
+  cfdi?: Cfdi
+) {
   // Extract recipient address data from different sources
   const domicilioCove = cove.datos_generales_destinatario?.domicilio;
 
@@ -167,7 +183,11 @@ async function validateDomicilioDestinatario(traceId: string, cove: Cove, cfdi?:
 }
 
 export const tracedProveedorDestinatario = traceable(
-  async ({ cove, cfdi, traceId }: { cove: Cove; cfdi?: Cfdi; traceId: string }) => {
+  async ({
+    cove,
+    cfdi,
+    traceId,
+  }: { cove: Cove; cfdi?: Cfdi; traceId: string }) => {
     const validationsPromise = await Promise.all([
       validateDatosGeneralesProveedor(traceId, cove, cfdi),
       validateDomicilioProveedor(traceId, cove, cfdi),

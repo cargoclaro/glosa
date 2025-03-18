@@ -114,7 +114,13 @@ export const tracedPesosYBultos = traceable(
     traceId: string;
   }) => {
     const validationsPromise = await Promise.all([
-      validatePesosYBultos(traceId, pedimento, transportDocument, packingList, invoice),
+      validatePesosYBultos(
+        traceId,
+        pedimento,
+        transportDocument,
+        packingList,
+        invoice
+      ),
       validateBultos(traceId, pedimento, transportDocument),
     ]);
 

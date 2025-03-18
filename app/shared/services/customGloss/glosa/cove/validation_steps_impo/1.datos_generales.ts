@@ -93,8 +93,13 @@ export const tracedDatosGenerales = traceable(
     cove,
     invoice,
     carta318,
-    traceId
-  }: { cove: Cove; invoice?: Invoice; carta318?: Carta318; traceId: string }) => {
+    traceId,
+  }: {
+    cove: Cove;
+    invoice?: Invoice;
+    carta318?: Carta318;
+    traceId: string;
+  }) => {
     const validationsPromise = await Promise.all([
       validateNumeroFactura(traceId, cove, invoice, carta318),
       validateFechaExpedicion(traceId, cove, invoice, carta318),

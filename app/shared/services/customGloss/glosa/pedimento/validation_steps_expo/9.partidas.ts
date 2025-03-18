@@ -103,10 +103,7 @@ async function validateCoherenciaPeso(
 }
 
 // Función para validar cálculo del prorrateo y DTA
-async function validateCalculoDTA(
-  traceId: string,
-  pedimento: Pedimento
-) {
+async function validateCalculoDTA(traceId: string, pedimento: Pedimento) {
   // Extraer partidas con contribuciones
   const partidas = pedimento.partidas || [];
 

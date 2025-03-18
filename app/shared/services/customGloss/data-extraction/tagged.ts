@@ -11,14 +11,14 @@ export async function structureTaggedText<T>(
 ): Promise<T> {
   const { object } = await generateObject({
     model: openai('gpt-4o'),
-    experimental_telemetry: { 
+    experimental_telemetry: {
       isEnabled: true,
       functionId: `structure_${documentType}`,
       metadata: {
         langfuseTraceId: traceId,
         langfuseUpdateParent: false,
-        documentType
-      }
+        documentType,
+      },
     },
     schema,
     prompt: `

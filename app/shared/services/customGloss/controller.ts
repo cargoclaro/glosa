@@ -1,9 +1,9 @@
 'use server';
 
+import { randomUUID } from 'crypto';
 import prisma from '@/shared/services/prisma';
 import { auth } from '@clerk/nextjs/server';
 import type { CustomGlossTabContextType } from '@prisma/client';
-import { randomUUID } from 'crypto';
 import { config } from 'dotenv';
 import { Langfuse } from 'langfuse';
 import { traceable } from 'langsmith/traceable';
@@ -42,12 +42,12 @@ const runGlosa = traceable(
     const operationType = pedimento.encabezado_del_pedimento?.tipo_oper;
     if (operationType === 'IMP') {
       return {
-        gloss: await glosaImpo({...documents, traceId}),
+        gloss: await glosaImpo({ ...documents, traceId }),
         importerName: pedimento.datos_importador?.razon_social,
       };
     } else if (operationType === 'EXP') {
       return {
-        gloss: await glosaExpo({...documents, traceId}),
+        gloss: await glosaExpo({ ...documents, traceId }),
         importerName: pedimento.datos_importador?.razon_social,
       };
     } else {
@@ -63,17 +63,20 @@ const runGlosa = traceable(
 export async function analysis(formData: FormData) {
   try {
     const { userId } = await auth.protect();
-    
+
     // Generate a trace ID for Langfuse tracking
     const parentTraceId = randomUUID();
     langfuse.trace({
       id: parentTraceId,
       name: 'Glosa de Pedimento',
     });
-    
+
     const files = formData.getAll('files') as File[]; // TODO: We should use trpc instead of this
     const successfulUploads = await uploadFiles(files);
-    const classifications = await classifyDocuments(successfulUploads, parentTraceId);
+    const classifications = await classifyDocuments(
+      successfulUploads,
+      parentTraceId
+    );
     // Now group the classifications by document type, taking only the first file of each type.
     const groupedClassifications = classifications.reduce(
       (acc, curr) => {
@@ -92,7 +95,10 @@ export async function analysis(formData: FormData) {
     );
 
     // Only use this for testing the migration from the python backend
-    const { gloss, importerName } = await runGlosa(groupedClassifications, parentTraceId);
+    const { gloss, importerName } = await runGlosa(
+      groupedClassifications,
+      parentTraceId
+    );
     const newCustomGloss = await prisma.customGloss.create({
       data: {
         userId,

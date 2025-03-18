@@ -120,7 +120,11 @@ export const tracedTipoOperacion = traceable(
     pedimento,
     transportDoc,
     traceId,
-  }: { pedimento: Pedimento; transportDoc?: TransportDocument; traceId: string }) => {
+  }: {
+    pedimento: Pedimento;
+    transportDoc?: TransportDocument;
+    traceId: string;
+  }) => {
     const validationsPromise = await Promise.all([
       validateCoherenciaOrigenDestino(traceId, pedimento, transportDoc),
       validateClavePedimento(traceId, pedimento),

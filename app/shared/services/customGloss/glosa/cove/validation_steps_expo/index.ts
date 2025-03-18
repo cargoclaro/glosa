@@ -10,7 +10,7 @@ export const tracedCoveValidationStepsExpo = traceable(
     cove,
     cfdi,
     invoice,
-    traceId
+    traceId,
   }: { cove: Cove; cfdi?: Cfdi; invoice?: Invoice; traceId: string }) =>
     Promise.all([
       tracedDatosGenerales({ cove, cfdi, traceId }),

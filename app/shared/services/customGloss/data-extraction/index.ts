@@ -70,12 +70,22 @@ async function extractTextFromPDFsParallel(
     cartaCesionDeDerechosText,
   ] = await Promise.all([
     factura
-      ? extractTextFromImage(factura.originalFile, factura.documentType, traceId)
+      ? extractTextFromImage(
+          factura.originalFile,
+          factura.documentType,
+          traceId
+        )
       : null,
     carta318
-      ? extractTextFromImage(carta318.originalFile, carta318.documentType, traceId)
+      ? extractTextFromImage(
+          carta318.originalFile,
+          carta318.documentType,
+          traceId
+        )
       : null,
-    rrna ? extractTextFromImage(rrna.originalFile, rrna.documentType, traceId) : null,
+    rrna
+      ? extractTextFromImage(rrna.originalFile, rrna.documentType, traceId)
+      : null,
     documentoDeTransporte
       ? extractTextFromImage(
           documentoDeTransporte.originalFile,
@@ -102,7 +112,9 @@ async function extractTextFromPDFsParallel(
       documentToSchema.cove,
       traceId
     ),
-    cfdi ? extractTextFromImage(cfdi.originalFile, cfdi.documentType, traceId) : null,
+    cfdi
+      ? extractTextFromImage(cfdi.originalFile, cfdi.documentType, traceId)
+      : null,
     cartaCesionDeDerechos
       ? extractTextFromImage(
           cartaCesionDeDerechos.originalFile,

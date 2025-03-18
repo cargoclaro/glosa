@@ -36,7 +36,11 @@ async function validateNumeroFactura(traceId: string, cove: Cove, cfdi?: Cfdi) {
 /**
  * Validates that the invoice date in the COVE document matches the CFDI for exports.
  */
-async function validateFechaExpedicion(traceId: string, cove: Cove, cfdi?: Cfdi) {
+async function validateFechaExpedicion(
+  traceId: string,
+  cove: Cove,
+  cfdi?: Cfdi
+) {
   // Extract invoice dates from different sources
   const fechaExpedicionCove = cove.fecha_expedicion;
   const cfdiMkdown = cfdi?.markdown_representation;
@@ -91,7 +95,11 @@ async function validateRfc(traceId: string, cove: Cove, cfdi?: Cfdi) {
 }
 
 export const tracedDatosGenerales = traceable(
-  async ({ cove, cfdi, traceId }: { cove: Cove; cfdi?: Cfdi; traceId: string }) => {
+  async ({
+    cove,
+    cfdi,
+    traceId,
+  }: { cove: Cove; cfdi?: Cfdi; traceId: string }) => {
     const validationsPromise = await Promise.all([
       validateNumeroFactura(traceId, cove, cfdi),
       validateFechaExpedicion(traceId, cove, cfdi),

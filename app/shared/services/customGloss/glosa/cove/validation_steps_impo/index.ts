@@ -13,26 +13,26 @@ export const tracedCoveValidationStepsImpo = traceable(
     cove,
     invoice,
     carta318,
-    traceId
+    traceId,
   }: { cove: Cove; invoice?: Invoice; carta318?: Carta318; traceId: string }) =>
     Promise.all([
       tracedDatosGenerales({
         cove,
         ...(invoice ? { invoice } : {}),
         ...(carta318 ? { carta318 } : {}),
-        traceId
+        traceId,
       }),
       tracedChooseDocument({
         cove,
         ...(invoice ? { invoice } : {}),
         ...(carta318 ? { carta318 } : {}),
-        traceId
+        traceId,
       }),
       tracedMercancias({
         cove,
         ...(invoice ? { invoice } : {}),
         ...(carta318 ? { carta318 } : {}),
-        traceId
+        traceId,
       }),
     ]),
   { name: 'COVE (Importación)' }

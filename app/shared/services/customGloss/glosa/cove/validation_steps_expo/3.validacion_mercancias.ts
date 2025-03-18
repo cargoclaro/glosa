@@ -62,7 +62,11 @@ async function validateMercancias(traceId: string, cove: Cove, cfdi?: Cfdi) {
 /**
  * Validates that the total value in dollars in the COVE document matches the CFDI for exports.
  */
-async function validateValorTotalDolares(traceId: string, cove: Cove, cfdi?: Cfdi) {
+async function validateValorTotalDolares(
+  traceId: string,
+  cove: Cove,
+  cfdi?: Cfdi
+) {
   // Extract total value from COVE
   const valorTotalDolaresCove = cove.datos_mercancia[0]?.valor_total_dolares;
   const observacionesCove = cove.observaciones || '';
@@ -95,7 +99,12 @@ async function validateValorTotalDolares(traceId: string, cove: Cove, cfdi?: Cfd
  * First checks Carta 318, then falls back to the invoice if not found in Carta 318.
  * Serial numbers are not mandatory; if none exists, it's considered valid.
  */
-async function validateNumeroSerie(traceId: string, cove: Cove, invoice?: Invoice, cfdi?: Cfdi) {
+async function validateNumeroSerie(
+  traceId: string,
+  cove: Cove,
+  invoice?: Invoice,
+  cfdi?: Cfdi
+) {
   const numeroSerieCove = cove.datos_mercancia[0]?.numeros_serie;
   const invoiceMkdown = invoice?.markdown_representation;
   const cfdiMkdown = cfdi?.markdown_representation;
@@ -135,7 +144,7 @@ export const tracedMercancias = traceable(
     cove,
     invoice,
     cfdi,
-    traceId
+    traceId,
   }: { cove: Cove; invoice?: Invoice; cfdi?: Cfdi; traceId: string }) => {
     const validationsPromise = await Promise.all([
       validateMercancias(traceId, cove, cfdi),

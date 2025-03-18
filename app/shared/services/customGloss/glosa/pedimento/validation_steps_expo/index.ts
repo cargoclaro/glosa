@@ -23,7 +23,7 @@ export const tracedPedimentoValidationStepsExpo = traceable(
     cartaSesion,
     transportDocument,
     packingList,
-    traceId
+    traceId,
   }: {
     pedimento: Pedimento;
     cove: Cove;
@@ -37,8 +37,20 @@ export const tracedPedimentoValidationStepsExpo = traceable(
       tracedNumeroDePedimento({ pedimento, traceId }),
       tracedTipoOperacion({ pedimento, traceId }),
       tracedClaveApendice15({ pedimento, traceId }),
-      tracedOperacionMonetaria({ pedimento, cove, transportDocument, cfdi, traceId }),
-      tracedPesosYBultos({ pedimento, transportDocument, packingList, cfdi, traceId }),
+      tracedOperacionMonetaria({
+        pedimento,
+        cove,
+        transportDocument,
+        cfdi,
+        traceId,
+      }),
+      tracedPesosYBultos({
+        pedimento,
+        transportDocument,
+        packingList,
+        cfdi,
+        traceId,
+      }),
       tracedRfcFormat({ pedimento, cove, cfdi, cartaSesion, traceId }),
       tracedTipoTransporte({ pedimento, transportDocument, traceId }),
       tracedPartidas({ pedimento, cfdi, traceId }),

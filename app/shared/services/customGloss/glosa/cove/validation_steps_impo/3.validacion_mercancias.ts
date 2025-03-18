@@ -166,7 +166,12 @@ export const tracedMercancias = traceable(
     invoice,
     carta318,
     traceId,
-  }: { cove: Cove; invoice?: Invoice; carta318?: Carta318; traceId: string }) => {
+  }: {
+    cove: Cove;
+    invoice?: Invoice;
+    carta318?: Carta318;
+    traceId: string;
+  }) => {
     const validationsPromise = await Promise.all([
       validateMercancias(traceId, cove, invoice, carta318),
       validateValorTotalDolares(traceId, cove, invoice, carta318),

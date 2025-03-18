@@ -19,7 +19,7 @@ export const glosaExpo = traceable(
     cfdi,
     cartaSesion,
     invoice,
-    traceId
+    traceId,
   }: {
     pedimento: Pedimento;
     transportDocument?: TransportDocument;
@@ -38,7 +38,7 @@ export const glosaExpo = traceable(
         cartaSesion,
         transportDocument,
         packingList,
-        traceId
+        traceId,
       }),
       tracedCoveValidationStepsExpo({ cove, cfdi, invoice, traceId }),
     ]).then((results) => results.flat()),
