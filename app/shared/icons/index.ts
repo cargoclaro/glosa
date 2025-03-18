@@ -21,31 +21,22 @@ import Upload from './Upload';
 import XMark from './XMark';
 
 export {
-  
-  
   Clock,
   XMark,
   Check,
   Funnel,
   Search,
   Upload,
-  
-  
   GlobeAlt,
   Document,
-  
   Square2x2,
   LeftArrow,
-  
   RightArrow,
-  
   LeftChevron,
   ArrowsUpDown,
   RightChevron,
   CalendarDays,
   DocMagniGlass,
-  
-  
   ArrowTrendingUp,
   LeftDoubleChevron,
   RightDoubleChevron,
