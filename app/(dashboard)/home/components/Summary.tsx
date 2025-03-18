@@ -1,12 +1,12 @@
-import { GenericCard } from "@/app/shared/components";
+import { GenericCard } from "@/shared/components";
 import {
   Clock,
   CalendarDays,
   ClipboardDocumentList,
-} from "@/app/shared/icons";
-import { getTimePassed } from "@/app/shared/utils/get-time-passed";
+} from "@/shared/icons";
+import { getTimePassed } from "@/shared/utils/get-time-passed";
 import { auth } from "@clerk/nextjs/server";
-import prisma from "@/app/shared/services/prisma";
+import prisma from "@/shared/services/prisma";
 import { currentUser } from "@clerk/nextjs/server";
 
 const Summary = async () => {

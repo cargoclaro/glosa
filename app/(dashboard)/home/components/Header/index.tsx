@@ -2,8 +2,8 @@
 
 import GlossForm from "./GlossForm";
 import GlossFormRemesa from "./GlossFormRemesa";
-import { Modal } from "@/app/shared/components";
-import { useModal } from "@/app/shared/hooks";
+import { Modal } from "@/shared/components";
+import { useModal } from "@/shared/hooks";
 
 const Header = () => {
   const { isOpen, openMenu, closeMenu, menuRef } = useModal(false);

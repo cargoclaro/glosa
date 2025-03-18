@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { RightArrow } from "@/app/shared/icons";
-import { GenericCard } from "@/app/shared/components";
+import { RightArrow } from "@/shared/icons";
+import { GenericCard } from "@/shared/components";
 import { CustomGloss } from "@prisma/client";
 
 const GlossHistory = ({ history }: { history: CustomGloss[] }) => {

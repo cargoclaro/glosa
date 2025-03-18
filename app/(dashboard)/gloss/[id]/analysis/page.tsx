@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { Documents, PedimentAnalysisNFinish } from "./components";
 import type { Metadata } from "next";
-import prisma from "@/app/shared/services/prisma";
+import prisma from "@/shared/services/prisma";
 import Link from "next/link";
 import { auth } from "@clerk/nextjs/server";
 

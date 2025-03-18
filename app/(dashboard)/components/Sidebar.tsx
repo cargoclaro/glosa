@@ -2,9 +2,9 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { cn } from "@/app/shared/utils/cn";
+import { cn } from "@/shared/utils/cn";
 import { usePathname } from "next/navigation";
-import { GlobeAlt, Square2x2 } from "@/app/shared/icons";
+import { GlobeAlt, Square2x2 } from "@/shared/icons";
 
 const Sidebar = () => {
   const pathname = usePathname();

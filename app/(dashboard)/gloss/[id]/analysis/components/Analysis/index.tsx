@@ -1,9 +1,9 @@
 "use client";
 
 import Detailed from "./Detailed";
-import { cn } from "@/app/shared/utils/cn";
-import { useModal, useServerAction } from "@/app/shared/hooks";
-import { GenericCard, Modal } from "@/app/shared/components";
+import { cn } from "@/shared/utils/cn";
+import { useModal, useServerAction } from "@/shared/hooks";
+import { GenericCard, Modal } from "@/shared/components";
 import { ITabInfoSelected } from "../PedimentAnalysisNFinish";
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
@@ -15,10 +15,10 @@ import {
   ArrowTrendingUp,
   ExclamationTriangle,
   Document,
-} from "@/app/shared/icons";
-import type { ISharedState } from "@/app/shared/interfaces";
-import { markTabAsVerifiedByTabIdNCustomGlossID } from "@/app/shared/services/customGloss/controller";
-import { INITIAL_STATE_RESPONSE } from "@/app/shared/constants";
+} from "@/shared/icons";
+import type { ISharedState } from "@/shared/interfaces";
+import { markTabAsVerifiedByTabIdNCustomGlossID } from "@/shared/services/customGloss/controller";
+import { INITIAL_STATE_RESPONSE } from "@/shared/constants";
 import { Prisma } from "@prisma/client";
 
 type tabs = Prisma.CustomGlossTabGetPayload<{

@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@/app/shared/utils/cn";
+import { cn } from "@/shared/utils/cn";
 import { usePathname } from "next/navigation";
 
 const Main = ({ children }: { children: React.ReactNode }) => {

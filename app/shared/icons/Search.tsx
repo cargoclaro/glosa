@@ -1,5 +1,5 @@
-import { cn } from "@/app/shared/utils/cn";
-import type { IGenericIcon } from "@/app/shared/interfaces";
+import { cn } from "@/shared/utils/cn";
+import type { IGenericIcon } from "@/shared/interfaces";
 
 const Search = ({
   size = "size-6",

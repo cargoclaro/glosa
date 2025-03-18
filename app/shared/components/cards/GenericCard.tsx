@@ -1,4 +1,4 @@
-import { cn } from "@/app/shared/utils/cn";
+import { cn } from "@/shared/utils/cn";
 
 interface IGenericCard {
   customClass?: string;

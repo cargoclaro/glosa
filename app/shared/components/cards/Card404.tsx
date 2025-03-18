@@ -1,4 +1,4 @@
-import { XBoxIcon } from "@/app/shared/icons";
+import { XBoxIcon } from "@/shared/icons";
 
 interface Card404Props {
   title: string;

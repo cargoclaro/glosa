@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { LeftArrow } from "@/app/shared/icons";
+import { LeftArrow } from "@/shared/icons";
 import type { Metadata } from "next";
-import prisma from "@/app/shared/services/prisma";
+import prisma from "@/shared/services/prisma";
 
 type IDynamicMetadata = {
   params: Promise<{ id: string }>;

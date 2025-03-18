@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { GenericCard } from "@/app/shared/components";
+import { GenericCard } from "@/shared/components";
 import { clerkClient, currentUser } from "@clerk/nextjs/server";
 import { auth } from "@clerk/nextjs/server";
 

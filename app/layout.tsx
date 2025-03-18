@@ -1,7 +1,7 @@
 import "./styles/globals.css";
-import { cn } from "@/app/shared/utils/cn";
+import { cn } from "@/shared/utils/cn";
 import { GeistSans } from "geist/font/sans";
-import { ThemeComponent } from "@/app/shared/components";
+import { ThemeComponent } from "@/shared/components";
 import type { Metadata } from "next";
 import { ClerkProvider } from "@clerk/nextjs";
 import { esMX } from '@clerk/localizations'

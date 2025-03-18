@@ -1,10 +1,10 @@
 "use client";
 
 import * as pdfjs from "pdfjs-dist";
-import { cn } from "@/app/shared/utils/cn";
-import { GenericCard } from "@/app/shared/components";
+import { cn } from "@/shared/utils/cn";
+import { GenericCard } from "@/shared/components";
 import React, { useEffect, useRef, useState } from "react";
-import { LeftChevron, RightChevron } from "@/app/shared/icons";
+import { LeftChevron, RightChevron } from "@/shared/icons";
 import type { TextItem } from "pdfjs-dist/types/src/display/api";
 import { ITabInfoSelected } from "./PedimentAnalysisNFinish";
 import { CustomGlossTab } from "@prisma/client";

@@ -1,13 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { cn } from "@/app/shared/utils/cn";
-import { LoadingBar, Modal } from "@/app/shared/components";
-import { Document, Upload, XMark } from "@/app/shared/icons";
-import { useModal, useServerAction } from "@/app/shared/hooks";
-import { INITIAL_STATE_RESPONSE } from "@/app/shared/constants";
-import { analysis } from "@/app/shared/services/customGloss/controller";
-import type { IGlossAnalysisState } from "@/app/shared/interfaces";
+import { cn } from "@/shared/utils/cn";
+import { LoadingBar, Modal } from "@/shared/components";
+import { Document, Upload, XMark } from "@/shared/icons";
+import { useModal, useServerAction } from "@/shared/hooks";
+import { INITIAL_STATE_RESPONSE } from "@/shared/constants";
+import { analysis } from "@/shared/services/customGloss/controller";
+import type { IGlossAnalysisState } from "@/shared/interfaces";
 
 const GlossForm = () => {
   const [files, setFiles] = useState<FileList | null>(null);

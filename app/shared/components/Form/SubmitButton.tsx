@@ -1,5 +1,5 @@
-import { cn } from "@/app/shared/utils/cn";
-import { Loading } from "@/app/shared/components";
+import { cn } from "@/shared/utils/cn";
+import { Loading } from "@/shared/components";
 
 const colorMap: { [key: string]: string } = {
   red: "link-button-red",

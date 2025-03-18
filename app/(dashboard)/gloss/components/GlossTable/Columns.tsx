@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { cn } from "@/app/shared/utils/cn";
+import { cn } from "@/shared/utils/cn";
 import { ColumnDef } from "@tanstack/react-table";
-import { RightArrow, ArrowsUpDown } from "@/app/shared/icons";
+import { RightArrow, ArrowsUpDown } from "@/shared/icons";
 
 interface IDumpGlosses {
   id: string;

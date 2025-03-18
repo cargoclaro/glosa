@@ -1,7 +1,7 @@
 // "use client";
 
-import Bell from "@/app/shared/icons/Bell";
-import { useModal } from "@/app/shared/hooks";
+import Bell from "@/shared/icons/Bell";
+import { useModal } from "@/shared/hooks";
 
 interface INotificationsMenu {
   notifications: object;

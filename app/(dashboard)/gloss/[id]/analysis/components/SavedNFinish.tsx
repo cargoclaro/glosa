@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { RightArrow } from "@/app/shared/icons";
+import { RightArrow } from "@/shared/icons";
 
 interface ISavedNFinish {
   glossId: string;

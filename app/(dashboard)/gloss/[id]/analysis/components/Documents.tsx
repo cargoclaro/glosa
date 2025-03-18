@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { Document } from "@/app/shared/icons";
-import { GenericCard } from "@/app/shared/components";
+import { Document } from "@/shared/icons";
+import { GenericCard } from "@/shared/components";
 import { CustomGlossFile } from "@prisma/client";
 
 const Documents = ({ data }: { data: CustomGlossFile[] }) => {

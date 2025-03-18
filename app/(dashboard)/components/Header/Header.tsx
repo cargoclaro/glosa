@@ -1,8 +1,8 @@
 "use client";
 
-import { cn } from "@/app/shared/utils/cn";
+import { cn } from "@/shared/utils/cn";
 import ProfileMenu from "./ProfileMenu";
-import todayIs from "@/app/shared/utils/today-is";
+import todayIs from "@/shared/utils/today-is";
 // import NotificationsMenu from "./NotificationsMenu";
 import { usePathname } from "next/navigation";
 

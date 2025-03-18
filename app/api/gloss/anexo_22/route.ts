@@ -1,6 +1,6 @@
 import path from "path";
 import { promises as fs } from "fs";
-// import { isAuthenticated } from "@/app/services/auth";
+// import { isAuthenticated } from "@/services/auth";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {

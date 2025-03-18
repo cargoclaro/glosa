@@ -1,6 +1,6 @@
 "use client";
 
-import { XMark } from "@/app/shared/icons";
+import { XMark } from "@/shared/icons";
 
 interface IModal {
   isOpen: boolean;

@@ -1,7 +1,7 @@
-import { cn } from "@/app/shared/utils/cn";
-import { GenericCard } from "@/app/shared/components";
-import { BellAlert, XMark } from "@/app/shared/icons";
-import ExclamationTriangle from "@/app/shared/icons/ExclamationTriangle";
+import { cn } from "@/shared/utils/cn";
+import { GenericCard } from "@/shared/components";
+import { BellAlert, XMark } from "@/shared/icons";
+import ExclamationTriangle from "@/shared/icons/ExclamationTriangle";
 import { CustomGlossAlert } from "@prisma/client";
 
 const Alerts = ({ data }: { data: CustomGlossAlert[] }) => {

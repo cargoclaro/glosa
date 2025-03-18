@@ -11,7 +11,7 @@ import { classifyDocuments } from "./classification";
 import { extractTextFromPDFs } from "./data-extraction";
 import { glosaImpo } from "./glosa/impo";
 import { glosaExpo } from "./glosa/expo";
-import prisma from "@/app/shared/services/prisma";
+import prisma from "@/shared/services/prisma";
 import { auth } from "@clerk/nextjs/server";
 import { UploadedFileData } from "uploadthing/types";
 import { DocumentType } from "./classification";

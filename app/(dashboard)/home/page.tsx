@@ -1,6 +1,6 @@
 import { Header, MyInfo, MexMap, Summary, GlossHistory } from "./components";
 import type { Metadata } from "next";
-import prisma from "@/app/shared/services/prisma";
+import prisma from "@/shared/services/prisma";
 import { auth } from "@clerk/nextjs/server";
 
 export const metadata: Metadata = {

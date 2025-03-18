@@ -1,6 +1,6 @@
 "use server";
 
-import prisma from "@/app/shared/services/prisma";
+import prisma from "@/shared/services/prisma";
 import { Prisma } from "@prisma/client";
 
 export async function create({
