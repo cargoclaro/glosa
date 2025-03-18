@@ -23,6 +23,7 @@ export const tracedPedimentoValidationStepsImpo = traceable(
     packingList,
     invoice,
     carta318,
+    traceId
   }: {
     pedimento: Pedimento;
     cove: Cove;
@@ -30,35 +31,41 @@ export const tracedPedimentoValidationStepsImpo = traceable(
     packingList?: PackingList;
     invoice?: Invoice;
     carta318?: Carta318;
+    traceId: string;
   }) =>
     Promise.all([
-      tracedNumeroDePedimento({ pedimento }),
+      tracedNumeroDePedimento({ pedimento, traceId }),
       tracedTipoOperacion({
         pedimento,
         ...(transportDocument ? { transportDocument } : {}),
+        traceId
       }),
-      tracedClaveApendice15({ pedimento }),
+      tracedClaveApendice15({ pedimento, traceId }),
       tracedTransportDocumentEntryDate({
         pedimento,
         ...(invoice ? { invoice } : {}),
         ...(transportDocument ? { transportDocument } : {}),
         ...(carta318 ? { carta318 } : {}),
+        traceId
       }),
       tracedPesosYBultos({
         pedimento,
         ...(transportDocument ? { transportDocument } : {}),
         ...(packingList ? { packingList } : {}),
         ...(invoice ? { invoice } : {}),
+        traceId
       }),
       tracedDatosDeFactura({
         pedimento,
         cove,
         ...(carta318 ? { carta318 } : {}),
         ...(invoice ? { invoice } : {}),
+        traceId
       }),
       tracedTipoTransporte({
         pedimento,
         ...(transportDocument ? { transportDocument } : {}),
+        traceId
       }),
       ...(pedimento.partidas
         ? pedimento.partidas.map((partida, index) =>
@@ -69,6 +76,7 @@ export const tracedPedimentoValidationStepsImpo = traceable(
               carta318,
               partida,
               partidaNumber: index + 1,
+              traceId
             })
           )
         : []),

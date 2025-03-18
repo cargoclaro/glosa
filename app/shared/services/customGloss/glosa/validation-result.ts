@@ -100,6 +100,7 @@ export async function glosar(
       };
     };
   },
+  traceId: string,
   modelId:
     | 'gpt-4o'
     | 'o3-mini'
@@ -116,7 +117,15 @@ export async function glosar(
 
   const { object: glosaResult } = await generateObject({
     model: aiModel,
-    experimental_telemetry: { isEnabled: true },
+    experimental_telemetry: { 
+      isEnabled: true,
+      functionId: `glosa_${validation.name}`,
+      metadata: {
+        langfuseTraceId: traceId,
+        langfuseUpdateParent: false,
+        validationName: validation.name
+      }
+    },
     system: SYSTEM_PROMPT,
     schema: validationResultSchema,
     prompt: `${JSON.stringify(validation, null, 2)}`,

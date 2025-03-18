@@ -19,6 +19,7 @@ export const glosaExpo = traceable(
     cfdi,
     cartaSesion,
     invoice,
+    traceId
   }: {
     pedimento: Pedimento;
     transportDocument?: TransportDocument;
@@ -27,6 +28,7 @@ export const glosaExpo = traceable(
     cfdi?: Cfdi;
     cartaSesion?: CartaSesion;
     invoice?: Invoice;
+    traceId: string;
   }) =>
     Promise.all([
       tracedPedimentoValidationStepsExpo({
@@ -36,8 +38,9 @@ export const glosaExpo = traceable(
         cartaSesion,
         transportDocument,
         packingList,
+        traceId
       }),
-      tracedCoveValidationStepsExpo({ cove, cfdi, invoice }),
+      tracedCoveValidationStepsExpo({ cove, cfdi, invoice, traceId }),
     ]).then((results) => results.flat()),
   { name: 'Exportación' }
 );

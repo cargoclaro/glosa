@@ -12,6 +12,7 @@ import { glosar } from '../../validation-result';
  * For imports: Compares with the invoice or Carta 318. In case of discrepancy, Carta 318 takes precedence.
  */
 async function validateDatosGeneralesProveedor(
+  traceId: string,
   cove: Cove,
   invoice?: Invoice,
   carta318?: Carta318
@@ -50,7 +51,7 @@ async function validateDatosGeneralesProveedor(
     },
   } as const;
 
-  return await glosar(validation);
+  return await glosar(validation, traceId);
 }
 
 /**
@@ -58,6 +59,7 @@ async function validateDatosGeneralesProveedor(
  * For imports: Compares with the invoice or Carta 318. In case of discrepancy, Carta 318 takes precedence.
  */
 async function validateDomicilioProveedor(
+  traceId: string,
   cove: Cove,
   invoice?: Invoice,
   carta318?: Carta318
@@ -102,7 +104,7 @@ async function validateDomicilioProveedor(
     },
   } as const;
 
-  return await glosar(validation);
+  return await glosar(validation, traceId);
 }
 
 /**
@@ -110,6 +112,7 @@ async function validateDomicilioProveedor(
  * For imports: Compares with the invoice or Carta 318. In case of discrepancy, Carta 318 takes precedence.
  */
 async function validateDatosGeneralesDestinatario(
+  traceId: string,
   cove: Cove,
   invoice?: Invoice,
   carta318?: Carta318
@@ -146,7 +149,7 @@ async function validateDatosGeneralesDestinatario(
     },
   } as const;
 
-  return await glosar(validation);
+  return await glosar(validation, traceId);
 }
 
 /**
@@ -154,6 +157,7 @@ async function validateDatosGeneralesDestinatario(
  * For imports: Compares with the invoice or Carta 318. In case of discrepancy, Carta 318 takes precedence.
  */
 async function validateDomicilioDestinatario(
+  traceId: string,
   cove: Cove,
   invoice?: Invoice,
   carta318?: Carta318
@@ -200,7 +204,7 @@ async function validateDomicilioDestinatario(
     },
   } as const;
 
-  return await glosar(validation);
+  return await glosar(validation, traceId);
 }
 
 export const tracedChooseDocument = traceable(
@@ -208,12 +212,13 @@ export const tracedChooseDocument = traceable(
     cove,
     invoice,
     carta318,
-  }: { cove: Cove; invoice?: Invoice; carta318?: Carta318 }) => {
+    traceId,
+  }: { cove: Cove; invoice?: Invoice; carta318?: Carta318; traceId: string }) => {
     const validationsPromise = await Promise.all([
-      validateDatosGeneralesProveedor(cove, invoice, carta318),
-      validateDomicilioProveedor(cove, invoice, carta318),
-      validateDatosGeneralesDestinatario(cove, invoice, carta318),
-      validateDomicilioDestinatario(cove, invoice, carta318),
+      validateDatosGeneralesProveedor(traceId, cove, invoice, carta318),
+      validateDomicilioProveedor(traceId, cove, invoice, carta318),
+      validateDatosGeneralesDestinatario(traceId, cove, invoice, carta318),
+      validateDomicilioDestinatario(traceId, cove, invoice, carta318),
     ]);
 
     return {

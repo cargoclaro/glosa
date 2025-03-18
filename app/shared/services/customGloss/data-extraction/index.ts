@@ -33,7 +33,8 @@ async function extractTextFromPDFsParallel(
       DocumentType,
       UploadedFileData & { originalFile: File; documentType: DocumentType }
     >
-  >
+  >,
+  traceId: string
 ) {
   const {
     factura,
@@ -69,39 +70,44 @@ async function extractTextFromPDFsParallel(
     cartaCesionDeDerechosText,
   ] = await Promise.all([
     factura
-      ? extractTextFromImage(factura.originalFile, factura.documentType)
+      ? extractTextFromImage(factura.originalFile, factura.documentType, traceId)
       : null,
     carta318
-      ? extractTextFromImage(carta318.originalFile, carta318.documentType)
+      ? extractTextFromImage(carta318.originalFile, carta318.documentType, traceId)
       : null,
-    rrna ? extractTextFromImage(rrna.originalFile, rrna.documentType) : null,
+    rrna ? extractTextFromImage(rrna.originalFile, rrna.documentType, traceId) : null,
     documentoDeTransporte
       ? extractTextFromImage(
           documentoDeTransporte.originalFile,
-          documentoDeTransporte.documentType
+          documentoDeTransporte.documentType,
+          traceId
         )
       : null,
     extractTextFromPedimento(
       pedimento.originalFile,
       pedimento.documentType,
-      documentToSchema.pedimento
+      documentToSchema.pedimento,
+      traceId
     ),
     listaDeEmpaque
       ? extractTextFromImage(
           listaDeEmpaque.originalFile,
-          listaDeEmpaque.documentType
+          listaDeEmpaque.documentType,
+          traceId
         )
       : null,
     extractTextFromPDF(
       cove.originalFile,
       cove.documentType,
-      documentToSchema.cove
+      documentToSchema.cove,
+      traceId
     ),
-    cfdi ? extractTextFromImage(cfdi.originalFile, cfdi.documentType) : null,
+    cfdi ? extractTextFromImage(cfdi.originalFile, cfdi.documentType, traceId) : null,
     cartaCesionDeDerechos
       ? extractTextFromImage(
           cartaCesionDeDerechos.originalFile,
-          cartaCesionDeDerechos.documentType
+          cartaCesionDeDerechos.documentType,
+          traceId
         )
       : null,
   ]);
@@ -134,7 +140,8 @@ const extractionResponseSchema = z.object({
 async function extractTextFromPDF<T extends z.ZodType>(
   originalFile: File,
   documentType: DocumentType,
-  schema: T
+  schema: T,
+  traceId: string
 ) {
   const baseUrl = process.env['PYTHON_BACKEND_URL'];
   const url = `${baseUrl}/extract-pdf-text`;
@@ -158,13 +165,14 @@ async function extractTextFromPDF<T extends z.ZodType>(
   const rawData = await response.json();
   const data = extractionResponseSchema.parse(rawData);
   const extractedText = data.text;
-  return structureTaggedText(extractedText, schema, documentType);
+  return structureTaggedText(extractedText, schema, documentType, traceId);
 }
 
 async function extractTextFromPedimento<S extends z.ZodType>(
   originalFile: File,
   documentType: DocumentType,
-  schema: S
+  schema: S,
+  traceId: string
 ): Promise<z.infer<S>> {
   const baseUrl = process.env['PYTHON_BACKEND_URL'];
   const url = `${baseUrl}/extract-pedimento`;
@@ -191,5 +199,5 @@ async function extractTextFromPedimento<S extends z.ZodType>(
     partidas: z.unknown(),
   });
   const data = extractionResponseSchema.parse(rawData);
-  return structureTaggedText(data, schema, documentType);
+  return structureTaggedText(data, schema, documentType, traceId);
 }

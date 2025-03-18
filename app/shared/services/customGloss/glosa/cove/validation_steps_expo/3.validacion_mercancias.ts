@@ -8,7 +8,7 @@ import { glosar } from '../../validation-result';
  * Validates that the merchandise details in the COVE document match the CFDI for exports.
  * Compares merchandise details between COVE and CFDI.
  */
-async function validateMercancias(cove: Cove, cfdi?: Cfdi) {
+async function validateMercancias(traceId: string, cove: Cove, cfdi?: Cfdi) {
   // Extract merchandise data from COVE
   const datosMercanciaCove = cove.datos_mercancia;
   const cfdiMkdown = cfdi?.markdown_representation;
@@ -56,13 +56,13 @@ async function validateMercancias(cove: Cove, cfdi?: Cfdi) {
     },
   } as const;
 
-  return await glosar(validation);
+  return await glosar(validation, traceId);
 }
 
 /**
  * Validates that the total value in dollars in the COVE document matches the CFDI for exports.
  */
-async function validateValorTotalDolares(cove: Cove, cfdi?: Cfdi) {
+async function validateValorTotalDolares(traceId: string, cove: Cove, cfdi?: Cfdi) {
   // Extract total value from COVE
   const valorTotalDolaresCove = cove.datos_mercancia[0]?.valor_total_dolares;
   const observacionesCove = cove.observaciones || '';
@@ -88,14 +88,14 @@ async function validateValorTotalDolares(cove: Cove, cfdi?: Cfdi) {
     },
   } as const;
 
-  return await glosar(validation);
+  return await glosar(validation, traceId);
 }
 /**
  * Validates that the serial numbers of the merchandise match across documents.
  * First checks Carta 318, then falls back to the invoice if not found in Carta 318.
  * Serial numbers are not mandatory; if none exists, it's considered valid.
  */
-async function validateNumeroSerie(cove: Cove, invoice?: Invoice, cfdi?: Cfdi) {
+async function validateNumeroSerie(traceId: string, cove: Cove, invoice?: Invoice, cfdi?: Cfdi) {
   const numeroSerieCove = cove.datos_mercancia[0]?.numeros_serie;
   const invoiceMkdown = invoice?.markdown_representation;
   const cfdiMkdown = cfdi?.markdown_representation;
@@ -127,7 +127,7 @@ async function validateNumeroSerie(cove: Cove, invoice?: Invoice, cfdi?: Cfdi) {
     },
   } as const;
 
-  return await glosar(validation);
+  return await glosar(validation, traceId);
 }
 
 export const tracedMercancias = traceable(
@@ -135,11 +135,12 @@ export const tracedMercancias = traceable(
     cove,
     invoice,
     cfdi,
-  }: { cove: Cove; invoice?: Invoice; cfdi?: Cfdi }) => {
+    traceId
+  }: { cove: Cove; invoice?: Invoice; cfdi?: Cfdi; traceId: string }) => {
     const validationsPromise = await Promise.all([
-      validateMercancias(cove, cfdi),
-      validateValorTotalDolares(cove, cfdi),
-      validateNumeroSerie(cove, invoice, cfdi),
+      validateMercancias(traceId, cove, cfdi),
+      validateValorTotalDolares(traceId, cove, cfdi),
+      validateNumeroSerie(traceId, cove, invoice, cfdi),
     ]);
 
     return {

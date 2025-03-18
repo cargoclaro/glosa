@@ -12,6 +12,7 @@ import { glosar } from '../../validation-result';
  * Compares with the invoice or Carta 318. In case of discrepancy, Carta 318 takes precedence.
  */
 async function validateMercancias(
+  traceId: string,
   cove: Cove,
   invoice?: Invoice,
   carta318?: Carta318
@@ -68,7 +69,7 @@ async function validateMercancias(
     },
   } as const;
 
-  return await glosar(validation);
+  return await glosar(validation, traceId);
 }
 
 /**
@@ -76,6 +77,7 @@ async function validateMercancias(
  * Compares with the invoice or Carta 318. In case of discrepancy, Carta 318 takes precedence.
  */
 async function validateValorTotalDolares(
+  traceId: string,
   cove: Cove,
   invoice?: Invoice,
   carta318?: Carta318
@@ -110,7 +112,7 @@ async function validateValorTotalDolares(
     },
   } as const;
 
-  return await glosar(validation);
+  return await glosar(validation, traceId);
 }
 
 /**
@@ -119,6 +121,7 @@ async function validateValorTotalDolares(
  * Serial numbers are not mandatory; if none exists, it's considered valid.
  */
 async function validateNumeroSerie(
+  traceId: string,
   cove: Cove,
   invoice?: Invoice,
   carta318?: Carta318
@@ -154,7 +157,7 @@ async function validateNumeroSerie(
     },
   } as const;
 
-  return await glosar(validation);
+  return await glosar(validation, traceId);
 }
 
 export const tracedMercancias = traceable(
@@ -162,11 +165,12 @@ export const tracedMercancias = traceable(
     cove,
     invoice,
     carta318,
-  }: { cove: Cove; invoice?: Invoice; carta318?: Carta318 }) => {
+    traceId,
+  }: { cove: Cove; invoice?: Invoice; carta318?: Carta318; traceId: string }) => {
     const validationsPromise = await Promise.all([
-      validateMercancias(cove, invoice, carta318),
-      validateValorTotalDolares(cove, invoice, carta318),
-      validateNumeroSerie(cove, invoice, carta318),
+      validateMercancias(traceId, cove, invoice, carta318),
+      validateValorTotalDolares(traceId, cove, invoice, carta318),
+      validateNumeroSerie(traceId, cove, invoice, carta318),
     ]);
 
     return {

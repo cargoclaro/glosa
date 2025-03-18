@@ -7,7 +7,7 @@ import { glosar } from '../../validation-result';
 /**
  * Validates that the invoice number in the COVE document matches the CFDI for exports.
  */
-async function validateNumeroFactura(cove: Cove, cfdi?: Cfdi) {
+async function validateNumeroFactura(traceId: string, cove: Cove, cfdi?: Cfdi) {
   // Extract invoice numbers from different sources
   const numeroFacturaCove = cove.numero_factura;
   const cfdiMkdown = cfdi?.markdown_representation;
@@ -30,13 +30,13 @@ async function validateNumeroFactura(cove: Cove, cfdi?: Cfdi) {
     },
   } as const;
 
-  return await glosar(validation);
+  return await glosar(validation, traceId);
 }
 
 /**
  * Validates that the invoice date in the COVE document matches the CFDI for exports.
  */
-async function validateFechaExpedicion(cove: Cove, cfdi?: Cfdi) {
+async function validateFechaExpedicion(traceId: string, cove: Cove, cfdi?: Cfdi) {
   // Extract invoice dates from different sources
   const fechaExpedicionCove = cove.fecha_expedicion;
   const cfdiMkdown = cfdi?.markdown_representation;
@@ -59,13 +59,13 @@ async function validateFechaExpedicion(cove: Cove, cfdi?: Cfdi) {
     },
   } as const;
 
-  return await glosar(validation);
+  return await glosar(validation, traceId);
 }
 
 /**
  * Validates that the RFC in the COVE document matches other documents for exports.
  */
-async function validateRfc(cove: Cove, cfdi?: Cfdi) {
+async function validateRfc(traceId: string, cove: Cove, cfdi?: Cfdi) {
   // Extract RFC values from different sources
   const rfcCove = cove.datos_generales_destinatario?.rfc_destinatario;
   const cfdiMkdown = cfdi?.markdown_representation;
@@ -87,15 +87,15 @@ async function validateRfc(cove: Cove, cfdi?: Cfdi) {
     },
   } as const;
 
-  return await glosar(validation);
+  return await glosar(validation, traceId);
 }
 
 export const tracedDatosGenerales = traceable(
-  async ({ cove, cfdi }: { cove: Cove; cfdi?: Cfdi }) => {
+  async ({ cove, cfdi, traceId }: { cove: Cove; cfdi?: Cfdi; traceId: string }) => {
     const validationsPromise = await Promise.all([
-      validateNumeroFactura(cove, cfdi),
-      validateFechaExpedicion(cove, cfdi),
-      validateRfc(cove, cfdi),
+      validateNumeroFactura(traceId, cove, cfdi),
+      validateFechaExpedicion(traceId, cove, cfdi),
+      validateRfc(traceId, cove, cfdi),
     ]);
 
     return {

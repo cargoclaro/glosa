@@ -12,6 +12,7 @@ import { glosar } from '../../validation-result';
  * In case of discrepancy, the Carta 318's invoice number takes precedence.
  */
 async function validateNumeroFactura(
+  traceId: string,
   cove: Cove,
   invoice?: Invoice,
   carta318?: Carta318
@@ -41,7 +42,7 @@ async function validateNumeroFactura(
       },
     },
   } as const;
-  return await glosar(validation);
+  return await glosar(validation, traceId);
 }
 
 /**
@@ -49,6 +50,7 @@ async function validateNumeroFactura(
  * In case of discrepancy, the Carta 318's date takes precedence.
  */
 async function validateFechaExpedicion(
+  traceId: string,
   cove: Cove,
   invoice?: Invoice,
   carta318?: Carta318
@@ -83,7 +85,7 @@ async function validateFechaExpedicion(
     },
   } as const;
 
-  return await glosar(validation);
+  return await glosar(validation, traceId);
 }
 
 export const tracedDatosGenerales = traceable(
@@ -91,10 +93,11 @@ export const tracedDatosGenerales = traceable(
     cove,
     invoice,
     carta318,
-  }: { cove: Cove; invoice?: Invoice; carta318?: Carta318 }) => {
+    traceId
+  }: { cove: Cove; invoice?: Invoice; carta318?: Carta318; traceId: string }) => {
     const validationsPromise = await Promise.all([
-      validateNumeroFactura(cove, invoice, carta318),
-      validateFechaExpedicion(cove, invoice, carta318),
+      validateNumeroFactura(traceId, cove, invoice, carta318),
+      validateFechaExpedicion(traceId, cove, invoice, carta318),
     ]);
 
     return {

@@ -23,6 +23,7 @@ export const tracedPedimentoValidationStepsExpo = traceable(
     cartaSesion,
     transportDocument,
     packingList,
+    traceId
   }: {
     pedimento: Pedimento;
     cove: Cove;
@@ -30,16 +31,17 @@ export const tracedPedimentoValidationStepsExpo = traceable(
     cartaSesion?: CartaSesion;
     transportDocument?: TransportDocument;
     packingList?: PackingList;
+    traceId: string;
   }) =>
     Promise.all([
-      tracedNumeroDePedimento({ pedimento }),
-      tracedTipoOperacion({ pedimento }),
-      tracedClaveApendice15({ pedimento }),
-      tracedOperacionMonetaria({ pedimento, cove, transportDocument, cfdi }),
-      tracedPesosYBultos({ pedimento, transportDocument, packingList, cfdi }),
-      tracedRfcFormat({ pedimento, cove, cfdi, cartaSesion }),
-      tracedTipoTransporte({ pedimento, transportDocument }),
-      tracedPartidas({ pedimento, cfdi }),
+      tracedNumeroDePedimento({ pedimento, traceId }),
+      tracedTipoOperacion({ pedimento, traceId }),
+      tracedClaveApendice15({ pedimento, traceId }),
+      tracedOperacionMonetaria({ pedimento, cove, transportDocument, cfdi, traceId }),
+      tracedPesosYBultos({ pedimento, transportDocument, packingList, cfdi, traceId }),
+      tracedRfcFormat({ pedimento, cove, cfdi, cartaSesion, traceId }),
+      tracedTipoTransporte({ pedimento, transportDocument, traceId }),
+      tracedPartidas({ pedimento, cfdi, traceId }),
     ]),
   { name: 'Pedimento (Exportación)' }
 );

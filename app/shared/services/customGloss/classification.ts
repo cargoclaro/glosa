@@ -1,5 +1,6 @@
 import { google } from '@ai-sdk/google';
 import { generateObject } from 'ai';
+import { Langfuse } from 'langfuse';
 import type { UploadedFileData } from 'uploadthing/types';
 import { z } from 'zod';
 
@@ -19,15 +20,36 @@ const documentTypes = [
 export type DocumentType = (typeof documentTypes)[number];
 
 export async function classifyDocuments(
-  uploadedFiles: (UploadedFileData & { originalFile: File })[]
+  uploadedFiles: (UploadedFileData & { originalFile: File })[],
+  parentTraceId: string
 ) {
+  const langfuse = new Langfuse();
+  langfuse.event({
+    traceId: parentTraceId,
+    name: 'Classification',
+  });
   return await Promise.all(
     uploadedFiles.map(async (uploadedFile) => {
+      // We assume all xml files are cfdis
+      if (uploadedFile.type === 'text/xml') {
+        return {
+          ...uploadedFile,
+          documentType: 'cfdi' as const,
+        };
+      }
       const {
         object: { documentType },
       } = await generateObject({
         model: google('gemini-2.0-flash-001'),
-        experimental_telemetry: { isEnabled: true },
+        experimental_telemetry: { 
+          isEnabled: true,
+          functionId: uploadedFile.name,
+          metadata: {
+            langfuseTraceId: parentTraceId,
+            langfuseUpdateParent: false,
+            fileUrl: uploadedFile.ufsUrl,
+          },
+        },
         system: `
         Eres un experto en análisis y clasificación de documentos aduaneros.
         
@@ -83,8 +105,8 @@ export async function classifyDocuments(
             content: [
               {
                 type: 'file',
-                data: `data:application/pdf;base64,${Buffer.from(await uploadedFile.originalFile.arrayBuffer()).toString('base64')}`,
-                mimeType: 'application/pdf',
+                data: `data:${uploadedFile.type};base64,${Buffer.from(await uploadedFile.originalFile.arrayBuffer()).toString('base64')}`,
+                mimeType: uploadedFile.type,
               },
             ],
           },

@@ -8,7 +8,8 @@ import { sanitizeObjectStrings } from "../remove-null-bytes"; */
 
 export async function extractTextFromImage(
   pdfFile: File,
-  documentType: DocumentType
+  documentType: DocumentType,
+  traceId: string
 ) {
   const base64Data = Buffer.from(await pdfFile.arrayBuffer()).toString(
     'base64'
@@ -65,7 +66,15 @@ export async function extractTextFromImage(
   } */
   const { text } = await generateText({
     model: google('gemini-2.0-flash-001'),
-    experimental_telemetry: { isEnabled: true },
+    experimental_telemetry: { 
+      isEnabled: true,
+      functionId: `extract_${documentType}`,
+      metadata: {
+        langfuseTraceId: traceId,
+        langfuseUpdateParent: false,
+        documentType
+      }
+    },
     messages: [
       {
         role: 'user',
