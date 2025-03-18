@@ -7,7 +7,7 @@ import { ThemeComponent } from './providers';
 export {
   Modal,
   
-  Loading,
+  
   
   LoadingBar,
   GenericCard,

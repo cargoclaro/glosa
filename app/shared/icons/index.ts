@@ -38,7 +38,7 @@ export {
   
   Square2x2,
   LeftArrow,
-  BellAlert,
+  
   RightArrow,
   
   LeftChevron,
