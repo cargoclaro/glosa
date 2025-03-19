@@ -19,11 +19,17 @@ export async function generateMetadata({
   };
 }
 
-const GlossIdAnalysis = async ({
-  params: { id },
-}: {
-  params: { id: string };
-}) => {
+const GlossIdAnalysis = async (
+  props: {
+    params: Promise<{ id: string }>;
+  }
+) => {
+  const params = await props.params;
+
+  const {
+    id
+  } = params;
+
   const { userId } = await auth.protect();
   const customGloss = await prisma.customGloss.findUnique({
     where: { id, userId },

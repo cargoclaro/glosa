@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": false,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --turbopack",
     "build": "prisma migrate deploy && prisma generate && next build",
     "start": "next start",
     "qa:fix": "pnpm biome:fix && pnpm knip:fix && pnpm pnpm:update",
@@ -54,13 +54,13 @@
     "langfuse-vercel": "^3.37.0",
     "langsmith": "^0.3.14",
     "moment": "^2.30.1",
-    "next": "^14.2.25",
-    "next-themes": "^0.3.0",
+    "next": "15.2.3",
+    "next-themes": "^0.4.6",
     "openai": "^4.87.4",
     "pdf-lib": "^1.17.1",
     "pdfjs-dist": "^4.10.38",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
     "react-markdown": "^9.1.0",
     "tailwind-merge": "^2.6.0",
     "tailwindcss-animated": "^1.1.2",
@@ -72,8 +72,8 @@
     "@total-typescript/ts-reset": "^0.6.1",
     "@tsconfig/strictest": "^2.0.5",
     "@types/node": "^20.17.24",
-    "@types/react": "^18.3.18",
-    "@types/react-dom": "^18.3.5",
+    "@types/react": "19.0.11",
+    "@types/react-dom": "19.0.4",
     "cheerio": "^1.0.0",
     "domhandler": "^5.0.3",
     "knip": "^5.46.0",
@@ -84,5 +84,11 @@
     "tsx": "^4.19.3",
     "typescript": "^5.8.2",
     "ultracite": "^4.1.21"
+  },
+  "pnpm": {
+    "overrides": {
+      "@types/react": "19.0.11",
+      "@types/react-dom": "19.0.4"
+    }
   }
 }

@@ -17,7 +17,7 @@ import type { ISharedState } from '@/shared/interfaces';
 import { markTabAsVerifiedByTabIdNCustomGlossID } from '@/shared/services/customGloss/controller';
 import { cn } from '@/shared/utils/cn';
 import type { Prisma } from '@prisma/client';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState, type JSX } from 'react';
 import type { ITabInfoSelected } from '../PedimentAnalysisNFinish';
 import Detailed from './Detailed';
 

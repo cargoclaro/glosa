@@ -9,7 +9,9 @@ const nextConfig = {
     ],
   },
   experimental: {
-    instrumentationHook: true,
+    serverActions: {
+      bodySizeLimit: '10mb',
+    },
   },
   eslint: {
     ignoreDuringBuilds: true,
