@@ -16,10 +16,8 @@ import {
 import type { ISharedState } from '@/shared/interfaces';
 import { markTabAsVerifiedByTabIdNCustomGlossID } from '@/shared/services/customGloss/controller';
 import { cn } from '@/shared/utils/cn';
-import { type JSX, useCallback, useEffect, useRef, useState } from 'react';
-import type { ITabInfoSelected } from '../PedimentAnalysisNFinish';
-import Detailed from './Detailed';
 import type { InferSelectModel } from 'drizzle-orm';
+import { type JSX, useCallback, useEffect, useRef, useState } from 'react';
 import type {
   CustomGloss,
   CustomGlossTab,
@@ -27,12 +25,16 @@ import type {
   CustomGlossTabContextData,
   CustomGlossTabValidationStep,
   CustomGlossTabValidationStepActionToTake,
-  CustomGlossTabValidationStepResources
+  CustomGlossTabValidationStepResources,
 } from '~/db/schema';
+import type { ITabInfoSelected } from '../PedimentAnalysisNFinish';
+import Detailed from './Detailed';
 
 type TabValidation = InferSelectModel<typeof CustomGlossTabValidationStep> & {
   resources: InferSelectModel<typeof CustomGlossTabValidationStepResources>[];
-  actionsToTake: InferSelectModel<typeof CustomGlossTabValidationStepActionToTake>[];
+  actionsToTake: InferSelectModel<
+    typeof CustomGlossTabValidationStepActionToTake
+  >[];
   steps: InferSelectModel<typeof CustomGlossTabValidationStep>[];
 };
 
@@ -344,8 +346,9 @@ const VerifiedButton = ({
   isVerified,
   customGlossId,
 }: IVerifiedButton) => {
-  const { response, isLoading, setIsLoading } =
-    useServerAction<ISharedState>(INITIAL_STATE_RESPONSE);
+  const { response, isLoading, setIsLoading } = useServerAction<ISharedState>(
+    INITIAL_STATE_RESPONSE
+  );
 
   const handleVerify = async () => {
     setIsLoading(true);

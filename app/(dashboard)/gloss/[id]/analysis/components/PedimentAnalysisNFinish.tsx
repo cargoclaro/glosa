@@ -1,9 +1,8 @@
 'use client';
 
+import type { InferSelectModel } from 'drizzle-orm';
 import { useState } from 'react';
 import type { CustomGlossFileTable } from '~/db/schema';
-import { Analysis, Pediment, SavedNFinish } from '.';
-import type { InferSelectModel } from 'drizzle-orm';
 import type {
   CustomGloss,
   CustomGlossTab,
@@ -11,12 +10,15 @@ import type {
   CustomGlossTabContextData,
   CustomGlossTabValidationStep,
   CustomGlossTabValidationStepActionToTake,
-  CustomGlossTabValidationStepResources
+  CustomGlossTabValidationStepResources,
 } from '~/db/schema';
+import { Analysis, Pediment, SavedNFinish } from '.';
 
 type TabValidation = InferSelectModel<typeof CustomGlossTabValidationStep> & {
   resources: InferSelectModel<typeof CustomGlossTabValidationStepResources>[];
-  actionsToTake: InferSelectModel<typeof CustomGlossTabValidationStepActionToTake>[];
+  actionsToTake: InferSelectModel<
+    typeof CustomGlossTabValidationStepActionToTake
+  >[];
   steps: InferSelectModel<typeof CustomGlossTabValidationStep>[];
 };
 

@@ -72,26 +72,26 @@
   .pedimento-table {
     @apply w-full border-collapse text-xs;
   }
-  
+
   .pedimento-cell {
     @apply px-2 border-r last:border-r-0 border-gray-400 text-xs;
     min-height: 24px;
     display: flex;
     align-items: center;
   }
-  
+
   .pedimento-header {
     @apply bg-gray-200 text-black uppercase text-xs font-semibold tracking-wider text-center py-1 border-b border-gray-400;
   }
-  
+
   .pedimento-label {
     @apply bg-gray-100 text-xs uppercase font-semibold;
   }
-  
+
   .pedimento-value {
     @apply text-xs font-normal;
   }
-  
+
   .pedimento-section {
     @apply mb-4 opacity-0 animate-fadeIn w-full border border-gray-400;
     animation-delay: calc(var(--animation-order) * 100ms);
