@@ -19,7 +19,8 @@
     "baseUrl": ".",
     "exactOptionalPropertyTypes": false,
     "paths": {
-      "@/*": ["./app/*"]
+      "@/*": ["./app/*"],
+      "~/*": ["./*"]
     },
     "allowJs": true
   },
