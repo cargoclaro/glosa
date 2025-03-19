@@ -419,29 +419,21 @@ export const markTabAsVerifiedByTabIdNCustomGlossID = api
     })
   )
   .mutation(async ({ input: { tabId, customGlossId }, ctx: { userId } }) => {
-    try {
-      const customGloss = await read({ id: customGlossId, userId });
+    const customGloss = await read({ id: customGlossId, userId });
 
-      if (!customGloss) {
-        throw new Error('Gloss not found');
-      }
-
-      await updateTabWithCustomGlossId({
-        id: tabId,
-        customGlossId,
-        data: {
-          isVerified: true,
-        },
-      });
-
-      // We keep these outside the try-catch to maintain original behavior
-      revalidatePath(`/gloss/${customGlossId}/analysis`);
-      redirect(`/gloss/${customGlossId}/analysis`);
-    } catch (error) {
-      console.error(error);
-      return {
-        success: false,
-        message: 'Ocurrió un error interno',
-      };
+    if (!customGloss) {
+      throw new Error('Gloss not found');
     }
+
+    await updateTabWithCustomGlossId({
+      id: tabId,
+      customGlossId,
+      data: {
+        isVerified: true,
+      },
+    });
+
+    // We keep these outside the try-catch to maintain original behavior
+    revalidatePath(`/gloss/${customGlossId}/analysis`);
+    redirect(`/gloss/${customGlossId}/analysis`);
   });
