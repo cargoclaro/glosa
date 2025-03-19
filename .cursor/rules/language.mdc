@@ -3,4 +3,4 @@ description:
 globs: 
 alwaysApply: true
 ---
-Respond with the language used to make the question
+Respond with the language used to make the question. If the user asked in English, respond in English
