@@ -21,9 +21,7 @@ export async function generateMetadata({
 const GlossIdPage = async (props: { params: Promise<{ id: string }> }) => {
   const params = await props.params;
 
-  const {
-    id
-  } = params;
+  const { id } = params;
 
   const customGloss = await prisma.customGloss.findUnique({
     where: { id },
