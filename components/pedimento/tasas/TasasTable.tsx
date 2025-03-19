@@ -12,9 +12,7 @@ interface TasasTableProps {
   fechaPago?: string;
 }
 
-const TasasTable: React.FC<TasasTableProps> = ({
-  tasas,
-}) => {
+const TasasTable: React.FC<TasasTableProps> = ({ tasas }) => {
   return (
     <div className="grid grid-cols-3 gap-0">
       <div className="pedimento-header">CONTRIB.</div>
