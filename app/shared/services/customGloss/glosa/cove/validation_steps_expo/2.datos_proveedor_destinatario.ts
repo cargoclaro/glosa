@@ -1,4 +1,3 @@
-import { CustomGlossTabContextType } from '@prisma/client';
 import { traceable } from 'langsmith/traceable';
 import type { Cfdi } from '../../../data-extraction/mkdown_schemas';
 import type { Cove } from '../../../data-extraction/schemas';
@@ -28,7 +27,7 @@ async function validateDatosGeneralesProveedor(
     prompt:
       'Verificar que los siguientes datos coincidan entre el COVE y el CFDI:\n\n• RFC\n• Razón social\n Si no hay RFC, el tipo de identificador que tenga (tax id, tax id number, tax id number, etc) debe de coincidir.',
     contexts: {
-      [CustomGlossTabContextType.PROVIDED]: {
+      "PROVIDED": {
         cove: {
           data: [
             { name: 'Identificador', value: identificadorCove },
@@ -80,7 +79,7 @@ async function validateDomicilioProveedor(
     prompt:
       'Verificar que el domicilio fiscal del proveedor coincida entre el COVE y el CFDI:\n\n• Domicilio fiscal',
     contexts: {
-      [CustomGlossTabContextType.PROVIDED]: {
+      "PROVIDED": {
         cove: {
           data: [{ name: 'Domicilio', value: domicilioCoveCompleto }],
         },
@@ -117,7 +116,7 @@ async function validateDatosGeneralesDestinatario(
     prompt:
       'Verificar que los siguientes datos coincidan entre el COVE y el CFDI:\n\n• RFC\n• Razón social\n Si no hay RFC, el tipo de identificador que tenga (tax id, tax id number, tax id number, etc) debe de coincidir.',
     contexts: {
-      [CustomGlossTabContextType.PROVIDED]: {
+      "PROVIDED": {
         cove: {
           data: [
             { name: 'RFC', value: rfcDestinatarioCove },
@@ -168,7 +167,7 @@ async function validateDomicilioDestinatario(
     prompt:
       'Verificar que el domicilio fiscal del destinatario coincida entre el COVE y el CFDI:\n\n• Domicilio fiscal',
     contexts: {
-      [CustomGlossTabContextType.PROVIDED]: {
+      "PROVIDED": {
         cove: {
           data: [{ name: 'Domicilio', value: domicilioCoveCompleto }],
         },

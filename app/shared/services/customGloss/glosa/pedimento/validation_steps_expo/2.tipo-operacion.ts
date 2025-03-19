@@ -1,4 +1,3 @@
-import { CustomGlossTabContextType } from '@prisma/client';
 import { traceable } from 'langsmith/traceable';
 import type {
   Pedimento,
@@ -29,7 +28,7 @@ async function validateCoherenciaOrigenDestino(
     prompt:
       'El tipo de operación debe ser consistente con el origen y destino de las mercancías, es decir EXP (exportación) si origen es México, si no se pueden determinar los datos de origen y destino, ignorar y marcar como correcto.',
     contexts: {
-      [CustomGlossTabContextType.PROVIDED]: {
+      "PROVIDED": {
         pedimento: {
           data: [
             { name: 'Tipo de operación', value: tipoOperacion },
@@ -63,7 +62,7 @@ async function validateClavePedimento(traceId: string, pedimento: Pedimento) {
     prompt:
       'La clave de pedimento debe ser válida para el tipo de operación según el Apéndice 2',
     contexts: {
-      [CustomGlossTabContextType.PROVIDED]: {
+      "PROVIDED": {
         pedimento: {
           data: [
             { name: 'Tipo de operación', value: tipoOperacion },
@@ -71,7 +70,7 @@ async function validateClavePedimento(traceId: string, pedimento: Pedimento) {
           ],
         },
       },
-      [CustomGlossTabContextType.EXTERNAL]: {
+      "EXTERNAL": {
         apendices: {
           data: [{ name: 'Apéndice 2', value: JSON.stringify(apendice2) }],
         },
@@ -96,7 +95,7 @@ async function validateRegimen(traceId: string, pedimento: Pedimento) {
     prompt:
       'El régimen debe ser válido para el tipo de operación según el Apéndice 16',
     contexts: {
-      [CustomGlossTabContextType.PROVIDED]: {
+      "PROVIDED": {
         pedimento: {
           data: [
             { name: 'Tipo de operación', value: tipoOperacion },
@@ -104,7 +103,7 @@ async function validateRegimen(traceId: string, pedimento: Pedimento) {
           ],
         },
       },
-      [CustomGlossTabContextType.EXTERNAL]: {
+      "EXTERNAL": {
         apendices: {
           data: [{ name: 'Apéndice 16', value: JSON.stringify(apendice16) }],
         },

@@ -5,7 +5,11 @@ export const OperationStatus = pgEnum('OperationStatus', ['IN_PROGRESS', 'DONE']
 
 export const CustomGlossType = pgEnum('CustomGlossType', ['LOW', 'HIGH', 'MEDIUM'])
 
-export const CustomGlossTabContextType = pgEnum('CustomGlossTabContextType', ['PROVIDED', 'INFERRED', 'EXTERNAL'])
+export const customGlossContextTypes = ['PROVIDED', 'INFERRED', 'EXTERNAL'] as const;
+
+export type CustomGlossTabContextTypes = (typeof customGlossContextTypes)[number];
+
+export const CustomGlossTabContextType = pgEnum('CustomGlossTabContextType', customGlossContextTypes)
 
 export const CustomGloss = pgTable('CustomGloss', {
 	id: text('id').notNull().primaryKey().default(sql`uuid(4)`),
@@ -18,6 +22,8 @@ export const CustomGloss = pgTable('CustomGloss', {
 	createdAt: timestamp('createdAt', { precision: 3 }).notNull().defaultNow(),
 	updatedAt: timestamp('updatedAt', { precision: 3 }).notNull()
 });
+
+export type CustomGlossTable = typeof CustomGloss.$inferSelect;
 
 export const CustomGlossAlert = pgTable('CustomGlossAlert', {
 	id: serial('id').notNull(),
@@ -39,6 +45,8 @@ export const CustomGlossAlert = pgTable('CustomGlossAlert', {
 		columns: [CustomGlossAlert.id, CustomGlossAlert.customGlossId]
 	})
 }));
+
+export type CustomGlossAlertTable = typeof CustomGlossAlert.$inferSelect;
 
 export const CustomGlossFile = pgTable('CustomGlossFile', {
 	id: serial('id').notNull(),
@@ -62,6 +70,8 @@ export const CustomGlossFile = pgTable('CustomGlossFile', {
 	})
 }));
 
+export type CustomGlossFileTable = typeof CustomGlossFile.$inferSelect;
+
 export const CustomGlossTab = pgTable('CustomGlossTab', {
 	id: text('id').notNull().primaryKey().default(sql`uuid(4)`),
 	name: text('name').notNull(),
@@ -84,6 +94,8 @@ export const CustomGlossTab = pgTable('CustomGlossTab', {
 		.on(CustomGlossTab.name, CustomGlossTab.customGlossId)
 }));
 
+export type CustomGlossTabTable = typeof CustomGlossTab.$inferSelect;
+
 export const CustomGlossTabContext = pgTable('CustomGlossTabContext', {
 	id: serial('id').notNull().primaryKey(),
 	type: CustomGlossTabContextType('type').notNull(),
@@ -102,6 +114,8 @@ export const CustomGlossTabContext = pgTable('CustomGlossTabContext', {
 		.onUpdate('cascade')
 }));
 
+export type CustomGlossTabContextTable = typeof CustomGlossTabContext.$inferSelect;
+
 export const CustomGlossTabContextData = pgTable('CustomGlossTabContextData', {
 	id: serial('id').notNull().primaryKey(),
 	name: text('name').notNull(),
@@ -118,6 +132,8 @@ export const CustomGlossTabContextData = pgTable('CustomGlossTabContextData', {
 		.onDelete('cascade')
 		.onUpdate('cascade')
 }));
+
+export type CustomGlossTabContextDataTable = typeof CustomGlossTabContextData.$inferSelect;
 
 export const CustomGlossTabValidationStep = pgTable('CustomGlossTabValidationStep', {
 	id: serial('id').notNull().primaryKey(),
@@ -147,6 +163,8 @@ export const CustomGlossTabValidationStep = pgTable('CustomGlossTabValidationSte
 		.onUpdate('cascade')
 }));
 
+export type CustomGlossTabValidationStepTable = typeof CustomGlossTabValidationStep.$inferSelect;
+
 export const CustomGlossTabValidationStepActionToTake = pgTable('CustomGlossTabValidationStepActionToTake', {
 	id: serial('id').notNull().primaryKey(),
 	description: text('description').notNull(),
@@ -162,6 +180,8 @@ export const CustomGlossTabValidationStepActionToTake = pgTable('CustomGlossTabV
 		.onDelete('cascade')
 		.onUpdate('cascade')
 }));
+
+export type CustomGlossTabValidationStepActionToTakeTable = typeof CustomGlossTabValidationStepActionToTake.$inferSelect;
 
 export const CustomGlossTabValidationStepResources = pgTable('CustomGlossTabValidationStepResources', {
 	id: serial('id').notNull().primaryKey(),
@@ -179,6 +199,8 @@ export const CustomGlossTabValidationStepResources = pgTable('CustomGlossTabVali
 		.onDelete('cascade')
 		.onUpdate('cascade')
 }));
+
+export type CustomGlossTabValidationStepResourcesTable = typeof CustomGlossTabValidationStepResources.$inferSelect;
 
 export const CustomGlossRelations = relations(CustomGloss, ({ many }) => ({
 	tabs: many(CustomGlossTab, {

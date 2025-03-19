@@ -1,4 +1,3 @@
-import { CustomGlossTabContextType } from '@prisma/client';
 import { traceable } from 'langsmith/traceable';
 import type { TransportDocument } from '../../../data-extraction/mkdown_schemas/transport-document';
 import type { Pedimento } from '../../../data-extraction/schemas';
@@ -25,7 +24,7 @@ async function validateTipoTransporte(
     prompt:
       'La clave del tipo de transporte debe existir en el apéndice 10. Debe hacer sentido con el tipo de transporte que se proporciona (apendice 3 para saber el tipo de transporte), si es un BL terrestre, debe de ser una clave de un vehículo terrestre, lo mismo para marítimo, ferroviario o aero. Analiza el documento de transporte para determinar que tipo de transporte hay. Si no hay documento de transporte y la clave del pedimento corresponde a algo terrestre, asume que esta bien, por que a veces en operaciones terrestre no se pone documento de transporte.',
     contexts: {
-      [CustomGlossTabContextType.PROVIDED]: {
+      "PROVIDED": {
         Pedimento: {
           data: [
             { name: 'Tipo de transporte', value: tipoTransporte },
@@ -42,7 +41,7 @@ async function validateTipoTransporte(
           ],
         },
       },
-      [CustomGlossTabContextType.EXTERNAL]: {
+      "EXTERNAL": {
         'Anexo 22 -> Apendices': {
           data: [
             { name: 'Apéndice 10', value: JSON.stringify(apendice10) },
@@ -76,7 +75,7 @@ async function validateModalidadMedioTransporte(
     prompt:
       "La modalidad del documento de transporte y el medio de transporte deben ser coherentes entre sí. En transporte terrestre, puede no existir un documento de transporte, pero si lo hay, debe coincidir con el pedimento. Si la clave del medio de transporte es '7' (carretero) y no se proporciona modalidad de documento, esto es válido, pero se debe verificar que no falte información en documentos de transporte relacionados. Validar contra el apendice 3.",
     contexts: {
-      [CustomGlossTabContextType.PROVIDED]: {
+      "PROVIDED": {
         Pedimento: {
           data: [
             {
@@ -92,7 +91,7 @@ async function validateModalidadMedioTransporte(
           ],
         },
       },
-      [CustomGlossTabContextType.EXTERNAL]: {
+      "EXTERNAL": {
         'Anexo 22 -> Apendices': {
           data: [{ name: 'Apéndice 3', value: JSON.stringify(apendice3) }],
         },
@@ -121,7 +120,7 @@ async function validateNumeroGuiaEmbarque(
     prompt:
       'En caso de transporte terrestre, el valor es correcto porque se envía el mismo día del pago del pedimento, y puede no existir un documento de transporte. Para transporte marítimo, el número de guía o embarque del pedimento debe ser exactamente igual al número de contenedor, placa, o master y house del documento de transporte. Para transporte aéreo, el número de guía o embarque del pedimento debe ser exactamente igual al número master y house del documento de transporte. Si el documento de transporte no cuenta con estos datos, se debe validar con el documento oficial proporcionado por la naviera o agente de carga.Nota: En el pedimento pueden venir más de un valor, en caso de master y house, denotados por M y H respectivamente.',
     contexts: {
-      [CustomGlossTabContextType.PROVIDED]: {
+      "PROVIDED": {
         Pedimento: {
           data: [
             { name: 'Número de guía/embarque', value: numeroGuiaEmbarque },

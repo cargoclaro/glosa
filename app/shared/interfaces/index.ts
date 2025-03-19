@@ -1,15 +1,15 @@
 import type {
   // Custom,
-  CustomGloss,
-  CustomGlossAlert,
-  CustomGlossFile,
-  CustomGlossTab,
-  CustomGlossTabContext,
-  CustomGlossTabContextData,
-  CustomGlossTabValidationStep,
-  CustomGlossTabValidationStepActionToTake,
-  CustomGlossTabValidationStepResources,
-} from '@prisma/client';
+  CustomGlossTable,
+  CustomGlossAlertTable,
+  CustomGlossFileTable,
+  CustomGlossTabTable,
+  CustomGlossTabContextTable,
+  CustomGlossTabContextDataTable,
+  CustomGlossTabValidationStepTable,
+  CustomGlossTabValidationStepActionToTakeTable,
+  CustomGlossTabValidationStepResourcesTable,
+} from '~/db/schema';
 
 // export interface ICustom extends Custom {
 //   users: {
@@ -19,36 +19,36 @@ import type {
 //   }[];
 // }
 
-interface ICustomGloss extends CustomGloss {
+interface ICustomGloss extends CustomGlossTable {
   tabs: ICustomGlossTab[];
   files: ICustomGlossFile[];
   alerts: ICustomGlossAlert[];
 }
 
-interface ICustomGlossAlert extends CustomGlossAlert {
+interface ICustomGlossAlert extends CustomGlossAlertTable {
   customGloss: ICustomGloss;
 }
 
-interface ICustomGlossFile extends CustomGlossFile {
+interface ICustomGlossFile extends CustomGlossFileTable {
   customGloss: ICustomGloss;
 }
 
-interface ICustomGlossTab extends CustomGlossTab {
+interface ICustomGlossTab extends CustomGlossTabTable {
   customGloss: ICustomGloss;
   context: ICustomGlossTabContext[];
   validations: ICustomGlossTabValidationStep[];
 }
 
-interface ICustomGlossTabContext extends CustomGlossTabContext {
+interface ICustomGlossTabContext extends CustomGlossTabContextTable {
   customGlossTab: ICustomGlossTab;
   data: ICustomGlossTabContextData[];
 }
 
-interface ICustomGlossTabContextData extends CustomGlossTabContextData {
+interface ICustomGlossTabContextData extends CustomGlossTabContextDataTable {
   customGlossTabContext: ICustomGlossTabContext;
 }
 
-interface ICustomGlossTabValidationStep extends CustomGlossTabValidationStep {
+interface ICustomGlossTabValidationStep extends CustomGlossTabValidationStepTable {
   customGlossTab?: ICustomGlossTab;
   parentStep?: ICustomGlossTabValidationStep;
   steps: ICustomGlossTabValidationStep[];
@@ -57,12 +57,12 @@ interface ICustomGlossTabValidationStep extends CustomGlossTabValidationStep {
 }
 
 interface ICustomGlossTabValidationStepResources
-  extends CustomGlossTabValidationStepResources {
+  extends CustomGlossTabValidationStepResourcesTable {
   customGlossTabValidationStep: ICustomGlossTabValidationStep;
 }
 
 interface ICustomGlossTabValidationStepActionToTake
-  extends CustomGlossTabValidationStepActionToTake {
+  extends CustomGlossTabValidationStepActionToTakeTable {
   customGlossTabValidationStep: ICustomGlossTabValidationStep;
 }
 

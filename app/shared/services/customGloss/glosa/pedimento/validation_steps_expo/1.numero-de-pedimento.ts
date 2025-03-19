@@ -1,4 +1,3 @@
-import { CustomGlossTabContextType } from '@prisma/client';
 import { traceable } from 'langsmith/traceable';
 import type { Pedimento } from '../../../data-extraction/schemas';
 import { glosar } from '../../validation-result';
@@ -13,7 +12,7 @@ async function validateLongitud(traceId: string, pedimento: Pedimento) {
     description: 'Validación de la longitud del número de pedimento',
     prompt: 'El número de pedimento debe contar con 15 dígitos',
     contexts: {
-      [CustomGlossTabContextType.INFERRED]: {
+      "INFERRED": {
         pedimento: {
           data: [
             {
@@ -44,7 +43,7 @@ async function validateAñoPedimento(traceId: string, pedimento: Pedimento) {
     prompt:
       'El año del pedimento (inferido por los dígitos 1 y 2 del número del pedimento) debe ser iguales al año actual',
     contexts: {
-      [CustomGlossTabContextType.INFERRED]: {
+      "INFERRED": {
         codigo: {
           data: [
             {

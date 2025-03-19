@@ -1,4 +1,3 @@
-import { CustomGlossTabContextType } from '@prisma/client';
 import { traceable } from 'langsmith/traceable';
 import type {
   Carta318,
@@ -33,7 +32,7 @@ async function validateDatosGeneralesProveedor(
     prompt:
       'Verificar que los siguientes datos coincidan entre el COVE y la factura y/o carta 318, con que coicida en la 318, esta bien:\n\n• RFC\n• Razón social\n Si no hay RFC, el tipo de identificador que tenga (tax id, tax id number, tax id number, etc) debe de coincidir.',
     contexts: {
-      [CustomGlossTabContextType.PROVIDED]: {
+      "PROVIDED": {
         cove: {
           data: [
             { name: 'Identificador', value: identificadorCove },
@@ -90,7 +89,7 @@ async function validateDomicilioProveedor(
     prompt:
       'Verificar que el domicilio fiscal del proveedor coincida entre el COVE y la factura/carta 318:\n\n• Domicilio fiscal.',
     contexts: {
-      [CustomGlossTabContextType.PROVIDED]: {
+      "PROVIDED": {
         cove: {
           data: [{ name: 'Domicilio completo', value: domicilioCoveCompleto }],
         },
@@ -132,7 +131,7 @@ async function validateDatosGeneralesDestinatario(
     prompt:
       'Verificar que los siguientes datos coincidan entre el COVE y la factura/carta 318:\n\n• TAXID\n• Razón social\n Si no hay TAXID, el tipo de identificador que tenga (tax id, tax id number, tax id number,) debe de coincidir.',
     contexts: {
-      [CustomGlossTabContextType.PROVIDED]: {
+      "PROVIDED": {
         cove: {
           data: [
             { name: 'RFC Destinatario', value: rfcDestinatarioCove },
@@ -188,7 +187,7 @@ async function validateDomicilioDestinatario(
     prompt:
       'Verificar que el domicilio fiscal del destinatario coincida entre el COVE y la factura/carta 318:\n\n• Domicilio fiscal',
     contexts: {
-      [CustomGlossTabContextType.PROVIDED]: {
+      "PROVIDED": {
         factura: {
           data: [{ name: 'Factura', value: invoiceMkdown }],
         },
@@ -196,7 +195,7 @@ async function validateDomicilioDestinatario(
           data: [{ name: 'Carta 318', value: carta318Mkdown }],
         },
       },
-      [CustomGlossTabContextType.INFERRED]: {
+      "INFERRED": {
         cove: {
           data: [{ name: 'Domicilio completo', value: domicilioCoveCompleto }],
         },

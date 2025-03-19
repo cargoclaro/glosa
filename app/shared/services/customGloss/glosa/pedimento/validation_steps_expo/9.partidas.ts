@@ -1,4 +1,3 @@
-import { CustomGlossTabContextType } from '@prisma/client';
 import { traceable } from 'langsmith/traceable';
 import type { Cfdi } from '../../../data-extraction/mkdown_schemas';
 import type { Pedimento } from '../../../data-extraction/schemas';
@@ -22,7 +21,7 @@ async function validatePreferenciaArancelaria(
     prompt:
       'Verificación de preferencia arancelaria y certificado de origen:\n\n1. Regla general:\n   - Si existe preferencia arancelaria, debe existir certificado de origen\n\n2. Por tipo de tratado:\n   a) T-MEC:\n      - Verificar certificado de origen correspondiente\n   b) Unión Europea:\n      - Verificar método de acreditación:\n        i. Declaración en factura:\n           - Si valor < 6,000 EUR: Declaración en factura es válida\n           - Si valor > 6,000 EUR: Debe incluir número de exportador autorizado\n        ii. Certificado de circulación:\n           - Válido sin importar el valor de factura\n           - Requerido si no hay número de exportador en declaración.',
     contexts: {
-      [CustomGlossTabContextType.PROVIDED]: {
+      "PROVIDED": {
         pedimento: {
           data: [
             { name: 'Partidas', value: partidas },
@@ -52,7 +51,7 @@ async function validateCoherenciaUMC(
     prompt:
       'Los campos UMC y cantidad UMC deben coincidir con los valores en el CFDI.',
     contexts: {
-      [CustomGlossTabContextType.PROVIDED]: {
+      "PROVIDED": {
         pedimento: {
           data: [{ name: 'Partidas', value: partidas }],
         },
@@ -85,7 +84,7 @@ async function validateCoherenciaPeso(
     prompt:
       'El peso de las partidas debe coincidir con el peso bruto del pedimento y el peso declarado en el CFDI.',
     contexts: {
-      [CustomGlossTabContextType.PROVIDED]: {
+      "PROVIDED": {
         pedimento: {
           data: [
             { name: 'Peso bruto', value: pesoBrutoPedimento },
@@ -114,7 +113,7 @@ async function validateCalculoDTA(traceId: string, pedimento: Pedimento) {
     prompt:
       'El prorrateo y el DTA calculados deben coincidir con los declarados. En el caso de DTA en cuota fija, divide el DTA entre el número de secuencias.',
     contexts: {
-      [CustomGlossTabContextType.PROVIDED]: {
+      "PROVIDED": {
         pedimento: {
           data: [{ name: 'Partidas', value: partidas }],
         },
@@ -141,7 +140,7 @@ async function validateCalculoContribuciones(
     prompt:
       'Los valores de precio pagado, precio unitario, valor aduana, IGI y DTA deben coincidir con los calculados. En exportación, verificar que el valor comercial coincida con el total del CFDI.',
     contexts: {
-      [CustomGlossTabContextType.PROVIDED]: {
+      "PROVIDED": {
         pedimento: {
           data: [{ name: 'Partidas', value: partidas }],
         },
@@ -173,7 +172,7 @@ async function validatePermisosIdentificadores(
     prompt:
       'Los permisos e identificadores en el pedimento deben existir en Taxfinder y ser apropiados para una operación de exportación.',
     contexts: {
-      [CustomGlossTabContextType.PROVIDED]: {
+      "PROVIDED": {
         pedimento: {
           data: [
             { name: 'Identificadores', value: identificadoresPedimento },
@@ -202,7 +201,7 @@ async function validateRegulacionesArancelarias(
     prompt:
       'Verifica si existen regulaciones arancelarias que apliquen a la mercancía en un contexto de exportación.',
     contexts: {
-      [CustomGlossTabContextType.PROVIDED]: {
+      "PROVIDED": {
         pedimento: {
           data: [{ name: 'Partidas', value: partidas }],
         },
@@ -228,7 +227,7 @@ async function validateRegulacionesNoArancelarias(
     prompt:
       'Verifica si existen regulaciones no arancelarias que apliquen a la mercancía en un contexto de exportación, como permisos de SEMARNAT, COFEPRIS u otras dependencias para productos de exportación.',
     contexts: {
-      [CustomGlossTabContextType.PROVIDED]: {
+      "PROVIDED": {
         pedimento: {
           data: [{ name: 'Partidas', value: partidas }],
         },

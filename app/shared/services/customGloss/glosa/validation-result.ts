@@ -1,6 +1,6 @@
 import { anthropic } from '@ai-sdk/anthropic';
 import { openai } from '@ai-sdk/openai';
-import type { CustomGlossTabContextType } from '@prisma/client';
+import type { CustomGlossTabContextTypes } from '~/db/schema';
 import { generateObject } from 'ai';
 import { z } from 'zod';
 
@@ -90,7 +90,7 @@ export async function glosar(
     prompt: string;
     description: string;
     contexts: {
-      [key in CustomGlossTabContextType]?: {
+      [key in CustomGlossTabContextTypes]?: {
         [origin: string]: {
           data: readonly {
             name: string;

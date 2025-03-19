@@ -3,7 +3,7 @@
 import { GenericCard } from '@/shared/components';
 import { LeftChevron, RightChevron } from '@/shared/icons';
 import { cn } from '@/shared/utils/cn';
-import type { CustomGlossTab } from '@prisma/client';
+import type { CustomGlossTabTable } from '~/db/schema';
 import * as pdfjs from 'pdfjs-dist';
 import type { TextItem } from 'pdfjs-dist/types/src/display/api';
 import { useEffect, useRef, useState } from 'react';
@@ -13,7 +13,7 @@ pdfjs.GlobalWorkerOptions.workerSrc = '/pdf.worker.mjs';
 
 interface IPediment {
   document: string;
-  tabs: CustomGlossTab[];
+  tabs: CustomGlossTabTable[];
   onClick: (tab: Keyword) => void;
   tabInfoSelected: ITabInfoSelected;
 }
@@ -422,7 +422,7 @@ function getKeywordConfig(text: Keyword, currentPage: number) {
   };
 }
 
-const getStrokeStyle = (text: Keyword, tabs: CustomGlossTab[]) => {
+const getStrokeStyle = (text: Keyword, tabs: CustomGlossTabTable[]) => {
   const tabName = keywordsConfig[text];
 
   const tab = tabs.find((tab) => tab.name === tabName);

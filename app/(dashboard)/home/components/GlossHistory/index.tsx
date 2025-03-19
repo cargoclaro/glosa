@@ -2,10 +2,10 @@
 
 import { GenericCard } from '@/shared/components';
 import { RightArrow } from '@/shared/icons';
-import type { CustomGloss } from '@prisma/client';
+import type { CustomGlossTable } from '~/db/schema';
 import Link from 'next/link';
 
-const GlossHistory = ({ history }: { history: CustomGloss[] }) => {
+const GlossHistory = ({ history }: { history: CustomGlossTable[] }) => {
   return (
     <GenericCard>
       <h1 className=" font-semibold text-xl">Historial Reciente de Glosas</h1>

@@ -1,6 +1,6 @@
 'use client';
 
-import type { CustomGlossFile } from '@prisma/client';
+import type { CustomGlossFileTable } from '~/db/schema';
 import type { Prisma } from '@prisma/client';
 import { useState } from 'react';
 import { Analysis, Pediment, SavedNFinish } from '.';
@@ -25,7 +25,7 @@ interface IPedimentAnalysisNFinish {
   id: string;
   moneySaved: number;
   tabs: tabs[];
-  files: CustomGlossFile[];
+  files: CustomGlossFileTable[];
 }
 
 export interface ITabInfoSelected {

@@ -2,7 +2,7 @@
 
 import { randomUUID } from 'node:crypto';
 import { db } from '~/db';
-import type { CustomGlossTabContextType } from '@prisma/client';
+import type { CustomGlossTabContextTypes } from '~/db/schema';
 import { config } from 'dotenv';
 import { Langfuse } from 'langfuse';
 import { traceable } from 'langsmith/traceable';
@@ -247,7 +247,7 @@ export const analysis = api
       
       // Process contexts and their data in batches
       type ContextToInsert = {
-        type: CustomGlossTabContextType;
+        type: CustomGlossTabContextTypes;
         origin: string;
         customGlossTabId: string;
         updatedAt: Date;
@@ -274,7 +274,7 @@ export const analysis = api
               
               // Create context record
               contextsToInsert.push({
-                type: contextType as CustomGlossTabContextType,
+                type: contextType as CustomGlossTabContextTypes,
                 origin,
                 customGlossTabId: tab.id,
                 updatedAt: now,
