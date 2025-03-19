@@ -5,7 +5,7 @@
     "public/pdf.worker.mjs",
     "app/(dashboard)/home/components/Header/glosa/xml-to-json.ts"
   ],
-  "ignoreDependencies": ["ultracite"],
+  "ignoreDependencies": ["ultracite", "@anthropic-ai/claude-code"],
   "drizzle": {
     "config": ["drizzle.config.{ts,js,json}"]
   }
