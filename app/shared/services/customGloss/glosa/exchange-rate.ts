@@ -3,6 +3,7 @@ const BANXICO_BASE_URL = 'https://www.banxico.org.mx/SieAPIRest/service/v1';
 import Holidays from 'date-holidays';
 import { config } from 'dotenv';
 import { z } from 'zod';
+import { env } from 'lib/env/server';
 
 config();
 
@@ -53,7 +54,7 @@ export async function getExchangeRate(
   };
 
   const seriesId = currencySeries[currencyCode];
-  const token = process.env['BANXICO_TOKEN'];
+  const token = env.BANXICO_TOKEN;
 
   if (!token) {
     throw new Error('BANXICO_TOKEN is not set');

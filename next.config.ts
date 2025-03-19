@@ -1,5 +1,9 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
+import 'lib/env/server';
+import 'lib/env/client';
+
+import { type NextConfig } from 'next';
+
+const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       {
