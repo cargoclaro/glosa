@@ -1,4 +1,4 @@
-import prisma from '@/shared/services/prisma';
+import { db } from '~/db';
 import { auth } from '@clerk/nextjs/server';
 import type { Metadata } from 'next';
 import Link from 'next/link';
@@ -27,28 +27,28 @@ const GlossIdAnalysis = async (props: {
   const { id } = params;
 
   const { userId } = await auth.protect();
-  const customGloss = await prisma.customGloss.findUnique({
-    where: { id, userId },
-    include: {
+  const customGloss = await db.query.CustomGloss.findFirst({
+    where: (gloss, { eq, and }) => and(eq(gloss.id, id), eq(gloss.userId, userId)),
+    with: {
       files: {
-        include: {
+        with: {
           customGloss: true,
         },
       },
       alerts: {
-        include: {
+        with: {
           customGloss: true,
         },
       },
       tabs: {
-        include: {
+        with: {
           context: {
-            include: {
+            with: {
               data: true,
             },
           },
           validations: {
-            include: {
+            with: {
               resources: true,
               actionsToTake: true,
               steps: true,
@@ -59,7 +59,7 @@ const GlossIdAnalysis = async (props: {
       },
     },
   });
-  if (!customGloss) notFound();
+  if (!customGloss) { notFound(); }
 
   return (
     <article className="grid grid-cols-1 gap-4 sm:grid-cols-3 lg:grid-cols-4">

@@ -1,4 +1,4 @@
-import prisma from '@/shared/services/prisma';
+import { db } from '~/db';
 import { auth } from '@clerk/nextjs/server';
 import type { Metadata } from 'next';
 import { GlossHistory, Header, MexMap, MyInfo, Summary } from './components';
@@ -9,10 +9,10 @@ export const metadata: Metadata = {
 
 const HomePage = async () => {
   const { userId } = await auth.protect();
-  const myLatestGlosses = await prisma.customGloss.findMany({
-    where: { userId },
-    orderBy: { createdAt: 'desc' },
-    take: 3,
+  const myLatestGlosses = await db.query.CustomGloss.findMany({
+    where: (gloss, { eq }) => eq(gloss.userId, userId),
+    orderBy: (gloss, { desc }) => [desc(gloss.updatedAt)],
+    limit: 3,
   });
   if (!myLatestGlosses) {
     return <div>No hay glosas recientes</div>;

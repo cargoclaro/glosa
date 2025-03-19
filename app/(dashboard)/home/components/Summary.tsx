@@ -1,6 +1,6 @@
 import { GenericCard } from '@/shared/components';
 import { CalendarDays, ClipboardDocumentList, Clock } from '@/shared/icons';
-import prisma from '@/shared/services/prisma';
+import { db } from '~/db';
 import { getTimePassed } from '@/shared/utils/get-time-passed';
 import { auth } from '@clerk/nextjs/server';
 import { currentUser } from '@clerk/nextjs/server';
@@ -11,10 +11,8 @@ const Summary = async () => {
   if (!user) {
     return <div>No se pudo obtener el usuario</div>;
   }
-  const glosses = await prisma.customGloss.findMany({
-    where: {
-      userId,
-    },
+  const glosses = await db.query.CustomGloss.findMany({
+    where: (gloss, { eq }) => eq(gloss.userId, userId),
   });
   const totalTimeSaved = glosses.reduce(
     (sum, gloss) => sum + gloss.timeSaved,

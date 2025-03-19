@@ -1,5 +1,5 @@
 import { LeftArrow } from '@/shared/icons';
-import prisma from '@/shared/services/prisma';
+import { db } from '~/db';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
@@ -23,20 +23,20 @@ const GlossIdPage = async (props: { params: Promise<{ id: string }> }) => {
 
   const { id } = params;
 
-  const customGloss = await prisma.customGloss.findUnique({
-    where: { id },
-    include: {
+  const customGloss = await db.query.CustomGloss.findFirst({
+    where: (gloss, { eq }) => eq(gloss.id, id),
+    with: {
       files: true,
       alerts: true,
       tabs: {
-        include: {
+        with: {
           context: {
-            include: {
+            with: {
               data: true,
             },
           },
           validations: {
-            include: {
+            with: {
               resources: true,
               actionsToTake: true,
             },
@@ -45,7 +45,7 @@ const GlossIdPage = async (props: { params: Promise<{ id: string }> }) => {
       },
     },
   });
-  if (!customGloss) notFound();
+  if (!customGloss) { notFound(); }
 
   return (
     <article>

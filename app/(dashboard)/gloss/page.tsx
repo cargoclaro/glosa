@@ -1,4 +1,4 @@
-import prisma from '@/shared/services/prisma';
+import { db } from '~/db';
 import { auth } from '@clerk/nextjs/server';
 import type { Metadata } from 'next';
 import { GlossDataTable, GlossDataTableColumns } from './components';
@@ -9,8 +9,8 @@ export const metadata: Metadata = {
 
 const GlossPage = async () => {
   const { userId } = await auth.protect();
-  const myGlosses = await prisma.customGloss.findMany({
-    where: { userId },
+  const myGlosses = await db.query.CustomGloss.findMany({
+    where: (gloss, { eq }) => eq(gloss.userId, userId),
   });
   if (!myGlosses) {
     return <div>No se encontraron operaciones</div>;

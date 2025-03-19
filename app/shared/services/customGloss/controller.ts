@@ -1,7 +1,7 @@
 'use server';
 
 import { randomUUID } from 'node:crypto';
-import prisma from '@/shared/services/prisma';
+import { db } from '~/db';
 import type { CustomGlossTabContextType } from '@prisma/client';
 import { config } from 'dotenv';
 import { Langfuse } from 'langfuse';
@@ -18,6 +18,16 @@ import { extractTextFromPDFs } from './data-extraction';
 import { glosaExpo } from './glosa/expo';
 import { glosaImpo } from './glosa/impo';
 import { uploadFiles } from './upload-files';
+import { and, eq } from 'drizzle-orm';
+import { 
+  CustomGloss, 
+  CustomGlossTab, 
+  CustomGlossFile, 
+  CustomGlossTabContext, 
+  CustomGlossTabContextData, 
+  CustomGlossTabValidationStep, 
+  CustomGlossTabValidationStepActionToTake 
+} from '~/db/schema';
 
 config();
 
@@ -33,44 +43,42 @@ interface IRead {
  * Reads CustomGloss data based on provided parameters
  */
 async function read({ id, userId, recent }: IRead) {
-  const globalInclude = {
-    files: true,
-    alerts: true,
-    tabs: {
-      include: {
-        context: {
-          include: {
-            data: true,
-          },
-        },
-        validations: {
-          include: {
-            resources: true,
-            actionsToTake: true,
+  if (id && userId) {
+    return await db.query.CustomGloss.findFirst({
+      where: (gloss, { eq, and }) => and(eq(gloss.id, id), eq(gloss.userId, userId)),
+      with: {
+        files: true,
+        alerts: true,
+        tabs: {
+          with: {
+            context: {
+              with: {
+                data: true,
+              },
+            },
+            validations: {
+              with: {
+                resources: true,
+                actionsToTake: true,
+              },
+            },
           },
         },
       },
-    },
-  };
-
-  if (id && userId) {
-    return await prisma.customGloss.findUnique({
-      where: { id, userId },
-      include: globalInclude,
     });
   }
 
   if (userId && recent) {
-    return await prisma.customGloss.findMany({
-      where: { userId },
-      orderBy: { createdAt: 'desc' },
-      take: 3,
+    return await db.query.CustomGloss.findMany({
+      where: (gloss, { eq }) => eq(gloss.userId, userId),
+      orderBy: (gloss, { desc }) => [desc(gloss.updatedAt)],
+      limit: 3,
     });
   }
 
   if (userId) {
-    return await prisma.customGloss.findMany({
-      where: { userId },
+    return await db.query.CustomGloss.findMany({
+      where: (gloss, { eq }) => eq(gloss.userId, userId),
     });
   }
 
@@ -87,12 +95,18 @@ async function updateTabWithCustomGlossId({
 }: {
   id: string;
   customGlossId: string;
-  data: (typeof prisma.customGlossTab.update)['arguments']['data'];
+  data: Partial<typeof CustomGlossTab.$inferInsert>;
 }) {
-  return await prisma.customGlossTab.update({
-    where: { id, customGlossId },
-    data,
-  });
+  return await db
+    .update(CustomGlossTab)
+    .set(data)
+    .where(
+      and(
+        eq(CustomGlossTab.id, id),
+        eq(CustomGlossTab.customGlossId, customGlossId)
+      )
+    )
+    .returning();
 }
 
 const runGlosa = traceable(
@@ -181,74 +195,209 @@ export const analysis = api
         groupedClassifications,
         parentTraceId
       );
-      const newCustomGloss = await prisma.customGloss.create({
-        data: {
-          userId,
-          summary: 'No se donde sale esto',
-          timeSaved: 20,
-          moneySaved: 1000,
-          importerName:
-            importerName ?? 'No se encontro la razon social del importador',
-          tabs: {
-            create: gloss.map(({ sectionName, validations }) => ({
-              name: sectionName,
-              isCorrect: validations.every(
-                ({ validation: { isValid } }) => isValid
-              ),
-              fullContext: true,
-              context: {
-                create: validations.flatMap(({ contexts }) =>
-                  // "contexts" is an object keyed by context type:
-                  Object.entries(contexts).flatMap(([contextType, origins]) =>
-                    // "origins" is an object keyed by origin string:
-                    Object.entries(origins).map(([origin, contextValue]) => ({
-                      type: contextType as CustomGlossTabContextType, // TODO: This is a hack to make the type checker happy
-                      origin,
-                      data: {
-                        create: contextValue.data.map(({ name, value }) => ({
-                          name,
-                          value:
-                            value === undefined ? 'N/A' : JSON.stringify(value),
-                        })),
-                      },
-                    }))
-                  )
-                ),
-              },
-              validations: {
-                create: validations.map(
-                  ({
-                    validation: {
-                      name,
-                      description,
-                      llmAnalysis,
-                      isValid,
-                      actionsToTake,
-                    },
-                  }) => ({
-                    name,
-                    description,
-                    llmAnalysis,
-                    isCorrect: isValid,
-                    actionsToTake: {
-                      create: actionsToTake.map((action) => ({
-                        description: action,
-                      })),
-                    },
-                  })
-                ),
-              },
-            })),
-          },
-          files: {
-            create: classifications.map(({ name, ufsUrl, documentType }) => ({
-              name,
-              url: ufsUrl,
-              documentType,
-            })),
-          },
-        },
+
+      // Create CustomGloss record
+      const customGlossId = randomUUID();
+      const now = new Date();
+      const newCustomGlossArray = await db.insert(CustomGloss).values({
+        id: customGlossId,
+        userId,
+        summary: 'No se donde sale esto',
+        timeSaved: 20,
+        moneySaved: 1000,
+        importerName: importerName ?? 'No se encontro la razon social del importador',
+        updatedAt: now,
+      }).returning();
+      
+      const newCustomGloss = newCustomGlossArray[0];
+      if (!newCustomGloss) {
+        throw new Error('Failed to create CustomGloss record');
+      }
+      
+      // Batch insert files
+      await db.insert(CustomGlossFile).values(
+        classifications.map(({ name, ufsUrl, documentType }) => ({
+          name,
+          url: ufsUrl,
+          documentType,
+          customGlossId,
+          updatedAt: now,
+        }))
+      );
+      
+      // Create tabs with their IDs for later reference
+      const tabsToInsert = gloss.map(({ sectionName, validations }) => {
+        const tabId = randomUUID();
+        return {
+          id: tabId,
+          name: sectionName,
+          isCorrect: validations.every(({ validation: { isValid } }) => isValid),
+          fullContext: true,
+          isVerified: false,
+          customGlossId,
+          updatedAt: now,
+          // Store additional data for context/validation creation
+          _validations: validations,
+        };
       });
+      
+      // Extract just the tab data for insertion (remove _validations)
+      const tabInsertData = tabsToInsert.map(({ _validations, ...tabData }) => tabData);
+      await db.insert(CustomGlossTab).values(tabInsertData);
+      
+      // Process contexts and their data in batches
+      type ContextToInsert = {
+        type: CustomGlossTabContextType;
+        origin: string;
+        customGlossTabId: string;
+        updatedAt: Date;
+      };
+      
+      type ContextDataToInsert = {
+        name: string;
+        value: string;
+        customGlossTabContextId: number;
+        updatedAt: Date;
+      };
+      
+      const contextsToInsert: ContextToInsert[] = [];
+      const contextDataToInsert: ContextDataToInsert[] = [];
+      
+      // Use for...of instead of forEach for better performance
+      for (const tab of tabsToInsert) {
+        for (const { contexts } of tab._validations) {
+          // Process each context type
+          for (const [contextType, origins] of Object.entries(contexts)) {
+            // Process each origin
+            for (const [origin, contextValue] of Object.entries(origins)) {
+              const contextId = contextsToInsert.length + 1; // Simple incrementing ID for reference
+              
+              // Create context record
+              contextsToInsert.push({
+                type: contextType as CustomGlossTabContextType,
+                origin,
+                customGlossTabId: tab.id,
+                updatedAt: now,
+              });
+              
+              // Create context data records
+              for (const { name, value } of contextValue.data) {
+                contextDataToInsert.push({
+                  name,
+                  value: value === undefined ? 'N/A' : JSON.stringify(value),
+                  customGlossTabContextId: contextId,
+                  updatedAt: now,
+                });
+              }
+            }
+          }
+        }
+      }
+      
+      // Insert all contexts
+      if (contextsToInsert.length > 0) {
+        const insertedContexts = await db
+          .insert(CustomGlossTabContext)
+          .values(contextsToInsert)
+          .returning({ id: CustomGlossTabContext.id });
+        
+        // Update context data with actual context IDs
+        const contextDataWithCorrectIds = contextDataToInsert.map((data, index) => {
+          const contextIndex = Math.floor(
+            index / (contextDataToInsert.length / contextsToInsert.length)
+          );
+          const contextId = insertedContexts[contextIndex]?.id;
+          
+          if (contextId === undefined) {
+            throw new Error('Failed to retrieve context ID');
+          }
+          
+          return {
+            ...data,
+            customGlossTabContextId: contextId,
+          };
+        });
+        
+        // Insert all context data
+        if (contextDataWithCorrectIds.length > 0) {
+          await db.insert(CustomGlossTabContextData).values(contextDataWithCorrectIds);
+        }
+      }
+      
+      // Process validation steps and their actions
+      type ValidationStepToInsert = {
+        name?: string;
+        description?: string;
+        llmAnalysis?: string;
+        isCorrect?: boolean;
+        customGlossTabId: string;
+        updatedAt: Date;
+      };
+      
+      type ActionToInsert = {
+        description: string;
+        customGlossTabValidationStepId: number;
+        updatedAt: Date;
+      };
+      
+      const validationStepsToInsert: ValidationStepToInsert[] = [];
+      const actionsToInsert: ActionToInsert[] = [];
+      
+      // Use for...of instead of forEach for better performance
+      for (const tab of tabsToInsert) {
+        for (const { validation } of tab._validations) {
+          const validationId = validationStepsToInsert.length + 1; // Simple incrementing ID for reference
+          
+          // Create validation step record
+          validationStepsToInsert.push({
+            name: validation.name,
+            description: validation.description,
+            llmAnalysis: validation.llmAnalysis,
+            isCorrect: validation.isValid,
+            customGlossTabId: tab.id,
+            updatedAt: now,
+          });
+          
+          // Create action to take records
+          for (const action of validation.actionsToTake) {
+            actionsToInsert.push({
+              description: action,
+              customGlossTabValidationStepId: validationId,
+              updatedAt: now,
+            });
+          }
+        }
+      }
+      
+      // Insert all validation steps
+      if (validationStepsToInsert.length > 0) {
+        const insertedValidations = await db
+          .insert(CustomGlossTabValidationStep)
+          .values(validationStepsToInsert)
+          .returning({ id: CustomGlossTabValidationStep.id });
+        
+        // Update actions with actual validation step IDs
+        const actionsWithCorrectIds = actionsToInsert.map((action, index) => {
+          const validationIndex = Math.floor(
+            index / (actionsToInsert.length / validationStepsToInsert.length)
+          );
+          const validationId = insertedValidations[validationIndex]?.id;
+          
+          if (validationId === undefined) {
+            throw new Error('Failed to retrieve validation step ID');
+          }
+          
+          return {
+            ...action,
+            customGlossTabValidationStepId: validationId,
+          };
+        });
+        
+        // Insert all actions
+        if (actionsWithCorrectIds.length > 0) {
+          await db.insert(CustomGlossTabValidationStepActionToTake).values(actionsWithCorrectIds);
+        }
+      }
       return {
         success: true,
         glossId: newCustomGloss.id,
