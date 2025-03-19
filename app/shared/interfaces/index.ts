@@ -1,14 +1,14 @@
 import type {
-  // Custom,
-  CustomGlossTable,
   CustomGlossAlertTable,
   CustomGlossFileTable,
-  CustomGlossTabTable,
-  CustomGlossTabContextTable,
   CustomGlossTabContextDataTable,
-  CustomGlossTabValidationStepTable,
+  CustomGlossTabContextTable,
+  CustomGlossTabTable,
   CustomGlossTabValidationStepActionToTakeTable,
   CustomGlossTabValidationStepResourcesTable,
+  CustomGlossTabValidationStepTable,
+  // Custom,
+  CustomGlossTable,
 } from '~/db/schema';
 
 // export interface ICustom extends Custom {
@@ -48,7 +48,8 @@ interface ICustomGlossTabContextData extends CustomGlossTabContextDataTable {
   customGlossTabContext: ICustomGlossTabContext;
 }
 
-interface ICustomGlossTabValidationStep extends CustomGlossTabValidationStepTable {
+interface ICustomGlossTabValidationStep
+  extends CustomGlossTabValidationStepTable {
   customGlossTab?: ICustomGlossTab;
   parentStep?: ICustomGlossTabValidationStep;
   steps: ICustomGlossTabValidationStep[];

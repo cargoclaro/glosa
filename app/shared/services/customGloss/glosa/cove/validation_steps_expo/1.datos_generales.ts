@@ -18,7 +18,7 @@ async function validateNumeroFactura(traceId: string, cove: Cove, cfdi?: Cfdi) {
     prompt:
       'El número de factura del COVE debe coincidir con el folio fiscal del CFDI. En exportación, el CFDI es el documento de facturación oficial emitido por el exportador mexicano.',
     contexts: {
-      "PROVIDED": {
+      PROVIDED: {
         cove: {
           data: [{ name: 'Número de Factura', value: numeroFacturaCove }],
         },
@@ -51,7 +51,7 @@ async function validateFechaExpedicion(
     prompt:
       'La fecha de expedición del COVE debe coincidir con la fecha de emisión del CFDI. En exportación, el CFDI es el documento de facturación oficial emitido por el exportador mexicano.',
     contexts: {
-      "PROVIDED": {
+      PROVIDED: {
         cove: {
           data: [{ name: 'Fecha de Expedición', value: fechaExpedicionCove }],
         },
@@ -79,7 +79,7 @@ async function validateRfc(traceId: string, cove: Cove, cfdi?: Cfdi) {
     prompt:
       'El RFC del destinatario en el COVE debe coincidir con el RFC del emisor en el CFDI. En exportación, el emisor del CFDI es la empresa mexicana que realiza la exportación.',
     contexts: {
-      "PROVIDED": {
+      PROVIDED: {
         cove: {
           data: [{ name: 'RFC', value: rfcCove }],
         },

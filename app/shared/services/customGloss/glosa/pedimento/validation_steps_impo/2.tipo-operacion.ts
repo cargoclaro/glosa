@@ -26,7 +26,7 @@ async function validateCoherenciaOrigenDestino(
     prompt:
       'El tipo de operación debe ser consistente con el origen y destino de las mercancías, es decir IMP (importación) si destino es México, si no se pueden determinar los datos de origen y destino, ignorar y marcar como correcto.',
     contexts: {
-      "PROVIDED": {
+      PROVIDED: {
         Pedimento: {
           data: [
             { name: 'Tipo de operación', value: tipoOperacion },
@@ -60,7 +60,7 @@ async function validateClavePedimento(traceId: string, pedimento: Pedimento) {
     prompt:
       'La clave de pedimento debe ser válida para el tipo de operación según el Apéndice 2',
     contexts: {
-      "PROVIDED": {
+      PROVIDED: {
         Pedimento: {
           data: [
             { name: 'Tipo de operación', value: tipoOperacion },
@@ -69,7 +69,7 @@ async function validateClavePedimento(traceId: string, pedimento: Pedimento) {
           ],
         },
       },
-      "EXTERNAL": {
+      EXTERNAL: {
         'Anexo 22 -> Apendices': {
           data: [{ name: 'Apéndice 2', value: JSON.stringify(apendice2) }],
         },
@@ -95,7 +95,7 @@ async function validateRegimen(traceId: string, pedimento: Pedimento) {
     prompt:
       'El régimen debe ser válido para el tipo de operación según el Apéndice 16',
     contexts: {
-      "PROVIDED": {
+      PROVIDED: {
         Pedimento: {
           data: [
             { name: 'Tipo de operación', value: tipoOperacion },
@@ -104,7 +104,7 @@ async function validateRegimen(traceId: string, pedimento: Pedimento) {
           ],
         },
       },
-      "EXTERNAL": {
+      EXTERNAL: {
         'Anexo 22 -> Apendices': {
           data: [{ name: 'Apéndice 16', value: JSON.stringify(apendice16) }],
         },

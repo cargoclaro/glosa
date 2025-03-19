@@ -28,7 +28,7 @@ async function validateNumeroFactura(
     prompt:
       'El número de factura del COVE debe coincidir con el número de factura en la factura comercial (puede aparecer como Invoice Number, Invoice No, Invoice #) o en la carta 318. En caso de discrepancia, prevalece el número indicado en la carta 318.',
     contexts: {
-      "PROVIDED": {
+      PROVIDED: {
         cove: {
           data: [{ name: 'Número de Factura', value: numeroFacturaCove }],
         },
@@ -67,7 +67,7 @@ async function validateFechaExpedicion(
     prompt:
       'La fecha de expedición del COVE debe coincidir con la fecha de la factura y/o Carta 318. En caso de discrepancia o que falte un documento, prevalece la fecha indicada en la carta 318. Las fechas pueden tener diferentes formatos, busca que si es logico, sea valido. Por ejemplo, si la fecha es 2025-08-01 y en la 318 es 08-01-2025, probablemente sean diferentes formatos pero la misma fecha, es muy poco probable que justo esten invertidos. ',
     contexts: {
-      "PROVIDED": {
+      PROVIDED: {
         cove: {
           data: [
             { name: 'Fecha de Expedición', value: fechaExpedicionCove },

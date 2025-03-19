@@ -1,6 +1,6 @@
-import { db } from '~/db';
 import { auth } from '@clerk/nextjs/server';
 import type { Metadata } from 'next';
+import { db } from '~/db';
 import { GlossHistory, Header, MexMap, MyInfo, Summary } from './components';
 
 export const metadata: Metadata = {

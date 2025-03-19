@@ -40,12 +40,12 @@ async function validateFraccionArancelaria(
     prompt:
       'Verificar que la fracción arancelaria declarada en cada partida exista en el sistema de Tax Finder y coincida con la información del pedimento.',
     contexts: {
-      "PROVIDED": {
+      PROVIDED: {
         Pedimento: {
           data: [{ name: 'Fracción arancelaria', value: fraccion }],
         },
       },
-      "EXTERNAL": {
+      EXTERNAL: {
         'Tax Finder': {
           data: [{ name: 'Existe', value: fraccionExiste ? 'Si' : 'No' }],
         },
@@ -84,12 +84,12 @@ async function validateCoherenciaUMT(
     prompt:
       'Validar la unidad de medida de la tarifa de la partida, debe de existir en el apendice 7, que la unidad de medida de la tarifa sea la correspondiente para esa fracción arancelara de Tax Finder.',
     contexts: {
-      "PROVIDED": {
+      PROVIDED: {
         Pedimento: {
           data: [{ name: 'PartidasUMT', value: partidasUMT }],
         },
       },
-      "EXTERNAL": {
+      EXTERNAL: {
         Apéndices: {
           data: [{ name: 'Apéndice 7', value: JSON.stringify(apendice7) }],
         },
@@ -129,7 +129,7 @@ async function validateCoherenciaUMC(
     prompt:
       'Validar la unidad de medida comercial, es decir que la unidad de medida declarada en la partida sea la misma que en factura y COVE. Debe corresponder con el Apéndice 7.',
     contexts: {
-      "PROVIDED": {
+      PROVIDED: {
         Pedimento: {
           data: [{ name: 'PartidasUMC', value: partidasUMC }],
         },
@@ -143,7 +143,7 @@ async function validateCoherenciaUMC(
           data: [{ name: 'Carta 318', value: carta318mkdown }],
         },
       },
-      "EXTERNAL": {
+      EXTERNAL: {
         Apéndices: {
           data: [{ name: 'Apéndice 7', value: JSON.stringify(apendice7) }],
         },
@@ -181,7 +181,7 @@ async function validatePaisVenta(
     prompt:
       'Validar que el país de venta en el pedimento coincida con el país de la dirección de facturación en la factura/carta 318 y/o el packing.',
     contexts: {
-      "PROVIDED": {
+      PROVIDED: {
         Pedimento: {
           data: [
             { name: 'PartidasPaisVentaCompra', value: partidasPaisVentaCompra },
@@ -229,7 +229,7 @@ async function validatePaisOrigen(
     prompt:
       "Validar que el país de origen en el pedimento coincida con la leyenda 'hecho en...' en la factura o el packing. Si no se encuentra la leyenda, se debe imprimir una advertencia que diga que se busque en la mercancía fisica si tiene una leyenda que diga 'hecho en...'",
     contexts: {
-      "PROVIDED": {
+      PROVIDED: {
         Pedimento: {
           data: [
             { name: 'País de origen', value: paisOrigenDestino },
@@ -278,7 +278,7 @@ async function validateDescripcionMercancia(
     prompt:
       'La descripción de la mercancía en el pedimento debe coincidir con la descripción en el COVE, factura o carta 318 para asegurar que se trata de la misma mercancía.',
     contexts: {
-      "PROVIDED": {
+      PROVIDED: {
         Pedimento: {
           data: [
             {
@@ -356,7 +356,7 @@ async function validateTarifasArancelarias(
     prompt:
       'Validar que las tarifas arancelarias declaradas en la partida coincidan con las tarifas arancelarias declaradas en el Tax Finder.',
     contexts: {
-      "PROVIDED": {
+      PROVIDED: {
         Partida: {
           data: [
             {
@@ -366,7 +366,7 @@ async function validateTarifasArancelarias(
           ],
         },
       },
-      "EXTERNAL": {
+      EXTERNAL: {
         'Tax Finder': {
           data: [
             {
@@ -436,12 +436,12 @@ async function validateCalculosPartidas(
       Verifica que los valores de la partida sean los mismos que calculamos. 
     `,
     contexts: {
-      "PROVIDED": {
+      PROVIDED: {
         Partidas: {
           data: [{ name: 'Partidas', value: partida }],
         },
       },
-      "INFERRED": {
+      INFERRED: {
         Cálculos: {
           data: [
             { name: 'Prorrateo', value: prorrateo },
@@ -482,7 +482,7 @@ async function validateNumerosSerie(
     prompt:
       'Verifica que los números de serie, modelo y parte declarados en el pedimento coincidan con los declarados en el COVE. Si no hay valor es por que no se declararon los numeros de serie, modelo y parte. Da una advertencia de que no se declararon los numeros de serie, modelo y parte.',
     contexts: {
-      "PROVIDED": {
+      PROVIDED: {
         Pedimento: {
           data: [
             { name: 'Observaciones Partida', value: observaciones_partida },
@@ -522,7 +522,7 @@ async function validateIdentificadores(
     prompt:
       'Verifica que los complementos del identificador coincidan con los del apéndice 8. Solamente has una validación simple de data types, no hay necesidad de checar reglas o leyes extras, o usar logica condicional, es simplemente checar que el valor de los complementos sea posible que exista en el apéndice 8.',
     contexts: {
-      "PROVIDED": {
+      PROVIDED: {
         Identificador: {
           data: [
             {
@@ -532,7 +532,7 @@ async function validateIdentificadores(
           ],
         },
       },
-      "EXTERNAL": {
+      EXTERNAL: {
         'Identificadores Apéndice 8': {
           data: [
             {

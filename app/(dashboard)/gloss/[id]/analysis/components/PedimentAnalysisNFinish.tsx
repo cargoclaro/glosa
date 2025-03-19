@@ -1,8 +1,8 @@
 'use client';
 
-import type { CustomGlossFileTable } from '~/db/schema';
 import type { Prisma } from '@prisma/client';
 import { useState } from 'react';
+import type { CustomGlossFileTable } from '~/db/schema';
 import { Analysis, Pediment, SavedNFinish } from '.';
 
 type tabs = Prisma.CustomGlossTabGetPayload<{

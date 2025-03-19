@@ -24,7 +24,7 @@ async function validateRfcFormat(
     prompt:
       'Validar que los RFC cumplan con los siguientes criterios:\n\n1. Formato válido:\n• RFC Moral: 12 caracteres (ej: ABC850101AAA)\n• RFC Física: 13 caracteres (ej: ABCD850101AAA)\n\n2. Existencia real:\n• Consultar el RFC ante el SAT (servicio web)\n\n3. Consistencia entre documentos:\n• RFC del importador debe ser idéntico en Pedimento, COVE y Carta 3.1.8\n• Si hay Cesión de Derechos, el RFC de la comercializadora debe coincidir con el RFC del importador en la Carta 3.1.8',
     contexts: {
-      "PROVIDED": {
+      PROVIDED: {
         pedimento: {
           data: [{ name: 'RFC', value: rfcPedimento }],
         },
@@ -59,7 +59,7 @@ async function validateCesionDerechos(
     prompt:
       'Si existe Cesión de Derechos:\n\nComparar:\n• RFC comercializadora vs. RFC importador en Carta 3.1.8\n• Fecha de emisión de la Cesión debe ser anterior a Fecha de entrada del Pedimento\n\nPrecedencia:\n• La Carta 3.1.8 anula cualquier discrepancia en Factura/COVE\n• Si no hay Cesión, omitir y marcar como válido',
     contexts: {
-      "PROVIDED": {
+      PROVIDED: {
         pedimento: {
           data: [{ name: 'Fecha de entrada', value: fechaEntradaPedimento }],
         },
@@ -113,7 +113,7 @@ async function validateDatosImportador(
     prompt:
       'Validar que los siguientes campos coincidan literalmente entre documentos:\n\n• RFC: Debe coincidir entre Pedimento, CFDI y COVE (considerando exportador y comprador en exportación)\n• Domicilio fiscal: Debe coincidir entre Pedimento y CFDI para el exportador\n• Razón social: Debe coincidir entre Pedimento, CFDI y COVE',
     contexts: {
-      "PROVIDED": {
+      PROVIDED: {
         pedimento: {
           data: [
             { name: 'RFC', value: rfcPedimento },
@@ -175,7 +175,7 @@ async function validateDatosProveedor(
     prompt:
       'Validar lo siguiente:\n\n• El valor comercial del pedimento debe ser exactamente el valor indicado en el CFDI (emitido en pesos mexicanos).\n• Los datos de facturación (número de folio fiscal del CFDI) deben coincidir entre Pedimento y CFDI.\n• Si se utiliza información de comercializadora, esta debe coincidir con la indicada en la cesión de derechos.',
     contexts: {
-      "PROVIDED": {
+      PROVIDED: {
         pedimento: {
           data: [
             { name: 'Nombre/Razón social', value: nombreProveedorPedimento },
@@ -222,7 +222,7 @@ async function validateFechasYFolios(
     prompt:
       'Verificar que:\n\n• La fecha de emisión del CFDI sea menor o igual a la fecha de presentación ante aduana (fecha de entrada en expo).\n• La fecha del COVE coincida con la fecha del CFDI.\n• El número (folio fiscal) del CFDI sea único y coincida en Pedimento y en el documento COVE.',
     contexts: {
-      "PROVIDED": {
+      PROVIDED: {
         pedimento: {
           data: [
             { name: 'Fecha de entrada', value: fechaEntradaPedimento },
@@ -278,7 +278,7 @@ async function validateMonedaYEquivalencia(
     prompt:
       'Validar los siguientes aspectos:\n\n• En exportación, el CFDI debe emitirse en pesos mexicanos y la moneda declarada en el COVE debe coincidir.\n\n• Para obtener el valor en dólares, se debe dividir el valor comercial (de la factura en pesos) entre el tipo de cambio correspondiente al día anterior a la presentación ante aduana.\n\n• Se permite una tolerancia máxima de ±0.5% en esta conversión.',
     contexts: {
-      "PROVIDED": {
+      PROVIDED: {
         pedimento: {
           data: [
             { name: 'Moneda', value: monedaPedimento },
@@ -297,7 +297,7 @@ async function validateMonedaYEquivalencia(
           data: [{ name: 'CFDI', value: cfdiMkdown }],
         },
       },
-      "EXTERNAL": {
+      EXTERNAL: {
         DOF: {
           data: [
             { name: 'Factor DOF', value: factorDof },

@@ -2,8 +2,8 @@
 
 import { GenericCard } from '@/shared/components';
 import { RightArrow } from '@/shared/icons';
-import type { CustomGlossTable } from '~/db/schema';
 import Link from 'next/link';
+import type { CustomGlossTable } from '~/db/schema';
 
 const GlossHistory = ({ history }: { history: CustomGlossTable[] }) => {
   return (

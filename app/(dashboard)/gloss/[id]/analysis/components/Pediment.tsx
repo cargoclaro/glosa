@@ -3,10 +3,10 @@
 import { GenericCard } from '@/shared/components';
 import { LeftChevron, RightChevron } from '@/shared/icons';
 import { cn } from '@/shared/utils/cn';
-import type { CustomGlossTabTable } from '~/db/schema';
 import * as pdfjs from 'pdfjs-dist';
 import type { TextItem } from 'pdfjs-dist/types/src/display/api';
 import { useEffect, useRef, useState } from 'react';
+import type { CustomGlossTabTable } from '~/db/schema';
 import type { ITabInfoSelected } from './PedimentAnalysisNFinish';
 
 pdfjs.GlobalWorkerOptions.workerSrc = '/pdf.worker.mjs';

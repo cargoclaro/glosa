@@ -1,7 +1,7 @@
 import { GenericCard } from '@/shared/components';
 import { Document } from '@/shared/icons';
-import type { CustomGlossFileTable } from '~/db/schema';
 import Link from 'next/link';
+import type { CustomGlossFileTable } from '~/db/schema';
 
 const Documents = ({ data }: { data: CustomGlossFileTable[] }) => {
   return (

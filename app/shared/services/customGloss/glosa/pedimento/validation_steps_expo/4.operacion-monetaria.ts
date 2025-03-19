@@ -24,7 +24,7 @@ async function validateFechaSalida(
     prompt:
       'La fecha de salida del pedimento debe ser la fecha de salida dada por el operador de la carga.',
     contexts: {
-      "PROVIDED": {
+      PROVIDED: {
         pedimento: {
           data: [{ name: 'Fecha de salida', value: pedimentoExitDate }],
         },
@@ -54,7 +54,7 @@ async function validateTipoCambio(traceId: string, pedimento: Pedimento) {
     prompt:
       'El tipo de cambio debe ser exactamente igual al publicado en el DOF el día hábil anterior a la fecha de entrada.',
     contexts: {
-      "PROVIDED": {
+      PROVIDED: {
         pedimento: {
           data: [
             { name: 'Tipo de cambio', value: tipoCambio },
@@ -62,7 +62,7 @@ async function validateTipoCambio(traceId: string, pedimento: Pedimento) {
           ],
         },
       },
-      "EXTERNAL": {
+      EXTERNAL: {
         dof: {
           data: [{ name: 'Tipo de cambio DOF', value: tipoCambioDOF }],
         },
@@ -95,7 +95,7 @@ async function validateValorComercial(
     prompt:
       'El valor comercial del pedimento debe ser el mismo que el valor comercial del CFDI y el valor comercial en el COVE. Si el valor en el cfdi o en el cove es en dolares, se debe de convertir a pesos mexicanos usando el tipo de cambio del pedimento.',
     contexts: {
-      "PROVIDED": {
+      PROVIDED: {
         pedimento: {
           data: [
             { name: 'Valor comercial', value: valorComercialPedimento },
@@ -141,7 +141,7 @@ async function validateValorDolares(
     prompt:
       'El valor en dólares del pedimento se calcula dividiendo el valor comercial entre el tipo de cambio del pedimento. Si el valor en el CFDI o en el COVE está en dólares, debe coincidir con el valor en dólares del pedimento.',
     contexts: {
-      "PROVIDED": {
+      PROVIDED: {
         pedimento: {
           data: [
             { name: 'Valor en dólares', value: valorDolaresPedimento },

@@ -1,9 +1,9 @@
 import { GenericCard } from '@/shared/components';
 import { CalendarDays, ClipboardDocumentList, Clock } from '@/shared/icons';
-import { db } from '~/db';
 import { getTimePassed } from '@/shared/utils/get-time-passed';
 import { auth } from '@clerk/nextjs/server';
 import { currentUser } from '@clerk/nextjs/server';
+import { db } from '~/db';
 
 const Summary = async () => {
   const { userId } = await auth.protect();

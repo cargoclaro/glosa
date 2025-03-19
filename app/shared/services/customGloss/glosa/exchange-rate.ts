@@ -13,7 +13,9 @@ const oportunoSchema = z.object({
         z.object({
           idSerie: z.string(),
           titulo: z.string(),
-          datos: z.array(z.object({ fecha: z.string(), dato: z.string() })).optional(),
+          datos: z
+            .array(z.object({ fecha: z.string(), dato: z.string() }))
+            .optional(),
         })
       )
       .length(1),
@@ -22,7 +24,7 @@ const oportunoSchema = z.object({
 
 async function isDiaHabil(date: Date, seriesId: string): Promise<boolean> {
   const dateString = date.toISOString().split('T')[0];
-  
+
   try {
     const response = await fetch(
       `${BANXICO_BASE_URL}/series/${seriesId}/datos/${dateString}/${dateString}`,
@@ -34,7 +36,7 @@ async function isDiaHabil(date: Date, seriesId: string): Promise<boolean> {
         },
       }
     );
-    
+
     const data = oportunoSchema.parse(await response.json());
     // If datos exists and has elements, it's a business day
     return !!data.bmx.series[0]?.datos && data.bmx.series[0]?.datos.length > 0;
@@ -44,7 +46,10 @@ async function isDiaHabil(date: Date, seriesId: string): Promise<boolean> {
   }
 }
 
-async function getPreviousDiaHabil(fechaPedimento: Date, seriesId: string): Promise<Date> {
+async function getPreviousDiaHabil(
+  fechaPedimento: Date,
+  seriesId: string
+): Promise<Date> {
   // Create a copy of the input date to avoid modifying the original
   const resultDate = new Date(fechaPedimento);
   let businessDaysFound = 0;
@@ -62,7 +67,7 @@ async function getPreviousDiaHabil(fechaPedimento: Date, seriesId: string): Prom
       businessDaysFound++;
     }
   }
-  
+
   return resultDate;
 }
 
@@ -78,9 +83,12 @@ export async function getExchangeRate(
   };
 
   const seriesId = currencySeries[currencyCode];
-  
-  const previousBusinessDay = await getPreviousDiaHabil(fechaPedimento, seriesId);
-  
+
+  const previousBusinessDay = await getPreviousDiaHabil(
+    fechaPedimento,
+    seriesId
+  );
+
   const previousBusinessDayString = previousBusinessDay
     .toISOString()
     .split('T')[0];

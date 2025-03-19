@@ -1,8 +1,8 @@
 import { LeftArrow } from '@/shared/icons';
-import { db } from '~/db';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import { db } from '~/db';
 
 type IDynamicMetadata = {
   params: Promise<{ id: string }>;
@@ -45,7 +45,9 @@ const GlossIdPage = async (props: { params: Promise<{ id: string }> }) => {
       },
     },
   });
-  if (!customGloss) { notFound(); }
+  if (!customGloss) {
+    notFound();
+  }
 
   return (
     <article>

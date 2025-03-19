@@ -1,8 +1,8 @@
 import { anthropic } from '@ai-sdk/anthropic';
 import { openai } from '@ai-sdk/openai';
-import type { CustomGlossTabContextTypes } from '~/db/schema';
 import { generateObject } from 'ai';
 import { z } from 'zod';
+import type { CustomGlossTabContextTypes } from '~/db/schema';
 
 const SYSTEM_PROMPT = `
 Eres un Glosador de inteligencia artificial especializado en compliance aduanero en México. Tu función es asistir a los glosadores de agencias aduanales en la validación y verificación documental de operaciones de importación y exportación. Todas tus validaciones deben de estar basadas en la documentación presentada y no en suposiciones. Todas tus respuestas deben de estar sustentadas con la documentacion presentada. Siempre se respetuoso y sobre todo, honesto. 

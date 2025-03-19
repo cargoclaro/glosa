@@ -31,7 +31,7 @@ async function validatePesosYBultos(
     prompt:
       'Para validar los pesos y bultos, sigue estos pasos detallados:\n\n1. Verifica que el peso bruto declarado en el pedimento sea igual o menor a alguno de los pesos declarados en el documento de transporte, packing list o factura.\n2. Asegúrate de que el peso bruto declarado en el pedimento coincida con el peso declarado en el documento de transporte, carta 318 o packing list. La relación entre estos pesos debe ser lógica y consistente.',
     contexts: {
-      "PROVIDED": {
+      PROVIDED: {
         Pedimento: {
           data: [
             { name: 'Peso bruto', value: pesoBrutoPedimento },
@@ -79,7 +79,7 @@ async function validateBultos(
     prompt:
       'El número total de bultos debe coincidir entre el pedimento y el documento de transporte. Si no hay documento de transporte, marcar como advertencia.',
     contexts: {
-      "PROVIDED": {
+      PROVIDED: {
         Pedimento: {
           data: [
             { name: 'Número de bultos', value: bultosPedimento },

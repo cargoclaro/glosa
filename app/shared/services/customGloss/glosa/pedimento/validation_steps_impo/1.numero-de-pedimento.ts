@@ -12,7 +12,7 @@ async function validateLongitud(pedimento: Pedimento, traceId: string) {
     description: 'Valida que el número de pedimento tenga 15 dígitos',
     prompt: 'El número de pedimento debe contar con 15 dígitos.',
     contexts: {
-      "INFERRED": {
+      INFERRED: {
         pedimento: {
           data: [
             {
@@ -45,7 +45,7 @@ async function validateAñoPedimento(pedimento: Pedimento, traceId: string) {
     prompt:
       'El año del pedimento (inferido por los dígitos 1 y 2 del número del pedimento) debe ser iguales al año actual, deben de hacer sentido. ',
     contexts: {
-      "INFERRED": {
+      INFERRED: {
         Pedimento: {
           data: [
             { name: 'Año actual', value: añoActual },

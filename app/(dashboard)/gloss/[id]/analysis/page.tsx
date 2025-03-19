@@ -1,8 +1,8 @@
-import { db } from '~/db';
 import { auth } from '@clerk/nextjs/server';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import { db } from '~/db';
 import { Documents, PedimentAnalysisNFinish } from './components';
 
 type IDynamicMetadata = {
@@ -28,7 +28,8 @@ const GlossIdAnalysis = async (props: {
 
   const { userId } = await auth.protect();
   const customGloss = await db.query.CustomGloss.findFirst({
-    where: (gloss, { eq, and }) => and(eq(gloss.id, id), eq(gloss.userId, userId)),
+    where: (gloss, { eq, and }) =>
+      and(eq(gloss.id, id), eq(gloss.userId, userId)),
     with: {
       files: {
         with: {
@@ -59,7 +60,9 @@ const GlossIdAnalysis = async (props: {
       },
     },
   });
-  if (!customGloss) { notFound(); }
+  if (!customGloss) {
+    notFound();
+  }
 
   return (
     <article className="grid grid-cols-1 gap-4 sm:grid-cols-3 lg:grid-cols-4">

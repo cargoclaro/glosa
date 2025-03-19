@@ -12,7 +12,7 @@ async function validateClaveApendice15(traceId: string, pedimento: Pedimento) {
     prompt: 'La clave de destino/origen debe existir en el Apéndice 15',
     description: 'La clave de destino/origen debe existir en el Apéndice 15',
     contexts: {
-      "PROVIDED": {
+      PROVIDED: {
         pedimento: {
           data: [
             { name: 'Clave de destino/origen', value: claveDestinoOrigen },
@@ -20,7 +20,7 @@ async function validateClaveApendice15(traceId: string, pedimento: Pedimento) {
           ],
         },
       },
-      "EXTERNAL": {
+      EXTERNAL: {
         Apendices: {
           data: [{ name: 'Apéndice 15', value: JSON.stringify(apendice15) }],
         },
