@@ -1,0 +1,13 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+Este es una glosa electrónica para agencias aduanales.
+
+Ten en cuenta el contexto de los anexos del pedimento, sus apendices, documentos como facturas, coves.
+Conceptos como identificadores, aranceles, NOMS's, etc.
+
+# Resumen de Nuestro Trabajo y Guía para Acelerar el Proceso
+
+Estamos desarrollando una glosa electrónica para agencias aduanales en México, específicamente trabajando en validaciones para pedimentos de importación/exportación. Nuestro enfoque actual está en la validación de pesos (bruto y neto) y bultos entre diferentes documentos aduaneros.

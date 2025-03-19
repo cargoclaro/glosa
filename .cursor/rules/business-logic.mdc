@@ -1,14 +1,8 @@
-Este es una glosa electrónica para agencias aduanales.
-
-Ten en cuenta el contexto de los anexos del pedimento, sus apendices, documentos como facturas, coves.
-Conceptos como identificadores, aranceles, NOMS's, etc.
-
-# Resumen de Nuestro Trabajo y Guía para Acelerar el Proceso
-
-Estamos desarrollando una glosa electrónica para agencias aduanales en México, específicamente trabajando en validaciones para pedimentos de importación/exportación. Nuestro enfoque actual está en la validación de pesos (bruto y neto) y bultos entre diferentes documentos aduaneros.
-
-## Para acelerar el proceso:
-
+---
+description: 
+globs: 
+alwaysApply: false
+---
 ### Instrucciones claras:
 1. **Especifica la ruta exacta** para acceder a los campos en cada esquema (sin usar condicionales)
 2. **Indica el nombre del archivo** donde se realizarán los cambios
@@ -33,3 +27,4 @@ Campos a extraer:
 - Las validaciones deben seguir la estructura del esquema `validationResultSchema`
 
 Con estas instrucciones, podemos desarrollar rápidamente las validaciones necesarias para la glosa electrónica aduanal.
+
