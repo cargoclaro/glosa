@@ -1,10 +1,12 @@
 import { format } from 'date-fns';
 import { config } from 'dotenv';
+import { env } from 'lib/env/server';
 import { z } from 'zod';
 
 config();
 
 const TAXFINDER_BASE_URL = 'https://taxfinder-api.griver.com.mx/';
+const isDevelopment = process.env.NODE_ENV === 'development';
 
 const taxfinderResponseSchema = z.object({
   data: z.object({
@@ -73,15 +75,76 @@ interface TaxFinderInput {
   tipoDeOperacion: 'IMP' | 'EXP';
 }
 
+/**
+ * Mock response for development environment
+ */
+const getMockResponse = (fraccion: string) => ({
+  data: {
+    arancel: {
+      unidad_medida: {
+        clave: 'KG',
+        descripcion: 'KILOGRAMO',
+        simbolo: 'kg',
+      },
+    },
+    nicos: [
+      {
+        nico: '01',
+        descripcion: `Descripción para fracción ${fraccion}`,
+        fecha_dof: '2023-01-01',
+        fecha_entrada_vigor: '2023-01-15',
+        abrogado: false,
+        oid: 'abc123',
+      },
+    ],
+    iva: {
+      excepcion_iva: null,
+      valor_iva: 16,
+      valor_excepcion_iva: 0,
+      valor_iva_region_franja: 16,
+      valor_excepcion_iva_region_franja: 0,
+      fecha_dof: '2023-01-01',
+      fecha_entrada_vigor: '2023-01-15',
+      abrogado: false,
+      oid: 'def456',
+    },
+    regulaciones_no_arancelarias: {
+      normas: [
+        {
+          clave_acuerdo: 'NOM-001',
+          claves_articulos: ['A1', 'A2'],
+          descripcion: 'Norma Oficial Mexicana',
+          em_sanitaria_nom: 'COFEPRIS',
+        },
+      ],
+    },
+    extra: {
+      ligie_arancel: 5,
+      claves_identificadores: [],
+      identificadores_descripciones: [],
+      ieps: [],
+      ieps_tasas: [],
+      ieps_tasas_preferencias: [],
+    },
+  },
+});
+
 export async function getFraccionInfo({
   fraccion,
   fechaDeEntrada,
   tipoDeOperacion,
 }: TaxFinderInput) {
+  // Return mock response in development
+  if (isDevelopment) {
+    console.log(`[DEV] Using mock response for fraccion: ${fraccion}`);
+    return getMockResponse(fraccion);
+  }
+
+  // Production code - call the actual API
   // Convertir el tipo de operación del pedimento al formato esperado por Tax Finder
   const tipoOperacionTaxFinder = tipoDeOperacion === 'IMP' ? 'I' : 'E';
   const idioma = 'es';
-  const TAXFINDER_API_KEY = process.env['TAXFINDER_API_KEY'];
+  const TAXFINDER_API_KEY = env.TAXFINDER_API_KEY;
   if (!TAXFINDER_API_KEY) {
     throw new Error('TAXFINDER_API_KEY is not set');
   }
