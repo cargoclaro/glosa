@@ -335,18 +335,15 @@ const VerifiedButton = ({
   isVerified,
   customGlossId,
 }: IVerifiedButton) => {
-  const { response, isLoading, setResponse, setIsLoading } =
+  const { response, isLoading, setIsLoading } =
     useServerAction<ISharedState>(INITIAL_STATE_RESPONSE);
 
   const handleVerify = async () => {
     setIsLoading(true);
-    const res = await markTabAsVerifiedByTabIdNCustomGlossID({
+    await markTabAsVerifiedByTabIdNCustomGlossID({
       tabId,
       customGlossId,
     });
-    if (res && !res.success) {
-      setResponse(res);
-    }
     setIsLoading(false);
   };
 
