@@ -16,26 +16,35 @@ import {
 import type { ISharedState } from '@/shared/interfaces';
 import { markTabAsVerifiedByTabIdNCustomGlossID } from '@/shared/services/customGloss/controller';
 import { cn } from '@/shared/utils/cn';
-import type { Prisma } from '@prisma/client';
 import { type JSX, useCallback, useEffect, useRef, useState } from 'react';
 import type { ITabInfoSelected } from '../PedimentAnalysisNFinish';
 import Detailed from './Detailed';
+import type { InferSelectModel } from 'drizzle-orm';
+import type {
+  CustomGloss,
+  CustomGlossTab,
+  CustomGlossTabContext,
+  CustomGlossTabContextData,
+  CustomGlossTabValidationStep,
+  CustomGlossTabValidationStepActionToTake,
+  CustomGlossTabValidationStepResources
+} from '~/db/schema';
 
-type tabs = Prisma.CustomGlossTabGetPayload<{
-  include: {
-    context: {
-      include: { data: true };
-    };
-    validations: {
-      include: {
-        resources: true;
-        actionsToTake: true;
-        steps: true;
-      };
-    };
-    customGloss: true;
-  };
-}>;
+type TabValidation = InferSelectModel<typeof CustomGlossTabValidationStep> & {
+  resources: InferSelectModel<typeof CustomGlossTabValidationStepResources>[];
+  actionsToTake: InferSelectModel<typeof CustomGlossTabValidationStepActionToTake>[];
+  steps: InferSelectModel<typeof CustomGlossTabValidationStep>[];
+};
+
+type TabContext = InferSelectModel<typeof CustomGlossTabContext> & {
+  data: InferSelectModel<typeof CustomGlossTabContextData>[];
+};
+
+type tabs = InferSelectModel<typeof CustomGlossTab> & {
+  context: TabContext[];
+  validations: TabValidation[];
+  customGloss: InferSelectModel<typeof CustomGloss>;
+};
 
 interface IAnalysis {
   tabs: tabs[];

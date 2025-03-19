@@ -30,14 +30,13 @@ const CustomText = ({ text }: { text: string }) => (
   </ReactMarkdown>
 );
 
-import type { Prisma } from '@prisma/client';
+import type { InferSelectModel } from 'drizzle-orm';
+import type { CustomGlossTabValidationStep } from '~/db/schema';
 
-type validation = Prisma.CustomGlossTabValidationStepGetPayload<{
-  include: {
-    resources: true;
-    actionsToTake: true;
-  };
-}>;
+type validation = InferSelectModel<typeof CustomGlossTabValidationStep> & {
+  resources: Array<{ id: number; link: string | null }>;
+  actionsToTake: Array<{ id: number; description: string }>;
+};
 
 const Detailed = ({ data }: { data: validation }) => {
   return (
