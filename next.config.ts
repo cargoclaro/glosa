@@ -1,7 +1,7 @@
 import 'lib/env/server';
 import 'lib/env/client';
 
-import { type NextConfig } from 'next';
+import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
   images: {

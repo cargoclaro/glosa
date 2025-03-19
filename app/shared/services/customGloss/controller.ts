@@ -6,18 +6,18 @@ import type { CustomGlossTabContextType } from '@prisma/client';
 import { config } from 'dotenv';
 import { Langfuse } from 'langfuse';
 import { traceable } from 'langsmith/traceable';
+import { api } from 'lib/trpc';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import type { UploadedFileData } from 'uploadthing/types';
+import { z } from 'zod';
+import { zfd } from 'zod-form-data';
 import { classifyDocuments } from './classification';
 import type { DocumentType } from './classification';
 import { extractTextFromPDFs } from './data-extraction';
 import { glosaExpo } from './glosa/expo';
 import { glosaImpo } from './glosa/impo';
 import { uploadFiles } from './upload-files';
-import { api } from "lib/trpc";
-import { z } from "zod";
-import { zfd } from "zod-form-data";
 
 config();
 
@@ -138,9 +138,11 @@ const runGlosa = traceable(
 );
 
 export const analysis = api
-  .input(zfd.formData({
-    files: z.array(z.instanceof(File))
-  }))
+  .input(
+    zfd.formData({
+      files: z.array(z.instanceof(File)),
+    })
+  )
   .mutation(async ({ input: { files }, ctx: { userId } }) => {
     try {
       // Generate a trace ID for Langfuse tracking
@@ -166,7 +168,10 @@ export const analysis = api
         {} as Partial<
           Record<
             DocumentType,
-            UploadedFileData & { originalFile: File; documentType: DocumentType }
+            UploadedFileData & {
+              originalFile: File;
+              documentType: DocumentType;
+            }
           >
         >
       );
@@ -258,10 +263,12 @@ export const analysis = api
   });
 
 export const markTabAsVerifiedByTabIdNCustomGlossID = api
-  .input(z.object({
-    tabId: z.string(),
-    customGlossId: z.string()
-  }))
+  .input(
+    z.object({
+      tabId: z.string(),
+      customGlossId: z.string(),
+    })
+  )
   .mutation(async ({ input: { tabId, customGlossId }, ctx: { userId } }) => {
     try {
       const customGloss = await read({ id: customGlossId, userId });

@@ -2,8 +2,8 @@ const BANXICO_BASE_URL = 'https://www.banxico.org.mx/SieAPIRest/service/v1';
 
 import Holidays from 'date-holidays';
 import { config } from 'dotenv';
-import { z } from 'zod';
 import { env } from 'lib/env/server';
+import { z } from 'zod';
 
 config();
 
