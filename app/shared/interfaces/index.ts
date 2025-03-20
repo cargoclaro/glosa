@@ -1,15 +1,15 @@
 import type {
+  CustomGlossAlertTable,
+  CustomGlossFileTable,
+  CustomGlossTabContextDataTable,
+  CustomGlossTabContextTable,
+  CustomGlossTabTable,
+  CustomGlossTabValidationStepActionToTakeTable,
+  CustomGlossTabValidationStepResourcesTable,
+  CustomGlossTabValidationStepTable,
   // Custom,
-  CustomGloss,
-  CustomGlossFile,
-  CustomGlossAlert,
-  CustomGlossTab,
-  CustomGlossTabContext,
-  CustomGlossTabContextData,
-  CustomGlossTabValidationStepActionToTake,
-  CustomGlossTabValidationStepResources,
-  CustomGlossTabValidationStep,
-} from "@prisma/client";
+  CustomGlossTable,
+} from '~/db/schema';
 
 // export interface ICustom extends Custom {
 //   users: {
@@ -19,37 +19,37 @@ import type {
 //   }[];
 // }
 
-export interface ICustomGloss extends CustomGloss {
+interface ICustomGloss extends CustomGlossTable {
   tabs: ICustomGlossTab[];
   files: ICustomGlossFile[];
   alerts: ICustomGlossAlert[];
 }
 
-export interface ICustomGlossAlert extends CustomGlossAlert {
+interface ICustomGlossAlert extends CustomGlossAlertTable {
   customGloss: ICustomGloss;
 }
 
-export interface ICustomGlossFile extends CustomGlossFile {
+interface ICustomGlossFile extends CustomGlossFileTable {
   customGloss: ICustomGloss;
 }
 
-export interface ICustomGlossTab extends CustomGlossTab {
+interface ICustomGlossTab extends CustomGlossTabTable {
   customGloss: ICustomGloss;
   context: ICustomGlossTabContext[];
   validations: ICustomGlossTabValidationStep[];
 }
 
-export interface ICustomGlossTabContext extends CustomGlossTabContext {
+interface ICustomGlossTabContext extends CustomGlossTabContextTable {
   customGlossTab: ICustomGlossTab;
   data: ICustomGlossTabContextData[];
 }
 
-export interface ICustomGlossTabContextData extends CustomGlossTabContextData {
+interface ICustomGlossTabContextData extends CustomGlossTabContextDataTable {
   customGlossTabContext: ICustomGlossTabContext;
 }
 
-export interface ICustomGlossTabValidationStep
-  extends CustomGlossTabValidationStep {
+interface ICustomGlossTabValidationStep
+  extends CustomGlossTabValidationStepTable {
   customGlossTab?: ICustomGlossTab;
   parentStep?: ICustomGlossTabValidationStep;
   steps: ICustomGlossTabValidationStep[];
@@ -57,37 +57,19 @@ export interface ICustomGlossTabValidationStep
   actionsToTake: ICustomGlossTabValidationStepActionToTake[];
 }
 
-export interface ICustomGlossTabValidationStepResources
-  extends CustomGlossTabValidationStepResources {
+interface ICustomGlossTabValidationStepResources
+  extends CustomGlossTabValidationStepResourcesTable {
   customGlossTabValidationStep: ICustomGlossTabValidationStep;
 }
 
-export interface ICustomGlossTabValidationStepActionToTake
-  extends CustomGlossTabValidationStepActionToTake {
+interface ICustomGlossTabValidationStepActionToTake
+  extends CustomGlossTabValidationStepActionToTakeTable {
   customGlossTabValidationStep: ICustomGlossTabValidationStep;
 }
 
 export interface ISharedState {
   success: boolean;
   message?: string | string[];
-}
-
-export interface ILoginState extends ISharedState {
-  errors?: {
-    email?: string;
-    password?: string;
-  };
-}
-
-export interface IRegisterState extends ISharedState {
-  errors?: {
-    name?: string;
-    email?: string;
-    password?: string;
-    lastName?: string;
-    patentNumber?: string;
-    confirmPassword?: string;
-  };
 }
 
 export interface IGlossAnalysisState extends ISharedState {

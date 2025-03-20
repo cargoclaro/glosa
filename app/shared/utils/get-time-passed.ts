@@ -3,7 +3,7 @@ interface IGetTimePassed {
   locale?: string;
 }
 
-export function getTimePassed({ pastDate, locale = "es" }: IGetTimePassed) {
+export function getTimePassed({ pastDate, locale = 'es' }: IGetTimePassed) {
   const now = new Date();
   const diffInMilliseconds = now.getTime() - pastDate.getTime();
 
@@ -13,20 +13,20 @@ export function getTimePassed({ pastDate, locale = "es" }: IGetTimePassed) {
 
   if (diffInMilliseconds >= millisecondsInYear) {
     const years = Math.floor(diffInMilliseconds / millisecondsInYear);
-    return locale === "es"
-      ? `${years} año${years > 1 ? "s" : ""}`
-      : `${years} year${years > 1 ? "s" : ""}`;
+    return locale === 'es'
+      ? `${years} año${years > 1 ? 's' : ''}`
+      : `${years} year${years > 1 ? 's' : ''}`;
   } else if (diffInMilliseconds >= millisecondsInMonth) {
     const months = Math.floor(diffInMilliseconds / millisecondsInMonth);
-    return locale === "es"
-      ? `${months} mes${months > 1 ? "es" : ""}`
-      : `${months} month${months > 1 ? "s" : ""}`;
+    return locale === 'es'
+      ? `${months} mes${months > 1 ? 'es' : ''}`
+      : `${months} month${months > 1 ? 's' : ''}`;
   } else if (diffInMilliseconds >= millisecondsInDay) {
     const days = Math.floor(diffInMilliseconds / millisecondsInDay);
-    return locale === "es"
-      ? `${days} día${days > 1 ? "s" : ""}`
-      : `${days} day${days > 1 ? "s" : ""}`;
+    return locale === 'es'
+      ? `${days} día${days > 1 ? 's' : ''}`
+      : `${days} day${days > 1 ? 's' : ''}`;
   } else {
-    return locale === "es" ? "Menos de un día" : "Less than a day";
+    return locale === 'es' ? 'Menos de un día' : 'Less than a day';
   }
 }

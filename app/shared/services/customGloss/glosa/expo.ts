@@ -1,8 +1,14 @@
-import { Pedimento, Cove } from '../data-extraction/schemas';
-import { TransportDocument, PackingList, Invoice, Cfdi, CartaSesion } from '../data-extraction/mkdown_schemas';
-import { tracedPedimentoValidationStepsExpo } from './pedimento/validation_steps_expo';
+import { traceable } from 'langsmith/traceable';
+import type {
+  CartaSesion,
+  Cfdi,
+  Invoice,
+  PackingList,
+  TransportDocument,
+} from '../data-extraction/mkdown_schemas';
+import type { Cove, Pedimento } from '../data-extraction/schemas';
 import { tracedCoveValidationStepsExpo } from './cove/validation_steps_expo';
-import { traceable } from "langsmith/traceable";
+import { tracedPedimentoValidationStepsExpo } from './pedimento/validation_steps_expo';
 
 export const glosaExpo = traceable(
   async ({
@@ -12,7 +18,8 @@ export const glosaExpo = traceable(
     cove,
     cfdi,
     cartaSesion,
-    invoice
+    invoice,
+    traceId,
   }: {
     pedimento: Pedimento;
     transportDocument?: TransportDocument;
@@ -21,10 +28,19 @@ export const glosaExpo = traceable(
     cfdi?: Cfdi;
     cartaSesion?: CartaSesion;
     invoice?: Invoice;
+    traceId: string;
   }) =>
     Promise.all([
-      tracedPedimentoValidationStepsExpo({ pedimento, cove, cfdi, cartaSesion, transportDocument, packingList }),
-      tracedCoveValidationStepsExpo({ cove, cfdi, invoice })
-    ]).then(results => results.flat()),
-  { name: "Exportación" }
+      tracedPedimentoValidationStepsExpo({
+        pedimento,
+        cove,
+        cfdi,
+        cartaSesion,
+        transportDocument,
+        packingList,
+        traceId,
+      }),
+      tracedCoveValidationStepsExpo({ cove, cfdi, invoice, traceId }),
+    ]).then((results) => results.flat()),
+  { name: 'Exportación' }
 );

@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { cn } from "@/app/shared/utils/cn";
-// import latLonToSvgCoords from "@/app/shared/utils/lat-lon-to-svg";
+import { cn } from '@/shared/utils/cn';
+// import latLonToSvgCoords from "@/shared/utils/lat-lon-to-svg";
 
 const MexMap = () => {
   return (
@@ -10,7 +10,7 @@ const MexMap = () => {
         id="estados_mexico"
         viewBox="0 0 999 679"
         fill="currentColor"
-        className={cn("text-[#a4bac8]")}
+        className={cn('text-[#a4bac8]')}
       >
         <g id="g3014">
           <path

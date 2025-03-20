@@ -1,15 +1,15 @@
-import Link from "next/link";
-import Image from "next/image";
-import { type Metadata } from "next";
+import type { Metadata } from 'next';
+import Image from 'next/image';
+import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: "404",
+  title: '404',
 };
 
 const NotFoundPage = () => {
   return (
-    <article className="py-40 flex flex-col gap-4 items-center justify-center">
-      <div className="w-52 md:w-96 h-auto">
+    <article className="flex flex-col items-center justify-center gap-4 py-40">
+      <div className="h-auto w-52 md:w-96">
         <Image
           src="/assets/images/logo.webp"
           alt="Cargo Claro Logo"

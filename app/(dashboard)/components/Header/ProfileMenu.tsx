@@ -1,7 +1,7 @@
 // "use client";
 
-import { UserButton } from "@clerk/nextjs";
-import { SignedIn } from "@clerk/nextjs";
+import { UserButton } from '@clerk/nextjs';
+import { SignedIn } from '@clerk/nextjs';
 
 const ProfileMenu = () => {
   return (

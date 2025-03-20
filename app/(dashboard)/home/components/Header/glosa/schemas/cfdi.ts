@@ -1,5 +1,5 @@
-import { z } from "zod"
-import moment from 'moment'
+import moment from 'moment';
+import { z } from 'zod';
 
 export const cfdiSchema = z.object({
   Comprobante: z.object({
@@ -7,8 +7,8 @@ export const cfdiSchema = z.object({
       attributes: z.object({
         Rfc: z.string(),
         Nombre: z.string(),
-        RegimenFiscal: z.number()
-      })
+        RegimenFiscal: z.number(),
+      }),
     }),
     Receptor: z.object({
       attributes: z.object({
@@ -18,8 +18,8 @@ export const cfdiSchema = z.object({
         RegimenFiscalReceptor: z.number(),
         ResidenciaFiscal: z.string(),
         NumRegIdTrib: z.number(),
-        UsoCFDI: z.string()
-      })
+        UsoCFDI: z.string(),
+      }),
     }),
     Conceptos: z.object({
       Concepto: z.array(
@@ -32,10 +32,10 @@ export const cfdiSchema = z.object({
                   Impuesto: z.number(),
                   TipoFactor: z.string(),
                   TasaOCuota: z.number(),
-                  Importe: z.number()
-                })
-              })
-            })
+                  Importe: z.number(),
+                }),
+              }),
+            }),
           }),
           attributes: z.object({
             ObjetoImp: z.number(),
@@ -46,10 +46,10 @@ export const cfdiSchema = z.object({
             Unidad: z.string(),
             Descripcion: z.string(),
             ValorUnitario: z.number(),
-            Importe: z.number()
-          })
+            Importe: z.number(),
+          }),
         })
-      )
+      ),
     }),
     Impuestos: z.object({
       Traslados: z.object({
@@ -59,11 +59,11 @@ export const cfdiSchema = z.object({
             Impuesto: z.number(),
             TipoFactor: z.string(),
             TasaOCuota: z.number(),
-            Importe: z.number()
-          })
-        })
+            Importe: z.number(),
+          }),
+        }),
       }),
-      attributes: z.object({ TotalImpuestosTrasladados: z.number() })
+      attributes: z.object({ TotalImpuestosTrasladados: z.number() }),
     }),
     Complemento: z.object({
       TimbreFiscalDigital: z.object({
@@ -77,8 +77,8 @@ export const cfdiSchema = z.object({
           UUID: z.string(),
           Version: z.number(),
           RfcProvCertif: z.string(),
-          schemaLocation: z.string()
-        })
+          schemaLocation: z.string(),
+        }),
       }),
       ComercioExterior: z.object({
         Emisor: z.object({
@@ -88,9 +88,9 @@ export const cfdiSchema = z.object({
               CodigoPostal: z.number(),
               Municipio: z.number(),
               Estado: z.string(),
-              Pais: z.string()
-            })
-          })
+              Pais: z.string(),
+            }),
+          }),
         }),
         Receptor: z.object({
           Domicilio: z.object({
@@ -101,10 +101,10 @@ export const cfdiSchema = z.object({
               Municipio: z.string(),
               Estado: z.string(),
               CodigoPostal: z.number(),
-              Pais: z.string()
-            })
+              Pais: z.string(),
+            }),
           }),
-          attributes: z.object({ NumRegIdTrib: z.number() })
+          attributes: z.object({ NumRegIdTrib: z.number() }),
         }),
         Destinatario: z.object({
           Domicilio: z.object({
@@ -115,10 +115,10 @@ export const cfdiSchema = z.object({
               Municipio: z.string(),
               Estado: z.string(),
               CodigoPostal: z.number(),
-              Pais: z.string()
-            })
+              Pais: z.string(),
+            }),
           }),
-          attributes: z.object({ Nombre: z.string() })
+          attributes: z.object({ Nombre: z.string() }),
         }),
         Mercancias: z.object({
           Mercancia: z.array(
@@ -129,10 +129,10 @@ export const cfdiSchema = z.object({
                 CantidadAduana: z.number(),
                 UnidadAduana: z.number(),
                 ValorUnitarioAduana: z.number(),
-                ValorDolares: z.number()
-              })
+                ValorDolares: z.number(),
+              }),
             })
-          )
+          ),
         }),
         attributes: z.object({
           Version: z.number(),
@@ -140,9 +140,9 @@ export const cfdiSchema = z.object({
           CertificadoOrigen: z.number(),
           Incoterm: z.string(),
           TipoCambioUSD: z.number(),
-          TotalUSD: z.number()
-        })
-      })
+          TotalUSD: z.number(),
+        }),
+      }),
     }),
     attributes: z.object({
       schemaLocation: z.string(),
@@ -161,9 +161,9 @@ export const cfdiSchema = z.object({
       TipoDeComprobante: z.string(),
       MetodoPago: z.string(),
       LugarExpedicion: z.number(),
-      Sello: z.string()
-    })
-  })
-})
+      Sello: z.string(),
+    }),
+  }),
+});
 
 export type Cfdi = z.infer<typeof cfdiSchema>;

@@ -1,8 +1,8 @@
-import { Header, Main, Sidebar } from "./components";
-import { currentUser } from '@clerk/nextjs/server'
+import { currentUser } from '@clerk/nextjs/server';
+import { Header, Main, Sidebar } from './components';
 
 const AuthLayout = async ({ children }: { children: React.ReactNode }) => {
-  const user = await currentUser()
+  const user = await currentUser();
   if (!user) {
     return <div>No se pudo obtener el usuario</div>;
   }

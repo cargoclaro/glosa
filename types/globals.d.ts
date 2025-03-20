@@ -1,7 +1,7 @@
-export {}
+export {};
 
 declare global {
   interface OrganizationPublicMetadata {
-    patente: string
+    patente: string;
   }
 }

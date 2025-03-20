@@ -1,7 +1,7 @@
-import Header from "./Header";
-import MyInfo from "./MyInfo";
-import MexMap from "./MexMap";
-import Summary from "./Summary";
-import GlossHistory from "./GlossHistory";
+import GlossHistory from './GlossHistory';
+import Header from './Header';
+import MexMap from './MexMap';
+import MyInfo from './MyInfo';
+import Summary from './Summary';
 
 export { Header, MyInfo, MexMap, Summary, GlossHistory };

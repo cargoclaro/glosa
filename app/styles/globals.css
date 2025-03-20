@@ -28,7 +28,7 @@
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
-    --radius: 0.5rem
+    --radius: 0.5rem;
   }
   .dark {
     --background: 222.2 84% 4.9%;
@@ -54,7 +54,7 @@
     --chart-2: 160 60% 45%;
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%
+    --chart-5: 340 75% 55%;
   }
 }
 
@@ -65,6 +65,56 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* Pedimento document specific styles */
+@layer components {
+  .pedimento-table {
+    @apply w-full border-collapse text-xs;
+  }
+
+  .pedimento-cell {
+    @apply px-2 border-r last:border-r-0 border-gray-400 text-xs;
+    min-height: 24px;
+    display: flex;
+    align-items: center;
+  }
+
+  .pedimento-header {
+    @apply bg-gray-200 text-black uppercase text-xs font-semibold tracking-wider text-center py-1 border-b border-gray-400;
+  }
+
+  .pedimento-label {
+    @apply bg-gray-100 text-xs uppercase font-semibold;
+  }
+
+  .pedimento-value {
+    @apply text-xs font-normal;
+  }
+
+  .pedimento-section {
+    @apply mb-4 opacity-0 animate-fadeIn w-full border border-gray-400;
+    animation-delay: calc(var(--animation-order) * 100ms);
+  }
+
+  .pedimento-section-title {
+    @apply bg-gray-200 text-center text-xs py-1 uppercase font-semibold border-b border-gray-400;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.5s ease-out forwards;
 }
 
 .link-button-cargoClaro {

@@ -1,8 +1,13 @@
-import { Pedimento, Cove } from '../data-extraction/schemas';
-import { TransportDocument, PackingList, Invoice, Carta318 } from '../data-extraction/mkdown_schemas';
-import { tracedPedimentoValidationStepsImpo } from './pedimento/validation_steps_impo';
+import { traceable } from 'langsmith/traceable';
+import type {
+  Carta318,
+  Invoice,
+  PackingList,
+  TransportDocument,
+} from '../data-extraction/mkdown_schemas';
+import type { Cove, Pedimento } from '../data-extraction/schemas';
 import { tracedCoveValidationStepsImpo } from './cove/validation_steps_impo';
-import { traceable } from "langsmith/traceable";
+import { tracedPedimentoValidationStepsImpo } from './pedimento/validation_steps_impo';
 
 export const glosaImpo = traceable(
   async ({
@@ -11,7 +16,8 @@ export const glosaImpo = traceable(
     packingList,
     cove,
     invoice,
-    carta318
+    carta318,
+    traceId,
   }: {
     pedimento: Pedimento;
     transportDocument?: TransportDocument;
@@ -19,10 +25,19 @@ export const glosaImpo = traceable(
     cove: Cove;
     invoice?: Invoice;
     carta318?: Carta318;
+    traceId: string;
   }) =>
     Promise.all([
-      tracedPedimentoValidationStepsImpo({ pedimento, cove, transportDocument, packingList, invoice, carta318 }),
-      tracedCoveValidationStepsImpo({ cove, invoice, carta318 })
-    ]).then(results => results.flat()),
-  { name: "Importación" }
+      tracedPedimentoValidationStepsImpo({
+        pedimento,
+        cove,
+        transportDocument,
+        packingList,
+        invoice,
+        carta318,
+        traceId,
+      }),
+      tracedCoveValidationStepsImpo({ cove, invoice, carta318, traceId }),
+    ]).then((results) => results.flat()),
+  { name: 'Importación' }
 );

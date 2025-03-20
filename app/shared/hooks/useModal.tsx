@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 const useModal = (initialState = false) => {
   const menuRef = useRef<HTMLDivElement>(null);
@@ -12,16 +12,16 @@ const useModal = (initialState = false) => {
 
   const handleClickOutside = useCallback((event: MouseEvent) => {
     if (!(event.target instanceof Node)) return;
-    
+
     if (menuRef.current && !menuRef.current.contains(event.target)) {
       closeMenu();
     }
   }, []);
 
   useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [handleClickOutside]);
 
