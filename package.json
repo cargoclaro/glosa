@@ -2,6 +2,7 @@
   "name": "glosa",
   "version": "0.1.0",
   "private": false,
+  "type": "module",
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
@@ -20,6 +21,7 @@
     "vercel:pull": "vercel env pull .env --environment=development",
     "db:push": "drizzle-kit push --force",
     "db:studio": "drizzle-kit studio",
+    "db:reset": "tsx db/reset.ts",
     "script:xml-to-json": "tsx app/\\(dashboard\\)/home/components/Header/glosa/xml-to-json.ts",
     "script:chat": "tsx glosa-gpt/chat.ts",
     "script:add-context": "tsx glosa-gpt/add-context.ts",
@@ -82,6 +84,7 @@
     "cheerio": "^1.0.0",
     "domhandler": "^5.0.3",
     "drizzle-kit": "^0.30.5",
+    "drizzle-seed": "^0.3.1",
     "knip": "^5.46.0",
     "postcss": "^8.5.3",
     "postcss-load-config": "^6.0.1",

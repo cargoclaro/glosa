@@ -11,7 +11,7 @@ const HomePage = async () => {
   const { userId } = await auth.protect();
   const myLatestGlosses = await db.query.CustomGloss.findMany({
     where: (gloss, { eq }) => eq(gloss.userId, userId),
-    orderBy: (gloss, { desc }) => [desc(gloss.updatedAt)],
+    orderBy: (gloss, { desc }) => [desc(gloss.createdAt)],
     limit: 3,
   });
   if (!myLatestGlosses) {

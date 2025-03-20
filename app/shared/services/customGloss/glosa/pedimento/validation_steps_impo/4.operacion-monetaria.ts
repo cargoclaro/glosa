@@ -134,7 +134,7 @@ async function validateIncrementables(
     },
   } as const;
 
-  return await glosar(validation, traceId, 'o3-mini');
+  return await glosar(validation, traceId, 'claude-3-7-sonnet-20250219');
 }
 
 async function validateValorDolares(

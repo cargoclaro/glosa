@@ -74,7 +74,6 @@ const Analysis = ({
     resources: [],
     actionsToTake: [],
     createdAt: new Date(),
-    updatedAt: new Date(),
     customGlossTabId: '',
     steps: [],
     fraccion: '',

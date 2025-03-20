@@ -1,4 +1,4 @@
-import { relations, sql } from 'drizzle-orm';
+import { relations } from 'drizzle-orm';
 import {
   boolean,
   doublePrecision,
@@ -8,6 +8,7 @@ import {
   pgTable,
   primaryKey,
   serial,
+  uuid,
   text,
   timestamp,
   uniqueIndex,
@@ -39,7 +40,7 @@ export const CustomGlossTabContextType = pgEnum(
 );
 
 export const CustomGloss = pgTable('CustomGloss', {
-  id: text('id').notNull().primaryKey().default(sql`uuid(4)`),
+  id: uuid('id').notNull().primaryKey().defaultRandom(),
   summary: text('summary').notNull(),
   timeSaved: doublePrecision('timeSaved').notNull(),
   moneySaved: doublePrecision('moneySaved').notNull(),
@@ -49,7 +50,6 @@ export const CustomGloss = pgTable('CustomGloss', {
     .default('IN_PROGRESS'),
   userId: text('userId').notNull(),
   createdAt: timestamp('createdAt', { precision: 3 }).notNull().defaultNow(),
-  updatedAt: timestamp('updatedAt', { precision: 3 }).notNull(),
 });
 
 export type CustomGlossTable = typeof CustomGloss.$inferSelect;
@@ -60,7 +60,7 @@ export const CustomGlossAlert = pgTable(
     id: serial('id').notNull(),
     type: CustomGlossType('type').notNull(),
     description: text('description').notNull(),
-    customGlossId: text('customGlossId').notNull(),
+    customGlossId: uuid('customGlossId').notNull(),
     createdAt: timestamp('createdAt', { precision: 3 }).notNull().defaultNow(),
     updatedAt: timestamp('updatedAt', { precision: 3 }).notNull(),
   },
@@ -88,9 +88,8 @@ export const CustomGlossFile = pgTable(
     name: text('name').notNull(),
     url: text('url').notNull(),
     documentType: text('documentType'),
-    customGlossId: text('customGlossId').notNull(),
+    customGlossId: uuid('customGlossId').notNull(),
     createdAt: timestamp('createdAt', { precision: 3 }).notNull().defaultNow(),
-    updatedAt: timestamp('updatedAt', { precision: 3 }).notNull(),
   },
   (CustomGlossFile) => ({
     CustomGlossFile_customGloss_fkey: foreignKey({
@@ -112,15 +111,14 @@ export type CustomGlossFileTable = typeof CustomGlossFile.$inferSelect;
 export const CustomGlossTab = pgTable(
   'CustomGlossTab',
   {
-    id: text('id').notNull().primaryKey().default(sql`uuid(4)`),
+    id: uuid('id').notNull().primaryKey().defaultRandom(),
     name: text('name').notNull(),
     summary: text('summary'),
     isCorrect: boolean('isCorrect').notNull(),
     fullContext: boolean('fullContext').notNull(),
     isVerified: boolean('isVerified').notNull(),
-    customGlossId: text('customGlossId').notNull(),
+    customGlossId: uuid('customGlossId').notNull(),
     createdAt: timestamp('createdAt', { precision: 3 }).notNull().defaultNow(),
-    updatedAt: timestamp('updatedAt', { precision: 3 }).notNull(),
   },
   (CustomGlossTab) => ({
     CustomGlossTab_customGloss_fkey: foreignKey({
@@ -145,9 +143,8 @@ export const CustomGlossTabContext = pgTable(
     type: CustomGlossTabContextType('type').notNull(),
     origin: text('origin').notNull(),
     summary: text('summary'),
-    customGlossTabId: text('customGlossTabId').notNull(),
+    customGlossTabId: uuid('customGlossTabId').notNull(),
     createdAt: timestamp('createdAt', { precision: 3 }).notNull().defaultNow(),
-    updatedAt: timestamp('updatedAt', { precision: 3 }).notNull(),
   },
   (CustomGlossTabContext) => ({
     CustomGlossTabContext_customGlossTab_fkey: foreignKey({
@@ -171,7 +168,6 @@ export const CustomGlossTabContextData = pgTable(
     value: text('value').notNull(),
     customGlossTabContextId: integer('customGlossTabContextId').notNull(),
     createdAt: timestamp('createdAt', { precision: 3 }).notNull().defaultNow(),
-    updatedAt: timestamp('updatedAt', { precision: 3 }).notNull(),
   },
   (CustomGlossTabContextData) => ({
     CustomGlossTabContextData_customGlossTabContext_fkey: foreignKey({
@@ -197,9 +193,8 @@ export const CustomGlossTabValidationStep = pgTable(
     description: text('description'),
     llmAnalysis: text('llmAnalysis'),
     parentStepId: integer('parentStepId'),
-    customGlossTabId: text('customGlossTabId'),
+    customGlossTabId: uuid('customGlossTabId'),
     createdAt: timestamp('createdAt', { precision: 3 }).notNull().defaultNow(),
-    updatedAt: timestamp('updatedAt', { precision: 3 }).notNull(),
   },
   (CustomGlossTabValidationStep) => ({
     CustomGlossTabValidationStep_parentStep_fkey: foreignKey({
@@ -231,7 +226,6 @@ export const CustomGlossTabValidationStepActionToTake = pgTable(
       'customGlossTabValidationStepId'
     ).notNull(),
     createdAt: timestamp('createdAt', { precision: 3 }).notNull().defaultNow(),
-    updatedAt: timestamp('updatedAt', { precision: 3 }).notNull(),
   },
   (CustomGlossTabValidationStepActionToTake) => ({
     CustomGlossTabValidationStepActionToTake_customGlossTabValidationStep_fkey:
