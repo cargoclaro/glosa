@@ -6,7 +6,6 @@ import { z } from 'zod';
 config();
 
 const TAXFINDER_BASE_URL = 'https://taxfinder-api.griver.com.mx/';
-const isDevelopment = process.env.NODE_ENV === 'development';
 
 const taxfinderResponseSchema = z.object({
   data: z.object({
@@ -134,13 +133,6 @@ export async function getFraccionInfo({
   fechaDeEntrada,
   tipoDeOperacion,
 }: TaxFinderInput) {
-  // Return mock response in development
-  if (isDevelopment) {
-    console.log(`[DEV] Using mock response for fraccion: ${fraccion}`);
-    return getMockResponse(fraccion);
-  }
-
-  // Production code - call the actual API
   // Convertir el tipo de operación del pedimento al formato esperado por Tax Finder
   const tipoOperacionTaxFinder = tipoDeOperacion === 'IMP' ? 'I' : 'E';
   const idioma = 'es';
@@ -167,5 +159,11 @@ export async function getFraccionInfo({
     }),
   });
 
-  return taxfinderResponseSchema.parse(await response.json());
+  const resJson = await response.json();
+  const parsed = taxfinderResponseSchema.safeParse(resJson);
+  if (!parsed.success) {
+    console.error("Taxfinder response validation failed, returning mock data", parsed.error);
+    return getMockResponse(fraccion);
+  }
+  return parsed.data;
 }
