@@ -106,7 +106,11 @@ async function validateDatosImportador(
     ? [
         domicilioCove.calle,
         domicilioCove.numero_exterior,
+        domicilioCove.numero_interior,
         domicilioCove.colonia,
+        domicilioCove.localidad,
+        domicilioCove.municipio,
+        domicilioCove.entidad_federativa,
         domicilioCove.codigo_postal,
         domicilioCove.pais,
       ]
@@ -119,7 +123,7 @@ async function validateDatosImportador(
     description:
       'Valida que los datos del importador coincidan entre el pedimento, COVE y carta 3.1.8',
     prompt:
-      'Validar que los siguientes campos coincidan literalmente entre documentos:\n\nRFC: Debe coincidir entre Pedimento, Carta 3.1.8 y COVE.\nDomicilio fiscal: Debe coincidir entre Pedimento, Carta 3.1.8 (implícito) y Factura (importador).\nRazón social: Debe coincidir entre Pedimento, Carta 3.1.8 (implícito) y COVE.\nRegla de precedencia:\nSi la Carta 3.1.8 existe, sus datos tienen prioridad sobre Factura/COVE. Cualquier discrepancia en otros documentos se marca como error.',
+      'Validar que los siguientes campos coincidan, no importa tanto que litaralmente esten identicos:\n\nRFC: Debe coincidir entre Pedimento, Carta 3.1.8 y COVE.\nDomicilio fiscal: Debe coincidir entre Pedimento, Carta 3.1.8 (implícito) y Factura (importador).\nRazón social: Debe coincidir entre Pedimento, Carta 3.1.8 (implícito) y COVE.\nRegla de precedencia:\nSi la Carta 3.1.8 existe, sus datos tienen prioridad sobre Factura/COVE. Discrepancias grandes, se marcan como error.',
     contexts: {
       PROVIDED: {
         Pedimento: {

@@ -289,7 +289,7 @@ async function validateOtrosIncrementables(
     description:
       'Valida que el valor de otros incrementables declarado en el pedimento coincida con los documentos que lo avalan',
     prompt:
-      'Los otros incrementables son diversos cargos que deben coincidir con los documentos que los avalan. Si hay un valor en dólares de otros incrementables en la carta 318, factura o documento de transporte, se debe multiplicar por el tipo de cambio del pedimento para obtener el valor en pesos mexicanos y poder compararlo contra el valor declarado en el pedimento. Estos pueden incluir maniobras, cargos por agente, comisiones, y otros servicios especificados en la documentación.',
+      'Otros incrementables son los valores de algun tipo de servicio que no sea fletes, seguros o embalajes.',
     contexts: {
       PROVIDED: {
         Pedimento: {

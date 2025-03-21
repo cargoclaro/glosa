@@ -82,7 +82,7 @@ async function validateValorTotalDolares(
   carta318?: Carta318
 ) {
   // Extract total value from COVE
-  const valorTotalDolaresCove = cove.datos_mercancia[0]?.valor_total_dolares;
+  const valorTotalDolaresCove = cove.datos_mercancia?.reduce((sum, mercancia) => sum + (mercancia.valor_total_dolares || 0), 0);
   const observacionesCove = cove.observaciones || '';
   const invoiceMkdown = invoice?.markdown_representation;
   const carta318Mkdown = carta318?.markdown_representation;
