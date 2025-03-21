@@ -152,7 +152,7 @@ async function validateDatosGeneralesDestinatario(
     },
   } as const;
 
-  return await glosar(validation, traceId);
+  return await glosar(validation, traceId, 'o3-mini');
 }
 
 /**

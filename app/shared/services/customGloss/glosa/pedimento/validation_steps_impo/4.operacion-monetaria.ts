@@ -5,6 +5,7 @@ import type { TransportDocument } from '../../../data-extraction/mkdown_schemas/
 import type { Pedimento } from '../../../data-extraction/schemas';
 import { getExchangeRate } from '../../exchange-rate';
 import { glosar } from '../../validation-result';
+import { apendice14 } from '../../anexo-22/apendice-14';
 
 // TODO: Agregar DOF
 
@@ -83,6 +84,7 @@ async function validateValSeguros(
   transportDocument?: TransportDocument,
   carta318?: Carta318
 ) {
+  const incoterm = pedimento.datos_factura?.incoterm;
   const valSeguros = pedimento.incrementables?.valor_seguros;
   const precioPagadoValorComercial =
     pedimento.valores?.precio_pagado_valor_comercial;
@@ -97,7 +99,7 @@ async function validateValSeguros(
     description:
       'Valida que el valor asegurado declarado en el pedimento coincida con el valor comercial',
     prompt:
-      'El Val. Seguros es el valor que se asegura y debe ser igual al precio pagado / valor comercial del pedimento. Verifica si este valor está correctamente declarado comparando con la documentación disponible.',
+      'El Val. Seguros es el valor que se asegura y debe ser igual al precio pagado / valor comercial del pedimento. Verifica si este valor está correctamente declarado comparando con la documentación disponible. Ten en cuenta que los incoterms pueden afectar la inclusión de los seguros en el valor de aduana.',
     contexts: {
       PROVIDED: {
         Pedimento: {
@@ -109,6 +111,7 @@ async function validateValSeguros(
               value: precioPagadoValorComercial,
             },
             { name: 'Observaciones', value: observaciones },
+            { name: 'Incoterm', value: incoterm },
           ],
         },
         'Carta 318': {
@@ -121,6 +124,11 @@ async function validateValSeguros(
           data: [
             { name: 'Documento de transporte', value: transportDocmkdown },
           ],
+        },
+      },
+      EXTERNAL: {
+        'Apendice 14': {
+          data: [{ name: 'Apendice 14', value: apendice14 }],
         },
       },
     },
@@ -136,6 +144,7 @@ async function validateSeguros(
   transportDocument?: TransportDocument,
   carta318?: Carta318
 ) {
+  const incoterm = pedimento.datos_factura?.incoterm;
   const seguros = pedimento.incrementables?.seguros;
   const tipoCambio = pedimento.encabezado_del_pedimento?.tipo_cambio;
   const observaciones = pedimento.observaciones_a_nivel_pedimento;
@@ -148,7 +157,7 @@ async function validateSeguros(
     description:
       'Valida que el valor de seguros declarado en el pedimento coincida con los documentos que lo avalan',
     prompt:
-      'Los seguros son incrementables que deben coincidir con los documentos que los avalan. Si hay un valor en dólares de seguros en la carta 318, factura o documento de transporte, se debe multiplicar por el tipo de cambio del pedimento para obtener el valor en pesos mexicanos y poder compararlo contra el valor de seguros declarado en el pedimento.',
+      'Los seguros son incrementables que deben coincidir con los documentos que los avalan. Si hay un valor en dólares de seguros en la carta 318, factura o documento de transporte, se debe multiplicar por el tipo de cambio del pedimento para obtener el valor en pesos mexicanos y poder compararlo contra el valor de seguros declarado en el pedimento. Ten en cuenta que los incoterms pueden afectar la inclusión de los seguros en el valor de aduana.',
     contexts: {
       PROVIDED: {
         Pedimento: {
@@ -156,6 +165,7 @@ async function validateSeguros(
             { name: 'Seguros', value: seguros },
             { name: 'Tipo de cambio', value: tipoCambio },
             { name: 'Observaciones', value: observaciones },
+            { name: 'Incoterm', value: incoterm },
           ],
         },
         'Carta 318': {
@@ -168,6 +178,11 @@ async function validateSeguros(
           data: [
             { name: 'Documento de transporte', value: transportDocmkdown },
           ],
+        },
+      },
+      EXTERNAL: {
+        'Apendice 14': {
+          data: [{ name: 'Apendice 14', value: apendice14 }],
         },
       },
     },
@@ -183,6 +198,7 @@ async function validateFletes(
   transportDocument?: TransportDocument,
   carta318?: Carta318
 ) {
+  const incoterm = pedimento.datos_factura?.incoterm;
   const fletes = pedimento.incrementables?.fletes;
   const tipoCambio = pedimento.encabezado_del_pedimento?.tipo_cambio;
   const observaciones = pedimento.observaciones_a_nivel_pedimento;
@@ -203,6 +219,7 @@ async function validateFletes(
             { name: 'Fletes', value: fletes },
             { name: 'Tipo de cambio', value: tipoCambio },
             { name: 'Observaciones', value: observaciones },
+            { name: 'Incoterm', value: incoterm },
           ],
         },
         'Carta 318': {
@@ -215,6 +232,11 @@ async function validateFletes(
           data: [
             { name: 'Documento de transporte', value: transportDocmkdown },
           ],
+        },
+      },
+      EXTERNAL: {
+        'Apendice 14': {
+          data: [{ name: 'Apendice 14', value: apendice14 }],
         },
       },
     },
@@ -230,6 +252,7 @@ async function validateEmbalajes(
   transportDocument?: TransportDocument,
   carta318?: Carta318
 ) {
+  const incoterm = pedimento.datos_factura?.incoterm;
   const embalajes = pedimento.incrementables?.embalajes;
   const tipoCambio = pedimento.encabezado_del_pedimento?.tipo_cambio;
   const observaciones = pedimento.observaciones_a_nivel_pedimento;
@@ -242,7 +265,7 @@ async function validateEmbalajes(
     description:
       'Valida que el valor de embalajes declarado en el pedimento coincida con los documentos que lo avalan',
     prompt:
-      'Los embalajes son incrementables que deben coincidir con los documentos que los avalan. Si hay un valor en dólares de embalajes en la carta 318, factura o documento de transporte, se debe multiplicar por el tipo de cambio del pedimento para obtener el valor en pesos mexicanos y poder compararlo contra el valor de embalajes declarado en el pedimento.',
+      'Los embalajes son incrementables que deben coincidir con los documentos que los avalan. Si hay un valor en dólares de embalajes en la carta 318, factura o documento de transporte, se debe multiplicar por el tipo de cambio del pedimento para obtener el valor en pesos mexicanos y poder compararlo contra el valor de embalajes declarado en el pedimento. Ten en cuenta que los incoterms pueden afectar la inclusión de los embalajes en el valor de aduana.',
     contexts: {
       PROVIDED: {
         Pedimento: {
@@ -250,6 +273,7 @@ async function validateEmbalajes(
             { name: 'Embalajes', value: embalajes },
             { name: 'Tipo de cambio', value: tipoCambio },
             { name: 'Observaciones', value: observaciones },
+            { name: 'Incoterm', value: incoterm },
           ],
         },
         'Carta 318': {
@@ -262,6 +286,11 @@ async function validateEmbalajes(
           data: [
             { name: 'Documento de transporte', value: transportDocmkdown },
           ],
+        },
+      },
+      EXTERNAL: {
+        'Apendice 14': {
+          data: [{ name: 'Apendice 14', value: apendice14 }],
         },
       },
     },
@@ -277,6 +306,7 @@ async function validateOtrosIncrementables(
   transportDocument?: TransportDocument,
   carta318?: Carta318
 ) {
+  const incoterm = pedimento.datos_factura?.incoterm;
   const otrosIncrementables = pedimento.incrementables?.otros_incrementables;
   const tipoCambio = pedimento.encabezado_del_pedimento?.tipo_cambio;
   const observaciones = pedimento.observaciones_a_nivel_pedimento;
@@ -289,7 +319,7 @@ async function validateOtrosIncrementables(
     description:
       'Valida que el valor de otros incrementables declarado en el pedimento coincida con los documentos que lo avalan',
     prompt:
-      'Otros incrementables son los valores de algun tipo de servicio que no sea fletes, seguros o embalajes.',
+      'Otros incrementables son los valores de algun tipo de servicio que no sea fletes, seguros o embalajes. Ten en cuenta que los incoterms pueden afectar la inclusión de los otros incrementables en el valor de aduana.',
     contexts: {
       PROVIDED: {
         Pedimento: {
@@ -297,6 +327,7 @@ async function validateOtrosIncrementables(
             { name: 'Otros incrementables', value: otrosIncrementables },
             { name: 'Tipo de cambio', value: tipoCambio },
             { name: 'Observaciones', value: observaciones },
+            { name: 'Incoterm', value: incoterm },
           ],
         },
         'Carta 318': {
@@ -309,6 +340,11 @@ async function validateOtrosIncrementables(
           data: [
             { name: 'Documento de transporte', value: transportDocmkdown },
           ],
+        },
+      },
+      EXTERNAL: {
+        'Apendice 14': {
+          data: [{ name: 'Apendice 14', value: apendice14 }],
         },
       },
     },

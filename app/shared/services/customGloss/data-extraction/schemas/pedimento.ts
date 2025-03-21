@@ -235,42 +235,40 @@ export const pedimentoSchema = z.object({
     .describe("Two-letter text field ('SI' or 'NO')")
     .nullable(),
   datos_factura: z
-    .array(
-      z.object({
-        num_factura: z
-          .string()
-          .describe(
-            'The Mexican invoice number; alphanumeric; if none, leave blank'
-          )
-          .nullable(),
-        fecha_factura: z
-          .string()
-          .describe("Date in DD/MM/YYYY format (e.g., '07/05/2024')")
-          .nullable(),
-        incoterm: z
-          .string()
-          .describe("Three-letter code in uppercase (e.g., 'FCA')")
-          .nullable(),
-        moneda_factura: z
-          .string()
-          .describe("Three-letter currency code (e.g., 'USD')")
-          .nullable(),
-        valor_moneda_factura: z
-          .number()
-          .describe("Decimal number with 2 decimal places (e.g., '1068.75')")
-          .nullable(),
-        factor_moneda_factura: z
-          .number()
-          .describe("Decimal number with 8 decimal places (e.g., '1.00000000')")
-          .nullable(),
-        valor_dolares_factura: z
-          .number()
-          .describe('Value in USD with 2 decimal places')
-          .nullable(),
-      })
-    )
+    .object({
+      num_factura: z
+        .string()
+        .describe(
+          'The Mexican invoice number; alphanumeric; if none, leave blank'
+        )
+        .nullable(),
+      fecha_factura: z
+        .string()
+        .describe("Date in DD/MM/YYYY format (e.g., '07/05/2024')")
+        .nullable(),
+      incoterm: z
+        .string()
+        .describe("Three-letter code in uppercase (e.g., 'FCA')")
+        .nullable(),
+      moneda_factura: z
+        .string()
+        .describe("Three-letter currency code (e.g., 'USD')")
+        .nullable(),
+      valor_moneda_factura: z
+        .number()
+        .describe("Decimal number with 2 decimal places (e.g., '1068.75')")
+        .nullable(),
+      factor_moneda_factura: z
+        .number()
+        .describe("Decimal number with 8 decimal places (e.g., '1.00000000')")
+        .nullable(),
+      valor_dolares_factura: z
+        .number()
+        .describe('Value in USD with 2 decimal places')
+        .nullable(),
+    })
     .describe(
-      'Array of invoices associated with the pedimento. There can be more than one, but it always should have all of the values. There should be a box per invoice.'
+      'Invoice data associated with the pedimento'
     ),
   no_guia_embarque_id: z
     .string()
