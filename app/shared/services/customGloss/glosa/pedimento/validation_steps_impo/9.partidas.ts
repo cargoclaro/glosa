@@ -446,15 +446,10 @@ async function validateCalculosPartidas(
         Partidas: {
           data: [{ name: 'Partidas', value: partida }],
         },
-        Pedimento: {
-          data: [{ name: 'Liquidaciones', value: pedimento.liquidaciones }],
-        },
       },
       INFERRED: {
         Cálculos: {
           data: [
-            { name: 'Prorrateo', value: prorrateo },
-            { name: 'DTA calculado', value: dtaFinal },
             { name: 'Valor Aduana Calculado', value: valorAduanaCalculado },
             {
               name: 'Precio Unitario Calculado',
