@@ -22,7 +22,7 @@ async function validateTransportDocumentEntryDate(
     description:
       'Valida que la fecha del documento de transporte no sea posterior al pedimento',
     prompt:
-      'La fecha de entrada del documento de transporte ser anterior o igual a la fecha de entrada del pedimento. ',
+      'La fecha de entrada del documento de transporte debe ser anterior o igual a la fecha de entrada del pedimento. Es importante notar que la fecha de entrada no es la misma que la fecha de entrega en aeropuerto. La fecha de entrada se refiere a la fecha en que la mercancía ingresa al territorio nacional y se presenta ante la aduana.',
     contexts: {
       PROVIDED: {
         Pedimento: {
@@ -40,7 +40,7 @@ async function validateTransportDocumentEntryDate(
     },
   } as const;
 
-  return await glosar(validation, traceId);
+  return await glosar(validation, traceId, 'o3-mini');
 }
 
 async function validateTipoCambio(traceId: string, pedimento: Pedimento) {

@@ -278,7 +278,7 @@ async function validateMonedaYEquivalencia(
   const monedaCove = cove?.datos_mercancia?.[0]?.tipo_moneda;
   const valorDolaresPedimento =
     pedimento.datos_factura?.[0]?.valor_dolares_factura;
-  const valorDolaresCove = cove?.datos_mercancia?.[0]?.valor_total_dolares;
+  const valorDolaresCoveTotal = cove?.datos_mercancia?.reduce((sum, item) => sum + (item?.valor_total_dolares || 0), 0);
   const valorFactura = pedimento.datos_factura?.[0]?.valor_moneda_factura;
   const factorMonedaFactura =
     pedimento.datos_factura?.[0]?.factor_moneda_factura;
@@ -314,7 +314,7 @@ async function validateMonedaYEquivalencia(
         COVE: {
           data: [
             { name: 'Moneda', value: monedaCove },
-            { name: 'Valor en dólares', value: valorDolaresCove },
+            { name: 'Valor total en dólares', value: valorDolaresCoveTotal },
           ],
         },
         Factura: {

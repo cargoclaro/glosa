@@ -71,7 +71,11 @@ async function validateDomicilioProveedor(
     ? [
         domicilioCove.calle,
         domicilioCove.numero_exterior,
+        domicilioCove.numero_interior,
         domicilioCove.colonia,
+        domicilioCove.localidad,
+        domicilioCove.municipio,
+        domicilioCove.entidad_federativa,
         domicilioCove.codigo_postal,
         domicilioCove.pais,
       ]
@@ -169,7 +173,11 @@ async function validateDomicilioDestinatario(
     ? [
         domicilioCove.calle,
         domicilioCove.numero_exterior,
+        domicilioCove.numero_interior,
         domicilioCove.colonia,
+        domicilioCove.localidad,
+        domicilioCove.municipio,
+        domicilioCove.entidad_federativa,
         domicilioCove.codigo_postal,
         domicilioCove.pais,
       ]
