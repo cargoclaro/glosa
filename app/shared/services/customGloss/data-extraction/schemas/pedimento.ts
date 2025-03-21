@@ -175,6 +175,25 @@ export const pedimentoSchema = z.object({
 
       return parsedDate;
     }),
+  liquidaciones: z
+    .array(
+      z.object({
+        concepto: z
+          .string()
+          .describe('Concept code or name (e.g., "DTA", "PRV", "IVA", "IVA/PRV")')
+          .nullable(),
+        fp: z
+          .number()
+          .describe('Payment form code, usually a numeric value')
+          .nullable(),
+        importe: z
+          .number()
+          .describe('Amount to be paid for this concept in MXN')
+          .nullable(),
+      })
+    )
+    .describe('Array of liquidation entries showing taxes and fees to be paid')
+    .nullable(),
   identificadores_nivel_pedimento: z
     .object({
       clave_seccion_aduanera: z

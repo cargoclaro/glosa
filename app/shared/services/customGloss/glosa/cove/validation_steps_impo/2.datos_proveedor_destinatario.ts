@@ -211,7 +211,7 @@ async function validateDomicilioDestinatario(
     },
   } as const;
 
-  return await glosar(validation, traceId);
+  return await glosar(validation, traceId, 'o3-mini');
 }
 
 export const tracedChooseDocument = traceable(

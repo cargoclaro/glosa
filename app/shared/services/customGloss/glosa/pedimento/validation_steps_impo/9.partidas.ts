@@ -446,6 +446,9 @@ async function validateCalculosPartidas(
         Partidas: {
           data: [{ name: 'Partidas', value: partida }],
         },
+        Pedimento: {
+          data: [{ name: 'Liquidaciones', value: pedimento.liquidaciones }],
+        },
       },
       INFERRED: {
         Cálculos: {

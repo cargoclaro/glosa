@@ -23,13 +23,13 @@ async function validateMercancias(
 
   // Create a simplified view of COVE merchandise data
   const mercanciasCoveFormatted = datosMercanciaCove
-    ? {
-        descripcion: datosMercanciaCove[0]?.descripcion_mercancia,
-        cantidad: datosMercanciaCove[0]?.cantidad_umc,
-        unidadMedida: datosMercanciaCove[0]?.clave_umc,
-        valorUnitario: datosMercanciaCove[0]?.valor_unitario,
-        valorTotal: datosMercanciaCove[0]?.valor_total,
-      }
+    ? datosMercanciaCove.map(mercancia => ({
+        descripcion: mercancia?.descripcion_mercancia,
+        cantidad: mercancia?.cantidad_umc,
+        unidadMedida: mercancia?.clave_umc,
+        valorUnitario: mercancia?.valor_unitario,
+        valorTotal: mercancia?.valor_total,
+      }))
     : undefined;
 
   const validation = {
@@ -43,19 +43,9 @@ async function validateMercancias(
         cove: {
           data: [
             {
-              name: 'Descripción',
-              value: mercanciasCoveFormatted?.descripcion,
+              name: 'Datos de mercancías',
+              value: JSON.stringify(mercanciasCoveFormatted, null, 2),
             },
-            { name: 'Cantidad', value: mercanciasCoveFormatted?.cantidad },
-            {
-              name: 'Unidad de medida',
-              value: mercanciasCoveFormatted?.unidadMedida,
-            },
-            {
-              name: 'Valor unitario',
-              value: mercanciasCoveFormatted?.valorUnitario,
-            },
-            { name: 'Valor total', value: mercanciasCoveFormatted?.valorTotal },
           ],
         },
         carta318: {
