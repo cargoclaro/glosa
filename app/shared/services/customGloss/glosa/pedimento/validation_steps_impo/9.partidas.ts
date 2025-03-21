@@ -20,13 +20,15 @@ async function validateFraccionArancelaria(
   pedimento: Pedimento
 ) {
   // Extraer partidas con información de fracción arancelaria
-  const fraccion = partida.fraccion_y_nico || '';
+  const fraccion = partida.fraccion;
+  const nico = partida.nico;
+  const paisOrigenDestino = partida.p_o_d;
   const fechaDeEntrada = pedimento.fecha_entrada_presentacion;
   const tipoDeOperacion = pedimento.encabezado_del_pedimento.tipo_oper;
   let fraccionExiste = false;
   if (fechaDeEntrada && tipoDeOperacion && tipoDeOperacion !== 'TRA') {
     try {
-      await getFraccionInfo({ fraccion, fechaDeEntrada, tipoDeOperacion });
+      await getFraccionInfo({ fraccion, fechaDeEntrada, tipoDeOperacion, nico, clavePais: paisOrigenDestino });
       fraccionExiste = true;
     } catch (error) {
       console.error(error);
@@ -64,7 +66,9 @@ async function validateCoherenciaUMT(
 ) {
   // Extraer partidas con información de UMC
   const partidasUMT = partida.umt || '';
-  const fraccion = partida.fraccion_y_nico;
+  const fraccion = partida.fraccion;
+  const nico = partida.nico;
+  const paisOrigenDestino = partida.p_o_d;
   const fechaDeEntrada = pedimento.fecha_entrada_presentacion;
   const tipoDeOperacion = pedimento.encabezado_del_pedimento.tipo_oper;
   if (!fechaDeEntrada || !tipoDeOperacion || tipoDeOperacion === 'TRA') {
@@ -76,7 +80,7 @@ async function validateCoherenciaUMT(
     data: {
       arancel: { unidad_medida },
     },
-  } = await getFraccionInfo({ fraccion, fechaDeEntrada, tipoDeOperacion });
+  } = await getFraccionInfo({ fraccion, fechaDeEntrada, tipoDeOperacion, nico, clavePais: paisOrigenDestino });
   const validation = {
     name: 'Validación de unidad de medida de la tarifa',
     description:
@@ -314,7 +318,9 @@ async function validateTarifasArancelarias(
   partida: Partida,
   pedimento: Pedimento
 ) {
-  const fraccion = partida.fraccion_y_nico;
+  const fraccion = partida.fraccion;
+  const nico = partida.nico;
+  const paisOrigenDestino = partida.p_o_d;
   const fechaDeEntrada = pedimento.fecha_entrada_presentacion;
   const tipoDeOperacion = pedimento.encabezado_del_pedimento.tipo_oper;
   if (!fechaDeEntrada || !tipoDeOperacion || tipoDeOperacion === 'TRA') {
@@ -327,7 +333,7 @@ async function validateTarifasArancelarias(
       iva,
       extra: { ligie_arancel, ieps_tasas },
     },
-  } = await getFraccionInfo({ fraccion, fechaDeEntrada, tipoDeOperacion });
+  } = await getFraccionInfo({ fraccion, fechaDeEntrada, tipoDeOperacion, nico, clavePais: paisOrigenDestino });
 
   const tasasTaxFinder = {
     iva: iva?.valor_iva || 0,
