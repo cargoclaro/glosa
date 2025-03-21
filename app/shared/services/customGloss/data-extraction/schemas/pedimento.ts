@@ -106,13 +106,27 @@ export const pedimentoSchema = z.object({
     .describe('Importer information'),
   incrementables: z
     .object({
-      val_seguros: z.number().describe('Insurance value in MXN').nullable(),
-      seguros: z.number().describe('Insurance costs in MXN').nullable(),
-      fletes: z.number().describe('Freight costs in MXN').nullable(),
-      embalajes: z.number().describe('Packaging costs in MXN').nullable(),
+      valor_seguros: z
+        .number()
+        .describe(
+          'Aparece en el pedimento como "VAL. SEGUROS".'
+        )
+        .nullable(),
+      seguros: z
+        .number()
+        .describe('Aparece en el pedimento como "SEGUROS".')
+        .nullable(),
+      fletes: z
+        .number()
+        .describe('Aparece en el pedimento como "FLETES".')
+        .nullable(),
+      embalajes: z
+        .number()
+        .describe('Aparece en el pedimento como "EMBALAJES".')
+        .nullable(),
       otros_incrementables: z
         .number()
-        .describe('Other additional costs in MXN')
+        .describe('Aparece en el pedimento como "OTROS INCREMENTABLES".')
         .nullable(),
     })
     .describe('Additional costs to be added'),

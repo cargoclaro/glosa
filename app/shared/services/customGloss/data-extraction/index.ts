@@ -14,6 +14,7 @@ import {
 import { coveSchema, pedimentoSchema } from './schemas/';
 import { extractTextFromImage } from './vision';
 import { extractTextFromImageOpenAI } from './vision-openai';
+import { extractTextFromImageAnthropic } from './vision-anthropic';
 
 const documentToSchema = {
   factura: invoiceSchema,
@@ -98,7 +99,7 @@ async function extractTextFromPDFsParallel(
           traceId
         )
       : null,
-    extractTextFromImageOpenAI(
+    extractTextFromImageAnthropic(
       pedimento.originalFile,
       pedimento.documentType,
       documentToSchema.pedimento,
