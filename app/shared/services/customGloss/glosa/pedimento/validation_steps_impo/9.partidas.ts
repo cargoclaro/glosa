@@ -181,9 +181,9 @@ async function validatePaisVenta(
   const validation = {
     name: 'Validación del país de venta',
     description:
-      'Verificación de que el país de venta declarado en el pedimento coincida con el país de la dirección de facturación en los documentos soporte',
+      'Verificación de que el país de venta declarado en el pedimento coincida con el país de la dirección del proveedor en los documentos soporte',
     prompt:
-      'Validar que el país de venta en el pedimento coincida con el país de la dirección de facturación en la factura/carta 318 y/o el packing.',
+      'Validar que el país de venta en el pedimento coincida con el país de la dirección del proveedor en la factura/carta 318 y/o el packing.',
     contexts: {
       PROVIDED: {
         Pedimento: {
