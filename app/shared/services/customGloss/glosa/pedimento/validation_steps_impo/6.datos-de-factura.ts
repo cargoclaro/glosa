@@ -274,14 +274,14 @@ async function validateMonedaYEquivalencia(
   carta318?: Carta318,
   invoice?: Invoice
 ) {
-  const monedaPedimento = pedimento.datos_factura?.[0]?.moneda_factura;
+  const monedaPedimento = pedimento.datos_factura?.moneda_factura;
   const monedaCove = cove?.datos_mercancia?.[0]?.tipo_moneda;
   const valorDolaresPedimento =
-    pedimento.datos_factura?.[0]?.valor_dolares_factura;
+    pedimento.datos_factura?.valor_dolares_factura;
   const valorDolaresCoveTotal = cove?.datos_mercancia?.reduce((sum, item) => sum + (item?.valor_total_dolares || 0), 0);
-  const valorFactura = pedimento.datos_factura?.[0]?.valor_moneda_factura;
+  const valorFactura = pedimento.datos_factura?.valor_moneda_factura;
   const factorMonedaFactura =
-    pedimento.datos_factura?.[0]?.factor_moneda_factura;
+    pedimento.datos_factura?.factor_moneda_factura;
   const fechaEntrada = pedimento.fecha_entrada_presentacion;
 
   const carta318mkdown = carta318?.markdown_representation;
