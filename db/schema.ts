@@ -12,7 +12,9 @@ import {
   text,
   timestamp,
   uniqueIndex,
+  json,
 } from 'drizzle-orm/pg-core';
+import type { Cove, Pedimento } from '@/shared/services/customGloss/data-extraction/schemas';
 
 export const OperationStatus = pgEnum('OperationStatus', [
   'IN_PROGRESS',
@@ -49,6 +51,8 @@ export const CustomGloss = pgTable('CustomGloss', {
     .notNull()
     .default('IN_PROGRESS'),
   userId: text('userId').notNull(),
+  cove: json().$type<Cove>(),
+  pedimento: json().$type<Pedimento>(),
   createdAt: timestamp('createdAt', { precision: 3 }).notNull().defaultNow(),
 });
 
