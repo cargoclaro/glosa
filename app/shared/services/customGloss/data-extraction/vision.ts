@@ -27,7 +27,7 @@ export async function extractTextFromImage(
         content: [
           {
             type: 'text',
-            text: `El tipo de documento es ${documentType}. Transcribe la informacion de la imagen en formato markdown.`,
+            text: 'Transcribe la informacion de la imagen en formato markdown.',
           },
           {
             type: 'file',
