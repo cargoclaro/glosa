@@ -231,7 +231,7 @@ async function validatePaisOrigen(
     description:
       "Verificación de que el país de origen declarado en el pedimento coincida con la leyenda 'hecho en...' en los documentos soporte",
     prompt:
-      "Validar que el país de origen en el pedimento coincida con la leyenda 'hecho en...' en la factura o el packing. Si no se encuentra la leyenda, se debe imprimir una advertencia que diga que se busque en la mercancía fisica si tiene una leyenda que diga 'hecho en...'",
+      "Validar que el país de origen en el pedimento coincida con la leyenda 'hecho en...' en la carta 3.1.8, factura o el packing, teniendo en cuenta que la carta 3.1.8 tiene prioridad sobre los demás documentos. Si no se encuentra la leyenda, se debe imprimir una advertencia que diga que se busque en la mercancía fisica si tiene una leyenda que diga 'hecho en...'",
     contexts: {
       PROVIDED: {
         Pedimento: {
