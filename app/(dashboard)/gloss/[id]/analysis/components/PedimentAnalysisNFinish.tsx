@@ -76,7 +76,7 @@ const PedimentAnalysisNFinish = ({
 
   return (
     <>
-      <section className="sm:col-span-2">
+      <section className="sm:col-span-2 flex flex-col">
         <div className="mb-2 flex items-center justify-between gap-2">
           <h2 className="font-bold text-2xl text-gray-800">
             {documentSelected === 'PEDIMENTO' ? 'Pedimento' : 'COVE'}
@@ -114,7 +114,7 @@ const PedimentAnalysisNFinish = ({
           />
         )}
       </section>
-      <section className="col-span-1 flex flex-col gap-4 sm:col-span-3 lg:col-span-1">
+      <section className="col-span-1 flex flex-col pt-10 gap-4 sm:col-span-3 lg:col-span-1">
         <Analysis
           tabs={customGloss.tabs}
           setTabInfoSelected={setTabInfoSelected}
