@@ -62,16 +62,15 @@ const PedimentoViewer = ({
 
   // Transform liquidaciones from pedimento to match our component's expected structure
   const liquidacionData = {
-    conceptos: pedimento.liquidaciones?.map(item => ({
+    conceptos: pedimento.cuadro_de_liquidacion.liquidaciones?.map(item => ({
       concepto: item.concepto || '',
       fp: item.fp?.toString() || '0',
       importe: item.importe || 0,
     })) || [],
     totales: {
-      // Calculate totals based on liquidaciones
-      efectivo: pedimento.liquidaciones?.reduce((sum, item) => sum + (item.importe || 0), 0) || 0,
-      otros: 0,
-      total: pedimento.liquidaciones?.reduce((sum, item) => sum + (item.importe || 0), 0) || 0,
+      efectivo: pedimento.cuadro_de_liquidacion.totales?.efectivo || 0,
+      otros: pedimento.cuadro_de_liquidacion.totales?.otros || 0,
+      total: pedimento.cuadro_de_liquidacion.totales?.total || 0,
     },
   };
 

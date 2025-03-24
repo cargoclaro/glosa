@@ -175,25 +175,46 @@ export const pedimentoSchema = z.object({
 
       return parsedDate;
     }),
-  liquidaciones: z
-    .array(
-      z.object({
-        concepto: z
-          .string()
-          .describe('Concept code or name (e.g., "DTA", "PRV", "IVA", "IVA/PRV")')
-          .nullable(),
-        fp: z
-          .number()
-          .describe('Payment form code, usually a numeric value')
-          .nullable(),
-        importe: z
-          .number()
-          .describe('Amount to be paid for this concept in MXN')
-          .nullable(),
-      })
-    )
-    .describe('Array of liquidation entries showing taxes and fees to be paid')
-    .nullable(),
+  cuadro_de_liquidacion: z
+    .object({
+      liquidaciones: z
+        .array(
+          z.object({
+            concepto: z
+              .string()
+              .describe('Concept code or name (e.g., "DTA", "PRV", "IVA", "IVA/PRV")')
+              .nullable(),
+            fp: z
+              .number()
+              .describe('Payment form code, usually a numeric value')
+              .nullable(),
+            importe: z
+              .number()
+              .describe('Amount to be paid for this concept in MXN')
+              .nullable(),
+          })
+        )
+        .describe('Array of liquidation entries showing taxes and fees to be paid')
+        .nullable(),
+      totales: z
+        .object({
+          efectivo: z
+            .number()
+            .describe('Total amount to be paid in cash')
+            .nullable(),
+          otros: z
+            .number()
+            .describe('Total amount to be paid through other means')
+            .nullable(),
+          total: z
+            .number()
+            .describe('Grand total of all payments')
+            .nullable(),
+        })
+        .describe('Summary of payment totals')
+        .nullable(),
+    })
+    .describe('Complete liquidation table with entries and totals'),
   identificadores_nivel_pedimento: z
     .object({
       clave_seccion_aduanera: z
