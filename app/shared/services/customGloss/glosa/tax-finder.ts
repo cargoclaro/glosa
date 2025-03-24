@@ -97,7 +97,7 @@ export async function getFraccionInfo({
               clave_acuerdo: z.string(),
               claves_articulos: z.array(z.string()),
               descripcion: z.string(),
-              em_sanitaria_nom: z.string(),
+              em_sanitaria_nom: z.string().optional(),
             })
           )
           .optional(),
