@@ -59,7 +59,7 @@ const PedimentoProveedor: React.FC<PedimentoProveedorProps> = ({
     <div
       className={cn(
         "pedimento-section cursor-pointer",
-        "border-2",
+        "border-2 rounded-md overflow-hidden",
         getHighlightBorder('Datos de factura'),
         getHighlightFill('Datos de factura')
       )}

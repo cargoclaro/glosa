@@ -63,7 +63,7 @@ const PedimentoPartidas: React.FC<PedimentoPartidasProps> = ({
               key={index} 
               className={cn(
                 "mb-4 cursor-pointer",
-                "border-2",
+                "border-2 rounded-md overflow-hidden",
                 getHighlightBorder(partidaSection),
                 getHighlightFill(partidaSection)
               )}

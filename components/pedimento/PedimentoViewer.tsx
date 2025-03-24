@@ -287,31 +287,31 @@ const PedimentoViewer = ({
       </div>
       
       {/* Page navigation */}
-      <div className="container mx-auto px-2 py-1 flex justify-center items-center space-x-1 mt-0.5">
+      <div className="container mx-auto px-2 py-2 flex justify-center items-center space-x-2 mt-1">
         {/* First page button */}
         <Button 
           variant="outline" 
-          className="border border-gray-300 hover:bg-gray-100 transition-all duration-300 flex items-center py-0.5 h-6 text-[10px]"
+          className="border border-gray-300 hover:bg-gray-100 transition-all duration-300 flex items-center py-1 h-8 text-xs"
           onClick={goToFirstPage}
           disabled={!canGoPrev}
         >
-          <ChevronFirst className="h-2.5 w-2.5" />
+          <ChevronFirst className="h-3 w-3" />
         </Button>
 
         {/* Previous page button */}
         {canGoPrev && (
           <Button 
             variant="outline" 
-            className="border border-gray-300 hover:bg-gray-100 transition-all duration-300 flex items-center py-0.5 h-6 text-[10px]" 
+            className="border border-gray-300 hover:bg-gray-100 transition-all duration-300 flex items-center py-1 h-8 text-xs" 
             onClick={goToPrevPage}
           >
-            <ArrowLeft className="mr-0.5 h-2.5 w-2.5" />
+            <ArrowLeft className="mr-1 h-3 w-3" />
             Anterior
           </Button>
         )}
 
         {/* Page indicator */}
-        <span className="text-[10px] text-gray-600">
+        <span className="text-xs text-gray-600">
           Página {currentPage} de {totalPages}
         </span>
 
@@ -319,22 +319,22 @@ const PedimentoViewer = ({
         {canGoNext && (
           <Button 
             variant="default" 
-            className="bg-zinc-800 hover:bg-zinc-700 transition-all duration-300 flex items-center py-0.5 h-6 text-[10px]" 
+            className="bg-zinc-800 hover:bg-zinc-700 transition-all duration-300 flex items-center py-1 h-8 text-xs" 
             onClick={goToNextPage}
           >
             Siguiente
-            <ArrowRight className="ml-0.5 h-2.5 w-2.5" />
+            <ArrowRight className="ml-1 h-3 w-3" />
           </Button>
         )}
 
         {/* Last page button */}
         <Button 
           variant="outline" 
-          className="border border-gray-300 hover:bg-gray-100 transition-all duration-300 flex items-center py-0.5 h-6 text-[10px]"
+          className="border border-gray-300 hover:bg-gray-100 transition-all duration-300 flex items-center py-1 h-8 text-xs"
           onClick={goToLastPage}
           disabled={currentPage === totalPages}
         >
-          <ChevronLast className="h-2.5 w-2.5" />
+          <ChevronLast className="h-3 w-3" />
         </Button>
       </div>
     </div>

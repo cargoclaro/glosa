@@ -72,7 +72,7 @@ const PedimentoIdentificadores: React.FC<PedimentoIdentificadoresProps> = ({
     <div
       className={cn(
         "pedimento-section cursor-pointer",
-        "border-2",
+        "border-2 rounded-md overflow-hidden",
         getHighlightBorder('Clave de destino/origen'),
         getHighlightFill('Clave de destino/origen')
       )}

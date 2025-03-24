@@ -46,7 +46,7 @@ const PedimentoDecrementables: React.FC<PedimentoDecrementablesProps> = ({
     <div
       className={cn(
         "pedimento-section cursor-pointer",
-        "border-2",
+        "border-2 rounded-md overflow-hidden",
         getHighlightBorder('Operación monetaria'),
         getHighlightFill('Operación monetaria')
       )}

@@ -61,7 +61,7 @@ const PedimentoHeader: React.FC<PedimentoHeaderProps> = ({
       <div 
         className={cn(
           "grid grid-cols-12 gap-0 border-gray-400 border-b cursor-pointer",
-          "border-2",
+          "border-2 rounded-md overflow-hidden",
           getHighlightBorder('Número de pedimento'),
           getHighlightFill('Número de pedimento')
         )}
@@ -91,7 +91,7 @@ const PedimentoHeader: React.FC<PedimentoHeaderProps> = ({
         <div 
           className={cn(
             "col-span-2 grid grid-cols-2 cursor-pointer",
-            "border-2",
+            "border-2 rounded-md overflow-hidden",
             getHighlightBorder('Clave de destino/origen'),
             getHighlightFill('Clave de destino/origen')
           )}
@@ -109,7 +109,7 @@ const PedimentoHeader: React.FC<PedimentoHeaderProps> = ({
         <div 
           className={cn(
             "col-span-4 grid grid-cols-2 cursor-pointer",
-            "border-2",
+            "border-2 rounded-md overflow-hidden",
             getHighlightBorder('Operación monetaria'),
             getHighlightFill('Operación monetaria')
           )}
@@ -127,7 +127,7 @@ const PedimentoHeader: React.FC<PedimentoHeaderProps> = ({
         <div 
           className={cn(
             "col-span-4 grid grid-cols-2 cursor-pointer",
-            "border-2",
+            "border-2 rounded-md overflow-hidden",
             getHighlightBorder('Pesos y bultos'),
             getHighlightFill('Pesos y bultos')
           )}
@@ -156,7 +156,7 @@ const PedimentoHeader: React.FC<PedimentoHeaderProps> = ({
         <div 
           className={cn(
             "col-span-6 border-gray-400 border-r cursor-pointer",
-            "border-2",
+            "border-2 rounded-md overflow-hidden",
             getHighlightBorder('Datos del transporte'),
             getHighlightFill('Datos del transporte')
           )}
@@ -191,7 +191,7 @@ const PedimentoHeader: React.FC<PedimentoHeaderProps> = ({
         <div 
           className={cn(
             "col-span-6 cursor-pointer",
-            "border-2",
+            "border-2 rounded-md overflow-hidden",
             getHighlightBorder('Operación monetaria'),
             getHighlightFill('Operación monetaria')
           )}
