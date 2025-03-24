@@ -85,10 +85,7 @@ const PedimentAnalysisNFinish = ({
             onValueChange={setDocumentSelected}
             className="w-full"
           >
-            <div className="flex items-center justify-between gap-2">
-              <h2 className="font-bold text-2xl text-gray-800">
-                {documentSelected === 'PEDIMENTO' ? 'Pedimento' : 'COVE'}
-              </h2>
+            <div className="flex justify-center">
               <TabsList>
                 <TabsTrigger value="PEDIMENTO">Pedimento</TabsTrigger>
                 <TabsTrigger value="COVE" disabled={!customGloss.cove}>COVE</TabsTrigger>
