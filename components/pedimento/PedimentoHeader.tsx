@@ -1,6 +1,7 @@
 import type React from 'react';
 import type { Pedimento } from '@/shared/services/customGloss/data-extraction/schemas';
 import type { CustomGlossTabTable } from '~/db/schema';
+import { cn } from '@/shared/utils/cn';
 
 interface PedimentoHeaderProps {
   pedimento: Pedimento;
@@ -27,6 +28,22 @@ const PedimentoHeader: React.FC<PedimentoHeaderProps> = ({
     }).format(num);
   };
 
+  // Helper functions to determine highlight styles
+  const getHighlightBorder = (section: string) => {
+    const tab = tabs.find(tab => tab.name === section);
+    return tab?.isCorrect || tab?.isVerified 
+      ? 'border-green-500' 
+      : 'border-yellow-400';
+  };
+
+  const getHighlightFill = (section: string) => {
+    if (tabInfoSelected.name !== section) return '';
+    
+    return tabInfoSelected.isCorrect || tabInfoSelected.isVerified 
+      ? 'bg-green-100/50' 
+      : 'bg-yellow-100/50';
+  };
+
   if (page !== 1) {
     return null; // Don't show header on page 2
   }
@@ -40,7 +57,16 @@ const PedimentoHeader: React.FC<PedimentoHeaderProps> = ({
         <div className="pedimento-section-title col-span-12 text-[11px] py-0.5">PEDIMENTO</div>
       </div>
 
-      <div className="grid grid-cols-12 gap-0 border-gray-400 border-b">
+      {/* Número de Pedimento Section */}
+      <div 
+        className={cn(
+          "grid grid-cols-12 gap-0 border-gray-400 border-b cursor-pointer",
+          "border-2",
+          getHighlightBorder('Número de pedimento'),
+          getHighlightFill('Número de pedimento')
+        )}
+        onClick={() => onClick('Número de pedimento')}
+      >
         <div className="pedimento-cell pedimento-label col-span-3 py-0.5 text-[10px]">
           NUM. PEDIMENTO:
         </div>
@@ -59,35 +85,83 @@ const PedimentoHeader: React.FC<PedimentoHeaderProps> = ({
         </div>
       </div>
 
+      {/* Destino and Operación Monetaria Section */}
       <div className="grid grid-cols-12 gap-0 border-gray-400 border-b">
-        <div className="pedimento-cell pedimento-label col-span-1 py-0.5 text-[10px]">
-          DESTINO:
+        {/* Destino/Origen */}
+        <div 
+          className={cn(
+            "col-span-2 grid grid-cols-2 cursor-pointer",
+            "border-2",
+            getHighlightBorder('Clave de destino/origen'),
+            getHighlightFill('Clave de destino/origen')
+          )}
+          onClick={() => onClick('Clave de destino/origen')}
+        >
+          <div className="pedimento-cell pedimento-label col-span-1 py-0.5 text-[10px]">
+            DESTINO:
+          </div>
+          <div className="pedimento-cell pedimento-value col-span-1 py-0.5 text-[10px]">
+            {pedimento.encabezado_del_pedimento.destino_origen}
+          </div>
         </div>
-        <div className="pedimento-cell pedimento-value col-span-1 py-0.5 text-[10px]">
-          {pedimento.encabezado_del_pedimento.destino_origen}
+        
+        {/* Operación Monetaria - Tipo Cambio */}
+        <div 
+          className={cn(
+            "col-span-4 grid grid-cols-2 cursor-pointer",
+            "border-2",
+            getHighlightBorder('Operación monetaria'),
+            getHighlightFill('Operación monetaria')
+          )}
+          onClick={() => onClick('Operación monetaria')}
+        >
+          <div className="pedimento-cell pedimento-label col-span-1 py-0.5 text-[10px]">
+            TIPO CAMBIO:
+          </div>
+          <div className="pedimento-cell pedimento-value col-span-1 py-0.5 text-[10px]">
+            {pedimento.encabezado_del_pedimento.tipo_cambio?.toFixed(5) || '-'}
+          </div>
         </div>
-        <div className="pedimento-cell pedimento-label col-span-2 py-0.5 text-[10px]">
-          TIPO CAMBIO:
+        
+        {/* Pesos y Bultos - Peso Bruto */}
+        <div 
+          className={cn(
+            "col-span-4 grid grid-cols-2 cursor-pointer",
+            "border-2",
+            getHighlightBorder('Pesos y bultos'),
+            getHighlightFill('Pesos y bultos')
+          )}
+          onClick={() => onClick('Pesos y bultos')}
+        >
+          <div className="pedimento-cell pedimento-label col-span-1 py-0.5 text-[10px]">
+            PESO BRUTO:
+          </div>
+          <div className="pedimento-cell pedimento-value col-span-1 py-0.5 text-[10px]">
+            {pedimento.encabezado_del_pedimento.peso_bruto?.toFixed(3) || '-'}
+          </div>
         </div>
-        <div className="pedimento-cell pedimento-value col-span-2 py-0.5 text-[10px]">
-          {pedimento.encabezado_del_pedimento.tipo_cambio?.toFixed(5) || '-'}
-        </div>
-        <div className="pedimento-cell pedimento-label col-span-2 py-0.5 text-[10px]">
-          PESO BRUTO:
-        </div>
-        <div className="pedimento-cell pedimento-value col-span-2 py-0.5 text-[10px]">
-          {pedimento.encabezado_del_pedimento.peso_bruto?.toFixed(3) || '-'}
-        </div>
-        <div className="pedimento-cell pedimento-label col-span-1 py-0.5 text-[10px]">
-          ADUANA E/S:
-        </div>
-        <div className="pedimento-cell pedimento-value col-span-1 py-0.5 text-[10px]">
-          {pedimento.encabezado_del_pedimento.aduana_entrada_salida}
+        
+        <div className="col-span-2 grid grid-cols-2">
+          <div className="pedimento-cell pedimento-label col-span-1 py-0.5 text-[10px]">
+            ADUANA E/S:
+          </div>
+          <div className="pedimento-cell pedimento-value col-span-1 py-0.5 text-[10px]">
+            {pedimento.encabezado_del_pedimento.aduana_entrada_salida}
+          </div>
         </div>
       </div>
 
       <div className="grid grid-cols-12 gap-0">
-        <div className="col-span-6 border-gray-400 border-r">
+        {/* Transporte section */}
+        <div 
+          className={cn(
+            "col-span-6 border-gray-400 border-r cursor-pointer",
+            "border-2",
+            getHighlightBorder('Datos del transporte'),
+            getHighlightFill('Datos del transporte')
+          )}
+          onClick={() => onClick('Datos del transporte')}
+        >
           <div className="pedimento-section-title text-[11px] py-0.5">MEDIOS DE TRANSPORTE</div>
           <div className="grid grid-cols-3 gap-0 border-gray-400 border-b">
             <div className="pedimento-cell pedimento-label text-center py-0.5 text-[10px]">
@@ -112,7 +186,17 @@ const PedimentoHeader: React.FC<PedimentoHeaderProps> = ({
             </div>
           </div>
         </div>
-        <div className="col-span-6">
+        
+        {/* Valor section */}
+        <div 
+          className={cn(
+            "col-span-6 cursor-pointer",
+            "border-2",
+            getHighlightBorder('Operación monetaria'),
+            getHighlightFill('Operación monetaria')
+          )}
+          onClick={() => onClick('Operación monetaria')}
+        >
           <div className="grid grid-cols-2 gap-0 border-gray-400 border-b">
             <div className="pedimento-cell pedimento-label py-0.5 text-[10px]">VALOR DOLARES:</div>
             <div className="pedimento-cell pedimento-value text-right py-0.5 text-[10px]">

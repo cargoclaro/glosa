@@ -1,5 +1,6 @@
 import type React from 'react';
 import type { CustomGlossTabTable } from '~/db/schema';
+import { cn } from '@/shared/utils/cn';
 
 interface PedimentoImportadorProps {
   datosImportador: {
@@ -19,10 +20,32 @@ const PedimentoImportador: React.FC<PedimentoImportadorProps> = ({
   onClick = () => {},
   tabInfoSelected = { name: '', isCorrect: false, isVerified: false },
 }) => {
+  // Helper functions to determine highlight styles
+  const getHighlightBorder = (section: string) => {
+    const tab = tabs.find(tab => tab.name === section);
+    return tab?.isCorrect || tab?.isVerified 
+      ? 'border-green-500' 
+      : 'border-yellow-400';
+  };
+
+  const getHighlightFill = (section: string) => {
+    if (tabInfoSelected.name !== section) return '';
+    
+    return tabInfoSelected.isCorrect || tabInfoSelected.isVerified 
+      ? 'bg-green-100/50' 
+      : 'bg-yellow-100/50';
+  };
+
   return (
     <div
-      className="pedimento-section"
+      className={cn(
+        "pedimento-section cursor-pointer",
+        "border-2",
+        getHighlightBorder('Datos de factura'),
+        getHighlightFill('Datos de factura')
+      )}
       style={{ '--animation-order': 4 } as React.CSSProperties}
+      onClick={() => onClick('Datos de factura')}
     >
       <div className="grid grid-cols-1 gap-0">
         <div className="pedimento-section-title text-[11px] py-0.5">

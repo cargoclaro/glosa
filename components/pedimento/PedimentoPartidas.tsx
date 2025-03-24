@@ -1,6 +1,7 @@
 import type React from 'react';
 import type { Partida } from '@/shared/services/customGloss/data-extraction/schemas';
 import type { CustomGlossTabTable } from '~/db/schema';
+import { cn } from '@/shared/utils/cn';
 
 interface PedimentoPartidasProps {
   partidas: Partida[];
@@ -19,6 +20,22 @@ const PedimentoPartidas: React.FC<PedimentoPartidasProps> = ({
     return null;
   }
 
+  // Helper functions to determine highlight styles
+  const getHighlightBorder = (section: string) => {
+    const tab = tabs.find(tab => tab.name === section);
+    return tab?.isCorrect || tab?.isVerified 
+      ? 'border-green-500' 
+      : 'border-yellow-400';
+  };
+
+  const getHighlightFill = (section: string) => {
+    if (tabInfoSelected.name !== section) return '';
+    
+    return tabInfoSelected.isCorrect || tabInfoSelected.isVerified 
+      ? 'bg-green-100/50' 
+      : 'bg-yellow-100/50';
+  };
+
   const formatNumber = (num: number | null) => {
     if (num === null) return '-';
     return new Intl.NumberFormat('es-MX', {
@@ -29,8 +46,14 @@ const PedimentoPartidas: React.FC<PedimentoPartidasProps> = ({
 
   return (
     <div
-      className="pedimento-section"
+      className={cn(
+        "pedimento-section cursor-pointer",
+        "border-2",
+        getHighlightBorder('Partidas'),
+        getHighlightFill('Partidas')
+      )}
       style={{ '--animation-order': 4 } as React.CSSProperties}
+      onClick={() => onClick('Partidas')}
     >
       <div className="border border-gray-400">
         <div className="border-gray-400 border-b bg-gray-300 py-0.5 text-center font-bold text-[9px] uppercase">
