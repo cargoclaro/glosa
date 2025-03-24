@@ -48,10 +48,9 @@ export function CoveMerchandise({ cove, pageItems }: CoveMerchandiseProps) {
 
           {/* Merchandise Data */}
           <div className="p-2 border-b">
-            <h3 className="text-sm font-semibold mb-1">Datos de la mercancía</h3>
-
             {itemsToDisplay.map((item, index) => (
-              <div key={pageItems[index]} className="mb-2">
+              <div key={pageItems[index]} className={index < itemsToDisplay.length - 1 ? "mb-6" : "mb-2"}>
+                <h3 className="text-sm font-semibold mb-1">Datos de la mercancía</h3>
                 <table className="w-full border-collapse">
                   <tbody>
                     {/* First row - header for description spans two columns */}
