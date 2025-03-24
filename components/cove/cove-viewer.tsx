@@ -91,13 +91,15 @@ export function CoveViewer({ cove }: { cove: Cove }) {
   // Get current page number and total pages for display
   const getCurrentPageInfo = () => {
     let currentPage = 1; // Start with header = page 1
-    // The first merchandise item is on the recipient page, so we need one less merchandise page
-    let totalPages = 2 + (totalMerchandisePages - 1 > 0 ? totalMerchandisePages - 1 : 0);
+    // Total pages is 2 (header + recipient) plus the number of merchandise pages
+    let totalPages = 2 + totalMerchandisePages;
     
     if (currentPageType === 'recipient') currentPage = 2;
-    // Merchandise pages start at 3, but we need to add (merchandisePage + 1) to account for 1-indexing
-    // and also subtract 1 because the first merchandise item is on the recipient page
+    // Merchandise pages start at 3 (after header and recipient)
     else if (currentPageType === 'merchandise') currentPage = 3 + merchandisePage;
+    
+    // Make sure we don't show a current page number higher than total pages
+    if (currentPage > totalPages) currentPage = totalPages;
     
     return { currentPage, totalPages };
   };
