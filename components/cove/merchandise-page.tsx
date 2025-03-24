@@ -33,19 +33,8 @@ export function CoveMerchandise({
       : 'bg-yellow-100/50';
   };
 
-  // Create a 10x multiplied version of the merchandise items for testing pagination
-  const multipliedMerchandiseItems = () => {
-    if (!cove.datos_mercancia?.length) return [];
-    const repeatedItems = [];
-    for (let i = 0; i < 10; i++) {
-      repeatedItems.push(...cove.datos_mercancia);
-    }
-    // Skip the first item since it's displayed on the recipient page
-    return repeatedItems.slice(1);
-  };
-  
-  // Create all multiplied items once
-  const allItems = multipliedMerchandiseItems();
+  // Get all merchandise items except the first one (which is displayed on the recipient page)
+  const allItems = cove.datos_mercancia?.slice(1) || [];
   
   // Only render merchandise items on the current page
   // Filter out undefined items to prevent runtime errors

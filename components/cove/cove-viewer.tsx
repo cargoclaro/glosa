@@ -28,40 +28,35 @@ export function CoveViewer({
   const [currentPageType, setCurrentPageType] = useState<PageType>('header');
   const [merchandisePage, setMerchandisePage] = useState<number>(0); // For merchandise subpages
 
-  // Multiply merchandise items by 10 for testing pagination
-  const multipliedMerchandiseItems = useMemo(() => {
+  // Get merchandise items, skipping the first one which is displayed on the recipient page
+  const merchandiseItems = useMemo(() => {
     if (!cove.datos_mercancia?.length) return [];
-    // Create an array with 10x the original items by repeating the original items
-    const repeatedItems = [];
-    for (let i = 0; i < 10; i++) {
-      repeatedItems.push(...cove.datos_mercancia);
-    }
     // Skip the first item since it's displayed on the recipient page
-    return repeatedItems.slice(1);
+    return cove.datos_mercancia.slice(1);
   }, [cove.datos_mercancia]);
 
   // Calculate total number of merchandise pages needed
   const totalMerchandisePages = useMemo(() => {
-    if (!multipliedMerchandiseItems.length) return 0;
-    return Math.ceil(multipliedMerchandiseItems.length / ITEMS_PER_PAGE);
-  }, [multipliedMerchandiseItems]);
+    if (!merchandiseItems.length) return 0;
+    return Math.ceil(merchandiseItems.length / ITEMS_PER_PAGE);
+  }, [merchandiseItems]);
 
   // Calculate which items should be displayed on current merchandise page
   const currentMerchandiseItems = useMemo(() => {
-    if (!multipliedMerchandiseItems.length) return [];
+    if (!merchandiseItems.length) return [];
     
     const startIndex = merchandisePage * ITEMS_PER_PAGE;
     
     // Make sure we don't try to display items past the end of the array
-    if (startIndex >= multipliedMerchandiseItems.length) {
+    if (startIndex >= merchandiseItems.length) {
       return []; // Return empty array if we're past the end
     }
     
-    const endIndex = Math.min(startIndex + ITEMS_PER_PAGE, multipliedMerchandiseItems.length);
+    const endIndex = Math.min(startIndex + ITEMS_PER_PAGE, merchandiseItems.length);
     
-    // Return indices from our multiplied array
+    // Return indices from our array
     return Array.from({ length: endIndex - startIndex }, (_, i) => startIndex + i);
-  }, [multipliedMerchandiseItems, merchandisePage]);
+  }, [merchandiseItems, merchandisePage]);
 
   // Navigation functions
   const goToNextPage = () => {
