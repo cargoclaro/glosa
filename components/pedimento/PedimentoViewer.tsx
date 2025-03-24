@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { cn } from '~/lib/utils';
 import type { Pedimento } from '@/shared/services/customGloss/data-extraction/schemas';
 import PedimentoContenedores from './PedimentoContenedores';
@@ -29,19 +29,50 @@ const PedimentoViewer = ({
   onClick = () => {},
   tabInfoSelected = { name: '', isCorrect: false, isVerified: false }
 }: PedimentoViewerProps) => {
-  const [activeTab, setActiveTab] = useState<'page1' | 'page2'>('page1');
-  const totalPages = 2;
+  // Constants for partidas pagination
+  const PARTIDAS_PER_PAGE = 2;
+  
+  // State for active page
+  const [activeTab, setActiveTab] = useState<string>('page1');
+  
+  // Calculate total pages based on partidas length
+  const totalPartidasPages = useMemo(() => {
+    if (!pedimento.partidas || pedimento.partidas.length === 0) return 0;
+    return Math.ceil(pedimento.partidas.length / PARTIDAS_PER_PAGE);
+  }, [pedimento.partidas]);
+  
+  // Calculate total pages (base pages + partida pages)
+  const totalPages = 2 + (totalPartidasPages > 0 ? totalPartidasPages - 1 : 0);
+  
+  // Get current page number
+  const currentPage = useMemo(() => {
+    if (activeTab === 'page1') return 1;
+    if (activeTab === 'page2') return 2;
+    // For partida pages (page3, page4, etc.)
+    const pageNum = parseInt(activeTab.replace('page', ''));
+    return pageNum;
+  }, [activeTab]);
+  
+  // Get current partidas for display based on current page
+  const currentPartidas = useMemo(() => {
+    if (!pedimento.partidas || pedimento.partidas.length === 0) return [];
+    if (currentPage <= 2) return pedimento.partidas.slice(0, PARTIDAS_PER_PAGE);
+    
+    const startIdx = PARTIDAS_PER_PAGE + (currentPage - 3) * PARTIDAS_PER_PAGE;
+    const endIdx = startIdx + PARTIDAS_PER_PAGE;
+    return pedimento.partidas.slice(startIdx, endIdx);
+  }, [pedimento.partidas, currentPage]);
   
   // Navigation functions
   const goToNextPage = () => {
-    if (activeTab === 'page1') {
-      setActiveTab('page2');
+    if (currentPage < totalPages) {
+      setActiveTab(`page${currentPage + 1}`);
     }
   };
 
   const goToPrevPage = () => {
-    if (activeTab === 'page2') {
-      setActiveTab('page1');
+    if (currentPage > 1) {
+      setActiveTab(`page${currentPage - 1}`);
     }
   };
 
@@ -50,15 +81,12 @@ const PedimentoViewer = ({
   };
 
   const goToLastPage = () => {
-    setActiveTab('page2');
+    setActiveTab(`page${totalPages}`);
   };
 
   // Determine if next/prev buttons should be enabled
-  const canGoNext = activeTab === 'page1';
-  const canGoPrev = activeTab === 'page2';
-  
-  // Get current page number for display
-  const currentPage = activeTab === 'page1' ? 1 : 2;
+  const canGoNext = currentPage < totalPages;
+  const canGoPrev = currentPage > 1;
 
   // Transform liquidaciones from pedimento to match our component's expected structure
   const liquidacionData = {
@@ -78,12 +106,12 @@ const PedimentoViewer = ({
     <div className={cn('flex w-full flex-col overflow-hidden relative', className)}>
       <div className="glass-card mx-auto w-full max-w-4xl overflow-hidden rounded-xl shadow-xl transition-all duration-500">
         <div className="overflow-x-auto p-3">
-          {activeTab === 'page1' && (
+          {currentPage === 1 && (
             <div className="flex w-full flex-col gap-2">
               <div className="w-full">
                 <PedimentoHeader
                   pedimento={pedimento}
-                  page={1}
+                  page={currentPage}
                   totalPages={totalPages}
                   tabs={tabs}
                   onClick={onClick}
@@ -172,7 +200,7 @@ const PedimentoViewer = ({
             </div>
           )}
 
-          {activeTab === 'page2' && (
+          {currentPage === 2 && (
             <div className="flex w-full flex-col gap-2">
               <div className="w-full">
                 <PedimentoProveedor
@@ -218,16 +246,41 @@ const PedimentoViewer = ({
                   </div>
                 </div>
               </div>
-              {pedimento.partidas && (
+              {/* Show only first batch of partidas on page 2 */}
+              {pedimento.partidas && pedimento.partidas.length > 0 && (
                 <div className="w-full">
                   <PedimentoPartidas 
-                    partidas={pedimento.partidas}
+                    partidas={currentPartidas}
                     tabs={tabs}
                     onClick={onClick}
                     tabInfoSelected={tabInfoSelected}
                   />
                 </div>
               )}
+            </div>
+          )}
+          
+          {/* Additional pages for partidas (page 3 and beyond) */}
+          {currentPage > 2 && pedimento.partidas && (
+            <div className="flex w-full flex-col gap-2">
+              <div className="w-full">
+                <PedimentoHeader
+                  pedimento={pedimento}
+                  page={currentPage}
+                  totalPages={totalPages}
+                  tabs={tabs}
+                  onClick={onClick}
+                  tabInfoSelected={tabInfoSelected}
+                />
+              </div>
+              <div className="w-full">
+                <PedimentoPartidas 
+                  partidas={currentPartidas}
+                  tabs={tabs}
+                  onClick={onClick}
+                  tabInfoSelected={tabInfoSelected}
+                />
+              </div>
             </div>
           )}
         </div>
