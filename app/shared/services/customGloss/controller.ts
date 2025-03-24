@@ -4,7 +4,6 @@ import { randomUUID } from 'node:crypto';
 import { config } from 'dotenv';
 import { and, eq } from 'drizzle-orm';
 import { Langfuse } from 'langfuse';
-import { traceable } from 'langsmith/traceable';
 import { api } from 'lib/trpc';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
@@ -110,48 +109,6 @@ async function updateTabWithCustomGlossId({
     .returning();
 }
 
-const runGlosa = traceable(
-  async (
-    classifications: Partial<
-      Record<
-        DocumentType,
-        UploadedFileData & { originalFile: File; documentType: DocumentType }
-      >
-    >,
-    traceId: string
-  ) => {
-    const documents = await extractTextFromPDFs(classifications, traceId);
-    const { pedimento, cove } = documents;
-    if (!pedimento || !cove) {
-      throw new Error(
-        'El pedimento y el cove son obligatorios para realizar la glosa electrónica.'
-      );
-    }
-    const operationType = pedimento.encabezado_del_pedimento?.tipo_oper;
-    langfuse.event({
-      traceId,
-      name: 'Validation Steps',
-    });
-    if (operationType === 'IMP') {
-      return {
-        gloss: await glosaImpo({ ...documents, traceId }),
-        importerName: pedimento.datos_importador?.razon_social,
-      };
-    }
-    if (operationType === 'EXP') {
-      return {
-        gloss: await glosaExpo({ ...documents, traceId }),
-        importerName: pedimento.datos_importador?.razon_social,
-      };
-    }
-    throw new Error(`El tipo de operación ${operationType} no es válido.`);
-  },
-  {
-    name: 'runGlosa',
-    project_name: 'glosa',
-  }
-);
-
 export const analysis = api
   .input(
     zfd.formData({
@@ -191,11 +148,25 @@ export const analysis = api
         >
       );
 
-      // Only use this for testing the migration from the python backend
-      const { gloss, importerName } = await runGlosa(
-        groupedClassifications,
-        parentTraceId
-      );
+      const documents = await extractTextFromPDFs(groupedClassifications, parentTraceId);
+      const { pedimento, cove } = documents;
+      if (!pedimento || !cove) {
+        throw new Error(
+          'El pedimento y el cove son obligatorios para realizar la glosa electrónica.'
+        );
+      }
+      const operationType = pedimento.encabezado_del_pedimento?.tipo_oper;
+      const importerName = pedimento.datos_importador?.razon_social;
+      langfuse.event({
+        traceId: parentTraceId,
+        name: 'Validation Steps',
+      });
+      let gloss = null;
+      if (operationType === 'IMP') {
+        gloss = await glosaImpo({ ...documents, traceId: parentTraceId });
+      } else {
+        gloss = await glosaExpo({ ...documents, traceId: parentTraceId });
+      }
 
       const [newCustomGloss] = await db
         .insert(CustomGloss)
@@ -206,6 +177,7 @@ export const analysis = api
           moneySaved: 1000,
           importerName:
             importerName ?? 'No se encontro la razon social del importador',
+          cove: cove,
         })
         .returning();
 

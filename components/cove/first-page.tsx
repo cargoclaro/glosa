@@ -60,7 +60,7 @@ export function CoveFirstPage({ cove }: { cove: Cove }) {
                     <p>{cove.tipo_figura || "—"}</p>
                   </div>
                   <div className="p-2">
-                    <p>{cove.fecha_expedicion || "—"}</p>
+                    <p>{JSON.stringify(cove.fecha_expedicion) || "—"}</p>
                   </div>
                 </div>
 

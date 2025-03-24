@@ -234,17 +234,7 @@ export function CoveDetails({ cove }: { cove: Cove }) {
             </div>
           )}
 
-          {/* Navigation */}
-          <div className="p-4 border-b">
-            <div className="flex flex-wrap justify-center items-center gap-4">
-              <Link to="/">
-                <Button variant="outline" className="border border-gray-300 hover:bg-gray-100 transition-all duration-300 flex items-center">
-                  <ArrowLeft className="mr-2 h-4 w-4" />
-                  Volver
-                </Button>
-              </Link>
-            </div>
-          </div>
+          {/* No navigation buttons here - moved to parent component */}
 
           {/* Footer */}
           <footer className="bg-gray-200 p-5 flex items-center justify-center">

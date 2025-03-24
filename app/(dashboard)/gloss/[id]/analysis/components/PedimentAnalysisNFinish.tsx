@@ -13,6 +13,8 @@ import type {
   CustomGlossTabValidationStepResources,
 } from '~/db/schema';
 import { Analysis, Pediment, SavedNFinish } from '.';
+import { CoveViewer } from '~/components/cove/index';
+import type { Cove } from '@/shared/services/customGloss/data-extraction/schemas';
 
 type TabValidation = InferSelectModel<typeof CustomGlossTabValidationStep> & {
   resources: InferSelectModel<typeof CustomGlossTabValidationStepResources>[];
@@ -37,6 +39,7 @@ interface IPedimentAnalysisNFinish {
   moneySaved: number;
   tabs: tabs[];
   files: CustomGlossFileTable[];
+  cove: Cove | null;
 }
 
 export interface ITabInfoSelected {
@@ -89,18 +92,22 @@ const PedimentAnalysisNFinish = ({
             Cambiar a {documentSelected === 'PEDIMENTO' ? 'COVE' : 'Pedimento'}
           </button>
         </div>
-        <Pediment
-          tabs={customGloss.tabs}
-          onClick={handleFunction}
-          tabInfoSelected={tabInfoSelected}
-          document={
-            customGloss.files.find(
-              (doc) =>
-                doc.documentType?.toLowerCase() ===
-                documentSelected.toLowerCase()
-            )?.url || ''
-          }
-        />
+        {documentSelected === 'PEDIMENTO' || !customGloss.cove ? (
+          <Pediment
+            tabs={customGloss.tabs}
+            onClick={handleFunction}
+            tabInfoSelected={tabInfoSelected}
+            document={
+              customGloss.files.find(
+                (doc) =>
+                  doc.documentType?.toLowerCase() ===
+                  documentSelected.toLowerCase()
+              )?.url || ''
+              }
+          />
+        ) : (
+          <CoveViewer cove={customGloss.cove} />
+        )}
       </section>
       <section className="col-span-1 flex flex-col gap-4 sm:col-span-3 lg:col-span-1">
         <Analysis
