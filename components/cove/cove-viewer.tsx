@@ -5,13 +5,26 @@ import { CoveMerchandise } from './merchandise-page';
 import type { Cove } from "@/shared/services/customGloss/data-extraction/schemas";
 import { Button } from "@/shared/components/ui/button";
 import { ArrowLeft, ArrowRight, ChevronFirst, ChevronLast } from "lucide-react";
+import type { CustomGlossTabTable } from '~/db/schema';
 
 type PageType = 'header' | 'recipient' | 'merchandise';
 
 // Define how many merchandise items to show per page
 const ITEMS_PER_PAGE = 3;
 
-export function CoveViewer({ cove }: { cove: Cove }) {
+interface ICoveViewerProps {
+  cove: Cove;
+  tabs?: CustomGlossTabTable[];
+  onClick?: (keyword: string) => void;
+  tabInfoSelected?: { name: string; isCorrect: boolean; isVerified: boolean };
+}
+
+export function CoveViewer({ 
+  cove, 
+  tabs = [],
+  onClick = () => {},
+  tabInfoSelected = { name: '', isCorrect: false, isVerified: false }
+}: ICoveViewerProps) {
   const [currentPageType, setCurrentPageType] = useState<PageType>('header');
   const [merchandisePage, setMerchandisePage] = useState<number>(0); // For merchandise subpages
 
@@ -118,17 +131,25 @@ export function CoveViewer({ cove }: { cove: Cove }) {
 
   const { currentPage, totalPages } = getCurrentPageInfo();
 
-  // Render the appropriate page component
+  // Render the appropriate page component with highlighting props
   const renderPage = () => {
+    // Shared props for all components
+    const sharedProps = {
+      cove,
+      tabs,
+      onClick,
+      tabInfoSelected
+    };
+
     switch (currentPageType) {
       case 'header':
-        return <CoveHeader cove={cove} />;
+        return <CoveHeader {...sharedProps} />;
       case 'recipient':
-        return <CoveRecipient cove={cove} />;
+        return <CoveRecipient {...sharedProps} />;
       case 'merchandise':
-        return <CoveMerchandise cove={cove} pageItems={currentMerchandiseItems} />;
+        return <CoveMerchandise {...sharedProps} pageItems={currentMerchandiseItems} />;
       default:
-        return <CoveHeader cove={cove} />;
+        return <CoveHeader {...sharedProps} />;
     }
   };
 

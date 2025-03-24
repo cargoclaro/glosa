@@ -1,6 +1,36 @@
 import type { Cove } from "@/shared/services/customGloss/data-extraction/schemas";
+import type { CustomGlossTabTable } from '~/db/schema';
+import { cn } from '@/shared/utils/cn';
 
-export function CoveHeader({ cove }: { cove: Cove }) {
+interface ICoveHeaderProps {
+  cove: Cove;
+  tabs?: CustomGlossTabTable[];
+  onClick?: (keyword: string) => void;
+  tabInfoSelected?: { name: string; isCorrect: boolean; isVerified: boolean };
+}
+
+export function CoveHeader({ 
+  cove,
+  tabs = [],
+  onClick = () => {},
+  tabInfoSelected = { name: '', isCorrect: false, isVerified: false }
+}: ICoveHeaderProps) {
+
+  // Helper functions to determine highlight styles
+  const getHighlightBorder = (section: string) => {
+    const tab = tabs.find(tab => tab.name === section);
+    return tab?.isCorrect || tab?.isVerified 
+      ? 'border-green-500' 
+      : 'border-yellow-400';
+  };
+
+  const getHighlightFill = (section: string) => {
+    if (tabInfoSelected.name !== section) return '';
+    
+    return tabInfoSelected.isCorrect || tabInfoSelected.isVerified 
+      ? 'bg-green-100/50' 
+      : 'bg-yellow-100/50';
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
@@ -26,41 +56,51 @@ export function CoveHeader({ cove }: { cove: Cove }) {
               <div className="p-2 border-b">
                 <h3 className="text-sm font-semibold mb-1">Datos del Acuse de Valor <span className="font-bold text-zinc-700">{cove.acuse_valor}</span></h3>
                 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-1 border">
-                  <div className="p-1 bg-gray-100 border-r border-b">
-                    <h4 className="font-medium text-xs">Tipo de operación</h4>
+                {/* No. de Factura and Fecha Expedición highlighted section */}
+                <div 
+                  className={cn(
+                    "border-2 mb-1 cursor-pointer",
+                    getHighlightBorder('Datos de la Mercancía'),
+                    getHighlightFill('Datos de la Mercancía')
+                  )}
+                  onClick={() => onClick('No. de Factura')}
+                >
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-1 border">
+                    <div className="p-1 bg-gray-100 border-r border-b">
+                      <h4 className="font-medium text-xs">Tipo de operación</h4>
+                    </div>
+                    <div className="p-1 bg-gray-100 border-r border-b">
+                      <h4 className="font-medium text-xs">Relación de facturas</h4>
+                    </div>
+                    <div className="p-1 bg-gray-100 border-b">
+                      <h4 className="font-medium text-xs">No. de factura</h4>
+                    </div>
+                    
+                    <div className="p-1 border-r">
+                      <p className="text-xs">{cove.tipo_operacion || "—"}</p>
+                    </div>
+                    <div className="p-1 border-r">
+                      <p className="text-xs">{cove.relacion_facturas || "—"}</p>
+                    </div>
+                    <div className="p-1">
+                      <p className="text-xs">{cove.numero_factura || "—"}</p>
+                    </div>
                   </div>
-                  <div className="p-1 bg-gray-100 border-r border-b">
-                    <h4 className="font-medium text-xs">Relación de facturas</h4>
-                  </div>
-                  <div className="p-1 bg-gray-100 border-b">
-                    <h4 className="font-medium text-xs">No. de factura</h4>
-                  </div>
-                  
-                  <div className="p-1 border-r">
-                    <p className="text-xs">{cove.tipo_operacion || "—"}</p>
-                  </div>
-                  <div className="p-1 border-r">
-                    <p className="text-xs">{cove.relacion_facturas || "—"}</p>
-                  </div>
-                  <div className="p-1">
-                    <p className="text-xs">{cove.numero_factura || "—"}</p>
-                  </div>
-                </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-1 border-x border-b mt-1">
-                  <div className="p-1 bg-gray-100 border-r">
-                    <h4 className="font-medium text-xs">Tipo de figura</h4>
-                  </div>
-                  <div className="p-1 bg-gray-100">
-                    <h4 className="font-medium text-xs">Fecha Exp.</h4>
-                  </div>
-                  
-                  <div className="p-1 border-r">
-                    <p className="text-xs">{cove.tipo_figura || "—"}</p>
-                  </div>
-                  <div className="p-1">
-                    <p className="text-xs">{JSON.stringify(cove.fecha_expedicion) || "—"}</p>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-1 border-x border-b">
+                    <div className="p-1 bg-gray-100 border-r">
+                      <h4 className="font-medium text-xs">Tipo de figura</h4>
+                    </div>
+                    <div className="p-1 bg-gray-100">
+                      <h4 className="font-medium text-xs">Fecha Exp.</h4>
+                    </div>
+                    
+                    <div className="p-1 border-r">
+                      <p className="text-xs">{cove.tipo_figura || "—"}</p>
+                    </div>
+                    <div className="p-1">
+                      <p className="text-xs">{JSON.stringify(cove.fecha_expedicion) || "—"}</p>
+                    </div>
                   </div>
                 </div>
 
@@ -76,53 +116,69 @@ export function CoveHeader({ cove }: { cove: Cove }) {
               </div>
             )}
 
-            {/* Supplier Data */}
+            {/* Supplier Data - Datos generales del proveedor */}
             {cove.datos_generales_proveedor && (
               <div className="p-2 border-b">
                 <h3 className="text-sm font-semibold mb-1">Datos generales del proveedor</h3>
                 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-1 border-x border-t border-b">
-                  <div className="p-1 bg-gray-100 border-r">
-                    <h4 className="font-medium text-xs">Tipo de identificador</h4>
+                <div 
+                  className={cn(
+                    "border-2 mb-1 cursor-pointer",
+                    getHighlightBorder('Datos Generales'),
+                    getHighlightFill('Datos Generales')
+                  )}
+                  onClick={() => onClick('Datos generales del proveedor')}
+                >
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-1 border-x border-t border-b">
+                    <div className="p-1 bg-gray-100 border-r">
+                      <h4 className="font-medium text-xs">Tipo de identificador</h4>
+                    </div>
+                    <div className="p-1 bg-gray-100">
+                      <h4 className="font-medium text-xs">Tax ID/Sin Tax ID/RFC/CURP</h4>
+                    </div>
+                    
+                    <div className="p-1 border-r">
+                      <p className="text-xs">{cove.datos_generales_proveedor.tipo_identificador || "—"}</p>
+                    </div>
+                    <div className="p-1">
+                      <p className="text-xs">{cove.datos_generales_proveedor.identificador || "—"}</p>
+                    </div>
                   </div>
-                  <div className="p-1 bg-gray-100">
-                    <h4 className="font-medium text-xs">Tax ID/Sin Tax ID/RFC/CURP</h4>
-                  </div>
-                  
-                  <div className="p-1 border-r">
-                    <p className="text-xs">{cove.datos_generales_proveedor.tipo_identificador || "—"}</p>
-                  </div>
-                  <div className="p-1">
-                    <p className="text-xs">{cove.datos_generales_proveedor.identificador || "—"}</p>
+
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-1 border-x border-b mt-1">
+                    <div className="p-1 bg-gray-100 border-r md:col-span-1">
+                      <h4 className="font-medium text-xs">Nombre(s) o Razón Social</h4>
+                    </div>
+                    <div className="p-1 bg-gray-100 border-r">
+                      <h4 className="font-medium text-xs">Apellido paterno</h4>
+                    </div>
+                    <div className="p-1 bg-gray-100">
+                      <h4 className="font-medium text-xs">Apellido materno</h4>
+                    </div>
+                    
+                    <div className="p-1 border-r md:col-span-1">
+                      <p className="text-xs">{cove.datos_generales_proveedor.nombre_razon_social || "—"}</p>
+                    </div>
+                    <div className="p-1 border-r">
+                      <p className="text-xs">—</p>
+                    </div>
+                    <div className="p-1">
+                      <p className="text-xs">—</p>
+                    </div>
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-1 border-x border-b mt-1">
-                  <div className="p-1 bg-gray-100 border-r md:col-span-1">
-                    <h4 className="font-medium text-xs">Nombre(s) o Razón Social</h4>
-                  </div>
-                  <div className="p-1 bg-gray-100 border-r">
-                    <h4 className="font-medium text-xs">Apellido paterno</h4>
-                  </div>
-                  <div className="p-1 bg-gray-100">
-                    <h4 className="font-medium text-xs">Apellido materno</h4>
-                  </div>
-                  
-                  <div className="p-1 border-r md:col-span-1">
-                    <p className="text-xs">{cove.datos_generales_proveedor.nombre_razon_social || "—"}</p>
-                  </div>
-                  <div className="p-1 border-r">
-                    <p className="text-xs">—</p>
-                  </div>
-                  <div className="p-1">
-                    <p className="text-xs">—</p>
-                  </div>
-                </div>
-
-                {/* Address */}
+                {/* Address - Domicilio del proveedor */}
                 {cove.datos_generales_proveedor.domicilio && (
-                  <>
-                    <h4 className="font-semibold text-xs mt-2 mb-1">Domicilio del proveedor</h4>
+                  <div 
+                    className={cn(
+                      "border-2 mb-1 cursor-pointer",
+                      getHighlightBorder('Datos Proveedor Destinatario'),
+                      getHighlightFill('Datos Proveedor Destinatario')
+                    )}
+                    onClick={() => onClick('Domicilio del proveedor')}
+                  >
+                    <h4 className="font-semibold text-xs mt-1 mb-1 ml-1">Domicilio del proveedor</h4>
                     <div className="grid grid-cols-1 md:grid-cols-4 gap-1 border">
                       <div className="p-1 bg-gray-100 border-r md:col-span-1">
                         <h4 className="font-medium text-xs">Calle</h4>
@@ -192,7 +248,7 @@ export function CoveHeader({ cove }: { cove: Cove }) {
                         <p className="text-xs">{cove.datos_generales_proveedor.domicilio.pais || "—"}</p>
                       </div>
                     </div>
-                  </>
+                  </div>
                 )}
               </div>
             )}

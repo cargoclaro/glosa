@@ -106,7 +106,12 @@ const PedimentAnalysisNFinish = ({
               }
           />
         ) : (
-          <CoveViewer cove={customGloss.cove} />
+          <CoveViewer
+            cove={customGloss.cove} 
+            tabs={customGloss.tabs}
+            onClick={handleFunction}
+            tabInfoSelected={tabInfoSelected}
+          />
         )}
       </section>
       <section className="col-span-1 flex flex-col gap-4 sm:col-span-3 lg:col-span-1">
