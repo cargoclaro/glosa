@@ -12,9 +12,6 @@ interface PedimentoContenedoresProps {
 const PedimentoContenedores: React.FC<PedimentoContenedoresProps> = ({
   numero,
   tipo,
-  tabs = [],
-  onClick = () => {},
-  tabInfoSelected = { name: '', isCorrect: false, isVerified: false },
 }) => {
   return (
     <div
