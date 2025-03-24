@@ -106,13 +106,27 @@ export const pedimentoSchema = z.object({
     .describe('Importer information'),
   incrementables: z
     .object({
-      val_seguros: z.number().describe('Insurance value in MXN').nullable(),
-      seguros: z.number().describe('Insurance costs in MXN').nullable(),
-      fletes: z.number().describe('Freight costs in MXN').nullable(),
-      embalajes: z.number().describe('Packaging costs in MXN').nullable(),
+      valor_seguros: z
+        .number()
+        .describe(
+          'Aparece en el pedimento como "VAL. SEGUROS".'
+        )
+        .nullable(),
+      seguros: z
+        .number()
+        .describe('Aparece en el pedimento como "SEGUROS".')
+        .nullable(),
+      fletes: z
+        .number()
+        .describe('Aparece en el pedimento como "FLETES".')
+        .nullable(),
+      embalajes: z
+        .number()
+        .describe('Aparece en el pedimento como "EMBALAJES".')
+        .nullable(),
       otros_incrementables: z
         .number()
-        .describe('Other additional costs in MXN')
+        .describe('Aparece en el pedimento como "OTROS INCREMENTABLES".')
         .nullable(),
     })
     .describe('Additional costs to be added'),
@@ -161,6 +175,25 @@ export const pedimentoSchema = z.object({
 
       return parsedDate;
     }),
+  liquidaciones: z
+    .array(
+      z.object({
+        concepto: z
+          .string()
+          .describe('Concept code or name (e.g., "DTA", "PRV", "IVA", "IVA/PRV")')
+          .nullable(),
+        fp: z
+          .number()
+          .describe('Payment form code, usually a numeric value')
+          .nullable(),
+        importe: z
+          .number()
+          .describe('Amount to be paid for this concept in MXN')
+          .nullable(),
+      })
+    )
+    .describe('Array of liquidation entries showing taxes and fees to be paid')
+    .nullable(),
   identificadores_nivel_pedimento: z
     .object({
       clave_seccion_aduanera: z
@@ -202,42 +235,40 @@ export const pedimentoSchema = z.object({
     .describe("Two-letter text field ('SI' or 'NO')")
     .nullable(),
   datos_factura: z
-    .array(
-      z.object({
-        num_factura: z
-          .string()
-          .describe(
-            'The Mexican invoice number; alphanumeric; if none, leave blank'
-          )
-          .nullable(),
-        fecha_factura: z
-          .string()
-          .describe("Date in DD/MM/YYYY format (e.g., '07/05/2024')")
-          .nullable(),
-        incoterm: z
-          .string()
-          .describe("Three-letter code in uppercase (e.g., 'FCA')")
-          .nullable(),
-        moneda_factura: z
-          .string()
-          .describe("Three-letter currency code (e.g., 'USD')")
-          .nullable(),
-        valor_moneda_factura: z
-          .number()
-          .describe("Decimal number with 2 decimal places (e.g., '1068.75')")
-          .nullable(),
-        factor_moneda_factura: z
-          .number()
-          .describe("Decimal number with 8 decimal places (e.g., '1.00000000')")
-          .nullable(),
-        valor_dolares_factura: z
-          .number()
-          .describe('Value in USD with 2 decimal places')
-          .nullable(),
-      })
-    )
+    .object({
+      num_factura: z
+        .string()
+        .describe(
+          'The Mexican invoice number; alphanumeric; if none, leave blank'
+        )
+        .nullable(),
+      fecha_factura: z
+        .string()
+        .describe("Date in DD/MM/YYYY format (e.g., '07/05/2024')")
+        .nullable(),
+      incoterm: z
+        .string()
+        .describe("Three-letter code in uppercase (e.g., 'FCA')")
+        .nullable(),
+      moneda_factura: z
+        .string()
+        .describe("Three-letter currency code (e.g., 'USD')")
+        .nullable(),
+      valor_moneda_factura: z
+        .number()
+        .describe("Decimal number with 2 decimal places (e.g., '1068.75')")
+        .nullable(),
+      factor_moneda_factura: z
+        .number()
+        .describe("Decimal number with 8 decimal places (e.g., '1.00000000')")
+        .nullable(),
+      valor_dolares_factura: z
+        .number()
+        .describe('Value in USD with 2 decimal places')
+        .nullable(),
+    })
     .describe(
-      'Array of invoices associated with the pedimento. There can be more than one, but it always should have all of the values. There should be a box per invoice.'
+      'Invoice data associated with the pedimento'
     ),
   no_guia_embarque_id: z
     .string()

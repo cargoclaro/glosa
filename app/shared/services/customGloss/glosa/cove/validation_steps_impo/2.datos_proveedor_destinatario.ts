@@ -71,7 +71,11 @@ async function validateDomicilioProveedor(
     ? [
         domicilioCove.calle,
         domicilioCove.numero_exterior,
+        domicilioCove.numero_interior,
         domicilioCove.colonia,
+        domicilioCove.localidad,
+        domicilioCove.municipio,
+        domicilioCove.entidad_federativa,
         domicilioCove.codigo_postal,
         domicilioCove.pais,
       ]
@@ -148,7 +152,7 @@ async function validateDatosGeneralesDestinatario(
     },
   } as const;
 
-  return await glosar(validation, traceId);
+  return await glosar(validation, traceId, 'o3-mini');
 }
 
 /**
@@ -169,7 +173,11 @@ async function validateDomicilioDestinatario(
     ? [
         domicilioCove.calle,
         domicilioCove.numero_exterior,
+        domicilioCove.numero_interior,
         domicilioCove.colonia,
+        domicilioCove.localidad,
+        domicilioCove.municipio,
+        domicilioCove.entidad_federativa,
         domicilioCove.codigo_postal,
         domicilioCove.pais,
       ]
@@ -203,7 +211,7 @@ async function validateDomicilioDestinatario(
     },
   } as const;
 
-  return await glosar(validation, traceId);
+  return await glosar(validation, traceId, 'o3-mini');
 }
 
 export const tracedChooseDocument = traceable(

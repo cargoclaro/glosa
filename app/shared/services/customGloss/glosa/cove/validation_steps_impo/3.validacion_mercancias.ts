@@ -23,13 +23,13 @@ async function validateMercancias(
 
   // Create a simplified view of COVE merchandise data
   const mercanciasCoveFormatted = datosMercanciaCove
-    ? {
-        descripcion: datosMercanciaCove[0]?.descripcion_mercancia,
-        cantidad: datosMercanciaCove[0]?.cantidad_umc,
-        unidadMedida: datosMercanciaCove[0]?.clave_umc,
-        valorUnitario: datosMercanciaCove[0]?.valor_unitario,
-        valorTotal: datosMercanciaCove[0]?.valor_total,
-      }
+    ? datosMercanciaCove.map(mercancia => ({
+        descripcion: mercancia?.descripcion_mercancia,
+        cantidad: mercancia?.cantidad_umc,
+        unidadMedida: mercancia?.clave_umc,
+        valorUnitario: mercancia?.valor_unitario,
+        valorTotal: mercancia?.valor_total,
+      }))
     : undefined;
 
   const validation = {
@@ -43,19 +43,9 @@ async function validateMercancias(
         cove: {
           data: [
             {
-              name: 'Descripción',
-              value: mercanciasCoveFormatted?.descripcion,
+              name: 'Datos de mercancías',
+              value: JSON.stringify(mercanciasCoveFormatted, null, 2),
             },
-            { name: 'Cantidad', value: mercanciasCoveFormatted?.cantidad },
-            {
-              name: 'Unidad de medida',
-              value: mercanciasCoveFormatted?.unidadMedida,
-            },
-            {
-              name: 'Valor unitario',
-              value: mercanciasCoveFormatted?.valorUnitario,
-            },
-            { name: 'Valor total', value: mercanciasCoveFormatted?.valorTotal },
           ],
         },
         carta318: {
@@ -82,7 +72,7 @@ async function validateValorTotalDolares(
   carta318?: Carta318
 ) {
   // Extract total value from COVE
-  const valorTotalDolaresCove = cove.datos_mercancia[0]?.valor_total_dolares;
+  const valorTotalDolaresCove = cove.datos_mercancia?.reduce((sum, mercancia) => sum + (mercancia.valor_total_dolares || 0), 0);
   const observacionesCove = cove.observaciones || '';
   const invoiceMkdown = invoice?.markdown_representation;
   const carta318Mkdown = carta318?.markdown_representation;

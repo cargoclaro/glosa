@@ -106,7 +106,11 @@ async function validateDatosImportador(
     ? [
         domicilioCove.calle,
         domicilioCove.numero_exterior,
+        domicilioCove.numero_interior,
         domicilioCove.colonia,
+        domicilioCove.localidad,
+        domicilioCove.municipio,
+        domicilioCove.entidad_federativa,
         domicilioCove.codigo_postal,
         domicilioCove.pais,
       ]
@@ -119,7 +123,7 @@ async function validateDatosImportador(
     description:
       'Valida que los datos del importador coincidan entre el pedimento, COVE y carta 3.1.8',
     prompt:
-      'Validar que los siguientes campos coincidan literalmente entre documentos:\n\nRFC: Debe coincidir entre Pedimento, Carta 3.1.8 y COVE.\nDomicilio fiscal: Debe coincidir entre Pedimento, Carta 3.1.8 (implícito) y Factura (importador).\nRazón social: Debe coincidir entre Pedimento, Carta 3.1.8 (implícito) y COVE.\nRegla de precedencia:\nSi la Carta 3.1.8 existe, sus datos tienen prioridad sobre Factura/COVE. Cualquier discrepancia en otros documentos se marca como error.',
+      'Validar que los siguientes campos coincidan, no importa tanto que litaralmente esten identicos:\n\nRFC: Debe coincidir entre Pedimento, Carta 3.1.8 y COVE.\nDomicilio fiscal: Debe coincidir entre Pedimento, Carta 3.1.8 (implícito) y Factura (importador).\nRazón social: Debe coincidir entre Pedimento, Carta 3.1.8 (implícito) y COVE.\nRegla de precedencia:\nSi la Carta 3.1.8 existe, sus datos tienen prioridad sobre Factura/COVE. Discrepancias grandes, se marcan como error.',
     contexts: {
       PROVIDED: {
         Pedimento: {
@@ -226,32 +230,28 @@ async function validateFechasYFolios(
 ) {
   const fechaEntradaPedimento = pedimento.fecha_entrada_presentacion;
   const fechaExpedicionCove = cove?.fecha_expedicion;
-  const numeroCovePedimento = pedimento.cove;
-  const numeroCove = cove?.acuse_valor;
 
   const invoicemkdown = invoice?.markdown_representation;
   const carta318mkdown = carta318?.markdown_representation;
   const observaciones = pedimento.observaciones_a_nivel_pedimento;
 
   const validation = {
-    name: 'Validación de fechas de emisión y número de COVE',
+    name: 'Validación de fechas de emisión',
     description:
-      'Valida que las fechas de emisión de los documentos sean consistentes y que el número de COVE coincida entre documentos',
+      'Valida que las fechas de emisión de los documentos sean consistentes',
     prompt:
-      'Verificar secuencias lógicas\n\nFechas:\n• Fecha emisión Factura debe ser menor o igual a la Fecha entrada Pedimento\n• Fecha COVE debe ser igual a la Fecha Factura\n\nNúmeros:\n• Número COVE en el Pedimento debe ser igual al Número COVE en el COVE\n• Las facturas normalmente vienen en formato americano, YYYY/MM/DD, el pedimento y COVE viene en formato mexicano, DD/MM/YYYY, siempre revisa detalladamente los documentos propocionados',
+      'Verificar secuencias lógicas\n\nFechas:\n• Fecha emisión Factura debe ser menor o igual a la Fecha entrada Pedimento\n• Fecha COVE debe ser igual a la Fecha Factura\n\n• Las facturas normalmente vienen en formato americano, YYYY/MM/DD, el pedimento y COVE viene en formato mexicano, DD/MM/YYYY, siempre revisa detalladamente los documentos propocionados',
     contexts: {
       PROVIDED: {
         Pedimento: {
           data: [
             { name: 'Fecha de entrada', value: fechaEntradaPedimento },
-            { name: 'Número COVE', value: numeroCovePedimento },
             { name: 'Observaciones', value: observaciones },
           ],
         },
         COVE: {
           data: [
             { name: 'Fecha de expedición', value: fechaExpedicionCove },
-            { name: 'Número COVE', value: numeroCove },
           ],
         },
         Factura: {
@@ -274,14 +274,14 @@ async function validateMonedaYEquivalencia(
   carta318?: Carta318,
   invoice?: Invoice
 ) {
-  const monedaPedimento = pedimento.datos_factura?.[0]?.moneda_factura;
+  const monedaPedimento = pedimento.datos_factura?.moneda_factura;
   const monedaCove = cove?.datos_mercancia?.[0]?.tipo_moneda;
   const valorDolaresPedimento =
-    pedimento.datos_factura?.[0]?.valor_dolares_factura;
-  const valorDolaresCove = cove?.datos_mercancia?.[0]?.valor_total_dolares;
-  const valorFactura = pedimento.datos_factura?.[0]?.valor_moneda_factura;
+    pedimento.datos_factura?.valor_dolares_factura;
+  const valorDolaresCoveTotal = cove?.datos_mercancia?.reduce((sum, item) => sum + (item?.valor_total_dolares || 0), 0);
+  const valorFactura = pedimento.datos_factura?.valor_moneda_factura;
   const factorMonedaFactura =
-    pedimento.datos_factura?.[0]?.factor_moneda_factura;
+    pedimento.datos_factura?.factor_moneda_factura;
   const fechaEntrada = pedimento.fecha_entrada_presentacion;
 
   const carta318mkdown = carta318?.markdown_representation;
@@ -314,7 +314,7 @@ async function validateMonedaYEquivalencia(
         COVE: {
           data: [
             { name: 'Moneda', value: monedaCove },
-            { name: 'Valor en dólares', value: valorDolaresCove },
+            { name: 'Valor total en dólares', value: valorDolaresCoveTotal },
           ],
         },
         Factura: {

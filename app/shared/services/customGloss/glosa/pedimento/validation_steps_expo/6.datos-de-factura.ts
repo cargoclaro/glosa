@@ -252,7 +252,7 @@ async function validateMonedaYEquivalencia(
   cfdi?: Cfdi
 ) {
   // Moneda
-  const monedaPedimento = pedimento.datos_factura?.[0]?.moneda_factura;
+  const monedaPedimento = pedimento.datos_factura?.moneda_factura;
   const monedaCove = cove?.datos_mercancia?.[0]?.tipo_moneda;
 
   // Valores DOF
@@ -261,13 +261,13 @@ async function validateMonedaYEquivalencia(
 
   // Extract values from documents
   const valorDolaresPedimento =
-    pedimento.datos_factura?.[0]?.valor_dolares_factura;
+    pedimento.datos_factura?.valor_dolares_factura;
   const valorDolaresCove = cove?.datos_mercancia?.[0]?.valor_total_dolares;
 
   // Valor factura from pedimento:
-  const valorFactura = pedimento.datos_factura?.[0]?.valor_moneda_factura;
+  const valorFactura = pedimento.datos_factura?.valor_moneda_factura;
   const factorMonedaFactura =
-    pedimento.datos_factura?.[0]?.factor_moneda_factura;
+    pedimento.datos_factura?.factor_moneda_factura;
 
   const cfdiMkdown = cfdi?.markdown_representation;
 

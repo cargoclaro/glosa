@@ -5,6 +5,7 @@ import type { TransportDocument } from '../../../data-extraction/mkdown_schemas/
 import type { Pedimento } from '../../../data-extraction/schemas';
 import { getExchangeRate } from '../../exchange-rate';
 import { glosar } from '../../validation-result';
+import { apendice14 } from '../../anexo-22/apendice-14';
 
 // TODO: Agregar DOF
 
@@ -22,7 +23,7 @@ async function validateTransportDocumentEntryDate(
     description:
       'Valida que la fecha del documento de transporte no sea posterior al pedimento',
     prompt:
-      'La fecha de entrada del documento de transporte ser anterior o igual a la fecha de entrada del pedimento. ',
+      'La fecha de entrada del documento de transporte debe ser anterior o igual a la fecha de entrada del pedimento. Es importante notar que la fecha de entrada no es la misma que la fecha de entrega. La fecha de entrada se refiere a la fecha en que la mercancía ingresa al territorio nacional.',
     contexts: {
       PROVIDED: {
         Pedimento: {
@@ -40,7 +41,7 @@ async function validateTransportDocumentEntryDate(
     },
   } as const;
 
-  return await glosar(validation, traceId);
+  return await glosar(validation, traceId, 'o3-mini');
 }
 
 async function validateTipoCambio(traceId: string, pedimento: Pedimento) {
@@ -76,47 +77,41 @@ async function validateTipoCambio(traceId: string, pedimento: Pedimento) {
   return await glosar(validation, traceId, 'gpt-4o-mini');
 }
 
-async function validateIncrementables(
+async function validateValSeguros(
   traceId: string,
   pedimento: Pedimento,
   invoice?: Invoice,
   transportDocument?: TransportDocument,
   carta318?: Carta318
 ) {
-  // Get incrementables from pedimento
-  const incrementablesPedimento = {
-    val_seguros: pedimento.incrementables?.val_seguros,
-    seguros: pedimento.incrementables?.seguros,
-    fletes: pedimento.incrementables?.fletes,
-    embalajes: pedimento.incrementables?.embalajes,
-    otros: pedimento.incrementables?.otros_incrementables,
-  };
-  const tipoCambio = pedimento.encabezado_del_pedimento?.tipo_cambio;
+  const incoterm = pedimento.datos_factura?.incoterm;
+  const valSeguros = pedimento.incrementables?.valor_seguros;
   const precioPagadoValorComercial =
     pedimento.valores?.precio_pagado_valor_comercial;
+  const tipoCambio = pedimento.encabezado_del_pedimento?.tipo_cambio;
   const observaciones = pedimento.observaciones_a_nivel_pedimento;
-  // Update to use markdown representations
   const carta318mkdown = carta318?.markdown_representation;
   const invoicemkdown = invoice?.markdown_representation;
   const transportDocmkdown = transportDocument?.markdown_representation;
 
   const validation = {
-    name: 'Incrementables',
+    name: 'Val. Seguros',
     description:
-      'Valida que los valores de los incrementables declarados en el pedimento coincidan con los documentos que los avalan',
+      'Valida que el valor asegurado declarado en el pedimento coincida con el valor comercial',
     prompt:
-      'Los incrementables son los servicios a los cuales se les puede cobrar impuestos. Para hacer la declaracion correcta, se necesita verificar que los valores de los incrementables en el pedimento seas validos conforme a la carta 318, factura o documento de transporte. Los incrementables pueden ser fletes, seguros, maniobras, entre otros. Tenemos que buscar una relación entre los valores del pedimento y los documentos que lo avalan. Argumenta por que los incrementables estan bien o mal, siempre buscando sostener tus respuestas. Si hay un valor en dolares de incrementables en la carta 318, factura o documento de transporte, se debe de multiplicar por el tipo de cambio del pedimento para obtener el valor en pesos mexicanos y poder compararlo contra los incrementables del pedimento. Los incoterms son codigos de 3 letras. El Val. Seguros es el valor que aseguran, debe de ser igual al precio pagado / valor comercial del pedimento. ',
+      'El Val. Seguros es el valor que se asegura y debe ser igual al precio pagado / valor comercial del pedimento. Verifica si este valor está correctamente declarado comparando con la documentación disponible. Ten en cuenta que los incoterms pueden afectar la inclusión de los seguros en el valor de aduana.',
     contexts: {
       PROVIDED: {
         Pedimento: {
           data: [
-            { name: 'Incrementables', value: incrementablesPedimento },
+            { name: 'Val. Seguros', value: valSeguros },
             { name: 'Tipo de cambio', value: tipoCambio },
             {
               name: 'Precio pagado / valor comercial',
               value: precioPagadoValorComercial,
             },
             { name: 'Observaciones', value: observaciones },
+            { name: 'Incoterm', value: incoterm },
           ],
         },
         'Carta 318': {
@@ -131,10 +126,231 @@ async function validateIncrementables(
           ],
         },
       },
+      EXTERNAL: {
+        'Apendice 14': {
+          data: [{ name: 'Apendice 14', value: apendice14 }],
+        },
+      },
     },
   } as const;
 
-  return await glosar(validation, traceId, 'claude-3-7-sonnet-20250219');
+  return await glosar(validation, traceId, 'o3-mini');
+}
+
+async function validateSeguros(
+  traceId: string,
+  pedimento: Pedimento,
+  invoice?: Invoice,
+  transportDocument?: TransportDocument,
+  carta318?: Carta318
+) {
+  const incoterm = pedimento.datos_factura?.incoterm;
+  const seguros = pedimento.incrementables?.seguros;
+  const tipoCambio = pedimento.encabezado_del_pedimento?.tipo_cambio;
+  const observaciones = pedimento.observaciones_a_nivel_pedimento;
+  const carta318mkdown = carta318?.markdown_representation;
+  const invoicemkdown = invoice?.markdown_representation;
+  const transportDocmkdown = transportDocument?.markdown_representation;
+
+  const validation = {
+    name: 'Seguros',
+    description:
+      'Valida que el valor de seguros declarado en el pedimento coincida con los documentos que lo avalan',
+    prompt:
+      'Los seguros son incrementables que deben coincidir con los documentos que los avalan. Si hay un valor en dólares de seguros en la carta 318, factura o documento de transporte, se debe multiplicar por el tipo de cambio del pedimento para obtener el valor en pesos mexicanos y poder compararlo contra el valor de seguros declarado en el pedimento. Ten en cuenta que los incoterms pueden afectar la inclusión de los seguros en el valor de aduana.',
+    contexts: {
+      PROVIDED: {
+        Pedimento: {
+          data: [
+            { name: 'Seguros', value: seguros },
+            { name: 'Tipo de cambio', value: tipoCambio },
+            { name: 'Observaciones', value: observaciones },
+            { name: 'Incoterm', value: incoterm },
+          ],
+        },
+        'Carta 318': {
+          data: [{ name: 'Carta 318', value: carta318mkdown }],
+        },
+        Factura: {
+          data: [{ name: 'Factura', value: invoicemkdown }],
+        },
+        'Documento de transporte': {
+          data: [
+            { name: 'Documento de transporte', value: transportDocmkdown },
+          ],
+        },
+      },
+      EXTERNAL: {
+        'Apendice 14': {
+          data: [{ name: 'Apendice 14', value: apendice14 }],
+        },
+      },
+    },
+  } as const;
+
+  return await glosar(validation, traceId, 'o3-mini');
+}
+
+async function validateFletes(
+  traceId: string,
+  pedimento: Pedimento,
+  invoice?: Invoice,
+  transportDocument?: TransportDocument,
+  carta318?: Carta318
+) {
+  const incoterm = pedimento.datos_factura?.incoterm;
+  const fletes = pedimento.incrementables?.fletes;
+  const tipoCambio = pedimento.encabezado_del_pedimento?.tipo_cambio;
+  const observaciones = pedimento.observaciones_a_nivel_pedimento;
+  const carta318mkdown = carta318?.markdown_representation;
+  const invoicemkdown = invoice?.markdown_representation;
+  const transportDocmkdown = transportDocument?.markdown_representation;
+
+  const validation = {
+    name: 'Fletes',
+    description:
+      'Valida que el valor de fletes declarado en el pedimento coincida con los documentos que lo avalan',
+    prompt:
+      'Los fletes son incrementables que deben coincidir con los documentos que los avalan. Si hay un valor en dólares de fletes en la carta 318, factura o documento de transporte, se debe multiplicar por el tipo de cambio del pedimento para obtener el valor en pesos mexicanos y poder compararlo contra el valor de fletes declarado en el pedimento. Los incoterms pueden afectar la inclusión de los fletes en el valor de aduana.',
+    contexts: {
+      PROVIDED: {
+        Pedimento: {
+          data: [
+            { name: 'Fletes', value: fletes },
+            { name: 'Tipo de cambio', value: tipoCambio },
+            { name: 'Observaciones', value: observaciones },
+            { name: 'Incoterm', value: incoterm },
+          ],
+        },
+        'Carta 318': {
+          data: [{ name: 'Carta 318', value: carta318mkdown }],
+        },
+        Factura: {
+          data: [{ name: 'Factura', value: invoicemkdown }],
+        },
+        'Documento de transporte': {
+          data: [
+            { name: 'Documento de transporte', value: transportDocmkdown },
+          ],
+        },
+      },
+      EXTERNAL: {
+        'Apendice 14': {
+          data: [{ name: 'Apendice 14', value: apendice14 }],
+        },
+      },
+    },
+  } as const;
+
+  return await glosar(validation, traceId, 'o3-mini');
+}
+
+async function validateEmbalajes(
+  traceId: string,
+  pedimento: Pedimento,
+  invoice?: Invoice,
+  transportDocument?: TransportDocument,
+  carta318?: Carta318
+) {
+  const incoterm = pedimento.datos_factura?.incoterm;
+  const embalajes = pedimento.incrementables?.embalajes;
+  const tipoCambio = pedimento.encabezado_del_pedimento?.tipo_cambio;
+  const observaciones = pedimento.observaciones_a_nivel_pedimento;
+  const carta318mkdown = carta318?.markdown_representation;
+  const invoicemkdown = invoice?.markdown_representation;
+  const transportDocmkdown = transportDocument?.markdown_representation;
+
+  const validation = {
+    name: 'Embalajes',
+    description:
+      'Valida que el valor de embalajes declarado en el pedimento coincida con los documentos que lo avalan',
+    prompt:
+      'Los embalajes son incrementables que deben coincidir con los documentos que los avalan. Si hay un valor en dólares de embalajes en la carta 318, factura o documento de transporte, se debe multiplicar por el tipo de cambio del pedimento para obtener el valor en pesos mexicanos y poder compararlo contra el valor de embalajes declarado en el pedimento. Ten en cuenta que los incoterms pueden afectar la inclusión de los embalajes en el valor de aduana.',
+    contexts: {
+      PROVIDED: {
+        Pedimento: {
+          data: [
+            { name: 'Embalajes', value: embalajes },
+            { name: 'Tipo de cambio', value: tipoCambio },
+            { name: 'Observaciones', value: observaciones },
+            { name: 'Incoterm', value: incoterm },
+          ],
+        },
+        'Carta 318': {
+          data: [{ name: 'Carta 318', value: carta318mkdown }],
+        },
+        Factura: {
+          data: [{ name: 'Factura', value: invoicemkdown }],
+        },
+        'Documento de transporte': {
+          data: [
+            { name: 'Documento de transporte', value: transportDocmkdown },
+          ],
+        },
+      },
+      EXTERNAL: {
+        'Apendice 14': {
+          data: [{ name: 'Apendice 14', value: apendice14 }],
+        },
+      },
+    },
+  } as const;
+
+  return await glosar(validation, traceId, 'o3-mini');
+}
+
+async function validateOtrosIncrementables(
+  traceId: string,
+  pedimento: Pedimento,
+  invoice?: Invoice,
+  transportDocument?: TransportDocument,
+  carta318?: Carta318
+) {
+  const incoterm = pedimento.datos_factura?.incoterm;
+  const otrosIncrementables = pedimento.incrementables?.otros_incrementables;
+  const tipoCambio = pedimento.encabezado_del_pedimento?.tipo_cambio;
+  const observaciones = pedimento.observaciones_a_nivel_pedimento;
+  const carta318mkdown = carta318?.markdown_representation;
+  const invoicemkdown = invoice?.markdown_representation;
+  const transportDocmkdown = transportDocument?.markdown_representation;
+
+  const validation = {
+    name: 'Otros incrementables',
+    description:
+      'Valida que el valor de otros incrementables declarado en el pedimento coincida con los documentos que lo avalan',
+    prompt:
+      'Otros incrementables son los valores de algun tipo de servicio que no sea fletes, seguros o embalajes. Ten en cuenta que los incoterms pueden afectar la inclusión de los otros incrementables en el valor de aduana.',
+    contexts: {
+      PROVIDED: {
+        Pedimento: {
+          data: [
+            { name: 'Otros incrementables', value: otrosIncrementables },
+            { name: 'Tipo de cambio', value: tipoCambio },
+            { name: 'Observaciones', value: observaciones },
+            { name: 'Incoterm', value: incoterm },
+          ],
+        },
+        'Carta 318': {
+          data: [{ name: 'Carta 318', value: carta318mkdown }],
+        },
+        Factura: {
+          data: [{ name: 'Factura', value: invoicemkdown }],
+        },
+        'Documento de transporte': {
+          data: [
+            { name: 'Documento de transporte', value: transportDocmkdown },
+          ],
+        },
+      },
+      EXTERNAL: {
+        'Apendice 14': {
+          data: [{ name: 'Apendice 14', value: apendice14 }],
+        },
+      },
+    },
+  } as const;
+
+  return await glosar(validation, traceId, 'o3-mini');
 }
 
 async function validateValorDolares(
@@ -282,13 +498,11 @@ export const tracedTransportDocumentEntryDate = traceable(
     const validationsPromise = await Promise.all([
       validateTransportDocumentEntryDate(traceId, pedimento, transportDocument),
       validateTipoCambio(traceId, pedimento),
-      validateIncrementables(
-        traceId,
-        pedimento,
-        invoice,
-        transportDocument,
-        carta318
-      ),
+      validateValSeguros(traceId, pedimento, invoice, transportDocument, carta318),
+      validateSeguros(traceId, pedimento, invoice, transportDocument, carta318),
+      validateFletes(traceId, pedimento, invoice, transportDocument, carta318),
+      validateEmbalajes(traceId, pedimento, invoice, transportDocument, carta318),
+      validateOtrosIncrementables(traceId, pedimento, invoice, transportDocument, carta318),
       validateValorDolares(traceId, pedimento, invoice, carta318),
       validateValorComercial(traceId, pedimento, invoice, carta318),
       validateValorAduana(traceId, pedimento, invoice, carta318),
