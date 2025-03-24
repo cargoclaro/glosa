@@ -10,32 +10,30 @@ export function CoveViewer({ cove }: { cove: Cove }) {
 
   return (
     <div className="relative">
-      <div className="container mx-auto px-4 py-4 flex justify-between items-center">
+      {currentPage === 'first' ? <CoveFirstPage cove={cove} /> : <CoveDetails cove={cove} />}
+      
+      <div className="container mx-auto px-2 py-2 flex justify-center items-center space-x-4 mt-1">
         {currentPage === 'second' && (
           <Button 
             variant="outline" 
-            className="border border-gray-300 hover:bg-gray-100 transition-all duration-300 flex items-center" 
+            className="border border-gray-300 hover:bg-gray-100 transition-all duration-300 flex items-center py-1 h-8 text-xs" 
             onClick={() => setCurrentPage('first')}
           >
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            P�gina anterior
+            <ArrowLeft className="mr-1 h-3 w-3" />
+            Página anterior
           </Button>
         )}
         {currentPage === 'first' && (
-          <div className="ml-auto">
-            <Button 
-              variant="default" 
-              className="bg-zinc-800 hover:bg-zinc-700 transition-all duration-300 flex items-center" 
-              onClick={() => setCurrentPage('second')}
-            >
-              P�gina siguiente
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
-          </div>
+          <Button 
+            variant="default" 
+            className="bg-zinc-800 hover:bg-zinc-700 transition-all duration-300 flex items-center py-1 h-8 text-xs" 
+            onClick={() => setCurrentPage('second')}
+          >
+            Página siguiente
+            <ArrowRight className="ml-1 h-3 w-3" />
+          </Button>
         )}
       </div>
-      
-      {currentPage === 'first' ? <CoveFirstPage cove={cove} /> : <CoveDetails cove={cove} />}
     </div>
   );
 }
