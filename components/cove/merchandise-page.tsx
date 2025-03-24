@@ -17,11 +17,14 @@ export function CoveMerchandise({ cove, pageItems }: CoveMerchandiseProps) {
     return repeatedItems.slice(1);
   };
   
+  // Create all multiplied items once
+  const allItems = multipliedMerchandiseItems();
+  
   // Only render merchandise items on the current page
-  const itemsToDisplay = pageItems.map(index => {
-    const allItems = multipliedMerchandiseItems();
-    return allItems[index];
-  });
+  // Filter out undefined items to prevent runtime errors
+  const itemsToDisplay = pageItems
+    .map(index => allItems[index])
+    .filter(item => item !== undefined);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">

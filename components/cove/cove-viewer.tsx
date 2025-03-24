@@ -38,6 +38,12 @@ export function CoveViewer({ cove }: { cove: Cove }) {
     if (!multipliedMerchandiseItems.length) return [];
     
     const startIndex = merchandisePage * ITEMS_PER_PAGE;
+    
+    // Make sure we don't try to display items past the end of the array
+    if (startIndex >= multipliedMerchandiseItems.length) {
+      return []; // Return empty array if we're past the end
+    }
+    
     const endIndex = Math.min(startIndex + ITEMS_PER_PAGE, multipliedMerchandiseItems.length);
     
     // Return indices from our multiplied array
@@ -72,8 +78,14 @@ export function CoveViewer({ cove }: { cove: Cove }) {
   };
 
   const goToLastPage = () => {
-    setCurrentPageType('merchandise');
-    setMerchandisePage(totalMerchandisePages - 1);
+    if (totalMerchandisePages > 0) {
+      setCurrentPageType('merchandise');
+      // Make sure we don't set a page that doesn't exist
+      setMerchandisePage(Math.max(0, totalMerchandisePages - 1));
+    } else {
+      // If there are no merchandise pages, go to recipient page
+      setCurrentPageType('recipient');
+    }
   };
 
   // Determine if next/prev buttons should be enabled
