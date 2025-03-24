@@ -145,6 +145,92 @@ export function CoveRecipient({ cove }: { cove: Cove }) {
             </div>
           )}
 
+          {/* First Merchandise Item */}
+          {cove.datos_mercancia && cove.datos_mercancia.length > 0 && (
+            <div className="p-2 border-b">
+              <h3 className="text-sm font-semibold mb-1">Datos de la mercancía</h3>
+              <div className="mb-2">
+                <table className="w-full border-collapse">
+                  <tbody>
+                    {/* First row - header for description spans two columns */}
+                    <tr>
+                      <td colSpan={2} className="border p-1 bg-gray-200 font-medium text-xs w-2/3">
+                        Descripción genérica de la mercancía
+                      </td>
+                      <td className="border p-1 bg-gray-200 font-medium text-xs w-1/3">Cantidad de mercancía</td>
+                    </tr>
+                    
+                    {/* Second row - values for description spans two columns */}
+                    <tr>
+                      <td colSpan={2} className="border p-1 text-xs">
+                        {cove.datos_mercancia[0]?.descripcion_mercancia || "—"}
+                      </td>
+                      <td className="border p-1 text-xs">
+                        {cove.datos_mercancia[0]?.cantidad_umc ? Number(cove.datos_mercancia[0].cantidad_umc).toLocaleString('en-US', {
+                          minimumFractionDigits: 3,
+                          maximumFractionDigits: 3
+                        }) : "—"}
+                      </td>
+                    </tr>
+                    
+                    {/* Third row - header for unit */}
+                    <tr>
+                      <td className="border p-1 bg-gray-200 font-medium text-xs">Unidad de Medida</td>
+                      <td className="border p-1 bg-gray-200 font-medium text-xs">Tipo moneda</td>
+                      <td className="border p-1 bg-gray-200 font-medium text-xs">Valor unitario</td>
+                    </tr>
+                    
+                    {/* Fourth row - values for unit */}
+                    <tr>
+                      <td className="border p-1 text-xs">{cove.datos_mercancia[0]?.clave_umc || "—"}</td>
+                      <td className="border p-1 text-xs">{cove.datos_mercancia[0]?.tipo_moneda || "—"}</td>
+                      <td className="border p-1 text-xs">
+                        {cove.datos_mercancia[0]?.valor_unitario ? `$ ${cove.datos_mercancia[0].valor_unitario.toLocaleString('en-US', {
+                          minimumFractionDigits: 6,
+                          maximumFractionDigits: 6
+                        })}` : "—"}
+                      </td>
+                    </tr>
+                    
+                    {/* Fifth row - header for total values */}
+                    <tr>
+                      <td colSpan={2} className="border p-1 bg-gray-200 font-medium text-xs">Valor total</td>
+                      <td className="border p-1 bg-gray-200 font-medium text-xs">Valor total en dólares</td>
+                    </tr>
+                    
+                    {/* Sixth row - values for totals */}
+                    <tr>
+                      <td colSpan={2} className="border p-1 text-xs">
+                        {cove.datos_mercancia[0]?.valor_total ? `$ ${cove.datos_mercancia[0].valor_total.toLocaleString('en-US', {
+                          minimumFractionDigits: 6,
+                          maximumFractionDigits: 6
+                        })}` : "—"}
+                      </td>
+                      <td className="border p-1 text-xs">
+                        {cove.datos_mercancia[0]?.valor_total_dolares ? `$ ${cove.datos_mercancia[0].valor_total_dolares.toLocaleString('en-US', {
+                          minimumFractionDigits: 4,
+                          maximumFractionDigits: 4
+                        })}` : "—"}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                {cove.datos_mercancia[0]?.numeros_serie && cove.datos_mercancia[0].numeros_serie.length > 0 && (
+                  <div className="grid grid-cols-1 gap-1 border-x border-b mt-1">
+                    <div className="p-1 bg-gray-100">
+                      <h4 className="font-medium text-xs">Números de serie</h4>
+                    </div>
+                    
+                    <div className="p-1">
+                      <p className="text-xs">{cove.datos_mercancia[0].numeros_serie.join(", ") || "—"}</p>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
           {/* Footer */}
           <footer className="bg-gray-200 p-2 flex items-center justify-center">
             <h3 className="text-zinc-700 font-medium text-xs">Información de Valor y de Comercialización</h3>

@@ -9,27 +9,40 @@ import { ArrowLeft, ArrowRight, ChevronFirst, ChevronLast } from "lucide-react";
 type PageType = 'header' | 'recipient' | 'merchandise';
 
 // Define how many merchandise items to show per page
-const ITEMS_PER_PAGE = 2;
+const ITEMS_PER_PAGE = 3;
 
 export function CoveViewer({ cove }: { cove: Cove }) {
   const [currentPageType, setCurrentPageType] = useState<PageType>('header');
   const [merchandisePage, setMerchandisePage] = useState<number>(0); // For merchandise subpages
 
+  // Multiply merchandise items by 10 for testing pagination
+  const multipliedMerchandiseItems = useMemo(() => {
+    if (!cove.datos_mercancia?.length) return [];
+    // Create an array with 10x the original items by repeating the original items
+    const repeatedItems = [];
+    for (let i = 0; i < 10; i++) {
+      repeatedItems.push(...cove.datos_mercancia);
+    }
+    // Skip the first item since it's displayed on the recipient page
+    return repeatedItems.slice(1);
+  }, [cove.datos_mercancia]);
+
   // Calculate total number of merchandise pages needed
   const totalMerchandisePages = useMemo(() => {
-    if (!cove.datos_mercancia?.length) return 0;
-    return Math.ceil(cove.datos_mercancia.length / ITEMS_PER_PAGE);
-  }, [cove.datos_mercancia]);
+    if (!multipliedMerchandiseItems.length) return 0;
+    return Math.ceil(multipliedMerchandiseItems.length / ITEMS_PER_PAGE);
+  }, [multipliedMerchandiseItems]);
 
   // Calculate which items should be displayed on current merchandise page
   const currentMerchandiseItems = useMemo(() => {
-    if (!cove.datos_mercancia?.length) return [];
+    if (!multipliedMerchandiseItems.length) return [];
     
     const startIndex = merchandisePage * ITEMS_PER_PAGE;
-    const endIndex = Math.min(startIndex + ITEMS_PER_PAGE, cove.datos_mercancia.length);
+    const endIndex = Math.min(startIndex + ITEMS_PER_PAGE, multipliedMerchandiseItems.length);
     
+    // Return indices from our multiplied array
     return Array.from({ length: endIndex - startIndex }, (_, i) => startIndex + i);
-  }, [cove.datos_mercancia, merchandisePage]);
+  }, [multipliedMerchandiseItems, merchandisePage]);
 
   // Navigation functions
   const goToNextPage = () => {
@@ -78,9 +91,12 @@ export function CoveViewer({ cove }: { cove: Cove }) {
   // Get current page number and total pages for display
   const getCurrentPageInfo = () => {
     let currentPage = 1; // Start with header = page 1
-    let totalPages = 2 + totalMerchandisePages; // Header + Recipient + Merchandise pages
+    // The first merchandise item is on the recipient page, so we need one less merchandise page
+    let totalPages = 2 + (totalMerchandisePages - 1 > 0 ? totalMerchandisePages - 1 : 0);
     
     if (currentPageType === 'recipient') currentPage = 2;
+    // Merchandise pages start at 3, but we need to add (merchandisePage + 1) to account for 1-indexing
+    // and also subtract 1 because the first merchandise item is on the recipient page
     else if (currentPageType === 'merchandise') currentPage = 3 + merchandisePage;
     
     return { currentPage, totalPages };

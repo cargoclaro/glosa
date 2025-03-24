@@ -6,8 +6,22 @@ type CoveMerchandiseProps = {
 };
 
 export function CoveMerchandise({ cove, pageItems }: CoveMerchandiseProps) {
+  // Create a 10x multiplied version of the merchandise items for testing pagination
+  const multipliedMerchandiseItems = () => {
+    if (!cove.datos_mercancia?.length) return [];
+    const repeatedItems = [];
+    for (let i = 0; i < 10; i++) {
+      repeatedItems.push(...cove.datos_mercancia);
+    }
+    // Skip the first item since it's displayed on the recipient page
+    return repeatedItems.slice(1);
+  };
+  
   // Only render merchandise items on the current page
-  const itemsToDisplay = pageItems.map(index => cove.datos_mercancia[index]);
+  const itemsToDisplay = pageItems.map(index => {
+    const allItems = multipliedMerchandiseItems();
+    return allItems[index];
+  });
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
