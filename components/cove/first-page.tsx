@@ -56,14 +56,14 @@ export function CoveHeader({
               <div className="p-2 border-b">
                 <h3 className="text-sm font-semibold mb-1">Datos del Acuse de Valor <span className="font-bold text-zinc-700">{cove.acuse_valor}</span></h3>
                 
-                {/* No. de Factura and Fecha Expedición highlighted section */}
+                {/* Información general section */}
                 <div 
                   className={cn(
                     "border-2 mb-1 cursor-pointer",
-                    getHighlightBorder('Datos de la Mercancía'),
-                    getHighlightFill('Datos de la Mercancía')
+                    getHighlightBorder('Datos Generales'),
+                    getHighlightFill('Datos Generales')
                   )}
-                  onClick={() => onClick('No. de Factura')}
+                  onClick={() => onClick('Datos Generales')}
                 >
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-1 border">
                     <div className="p-1 bg-gray-100 border-r border-b">
@@ -124,10 +124,10 @@ export function CoveHeader({
                 <div 
                   className={cn(
                     "border-2 mb-1 cursor-pointer",
-                    getHighlightBorder('Datos Generales'),
-                    getHighlightFill('Datos Generales')
+                    getHighlightBorder('Datos Proveedor Destinatario'),
+                    getHighlightFill('Datos Proveedor Destinatario')
                   )}
-                  onClick={() => onClick('Datos generales del proveedor')}
+                  onClick={() => onClick('Datos Proveedor Destinatario')}
                 >
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-1 border-x border-t border-b">
                     <div className="p-1 bg-gray-100 border-r">
