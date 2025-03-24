@@ -63,8 +63,11 @@ export function CoveViewer({
     if (currentPageType === 'header') {
       setCurrentPageType('recipient');
     } else if (currentPageType === 'recipient') {
-      setCurrentPageType('merchandise');
-      setMerchandisePage(0); // Reset to first merchandise page
+      // Only go to merchandise pages if there are items to show
+      if (merchandiseItems.length > 0) {
+        setCurrentPageType('merchandise');
+        setMerchandisePage(0); // Reset to first merchandise page
+      }
     } else if (currentPageType === 'merchandise' && merchandisePage < totalMerchandisePages - 1) {
       setMerchandisePage(merchandisePage + 1);
     }
@@ -99,7 +102,7 @@ export function CoveViewer({
   // Determine if next/prev buttons should be enabled
   const canGoNext = (
     currentPageType === 'header' || 
-    currentPageType === 'recipient' || 
+    (currentPageType === 'recipient' && merchandiseItems.length > 0) || 
     (currentPageType === 'merchandise' && merchandisePage < totalMerchandisePages - 1)
   );
   
@@ -111,8 +114,10 @@ export function CoveViewer({
   // Get current page number and total pages for display
   const getCurrentPageInfo = () => {
     let currentPage = 1; // Start with header = page 1
-    // Total pages is 2 (header + recipient) plus the number of merchandise pages
-    let totalPages = 2 + totalMerchandisePages;
+    
+    // Calculate total pages - base pages (header & recipient) + merchandise pages
+    // If there are no merchandise items, don't include them in total
+    let totalPages = merchandiseItems.length > 0 ? (2 + totalMerchandisePages) : 2;
     
     if (currentPageType === 'recipient') currentPage = 2;
     // Merchandise pages start at 3 (after header and recipient)
@@ -197,7 +202,14 @@ export function CoveViewer({
           variant="outline" 
           className="border border-gray-300 hover:bg-gray-100 transition-all duration-300 flex items-center py-1 h-8 text-xs"
           onClick={goToLastPage}
-          disabled={!canGoNext}
+          disabled={
+            // Disable if we're already on the last page
+            (currentPageType === 'merchandise' && merchandisePage === totalMerchandisePages - 1) ||
+            // Disable if we're on the recipient page and there are no merchandise items
+            (currentPageType === 'recipient' && merchandiseItems.length === 0) ||
+            // Disable if we're on the last possible page type
+            currentPage === totalPages
+          }
         >
           <ChevronLast className="h-3 w-3" />
         </Button>
