@@ -2,6 +2,7 @@ import type React from 'react';
 import IdentificadoresTable from './identificadores/IdentificadoresTable';
 import LiquidacionTable from './liquidacion/LiquidacionTable';
 import TasasTable from './tasas/TasasTable';
+import { cn } from '@/shared/utils/cn';
 
 import type { CustomGlossTabTable } from '~/db/schema';
 
@@ -51,10 +52,32 @@ const PedimentoIdentificadores: React.FC<PedimentoIdentificadoresProps> = ({
   onClick = () => {},
   tabInfoSelected = { name: '', isCorrect: false, isVerified: false },
 }) => {
+  // Helper functions to determine highlight styles
+  const getHighlightBorder = (section: string) => {
+    const tab = tabs.find(tab => tab.name === section);
+    return tab?.isCorrect || tab?.isVerified 
+      ? 'border-green-500' 
+      : 'border-yellow-400';
+  };
+
+  const getHighlightFill = (section: string) => {
+    if (tabInfoSelected.name !== section) return '';
+    
+    return tabInfoSelected.isCorrect || tabInfoSelected.isVerified 
+      ? 'bg-green-100/50' 
+      : 'bg-yellow-100/50';
+  };
+
   return (
     <div
-      className="pedimento-section"
+      className={cn(
+        "pedimento-section cursor-pointer",
+        "border-2",
+        getHighlightBorder('Clave de destino/origen'),
+        getHighlightFill('Clave de destino/origen')
+      )}
       style={{ '--animation-order': 7 } as React.CSSProperties}
+      onClick={() => onClick('Clave de destino/origen')}
     >
       <div className="grid grid-cols-12 gap-0">
         <div className="col-span-4">

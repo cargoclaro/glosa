@@ -1,5 +1,6 @@
 import type React from 'react';
 import type { CustomGlossTabTable } from '~/db/schema';
+import { cn } from '@/shared/utils/cn';
 
 interface PedimentoIncrementablesProps {
   incrementables: {
@@ -20,6 +21,22 @@ const PedimentoIncrementables: React.FC<PedimentoIncrementablesProps> = ({
   onClick = () => {},
   tabInfoSelected = { name: '', isCorrect: false, isVerified: false },
 }) => {
+  // Helper functions to determine highlight styles
+  const getHighlightBorder = (section: string) => {
+    const tab = tabs.find(tab => tab.name === section);
+    return tab?.isCorrect || tab?.isVerified 
+      ? 'border-green-500' 
+      : 'border-yellow-400';
+  };
+
+  const getHighlightFill = (section: string) => {
+    if (tabInfoSelected.name !== section) return '';
+    
+    return tabInfoSelected.isCorrect || tabInfoSelected.isVerified 
+      ? 'bg-green-100/50' 
+      : 'bg-yellow-100/50';
+  };
+
   const formatNumber = (num: number) => {
     if (num === null || num === undefined) return '0';
     return num.toString();
@@ -27,8 +44,14 @@ const PedimentoIncrementables: React.FC<PedimentoIncrementablesProps> = ({
 
   return (
     <div
-      className="pedimento-section"
+      className={cn(
+        "pedimento-section cursor-pointer",
+        "border-2",
+        getHighlightBorder('Operación monetaria'),
+        getHighlightFill('Operación monetaria')
+      )}
       style={{ '--animation-order': 5 } as React.CSSProperties}
+      onClick={() => onClick('Operación monetaria')}
     >
       <div className="grid grid-cols-5 gap-0">
         <div className="pedimento-header py-0.5 text-[10px]">VAL.SEGUROS</div>
