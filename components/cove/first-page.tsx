@@ -59,7 +59,7 @@ export function CoveHeader({
                 {/* Información general section */}
                 <div 
                   className={cn(
-                    "border-2 mb-1 cursor-pointer",
+                    "border-2 mb-1 cursor-pointer rounded-md overflow-hidden",
                     getHighlightBorder('Datos Generales'),
                     getHighlightFill('Datos Generales')
                   )}
@@ -123,7 +123,7 @@ export function CoveHeader({
                 
                 <div 
                   className={cn(
-                    "border-2 mb-1 cursor-pointer",
+                    "border-2 mb-1 cursor-pointer rounded-md overflow-hidden",
                     getHighlightBorder('Datos Proveedor Destinatario'),
                     getHighlightFill('Datos Proveedor Destinatario')
                   )}
@@ -172,7 +172,7 @@ export function CoveHeader({
                 {cove.datos_generales_proveedor.domicilio && (
                   <div 
                     className={cn(
-                      "border-2 mb-1 cursor-pointer",
+                      "border-2 mb-1 cursor-pointer rounded-md overflow-hidden",
                       getHighlightBorder('Datos Proveedor Destinatario'),
                       getHighlightFill('Datos Proveedor Destinatario')
                     )}

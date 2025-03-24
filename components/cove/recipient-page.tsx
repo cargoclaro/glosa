@@ -62,7 +62,7 @@ export function CoveRecipient({
               {/* Datos generales del destinatario - Highlighted section */}
               <div 
                 className={cn(
-                  "border-2 mb-1 cursor-pointer",
+                  "border-2 mb-1 cursor-pointer rounded-md overflow-hidden",
                   getHighlightBorder('Datos Proveedor Destinatario'),
                   getHighlightFill('Datos Proveedor Destinatario')
                 )}
@@ -111,7 +111,7 @@ export function CoveRecipient({
               {cove.datos_generales_destinatario.domicilio && (
                 <div 
                   className={cn(
-                    "border-2 mb-1 cursor-pointer",
+                    "border-2 mb-1 cursor-pointer rounded-md overflow-hidden",
                     getHighlightBorder('Datos Proveedor Destinatario'),
                     getHighlightFill('Datos Proveedor Destinatario')
                   )}
@@ -200,7 +200,7 @@ export function CoveRecipient({
               {/* Datos de la mercancía - Highlighted section */}
               <div 
                 className={cn(
-                  "border-2 mb-1 cursor-pointer",
+                  "border-2 mb-1 cursor-pointer rounded-md overflow-hidden",
                   getHighlightBorder('Validación de mercancías'),
                   getHighlightFill('Validación de mercancías')
                 )}

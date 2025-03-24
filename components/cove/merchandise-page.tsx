@@ -85,7 +85,7 @@ export function CoveMerchandise({
                 {/* Datos de la mercancía - Highlighted section */}
                 <div 
                   className={cn(
-                    "border-2 mb-1 cursor-pointer",
+                    "border-2 mb-1 cursor-pointer rounded-md overflow-hidden",
                     getHighlightBorder('Validación de mercancías'),
                     getHighlightFill('Validación de mercancías')
                   )}
