@@ -23,7 +23,7 @@ interface PedimentoIdentificadoresProps {
     cve_t_tasa: string;
     tasa: string;
   }>;
-  liquidacion?: {
+  liquidacion: {
     conceptos: Array<{
       concepto: string;
       fp: string;
