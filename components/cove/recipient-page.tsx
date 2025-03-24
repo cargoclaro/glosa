@@ -1,0 +1,156 @@
+import type { Cove } from "@/shared/services/customGloss/data-extraction/schemas";
+
+export function CoveRecipient({ cove }: { cove: Cove }) {
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
+      <div className="container mx-auto px-2 py-4">
+        <div className="flex flex-col w-full max-w-3xl mx-auto my-4 bg-white rounded-lg shadow-sm overflow-hidden">
+          {/* Header */}
+          <header className="bg-zinc-800 text-white p-2">
+            <div className="flex items-center justify-between">
+              <h1 className="text-sm font-light tracking-wide">gob mx</h1>
+            </div>
+          </header>
+
+          {/* Title section */}
+          <div className="bg-gray-200 p-3 text-center space-y-0.5">
+            <h2 className="text-zinc-700 font-medium text-sm">Información de Valor y de Comercialización</h2>
+            <p className="text-zinc-700 text-xs">Ventanilla digital mexicana de comercio exterior</p>
+            <p className="text-zinc-700 text-xs">Promoción o solicitud en materia de comercio exterior</p>
+          </div>
+
+          {/* COVE Identifier Section */}
+          <div className="p-2 border-b">
+            <h3 className="text-sm font-semibold mb-1">Datos del Acuse de Valor <span className="font-bold text-zinc-700">{cove.acuse_valor}</span></h3>
+          </div>
+
+          {/* Recipient Data */}
+          {cove.datos_generales_destinatario && (
+            <div className="p-2 border-b">
+              <h3 className="text-sm font-semibold mb-1">Datos generales del destinatario</h3>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-1 border-x border-t border-b">
+                <div className="p-1 bg-gray-100 border-r">
+                  <h4 className="font-medium text-xs">Tipo de identificador</h4>
+                </div>
+                <div className="p-1 bg-gray-100">
+                  <h4 className="font-medium text-xs">Tax ID/Sin Tax ID/RFC/CURP</h4>
+                </div>
+                
+                <div className="p-1 border-r">
+                  <p className="text-xs">RFC</p>
+                </div>
+                <div className="p-1">
+                  <p className="text-xs">{cove.datos_generales_destinatario.rfc_destinatario || "—"}</p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-1 border-x border-b mt-1">
+                <div className="p-1 bg-gray-100 border-r md:col-span-1">
+                  <h4 className="font-medium text-xs">Nombre(s) o Razón Social</h4>
+                </div>
+                <div className="p-1 bg-gray-100 border-r">
+                  <h4 className="font-medium text-xs">Apellido paterno</h4>
+                </div>
+                <div className="p-1 bg-gray-100">
+                  <h4 className="font-medium text-xs">Apellido materno</h4>
+                </div>
+                
+                <div className="p-1 border-r md:col-span-1">
+                  <p className="text-xs">{cove.datos_generales_destinatario.nombre_razon_social || "—"}</p>
+                </div>
+                <div className="p-1 border-r">
+                  <p className="text-xs">—</p>
+                </div>
+                <div className="p-1">
+                  <p className="text-xs">—</p>
+                </div>
+              </div>
+
+              {/* Address */}
+              {cove.datos_generales_destinatario.domicilio && (
+                <>
+                  <h4 className="font-semibold text-xs mt-2 mb-1">Domicilio del destinatario</h4>
+                  <div className="grid grid-cols-1 md:grid-cols-4 gap-1 border">
+                    <div className="p-1 bg-gray-100 border-r md:col-span-1">
+                      <h4 className="font-medium text-xs">Calle</h4>
+                    </div>
+                    <div className="p-1 bg-gray-100 border-r">
+                      <h4 className="font-medium text-xs">No. exterior</h4>
+                    </div>
+                    <div className="p-1 bg-gray-100 border-r">
+                      <h4 className="font-medium text-xs">No. interior</h4>
+                    </div>
+                    <div className="p-1 bg-gray-100">
+                      <h4 className="font-medium text-xs">Código postal</h4>
+                    </div>
+                    
+                    <div className="p-1 border-r md:col-span-1">
+                      <p className="text-xs">{cove.datos_generales_destinatario.domicilio.calle || "—"}</p>
+                    </div>
+                    <div className="p-1 border-r">
+                      <p className="text-xs">{cove.datos_generales_destinatario.domicilio.numero_exterior || "—"}</p>
+                    </div>
+                    <div className="p-1 border-r">
+                      <p className="text-xs">—</p>
+                    </div>
+                    <div className="p-1">
+                      <p className="text-xs">{cove.datos_generales_destinatario.domicilio.codigo_postal || "—"}</p>
+                    </div>
+                  </div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-1 border-x border-b mt-1">
+                    <div className="p-1 bg-gray-100 border-r">
+                      <h4 className="font-medium text-xs">Colonia</h4>
+                    </div>
+                    <div className="p-1 bg-gray-100">
+                      <h4 className="font-medium text-xs">Localidad</h4>
+                    </div>
+                    
+                    <div className="p-1 border-r">
+                      <p className="text-xs">{cove.datos_generales_destinatario.domicilio.colonia || "—"}</p>
+                    </div>
+                    <div className="p-1">
+                      <p className="text-xs">—</p>
+                    </div>
+                  </div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-1 border-x border-b mt-1">
+                    <div className="p-1 bg-gray-100 border-r">
+                      <h4 className="font-medium text-xs">Entidad federativa</h4>
+                    </div>
+                    <div className="p-1 bg-gray-100">
+                      <h4 className="font-medium text-xs">Municipio</h4>
+                    </div>
+                    
+                    <div className="p-1 border-r">
+                      <p className="text-xs">—</p>
+                    </div>
+                    <div className="p-1">
+                      <p className="text-xs">—</p>
+                    </div>
+                  </div>
+                  
+                  <div className="grid grid-cols-1 gap-1 border-x border-b mt-1">
+                    <div className="p-1 bg-gray-100">
+                      <h4 className="font-medium text-xs">País</h4>
+                    </div>
+                    
+                    <div className="p-1">
+                      <p className="text-xs">{cove.datos_generales_destinatario.domicilio.pais || "—"}</p>
+                    </div>
+                  </div>
+                </>
+              )}
+            </div>
+          )}
+
+          {/* Footer */}
+          <footer className="bg-gray-200 p-2 flex items-center justify-center">
+            <h3 className="text-zinc-700 font-medium text-xs">Información de Valor y de Comercialización</h3>
+          </footer>
+        </div>
+      </div>
+    </div>
+  );
+};

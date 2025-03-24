@@ -1,6 +1,6 @@
 import type { Cove } from "@/shared/services/customGloss/data-extraction/schemas";
 
-export function CoveFirstPage({ cove }: { cove: Cove }) {
+export function CoveHeader({ cove }: { cove: Cove }) {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
