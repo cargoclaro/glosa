@@ -1,11 +1,20 @@
 import type React from 'react';
-import type { Partida } from '../../types/pedimento';
+import type { Partida } from '@/shared/services/customGloss/data-extraction/schemas';
+import type { CustomGlossTabTable } from '~/db/schema';
 
 interface PedimentoPartidasProps {
   partidas: Partida[];
+  tabs?: CustomGlossTabTable[];
+  onClick?: (keyword: string) => void;
+  tabInfoSelected?: { name: string; isCorrect: boolean; isVerified: boolean };
 }
 
-const PedimentoPartidas: React.FC<PedimentoPartidasProps> = ({ partidas }) => {
+const PedimentoPartidas: React.FC<PedimentoPartidasProps> = ({ 
+  partidas,
+  tabs = [],
+  onClick = () => {},
+  tabInfoSelected = { name: '', isCorrect: false, isVerified: false } 
+}) => {
   if (!partidas || partidas.length === 0) {
     return null;
   }
@@ -109,7 +118,7 @@ const PedimentoPartidas: React.FC<PedimentoPartidasProps> = ({ partidas }) => {
                 {partida.fraccion || ''}
               </div>
               <div className="col-span-2 border-gray-400 border-r px-1 py-0.5">
-                {partida.subd_num_identificacion_comercial || ''}
+                {partida.nico || ''}
               </div>
               <div className="col-span-1 border-gray-400 border-r px-1 py-0.5 text-center">
                 {partida.vinc || ''}
@@ -130,10 +139,10 @@ const PedimentoPartidas: React.FC<PedimentoPartidasProps> = ({ partidas }) => {
                 {formatNumber(partida.cantidad_umt)}
               </div>
               <div className="col-span-1 border-gray-400 border-r px-1 py-0.5">
-                {partida.p_vic || ''}
+                {partida.p_v_c || ''}
               </div>
               <div className="col-span-1 px-1 py-0.5">
-                {partida.p_oid || ''}
+                {partida.p_o_d || ''}
               </div>
             </div>
 
@@ -150,8 +159,8 @@ const PedimentoPartidas: React.FC<PedimentoPartidasProps> = ({ partidas }) => {
             {/* Data Content row 3 */}
             <div className="grid grid-cols-12 border-gray-400 border-b text-[9px]">
               <div className="col-span-3 border-gray-400 border-r px-1 py-0.5 text-right">
-                {partida.val_adu_usd !== null
-                  ? formatNumber(partida.val_adu_usd)
+                {partida.val_adu !== null
+                  ? formatNumber(partida.val_adu)
                   : ''}
               </div>
               <div className="col-span-3 border-gray-400 border-r px-1 py-0.5 text-right">
@@ -204,42 +213,25 @@ const PedimentoPartidas: React.FC<PedimentoPartidasProps> = ({ partidas }) => {
             </div>
 
             {/* Taxation data rows */}
-            <div className="grid grid-cols-12 border-gray-400 border-b text-[9px]">
-              <div className="col-span-2 border-gray-400 border-r px-1 py-0.5">
-                {partida.con || 'IGI/IGE'}
+            {partida.contribuciones && partida.contribuciones.map((contribucion, idx) => (
+              <div key={idx} className="grid grid-cols-12 border-gray-400 border-b text-[9px]">
+                <div className="col-span-2 border-gray-400 border-r px-1 py-0.5">
+                  {contribucion.con}
+                </div>
+                <div className="col-span-2 border-gray-400 border-r px-1 py-0.5 text-right">
+                  {contribucion.tasa?.toFixed(6) || ''}
+                </div>
+                <div className="col-span-1 border-gray-400 border-r px-1 py-0.5 text-center">
+                  {contribucion.t_t}
+                </div>
+                <div className="col-span-1 border-gray-400 border-r px-1 py-0.5 text-center">
+                  {contribucion.f_p}
+                </div>
+                <div className="col-span-6 px-1 py-0.5 text-right">
+                  {formatNumber(contribucion.importe)}
+                </div>
               </div>
-              <div className="col-span-2 border-gray-400 border-r px-1 py-0.5 text-right">
-                {partida.tasa_arancel?.toFixed(6) || ''}
-              </div>
-              <div className="col-span-1 border-gray-400 border-r px-1 py-0.5 text-center">
-                {partida.t_t || ''}
-              </div>
-              <div className="col-span-1 border-gray-400 border-r px-1 py-0.5 text-center">
-                {partida.f_p}
-              </div>
-              <div className="col-span-6 px-1 py-0.5 text-right">
-                {formatNumber(0)}
-              </div>
-            </div>
-
-            {/* IVA row */}
-            <div className="grid grid-cols-12 border-gray-400 border-b text-[9px]">
-              <div className="col-span-2 border-gray-400 border-r px-1 py-0.5">
-                {partida.iva || 'IVA'}
-              </div>
-              <div className="col-span-2 border-gray-400 border-r px-1 py-0.5 text-right">
-                16.00000
-              </div>
-              <div className="col-span-1 border-gray-400 border-r px-1 py-0.5 text-center">
-                1
-              </div>
-              <div className="col-span-1 border-gray-400 border-r px-1 py-0.5 text-center">
-                0
-              </div>
-              <div className="col-span-6 px-1 py-0.5 text-right">
-                {formatNumber(partida.importe)}
-              </div>
-            </div>
+            ))}
 
             {/* Identifiers row - header */}
             <div className="grid grid-cols-12 border-gray-400 border-b bg-gray-300 text-[9px]">
@@ -264,24 +256,23 @@ const PedimentoPartidas: React.FC<PedimentoPartidasProps> = ({ partidas }) => {
               </div>
             </div>
 
-            {/* Identifiers data row - Updated with centered complementos */}
-            <div className="grid grid-cols-12 border-gray-400 border-b text-[9px]">
-              <div className="col-span-2 border-gray-400 border-r px-1 py-0.5">
-                <div className="flex flex-col">
-                  <span className="font-semibold">EN</span>
-                  <span>{partida.identificadores_en || 'XI'}</span>
+            {/* Identifiers data rows */}
+            {partida.identificadores && partida.identificadores.map((identificador, idx) => (
+              <div key={idx} className="grid grid-cols-12 border-gray-400 border-b text-[9px]">
+                <div className="col-span-2 border-gray-400 border-r px-1 py-0.5">
+                  {identificador.clave}
+                </div>
+                <div className="col-span-3 border-gray-400 border-r px-1 py-0.5 text-center">
+                  {identificador.complemento1 || ''}
+                </div>
+                <div className="col-span-3.5 border-gray-400 border-r px-1 py-0.5 text-center">
+                  {identificador.complemento2 || ''}
+                </div>
+                <div className="col-span-3.5 px-1 py-0.5 text-center">
+                  {identificador.complemento3 || ''}
                 </div>
               </div>
-              <div className="col-span-3 border-gray-400 border-r px-1 py-0.5 text-center">
-                {partida.complemento_1 || ''}
-              </div>
-              <div className="col-span-3.5 border-gray-400 border-r px-1 py-0.5 text-center">
-                {partida.complemento_2 || '1.1'}
-              </div>
-              <div className="col-span-3.5 px-1 py-0.5 text-center">
-                {partida.complemento_3 || ''}
-              </div>
-            </div>
+            ))}
 
             {/* Observations header */}
             <div className="grid grid-cols-12 border-gray-400 border-b bg-gray-300 text-[9px]">
@@ -293,16 +284,15 @@ const PedimentoPartidas: React.FC<PedimentoPartidasProps> = ({ partidas }) => {
             {/* Observations data */}
             <div className="grid grid-cols-12 border-gray-400 border-b text-[9px]">
               <div className="col-span-12 px-1 py-2">
-                {partida.observaciones_nivel_partida ||
-                  partida.observaciones || (
-                    <>
-                      {partida.marca && <div>MARCA: {partida.marca}</div>}
-                      {partida.modelo && <div>MODELO: {partida.modelo}</div>}
-                      {partida.observaciones && (
-                        <div>{partida.observaciones}</div>
-                      )}
-                    </>
-                  )}
+                {partida.observaciones || (
+                  <>
+                    {partida.marca && <div>MARCA: {partida.marca}</div>}
+                    {partida.modelo && <div>MODELO: {partida.modelo}</div>}
+                    {partida.observaciones && (
+                      <div>{partida.observaciones}</div>
+                    )}
+                  </>
+                )}
               </div>
             </div>
 

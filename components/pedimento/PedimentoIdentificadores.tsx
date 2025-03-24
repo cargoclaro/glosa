@@ -3,6 +3,8 @@ import IdentificadoresTable from './identificadores/IdentificadoresTable';
 import LiquidacionTable from './liquidacion/LiquidacionTable';
 import TasasTable from './tasas/TasasTable';
 
+import type { CustomGlossTabTable } from '~/db/schema';
+
 interface PedimentoIdentificadoresProps {
   identificadoresNivelPedimento: {
     clave_seccion_aduanera: string;
@@ -33,31 +35,21 @@ interface PedimentoIdentificadoresProps {
       total: number;
     };
   };
+  tabs?: CustomGlossTabTable[];
+  onClick?: (keyword: string) => void;
+  tabInfoSelected?: { name: string; isCorrect: boolean; isVerified: boolean };
 }
 
 const PedimentoIdentificadores: React.FC<PedimentoIdentificadoresProps> = ({
   identificadoresNivelPedimento,
   identificadoresPedimento,
-  fechaEntrada = '18/03/2025',
-  fechaPago = '18/03/2025',
-  tasas = [
-    { contrib: 'DTA', cve_t_tasa: '7', tasa: '8.00000' },
-    { contrib: 'PRV', cve_t_tasa: '2', tasa: '290.00000' },
-    { contrib: 'IVA PRV', cve_t_tasa: '1', tasa: '16.00000' },
-  ],
-  liquidacion = {
-    conceptos: [
-      { concepto: 'DTA', fp: '0', importe: 1967 },
-      { concepto: 'IVA', fp: '0', importe: 39644 },
-      { concepto: 'PRV', fp: '0', importe: 290 },
-      { concepto: 'IVA PRV', fp: '0', importe: 46 },
-    ],
-    totales: {
-      efectivo: 41947,
-      otros: 0,
-      total: 41947,
-    },
-  },
+  fechaEntrada,
+  fechaPago,
+  tasas = [],
+  liquidacion,
+  tabs = [],
+  onClick = () => {},
+  tabInfoSelected = { name: '', isCorrect: false, isVerified: false },
 }) => {
   return (
     <div
@@ -66,77 +58,77 @@ const PedimentoIdentificadores: React.FC<PedimentoIdentificadoresProps> = ({
     >
       <div className="grid grid-cols-12 gap-0">
         <div className="col-span-4">
-          <div className="pedimento-section-title">CÓDIGO DE ACEPTACIÓN:</div>
-          <div className="pedimento-cell pedimento-value">&nbsp;</div>
+          <div className="pedimento-section-title text-[11px] py-0.5">CÓDIGO DE ACEPTACIÓN:</div>
+          <div className="pedimento-cell pedimento-value text-[10px] py-0.5">&nbsp;</div>
         </div>
         <div className="col-span-4">
-          <div className="pedimento-section-title">CODIGO DE BARRAS</div>
-          <div className="pedimento-cell pedimento-value">&nbsp;</div>
+          <div className="pedimento-section-title text-[11px] py-0.5">CODIGO DE BARRAS</div>
+          <div className="pedimento-cell pedimento-value text-[10px] py-0.5">&nbsp;</div>
         </div>
         <div className="col-span-4">
-          <div className="pedimento-section-title">
+          <div className="pedimento-section-title text-[11px] py-0.5">
             CLAVE DE LA SECCION ADUANERA DE DESPACHO:
           </div>
-          <div className="pedimento-cell pedimento-value text-center">
+          <div className="pedimento-cell pedimento-value text-center text-[10px] py-0.5">
             {identificadoresNivelPedimento.clave_seccion_aduanera}
           </div>
         </div>
       </div>
 
-      <div className="mt-4 grid grid-cols-12 gap-0">
+      <div className="mt-2 grid grid-cols-12 gap-0">
         <div className="col-span-8">
-          <div className="pedimento-section-title">
+          <div className="pedimento-section-title text-[11px] py-0.5">
             MARCAS, NUMEROS Y TOTAL DE BULTOS:
           </div>
-          <div className="pedimento-cell pedimento-value">
+          <div className="pedimento-cell pedimento-value text-[10px] py-0.5">
             {identificadoresNivelPedimento.marcas_numeros_bultos}
           </div>
         </div>
         <div className="col-span-4">
           <div className="flex h-full flex-col">
-            <div className="pedimento-header">1/2</div>
-            <div className="pedimento-cell pedimento-value flex flex-1 items-center justify-center text-center">
+            <div className="pedimento-header text-[10px] py-0.5">1/2</div>
+            <div className="pedimento-cell pedimento-value flex flex-1 items-center justify-center text-center text-[10px] py-0.5">
               2
             </div>
           </div>
         </div>
       </div>
 
-      <div className="mt-4 grid grid-cols-2 gap-0">
+      <div className="mt-2 grid grid-cols-2 gap-0">
         <div className="col-span-1">
-          <div className="pedimento-section-title">FECHAS</div>
+          <div className="pedimento-section-title text-[11px] py-0.5">FECHAS</div>
           <div className="grid grid-cols-1 gap-0">
             <div className="grid grid-cols-3 gap-0">
-              <div className="pedimento-cell pedimento-label col-span-1">
+              <div className="pedimento-cell pedimento-label col-span-1 text-[10px] py-0.5">
                 ENTRADA
               </div>
-              <div className="pedimento-cell pedimento-value col-span-2">
+              <div className="pedimento-cell pedimento-value col-span-2 text-[10px] py-0.5">
                 {fechaEntrada}
               </div>
             </div>
             <div className="grid grid-cols-3 gap-0">
-              <div className="pedimento-cell pedimento-label col-span-1">
+              <div className="pedimento-cell pedimento-label col-span-1 text-[10px] py-0.5">
                 PAGO
               </div>
-              <div className="pedimento-cell pedimento-value col-span-2">
+              <div className="pedimento-cell pedimento-value col-span-2 text-[10px] py-0.5">
                 {fechaPago}
               </div>
             </div>
           </div>
         </div>
         <div className="col-span-1">
-          <div className="pedimento-section-title">TASAS A NIVEL PEDIMENTO</div>
+          <div className="pedimento-section-title text-[11px] py-0.5">TASAS A NIVEL PEDIMENTO</div>
           <TasasTable tasas={tasas} />
         </div>
       </div>
 
-      <div className="mt-4">
-        <div className="pedimento-section-title">IDENTIFICADORES</div>
+      <div className="mt-2">
+        <div className="pedimento-section-title text-[11px] py-0.5">IDENTIFICADORES</div>
         <IdentificadoresTable identificadores={identificadoresPedimento} />
       </div>
 
-      <div className="mt-4">
-        <div className="pedimento-section-title">LIQUIDACIÓN</div>
+      <div className="mt-2">
+        <div className="pedimento-section-title text-[11px] py-0.5">LIQUIDACIÓN</div>
         <LiquidacionTable liquidacion={liquidacion} />
       </div>
     </div>

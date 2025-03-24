@@ -12,10 +12,12 @@ import type {
   CustomGlossTabValidationStepActionToTake,
   CustomGlossTabValidationStepResources,
 } from '~/db/schema';
-import { Analysis, Pediment, SavedNFinish } from '.';
+import { Analysis, SavedNFinish } from '.';
 import { CoveViewer } from '~/components/cove/index';
 import type { Cove } from '@/shared/services/customGloss/data-extraction/schemas';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import PedimentoViewer from '~/components/pedimento/PedimentoViewer';
+import type { Pedimento } from '@/shared/services/customGloss/data-extraction/schemas';
 
 type TabValidation = InferSelectModel<typeof CustomGlossTabValidationStep> & {
   resources: InferSelectModel<typeof CustomGlossTabValidationStepResources>[];
@@ -41,6 +43,7 @@ interface IPedimentAnalysisNFinish {
   tabs: tabs[];
   files: CustomGlossFileTable[];
   cove: Cove | null;
+  pedimento: Pedimento | null;
 }
 
 export interface ITabInfoSelected {
@@ -92,17 +95,14 @@ const PedimentAnalysisNFinish = ({
               </TabsList>
             </div>
             <TabsContent value="PEDIMENTO">
-              <Pediment
-                tabs={customGloss.tabs}
-                onClick={handleFunction}
-                tabInfoSelected={tabInfoSelected}
-                document={
-                  customGloss.files.find(
-                    (doc) =>
-                      doc.documentType?.toLowerCase() === "pedimento"
-                  )?.url || ''
-                }
-              />
+              {customGloss.pedimento && (
+                <PedimentoViewer
+                  pedimento={customGloss.pedimento} 
+                  tabs={customGloss.tabs}
+                  onClick={handleFunction}
+                  tabInfoSelected={tabInfoSelected}
+                />
+              )}
             </TabsContent>
             <TabsContent value="COVE">
               {customGloss.cove && (

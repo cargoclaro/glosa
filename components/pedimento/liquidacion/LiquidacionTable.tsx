@@ -31,19 +31,19 @@ const LiquidacionTable: React.FC<LiquidacionTableProps> = ({ liquidacion }) => {
     <div className="grid grid-cols-12 gap-0">
       <div className="col-span-9">
         <div className="grid grid-cols-3 gap-0">
-          <div className="pedimento-header">CONCEPTO</div>
-          <div className="pedimento-header">F.P.</div>
-          <div className="pedimento-header">IMPORTE</div>
+          <div className="pedimento-header text-[10px] py-0.5">CONCEPTO</div>
+          <div className="pedimento-header text-[10px] py-0.5">F.P.</div>
+          <div className="pedimento-header text-[10px] py-0.5">IMPORTE</div>
 
           {liquidacion.conceptos.map((concepto, index) => (
             <React.Fragment key={index}>
-              <div className="pedimento-cell pedimento-value">
+              <div className="pedimento-cell pedimento-value text-[10px] py-0.5">
                 {concepto.concepto}
               </div>
-              <div className="pedimento-cell pedimento-value text-center">
+              <div className="pedimento-cell pedimento-value text-center text-[10px] py-0.5">
                 {concepto.fp}
               </div>
-              <div className="pedimento-cell pedimento-value text-right">
+              <div className="pedimento-cell pedimento-value text-right text-[10px] py-0.5">
                 {formatNumber(concepto.importe)}
               </div>
             </React.Fragment>
@@ -52,22 +52,22 @@ const LiquidacionTable: React.FC<LiquidacionTableProps> = ({ liquidacion }) => {
       </div>
 
       <div className="col-span-3">
-        <div className="pedimento-header">TOTALES</div>
+        <div className="pedimento-header text-[10px] py-0.5">TOTALES</div>
         <div className="grid grid-cols-2 gap-0">
-          <div className="pedimento-cell pedimento-label">EFECTIVO</div>
-          <div className="pedimento-cell pedimento-value text-right">
+          <div className="pedimento-cell pedimento-label text-[10px] py-0.5">EFECTIVO</div>
+          <div className="pedimento-cell pedimento-value text-right text-[10px] py-0.5">
             {formatNumber(liquidacion.totales.efectivo)}
           </div>
         </div>
         <div className="grid grid-cols-2 gap-0">
-          <div className="pedimento-cell pedimento-label">OTROS</div>
-          <div className="pedimento-cell pedimento-value text-right">
+          <div className="pedimento-cell pedimento-label text-[10px] py-0.5">OTROS</div>
+          <div className="pedimento-cell pedimento-value text-right text-[10px] py-0.5">
             {formatNumber(liquidacion.totales.otros)}
           </div>
         </div>
         <div className="grid grid-cols-2 gap-0">
-          <div className="pedimento-cell pedimento-label">TOTAL</div>
-          <div className="pedimento-cell pedimento-value text-right">
+          <div className="pedimento-cell pedimento-label text-[10px] py-0.5">TOTAL</div>
+          <div className="pedimento-cell pedimento-value text-right text-[10px] py-0.5">
             {formatNumber(liquidacion.totales.total)}
           </div>
         </div>

@@ -178,6 +178,7 @@ export const analysis = api
           importerName:
             importerName ?? 'No se encontro la razon social del importador',
           cove: cove,
+          pedimento: pedimento,
         })
         .returning();
 

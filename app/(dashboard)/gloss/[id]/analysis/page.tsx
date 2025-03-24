@@ -84,6 +84,7 @@ const GlossIdAnalysis = async (props: {
           files: customGloss.files,
           moneySaved: customGloss.moneySaved,
           cove: customGloss.cove,
+          pedimento: customGloss.pedimento,
         }}
       />
     </article>

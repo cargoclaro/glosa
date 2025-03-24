@@ -27,6 +27,10 @@ export const partidasSchema = z.object({
     .nullable(),
   descripcion: z.string().describe('Descripción del producto'),
   val_adu: z.number().describe('Valor aduanero'),
+  val_agreg: z.number().describe('Valor agregado').nullable(),
+  marca: z.string().describe('Marca'),
+  modelo: z.string().describe('Modelo'),
+  codigo_producto: z.string().describe('Código de producto').nullable(),
   imp_precio_pag: z.number().describe('Importe de precio pagado'),
   precio_unit: z.number().describe('Precio unitario'),
   identificadores: z.array(

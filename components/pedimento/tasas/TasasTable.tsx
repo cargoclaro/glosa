@@ -15,19 +15,19 @@ interface TasasTableProps {
 const TasasTable: React.FC<TasasTableProps> = ({ tasas }) => {
   return (
     <div className="grid grid-cols-3 gap-0">
-      <div className="pedimento-header">CONTRIB.</div>
-      <div className="pedimento-header">CVE.T.TASA</div>
-      <div className="pedimento-header">TASA</div>
+      <div className="pedimento-header text-[10px] py-0.5">CONTRIB.</div>
+      <div className="pedimento-header text-[10px] py-0.5">CVE.T.TASA</div>
+      <div className="pedimento-header text-[10px] py-0.5">TASA</div>
 
       {tasas.map((tasa, index) => (
         <React.Fragment key={index}>
-          <div className="pedimento-cell pedimento-value text-center">
+          <div className="pedimento-cell pedimento-value text-center text-[10px] py-0.5">
             {tasa.contrib}
           </div>
-          <div className="pedimento-cell pedimento-value text-center">
+          <div className="pedimento-cell pedimento-value text-center text-[10px] py-0.5">
             {tasa.cve_t_tasa}
           </div>
-          <div className="pedimento-cell pedimento-value text-center">
+          <div className="pedimento-cell pedimento-value text-center text-[10px] py-0.5">
             {tasa.tasa}
           </div>
         </React.Fragment>
