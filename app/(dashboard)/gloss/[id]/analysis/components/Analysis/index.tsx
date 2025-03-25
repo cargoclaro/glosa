@@ -1,8 +1,7 @@
 'use client';
 
 import { GenericCard, Modal } from '@/shared/components';
-import { INITIAL_STATE_RESPONSE } from '@/shared/constants';
-import { useModal, useServerAction } from '@/shared/hooks';
+import { useModal } from '@/shared/hooks';
 import {
   ArrowTrendingUp,
   Check,
@@ -13,6 +12,7 @@ import {
   RightArrow,
   RightChevron,
 } from '@/shared/icons';
+import { useMutation } from '@tanstack/react-query';
 import type { ISharedState } from '@/shared/interfaces';
 import { markTabAsVerifiedByTabIdNCustomGlossID } from '@/shared/services/customGloss/controller';
 import { cn } from '@/shared/utils/cn';
@@ -345,28 +345,22 @@ const VerifiedButton = ({
   isVerified,
   customGlossId,
 }: IVerifiedButton) => {
-  const { response, isLoading, setIsLoading } = useServerAction<ISharedState>(
-    INITIAL_STATE_RESPONSE
-  );
-
-  const handleVerify = async () => {
-    setIsLoading(true);
-    await markTabAsVerifiedByTabIdNCustomGlossID({
+  const mutation = useMutation({
+    mutationFn: () => markTabAsVerifiedByTabIdNCustomGlossID({
       tabId,
       customGlossId,
-    });
-    setIsLoading(false);
-  };
+    })
+  });
 
   return (
     <div className="text-center">
-      {response.message && <p className="text-red-500">{response.message}</p>}
+      {mutation.error && <p className="text-red-500">{(mutation.error as Error).message}</p>}
       <button
-        disabled={isVerified}
-        onClick={() => handleVerify()}
+        disabled={isVerified || mutation.isPending}
+        onClick={() => mutation.mutate()}
         className={cn(
           'rounded-md border border-white px-12 py-2 text-sm shadow-black/50 shadow-md',
-          isLoading && 'cursor-not-allowed opacity-50',
+          mutation.isPending && 'cursor-not-allowed opacity-50',
           isVerified
             ? 'cursor-not-allowed bg-gray-300 text-gray-900'
             : 'bg-cargoClaroOrange text-white hover:bg-cargoClaroOrange-hover'

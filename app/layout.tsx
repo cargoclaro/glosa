@@ -1,5 +1,5 @@
 import './styles/globals.css';
-import { ThemeComponent } from '@/shared/components';
+import { QueryClientProvider, ThemeComponent } from '@/shared/components';
 import { cn } from '@/shared/utils/cn';
 import { esMX } from '@clerk/localizations';
 import { ClerkProvider } from '@clerk/nextjs';
@@ -37,7 +37,11 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <ClerkProvider localization={esMX}>{children}</ClerkProvider>
+          <ClerkProvider localization={esMX}>
+            <QueryClientProvider>
+              {children}
+            </QueryClientProvider>
+          </ClerkProvider>
         </ThemeComponent>
       </body>
     </html>
