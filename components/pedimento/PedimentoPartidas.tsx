@@ -1,7 +1,7 @@
-import type React from 'react';
 import type { Partida } from '@/shared/services/customGloss/data-extraction/schemas';
-import type { CustomGlossTabTable } from '~/db/schema';
 import { cn } from '@/shared/utils/cn';
+import type React from 'react';
+import type { CustomGlossTabTable } from '~/db/schema';
 
 interface PedimentoPartidasProps {
   partidas: Partida[];
@@ -10,11 +10,11 @@ interface PedimentoPartidasProps {
   tabInfoSelected?: { name: string; isCorrect: boolean; isVerified: boolean };
 }
 
-const PedimentoPartidas: React.FC<PedimentoPartidasProps> = ({ 
+const PedimentoPartidas: React.FC<PedimentoPartidasProps> = ({
   partidas,
   tabs = [],
   onClick = () => {},
-  tabInfoSelected = { name: '', isCorrect: false, isVerified: false } 
+  tabInfoSelected = { name: '', isCorrect: false, isVerified: false },
 }) => {
   if (!partidas || partidas.length === 0) {
     return null;
@@ -22,17 +22,17 @@ const PedimentoPartidas: React.FC<PedimentoPartidasProps> = ({
 
   // Helper functions to determine highlight styles
   const getHighlightBorder = (section: string) => {
-    const tab = tabs.find(tab => tab.name === section);
-    return tab?.isCorrect || tab?.isVerified 
-      ? 'border-green-500' 
+    const tab = tabs.find((tab) => tab.name === section);
+    return tab?.isCorrect || tab?.isVerified
+      ? 'border-green-500'
       : 'border-yellow-400';
   };
 
   const getHighlightFill = (section: string) => {
     if (tabInfoSelected.name !== section) return '';
-    
-    return tabInfoSelected.isCorrect || tabInfoSelected.isVerified 
-      ? 'bg-green-100/50' 
+
+    return tabInfoSelected.isCorrect || tabInfoSelected.isVerified
+      ? 'bg-green-100/50'
       : 'bg-yellow-100/50';
   };
 
@@ -57,13 +57,13 @@ const PedimentoPartidas: React.FC<PedimentoPartidasProps> = ({
         {partidas.map((partida, index) => {
           const partidaNumber = index + 1;
           const partidaSection = `Partida ${partidaNumber}`;
-          
+
           return (
-            <div 
-              key={index} 
+            <div
+              key={index}
               className={cn(
-                "mb-4 cursor-pointer",
-                "border-2 rounded-md overflow-hidden",
+                'mb-4 cursor-pointer',
+                'overflow-hidden rounded-md border-2',
                 getHighlightBorder(partidaSection),
                 getHighlightFill(partidaSection)
               )}
@@ -243,25 +243,29 @@ const PedimentoPartidas: React.FC<PedimentoPartidasProps> = ({
               </div>
 
               {/* Taxation data rows */}
-              {partida.contribuciones && partida.contribuciones.map((contribucion, idx) => (
-                <div key={idx} className="grid grid-cols-12 border-gray-400 border-b text-[9px]">
-                  <div className="col-span-2 border-gray-400 border-r px-1 py-0.5">
-                    {contribucion.con}
+              {partida.contribuciones &&
+                partida.contribuciones.map((contribucion, idx) => (
+                  <div
+                    key={idx}
+                    className="grid grid-cols-12 border-gray-400 border-b text-[9px]"
+                  >
+                    <div className="col-span-2 border-gray-400 border-r px-1 py-0.5">
+                      {contribucion.con}
+                    </div>
+                    <div className="col-span-2 border-gray-400 border-r px-1 py-0.5 text-right">
+                      {contribucion.tasa?.toFixed(6) || ''}
+                    </div>
+                    <div className="col-span-1 border-gray-400 border-r px-1 py-0.5 text-center">
+                      {contribucion.t_t}
+                    </div>
+                    <div className="col-span-1 border-gray-400 border-r px-1 py-0.5 text-center">
+                      {contribucion.f_p}
+                    </div>
+                    <div className="col-span-6 px-1 py-0.5 text-right">
+                      {formatNumber(contribucion.importe)}
+                    </div>
                   </div>
-                  <div className="col-span-2 border-gray-400 border-r px-1 py-0.5 text-right">
-                    {contribucion.tasa?.toFixed(6) || ''}
-                  </div>
-                  <div className="col-span-1 border-gray-400 border-r px-1 py-0.5 text-center">
-                    {contribucion.t_t}
-                  </div>
-                  <div className="col-span-1 border-gray-400 border-r px-1 py-0.5 text-center">
-                    {contribucion.f_p}
-                  </div>
-                  <div className="col-span-6 px-1 py-0.5 text-right">
-                    {formatNumber(contribucion.importe)}
-                  </div>
-                </div>
-              ))}
+                ))}
 
               {/* Identifiers row - header */}
               <div className="grid grid-cols-12 border-gray-400 border-b bg-gray-300 text-[9px]">
@@ -287,22 +291,26 @@ const PedimentoPartidas: React.FC<PedimentoPartidasProps> = ({
               </div>
 
               {/* Identifiers data rows */}
-              {partida.identificadores && partida.identificadores.map((identificador, idx) => (
-                <div key={idx} className="grid grid-cols-12 border-gray-400 border-b text-[9px]">
-                  <div className="col-span-2 border-gray-400 border-r px-1 py-0.5">
-                    {identificador.clave}
+              {partida.identificadores &&
+                partida.identificadores.map((identificador, idx) => (
+                  <div
+                    key={idx}
+                    className="grid grid-cols-12 border-gray-400 border-b text-[9px]"
+                  >
+                    <div className="col-span-2 border-gray-400 border-r px-1 py-0.5">
+                      {identificador.clave}
+                    </div>
+                    <div className="col-span-3 border-gray-400 border-r px-1 py-0.5 text-center">
+                      {identificador.complemento1 || ''}
+                    </div>
+                    <div className="col-span-3.5 border-gray-400 border-r px-1 py-0.5 text-center">
+                      {identificador.complemento2 || ''}
+                    </div>
+                    <div className="col-span-3.5 px-1 py-0.5 text-center">
+                      {identificador.complemento3 || ''}
+                    </div>
                   </div>
-                  <div className="col-span-3 border-gray-400 border-r px-1 py-0.5 text-center">
-                    {identificador.complemento1 || ''}
-                  </div>
-                  <div className="col-span-3.5 border-gray-400 border-r px-1 py-0.5 text-center">
-                    {identificador.complemento2 || ''}
-                  </div>
-                  <div className="col-span-3.5 px-1 py-0.5 text-center">
-                    {identificador.complemento3 || ''}
-                  </div>
-                </div>
-              ))}
+                ))}
 
               {/* Observations header */}
               <div className="grid grid-cols-12 border-gray-400 border-b bg-gray-300 text-[9px]">

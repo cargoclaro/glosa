@@ -1,6 +1,6 @@
-import moment from 'moment';
 import { config } from 'dotenv';
 import { env } from 'lib/env/server';
+import moment from 'moment';
 import { z } from 'zod';
 
 config();
@@ -39,23 +39,26 @@ export async function getFraccionInfo({
     tipo_operacion: 'I' | 'E';
   }
 
-  const response = await fetch('https://taxfinder-api.griver.com.mx/api/tel/consulta', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'reco-api-key': env.TAXFINDER_API_KEY,
-    },
-    body: JSON.stringify({
-      clave_pais: clavePais,
-      consulta: fraccion,
-      extra: true,
-      fecha: moment(fechaDeEntrada).format('YYYY-MM-DD'),
-      fecha_pago: moment(new Date()).format('YYYY-MM-DD'),
-      idioma: 'es',
-      nico,
-      tipo_operacion: tipoDeOperacion === 'IMP' ? 'I' : 'E',
-    } as TaxFinderRequest),
-  });
+  const response = await fetch(
+    'https://taxfinder-api.griver.com.mx/api/tel/consulta',
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'reco-api-key': env.TAXFINDER_API_KEY,
+      },
+      body: JSON.stringify({
+        clave_pais: clavePais,
+        consulta: fraccion,
+        extra: true,
+        fecha: moment(fechaDeEntrada).format('YYYY-MM-DD'),
+        fecha_pago: moment(new Date()).format('YYYY-MM-DD'),
+        idioma: 'es',
+        nico,
+        tipo_operacion: tipoDeOperacion === 'IMP' ? 'I' : 'E',
+      } as TaxFinderRequest),
+    }
+  );
 
   const resJson = await response.json();
   const taxfinderResponseSchema = z.object({
@@ -112,10 +115,13 @@ export async function getFraccionInfo({
       }),
     }),
   });
-  
+
   const parsed = taxfinderResponseSchema.safeParse(resJson);
   if (!parsed.success) {
-    throw new Error(`Taxfinder response validation failed for input ${parsed.data}`, parsed.error);
+    throw new Error(
+      `Taxfinder response validation failed for input ${parsed.data}`,
+      parsed.error
+    );
   }
   return parsed.data;
 }

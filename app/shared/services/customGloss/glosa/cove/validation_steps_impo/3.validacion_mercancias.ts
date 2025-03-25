@@ -23,7 +23,7 @@ async function validateMercancias(
 
   // Create a simplified view of COVE merchandise data
   const mercanciasCoveFormatted = datosMercanciaCove
-    ? datosMercanciaCove.map(mercancia => ({
+    ? datosMercanciaCove.map((mercancia) => ({
         descripcion: mercancia?.descripcion_mercancia,
         cantidad: mercancia?.cantidad_umc,
         unidadMedida: mercancia?.clave_umc,
@@ -72,7 +72,10 @@ async function validateValorTotalDolares(
   carta318?: Carta318
 ) {
   // Extract total value from COVE
-  const valorTotalDolaresCove = cove.datos_mercancia?.reduce((sum, mercancia) => sum + (mercancia.valor_total_dolares || 0), 0);
+  const valorTotalDolaresCove = cove.datos_mercancia?.reduce(
+    (sum, mercancia) => sum + (mercancia.valor_total_dolares || 0),
+    0
+  );
   const observacionesCove = cove.observaciones || '';
   const invoiceMkdown = invoice?.markdown_representation;
   const carta318Mkdown = carta318?.markdown_representation;

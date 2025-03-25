@@ -28,7 +28,13 @@ async function validateFraccionArancelaria(
   let fraccionExiste = false;
   if (fechaDeEntrada && tipoDeOperacion && tipoDeOperacion !== 'TRA') {
     try {
-      await getFraccionInfo({ fraccion, fechaDeEntrada, tipoDeOperacion, nico, clavePais: paisOrigenDestino });
+      await getFraccionInfo({
+        fraccion,
+        fechaDeEntrada,
+        tipoDeOperacion,
+        nico,
+        clavePais: paisOrigenDestino,
+      });
       fraccionExiste = true;
     } catch (error) {
       console.error(error);
@@ -80,7 +86,13 @@ async function validateCoherenciaUMT(
     data: {
       arancel: { unidad_medida },
     },
-  } = await getFraccionInfo({ fraccion, fechaDeEntrada, tipoDeOperacion, nico, clavePais: paisOrigenDestino });
+  } = await getFraccionInfo({
+    fraccion,
+    fechaDeEntrada,
+    tipoDeOperacion,
+    nico,
+    clavePais: paisOrigenDestino,
+  });
   const validation = {
     name: 'Validación de unidad de medida de la tarifa',
     description:
@@ -333,7 +345,13 @@ async function validateTarifasArancelarias(
       iva,
       extra: { ligie_arancel, ieps_tasas },
     },
-  } = await getFraccionInfo({ fraccion, fechaDeEntrada, tipoDeOperacion, nico, clavePais: paisOrigenDestino });
+  } = await getFraccionInfo({
+    fraccion,
+    fechaDeEntrada,
+    tipoDeOperacion,
+    nico,
+    clavePais: paisOrigenDestino,
+  });
 
   const tasasTaxFinder = {
     iva: iva?.valor_iva || 0,

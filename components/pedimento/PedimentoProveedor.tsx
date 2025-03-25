@@ -1,6 +1,6 @@
+import { cn } from '@/shared/utils/cn';
 import type React from 'react';
 import type { CustomGlossTabTable } from '~/db/schema';
-import { cn } from '@/shared/utils/cn';
 
 interface PedimentoProveedorProps {
   idFiscal: string;
@@ -33,17 +33,17 @@ const PedimentoProveedor: React.FC<PedimentoProveedorProps> = ({
 }) => {
   // Helper functions to determine highlight styles
   const getHighlightBorder = (section: string) => {
-    const tab = tabs.find(tab => tab.name === section);
-    return tab?.isCorrect || tab?.isVerified 
-      ? 'border-green-500' 
+    const tab = tabs.find((tab) => tab.name === section);
+    return tab?.isCorrect || tab?.isVerified
+      ? 'border-green-500'
       : 'border-yellow-400';
   };
 
   const getHighlightFill = (section: string) => {
     if (tabInfoSelected.name !== section) return '';
-    
-    return tabInfoSelected.isCorrect || tabInfoSelected.isVerified 
-      ? 'bg-green-100/50' 
+
+    return tabInfoSelected.isCorrect || tabInfoSelected.isVerified
+      ? 'bg-green-100/50'
       : 'bg-yellow-100/50';
   };
 
@@ -58,8 +58,8 @@ const PedimentoProveedor: React.FC<PedimentoProveedorProps> = ({
   return (
     <div
       className={cn(
-        "pedimento-section cursor-pointer",
-        "border-2 rounded-md overflow-hidden",
+        'pedimento-section cursor-pointer',
+        'overflow-hidden rounded-md border-2',
         getHighlightBorder('Datos de factura'),
         getHighlightFill('Datos de factura')
       )}

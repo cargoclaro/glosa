@@ -3,9 +3,9 @@ import type { Carta318 } from '../../../data-extraction/mkdown_schemas/carta-318
 import type { Invoice } from '../../../data-extraction/mkdown_schemas/invoice';
 import type { TransportDocument } from '../../../data-extraction/mkdown_schemas/transport-document';
 import type { Pedimento } from '../../../data-extraction/schemas';
+import { apendice14 } from '../../anexo-22/apendice-14';
 import { getExchangeRate } from '../../exchange-rate';
 import { glosar } from '../../validation-result';
-import { apendice14 } from '../../anexo-22/apendice-14';
 
 // TODO: Agregar DOF
 
@@ -498,11 +498,29 @@ export const tracedTransportDocumentEntryDate = traceable(
     const validationsPromise = await Promise.all([
       validateTransportDocumentEntryDate(traceId, pedimento, transportDocument),
       validateTipoCambio(traceId, pedimento),
-      validateValSeguros(traceId, pedimento, invoice, transportDocument, carta318),
+      validateValSeguros(
+        traceId,
+        pedimento,
+        invoice,
+        transportDocument,
+        carta318
+      ),
       validateSeguros(traceId, pedimento, invoice, transportDocument, carta318),
       validateFletes(traceId, pedimento, invoice, transportDocument, carta318),
-      validateEmbalajes(traceId, pedimento, invoice, transportDocument, carta318),
-      validateOtrosIncrementables(traceId, pedimento, invoice, transportDocument, carta318),
+      validateEmbalajes(
+        traceId,
+        pedimento,
+        invoice,
+        transportDocument,
+        carta318
+      ),
+      validateOtrosIncrementables(
+        traceId,
+        pedimento,
+        invoice,
+        transportDocument,
+        carta318
+      ),
       validateValorDolares(traceId, pedimento, invoice, carta318),
       validateValorComercial(traceId, pedimento, invoice, carta318),
       validateValorAduana(traceId, pedimento, invoice, carta318),

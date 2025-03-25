@@ -19,18 +19,18 @@ const PedimentoContenedores: React.FC<PedimentoContenedoresProps> = ({
       style={{ '--animation-order': 3 } as React.CSSProperties}
     >
       <div className="border border-gray-400">
-        <div className="pedimento-cell pedimento-header bg-gray-200 text-center font-bold py-0.5 text-[10px]">
+        <div className="pedimento-cell pedimento-header bg-gray-200 py-0.5 text-center font-bold text-[10px]">
           CONTENEDORES/ CARRO DE FERROCARRIL/ NÚMERO ECONÓMICO DEL VEHÍCULO
         </div>
 
         <div className="grid grid-cols-12 gap-0">
-          <div className="pedimento-cell pedimento-header col-span-3 border-gray-400 border-r font-bold py-0.5 text-[10px]">
+          <div className="pedimento-cell pedimento-header col-span-3 border-gray-400 border-r py-0.5 font-bold text-[10px]">
             NÚMERO (GUÍA)
           </div>
-          <div className="pedimento-cell pedimento-header col-span-3 border-gray-400 border-r font-bold py-0.5 text-[10px]">
+          <div className="pedimento-cell pedimento-header col-span-3 border-gray-400 border-r py-0.5 font-bold text-[10px]">
             TIPO
           </div>
-          <div className="pedimento-cell pedimento-header col-span-6 font-bold py-0.5 text-[10px]">
+          <div className="pedimento-cell pedimento-header col-span-6 py-0.5 font-bold text-[10px]">
             ID (CONTENEDOR)
           </div>
         </div>

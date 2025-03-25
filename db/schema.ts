@@ -1,20 +1,23 @@
+import type {
+  Cove,
+  Pedimento,
+} from '@/shared/services/customGloss/data-extraction/schemas';
 import { relations } from 'drizzle-orm';
 import {
   boolean,
   doublePrecision,
   foreignKey,
   integer,
+  json,
   pgEnum,
   pgTable,
   primaryKey,
   serial,
-  uuid,
   text,
   timestamp,
   uniqueIndex,
-  json,
+  uuid,
 } from 'drizzle-orm/pg-core';
-import type { Cove, Pedimento } from '@/shared/services/customGloss/data-extraction/schemas';
 
 export const OperationStatus = pgEnum('OperationStatus', [
   'IN_PROGRESS',

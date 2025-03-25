@@ -1,6 +1,10 @@
-import { useState, useMemo } from 'react';
-import { cn } from '~/lib/utils';
+import { Button } from '@/shared/components/ui/button';
 import type { Pedimento } from '@/shared/services/customGloss/data-extraction/schemas';
+import { ChevronFirst, ChevronLast } from 'lucide-react';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { useMemo, useState } from 'react';
+import type { CustomGlossTabTable } from '~/db/schema';
+import { cn } from '~/lib/utils';
 import PedimentoContenedores from './PedimentoContenedores';
 import PedimentoDecrementables from './PedimentoDecrementables';
 import PedimentoHeader from './PedimentoHeader';
@@ -9,10 +13,6 @@ import PedimentoImportador from './PedimentoImportador';
 import PedimentoIncrementables from './PedimentoIncrementables';
 import PedimentoPartidas from './PedimentoPartidas';
 import PedimentoProveedor from './PedimentoProveedor';
-import type { CustomGlossTabTable } from '~/db/schema';
-import { Button } from "@/shared/components/ui/button";
-import { ChevronFirst, ChevronLast } from "lucide-react";
-import { ArrowLeft, ArrowRight } from "lucide-react";
 
 interface PedimentoViewerProps {
   pedimento: Pedimento;
@@ -22,47 +22,47 @@ interface PedimentoViewerProps {
   tabInfoSelected?: { name: string; isCorrect: boolean; isVerified: boolean };
 }
 
-const PedimentoViewer = ({ 
-  pedimento, 
+const PedimentoViewer = ({
+  pedimento,
   className,
   tabs = [],
   onClick = () => {},
-  tabInfoSelected = { name: '', isCorrect: false, isVerified: false }
+  tabInfoSelected = { name: '', isCorrect: false, isVerified: false },
 }: PedimentoViewerProps) => {
   // Constants for partidas pagination
   const PARTIDAS_PER_PAGE = 2;
-  
+
   // State for active page
   const [activeTab, setActiveTab] = useState<string>('page1');
-  
+
   // Calculate total pages based on partidas length
   const totalPartidasPages = useMemo(() => {
     if (!pedimento.partidas || pedimento.partidas.length === 0) return 0;
     return Math.ceil(pedimento.partidas.length / PARTIDAS_PER_PAGE);
   }, [pedimento.partidas]);
-  
+
   // Calculate total pages (base pages + partida pages)
   const totalPages = 2 + (totalPartidasPages > 0 ? totalPartidasPages - 1 : 0);
-  
+
   // Get current page number
   const currentPage = useMemo(() => {
     if (activeTab === 'page1') return 1;
     if (activeTab === 'page2') return 2;
     // For partida pages (page3, page4, etc.)
-    const pageNum = parseInt(activeTab.replace('page', ''));
+    const pageNum = Number.parseInt(activeTab.replace('page', ''));
     return pageNum;
   }, [activeTab]);
-  
+
   // Get current partidas for display based on current page
   const currentPartidas = useMemo(() => {
     if (!pedimento.partidas || pedimento.partidas.length === 0) return [];
     if (currentPage <= 2) return pedimento.partidas.slice(0, PARTIDAS_PER_PAGE);
-    
+
     const startIdx = PARTIDAS_PER_PAGE + (currentPage - 3) * PARTIDAS_PER_PAGE;
     const endIdx = startIdx + PARTIDAS_PER_PAGE;
     return pedimento.partidas.slice(startIdx, endIdx);
   }, [pedimento.partidas, currentPage]);
-  
+
   // Navigation functions
   const goToNextPage = () => {
     if (currentPage < totalPages) {
@@ -90,11 +90,12 @@ const PedimentoViewer = ({
 
   // Transform liquidaciones from pedimento to match our component's expected structure
   const liquidacionData = {
-    conceptos: pedimento.cuadro_de_liquidacion.liquidaciones?.map(item => ({
-      concepto: item.concepto || '',
-      fp: item.fp?.toString() || '0',
-      importe: item.importe || 0,
-    })) || [],
+    conceptos:
+      pedimento.cuadro_de_liquidacion.liquidaciones?.map((item) => ({
+        concepto: item.concepto || '',
+        fp: item.fp?.toString() || '0',
+        importe: item.importe || 0,
+      })) || [],
     totales: {
       efectivo: pedimento.cuadro_de_liquidacion.totales?.efectivo || 0,
       otros: pedimento.cuadro_de_liquidacion.totales?.otros || 0,
@@ -103,7 +104,9 @@ const PedimentoViewer = ({
   };
 
   return (
-    <div className={cn('flex w-full flex-col overflow-hidden relative', className)}>
+    <div
+      className={cn('relative flex w-full flex-col overflow-hidden', className)}
+    >
       <div className="glass-card mx-auto w-full max-w-4xl overflow-hidden rounded-xl shadow-xl transition-all duration-500">
         <div className="overflow-x-auto p-3">
           {currentPage === 1 && (
@@ -183,14 +186,24 @@ const PedimentoViewer = ({
                       complemento_3: id.complemento_3 || '',
                     })
                   )}
-                  fechaEntrada={pedimento.fecha_entrada_presentacion ? pedimento.fecha_entrada_presentacion.toString() : undefined}
-                  fechaPago={pedimento.fecha_entrada_presentacion ? pedimento.fecha_entrada_presentacion.toString() : undefined}
+                  fechaEntrada={
+                    pedimento.fecha_entrada_presentacion
+                      ? pedimento.fecha_entrada_presentacion.toString()
+                      : undefined
+                  }
+                  fechaPago={
+                    pedimento.fecha_entrada_presentacion
+                      ? pedimento.fecha_entrada_presentacion.toString()
+                      : undefined
+                  }
                   // Generate tasas from partidas contribuciones if available
-                  tasas={pedimento.partidas?.[0]?.contribuciones?.map(c => ({
-                    contrib: c.con || '',
-                    cve_t_tasa: c.t_t || '',
-                    tasa: c.tasa?.toString() || '0',
-                  })) || []}
+                  tasas={
+                    pedimento.partidas?.[0]?.contribuciones?.map((c) => ({
+                      contrib: c.con || '',
+                      cve_t_tasa: c.t_t || '',
+                      tasa: c.tasa?.toString() || '0',
+                    })) || []
+                  }
                   liquidacion={liquidacionData}
                   tabs={tabs}
                   onClick={onClick}
@@ -212,10 +225,14 @@ const PedimentoViewer = ({
                     num_factura: pedimento.datos_factura.num_factura || '',
                     fecha_factura: pedimento.datos_factura.fecha_factura || '',
                     incoterm: pedimento.datos_factura.incoterm || '',
-                    moneda_factura: pedimento.datos_factura.moneda_factura || '',
-                    valor_moneda_factura: pedimento.datos_factura.valor_moneda_factura || 0,
-                    factor_moneda_factura: pedimento.datos_factura.factor_moneda_factura || 0,
-                    valor_dolares_factura: pedimento.datos_factura.valor_dolares_factura || 0,
+                    moneda_factura:
+                      pedimento.datos_factura.moneda_factura || '',
+                    valor_moneda_factura:
+                      pedimento.datos_factura.valor_moneda_factura || 0,
+                    factor_moneda_factura:
+                      pedimento.datos_factura.factor_moneda_factura || 0,
+                    valor_dolares_factura:
+                      pedimento.datos_factura.valor_dolares_factura || 0,
                   }}
                   tabs={tabs}
                   onClick={onClick}
@@ -249,7 +266,7 @@ const PedimentoViewer = ({
               {/* Show only first batch of partidas on page 2 */}
               {pedimento.partidas && pedimento.partidas.length > 0 && (
                 <div className="w-full">
-                  <PedimentoPartidas 
+                  <PedimentoPartidas
                     partidas={currentPartidas}
                     tabs={tabs}
                     onClick={onClick}
@@ -259,7 +276,7 @@ const PedimentoViewer = ({
               )}
             </div>
           )}
-          
+
           {/* Additional pages for partidas (page 3 and beyond) */}
           {currentPage > 2 && pedimento.partidas && (
             <div className="flex w-full flex-col gap-2">
@@ -274,7 +291,7 @@ const PedimentoViewer = ({
                 />
               </div>
               <div className="w-full">
-                <PedimentoPartidas 
+                <PedimentoPartidas
                   partidas={currentPartidas}
                   tabs={tabs}
                   onClick={onClick}
@@ -285,13 +302,13 @@ const PedimentoViewer = ({
           )}
         </div>
       </div>
-      
+
       {/* Page navigation */}
-      <div className="container mx-auto px-2 py-2 flex justify-center items-center space-x-2 mt-1">
+      <div className="container mx-auto mt-1 flex items-center justify-center space-x-2 px-2 py-2">
         {/* First page button */}
-        <Button 
-          variant="outline" 
-          className="border border-gray-300 hover:bg-gray-100 transition-all duration-300 flex items-center py-1 h-8 text-xs"
+        <Button
+          variant="outline"
+          className="flex h-8 items-center border border-gray-300 py-1 text-xs transition-all duration-300 hover:bg-gray-100"
           onClick={goToFirstPage}
           disabled={!canGoPrev}
         >
@@ -300,9 +317,9 @@ const PedimentoViewer = ({
 
         {/* Previous page button */}
         {canGoPrev && (
-          <Button 
-            variant="outline" 
-            className="border border-gray-300 hover:bg-gray-100 transition-all duration-300 flex items-center py-1 h-8 text-xs" 
+          <Button
+            variant="outline"
+            className="flex h-8 items-center border border-gray-300 py-1 text-xs transition-all duration-300 hover:bg-gray-100"
             onClick={goToPrevPage}
           >
             <ArrowLeft className="mr-1 h-3 w-3" />
@@ -311,15 +328,15 @@ const PedimentoViewer = ({
         )}
 
         {/* Page indicator */}
-        <span className="text-xs text-gray-600">
+        <span className="text-gray-600 text-xs">
           Página {currentPage} de {totalPages}
         </span>
 
         {/* Next page button */}
         {canGoNext && (
-          <Button 
-            variant="default" 
-            className="bg-zinc-800 hover:bg-zinc-700 transition-all duration-300 flex items-center py-1 h-8 text-xs" 
+          <Button
+            variant="default"
+            className="flex h-8 items-center bg-zinc-800 py-1 text-xs transition-all duration-300 hover:bg-zinc-700"
             onClick={goToNextPage}
           >
             Siguiente
@@ -328,9 +345,9 @@ const PedimentoViewer = ({
         )}
 
         {/* Last page button */}
-        <Button 
-          variant="outline" 
-          className="border border-gray-300 hover:bg-gray-100 transition-all duration-300 flex items-center py-1 h-8 text-xs"
+        <Button
+          variant="outline"
+          className="flex h-8 items-center border border-gray-300 py-1 text-xs transition-all duration-300 hover:bg-gray-100"
           onClick={goToLastPage}
           disabled={currentPage === totalPages}
         >

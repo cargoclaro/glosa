@@ -1,7 +1,12 @@
 'use client';
 
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import type { Cove } from '@/shared/services/customGloss/data-extraction/schemas';
+import type { Pedimento } from '@/shared/services/customGloss/data-extraction/schemas';
 import type { InferSelectModel } from 'drizzle-orm';
 import { useState } from 'react';
+import { CoveViewer } from '~/components/cove/index';
+import PedimentoViewer from '~/components/pedimento/PedimentoViewer';
 import type { CustomGlossFileTable } from '~/db/schema';
 import type {
   CustomGloss,
@@ -13,11 +18,6 @@ import type {
   CustomGlossTabValidationStepResources,
 } from '~/db/schema';
 import { Analysis, SavedNFinish } from '.';
-import { CoveViewer } from '~/components/cove/index';
-import type { Cove } from '@/shared/services/customGloss/data-extraction/schemas';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import PedimentoViewer from '~/components/pedimento/PedimentoViewer';
-import type { Pedimento } from '@/shared/services/customGloss/data-extraction/schemas';
 
 type TabValidation = InferSelectModel<typeof CustomGlossTabValidationStep> & {
   resources: InferSelectModel<typeof CustomGlossTabValidationStepResources>[];
@@ -80,24 +80,26 @@ const PedimentAnalysisNFinish = ({
 
   return (
     <>
-      <section className="sm:col-span-2 flex flex-col">
+      <section className="flex flex-col sm:col-span-2">
         <div className="mb-2">
-          <Tabs 
-            defaultValue="PEDIMENTO" 
-            value={documentSelected} 
+          <Tabs
+            defaultValue="PEDIMENTO"
+            value={documentSelected}
             onValueChange={setDocumentSelected}
             className="w-full"
           >
             <div className="flex justify-center">
               <TabsList>
                 <TabsTrigger value="PEDIMENTO">Pedimento</TabsTrigger>
-                <TabsTrigger value="COVE" disabled={!customGloss.cove}>COVE</TabsTrigger>
+                <TabsTrigger value="COVE" disabled={!customGloss.cove}>
+                  COVE
+                </TabsTrigger>
               </TabsList>
             </div>
             <TabsContent value="PEDIMENTO">
               {customGloss.pedimento && (
                 <PedimentoViewer
-                  pedimento={customGloss.pedimento} 
+                  pedimento={customGloss.pedimento}
                   tabs={customGloss.tabs}
                   onClick={handleFunction}
                   tabInfoSelected={tabInfoSelected}
@@ -107,7 +109,7 @@ const PedimentAnalysisNFinish = ({
             <TabsContent value="COVE">
               {customGloss.cove && (
                 <CoveViewer
-                  cove={customGloss.cove} 
+                  cove={customGloss.cove}
                   tabs={customGloss.tabs}
                   onClick={handleFunction}
                   tabInfoSelected={tabInfoSelected}
@@ -117,7 +119,7 @@ const PedimentAnalysisNFinish = ({
           </Tabs>
         </div>
       </section>
-      <section className="col-span-1 flex flex-col pt-10 gap-4 sm:col-span-3 lg:col-span-1">
+      <section className="col-span-1 flex flex-col gap-4 pt-10 sm:col-span-3 lg:col-span-1">
         <Analysis
           tabs={customGloss.tabs}
           setTabInfoSelected={setTabInfoSelected}

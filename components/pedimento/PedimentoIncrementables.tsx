@@ -1,6 +1,6 @@
+import { cn } from '@/shared/utils/cn';
 import type React from 'react';
 import type { CustomGlossTabTable } from '~/db/schema';
-import { cn } from '@/shared/utils/cn';
 
 interface PedimentoIncrementablesProps {
   incrementables: {
@@ -23,17 +23,17 @@ const PedimentoIncrementables: React.FC<PedimentoIncrementablesProps> = ({
 }) => {
   // Helper functions to determine highlight styles
   const getHighlightBorder = (section: string) => {
-    const tab = tabs.find(tab => tab.name === section);
-    return tab?.isCorrect || tab?.isVerified 
-      ? 'border-green-500' 
+    const tab = tabs.find((tab) => tab.name === section);
+    return tab?.isCorrect || tab?.isVerified
+      ? 'border-green-500'
       : 'border-yellow-400';
   };
 
   const getHighlightFill = (section: string) => {
     if (tabInfoSelected.name !== section) return '';
-    
-    return tabInfoSelected.isCorrect || tabInfoSelected.isVerified 
-      ? 'bg-green-100/50' 
+
+    return tabInfoSelected.isCorrect || tabInfoSelected.isVerified
+      ? 'bg-green-100/50'
       : 'bg-yellow-100/50';
   };
 
@@ -45,8 +45,8 @@ const PedimentoIncrementables: React.FC<PedimentoIncrementablesProps> = ({
   return (
     <div
       className={cn(
-        "pedimento-section cursor-pointer",
-        "border-2 rounded-md overflow-hidden",
+        'pedimento-section cursor-pointer',
+        'overflow-hidden rounded-md border-2',
         getHighlightBorder('Operación monetaria'),
         getHighlightFill('Operación monetaria')
       )}
@@ -58,22 +58,24 @@ const PedimentoIncrementables: React.FC<PedimentoIncrementablesProps> = ({
         <div className="pedimento-header py-0.5 text-[10px]">SEGUROS</div>
         <div className="pedimento-header py-0.5 text-[10px]">FLETES</div>
         <div className="pedimento-header py-0.5 text-[10px]">EMBALAJES</div>
-        <div className="pedimento-header py-0.5 text-[10px]">OTROS INCREMENTABLES</div>
+        <div className="pedimento-header py-0.5 text-[10px]">
+          OTROS INCREMENTABLES
+        </div>
       </div>
       <div className="grid grid-cols-5 gap-0">
-        <div className="pedimento-cell pedimento-value text-center py-0.5 text-[10px]">
+        <div className="pedimento-cell pedimento-value py-0.5 text-center text-[10px]">
           {formatNumber(incrementables.val_seguros)}
         </div>
-        <div className="pedimento-cell pedimento-value text-center py-0.5 text-[10px]">
+        <div className="pedimento-cell pedimento-value py-0.5 text-center text-[10px]">
           {formatNumber(incrementables.seguros)}
         </div>
-        <div className="pedimento-cell pedimento-value text-center py-0.5 text-[10px]">
+        <div className="pedimento-cell pedimento-value py-0.5 text-center text-[10px]">
           {formatNumber(incrementables.fletes)}
         </div>
-        <div className="pedimento-cell pedimento-value text-center py-0.5 text-[10px]">
+        <div className="pedimento-cell pedimento-value py-0.5 text-center text-[10px]">
           {formatNumber(incrementables.embalajes)}
         </div>
-        <div className="pedimento-cell pedimento-value text-center py-0.5 text-[10px]">
+        <div className="pedimento-cell pedimento-value py-0.5 text-center text-[10px]">
           {formatNumber(incrementables.otros_incrementables)}
         </div>
       </div>

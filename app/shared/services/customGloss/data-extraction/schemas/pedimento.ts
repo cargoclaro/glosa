@@ -108,9 +108,7 @@ export const pedimentoSchema = z.object({
     .object({
       valor_seguros: z
         .number()
-        .describe(
-          'Aparece en el pedimento como "VAL. SEGUROS".'
-        )
+        .describe('Aparece en el pedimento como "VAL. SEGUROS".')
         .nullable(),
       seguros: z
         .number()
@@ -182,7 +180,9 @@ export const pedimentoSchema = z.object({
           z.object({
             concepto: z
               .string()
-              .describe('Concept code or name (e.g., "DTA", "PRV", "IVA", "IVA/PRV")')
+              .describe(
+                'Concept code or name (e.g., "DTA", "PRV", "IVA", "IVA/PRV")'
+              )
               .nullable(),
             fp: z
               .number()
@@ -194,7 +194,9 @@ export const pedimentoSchema = z.object({
               .nullable(),
           })
         )
-        .describe('Array of liquidation entries showing taxes and fees to be paid')
+        .describe(
+          'Array of liquidation entries showing taxes and fees to be paid'
+        )
         .nullable(),
       totales: z
         .object({
@@ -206,10 +208,7 @@ export const pedimentoSchema = z.object({
             .number()
             .describe('Total amount to be paid through other means')
             .nullable(),
-          total: z
-            .number()
-            .describe('Grand total of all payments')
-            .nullable(),
+          total: z.number().describe('Grand total of all payments').nullable(),
         })
         .describe('Summary of payment totals')
         .nullable(),
@@ -288,9 +287,7 @@ export const pedimentoSchema = z.object({
         .describe('Value in USD with 2 decimal places')
         .nullable(),
     })
-    .describe(
-      'Invoice data associated with the pedimento'
-    ),
+    .describe('Invoice data associated with the pedimento'),
   no_guia_embarque_id: z
     .string()
     .describe(

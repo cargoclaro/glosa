@@ -16,7 +16,8 @@ export const apendice14 = {
     },
     {
       Clave: 'CIP',
-      Descripción: 'TRANSPORTE Y SEGURO PAGADO HASTA (LUGAR DE DESTINO CONVENIDO).',
+      Descripción:
+        'TRANSPORTE Y SEGURO PAGADO HASTA (LUGAR DE DESTINO CONVENIDO).',
     },
     {
       Clave: 'DAP',
