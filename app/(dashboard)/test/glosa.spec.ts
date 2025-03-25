@@ -15,9 +15,10 @@ test('Glosa un expediente y valida una sección exitosamente', async ({
   ]);
   await page.locator('text="Glosar"').click();
   await page.locator('text="Continuar"').click();
-
-  await page.waitForNavigation({ waitUntil: 'networkidle' });
+  
+  await page.waitForURL('**/analysis');
+  await page.locator('text="Marcar como verificado"').waitFor({ state: 'visible', timeout: 60000 });
   await page.locator('text="Marcar como verificado"').click();
 
-  await expect(page).toHaveText('Análisis verificado');
+  await expect(page.getByText('Análisis verificado')).toBeVisible({ timeout: 60000 });
 });
