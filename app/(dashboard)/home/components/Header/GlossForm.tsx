@@ -125,11 +125,6 @@ const GlossForm = () => {
               {`Archivos cargados: ${files?.length}`}
             </p>
           )}
-          {mutation.data && !mutation.data.success && (
-            <p className="mb-2 block text-red-500 text-sm">
-              {mutation.data.message}
-            </p>
-          )}
           <div className="flex justify-center gap-2">
             <button
               disabled={!files}

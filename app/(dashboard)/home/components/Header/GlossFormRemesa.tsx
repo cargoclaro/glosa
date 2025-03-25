@@ -136,15 +136,6 @@ const GlossFormRemesa = () => {
               {`Archivos cargados: ${files?.length}`}
             </p>
           )}
-          {mutation.data && !mutation.data.success && (
-            <p className="mb-2 block text-red-500 text-sm">
-              {typeof mutation.data.message === 'string'
-                ? mutation.data.message
-                : Array.isArray(mutation.data.message)
-                  ? mutation.data.message.join(', ')
-                  : 'Error'}
-            </p>
-          )}
           <div className="flex justify-center gap-2">
             <button
               disabled={!files}
