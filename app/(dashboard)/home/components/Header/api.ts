@@ -1,6 +1,6 @@
 'use server';
 
-import { randomUUID } from 'crypto';
+import { randomUUID } from 'node:crypto';
 import { config } from 'dotenv';
 import { Langfuse } from 'langfuse';
 import { api } from 'lib/trpc';
@@ -373,8 +373,7 @@ export const glosarRemesa = api
         success: true,
         message: 'No se encontraron errores',
       };
-    } catch (error) {
-      console.error(error);
+    } catch {
       return {
         success: false,
         message: 'Ocurrió un error interno',

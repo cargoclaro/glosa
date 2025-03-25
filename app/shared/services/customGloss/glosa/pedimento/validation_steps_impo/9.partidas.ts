@@ -27,18 +27,14 @@ async function validateFraccionArancelaria(
   const tipoDeOperacion = pedimento.encabezado_del_pedimento.tipo_oper;
   let fraccionExiste = false;
   if (fechaDeEntrada && tipoDeOperacion && tipoDeOperacion !== 'TRA') {
-    try {
-      await getFraccionInfo({
-        fraccion,
-        fechaDeEntrada,
-        tipoDeOperacion,
-        nico,
-        clavePais: paisOrigenDestino,
-      });
-      fraccionExiste = true;
-    } catch (error) {
-      console.error(error);
-    }
+    await getFraccionInfo({
+      fraccion,
+      fechaDeEntrada,
+      tipoDeOperacion,
+      nico,
+      clavePais: paisOrigenDestino,
+    });
+    fraccionExiste = true;
   }
 
   const validation = {

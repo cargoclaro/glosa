@@ -279,8 +279,7 @@ export const analysis = api
         success: true,
         glossId: newCustomGloss.id,
       };
-    } catch (error) {
-      console.error(error);
+    } catch {
       return {
         success: false,
         message: 'Ocurrió un error interno',
