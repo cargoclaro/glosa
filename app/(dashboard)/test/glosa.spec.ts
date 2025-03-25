@@ -3,8 +3,8 @@ import { expect, test } from '~/lib/playwright/fixture';
 test('Glosa un expediente y valida una sección exitosamente', async ({
   page,
 }) => {
-  await page.getByText('Nueva Glosa').click();
-  await page.getByText('Glosa Regular').click();
+  await page.locator('text="Nueva Glosa"').click();
+  await page.locator('text="Glosa Regular"').click();
   const [fileChooser] = await Promise.all([
     page.waitForEvent('filechooser'),
     page.locator('input[type="file"]').click(),
@@ -16,11 +16,11 @@ test('Glosa un expediente y valida una sección exitosamente', async ({
     'A-66151 TRAD.pdf',
     'PROFORMA.pdf'
   ]);
-  await page.getByText('Glosar').click();
-  await page.getByText('Continuar').click();
+  await page.locator('text="Glosar"').click();
+  await page.locator('text="Continuar"').click();
 
   await page.waitForNavigation({ waitUntil: 'networkidle' });
-  await page.getByText('Marcar como verificado').click();
+  await page.locator('text="Marcar como verificado"').click();
 
   await expect(page).toHaveText('Análisis verificado');
 });
