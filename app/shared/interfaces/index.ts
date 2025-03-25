@@ -67,12 +67,12 @@ interface ICustomGlossTabValidationStepActionToTake
   customGlossTabValidationStep: ICustomGlossTabValidationStep;
 }
 
-export interface ISharedState {
+interface ISharedState {
   success: boolean;
   message?: string | string[];
 }
 
-export interface IGlossAnalysisState extends ISharedState {
+interface IGlossAnalysisState extends ISharedState {
   glossId?: string;
   errors?: {
     documents?: string;

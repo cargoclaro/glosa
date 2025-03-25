@@ -2,15 +2,11 @@
   "$schema": "https://unpkg.com/knip@5/schema.json",
   "ignore": [
     "src/ui/**",
-    "public/pdf.worker.mjs",
-    "app/(dashboard)/home/components/Header/glosa/xml-to-json.ts"
+    "app/(dashboard)/home/components/Header/glosa/xml-to-json.ts",
+    "**/global.setup.{ts,js}"
   ],
   "ignoreDependencies": [
     "ultracite",
-    "@anthropic-ai/claude-code",
-    "bufferutil"
-  ],
-  "drizzle": {
-    "config": ["drizzle.config.{ts,js,json}"]
-  }
+    "@clerk/testing"
+  ]
 }
