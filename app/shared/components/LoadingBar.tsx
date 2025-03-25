@@ -30,7 +30,7 @@ const LoadingBar: React.FC<LoadingBarProps> = ({ duration = 200 }) => {
   }, [duration, timeElapsed]);
 
   const easeOutExpo = (t: number) => {
-    return t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
+    return t === 1 ? 1 : 1 - 2 ** (-10 * t);
   };
 
   return (

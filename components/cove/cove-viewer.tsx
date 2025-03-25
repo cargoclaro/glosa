@@ -30,20 +30,20 @@ export function CoveViewer({
 
   // Get merchandise items, skipping the first one which is displayed on the recipient page
   const merchandiseItems = useMemo(() => {
-    if (!cove.datos_mercancia?.length) return [];
+    if (!cove.datos_mercancia?.length) { return []; }
     // Skip the first item since it's displayed on the recipient page
     return cove.datos_mercancia.slice(1);
   }, [cove.datos_mercancia]);
 
   // Calculate total number of merchandise pages needed
   const totalMerchandisePages = useMemo(() => {
-    if (!merchandiseItems.length) return 0;
+    if (!merchandiseItems.length) { return 0; }
     return Math.ceil(merchandiseItems.length / ITEMS_PER_PAGE);
   }, [merchandiseItems]);
 
   // Calculate which items should be displayed on current merchandise page
   const currentMerchandiseItems = useMemo(() => {
-    if (!merchandiseItems.length) return [];
+    if (!merchandiseItems.length) { return []; }
 
     const startIndex = merchandisePage * ITEMS_PER_PAGE;
 
@@ -127,13 +127,14 @@ export function CoveViewer({
     const totalPages =
       merchandiseItems.length > 0 ? 2 + totalMerchandisePages : 2;
 
-    if (currentPageType === 'recipient') currentPage = 2;
+    if (currentPageType === 'recipient') { currentPage = 2; }
     // Merchandise pages start at 3 (after header and recipient)
-    else if (currentPageType === 'merchandise')
+    else if (currentPageType === 'merchandise') {
       currentPage = 3 + merchandisePage;
+    }
 
     // Make sure we don't show a current page number higher than total pages
-    if (currentPage > totalPages) currentPage = totalPages;
+    if (currentPage > totalPages) { currentPage = totalPages; }
 
     return { currentPage, totalPages };
   };

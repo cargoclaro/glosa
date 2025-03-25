@@ -61,7 +61,7 @@ const PedimentoIdentificadores: React.FC<PedimentoIdentificadoresProps> = ({
   };
 
   const getHighlightFill = (section: string) => {
-    if (tabInfoSelected.name !== section) return '';
+    if (tabInfoSelected.name !== section) { return ''; }
 
     return tabInfoSelected.isCorrect || tabInfoSelected.isVerified
       ? 'bg-green-100/50'

@@ -29,7 +29,7 @@ const PedimentoPartidas: React.FC<PedimentoPartidasProps> = ({
   };
 
   const getHighlightFill = (section: string) => {
-    if (tabInfoSelected.name !== section) return '';
+    if (tabInfoSelected.name !== section) { return ''; }
 
     return tabInfoSelected.isCorrect || tabInfoSelected.isVerified
       ? 'bg-green-100/50'
@@ -37,7 +37,7 @@ const PedimentoPartidas: React.FC<PedimentoPartidasProps> = ({
   };
 
   const formatNumber = (num: number | null) => {
-    if (num === null) return '-';
+    if (num === null) { return '-'; }
     return new Intl.NumberFormat('es-MX', {
       minimumFractionDigits: 2,
       maximumFractionDigits: 5,
@@ -243,8 +243,7 @@ const PedimentoPartidas: React.FC<PedimentoPartidasProps> = ({
               </div>
 
               {/* Taxation data rows */}
-              {partida.contribuciones &&
-                partida.contribuciones.map((contribucion, idx) => (
+              {partida.contribuciones?.map((contribucion, idx) => (
                   <div
                     key={idx}
                     className="grid grid-cols-12 border-gray-400 border-b text-[9px]"
@@ -291,8 +290,7 @@ const PedimentoPartidas: React.FC<PedimentoPartidasProps> = ({
               </div>
 
               {/* Identifiers data rows */}
-              {partida.identificadores &&
-                partida.identificadores.map((identificador, idx) => (
+              {partida.identificadores?.map((identificador, idx) => (
                   <div
                     key={idx}
                     className="grid grid-cols-12 border-gray-400 border-b text-[9px]"

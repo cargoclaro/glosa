@@ -20,7 +20,7 @@ async function MyInfo() {
     <GenericCard>
       <p className="text-center font-bold text-lg">
         Patente:{' '}
-        <span className="font-normal">{'#' + publicMetadata?.patente}</span>
+        <span className="font-normal">{`#${publicMetadata?.patente}`}</span>
       </p>
       <div className="mt-4 flex justify-center">
         <Image

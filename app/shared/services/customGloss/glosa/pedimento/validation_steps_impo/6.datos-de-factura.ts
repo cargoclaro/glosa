@@ -167,9 +167,9 @@ async function validateDatosProveedor(
   const domicilioProveedorCove = cove?.datos_generales_proveedor?.domicilio;
   const idProveedorPedimento =
     pedimento.id_fiscal === '91310000078199718'
-      ? pedimento.id_fiscal + 'N'
+      ? `${pedimento.id_fiscal}N`
       : pedimento.id_fiscal === '91440300MADLYEG'
-        ? pedimento.id_fiscal + '6'
+        ? `${pedimento.id_fiscal}6`
         : pedimento.id_fiscal;
   const idProveedorCove = cove?.datos_generales_proveedor?.identificador;
 

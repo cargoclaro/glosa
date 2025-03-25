@@ -37,8 +37,8 @@ const IdentificadoresTable: React.FC<IdentificadoresTableProps> = ({
           <div className="pedimento-cell pedimento-value py-0.5 text-[10px]">
             {identificador.complemento_3 || ''}
           </div>
-          <div className="pedimento-cell pedimento-value py-0.5 text-[10px]"></div>
-          <div className="pedimento-cell pedimento-value py-0.5 text-[10px]"></div>
+          <div className="pedimento-cell pedimento-value py-0.5 text-[10px]" />
+          <div className="pedimento-cell pedimento-value py-0.5 text-[10px]" />
         </React.Fragment>
       ))}
     </div>

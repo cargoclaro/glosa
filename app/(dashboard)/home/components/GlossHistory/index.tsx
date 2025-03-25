@@ -19,7 +19,7 @@ const GlossHistory = ({ history }: { history: CustomGlossTable[] }) => {
                 className="group flex items-center justify-between rounded-xl p-2 hover:bg-gray-50"
               >
                 <div>
-                  <p className="text-lg">{'Operación #' + gloss.id}</p>
+                  <p className="text-lg">{`Operación #${gloss.id}`}</p>
                   <small className="text-base text-gray-500">
                     {gloss.importerName}
                   </small>

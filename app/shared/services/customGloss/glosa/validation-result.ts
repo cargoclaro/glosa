@@ -60,7 +60,7 @@ const validationResultSchema = z.object({
   contextSummary: z
     .string()
     .describe(
-      `Lista de documentos utilizados para la validación, incluyendo pedimentos, facturas, cartas porte, COVEs, u otros documentos aduanales relevantes. Debe enumerar específicamente cada documento consultado y su origen.`
+      'Lista de documentos utilizados para la validación, incluyendo pedimentos, facturas, cartas porte, COVEs, u otros documentos aduanales relevantes. Debe enumerar específicamente cada documento consultado y su origen.'
     ),
   llmAnalysis: z
     .string()
@@ -70,17 +70,17 @@ const validationResultSchema = z.object({
   isValid: z
     .boolean()
     .describe(
-      `Indicador booleano de si la validación es correcta (true) o si presenta errores o advertencias que requieren atención (false)`
+      'Indicador booleano de si la validación es correcta (true) o si presenta errores o advertencias que requieren atención (false)'
     ),
   actionsToTake: z
     .array(z.string())
     .describe(
-      `Lista detallada de acciones concretas a tomar en caso de que la validación no sea correcta. Cada acción debe ser específica, factible y directamente relacionada con los problemas identificados en el análisis. Puede incluir solicitudes de documentación adicional, correcciones a realizar, o consultas específicas que deban hacerse.`
+      'Lista detallada de acciones concretas a tomar en caso de que la validación no sea correcta. Cada acción debe ser específica, factible y directamente relacionada con los problemas identificados en el análisis. Puede incluir solicitudes de documentación adicional, correcciones a realizar, o consultas específicas que deban hacerse.'
     ),
   summary: z
     .string()
     .describe(
-      `Resumen final conciso pero completo con todos los hallazgos encontrados en los pasos de validación. Debe sintetizar los puntos clave del análisis, destacar las discrepancias principales y mencionar el resultado global de la validación. Utilizar lenguaje claro y directo apropiado para un glosador aduanal.`
+      'Resumen final conciso pero completo con todos los hallazgos encontrados en los pasos de validación. Debe sintetizar los puntos clave del análisis, destacar las discrepancias principales y mencionar el resultado global de la validación. Utilizar lenguaje claro y directo apropiado para un glosador aduanal.'
     ),
 });
 

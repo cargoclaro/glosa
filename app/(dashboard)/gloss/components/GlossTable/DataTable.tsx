@@ -153,10 +153,7 @@ export default function GlossDataTable<TData, TValue>({
       </Table>
       <div className="mt-4 flex justify-between gap-2">
         <p className="font-medium text-sm">
-          {'Página ' +
-            (table.getState().pagination.pageIndex + 1) +
-            ' de ' +
-            table.getPageCount()}
+          {`Página ${table.getState().pagination.pageIndex + 1} de ${table.getPageCount()}`}
         </p>
         <div className="flex items-center justify-end space-x-2">
           <button

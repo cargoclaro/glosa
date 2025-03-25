@@ -357,8 +357,6 @@ const VerifiedButton = ({
         // This is a redirect, allow it to happen normally
         return;
       }
-      // Handle actual errors here
-      console.error('Error marking tab as verified:', error);
     },
   });
 
@@ -444,7 +442,7 @@ const DataListForSummaryCard = ({
             </span>
           )}
           <p className="font-semibold text-black">
-            {item.name + ': '}
+            {`${item.name}: `}
             <span className="font-normal">{item.description}</span>
           </p>
           <span className="animate-infinite rounded-full border-2 border-black p-1 text-black group-hover:animate-pulse">

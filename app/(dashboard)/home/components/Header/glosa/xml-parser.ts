@@ -13,7 +13,7 @@ export const xmlParser = new XMLParser({
   ignoreDeclaration: true,
   ignorePiTags: true,
   isArray: (_, jpath) => {
-    if (alwaysArray.includes(jpath)) return true;
+    if (alwaysArray.includes(jpath)) { return true; }
     return false;
   },
   parseAttributeValue: true,

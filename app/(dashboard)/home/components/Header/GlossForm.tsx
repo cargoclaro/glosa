@@ -18,7 +18,7 @@ const GlossForm = () => {
       return await analysis(formData);
     },
     onSuccess: (data) => {
-      if (data && data.success) {
+      if (data?.success) {
         window.location.href = `/gloss/${data.glossId}/analysis`;
       }
       if (!data.success) {
@@ -46,7 +46,7 @@ const GlossForm = () => {
   };
 
   const handleRemoveFile = (index: number) => {
-    if (!files) return;
+    if (!files) { return; }
     const updatedFileList = Array.from(files).filter((_, i) => i !== index);
     const dataTransfer = new DataTransfer();
     updatedFileList.forEach((file) => dataTransfer.items.add(file));
@@ -120,7 +120,7 @@ const GlossForm = () => {
         <div className="text-center">
           {files && (
             <p className="font-semibold">
-              {'Archivos cargados: ' + files?.length}
+              {`Archivos cargados: ${files?.length}`}
             </p>
           )}
           {mutation.data && !mutation.data.success && (
