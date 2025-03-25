@@ -1,3 +1,2 @@
-import GenericCard from './generic-card';
+export { default as GenericCard } from './generic-card';
 
-export { GenericCard };

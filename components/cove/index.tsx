@@ -1,3 +1,1 @@
-import { CoveViewer } from './cove-viewer';
-
-export { CoveViewer };
+export { CoveViewer } from './cove-viewer';

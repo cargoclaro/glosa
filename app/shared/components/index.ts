@@ -1,5 +1,3 @@
-import LoadingBar from './loading-bar';
-import Modal from './modal';
-import { GenericCard } from './cards';
-
-export { Modal, LoadingBar, GenericCard };
+export { GenericCard } from './cards';
+export { default as LoadingBar } from './loading-bar';
+export { default as Modal } from './modal';
