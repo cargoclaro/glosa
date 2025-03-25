@@ -5,14 +5,14 @@ import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import type { CustomGlossTabTable } from '~/db/schema';
 import { cn } from '~/lib/utils';
-import PedimentoContenedores from './PedimentoContenedores';
-import PedimentoDecrementables from './PedimentoDecrementables';
-import PedimentoHeader from './PedimentoHeader';
-import PedimentoIdentificadores from './PedimentoIdentificadores';
-import PedimentoImportador from './PedimentoImportador';
-import PedimentoIncrementables from './PedimentoIncrementables';
-import PedimentoPartidas from './PedimentoPartidas';
-import PedimentoProveedor from './PedimentoProveedor';
+import PedimentoContenedores from './pedimento-contenedores';
+import PedimentoDecrementables from './pedimento-decrementables';
+import PedimentoHeader from './pedimento-header';
+import PedimentoIdentificadores from './pedimento-identificadores';
+import PedimentoImportador from './pedimento-importador';
+import PedimentoIncrementables from './pedimento-incrementables';
+import PedimentoPartidas from './pedimento-partidas';
+import PedimentoProveedor from './pedimento-proveedor';
 
 interface PedimentoViewerProps {
   pedimento: Pedimento;

@@ -1,3 +1,3 @@
-import GenericCard from './GenericCard';
+import GenericCard from './generic-card';
 
 export { GenericCard };

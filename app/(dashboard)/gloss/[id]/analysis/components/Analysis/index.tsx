@@ -27,8 +27,8 @@ import type {
   CustomGlossTabValidationStepActionToTake,
   CustomGlossTabValidationStepResources,
 } from '~/db/schema';
-import type { ITabInfoSelected } from '../PedimentAnalysisNFinish';
-import Detailed from './Detailed';
+import type { ITabInfoSelected } from '../pediment-analysis-n-finish';
+import Detailed from './detailed';
 
 type TabValidation = InferSelectModel<typeof CustomGlossTabValidationStep> & {
   resources: InferSelectModel<typeof CustomGlossTabValidationStepResources>[];

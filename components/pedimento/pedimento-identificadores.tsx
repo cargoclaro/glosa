@@ -1,8 +1,8 @@
 import { cn } from '@/shared/utils/cn';
 import type React from 'react';
-import IdentificadoresTable from './identificadores/IdentificadoresTable';
-import LiquidacionTable from './liquidacion/LiquidacionTable';
-import TasasTable from './tasas/TasasTable';
+import IdentificadoresTable from './identificadores/identificadores-table';
+import LiquidacionTable from './liquidacion/liquidacion-table';
+import TasasTable from './tasas/tasas-table';
 
 import type { CustomGlossTabTable } from '~/db/schema';
 

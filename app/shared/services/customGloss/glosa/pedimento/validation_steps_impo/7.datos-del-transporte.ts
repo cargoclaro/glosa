@@ -1,8 +1,8 @@
 import { traceable } from 'langsmith/traceable';
 import type { TransportDocument } from '../../../data-extraction/mkdown_schemas/transport-document';
 import type { Pedimento } from '../../../data-extraction/schemas';
-import { apendice3 } from '../../anexo-22/apendice_3';
-import { apendice10 } from '../../anexo-22/apendice_10';
+import { apendice3 } from '../../anexo-22/apendice-3';
+import { apendice10 } from '../../anexo-22/apendice-10';
 import { glosar } from '../../validation-result';
 
 async function validateTipoTransporte(

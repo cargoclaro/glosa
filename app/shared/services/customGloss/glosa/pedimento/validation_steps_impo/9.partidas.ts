@@ -9,7 +9,7 @@ import type {
   Partida,
   Pedimento,
 } from '../../../data-extraction/schemas';
-import { apendice7 } from '../../anexo-22/apendice_7';
+import { apendice7 } from '../../anexo-22/apendice-7';
 import { getFraccionInfo } from '../../tax-finder';
 import { glosar } from '../../validation-result';
 

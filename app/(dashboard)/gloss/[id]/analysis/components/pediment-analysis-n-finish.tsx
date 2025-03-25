@@ -6,7 +6,7 @@ import type { Pedimento } from '@/shared/services/customGloss/data-extraction/sc
 import type { InferSelectModel } from 'drizzle-orm';
 import { useState } from 'react';
 import { CoveViewer } from '~/components/cove/index';
-import PedimentoViewer from '~/components/pedimento/PedimentoViewer';
+import PedimentoViewer from '~/components/pedimento/pedimento-viewer';
 import type { CustomGlossFileTable } from '~/db/schema';
 import type {
   CustomGloss,

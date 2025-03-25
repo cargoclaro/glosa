@@ -4,7 +4,7 @@ import { cn } from '@/shared/utils/cn';
 import todayIs from '@/shared/utils/today-is';
 // import NotificationsMenu from "./NotificationsMenu";
 import { usePathname } from 'next/navigation';
-import ProfileMenu from './ProfileMenu';
+import ProfileMenu from './profile-menu';
 
 const Header = () => {
   const pathname = usePathname();
