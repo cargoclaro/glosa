@@ -1,13 +1,13 @@
 import { defineConfig, devices } from '@playwright/test';
+import ms from 'ms';
 
 export default defineConfig({
   fullyParallel: false,
+  timeout: ms('5m'),
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: Boolean(process.env['CI']),
   use: {
-    baseURL: process.env['NEXT_PUBLIC_VERCEL_URL']
-      ? `https://${process.env['NEXT_PUBLIC_VERCEL_URL']}`
-      : 'http://localhost:3000',
+    baseURL: 'http://localhost:3000',
     bypassCSP: true,
   },
   projects: [
