@@ -41,7 +41,9 @@ const GlossFormRemesa = () => {
   };
 
   const handleRemoveFile = (index: number) => {
-    if (!files) { return; }
+    if (!files) {
+      return;
+    }
     const updatedFileList = Array.from(files).filter((_, i) => i !== index);
     const dataTransfer = new DataTransfer();
     updatedFileList.forEach((file) => dataTransfer.items.add(file));

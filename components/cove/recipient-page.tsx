@@ -24,7 +24,9 @@ export function CoveRecipient({
   };
 
   const getHighlightFill = (section: string) => {
-    if (tabInfoSelected.name !== section) { return ''; }
+    if (tabInfoSelected.name !== section) {
+      return '';
+    }
 
     return tabInfoSelected.isCorrect || tabInfoSelected.isVerified
       ? 'bg-green-100/50'

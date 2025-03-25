@@ -11,7 +11,9 @@ const useModal = (initialState = false) => {
   const toggleMenu = () => setIsOpen((prev) => !prev);
 
   const handleClickOutside = useCallback((event: MouseEvent) => {
-    if (!(event.target instanceof Node)) { return; }
+    if (!(event.target instanceof Node)) {
+      return;
+    }
 
     if (menuRef.current && !menuRef.current.contains(event.target)) {
       closeMenu();

@@ -29,7 +29,9 @@ const PedimentoPartidas: React.FC<PedimentoPartidasProps> = ({
   };
 
   const getHighlightFill = (section: string) => {
-    if (tabInfoSelected.name !== section) { return ''; }
+    if (tabInfoSelected.name !== section) {
+      return '';
+    }
 
     return tabInfoSelected.isCorrect || tabInfoSelected.isVerified
       ? 'bg-green-100/50'
@@ -37,7 +39,9 @@ const PedimentoPartidas: React.FC<PedimentoPartidasProps> = ({
   };
 
   const formatNumber = (num: number | null) => {
-    if (num === null) { return '-'; }
+    if (num === null) {
+      return '-';
+    }
     return new Intl.NumberFormat('es-MX', {
       minimumFractionDigits: 2,
       maximumFractionDigits: 5,
@@ -244,27 +248,27 @@ const PedimentoPartidas: React.FC<PedimentoPartidasProps> = ({
 
               {/* Taxation data rows */}
               {partida.contribuciones?.map((contribucion, idx) => (
-                  <div
-                    key={idx}
-                    className="grid grid-cols-12 border-gray-400 border-b text-[9px]"
-                  >
-                    <div className="col-span-2 border-gray-400 border-r px-1 py-0.5">
-                      {contribucion.con}
-                    </div>
-                    <div className="col-span-2 border-gray-400 border-r px-1 py-0.5 text-right">
-                      {contribucion.tasa?.toFixed(6) || ''}
-                    </div>
-                    <div className="col-span-1 border-gray-400 border-r px-1 py-0.5 text-center">
-                      {contribucion.t_t}
-                    </div>
-                    <div className="col-span-1 border-gray-400 border-r px-1 py-0.5 text-center">
-                      {contribucion.f_p}
-                    </div>
-                    <div className="col-span-6 px-1 py-0.5 text-right">
-                      {formatNumber(contribucion.importe)}
-                    </div>
+                <div
+                  key={idx}
+                  className="grid grid-cols-12 border-gray-400 border-b text-[9px]"
+                >
+                  <div className="col-span-2 border-gray-400 border-r px-1 py-0.5">
+                    {contribucion.con}
                   </div>
-                ))}
+                  <div className="col-span-2 border-gray-400 border-r px-1 py-0.5 text-right">
+                    {contribucion.tasa?.toFixed(6) || ''}
+                  </div>
+                  <div className="col-span-1 border-gray-400 border-r px-1 py-0.5 text-center">
+                    {contribucion.t_t}
+                  </div>
+                  <div className="col-span-1 border-gray-400 border-r px-1 py-0.5 text-center">
+                    {contribucion.f_p}
+                  </div>
+                  <div className="col-span-6 px-1 py-0.5 text-right">
+                    {formatNumber(contribucion.importe)}
+                  </div>
+                </div>
+              ))}
 
               {/* Identifiers row - header */}
               <div className="grid grid-cols-12 border-gray-400 border-b bg-gray-300 text-[9px]">
@@ -291,24 +295,24 @@ const PedimentoPartidas: React.FC<PedimentoPartidasProps> = ({
 
               {/* Identifiers data rows */}
               {partida.identificadores?.map((identificador, idx) => (
-                  <div
-                    key={idx}
-                    className="grid grid-cols-12 border-gray-400 border-b text-[9px]"
-                  >
-                    <div className="col-span-2 border-gray-400 border-r px-1 py-0.5">
-                      {identificador.clave}
-                    </div>
-                    <div className="col-span-3 border-gray-400 border-r px-1 py-0.5 text-center">
-                      {identificador.complemento1 || ''}
-                    </div>
-                    <div className="col-span-3.5 border-gray-400 border-r px-1 py-0.5 text-center">
-                      {identificador.complemento2 || ''}
-                    </div>
-                    <div className="col-span-3.5 px-1 py-0.5 text-center">
-                      {identificador.complemento3 || ''}
-                    </div>
+                <div
+                  key={idx}
+                  className="grid grid-cols-12 border-gray-400 border-b text-[9px]"
+                >
+                  <div className="col-span-2 border-gray-400 border-r px-1 py-0.5">
+                    {identificador.clave}
                   </div>
-                ))}
+                  <div className="col-span-3 border-gray-400 border-r px-1 py-0.5 text-center">
+                    {identificador.complemento1 || ''}
+                  </div>
+                  <div className="col-span-3.5 border-gray-400 border-r px-1 py-0.5 text-center">
+                    {identificador.complemento2 || ''}
+                  </div>
+                  <div className="col-span-3.5 px-1 py-0.5 text-center">
+                    {identificador.complemento3 || ''}
+                  </div>
+                </div>
+              ))}
 
               {/* Observations header */}
               <div className="grid grid-cols-12 border-gray-400 border-b bg-gray-300 text-[9px]">

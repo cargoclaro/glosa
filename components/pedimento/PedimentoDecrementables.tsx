@@ -30,7 +30,9 @@ const PedimentoDecrementables: React.FC<PedimentoDecrementablesProps> = ({
   };
 
   const getHighlightFill = (section: string) => {
-    if (tabInfoSelected.name !== section) { return ''; }
+    if (tabInfoSelected.name !== section) {
+      return '';
+    }
 
     return tabInfoSelected.isCorrect || tabInfoSelected.isVerified
       ? 'bg-green-100/50'
@@ -38,7 +40,9 @@ const PedimentoDecrementables: React.FC<PedimentoDecrementablesProps> = ({
   };
 
   const formatNumber = (num: number) => {
-    if (num === null || num === undefined) { return '0'; }
+    if (num === null || num === undefined) {
+      return '0';
+    }
     return num.toString();
   };
 

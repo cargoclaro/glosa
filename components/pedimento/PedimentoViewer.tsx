@@ -37,7 +37,9 @@ const PedimentoViewer = ({
 
   // Calculate total pages based on partidas length
   const totalPartidasPages = useMemo(() => {
-    if (!pedimento.partidas || pedimento.partidas.length === 0) { return 0; }
+    if (!pedimento.partidas || pedimento.partidas.length === 0) {
+      return 0;
+    }
     return Math.ceil(pedimento.partidas.length / PARTIDAS_PER_PAGE);
   }, [pedimento.partidas]);
 
@@ -46,8 +48,12 @@ const PedimentoViewer = ({
 
   // Get current page number
   const currentPage = useMemo(() => {
-    if (activeTab === 'page1') { return 1; }
-    if (activeTab === 'page2') { return 2; }
+    if (activeTab === 'page1') {
+      return 1;
+    }
+    if (activeTab === 'page2') {
+      return 2;
+    }
     // For partida pages (page3, page4, etc.)
     const pageNum = Number.parseInt(activeTab.replace('page', ''));
     return pageNum;
@@ -55,8 +61,12 @@ const PedimentoViewer = ({
 
   // Get current partidas for display based on current page
   const currentPartidas = useMemo(() => {
-    if (!pedimento.partidas || pedimento.partidas.length === 0) { return []; }
-    if (currentPage <= 2) { return pedimento.partidas.slice(0, PARTIDAS_PER_PAGE); }
+    if (!pedimento.partidas || pedimento.partidas.length === 0) {
+      return [];
+    }
+    if (currentPage <= 2) {
+      return pedimento.partidas.slice(0, PARTIDAS_PER_PAGE);
+    }
 
     const startIdx = PARTIDAS_PER_PAGE + (currentPage - 3) * PARTIDAS_PER_PAGE;
     const endIdx = startIdx + PARTIDAS_PER_PAGE;

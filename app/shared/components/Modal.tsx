@@ -10,7 +10,9 @@ interface IModal {
 }
 
 const Modal = ({ isOpen, onClose, children, menuRef }: IModal) => {
-  if (!isOpen) { return null; }
+  if (!isOpen) {
+    return null;
+  }
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
       <div

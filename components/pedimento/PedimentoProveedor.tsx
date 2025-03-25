@@ -40,7 +40,9 @@ const PedimentoProveedor: React.FC<PedimentoProveedorProps> = ({
   };
 
   const getHighlightFill = (section: string) => {
-    if (tabInfoSelected.name !== section) { return ''; }
+    if (tabInfoSelected.name !== section) {
+      return '';
+    }
 
     return tabInfoSelected.isCorrect || tabInfoSelected.isVerified
       ? 'bg-green-100/50'
@@ -48,7 +50,9 @@ const PedimentoProveedor: React.FC<PedimentoProveedorProps> = ({
   };
 
   const formatNumber = (num: number) => {
-    if (num === null || num === undefined) { return '-'; }
+    if (num === null || num === undefined) {
+      return '-';
+    }
     return new Intl.NumberFormat('es-MX', {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
