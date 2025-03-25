@@ -4,15 +4,15 @@ import { LoadingBar, Modal } from '@/shared/components';
 import { useModal } from '@/shared/hooks';
 import { Document, Upload, XMark } from '@/shared/icons';
 import { cn } from '@/shared/utils/cn';
+import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 import { glosarRemesa } from './api';
-import { useMutation } from '@tanstack/react-query';
 
 const GlossFormRemesa = () => {
   const [files, setFiles] = useState<FileList | null>(null);
   const [errorDisplaying, setErrorDisplaying] = useState(false);
   const { isOpen, openMenu, closeMenu, menuRef } = useModal(false);
-  
+
   const mutation = useMutation({
     mutationFn: async (formData: FormData) => {
       return await glosarRemesa(formData);
@@ -27,7 +27,7 @@ const GlossFormRemesa = () => {
         return;
       }
       closeMenu();
-    }
+    },
   });
 
   const handlerAction = () => {
@@ -81,7 +81,7 @@ const GlossFormRemesa = () => {
         </div>
       )}
       {mutation.error && (
-        <div className="rounded-md p-4 bg-red-50 text-red-700">
+        <div className="rounded-md bg-red-50 p-4 text-red-700">
           <p className="text-sm">{(mutation.error as Error).message}</p>
         </div>
       )}
@@ -91,30 +91,24 @@ const GlossFormRemesa = () => {
           className={cn(
             'mb-4 flex h-64 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed',
             files
-              ? !mutation.data?.success
-                ? 'border-red-500 bg-red-50'
-                : 'border-green-500 bg-green-50'
+              ? mutation.data?.success
+                ? 'border-green-500 bg-green-50'
+                : 'border-red-500 bg-red-50'
               : 'border-gray-300 bg-gray-50 hover:bg-gray-100'
           )}
         >
           <div className="flex flex-col items-center justify-center p-5">
             <Upload
               size="size-10"
-              color={
-                files
-                  ? !mutation.data?.success
-                    ? 'red'
-                    : 'green'
-                  : ''
-              }
+              color={files ? (mutation.data?.success ? 'green' : 'red') : ''}
             />
             <p
               className={cn(
                 'mb-2 text-center text-sm',
                 files
-                  ? !mutation.data?.success
-                    ? 'text-red-500'
-                    : 'text-green-500'
+                  ? mutation.data?.success
+                    ? 'text-green-500'
+                    : 'text-red-500'
                   : 'text-gray-500'
               )}
             >
@@ -142,10 +136,10 @@ const GlossFormRemesa = () => {
           )}
           {mutation.data && !mutation.data.success && (
             <p className="mb-2 block text-red-500 text-sm">
-              {typeof mutation.data.message === 'string' 
-                ? mutation.data.message 
-                : Array.isArray(mutation.data.message) 
-                  ? mutation.data.message.join(', ') 
+              {typeof mutation.data.message === 'string'
+                ? mutation.data.message
+                : Array.isArray(mutation.data.message)
+                  ? mutation.data.message.join(', ')
                   : 'Error'}
             </p>
           )}

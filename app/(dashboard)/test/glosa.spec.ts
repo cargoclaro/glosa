@@ -11,14 +11,18 @@ test('Glosa un expediente y valida una sección exitosamente', async ({
     'app/(dashboard)/test/A-66151 FACTURA.pdf',
     'app/(dashboard)/test/A-66151 PACK.pdf',
     'app/(dashboard)/test/A-66151 TRAD.pdf',
-    'app/(dashboard)/test/PROFORMA.pdf'
+    'app/(dashboard)/test/PROFORMA.pdf',
   ]);
   await page.locator('text="Glosar"').click();
   await page.locator('text="Continuar"').click();
-  
+
   await page.waitForURL('**/analysis');
-  await page.locator('text="Marcar como verificado"').waitFor({ state: 'visible', timeout: 60000 });
+  await page
+    .locator('text="Marcar como verificado"')
+    .waitFor({ state: 'visible', timeout: 60000 });
   await page.locator('text="Marcar como verificado"').click();
 
-  await expect(page.getByText('Análisis verificado')).toBeVisible({ timeout: 60000 });
+  await expect(page.getByText('Análisis verificado')).toBeVisible({
+    timeout: 60000,
+  });
 });

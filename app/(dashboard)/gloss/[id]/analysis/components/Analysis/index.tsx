@@ -12,11 +12,11 @@ import {
   RightArrow,
   RightChevron,
 } from '@/shared/icons';
-import { Loader2 } from 'lucide-react';
-import { useMutation } from '@tanstack/react-query';
 import { markTabAsVerifiedByTabIdNCustomGlossID } from '@/shared/services/customGloss/controller';
 import { cn } from '@/shared/utils/cn';
+import { useMutation } from '@tanstack/react-query';
 import type { InferSelectModel } from 'drizzle-orm';
+import { Loader2 } from 'lucide-react';
 import { type JSX, useCallback, useEffect, useRef, useState } from 'react';
 import type {
   CustomGloss,
@@ -346,10 +346,11 @@ const VerifiedButton = ({
   customGlossId,
 }: IVerifiedButton) => {
   const mutation = useMutation({
-    mutationFn: () => markTabAsVerifiedByTabIdNCustomGlossID({
-      tabId,
-      customGlossId,
-    }),
+    mutationFn: () =>
+      markTabAsVerifiedByTabIdNCustomGlossID({
+        tabId,
+        customGlossId,
+      }),
     onError: (error) => {
       // Handle redirects (which Next.js sends as 303 responses that React Query considers errors)
       if (error instanceof Error && error.message === 'NEXT_REDIRECT') {
@@ -358,14 +359,15 @@ const VerifiedButton = ({
       }
       // Handle actual errors here
       console.error('Error marking tab as verified:', error);
-    }
+    },
   });
 
   return (
     <div className="text-center">
-      {mutation.error && (mutation.error as Error).message !== 'NEXT_REDIRECT' && 
-        <p className="text-red-500">{(mutation.error as Error).message}</p>
-      }
+      {mutation.error &&
+        (mutation.error as Error).message !== 'NEXT_REDIRECT' && (
+          <p className="text-red-500">{(mutation.error as Error).message}</p>
+        )}
       <button
         disabled={isVerified || mutation.isPending}
         onClick={() => mutation.mutate()}
@@ -382,8 +384,10 @@ const VerifiedButton = ({
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
             Verificando...
           </span>
+        ) : isVerified ? (
+          'Análisis Verificado'
         ) : (
-          isVerified ? 'Análisis Verificado' : 'Marcar como verificado'
+          'Marcar como verificado'
         )}
       </button>
     </div>

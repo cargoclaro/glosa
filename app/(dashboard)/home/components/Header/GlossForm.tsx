@@ -5,14 +5,14 @@ import { useModal } from '@/shared/hooks';
 import { Document, Upload, XMark } from '@/shared/icons';
 import { analysis } from '@/shared/services/customGloss/controller';
 import { cn } from '@/shared/utils/cn';
-import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
+import { useState } from 'react';
 
 const GlossForm = () => {
   const [files, setFiles] = useState<FileList | null>(null);
   const [errorDisplaying, setErrorDisplaying] = useState(false);
   const { isOpen, openMenu, closeMenu, menuRef } = useModal(false);
-  
+
   const mutation = useMutation({
     mutationFn: async (formData: FormData) => {
       return await analysis(formData);
@@ -32,7 +32,7 @@ const GlossForm = () => {
         return;
       }
       closeMenu();
-    }
+    },
   });
 
   const handlerAction = () => {
@@ -68,8 +68,12 @@ const GlossForm = () => {
         Recuerda incluir todos los documentos relevantes a la operación <br />{' '}
         <span>(BL, Carta 3.1.8, etc.).</span>
       </p>
-      {mutation.error && <p className="text-red-500">{(mutation.error as Error).message}</p>}
-      {mutation.data && !mutation.data.success && <p className="text-red-500">{mutation.data.message}</p>}
+      {mutation.error && (
+        <p className="text-red-500">{(mutation.error as Error).message}</p>
+      )}
+      {mutation.data && !mutation.data.success && (
+        <p className="text-red-500">{mutation.data.message}</p>
+      )}
       <div className="mt-4">
         <label
           htmlFor="documents"
@@ -85,13 +89,7 @@ const GlossForm = () => {
           <div className="flex flex-col items-center justify-center p-5">
             <Upload
               size="size-10"
-              color={
-                files
-                  ? mutation.error
-                    ? 'red'
-                    : 'green'
-                  : ''
-              }
+              color={files ? (mutation.error ? 'red' : 'green') : ''}
             />
             <p
               className={cn(
