@@ -1,6 +1,3 @@
-import '@/db/control/reset';
-import '@/db/control/seed';
-
 import path from 'node:path';
 import { clerk, clerkSetup } from '@clerk/testing/playwright';
 import { env } from '../env/server';
