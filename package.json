@@ -10,7 +10,7 @@
     "start": "next start",
     "qa:fix": "biome:fix; knip:fix; pnpm:update",
     "qa:check": "biome:check; knip:check; pnpm:check; nextjs:build",
-    "typescript:check": "tsc --noEmit",
+    "typecheck": "tsc --noEmit",
     "biome:check": "biome check .",
     "biome:fix": "biome check --write .",
     "knip:check": "knip",

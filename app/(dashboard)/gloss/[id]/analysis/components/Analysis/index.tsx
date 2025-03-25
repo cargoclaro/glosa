@@ -12,8 +12,8 @@ import {
   RightArrow,
   RightChevron,
 } from '@/shared/icons';
+import { Loader2 } from 'lucide-react';
 import { useMutation } from '@tanstack/react-query';
-import type { ISharedState } from '@/shared/interfaces';
 import { markTabAsVerifiedByTabIdNCustomGlossID } from '@/shared/services/customGloss/controller';
 import { cn } from '@/shared/utils/cn';
 import type { InferSelectModel } from 'drizzle-orm';
@@ -349,12 +349,23 @@ const VerifiedButton = ({
     mutationFn: () => markTabAsVerifiedByTabIdNCustomGlossID({
       tabId,
       customGlossId,
-    })
+    }),
+    onError: (error) => {
+      // Handle redirects (which Next.js sends as 303 responses that React Query considers errors)
+      if (error instanceof Error && error.message === 'NEXT_REDIRECT') {
+        // This is a redirect, allow it to happen normally
+        return;
+      }
+      // Handle actual errors here
+      console.error('Error marking tab as verified:', error);
+    }
   });
 
   return (
     <div className="text-center">
-      {mutation.error && <p className="text-red-500">{(mutation.error as Error).message}</p>}
+      {mutation.error && (mutation.error as Error).message !== 'NEXT_REDIRECT' && 
+        <p className="text-red-500">{(mutation.error as Error).message}</p>
+      }
       <button
         disabled={isVerified || mutation.isPending}
         onClick={() => mutation.mutate()}
@@ -366,7 +377,14 @@ const VerifiedButton = ({
             : 'bg-cargoClaroOrange text-white hover:bg-cargoClaroOrange-hover'
         )}
       >
-        {isVerified ? 'Análisis Verificado' : 'Marcar como verificado'}
+        {mutation.isPending ? (
+          <span className="flex items-center justify-center">
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            Verificando...
+          </span>
+        ) : (
+          isVerified ? 'Análisis Verificado' : 'Marcar como verificado'
+        )}
       </button>
     </div>
   );

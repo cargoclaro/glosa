@@ -3,7 +3,6 @@
 import { LoadingBar, Modal } from '@/shared/components';
 import { useModal } from '@/shared/hooks';
 import { Document, Upload, XMark } from '@/shared/icons';
-import type { IGlossAnalysisState } from '@/shared/interfaces';
 import { analysis } from '@/shared/services/customGloss/controller';
 import { cn } from '@/shared/utils/cn';
 import { useState } from 'react';
@@ -26,7 +25,12 @@ const GlossForm = () => {
         closeMenu();
       }
     },
-    onError: () => {
+    onError: (error) => {
+      // Handle redirects (which Next.js sends as 303 responses that React Query considers errors)
+      if (error instanceof Error && error.message === 'NEXT_REDIRECT') {
+        // This is a redirect, allow it to happen normally
+        return;
+      }
       closeMenu();
     }
   });
@@ -72,7 +76,7 @@ const GlossForm = () => {
           className={cn(
             'mb-4 flex h-64 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed',
             files
-              ? mutation.data?.errors && mutation.data.errors.documents
+              ? mutation.error
                 ? 'border-red-500 bg-red-50'
                 : 'border-green-500 bg-green-50'
               : 'border-gray-300 bg-gray-50 hover:bg-gray-100'
@@ -83,7 +87,7 @@ const GlossForm = () => {
               size="size-10"
               color={
                 files
-                  ? mutation.data?.errors && mutation.data.errors.documents
+                  ? mutation.error
                     ? 'red'
                     : 'green'
                   : ''
@@ -93,7 +97,7 @@ const GlossForm = () => {
               className={cn(
                 'mb-2 text-center text-sm',
                 files
-                  ? mutation.data?.errors && mutation.data.errors.documents
+                  ? mutation.error
                     ? 'text-red-500'
                     : 'text-green-500'
                   : 'text-gray-500'
@@ -121,9 +125,11 @@ const GlossForm = () => {
               {'Archivos cargados: ' + files?.length}
             </p>
           )}
-          <p className="mb-2 block text-red-500 text-sm">
-            {mutation.data?.errors && mutation.data.errors.documents}
-          </p>
+          {mutation.data && !mutation.data.success && (
+            <p className="mb-2 block text-red-500 text-sm">
+              {mutation.data.message}
+            </p>
+          )}
           <div className="flex justify-center gap-2">
             <button
               disabled={!files}

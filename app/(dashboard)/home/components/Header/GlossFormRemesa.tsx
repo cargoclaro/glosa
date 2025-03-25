@@ -3,7 +3,6 @@
 import { LoadingBar, Modal } from '@/shared/components';
 import { useModal } from '@/shared/hooks';
 import { Document, Upload, XMark } from '@/shared/icons';
-import type { IGlossAnalysisState } from '@/shared/interfaces';
 import { cn } from '@/shared/utils/cn';
 import { useState } from 'react';
 import { glosarRemesa } from './api';
@@ -21,7 +20,12 @@ const GlossFormRemesa = () => {
     onSuccess: () => {
       closeMenu();
     },
-    onError: () => {
+    onError: (error) => {
+      // Handle redirects (which Next.js sends as 303 responses that React Query considers errors)
+      if (error instanceof Error && error.message === 'NEXT_REDIRECT') {
+        // This is a redirect, allow it to happen normally
+        return;
+      }
       closeMenu();
     }
   });
@@ -87,7 +91,7 @@ const GlossFormRemesa = () => {
           className={cn(
             'mb-4 flex h-64 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed',
             files
-              ? mutation.data?.errors && mutation.data.errors.documents
+              ? !mutation.data?.success
                 ? 'border-red-500 bg-red-50'
                 : 'border-green-500 bg-green-50'
               : 'border-gray-300 bg-gray-50 hover:bg-gray-100'
@@ -98,7 +102,7 @@ const GlossFormRemesa = () => {
               size="size-10"
               color={
                 files
-                  ? mutation.data?.errors && mutation.data.errors.documents
+                  ? !mutation.data?.success
                     ? 'red'
                     : 'green'
                   : ''
@@ -108,7 +112,7 @@ const GlossFormRemesa = () => {
               className={cn(
                 'mb-2 text-center text-sm',
                 files
-                  ? mutation.data?.errors && mutation.data.errors.documents
+                  ? !mutation.data?.success
                     ? 'text-red-500'
                     : 'text-green-500'
                   : 'text-gray-500'
@@ -136,9 +140,15 @@ const GlossFormRemesa = () => {
               {'Archivos cargados: ' + files?.length}
             </p>
           )}
-          <p className="mb-2 block text-red-500 text-sm">
-            {mutation.data?.errors && mutation.data.errors.documents}
-          </p>
+          {mutation.data && !mutation.data.success && (
+            <p className="mb-2 block text-red-500 text-sm">
+              {typeof mutation.data.message === 'string' 
+                ? mutation.data.message 
+                : Array.isArray(mutation.data.message) 
+                  ? mutation.data.message.join(', ') 
+                  : 'Error'}
+            </p>
+          )}
           <div className="flex justify-center gap-2">
             <button
               disabled={!files}
