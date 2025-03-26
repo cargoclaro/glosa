@@ -7,7 +7,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/shared/components/ui/table';
+} from '~/ui/table';
 import {
   Funnel,
   LeftChevron,
@@ -16,7 +16,7 @@ import {
   RightDoubleChevron,
   Search,
 } from '@/shared/icons';
-import { cn } from '@/shared/utils/cn';
+import { cn } from '~/lib/utils';
 import {
   type ColumnDef,
   type ColumnFiltersState,

@@ -1,7 +1,7 @@
 'use client';
 
 import { ArrowsUpDown, RightArrow } from '@/shared/icons';
-import { cn } from '@/shared/utils/cn';
+import { cn } from '~/lib/utils';
 import type { ColumnDef } from '@tanstack/react-table';
 import Link from 'next/link';
 

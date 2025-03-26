@@ -1,6 +1,6 @@
 'use client';
 
-import { cn } from '@/shared/utils/cn';
+import { cn } from '~/lib/utils';
 // import latLonToSvgCoords from "@/shared/utils/lat-lon-to-svg";
 
 const MexMap = () => {

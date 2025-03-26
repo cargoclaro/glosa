@@ -1,5 +1,5 @@
 import type { IGenericIcon } from '@/shared/interfaces';
-import { cn } from '@/shared/utils/cn';
+import { cn } from '~/lib/utils';
 
 const Clock = ({
   size = 'size-6',

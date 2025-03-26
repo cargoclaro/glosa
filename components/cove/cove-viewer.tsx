@@ -1,4 +1,4 @@
-import { Button } from '@/shared/components/ui/button';
+import { Button } from '~/ui/button';
 import type { Cove } from '@/shared/services/customGloss/data-extraction/schemas';
 import { ArrowLeft, ArrowRight, ChevronFirst, ChevronLast } from 'lucide-react';
 import { useMemo, useState } from 'react';

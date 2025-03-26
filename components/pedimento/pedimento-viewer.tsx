@@ -1,4 +1,4 @@
-import { Button } from '@/shared/components/ui/button';
+import { Button } from '~/ui/button';
 import type { Pedimento } from '@/shared/services/customGloss/data-extraction/schemas';
 import { ChevronFirst, ChevronLast } from 'lucide-react';
 import { ArrowLeft, ArrowRight } from 'lucide-react';

@@ -1,5 +1,5 @@
 import type { Cove } from '@/shared/services/customGloss/data-extraction/schemas';
-import { cn } from '@/shared/utils/cn';
+import { cn } from '~/lib/utils';
 import type { CustomGlossTabTable } from '~/db/schema';
 
 type CoveMerchandiseProps = {

@@ -1,6 +1,6 @@
 'use client';
 
-import { cn } from '@/shared/utils/cn';
+import { cn } from '~/lib/utils';
 import todayIs from '@/shared/utils/today-is';
 // import NotificationsMenu from "./NotificationsMenu";
 import { usePathname } from 'next/navigation';

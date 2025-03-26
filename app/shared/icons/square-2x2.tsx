@@ -1,5 +1,5 @@
 import type { IGenericIcon } from '@/shared/interfaces';
-import { cn } from '@/shared/utils/cn';
+import { cn } from '~/lib/utils';
 
 const Square2x2 = ({
   size = 'size-6',

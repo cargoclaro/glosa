@@ -4,7 +4,7 @@ import { LoadingBar, Modal } from '@/shared/components';
 import { useModal } from '@/shared/hooks';
 import { Document, Upload, XMark } from '@/shared/icons';
 import { analysis } from '@/shared/services/customGloss/controller';
-import { cn } from '@/shared/utils/cn';
+import { cn } from '~/lib/utils';
 import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 

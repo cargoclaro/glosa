@@ -13,7 +13,7 @@ import {
   RightChevron,
 } from '@/shared/icons';
 import { markTabAsVerifiedByTabIdNCustomGlossID } from '@/shared/services/customGloss/controller';
-import { cn } from '@/shared/utils/cn';
+import { cn } from '~/lib/utils';
 import { useMutation } from '@tanstack/react-query';
 import type { InferSelectModel } from 'drizzle-orm';
 import { Loader2 } from 'lucide-react';
