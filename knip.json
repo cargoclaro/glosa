@@ -1,7 +1,7 @@
 {
   "$schema": "https://unpkg.com/knip@5/schema.json",
   "ignore": [
-    "src/ui/**",
+    "**/ui/**",
     "app/(dashboard)/home/components/Header/glosa/xml-to-json.ts",
     "**/global.setup.{ts,js}"
   ],
