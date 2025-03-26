@@ -34,10 +34,10 @@ export function CoveHeader({
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
+    <div className="min-h-screen bg-linear-to-b from-gray-50 to-gray-100">
       <div className="container mx-auto px-2 py-4">
         <div>
-          <div className="mx-auto my-4 flex w-full max-w-3xl flex-col overflow-hidden rounded-lg bg-white shadow-sm">
+          <div className="mx-auto my-4 flex w-full max-w-3xl flex-col overflow-hidden rounded-lg bg-white shadow-xs">
             {/* Header */}
             <header className="bg-zinc-800 p-2 text-white">
               <div className="flex items-center">
