@@ -165,7 +165,7 @@ export default function GlossDataTable<TData, TValue>({
               'rounded-md p-2 text-white',
               !table.getCanPreviousPage() && 'cursor-not-allowed bg-gray-300',
               table.getCanPreviousPage() &&
-                'bg-cargoClaroOrange hover:bg-cargoClaroOrange-hover'
+                'bg-cargoClaroOrange hover:bg-cargoClaroOrange/80'
             )}
           >
             <LeftDoubleChevron />
@@ -179,7 +179,7 @@ export default function GlossDataTable<TData, TValue>({
               'rounded-md p-2 text-white',
               !table.getCanPreviousPage() && 'cursor-not-allowed bg-gray-300',
               table.getCanPreviousPage() &&
-                'bg-cargoClaroOrange hover:bg-cargoClaroOrange-hover'
+                'bg-cargoClaroOrange hover:bg-cargoClaroOrange/80'
             )}
           >
             <LeftChevron />
@@ -193,7 +193,7 @@ export default function GlossDataTable<TData, TValue>({
               'rounded-md p-2 text-white',
               !table.getCanNextPage() && 'cursor-not-allowed bg-gray-300',
               table.getCanNextPage() &&
-                'bg-cargoClaroOrange hover:bg-cargoClaroOrange-hover'
+                'bg-cargoClaroOrange hover:bg-cargoClaroOrange/80'
             )}
           >
             <RightChevron />
@@ -207,7 +207,7 @@ export default function GlossDataTable<TData, TValue>({
               'rounded-md p-2 text-white',
               !table.getCanNextPage() && 'cursor-not-allowed bg-gray-300',
               table.getCanNextPage() &&
-                'bg-cargoClaroOrange hover:bg-cargoClaroOrange-hover'
+                'bg-cargoClaroOrange hover:bg-cargoClaroOrange/80'
             )}
           >
             <RightDoubleChevron />

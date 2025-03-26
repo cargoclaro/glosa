@@ -144,7 +144,7 @@ const GlossForm = () => {
               className={cn(
                 'rounded-md border border-white px-12 py-2 text-sm shadow-black/50 shadow-md transition-colors duration-300',
                 files
-                  ? 'bg-cargoClaroOrange text-white hover:bg-cargoClaroOrange-hover'
+                  ? 'bg-cargoClaroOrange text-white hover:bg-cargoClaroOrange/80'
                   : 'cursor-not-allowed bg-gray-300 text-gray-500'
               )}
             >
@@ -212,7 +212,7 @@ const GlossForm = () => {
                 <button
                   type="button"
                   onClick={() => handlerAction()}
-                  className="rounded-md border border-white bg-cargoClaroOrange px-12 py-2 text-sm text-white shadow-black/50 shadow-md hover:bg-cargoClaroOrange-hover"
+                  className="rounded-md border border-white bg-cargoClaroOrange px-12 py-2 text-sm text-white shadow-black/50 shadow-md hover:bg-cargoClaroOrange/80"
                 >
                   Continuar
                 </button>

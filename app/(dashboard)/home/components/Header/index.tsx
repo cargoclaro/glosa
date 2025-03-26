@@ -23,7 +23,7 @@ const Header = () => {
             const dropdown = document.getElementById('glosa-dropdown');
             dropdown?.classList.toggle('hidden');
           }}
-          className="flex items-center rounded-md border border-white bg-cargoClaroOrange px-12 py-2 text-sm text-white shadow-black/50 shadow-md hover:bg-cargoClaroOrange-hover"
+          className="flex items-center rounded-md border border-white bg-cargoClaroOrange px-12 py-2 text-sm text-white shadow-black/50 shadow-md hover:bg-cargoClaroOrange/80"
         >
           Nueva Glosa
           <svg

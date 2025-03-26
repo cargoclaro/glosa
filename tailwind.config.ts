@@ -24,7 +24,6 @@ const config: Config = {
       colors: {
         cargoClaroOrange: {
           DEFAULT: '#f66714',
-          hover: '#c66327',
         },
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
