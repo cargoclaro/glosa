@@ -5,7 +5,7 @@ interface PedimentoContenedoresProps {
   numero: string;
   tipo: string;
   tabs?: CustomGlossTabTable[];
-  onClick?: (keyword: string) => void;
+  onClick: (keyword: string) => void;
   tabInfoSelected?: { name: string; isCorrect: boolean; isVerified: boolean };
 }
 

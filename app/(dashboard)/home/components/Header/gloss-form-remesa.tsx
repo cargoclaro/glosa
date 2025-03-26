@@ -33,9 +33,9 @@ const GlossFormRemesa = () => {
   const handlerAction = () => {
     if (files) {
       const formData = new FormData();
-      Array.from(files).forEach((file) => {
+      for (const file of Array.from(files)) {
         formData.append('files', file);
-      });
+      }
       mutation.mutate(formData);
     }
   };
@@ -46,7 +46,9 @@ const GlossFormRemesa = () => {
     }
     const updatedFileList = Array.from(files).filter((_, i) => i !== index);
     const dataTransfer = new DataTransfer();
-    updatedFileList.forEach((file) => dataTransfer.items.add(file));
+    for (const file of updatedFileList) {
+      dataTransfer.items.add(file);
+    }
 
     if (updatedFileList.length === 0) {
       setFiles(null);
@@ -56,6 +58,27 @@ const GlossFormRemesa = () => {
     }
   };
 
+  let labelColor: string;
+  if (files) {
+    if (mutation.data?.success) {
+      labelColor = 'border-green-500 bg-green-50';
+    } else {
+      labelColor = 'border-red-500 bg-red-50';
+    }
+  } else {
+    labelColor = 'border-gray-300 bg-gray-50 hover:bg-gray-100';
+  }
+
+  let filePickerTextColor: string;
+  if (files) {
+    if (mutation.data?.success) {
+      filePickerTextColor = 'text-green-500';
+    } else {
+      filePickerTextColor = 'text-red-500';
+    }
+  } else {
+    filePickerTextColor = 'text-gray-500';
+  }
   return (
     <>
       <h1 className="text-center font-semibold text-xl">
@@ -92,11 +115,7 @@ const GlossFormRemesa = () => {
           htmlFor="documents"
           className={cn(
             'mb-4 flex h-64 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed',
-            files
-              ? mutation.data?.success
-                ? 'border-green-500 bg-green-50'
-                : 'border-red-500 bg-red-50'
-              : 'border-gray-300 bg-gray-50 hover:bg-gray-100'
+            labelColor
           )}
         >
           <div className="flex flex-col items-center justify-center p-5">
@@ -107,11 +126,7 @@ const GlossFormRemesa = () => {
             <p
               className={cn(
                 'mb-2 text-center text-sm',
-                files
-                  ? mutation.data?.success
-                    ? 'text-green-500'
-                    : 'text-red-500'
-                  : 'text-gray-500'
+                filePickerTextColor
               )}
             >
               <span className="font-semibold">Click para subir</span>
@@ -138,6 +153,7 @@ const GlossFormRemesa = () => {
           )}
           <div className="flex justify-center gap-2">
             <button
+              type="button"
               disabled={!files}
               onClick={() => openMenu()}
               className={cn(
@@ -155,7 +171,7 @@ const GlossFormRemesa = () => {
       <Modal
         isOpen={isOpen}
         menuRef={mutation.isPending ? null : menuRef}
-        onClose={mutation.isPending ? () => {} : closeMenu}
+        onClose={closeMenu}
       >
         <div className="flex h-[430px] flex-col items-center justify-center gap-2">
           {mutation.isPending ? (
@@ -181,6 +197,7 @@ const GlossFormRemesa = () => {
                       className="relative flex h-[260px] w-[260px] flex-col gap-2"
                     >
                       <button
+                        type="button"
                         onClick={() => handleRemoveFile(index)}
                         className="absolute top-1.5 right-1.5 z-10 rounded-full bg-gray-400 p-1 text-sm text-white hover:bg-gray-600"
                       >
@@ -190,6 +207,7 @@ const GlossFormRemesa = () => {
                         <Document />
                       ) : (
                         <iframe
+                          title={file.name}
                           width="260px"
                           height="260px"
                           src={URL.createObjectURL(file)}
@@ -207,12 +225,14 @@ const GlossFormRemesa = () => {
               </ul>
               <div className="flex flex-col justify-center gap-2 sm:flex-row">
                 <button
+                  type="button"
                   onClick={() => handlerAction()}
                   className="rounded-md border border-white bg-cargoClaroOrange px-12 py-2 text-sm text-white shadow-black/50 shadow-md hover:bg-cargoClaroOrange-hover"
                 >
                   Continuar
                 </button>
                 <button
+                  type="button"
                   onClick={() => closeMenu()}
                   className="rounded-md border border-white bg-gray-400 px-12 py-2 text-sm text-white shadow-black/50 shadow-md hover:bg-gray-500"
                 >

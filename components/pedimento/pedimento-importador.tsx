@@ -10,14 +10,14 @@ interface PedimentoImportadorProps {
     domicilio: string;
   };
   tabs?: CustomGlossTabTable[];
-  onClick?: (keyword: string) => void;
+  onClick: (keyword: string) => void;
   tabInfoSelected?: { name: string; isCorrect: boolean; isVerified: boolean };
 }
 
 const PedimentoImportador: React.FC<PedimentoImportadorProps> = ({
   datosImportador,
   tabs = [],
-  onClick = () => {},
+  onClick,
   tabInfoSelected = { name: '', isCorrect: false, isVerified: false },
 }) => {
   // Helper functions to determine highlight styles

@@ -17,6 +17,7 @@ export const GlossDataTableColumns: ColumnDef<IDumpGlosses>[] = [
     header: ({ column }) => {
       return (
         <button
+          type="button"
           className="flex items-center gap-2"
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
         >
@@ -31,6 +32,7 @@ export const GlossDataTableColumns: ColumnDef<IDumpGlosses>[] = [
     header: ({ column }) => {
       return (
         <button
+          type="button"
           className="flex items-center gap-2"
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
         >

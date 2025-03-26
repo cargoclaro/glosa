@@ -15,14 +15,14 @@ const ITEMS_PER_PAGE = 3;
 interface ICoveViewerProps {
   cove: Cove;
   tabs?: CustomGlossTabTable[];
-  onClick?: (keyword: string) => void;
+  onClick: (keyword: string) => void;
   tabInfoSelected?: { name: string; isCorrect: boolean; isVerified: boolean };
 }
 
 export function CoveViewer({
   cove,
   tabs = [],
-  onClick = () => {},
+  onClick,
   tabInfoSelected = { name: '', isCorrect: false, isVerified: false },
 }: ICoveViewerProps) {
   const [currentPageType, setCurrentPageType] = useState<PageType>('header');

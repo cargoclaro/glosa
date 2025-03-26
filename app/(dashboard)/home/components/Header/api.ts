@@ -124,7 +124,7 @@ export const glosarRemesa = api
       );
 
       // Array to accumulate all validation errors
-      const validationErrors = [];
+      const validationErrors: string[] = [];
 
       const cfdiUUIDs = structuredText.cfdis.map(
         (cfdi) =>
@@ -209,84 +209,78 @@ export const glosarRemesa = api
         }
       > = {};
 
-      structuredText.listaDeFacturas.facturas.forEach(
-        ({ facturaUUID, cantidadEnUMC, fecha, valorFacturaEnDolares }) => {
-          if (!datosFolio[facturaUUID]) {
-            datosFolio[facturaUUID] = {
-              facturaCantidadTotal: 0,
-              cfdiCantidadTotal: 0,
-              listaDeFacturasCantidadTotal: 0,
-              cfdiFechaYHoraDeCertificacion: moment(),
-              facturaFechaYHoraDeCertificacion: moment(),
-              listaDeFacturasFecha: moment(),
-              cfdiImporteTotal: 0,
-              facturaImporteTotal: 0,
-              listaDeFacturasImporteTotal: 0,
-              facturaPesoBrutoTotal: 0,
-            };
-          }
-          datosFolio[facturaUUID].listaDeFacturasCantidadTotal = cantidadEnUMC;
-          datosFolio[facturaUUID].listaDeFacturasFecha = fecha;
-          datosFolio[facturaUUID].listaDeFacturasImporteTotal =
-            valorFacturaEnDolares;
+      for (const { facturaUUID, cantidadEnUMC, fecha, valorFacturaEnDolares } of structuredText.listaDeFacturas.facturas) {
+        if (!datosFolio[facturaUUID]) {
+          datosFolio[facturaUUID] = {
+            facturaCantidadTotal: 0,
+            cfdiCantidadTotal: 0,
+            listaDeFacturasCantidadTotal: 0,
+            cfdiFechaYHoraDeCertificacion: moment(),
+            facturaFechaYHoraDeCertificacion: moment(),
+            listaDeFacturasFecha: moment(),
+            cfdiImporteTotal: 0,
+            facturaImporteTotal: 0,
+            listaDeFacturasImporteTotal: 0,
+            facturaPesoBrutoTotal: 0,
+          };
         }
-      );
-      facturaCantidadTotal.forEach(
-        ({
-          folioFiscal,
-          cantidadTotal,
-          fechaYHoraDeCertificacion,
-          importeTotal,
-          pesoBrutoTotal,
-        }) => {
-          if (!datosFolio[folioFiscal]) {
-            datosFolio[folioFiscal] = {
-              facturaCantidadTotal: 0,
-              cfdiCantidadTotal: 0,
-              listaDeFacturasCantidadTotal: 0,
-              cfdiFechaYHoraDeCertificacion: moment(),
-              facturaFechaYHoraDeCertificacion: moment(),
-              listaDeFacturasFecha: moment(),
-              cfdiImporteTotal: 0,
-              facturaImporteTotal: 0,
-              listaDeFacturasImporteTotal: 0,
-              facturaPesoBrutoTotal: 0,
-            };
-          }
-          datosFolio[folioFiscal].facturaCantidadTotal = cantidadTotal;
-          datosFolio[folioFiscal].facturaFechaYHoraDeCertificacion =
-            fechaYHoraDeCertificacion;
-          datosFolio[folioFiscal].facturaImporteTotal = importeTotal;
-          datosFolio[folioFiscal].facturaPesoBrutoTotal += pesoBrutoTotal;
+        datosFolio[facturaUUID].listaDeFacturasCantidadTotal = cantidadEnUMC;
+        datosFolio[facturaUUID].listaDeFacturasFecha = fecha;
+        datosFolio[facturaUUID].listaDeFacturasImporteTotal =
+          valorFacturaEnDolares;
+      }
+      for (const {
+        folioFiscal,
+        cantidadTotal,
+        fechaYHoraDeCertificacion,
+        importeTotal,
+        pesoBrutoTotal,
+      } of facturaCantidadTotal) {
+        if (!datosFolio[folioFiscal]) {
+          datosFolio[folioFiscal] = {
+            facturaCantidadTotal: 0,
+            cfdiCantidadTotal: 0,
+            listaDeFacturasCantidadTotal: 0,
+            cfdiFechaYHoraDeCertificacion: moment(),
+            facturaFechaYHoraDeCertificacion: moment(),
+            listaDeFacturasFecha: moment(),
+            cfdiImporteTotal: 0,
+            facturaImporteTotal: 0,
+            listaDeFacturasImporteTotal: 0,
+            facturaPesoBrutoTotal: 0,
+          };
         }
-      );
-      cfdiCantidadTotal.forEach(
-        ({
-          folioFiscal,
-          cantidadTotal,
-          fechaYHoraDeCertificacion,
-          importeTotal,
-        }) => {
-          if (!datosFolio[folioFiscal]) {
-            datosFolio[folioFiscal] = {
-              facturaCantidadTotal: 0,
-              cfdiCantidadTotal: 0,
-              listaDeFacturasCantidadTotal: 0,
-              cfdiFechaYHoraDeCertificacion: moment(),
-              facturaFechaYHoraDeCertificacion: moment(),
-              listaDeFacturasFecha: moment(),
-              cfdiImporteTotal: 0,
-              facturaImporteTotal: 0,
-              listaDeFacturasImporteTotal: 0,
-              facturaPesoBrutoTotal: 0,
-            };
-          }
-          datosFolio[folioFiscal].cfdiCantidadTotal = cantidadTotal;
-          datosFolio[folioFiscal].cfdiFechaYHoraDeCertificacion =
-            fechaYHoraDeCertificacion;
-          datosFolio[folioFiscal].cfdiImporteTotal = importeTotal;
+        datosFolio[folioFiscal].facturaCantidadTotal = cantidadTotal;
+        datosFolio[folioFiscal].facturaFechaYHoraDeCertificacion =
+          fechaYHoraDeCertificacion;
+        datosFolio[folioFiscal].facturaImporteTotal = importeTotal;
+        datosFolio[folioFiscal].facturaPesoBrutoTotal += pesoBrutoTotal;
+      }
+      for (const {
+        folioFiscal,
+        cantidadTotal,
+        fechaYHoraDeCertificacion,
+        importeTotal,
+      } of cfdiCantidadTotal) {
+        if (!datosFolio[folioFiscal]) {
+          datosFolio[folioFiscal] = {
+            facturaCantidadTotal: 0,
+            cfdiCantidadTotal: 0,
+            listaDeFacturasCantidadTotal: 0,
+            cfdiFechaYHoraDeCertificacion: moment(),
+            facturaFechaYHoraDeCertificacion: moment(),
+            listaDeFacturasFecha: moment(),
+            cfdiImporteTotal: 0,
+            facturaImporteTotal: 0,
+            listaDeFacturasImporteTotal: 0,
+            facturaPesoBrutoTotal: 0,
+          };
         }
-      );
+        datosFolio[folioFiscal].cfdiCantidadTotal = cantidadTotal;
+        datosFolio[folioFiscal].cfdiFechaYHoraDeCertificacion =
+          fechaYHoraDeCertificacion;
+        datosFolio[folioFiscal].cfdiImporteTotal = importeTotal;
+      }
 
       for (const [
         folioFiscal,

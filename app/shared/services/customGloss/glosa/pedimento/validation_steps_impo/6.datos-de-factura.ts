@@ -165,12 +165,6 @@ async function validateDatosProveedor(
     cove?.datos_generales_proveedor?.nombre_razon_social;
   const domicilioProveedorPedimento = pedimento.domicilio;
   const domicilioProveedorCove = cove?.datos_generales_proveedor?.domicilio;
-  const idProveedorPedimento =
-    pedimento.id_fiscal === '91310000078199718'
-      ? `${pedimento.id_fiscal}N`
-      : pedimento.id_fiscal === '91440300MADLYEG'
-        ? `${pedimento.id_fiscal}6`
-        : pedimento.id_fiscal;
   const idProveedorCove = cove?.datos_generales_proveedor?.identificador;
 
   const carta318mkdown = carta318?.markdown_representation;
@@ -200,7 +194,7 @@ async function validateDatosProveedor(
           data: [
             { name: 'Nombre/Razón social', value: nombreProveedorPedimento },
             { name: 'Domicilio', value: domicilioProveedorPedimento },
-            { name: 'ID Fiscal', value: idProveedorPedimento },
+            { name: 'ID Fiscal', value: pedimento.id_fiscal },
             { name: 'Observaciones', value: observaciones },
           ],
         },

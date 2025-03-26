@@ -209,6 +209,7 @@ const Analysis = ({
       <GenericCard>
         <div className="relative w-full">
           <button
+            type="button"
             className="absolute top-0 left-0 rounded-full bg-white/70 p-1 shadow-md transition-colors duration-200 hover:bg-white/90"
             onClick={handlePrevious}
           >
@@ -229,6 +230,7 @@ const Analysis = ({
             ))}
           </ul>
           <button
+            type="button"
             className="absolute top-0 right-0 rounded-full bg-white/70 p-1 shadow-md transition-colors duration-200 hover:bg-white/90"
             onClick={handleNext}
           >
@@ -261,6 +263,7 @@ interface IGenericTabLi {
 const GenericTabLi = ({ title, active, onClick }: IGenericTabLi) => (
   <li>
     <button
+      type="button"
       title={title}
       onClick={onClick}
       className={cn(
@@ -360,6 +363,20 @@ const VerifiedButton = ({
     },
   });
 
+  let buttonContent: React.ReactNode;
+  if (mutation.isPending) {
+    buttonContent = (
+      <span className="flex items-center justify-center">
+        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+        Verificando...
+      </span>
+    );
+  } else if (isVerified) {
+    buttonContent = 'Análisis Verificado';
+  } else {
+    buttonContent = 'Marcar como verificado';
+  }
+
   return (
     <div className="text-center">
       {mutation.error &&
@@ -367,6 +384,7 @@ const VerifiedButton = ({
           <p className="text-red-500">{(mutation.error as Error).message}</p>
         )}
       <button
+        type="button"
         disabled={isVerified || mutation.isPending}
         onClick={() => mutation.mutate()}
         className={cn(
@@ -377,16 +395,7 @@ const VerifiedButton = ({
             : 'bg-cargoClaroOrange text-white hover:bg-cargoClaroOrange-hover'
         )}
       >
-        {mutation.isPending ? (
-          <span className="flex items-center justify-center">
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            Verificando...
-          </span>
-        ) : isVerified ? (
-          'Análisis Verificado'
-        ) : (
-          'Marcar como verificado'
-        )}
+        {buttonContent}
       </button>
     </div>
   );

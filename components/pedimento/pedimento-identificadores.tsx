@@ -37,7 +37,7 @@ interface PedimentoIdentificadoresProps {
     };
   };
   tabs?: CustomGlossTabTable[];
-  onClick?: (keyword: string) => void;
+  onClick: (keyword: string) => void;
   tabInfoSelected?: { name: string; isCorrect: boolean; isVerified: boolean };
 }
 
@@ -49,7 +49,7 @@ const PedimentoIdentificadores: React.FC<PedimentoIdentificadoresProps> = ({
   tasas = [],
   liquidacion,
   tabs = [],
-  onClick = () => {},
+  onClick,
   tabInfoSelected = { name: '', isCorrect: false, isVerified: false },
 }) => {
   // Helper functions to determine highlight styles

@@ -6,7 +6,7 @@ type CoveMerchandiseProps = {
   cove: Cove;
   pageItems: number[];
   tabs?: CustomGlossTabTable[];
-  onClick?: (keyword: string) => void;
+  onClick: (keyword: string) => void;
   tabInfoSelected?: { name: string; isCorrect: boolean; isVerified: boolean };
 };
 
@@ -14,7 +14,7 @@ export function CoveMerchandise({
   cove,
   pageItems,
   tabs = [],
-  onClick = () => {},
+  onClick,
   tabInfoSelected = { name: '', isCorrect: false, isVerified: false },
 }: CoveMerchandiseProps) {
   // Helper functions to determine highlight styles

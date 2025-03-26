@@ -18,6 +18,7 @@ const Header = () => {
       <h1 className="font-bold text-2xl">Dashboard de Glosa Aduanal</h1>
       <div className="relative">
         <button
+          type="button"
           onClick={() => {
             const dropdown = document.getElementById('glosa-dropdown');
             dropdown?.classList.toggle('hidden');
@@ -47,6 +48,7 @@ const Header = () => {
           <ul className="py-1">
             <li>
               <button
+                type="button"
                 onClick={() => {
                   document
                     .getElementById('glosa-dropdown')
@@ -60,6 +62,7 @@ const Header = () => {
             </li>
             <li>
               <button
+                type="button"
                 onClick={() => {
                   document
                     .getElementById('glosa-dropdown')

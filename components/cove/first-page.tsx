@@ -5,14 +5,14 @@ import type { CustomGlossTabTable } from '~/db/schema';
 interface ICoveHeaderProps {
   cove: Cove;
   tabs?: CustomGlossTabTable[];
-  onClick?: (keyword: string) => void;
+  onClick: (keyword: string) => void;
   tabInfoSelected?: { name: string; isCorrect: boolean; isVerified: boolean };
 }
 
 export function CoveHeader({
   cove,
   tabs = [],
-  onClick = () => {},
+  onClick,
   tabInfoSelected = { name: '', isCorrect: false, isVerified: false },
 }: ICoveHeaderProps) {
   // Helper functions to determine highlight styles

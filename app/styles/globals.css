@@ -118,17 +118,17 @@
 }
 
 .link-button-cargoClaro {
-  @apply text-white bg-cargoClaroOrange hover:bg-cargoClaroOrange-hover px-4 py-2 rounded-lg
+  @apply text-white bg-cargoClaroOrange hover:bg-cargoClaroOrange-hover px-4 py-2 rounded-lg;
 }
 
 .link-button-blue {
-  @apply text-white bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg
+  @apply text-white bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg;
 }
 
 .link-button-red {
-  @apply text-white bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg
+  @apply text-white bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg;
 }
 
 .link-button-green {
-  @apply text-white bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg
+  @apply text-white bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg;
 }

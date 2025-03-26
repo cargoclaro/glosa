@@ -18,7 +18,7 @@ interface PedimentoViewerProps {
   pedimento: Pedimento;
   className?: string;
   tabs?: CustomGlossTabTable[];
-  onClick?: (keyword: string) => void;
+  onClick: (keyword: string) => void;
   tabInfoSelected?: { name: string; isCorrect: boolean; isVerified: boolean };
 }
 
@@ -26,7 +26,7 @@ const PedimentoViewer = ({
   pedimento,
   className,
   tabs = [],
-  onClick = () => {},
+  onClick,
   tabInfoSelected = { name: '', isCorrect: false, isVerified: false },
 }: PedimentoViewerProps) => {
   // Constants for partidas pagination

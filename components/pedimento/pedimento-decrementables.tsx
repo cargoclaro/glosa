@@ -11,14 +11,14 @@ interface PedimentoDecrementablesProps {
     otros_decrementables: number;
   };
   tabs?: CustomGlossTabTable[];
-  onClick?: (keyword: string) => void;
+  onClick: (keyword: string) => void;
   tabInfoSelected?: { name: string; isCorrect: boolean; isVerified: boolean };
 }
 
 const PedimentoDecrementables: React.FC<PedimentoDecrementablesProps> = ({
   decrementables,
   tabs = [],
-  onClick = () => {},
+  onClick,
   tabInfoSelected = { name: '', isCorrect: false, isVerified: false },
 }) => {
   // Helper functions to determine highlight styles

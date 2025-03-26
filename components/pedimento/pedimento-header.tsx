@@ -8,7 +8,7 @@ interface PedimentoHeaderProps {
   page: number;
   totalPages: number;
   tabs?: CustomGlossTabTable[];
-  onClick?: (keyword: string) => void;
+  onClick: (keyword: string) => void;
   tabInfoSelected?: { name: string; isCorrect: boolean; isVerified: boolean };
 }
 
@@ -17,7 +17,7 @@ const PedimentoHeader: React.FC<PedimentoHeaderProps> = ({
   page,
   totalPages,
   tabs = [],
-  onClick = () => {},
+  onClick,
   tabInfoSelected = { name: '', isCorrect: false, isVerified: false },
 }) => {
   const formatNumber = (num: number) => {

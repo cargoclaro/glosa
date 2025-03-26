@@ -6,14 +6,14 @@ import type { CustomGlossTabTable } from '~/db/schema';
 interface PedimentoPartidasProps {
   partidas: Partida[];
   tabs?: CustomGlossTabTable[];
-  onClick?: (keyword: string) => void;
+  onClick: (keyword: string) => void;
   tabInfoSelected?: { name: string; isCorrect: boolean; isVerified: boolean };
 }
 
 const PedimentoPartidas: React.FC<PedimentoPartidasProps> = ({
   partidas,
   tabs = [],
-  onClick = () => {},
+  onClick,
   tabInfoSelected = { name: '', isCorrect: false, isVerified: false },
 }) => {
   if (!partidas || partidas.length === 0) {

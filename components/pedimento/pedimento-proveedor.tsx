@@ -17,7 +17,7 @@ interface PedimentoProveedorProps {
     valor_dolares_factura: number;
   };
   tabs?: CustomGlossTabTable[];
-  onClick?: (keyword: string) => void;
+  onClick: (keyword: string) => void;
   tabInfoSelected?: { name: string; isCorrect: boolean; isVerified: boolean };
 }
 
@@ -28,7 +28,7 @@ const PedimentoProveedor: React.FC<PedimentoProveedorProps> = ({
   vinculacion,
   datosFactura,
   tabs = [],
-  onClick = () => {},
+  onClick,
   tabInfoSelected = { name: '', isCorrect: false, isVerified: false },
 }) => {
   // Helper functions to determine highlight styles

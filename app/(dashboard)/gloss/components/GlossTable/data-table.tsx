@@ -157,6 +157,7 @@ export default function GlossDataTable<TData, TValue>({
         </p>
         <div className="flex items-center justify-end space-x-2">
           <button
+            type="button"
             aria-label="Go to first page"
             onClick={() => table.setPageIndex(0)}
             disabled={!table.getCanPreviousPage()}
@@ -170,6 +171,7 @@ export default function GlossDataTable<TData, TValue>({
             <LeftDoubleChevron />
           </button>
           <button
+            type="button"
             aria-label="Go to previous page"
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
@@ -183,6 +185,7 @@ export default function GlossDataTable<TData, TValue>({
             <LeftChevron />
           </button>
           <button
+            type="button"
             aria-label="Go to next page"
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
@@ -196,6 +199,7 @@ export default function GlossDataTable<TData, TValue>({
             <RightChevron />
           </button>
           <button
+            type="button"
             aria-label="Go to last page"
             onClick={() => table.setPageIndex(table.getPageCount() - 1)}
             disabled={!table.getCanNextPage()}
