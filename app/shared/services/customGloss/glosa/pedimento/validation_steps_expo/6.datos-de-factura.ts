@@ -260,14 +260,12 @@ async function validateMonedaYEquivalencia(
   const tipoCambioDOF = 17.1234;
 
   // Extract values from documents
-  const valorDolaresPedimento =
-    pedimento.datos_factura?.valor_dolares_factura;
+  const valorDolaresPedimento = pedimento.datos_factura?.valor_dolares_factura;
   const valorDolaresCove = cove?.datos_mercancia?.[0]?.valor_total_dolares;
 
   // Valor factura from pedimento:
   const valorFactura = pedimento.datos_factura?.valor_moneda_factura;
-  const factorMonedaFactura =
-    pedimento.datos_factura?.factor_moneda_factura;
+  const factorMonedaFactura = pedimento.datos_factura?.factor_moneda_factura;
 
   const cfdiMkdown = cfdi?.markdown_representation;
 

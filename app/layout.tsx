@@ -1,10 +1,13 @@
 import './styles/globals.css';
-import { ThemeComponent } from '@/shared/components';
-import { cn } from '@/shared/utils/cn';
+import {
+  QueryClientProvider,
+  ThemeComponent,
+} from '@/shared/components/providers';
 import { esMX } from '@clerk/localizations';
 import { ClerkProvider } from '@clerk/nextjs';
 import { GeistSans } from 'geist/font/sans';
 import type { Metadata } from 'next';
+import { cn } from '~/lib/utils';
 
 export const dynamic = 'force-dynamic';
 
@@ -37,7 +40,9 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <ClerkProvider localization={esMX}>{children}</ClerkProvider>
+          <ClerkProvider localization={esMX}>
+            <QueryClientProvider>{children}</QueryClientProvider>
+          </ClerkProvider>
         </ThemeComponent>
       </body>
     </html>

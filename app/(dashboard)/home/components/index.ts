@@ -1,7 +1,5 @@
-import GlossHistory from './GlossHistory';
-import Header from './Header';
-import MexMap from './MexMap';
-import MyInfo from './MyInfo';
-import Summary from './Summary';
-
-export { Header, MyInfo, MexMap, Summary, GlossHistory };
+export { default as GlossHistory } from './GlossHistory';
+export { default as Header } from './Header';
+export { default as MexMap } from './mex-map';
+export { default as MyInfo } from './my-info';
+export { default as Summary } from './summary';

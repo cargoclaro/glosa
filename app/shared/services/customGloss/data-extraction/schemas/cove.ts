@@ -73,16 +73,27 @@ export const coveSchema = z.object({
         .object({
           calle: z.string().describe("Street name, e.g., 'MASON STREET'."),
           numero_exterior: z.string().describe("External number, e.g., '35'."),
-          numero_interior: z.string().describe("Interior number, e.g., 'ROOM 420H'.").nullable(),
+          numero_interior: z
+            .string()
+            .describe("Interior number, e.g., 'ROOM 420H'.")
+            .nullable(),
           codigo_postal: z.string().describe("Postal code, e.g., '06830'."),
           colonia: z
             .string()
             .describe(
               "Neighborhood or subdivision, e.g., 'GREENWICH CONNECTICUT'."
             ),
-          localidad: z.string().describe("Locality, e.g., 'SHANGHAI'.").nullable(),
-          entidad_federativa: z.string().describe("Federal entity or state, e.g., 'CHINA (REPUBLICA POPULAR)'.").nullable(),
-          municipio: z.string().describe("Municipality.").nullable(),
+          localidad: z
+            .string()
+            .describe("Locality, e.g., 'SHANGHAI'.")
+            .nullable(),
+          entidad_federativa: z
+            .string()
+            .describe(
+              "Federal entity or state, e.g., 'CHINA (REPUBLICA POPULAR)'."
+            )
+            .nullable(),
+          municipio: z.string().describe('Municipality.').nullable(),
           pais: z.string().describe("Country, e.g., 'USA'."),
         })
         .describe("Supplier's address details."),
@@ -104,14 +115,26 @@ export const coveSchema = z.object({
         .object({
           calle: z.string().describe("Street name, e.g., 'CANELA'."),
           numero_exterior: z.string().describe("External number, e.g., '229'."),
-          numero_interior: z.string().describe("Interior number, e.g., 'L3 B9 10 11 12 13a'.").nullable(),
+          numero_interior: z
+            .string()
+            .describe("Interior number, e.g., 'L3 B9 10 11 12 13a'.")
+            .nullable(),
           codigo_postal: z.string().describe("Postal code, e.g., '08400'."),
           colonia: z
             .string()
             .describe("Neighborhood or subdivision, e.g., 'GRANJAS MEXICO'."),
-          localidad: z.string().describe("Locality, e.g., 'SAN LUIS POTOSI'.").nullable(),
-          entidad_federativa: z.string().describe("Federal entity or state, e.g., 'SAN LUIS POTOSI'.").nullable(),
-          municipio: z.string().describe("Municipality, e.g., 'SAN LUIS POTOSI'.").nullable(),
+          localidad: z
+            .string()
+            .describe("Locality, e.g., 'SAN LUIS POTOSI'.")
+            .nullable(),
+          entidad_federativa: z
+            .string()
+            .describe("Federal entity or state, e.g., 'SAN LUIS POTOSI'.")
+            .nullable(),
+          municipio: z
+            .string()
+            .describe("Municipality, e.g., 'SAN LUIS POTOSI'.")
+            .nullable(),
           pais: z.string().describe("Country, e.g., 'MEX'."),
         })
         .describe("Recipient's address details."),

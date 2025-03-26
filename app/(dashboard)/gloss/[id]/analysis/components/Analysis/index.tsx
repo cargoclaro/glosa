@@ -1,8 +1,7 @@
 'use client';
 
 import { GenericCard, Modal } from '@/shared/components';
-import { INITIAL_STATE_RESPONSE } from '@/shared/constants';
-import { useModal, useServerAction } from '@/shared/hooks';
+import { useModal } from '@/shared/hooks';
 import {
   ArrowTrendingUp,
   Check,
@@ -13,10 +12,10 @@ import {
   RightArrow,
   RightChevron,
 } from '@/shared/icons';
-import type { ISharedState } from '@/shared/interfaces';
 import { markTabAsVerifiedByTabIdNCustomGlossID } from '@/shared/services/customGloss/controller';
-import { cn } from '@/shared/utils/cn';
+import { useMutation } from '@tanstack/react-query';
 import type { InferSelectModel } from 'drizzle-orm';
+import { Loader2 } from 'lucide-react';
 import { type JSX, useCallback, useEffect, useRef, useState } from 'react';
 import type {
   CustomGloss,
@@ -27,8 +26,9 @@ import type {
   CustomGlossTabValidationStepActionToTake,
   CustomGlossTabValidationStepResources,
 } from '~/db/schema';
-import type { ITabInfoSelected } from '../PedimentAnalysisNFinish';
-import Detailed from './Detailed';
+import { cn } from '~/lib/utils';
+import type { ITabInfoSelected } from '../pediment-analysis-n-finish';
+import Detailed from './detailed';
 
 type TabValidation = InferSelectModel<typeof CustomGlossTabValidationStep> & {
   resources: InferSelectModel<typeof CustomGlossTabValidationStepResources>[];
@@ -209,6 +209,7 @@ const Analysis = ({
       <GenericCard>
         <div className="relative w-full">
           <button
+            type="button"
             className="absolute top-0 left-0 rounded-full bg-white/70 p-1 shadow-md transition-colors duration-200 hover:bg-white/90"
             onClick={handlePrevious}
           >
@@ -229,6 +230,7 @@ const Analysis = ({
             ))}
           </ul>
           <button
+            type="button"
             className="absolute top-0 right-0 rounded-full bg-white/70 p-1 shadow-md transition-colors duration-200 hover:bg-white/90"
             onClick={handleNext}
           >
@@ -261,13 +263,12 @@ interface IGenericTabLi {
 const GenericTabLi = ({ title, active, onClick }: IGenericTabLi) => (
   <li>
     <button
+      type="button"
       title={title}
       onClick={onClick}
       className={cn(
-        'min-w-64 border-b-2 pb-2 text-center hover:border-cargoClaroOrange-hover hover:text-cargoClaroOrange-hover',
-        active
-          ? 'border-cargoClaroOrange text-cargoClaroOrange'
-          : 'border-black'
+        'min-w-64 border-b-2 pb-2 text-center hover:border-primary/80 hover:text-primary/80',
+        active ? 'border-primary text-primary' : 'border-black'
       )}
     >
       <p className="line-clamp-1">{title}</p>
@@ -345,34 +346,54 @@ const VerifiedButton = ({
   isVerified,
   customGlossId,
 }: IVerifiedButton) => {
-  const { response, isLoading, setIsLoading } = useServerAction<ISharedState>(
-    INITIAL_STATE_RESPONSE
-  );
+  const mutation = useMutation({
+    mutationFn: () =>
+      markTabAsVerifiedByTabIdNCustomGlossID({
+        tabId,
+        customGlossId,
+      }),
+    onError: (error) => {
+      // Handle redirects (which Next.js sends as 303 responses that React Query considers errors)
+      if (error instanceof Error && error.message === 'NEXT_REDIRECT') {
+        // This is a redirect, allow it to happen normally
+        return;
+      }
+    },
+  });
 
-  const handleVerify = async () => {
-    setIsLoading(true);
-    await markTabAsVerifiedByTabIdNCustomGlossID({
-      tabId,
-      customGlossId,
-    });
-    setIsLoading(false);
-  };
+  let buttonContent: React.ReactNode;
+  if (mutation.isPending) {
+    buttonContent = (
+      <span className="flex items-center justify-center">
+        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+        Verificando...
+      </span>
+    );
+  } else if (isVerified) {
+    buttonContent = 'Análisis Verificado';
+  } else {
+    buttonContent = 'Marcar como verificado';
+  }
 
   return (
     <div className="text-center">
-      {response.message && <p className="text-red-500">{response.message}</p>}
+      {mutation.error &&
+        (mutation.error as Error).message !== 'NEXT_REDIRECT' && (
+          <p className="text-red-500">{(mutation.error as Error).message}</p>
+        )}
       <button
-        disabled={isVerified}
-        onClick={() => handleVerify()}
+        type="button"
+        disabled={isVerified || mutation.isPending}
+        onClick={() => mutation.mutate()}
         className={cn(
           'rounded-md border border-white px-12 py-2 text-sm shadow-black/50 shadow-md',
-          isLoading && 'cursor-not-allowed opacity-50',
+          mutation.isPending && 'cursor-not-allowed opacity-50',
           isVerified
             ? 'cursor-not-allowed bg-gray-300 text-gray-900'
-            : 'bg-cargoClaroOrange text-white hover:bg-cargoClaroOrange-hover'
+            : 'bg-primary text-white hover:bg-primary/80'
         )}
       >
-        {isVerified ? 'Análisis Verificado' : 'Marcar como verificado'}
+        {buttonContent}
       </button>
     </div>
   );
@@ -428,7 +449,7 @@ const DataListForSummaryCard = ({
             </span>
           )}
           <p className="font-semibold text-black">
-            {item.name + ': '}
+            {`${item.name}: `}
             <span className="font-normal">{item.description}</span>
           </p>
           <span className="animate-infinite rounded-full border-2 border-black p-1 text-black group-hover:animate-pulse">

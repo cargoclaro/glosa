@@ -19,12 +19,12 @@ const GlossHistory = ({ history }: { history: CustomGlossTable[] }) => {
                 className="group flex items-center justify-between rounded-xl p-2 hover:bg-gray-50"
               >
                 <div>
-                  <p className="text-lg">{'Operación #' + gloss.id}</p>
+                  <p className="text-lg">{`Operación #${gloss.id}`}</p>
                   <small className="text-base text-gray-500">
                     {gloss.importerName}
                   </small>
                 </div>
-                <div className="rounded-xl bg-cargoClaroOrange p-2 text-white group-hover:bg-cargoClaroOrange-hover">
+                <div className="rounded-xl bg-primary p-2 text-white group-hover:bg-primary/80">
                   <RightArrow size="size-4" strokeWidth={4} />
                 </div>
               </Link>

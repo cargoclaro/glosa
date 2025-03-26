@@ -1,4 +1,1 @@
-import useModal from './useModal';
-import useServerAction from './useServerAction';
-
-export { useModal, useServerAction };
+export { default as useModal } from './use-modal';

@@ -1,3 +1,2 @@
-import { ThemeComponent } from './ThemeComponent';
-
-export { ThemeComponent };
+export { QueryClientProvider } from './query-client-provider';
+export { ThemeComponent } from './theme-component';

@@ -1,7 +1,4 @@
-import Analysis from './Analysis';
-import Documents from './Documents';
-import Pediment from './Pediment';
-import PedimentAnalysisNFinish from './PedimentAnalysisNFinish';
-import SavedNFinish from './SavedNFinish';
-
-export { Pediment, Analysis, Documents, SavedNFinish, PedimentAnalysisNFinish };
+export { default as Analysis } from './Analysis';
+export { default as Documents } from './documents';
+export { default as PedimentAnalysisNFinish } from './pediment-analysis-n-finish';
+export { default as SavedNFinish } from './saved-n-finish';

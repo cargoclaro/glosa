@@ -1,4 +1,2 @@
-import { GlossDataTableColumns } from './Columns';
-import GlossDataTable from './DataTable';
-
-export { GlossDataTable, GlossDataTableColumns };
+export { GlossDataTableColumns } from './columns';
+export { default as GlossDataTable } from './data-table';

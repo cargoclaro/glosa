@@ -9,7 +9,7 @@ import type {
   Partida,
   Pedimento,
 } from '../../../data-extraction/schemas';
-import { apendice7 } from '../../anexo-22/apendice_7';
+import { apendice7 } from '../../anexo-22/apendice-7';
 import { getFraccionInfo } from '../../tax-finder';
 import { glosar } from '../../validation-result';
 
@@ -27,12 +27,14 @@ async function validateFraccionArancelaria(
   const tipoDeOperacion = pedimento.encabezado_del_pedimento.tipo_oper;
   let fraccionExiste = false;
   if (fechaDeEntrada && tipoDeOperacion && tipoDeOperacion !== 'TRA') {
-    try {
-      await getFraccionInfo({ fraccion, fechaDeEntrada, tipoDeOperacion, nico, clavePais: paisOrigenDestino });
-      fraccionExiste = true;
-    } catch (error) {
-      console.error(error);
-    }
+    await getFraccionInfo({
+      fraccion,
+      fechaDeEntrada,
+      tipoDeOperacion,
+      nico,
+      clavePais: paisOrigenDestino,
+    });
+    fraccionExiste = true;
   }
 
   const validation = {
@@ -80,7 +82,13 @@ async function validateCoherenciaUMT(
     data: {
       arancel: { unidad_medida },
     },
-  } = await getFraccionInfo({ fraccion, fechaDeEntrada, tipoDeOperacion, nico, clavePais: paisOrigenDestino });
+  } = await getFraccionInfo({
+    fraccion,
+    fechaDeEntrada,
+    tipoDeOperacion,
+    nico,
+    clavePais: paisOrigenDestino,
+  });
   const validation = {
     name: 'Validación de unidad de medida de la tarifa',
     description:
@@ -333,7 +341,13 @@ async function validateTarifasArancelarias(
       iva,
       extra: { ligie_arancel, ieps_tasas },
     },
-  } = await getFraccionInfo({ fraccion, fechaDeEntrada, tipoDeOperacion, nico, clavePais: paisOrigenDestino });
+  } = await getFraccionInfo({
+    fraccion,
+    fechaDeEntrada,
+    tipoDeOperacion,
+    nico,
+    clavePais: paisOrigenDestino,
+  });
 
   const tasasTaxFinder = {
     iva: iva?.valor_iva || 0,

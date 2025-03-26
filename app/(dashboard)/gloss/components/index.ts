@@ -1,3 +1,1 @@
-import { GlossDataTable, GlossDataTableColumns } from './GlossTable';
-
-export { GlossDataTable, GlossDataTableColumns };
+export { GlossDataTable, GlossDataTableColumns } from './GlossTable';

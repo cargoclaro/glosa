@@ -2,8 +2,8 @@
 
 import { Modal } from '@/shared/components';
 import { useModal } from '@/shared/hooks';
-import GlossForm from './GlossForm';
-import GlossFormRemesa from './GlossFormRemesa';
+import GlossForm from './gloss-form';
+import GlossFormRemesa from './gloss-form-remesa';
 
 const Header = () => {
   const { isOpen, openMenu, closeMenu, menuRef } = useModal(false);
@@ -18,11 +18,12 @@ const Header = () => {
       <h1 className="font-bold text-2xl">Dashboard de Glosa Aduanal</h1>
       <div className="relative">
         <button
+          type="button"
           onClick={() => {
             const dropdown = document.getElementById('glosa-dropdown');
             dropdown?.classList.toggle('hidden');
           }}
-          className="flex items-center rounded-md border border-white bg-cargoClaroOrange px-12 py-2 text-sm text-white shadow-black/50 shadow-md hover:bg-cargoClaroOrange-hover"
+          className="flex items-center rounded-md border border-white bg-primary px-12 py-2 text-sm text-white shadow-black/50 shadow-md hover:bg-primary/80"
         >
           Nueva Glosa
           <svg
@@ -37,7 +38,7 @@ const Header = () => {
               strokeLinejoin="round"
               strokeWidth="2"
               d="M19 9l-7 7-7-7"
-            ></path>
+            />
           </svg>
         </button>
         <div
@@ -47,6 +48,7 @@ const Header = () => {
           <ul className="py-1">
             <li>
               <button
+                type="button"
                 onClick={() => {
                   document
                     .getElementById('glosa-dropdown')
@@ -60,6 +62,7 @@ const Header = () => {
             </li>
             <li>
               <button
+                type="button"
                 onClick={() => {
                   document
                     .getElementById('glosa-dropdown')

@@ -13,8 +13,8 @@ import {
 } from './mkdown_schemas';
 import { coveSchema, pedimentoSchema } from './schemas/';
 import { extractTextFromImage } from './vision';
-import { extractTextFromImageOpenAI } from './vision-openai';
 import { extractTextFromImageAnthropic } from './vision-anthropic';
+import { extractTextFromImageOpenAI } from './vision-openai';
 
 const documentToSchema = {
   factura: invoiceSchema,

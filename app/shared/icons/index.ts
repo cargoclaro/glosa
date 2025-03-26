@@ -1,45 +1,21 @@
-import ArrowTrendingUp from './ArrowTrendingUp';
-import ArrowsUpDown from './ArrowsUpDown';
-import CalendarDays from './CalendarDays';
-import Check from './Check';
-import ClipboardDocumentList from './ClipboardDocumentList';
-import Clock from './Clock';
-import DocMagniGlass from './DocMagniGlass';
-import Document from './Document';
-import ExclamationTriangle from './ExclamationTriangle';
-import Funnel from './Funnel';
-import GlobeAlt from './GlobeAlt';
-import LeftArrow from './LeftArrow';
-import LeftChevron from './LeftChevron';
-import LeftDoubleChevron from './LeftDoubleChevron';
-import RightArrow from './RightArrow';
-import RightChevron from './RightChevron';
-import RightDoubleChevron from './RightDoubleChevron';
-import Search from './Search';
-import Square2x2 from './Square2x2';
-import Upload from './Upload';
-import XMark from './XMark';
-
-export {
-  Clock,
-  XMark,
-  Check,
-  Funnel,
-  Search,
-  Upload,
-  GlobeAlt,
-  Document,
-  Square2x2,
-  LeftArrow,
-  RightArrow,
-  LeftChevron,
-  ArrowsUpDown,
-  RightChevron,
-  CalendarDays,
-  DocMagniGlass,
-  ArrowTrendingUp,
-  LeftDoubleChevron,
-  RightDoubleChevron,
-  ExclamationTriangle,
-  ClipboardDocumentList,
-};
+export { default as ArrowTrendingUp } from './arrow-trending-up';
+export { default as ArrowsUpDown } from './arrows-up-down';
+export { default as CalendarDays } from './calendar-days';
+export { default as Check } from './check';
+export { default as ClipboardDocumentList } from './clipboard-document-list';
+export { default as Clock } from './clock';
+export { default as DocMagniGlass } from './doc-magni-glass';
+export { default as Document } from './document';
+export { default as ExclamationTriangle } from './exclamation-triangle';
+export { default as Funnel } from './funnel';
+export { default as GlobeAlt } from './globe-alt';
+export { default as LeftArrow } from './left-arrow';
+export { default as LeftChevron } from './left-chevron';
+export { default as LeftDoubleChevron } from './left-double-chevron';
+export { default as RightArrow } from './right-arrow';
+export { default as RightChevron } from './right-chevron';
+export { default as RightDoubleChevron } from './right-double-chevron';
+export { default as Search } from './search';
+export { default as Square2x2 } from './square-2x2';
+export { default as Upload } from './upload';
+export { default as XMark } from './x-mark';

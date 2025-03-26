@@ -165,12 +165,6 @@ async function validateDatosProveedor(
     cove?.datos_generales_proveedor?.nombre_razon_social;
   const domicilioProveedorPedimento = pedimento.domicilio;
   const domicilioProveedorCove = cove?.datos_generales_proveedor?.domicilio;
-  const idProveedorPedimento =
-    pedimento.id_fiscal === '91310000078199718'
-      ? pedimento.id_fiscal + 'N'
-      : pedimento.id_fiscal === '91440300MADLYEG'
-        ? pedimento.id_fiscal + '6'
-        : pedimento.id_fiscal;
   const idProveedorCove = cove?.datos_generales_proveedor?.identificador;
 
   const carta318mkdown = carta318?.markdown_representation;
@@ -200,7 +194,7 @@ async function validateDatosProveedor(
           data: [
             { name: 'Nombre/Razón social', value: nombreProveedorPedimento },
             { name: 'Domicilio', value: domicilioProveedorPedimento },
-            { name: 'ID Fiscal', value: idProveedorPedimento },
+            { name: 'ID Fiscal', value: pedimento.id_fiscal },
             { name: 'Observaciones', value: observaciones },
           ],
         },
@@ -250,9 +244,7 @@ async function validateFechasYFolios(
           ],
         },
         COVE: {
-          data: [
-            { name: 'Fecha de expedición', value: fechaExpedicionCove },
-          ],
+          data: [{ name: 'Fecha de expedición', value: fechaExpedicionCove }],
         },
         Factura: {
           data: [{ name: 'Factura', value: invoicemkdown }],
@@ -276,12 +268,13 @@ async function validateMonedaYEquivalencia(
 ) {
   const monedaPedimento = pedimento.datos_factura?.moneda_factura;
   const monedaCove = cove?.datos_mercancia?.[0]?.tipo_moneda;
-  const valorDolaresPedimento =
-    pedimento.datos_factura?.valor_dolares_factura;
-  const valorDolaresCoveTotal = cove?.datos_mercancia?.reduce((sum, item) => sum + (item?.valor_total_dolares || 0), 0);
+  const valorDolaresPedimento = pedimento.datos_factura?.valor_dolares_factura;
+  const valorDolaresCoveTotal = cove?.datos_mercancia?.reduce(
+    (sum, item) => sum + (item?.valor_total_dolares || 0),
+    0
+  );
   const valorFactura = pedimento.datos_factura?.valor_moneda_factura;
-  const factorMonedaFactura =
-    pedimento.datos_factura?.factor_moneda_factura;
+  const factorMonedaFactura = pedimento.datos_factura?.factor_moneda_factura;
   const fechaEntrada = pedimento.fecha_entrada_presentacion;
 
   const carta318mkdown = carta318?.markdown_representation;

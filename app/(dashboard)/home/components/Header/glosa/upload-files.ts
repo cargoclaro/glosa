@@ -18,8 +18,11 @@ export async function uploadFiles(files: File[]) {
     if (!originalFile) {
       throw new Error('Should never happen');
     }
+    if (!result.data) {
+      throw new Error('Should never happen');
+    }
     return {
-      ...result.data!,
+      ...result.data,
       originalFile,
     };
   });

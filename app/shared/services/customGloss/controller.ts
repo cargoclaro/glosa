@@ -148,7 +148,10 @@ export const analysis = api
         >
       );
 
-      const documents = await extractTextFromPDFs(groupedClassifications, parentTraceId);
+      const documents = await extractTextFromPDFs(
+        groupedClassifications,
+        parentTraceId
+      );
       const { pedimento, cove } = documents;
       if (!pedimento || !cove) {
         throw new Error(
@@ -161,12 +164,9 @@ export const analysis = api
         traceId: parentTraceId,
         name: 'Validation Steps',
       });
-      let gloss = null;
-      if (operationType === 'IMP') {
-        gloss = await glosaImpo({ ...documents, traceId: parentTraceId });
-      } else {
-        gloss = await glosaExpo({ ...documents, traceId: parentTraceId });
-      }
+      const gloss = await (operationType === 'IMP'
+        ? glosaImpo({ ...documents, traceId: parentTraceId })
+        : glosaExpo({ ...documents, traceId: parentTraceId }));
 
       const [newCustomGloss] = await db
         .insert(CustomGloss)
@@ -178,6 +178,7 @@ export const analysis = api
           importerName:
             importerName ?? 'No se encontro la razon social del importador',
           cove: cove,
+          pedimento: pedimento,
         })
         .returning();
 
@@ -204,24 +205,32 @@ export const analysis = api
           fullContext: true,
           isVerified: false,
           customGlossId: newCustomGloss.id,
-        }
-        const [insertedTab] = await db.insert(CustomGlossTab).values(data).returning();
+        };
+        const [insertedTab] = await db
+          .insert(CustomGlossTab)
+          .values(data)
+          .returning();
 
         if (!insertedTab) {
           throw new Error('Failed to create CustomGlossTab record');
         }
 
         for (const { contexts, validation } of validations) {
-          const [insertedValidationStep] = await db.insert(CustomGlossTabValidationStep).values({
-            name: validation.name,
-            description: validation.description,
-            llmAnalysis: validation.llmAnalysis,
-            isCorrect: validation.isValid,
-            customGlossTabId: insertedTab.id,
-          }).returning();
+          const [insertedValidationStep] = await db
+            .insert(CustomGlossTabValidationStep)
+            .values({
+              name: validation.name,
+              description: validation.description,
+              llmAnalysis: validation.llmAnalysis,
+              isCorrect: validation.isValid,
+              customGlossTabId: insertedTab.id,
+            })
+            .returning();
 
           if (!insertedValidationStep) {
-            throw new Error('Failed to create CustomGlossTabValidationStep record');
+            throw new Error(
+              'Failed to create CustomGlossTabValidationStep record'
+            );
           }
 
           for (const action of validation.actionsToTake) {
@@ -235,14 +244,19 @@ export const analysis = api
           for (const [contextType, origins] of Object.entries(contexts)) {
             // Process each origin
             for (const [origin, contextValue] of Object.entries(origins)) {
-              const [insertedContext] = await db.insert(CustomGlossTabContext).values({
-                type: contextType as CustomGlossTabContextTypes,
-                origin,
-                customGlossTabId: insertedTab.id,
-              }).returning();
+              const [insertedContext] = await db
+                .insert(CustomGlossTabContext)
+                .values({
+                  type: contextType as CustomGlossTabContextTypes,
+                  origin,
+                  customGlossTabId: insertedTab.id,
+                })
+                .returning();
 
               if (!insertedContext) {
-                throw new Error('Failed to create CustomGlossTabContext record');
+                throw new Error(
+                  'Failed to create CustomGlossTabContext record'
+                );
               }
 
               // Create context data records
@@ -262,8 +276,7 @@ export const analysis = api
         success: true,
         glossId: newCustomGloss.id,
       };
-    } catch (error) {
-      console.error(error);
+    } catch {
       return {
         success: false,
         message: 'Ocurrió un error interno',
