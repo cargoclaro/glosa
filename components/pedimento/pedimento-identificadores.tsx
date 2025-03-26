@@ -1,5 +1,5 @@
-import { cn } from '~/lib/utils';
 import type React from 'react';
+import { cn } from '~/lib/utils';
 import IdentificadoresTable from './identificadores/identificadores-table';
 import LiquidacionTable from './liquidacion/liquidacion-table';
 import TasasTable from './tasas/tasas-table';

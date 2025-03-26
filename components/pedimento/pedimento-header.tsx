@@ -1,7 +1,7 @@
 import type { Pedimento } from '@/shared/services/customGloss/data-extraction/schemas';
-import { cn } from '~/lib/utils';
 import type React from 'react';
 import type { CustomGlossTabTable } from '~/db/schema';
+import { cn } from '~/lib/utils';
 
 interface PedimentoHeaderProps {
   pedimento: Pedimento;

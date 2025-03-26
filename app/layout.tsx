@@ -3,11 +3,11 @@ import {
   QueryClientProvider,
   ThemeComponent,
 } from '@/shared/components/providers';
-import { cn } from '~/lib/utils';
 import { esMX } from '@clerk/localizations';
 import { ClerkProvider } from '@clerk/nextjs';
 import { GeistSans } from 'geist/font/sans';
 import type { Metadata } from 'next';
+import { cn } from '~/lib/utils';
 
 export const dynamic = 'force-dynamic';
 

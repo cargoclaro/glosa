@@ -1,8 +1,8 @@
-import { Button } from '~/ui/button';
 import type { Cove } from '@/shared/services/customGloss/data-extraction/schemas';
 import { ArrowLeft, ArrowRight, ChevronFirst, ChevronLast } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import type { CustomGlossTabTable } from '~/db/schema';
+import { Button } from '~/ui/button';
 import { CoveHeader } from './first-page';
 import { CoveMerchandise } from './merchandise-page';
 import { CoveRecipient } from './recipient-page';

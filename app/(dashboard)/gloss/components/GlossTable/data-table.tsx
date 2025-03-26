@@ -1,14 +1,6 @@
 'use client';
 
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '~/ui/table';
-import {
   Funnel,
   LeftChevron,
   LeftDoubleChevron,
@@ -16,7 +8,6 @@ import {
   RightDoubleChevron,
   Search,
 } from '@/shared/icons';
-import { cn } from '~/lib/utils';
 import {
   type ColumnDef,
   type ColumnFiltersState,
@@ -29,6 +20,15 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import { useState } from 'react';
+import { cn } from '~/lib/utils';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '~/ui/table';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];

@@ -1,10 +1,10 @@
-import { Button } from '~/ui/button';
 import type { Pedimento } from '@/shared/services/customGloss/data-extraction/schemas';
 import { ChevronFirst, ChevronLast } from 'lucide-react';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import type { CustomGlossTabTable } from '~/db/schema';
 import { cn } from '~/lib/utils';
+import { Button } from '~/ui/button';
 import PedimentoContenedores from './pedimento-contenedores';
 import PedimentoDecrementables from './pedimento-decrementables';
 import PedimentoHeader from './pedimento-header';

@@ -1,6 +1,6 @@
 import type { Cove } from '@/shared/services/customGloss/data-extraction/schemas';
-import { cn } from '~/lib/utils';
 import type { CustomGlossTabTable } from '~/db/schema';
+import { cn } from '~/lib/utils';
 
 interface ICoveHeaderProps {
   cove: Cove;

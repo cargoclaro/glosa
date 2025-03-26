@@ -1,9 +1,9 @@
 'use client';
 
-import { cn } from '~/lib/utils';
 import todayIs from '@/shared/utils/today-is';
 // import NotificationsMenu from "./NotificationsMenu";
 import { usePathname } from 'next/navigation';
+import { cn } from '~/lib/utils';
 import ProfileMenu from './profile-menu';
 
 const Header = () => {

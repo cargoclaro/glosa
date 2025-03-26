@@ -1,10 +1,10 @@
 'use client';
 
 import { GlobeAlt, Square2x2 } from '@/shared/icons';
-import { cn } from '~/lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { cn } from '~/lib/utils';
 
 const Sidebar = () => {
   const pathname = usePathname();

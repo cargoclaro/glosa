@@ -1,6 +1,5 @@
 'use client';
 
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/ui/tabs';
 import type { Cove } from '@/shared/services/customGloss/data-extraction/schemas';
 import type { Pedimento } from '@/shared/services/customGloss/data-extraction/schemas';
 import type { InferSelectModel } from 'drizzle-orm';
@@ -17,6 +16,7 @@ import type {
   CustomGlossTabValidationStepActionToTake,
   CustomGlossTabValidationStepResources,
 } from '~/db/schema';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/ui/tabs';
 import { Analysis, SavedNFinish } from '.';
 
 type TabValidation = InferSelectModel<typeof CustomGlossTabValidationStep> & {

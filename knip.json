@@ -5,5 +5,5 @@
     "app/(dashboard)/home/components/Header/glosa/xml-to-json.ts",
     "**/global.setup.{ts,js}"
   ],
-  "ignoreDependencies": ["ultracite", "@clerk/testing"]
+  "ignoreDependencies": ["ultracite", "@clerk/testing", "tw-animate-css"]
 }

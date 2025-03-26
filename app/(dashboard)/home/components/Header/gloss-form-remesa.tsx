@@ -3,9 +3,9 @@
 import { LoadingBar, Modal } from '@/shared/components';
 import { useModal } from '@/shared/hooks';
 import { Document, Upload, XMark } from '@/shared/icons';
-import { cn } from '~/lib/utils';
 import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
+import { cn } from '~/lib/utils';
 import { glosarRemesa } from './api';
 
 const GlossFormRemesa = () => {
