@@ -5,6 +5,7 @@
   "features": {
     "ghcr.io/devcontainers-extra/features/pnpm:2": {}
   },
+  "runArgs": ["--platform", "linux/amd64"],
   "customizations": {
     "vscode": {
       "settings": {
