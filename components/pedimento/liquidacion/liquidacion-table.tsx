@@ -31,19 +31,25 @@ const LiquidacionTable: React.FC<LiquidacionTableProps> = ({ liquidacion }) => {
     <div className="grid grid-cols-12 gap-0">
       <div className="col-span-9">
         <div className="grid grid-cols-3 gap-0">
-          <div className="bg-gray-200 text-black uppercase text-xs font-semibold tracking-wider text-center py-1 border-b border-gray-400 py-0.5 text-[10px]">CONCEPTO</div>
-          <div className="bg-gray-200 text-black uppercase text-xs font-semibold tracking-wider text-center py-1 border-b border-gray-400 py-0.5 text-[10px]">F.P.</div>
-          <div className="bg-gray-200 text-black uppercase text-xs font-semibold tracking-wider text-center py-1 border-b border-gray-400 py-0.5 text-[10px]">IMPORTE</div>
+          <div className="border-gray-400 border-b bg-gray-200 py-0.5 py-1 text-center font-semibold text-[10px] text-black text-xs uppercase tracking-wider">
+            CONCEPTO
+          </div>
+          <div className="border-gray-400 border-b bg-gray-200 py-0.5 py-1 text-center font-semibold text-[10px] text-black text-xs uppercase tracking-wider">
+            F.P.
+          </div>
+          <div className="border-gray-400 border-b bg-gray-200 py-0.5 py-1 text-center font-semibold text-[10px] text-black text-xs uppercase tracking-wider">
+            IMPORTE
+          </div>
 
           {liquidacion.conceptos.map((concepto, index) => (
             <React.Fragment key={index}>
-              <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center text-xs font-normal py-0.5 text-[10px]">
+              <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 font-normal text-[10px] text-xs text-xs last:border-r-0">
                 {concepto.concepto}
               </div>
-              <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center text-xs font-normal py-0.5 text-center text-[10px]">
+              <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-center font-normal text-[10px] text-xs text-xs last:border-r-0">
                 {concepto.fp}
               </div>
-              <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center text-xs font-normal py-0.5 text-right text-[10px]">
+              <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-right font-normal text-[10px] text-xs text-xs last:border-r-0">
                 {formatNumber(concepto.importe)}
               </div>
             </React.Fragment>
@@ -52,28 +58,30 @@ const LiquidacionTable: React.FC<LiquidacionTableProps> = ({ liquidacion }) => {
       </div>
 
       <div className="col-span-3">
-        <div className="bg-gray-200 text-black uppercase text-xs font-semibold tracking-wider text-center py-1 border-b border-gray-400 py-0.5 text-[10px]">TOTALES</div>
+        <div className="border-gray-400 border-b bg-gray-200 py-0.5 py-1 text-center font-semibold text-[10px] text-black text-xs uppercase tracking-wider">
+          TOTALES
+        </div>
         <div className="grid grid-cols-2 gap-0">
-          <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center bg-gray-100 text-xs uppercase font-semibold py-0.5 text-[10px]">
+          <div className="flex min-h-6 items-center border-gray-400 border-r bg-gray-100 px-2 py-0.5 font-semibold text-[10px] text-xs text-xs uppercase last:border-r-0">
             EFECTIVO
           </div>
-          <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center text-xs font-normal py-0.5 text-right text-[10px]">
+          <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-right font-normal text-[10px] text-xs text-xs last:border-r-0">
             {formatNumber(liquidacion.totales.efectivo)}
           </div>
         </div>
         <div className="grid grid-cols-2 gap-0">
-          <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center bg-gray-100 text-xs uppercase font-semibold py-0.5 text-[10px]">
+          <div className="flex min-h-6 items-center border-gray-400 border-r bg-gray-100 px-2 py-0.5 font-semibold text-[10px] text-xs text-xs uppercase last:border-r-0">
             OTROS
           </div>
-          <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center text-xs font-normal py-0.5 text-right text-[10px]">
+          <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-right font-normal text-[10px] text-xs text-xs last:border-r-0">
             {formatNumber(liquidacion.totales.otros)}
           </div>
         </div>
         <div className="grid grid-cols-2 gap-0">
-          <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center bg-gray-100 text-xs uppercase font-semibold py-0.5 text-[10px]">
+          <div className="flex min-h-6 items-center border-gray-400 border-r bg-gray-100 px-2 py-0.5 font-semibold text-[10px] text-xs text-xs uppercase last:border-r-0">
             TOTAL
           </div>
-          <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center text-xs font-normal py-0.5 text-right text-[10px]">
+          <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-right font-normal text-[10px] text-xs text-xs last:border-r-0">
             {formatNumber(liquidacion.totales.total)}
           </div>
         </div>

@@ -164,8 +164,7 @@ export default function GlossDataTable<TData, TValue>({
             className={cn(
               'rounded-md p-2 text-white',
               !table.getCanPreviousPage() && 'cursor-not-allowed bg-gray-300',
-              table.getCanPreviousPage() &&
-                'bg-primary hover:bg-primary/80'
+              table.getCanPreviousPage() && 'bg-primary hover:bg-primary/80'
             )}
           >
             <LeftDoubleChevron />
@@ -178,8 +177,7 @@ export default function GlossDataTable<TData, TValue>({
             className={cn(
               'rounded-md p-2 text-white',
               !table.getCanPreviousPage() && 'cursor-not-allowed bg-gray-300',
-              table.getCanPreviousPage() &&
-                'bg-primary hover:bg-primary/80'
+              table.getCanPreviousPage() && 'bg-primary hover:bg-primary/80'
             )}
           >
             <LeftChevron />
@@ -192,8 +190,7 @@ export default function GlossDataTable<TData, TValue>({
             className={cn(
               'rounded-md p-2 text-white',
               !table.getCanNextPage() && 'cursor-not-allowed bg-gray-300',
-              table.getCanNextPage() &&
-                'bg-primary hover:bg-primary/80'
+              table.getCanNextPage() && 'bg-primary hover:bg-primary/80'
             )}
           >
             <RightChevron />
@@ -206,8 +203,7 @@ export default function GlossDataTable<TData, TValue>({
             className={cn(
               'rounded-md p-2 text-white',
               !table.getCanNextPage() && 'cursor-not-allowed bg-gray-300',
-              table.getCanNextPage() &&
-                'bg-primary hover:bg-primary/80'
+              table.getCanNextPage() && 'bg-primary hover:bg-primary/80'
             )}
           >
             <RightDoubleChevron />

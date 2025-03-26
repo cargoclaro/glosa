@@ -14,34 +14,32 @@ const PedimentoContenedores: React.FC<PedimentoContenedoresProps> = ({
   tipo,
 }) => {
   return (
-    <div
-      className="mb-4 w-full border border-gray-400"
-    >
+    <div className="mb-4 w-full border border-gray-400">
       <div className="border border-gray-400">
-        <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center bg-gray-200 text-black uppercase text-xs font-semibold tracking-wider text-center py-1 border-b border-gray-400 bg-gray-200 py-0.5 text-center font-bold text-[10px]">
+        <div className="flex min-h-6 items-center border-gray-400 border-gray-400 border-r border-b bg-gray-200 bg-gray-200 px-2 py-0.5 py-1 text-center text-center font-bold font-semibold text-[10px] text-black text-xs text-xs uppercase tracking-wider last:border-r-0">
           CONTENEDORES/ CARRO DE FERROCARRIL/ NÚMERO ECONÓMICO DEL VEHÍCULO
         </div>
 
         <div className="grid grid-cols-12 gap-0">
-          <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center bg-gray-200 text-black uppercase text-xs font-semibold tracking-wider text-center py-1 border-b border-gray-400 col-span-3 border-gray-400 border-r py-0.5 font-bold text-[10px]">
+          <div className="col-span-3 flex min-h-6 items-center border-gray-400 border-gray-400 border-gray-400 border-r border-r border-b bg-gray-200 px-2 py-0.5 py-1 text-center font-bold font-semibold text-[10px] text-black text-xs text-xs uppercase tracking-wider last:border-r-0">
             NÚMERO (GUÍA)
           </div>
-          <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center bg-gray-200 text-black uppercase text-xs font-semibold tracking-wider text-center py-1 border-b border-gray-400 col-span-3 border-gray-400 border-r py-0.5 font-bold text-[10px]">
+          <div className="col-span-3 flex min-h-6 items-center border-gray-400 border-gray-400 border-gray-400 border-r border-r border-b bg-gray-200 px-2 py-0.5 py-1 text-center font-bold font-semibold text-[10px] text-black text-xs text-xs uppercase tracking-wider last:border-r-0">
             TIPO
           </div>
-          <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center bg-gray-200 text-black uppercase text-xs font-semibold tracking-wider text-center py-1 border-b border-gray-400 col-span-6 py-0.5 font-bold text-[10px]">
+          <div className="col-span-6 flex min-h-6 items-center border-gray-400 border-gray-400 border-r border-b bg-gray-200 px-2 py-0.5 py-1 text-center font-bold font-semibold text-[10px] text-black text-xs text-xs uppercase tracking-wider last:border-r-0">
             ID (CONTENEDOR)
           </div>
         </div>
 
         <div className="grid grid-cols-12 gap-0">
-          <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center text-xs font-normal col-span-3 border-gray-400 border-r py-0.5 text-[10px]">
+          <div className="col-span-3 flex min-h-6 items-center border-gray-400 border-gray-400 border-r border-r px-2 py-0.5 font-normal text-[10px] text-xs text-xs last:border-r-0">
             {numero || ''}
           </div>
-          <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center text-xs font-normal col-span-3 border-gray-400 border-r py-0.5 text-[10px]">
+          <div className="col-span-3 flex min-h-6 items-center border-gray-400 border-gray-400 border-r border-r px-2 py-0.5 font-normal text-[10px] text-xs text-xs last:border-r-0">
             {tipo || ''}
           </div>
-          <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center text-xs font-normal col-span-6 py-0.5 text-[10px]">
+          <div className="col-span-6 flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 font-normal text-[10px] text-xs text-xs last:border-r-0">
             {/* ID value can be added here if needed in the future */}
           </div>
         </div>

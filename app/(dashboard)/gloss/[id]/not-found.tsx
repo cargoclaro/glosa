@@ -24,7 +24,10 @@ const NotFoundPage = () => {
         <p className="text-2xl">Glosa no encontrada</p>
         <small className="text-xl">La glosa que buscas no existe.</small>
       </div>
-      <Link href="/gloss" className='rounded-lg bg-primary px-4 py-2 text-white hover:bg-primary/80'>
+      <Link
+        href="/gloss"
+        className="rounded-lg bg-primary px-4 py-2 text-white hover:bg-primary/80"
+      >
         Mis glosas
       </Link>
     </article>

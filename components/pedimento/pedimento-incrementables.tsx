@@ -49,7 +49,7 @@ const PedimentoIncrementables: React.FC<PedimentoIncrementablesProps> = ({
   return (
     <div
       className={cn(
-        'mb-4 w-full border border-gray-400 cursor-pointer',
+        'mb-4 w-full cursor-pointer border border-gray-400',
         'overflow-hidden rounded-md border-2',
         getHighlightBorder('Operación monetaria'),
         getHighlightFill('Operación monetaria')
@@ -57,28 +57,36 @@ const PedimentoIncrementables: React.FC<PedimentoIncrementablesProps> = ({
       onClick={() => onClick('Operación monetaria')}
     >
       <div className="grid grid-cols-5 gap-0">
-        <div className="bg-gray-200 text-black uppercase text-xs font-semibold tracking-wider text-center py-1 border-b border-gray-400 py-0.5 text-[10px]">VAL.SEGUROS</div>
-        <div className="bg-gray-200 text-black uppercase text-xs font-semibold tracking-wider text-center py-1 border-b border-gray-400 py-0.5 text-[10px]">SEGUROS</div>
-        <div className="bg-gray-200 text-black uppercase text-xs font-semibold tracking-wider text-center py-1 border-b border-gray-400 py-0.5 text-[10px]">FLETES</div>
-        <div className="bg-gray-200 text-black uppercase text-xs font-semibold tracking-wider text-center py-1 border-b border-gray-400 py-0.5 text-[10px]">EMBALAJES</div>
-        <div className="bg-gray-200 text-black uppercase text-xs font-semibold tracking-wider text-center py-1 border-b border-gray-400 py-0.5 text-[10px]">
+        <div className="border-gray-400 border-b bg-gray-200 py-0.5 py-1 text-center font-semibold text-[10px] text-black text-xs uppercase tracking-wider">
+          VAL.SEGUROS
+        </div>
+        <div className="border-gray-400 border-b bg-gray-200 py-0.5 py-1 text-center font-semibold text-[10px] text-black text-xs uppercase tracking-wider">
+          SEGUROS
+        </div>
+        <div className="border-gray-400 border-b bg-gray-200 py-0.5 py-1 text-center font-semibold text-[10px] text-black text-xs uppercase tracking-wider">
+          FLETES
+        </div>
+        <div className="border-gray-400 border-b bg-gray-200 py-0.5 py-1 text-center font-semibold text-[10px] text-black text-xs uppercase tracking-wider">
+          EMBALAJES
+        </div>
+        <div className="border-gray-400 border-b bg-gray-200 py-0.5 py-1 text-center font-semibold text-[10px] text-black text-xs uppercase tracking-wider">
           OTROS INCREMENTABLES
         </div>
       </div>
       <div className="grid grid-cols-5 gap-0">
-        <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center text-xs font-normal py-0.5 text-center text-[10px]">
+        <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-center font-normal text-[10px] text-xs text-xs last:border-r-0">
           {formatNumber(incrementables.val_seguros)}
         </div>
-        <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center text-xs font-normal py-0.5 text-center text-[10px]">
+        <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-center font-normal text-[10px] text-xs text-xs last:border-r-0">
           {formatNumber(incrementables.seguros)}
         </div>
-        <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center text-xs font-normal py-0.5 text-center text-[10px]">
+        <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-center font-normal text-[10px] text-xs text-xs last:border-r-0">
           {formatNumber(incrementables.fletes)}
         </div>
-        <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center text-xs font-normal py-0.5 text-center text-[10px]">
+        <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-center font-normal text-[10px] text-xs text-xs last:border-r-0">
           {formatNumber(incrementables.embalajes)}
         </div>
-        <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center text-xs font-normal py-0.5 text-center text-[10px]">
+        <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-center font-normal text-[10px] text-xs text-xs last:border-r-0">
           {formatNumber(incrementables.otros_incrementables)}
         </div>
       </div>

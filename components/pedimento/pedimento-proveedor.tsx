@@ -62,7 +62,7 @@ const PedimentoProveedor: React.FC<PedimentoProveedorProps> = ({
   return (
     <div
       className={cn(
-        'mb-4 w-full border border-gray-400 cursor-pointer',
+        'mb-4 w-full cursor-pointer border border-gray-400',
         'overflow-hidden rounded-md border-2',
         getHighlightBorder('Datos de factura'),
         getHighlightFill('Datos de factura')
@@ -77,82 +77,82 @@ const PedimentoProveedor: React.FC<PedimentoProveedorProps> = ({
 
         {/* Header row */}
         <div className="grid grid-cols-12 gap-0 border-gray-400 border-b bg-white">
-          <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center col-span-2 py-0.5 font-semibold text-[10px] uppercase">
+          <div className="col-span-2 flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 font-semibold text-[10px] text-xs uppercase last:border-r-0">
             ID FISCAL:
           </div>
-          <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center col-span-5 py-0.5 font-semibold text-[10px] uppercase">
+          <div className="col-span-5 flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 font-semibold text-[10px] text-xs uppercase last:border-r-0">
             NOMBRE, DENOMINACION O RAZON SOCIAL:
           </div>
-          <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center col-span-4 py-0.5 font-semibold text-[10px] uppercase">
+          <div className="col-span-4 flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 font-semibold text-[10px] text-xs uppercase last:border-r-0">
             DOMICILIO:
           </div>
-          <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center col-span-1 py-0.5 font-semibold text-[10px] uppercase">
+          <div className="col-span-1 flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 font-semibold text-[10px] text-xs uppercase last:border-r-0">
             VINCULACION
           </div>
         </div>
 
         {/* Data row */}
         <div className="grid grid-cols-12 gap-0 border-gray-400 border-b">
-          <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center col-span-2 py-0.5 text-[10px]">
+          <div className="col-span-2 flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-[10px] text-xs last:border-r-0">
             {idFiscal || ''}
           </div>
-          <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center col-span-5 py-0.5 text-[10px]">
+          <div className="col-span-5 flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-[10px] text-xs last:border-r-0">
             {nombreRazonSocial || ''}
           </div>
-          <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center col-span-4 py-0.5 text-[10px]">
+          <div className="col-span-4 flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-[10px] text-xs last:border-r-0">
             {domicilio || ''}
           </div>
-          <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center col-span-1 py-0.5 text-center text-[10px]">
+          <div className="col-span-1 flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-center text-[10px] text-xs last:border-r-0">
             {vinculacion || ''}
           </div>
         </div>
 
         {/* Facturas section - column headers */}
         <div className="grid grid-cols-7 gap-0 border-gray-400 border-b bg-white">
-          <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center py-0.5 text-center font-semibold text-[10px] uppercase">
+          <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-center font-semibold text-[10px] text-xs uppercase last:border-r-0">
             NUM.FACTURA
           </div>
-          <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center py-0.5 text-center font-semibold text-[10px] uppercase">
+          <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-center font-semibold text-[10px] text-xs uppercase last:border-r-0">
             FECHA
           </div>
-          <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center py-0.5 text-center font-semibold text-[10px] uppercase">
+          <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-center font-semibold text-[10px] text-xs uppercase last:border-r-0">
             INCOTERM
           </div>
-          <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center py-0.5 text-center font-semibold text-[10px] uppercase">
+          <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-center font-semibold text-[10px] text-xs uppercase last:border-r-0">
             MONEDA FACT
           </div>
-          <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center py-0.5 text-center font-semibold text-[10px] uppercase">
+          <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-center font-semibold text-[10px] text-xs uppercase last:border-r-0">
             VAL.MON.FACT
           </div>
-          <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center py-0.5 text-center font-semibold text-[10px] uppercase">
+          <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-center font-semibold text-[10px] text-xs uppercase last:border-r-0">
             FACTOR MON.FACT
           </div>
-          <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center py-0.5 text-center font-semibold text-[10px] uppercase">
+          <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-center font-semibold text-[10px] text-xs uppercase last:border-r-0">
             VAL.DOLARES
           </div>
         </div>
 
         {/* Factura data row */}
         <div className="grid grid-cols-7 gap-0 border-gray-400 border-b">
-          <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center py-0.5 text-[10px]">
+          <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-[10px] text-xs last:border-r-0">
             {datosFactura.num_factura || ''}
           </div>
-          <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center py-0.5 text-center text-[10px]">
+          <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-center text-[10px] text-xs last:border-r-0">
             {datosFactura.fecha_factura || ''}
           </div>
-          <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center py-0.5 text-center text-[10px]">
+          <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-center text-[10px] text-xs last:border-r-0">
             {datosFactura.incoterm || ''}
           </div>
-          <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center py-0.5 text-center text-[10px]">
+          <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-center text-[10px] text-xs last:border-r-0">
             {datosFactura.moneda_factura || ''}
           </div>
-          <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center py-0.5 text-right text-[10px]">
+          <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-right text-[10px] text-xs last:border-r-0">
             {formatNumber(datosFactura.valor_moneda_factura)}
           </div>
-          <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center py-0.5 text-right text-[10px]">
+          <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-right text-[10px] text-xs last:border-r-0">
             {datosFactura.factor_moneda_factura?.toFixed(8) || ''}
           </div>
-          <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center py-0.5 text-right text-[10px]">
+          <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-right text-[10px] text-xs last:border-r-0">
             {formatNumber(datosFactura.valor_dolares_factura)}
           </div>
         </div>

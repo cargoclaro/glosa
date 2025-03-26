@@ -258,16 +258,14 @@ const PedimentoViewer = ({
                   tabInfoSelected={tabInfoSelected}
                 />
               </div>
-              <div
-                className="mb-4 w-full border border-gray-400 w-full border border-gray-400"
-              >
+              <div className="mb-4 w-full w-full border border border-gray-400 border-gray-400">
                 <div className="grid grid-cols-12 gap-0 border-gray-400 border-b">
                   <div className="col-span-12 bg-gray-200 py-0.5 text-center font-semibold text-[10px] uppercase">
                     NUMERO (GUIA/ORDEN EMBARQUE)/ID:
                   </div>
                 </div>
                 <div className="grid grid-cols-12 gap-0">
-                  <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center col-span-12 py-0.5 text-[10px]">
+                  <div className="col-span-12 flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-[10px] text-xs last:border-r-0">
                     {pedimento.no_guia_embarque_id}
                   </div>
                 </div>

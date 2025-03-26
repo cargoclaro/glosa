@@ -268,9 +268,7 @@ const GenericTabLi = ({ title, active, onClick }: IGenericTabLi) => (
       onClick={onClick}
       className={cn(
         'min-w-64 border-b-2 pb-2 text-center hover:border-primary/80 hover:text-primary/80',
-        active
-          ? 'border-primary text-primary'
-          : 'border-black'
+        active ? 'border-primary text-primary' : 'border-black'
       )}
     >
       <p className="line-clamp-1">{title}</p>

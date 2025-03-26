@@ -73,7 +73,7 @@ const PedimentoIdentificadores: React.FC<PedimentoIdentificadoresProps> = ({
   return (
     <div
       className={cn(
-        'mb-4 w-full border border-gray-400 cursor-pointer',
+        'mb-4 w-full cursor-pointer border border-gray-400',
         'overflow-hidden rounded-md border-2',
         getHighlightBorder('Clave de destino/origen'),
         getHighlightFill('Clave de destino/origen')
@@ -82,26 +82,26 @@ const PedimentoIdentificadores: React.FC<PedimentoIdentificadoresProps> = ({
     >
       <div className="grid grid-cols-12 gap-0">
         <div className="col-span-4">
-          <div className="bg-gray-200 text-center text-xs py-1 uppercase font-semibold border-b border-gray-400 py-0.5 text-[11px]">
+          <div className="border-gray-400 border-b bg-gray-200 py-0.5 py-1 text-center font-semibold text-[11px] text-xs uppercase">
             CÓDIGO DE ACEPTACIÓN:
           </div>
-          <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center text-xs font-normal py-0.5 text-[10px]">
+          <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 font-normal text-[10px] text-xs text-xs last:border-r-0">
             &nbsp;
           </div>
         </div>
         <div className="col-span-4">
-          <div className="bg-gray-200 text-center text-xs py-1 uppercase font-semibold border-b border-gray-400 py-0.5 text-[11px]">
+          <div className="border-gray-400 border-b bg-gray-200 py-0.5 py-1 text-center font-semibold text-[11px] text-xs uppercase">
             CODIGO DE BARRAS
           </div>
-          <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center text-xs font-normal py-0.5 text-[10px]">
+          <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 font-normal text-[10px] text-xs text-xs last:border-r-0">
             &nbsp;
           </div>
         </div>
         <div className="col-span-4">
-          <div className="bg-gray-200 text-center text-xs py-1 uppercase font-semibold border-b border-gray-400 py-0.5 text-[11px]">
+          <div className="border-gray-400 border-b bg-gray-200 py-0.5 py-1 text-center font-semibold text-[11px] text-xs uppercase">
             CLAVE DE LA SECCION ADUANERA DE DESPACHO:
           </div>
-          <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center text-xs font-normal py-0.5 text-center text-[10px]">
+          <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-center font-normal text-[10px] text-xs text-xs last:border-r-0">
             {identificadoresNivelPedimento.clave_seccion_aduanera}
           </div>
         </div>
@@ -109,17 +109,19 @@ const PedimentoIdentificadores: React.FC<PedimentoIdentificadoresProps> = ({
 
       <div className="mt-2 grid grid-cols-12 gap-0">
         <div className="col-span-8">
-          <div className="bg-gray-200 text-center text-xs py-1 uppercase font-semibold border-b border-gray-400 py-0.5 text-[11px]">
+          <div className="border-gray-400 border-b bg-gray-200 py-0.5 py-1 text-center font-semibold text-[11px] text-xs uppercase">
             MARCAS, NUMEROS Y TOTAL DE BULTOS:
           </div>
-          <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center text-xs font-normal py-0.5 text-[10px]">
+          <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 font-normal text-[10px] text-xs text-xs last:border-r-0">
             {identificadoresNivelPedimento.marcas_numeros_bultos}
           </div>
         </div>
         <div className="col-span-4">
           <div className="flex h-full flex-col">
-            <div className="bg-gray-200 text-black uppercase text-xs font-semibold tracking-wider text-center py-1 border-b border-gray-400 py-0.5 text-[10px]">1/2</div>
-            <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center text-xs font-normal flex flex-1 items-center justify-center py-0.5 text-center text-[10px]">
+            <div className="border-gray-400 border-b bg-gray-200 py-0.5 py-1 text-center font-semibold text-[10px] text-black text-xs uppercase tracking-wider">
+              1/2
+            </div>
+            <div className="flex flex min-h-6 flex-1 items-center items-center justify-center border-gray-400 border-r px-2 py-0.5 text-center font-normal text-[10px] text-xs text-xs last:border-r-0">
               2
             </div>
           </div>
@@ -128,30 +130,30 @@ const PedimentoIdentificadores: React.FC<PedimentoIdentificadoresProps> = ({
 
       <div className="mt-2 grid grid-cols-2 gap-0">
         <div className="col-span-1">
-          <div className="bg-gray-200 text-center text-xs py-1 uppercase font-semibold border-b border-gray-400 py-0.5 text-[11px]">
+          <div className="border-gray-400 border-b bg-gray-200 py-0.5 py-1 text-center font-semibold text-[11px] text-xs uppercase">
             FECHAS
           </div>
           <div className="grid grid-cols-1 gap-0">
             <div className="grid grid-cols-3 gap-0">
-              <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center bg-gray-100 text-xs uppercase font-semibold col-span-1 py-0.5 text-[10px]">
+              <div className="col-span-1 flex min-h-6 items-center border-gray-400 border-r bg-gray-100 px-2 py-0.5 font-semibold text-[10px] text-xs text-xs uppercase last:border-r-0">
                 ENTRADA
               </div>
-              <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center text-xs font-normal col-span-2 py-0.5 text-[10px]">
+              <div className="col-span-2 flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 font-normal text-[10px] text-xs text-xs last:border-r-0">
                 {fechaEntrada}
               </div>
             </div>
             <div className="grid grid-cols-3 gap-0">
-              <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center bg-gray-100 text-xs uppercase font-semibold col-span-1 py-0.5 text-[10px]">
+              <div className="col-span-1 flex min-h-6 items-center border-gray-400 border-r bg-gray-100 px-2 py-0.5 font-semibold text-[10px] text-xs text-xs uppercase last:border-r-0">
                 PAGO
               </div>
-              <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center text-xs font-normal col-span-2 py-0.5 text-[10px]">
+              <div className="col-span-2 flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 font-normal text-[10px] text-xs text-xs last:border-r-0">
                 {fechaPago}
               </div>
             </div>
           </div>
         </div>
         <div className="col-span-1">
-          <div className="bg-gray-200 text-center text-xs py-1 uppercase font-semibold border-b border-gray-400 py-0.5 text-[11px]">
+          <div className="border-gray-400 border-b bg-gray-200 py-0.5 py-1 text-center font-semibold text-[11px] text-xs uppercase">
             TASAS A NIVEL PEDIMENTO
           </div>
           <TasasTable tasas={tasas} />
@@ -159,14 +161,14 @@ const PedimentoIdentificadores: React.FC<PedimentoIdentificadoresProps> = ({
       </div>
 
       <div className="mt-2">
-        <div className="bg-gray-200 text-center text-xs py-1 uppercase font-semibold border-b border-gray-400 py-0.5 text-[11px]">
+        <div className="border-gray-400 border-b bg-gray-200 py-0.5 py-1 text-center font-semibold text-[11px] text-xs uppercase">
           IDENTIFICADORES
         </div>
         <IdentificadoresTable identificadores={identificadoresPedimento} />
       </div>
 
       <div className="mt-2">
-        <div className="bg-gray-200 text-center text-xs py-1 uppercase font-semibold border-b border-gray-400 py-0.5 text-[11px]">
+        <div className="border-gray-400 border-b bg-gray-200 py-0.5 py-1 text-center font-semibold text-[11px] text-xs uppercase">
           LIQUIDACIÓN
         </div>
         <LiquidacionTable liquidacion={liquidacion} />
