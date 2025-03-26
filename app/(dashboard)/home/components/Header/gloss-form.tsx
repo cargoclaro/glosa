@@ -73,7 +73,7 @@ const GlossForm = () => {
   } else {
     labelColor = 'border-gray-300 bg-gray-50 hover:bg-gray-100';
   }
-  
+
   let filePickerTextColor: string;
   if (files) {
     if (mutation.error) {
@@ -113,12 +113,7 @@ const GlossForm = () => {
               size="size-10"
               color={files ? (mutation.error ? 'red' : 'green') : ''}
             />
-            <p
-              className={cn(
-                'mb-2 text-center text-sm',
-                filePickerTextColor
-              )}
-            >
+            <p className={cn('mb-2 text-center text-sm', filePickerTextColor)}>
               <span className="font-semibold">Click para subir</span>
               <br />o arrastra los archivos aquí
             </p>

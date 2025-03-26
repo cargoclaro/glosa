@@ -107,7 +107,10 @@ export async function glosar(
     | 'gpt-4o-mini'
     | 'claude-3-7-sonnet-20250219' = 'gpt-4o'
 ) {
-  const aiModel = modelId === 'claude-3-7-sonnet-20250219' ? anthropic('claude-3-7-sonnet-20250219') : openai(modelId);
+  const aiModel =
+    modelId === 'claude-3-7-sonnet-20250219'
+      ? anthropic('claude-3-7-sonnet-20250219')
+      : openai(modelId);
 
   const { object: glosaResult } = await generateObject({
     model: aiModel,

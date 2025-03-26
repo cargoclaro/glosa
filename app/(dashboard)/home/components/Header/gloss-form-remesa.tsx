@@ -123,12 +123,7 @@ const GlossFormRemesa = () => {
               size="size-10"
               color={files ? (mutation.data?.success ? 'green' : 'red') : ''}
             />
-            <p
-              className={cn(
-                'mb-2 text-center text-sm',
-                filePickerTextColor
-              )}
-            >
+            <p className={cn('mb-2 text-center text-sm', filePickerTextColor)}>
               <span className="font-semibold">Click para subir</span>
               <br />o arrastra los archivos aquí
             </p>

@@ -209,7 +209,12 @@ export const glosarRemesa = api
         }
       > = {};
 
-      for (const { facturaUUID, cantidadEnUMC, fecha, valorFacturaEnDolares } of structuredText.listaDeFacturas.facturas) {
+      for (const {
+        facturaUUID,
+        cantidadEnUMC,
+        fecha,
+        valorFacturaEnDolares,
+      } of structuredText.listaDeFacturas.facturas) {
         if (!datosFolio[facturaUUID]) {
           datosFolio[facturaUUID] = {
             facturaCantidadTotal: 0,

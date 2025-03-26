@@ -164,7 +164,9 @@ export const analysis = api
         traceId: parentTraceId,
         name: 'Validation Steps',
       });
-      const gloss = await (operationType === 'IMP' ? glosaImpo({ ...documents, traceId: parentTraceId }) : glosaExpo({ ...documents, traceId: parentTraceId }));
+      const gloss = await (operationType === 'IMP'
+        ? glosaImpo({ ...documents, traceId: parentTraceId })
+        : glosaExpo({ ...documents, traceId: parentTraceId }));
 
       const [newCustomGloss] = await db
         .insert(CustomGloss)
