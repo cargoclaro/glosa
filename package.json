@@ -25,7 +25,8 @@
     "db:studio": "drizzle-kit studio",
     "db:reset": "tsx db/reset.ts",
     "dev:xml-to-json": "tsx app/\\(dashboard\\)/home/components/Header/glosa/xml-to-json.ts",
-    "dev:proceso-de-equivalencia": "tsx app/shared/services/customGloss/glosa/processdofequivalencia.ts"
+    "dev:proceso-de-equivalencia": "tsx app/shared/services/customGloss/glosa/processdofequivalencia.ts",
+    "test:glosa": "vitest run"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^1.2.2",
@@ -96,7 +97,8 @@
     "tsx": "^4.19.3",
     "typescript": "^5.8.2",
     "ultracite": "^4.2.0",
-    "vercel": "^41.4.1"
+    "vercel": "^41.4.1",
+    "vitest": "^3.0.9"
   },
   "pnpm": {
     "overrides": {
