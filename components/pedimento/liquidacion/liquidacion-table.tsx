@@ -31,19 +31,19 @@ const LiquidacionTable: React.FC<LiquidacionTableProps> = ({ liquidacion }) => {
     <div className="grid grid-cols-12 gap-0">
       <div className="col-span-9">
         <div className="grid grid-cols-3 gap-0">
-          <div className="pedimento-header py-0.5 text-[10px]">CONCEPTO</div>
-          <div className="pedimento-header py-0.5 text-[10px]">F.P.</div>
-          <div className="pedimento-header py-0.5 text-[10px]">IMPORTE</div>
+          <div className="bg-gray-200 text-black uppercase text-xs font-semibold tracking-wider text-center py-1 border-b border-gray-400 py-0.5 text-[10px]">CONCEPTO</div>
+          <div className="bg-gray-200 text-black uppercase text-xs font-semibold tracking-wider text-center py-1 border-b border-gray-400 py-0.5 text-[10px]">F.P.</div>
+          <div className="bg-gray-200 text-black uppercase text-xs font-semibold tracking-wider text-center py-1 border-b border-gray-400 py-0.5 text-[10px]">IMPORTE</div>
 
           {liquidacion.conceptos.map((concepto, index) => (
             <React.Fragment key={index}>
-              <div className="pedimento-cell pedimento-value py-0.5 text-[10px]">
+              <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center text-xs font-normal py-0.5 text-[10px]">
                 {concepto.concepto}
               </div>
-              <div className="pedimento-cell pedimento-value py-0.5 text-center text-[10px]">
+              <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center text-xs font-normal py-0.5 text-center text-[10px]">
                 {concepto.fp}
               </div>
-              <div className="pedimento-cell pedimento-value py-0.5 text-right text-[10px]">
+              <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center text-xs font-normal py-0.5 text-right text-[10px]">
                 {formatNumber(concepto.importe)}
               </div>
             </React.Fragment>
@@ -52,28 +52,28 @@ const LiquidacionTable: React.FC<LiquidacionTableProps> = ({ liquidacion }) => {
       </div>
 
       <div className="col-span-3">
-        <div className="pedimento-header py-0.5 text-[10px]">TOTALES</div>
+        <div className="bg-gray-200 text-black uppercase text-xs font-semibold tracking-wider text-center py-1 border-b border-gray-400 py-0.5 text-[10px]">TOTALES</div>
         <div className="grid grid-cols-2 gap-0">
-          <div className="pedimento-cell pedimento-label py-0.5 text-[10px]">
+          <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center bg-gray-100 text-xs uppercase font-semibold py-0.5 text-[10px]">
             EFECTIVO
           </div>
-          <div className="pedimento-cell pedimento-value py-0.5 text-right text-[10px]">
+          <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center text-xs font-normal py-0.5 text-right text-[10px]">
             {formatNumber(liquidacion.totales.efectivo)}
           </div>
         </div>
         <div className="grid grid-cols-2 gap-0">
-          <div className="pedimento-cell pedimento-label py-0.5 text-[10px]">
+          <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center bg-gray-100 text-xs uppercase font-semibold py-0.5 text-[10px]">
             OTROS
           </div>
-          <div className="pedimento-cell pedimento-value py-0.5 text-right text-[10px]">
+          <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center text-xs font-normal py-0.5 text-right text-[10px]">
             {formatNumber(liquidacion.totales.otros)}
           </div>
         </div>
         <div className="grid grid-cols-2 gap-0">
-          <div className="pedimento-cell pedimento-label py-0.5 text-[10px]">
+          <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center bg-gray-100 text-xs uppercase font-semibold py-0.5 text-[10px]">
             TOTAL
           </div>
-          <div className="pedimento-cell pedimento-value py-0.5 text-right text-[10px]">
+          <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center text-xs font-normal py-0.5 text-right text-[10px]">
             {formatNumber(liquidacion.totales.total)}
           </div>
         </div>

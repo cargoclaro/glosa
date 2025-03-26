@@ -49,48 +49,47 @@ const PedimentoDecrementables: React.FC<PedimentoDecrementablesProps> = ({
   return (
     <div
       className={cn(
-        'pedimento-section cursor-pointer',
+        'mb-4 w-full border border-gray-400 cursor-pointer',
         'overflow-hidden rounded-md border-2',
         getHighlightBorder('Operación monetaria'),
         getHighlightFill('Operación monetaria')
       )}
-      style={{ '--animation-order': 6 } as React.CSSProperties}
       onClick={() => onClick('Operación monetaria')}
     >
-      <div className="pedimento-section-title py-0.5 text-[11px]">
+      <div className="bg-gray-200 text-center text-xs py-1 uppercase font-semibold border-b border-gray-400 py-0.5 text-[11px]">
         VALOR DECREMENTABLES
       </div>
       <div className="grid grid-cols-5 gap-0">
-        <div className="pedimento-header py-0.5 text-[10px]">
+        <div className="bg-gray-200 text-black uppercase text-xs font-semibold tracking-wider text-center py-1 border-b border-gray-400 py-0.5 text-[10px]">
           TRANSPORTE DECREMENTABLES
         </div>
-        <div className="pedimento-header py-0.5 text-[10px]">
+        <div className="bg-gray-200 text-black uppercase text-xs font-semibold tracking-wider text-center py-1 border-b border-gray-400 py-0.5 text-[10px]">
           SEGURO DECREMENTABLES
         </div>
-        <div className="pedimento-header py-0.5 text-[10px]">
+        <div className="bg-gray-200 text-black uppercase text-xs font-semibold tracking-wider text-center py-1 border-b border-gray-400 py-0.5 text-[10px]">
           CARGA DECREMENTABLES
         </div>
-        <div className="pedimento-header py-0.5 text-[10px]">
+        <div className="bg-gray-200 text-black uppercase text-xs font-semibold tracking-wider text-center py-1 border-b border-gray-400 py-0.5 text-[10px]">
           DESCARGA DECREMENTABLES
         </div>
-        <div className="pedimento-header py-0.5 text-[10px]">
+        <div className="bg-gray-200 text-black uppercase text-xs font-semibold tracking-wider text-center py-1 border-b border-gray-400 py-0.5 text-[10px]">
           OTROS DECREMENTABLES
         </div>
       </div>
       <div className="grid grid-cols-5 gap-0">
-        <div className="pedimento-cell pedimento-value py-0.5 text-center text-[10px]">
+        <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center text-xs font-normal py-0.5 text-center text-[10px]">
           {formatNumber(decrementables.transporte_decrementables)}
         </div>
-        <div className="pedimento-cell pedimento-value py-0.5 text-center text-[10px]">
+        <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center text-xs font-normal py-0.5 text-center text-[10px]">
           {formatNumber(decrementables.seguro_decrementables)}
         </div>
-        <div className="pedimento-cell pedimento-value py-0.5 text-center text-[10px]">
+        <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center text-xs font-normal py-0.5 text-center text-[10px]">
           {formatNumber(decrementables.carga_decrementables)}
         </div>
-        <div className="pedimento-cell pedimento-value py-0.5 text-center text-[10px]">
+        <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center text-xs font-normal py-0.5 text-center text-[10px]">
           {formatNumber(decrementables.descarga_decrementables)}
         </div>
-        <div className="pedimento-cell pedimento-value py-0.5 text-center text-[10px]">
+        <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center text-xs font-normal py-0.5 text-center text-[10px]">
           {formatNumber(decrementables.otros_decrementables)}
         </div>
       </div>

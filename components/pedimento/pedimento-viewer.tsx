@@ -259,8 +259,7 @@ const PedimentoViewer = ({
                 />
               </div>
               <div
-                className="pedimento-section w-full border border-gray-400"
-                style={{ '--animation-order': 4 } as React.CSSProperties}
+                className="mb-4 w-full border border-gray-400 w-full border border-gray-400"
               >
                 <div className="grid grid-cols-12 gap-0 border-gray-400 border-b">
                   <div className="col-span-12 bg-gray-200 py-0.5 text-center font-semibold text-[10px] uppercase">
@@ -268,7 +267,7 @@ const PedimentoViewer = ({
                   </div>
                 </div>
                 <div className="grid grid-cols-12 gap-0">
-                  <div className="pedimento-cell col-span-12 py-0.5 text-[10px]">
+                  <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center col-span-12 py-0.5 text-[10px]">
                     {pedimento.no_guia_embarque_id}
                   </div>
                 </div>

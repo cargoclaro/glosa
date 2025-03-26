@@ -62,12 +62,11 @@ const PedimentoProveedor: React.FC<PedimentoProveedorProps> = ({
   return (
     <div
       className={cn(
-        'pedimento-section cursor-pointer',
+        'mb-4 w-full border border-gray-400 cursor-pointer',
         'overflow-hidden rounded-md border-2',
         getHighlightBorder('Datos de factura'),
         getHighlightFill('Datos de factura')
       )}
-      style={{ '--animation-order': 1 } as React.CSSProperties}
       onClick={() => onClick('Datos de factura')}
     >
       <div className="border border-gray-400">
@@ -78,82 +77,82 @@ const PedimentoProveedor: React.FC<PedimentoProveedorProps> = ({
 
         {/* Header row */}
         <div className="grid grid-cols-12 gap-0 border-gray-400 border-b bg-white">
-          <div className="pedimento-cell col-span-2 py-0.5 font-semibold text-[10px] uppercase">
+          <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center col-span-2 py-0.5 font-semibold text-[10px] uppercase">
             ID FISCAL:
           </div>
-          <div className="pedimento-cell col-span-5 py-0.5 font-semibold text-[10px] uppercase">
+          <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center col-span-5 py-0.5 font-semibold text-[10px] uppercase">
             NOMBRE, DENOMINACION O RAZON SOCIAL:
           </div>
-          <div className="pedimento-cell col-span-4 py-0.5 font-semibold text-[10px] uppercase">
+          <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center col-span-4 py-0.5 font-semibold text-[10px] uppercase">
             DOMICILIO:
           </div>
-          <div className="pedimento-cell col-span-1 py-0.5 font-semibold text-[10px] uppercase">
+          <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center col-span-1 py-0.5 font-semibold text-[10px] uppercase">
             VINCULACION
           </div>
         </div>
 
         {/* Data row */}
         <div className="grid grid-cols-12 gap-0 border-gray-400 border-b">
-          <div className="pedimento-cell col-span-2 py-0.5 text-[10px]">
+          <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center col-span-2 py-0.5 text-[10px]">
             {idFiscal || ''}
           </div>
-          <div className="pedimento-cell col-span-5 py-0.5 text-[10px]">
+          <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center col-span-5 py-0.5 text-[10px]">
             {nombreRazonSocial || ''}
           </div>
-          <div className="pedimento-cell col-span-4 py-0.5 text-[10px]">
+          <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center col-span-4 py-0.5 text-[10px]">
             {domicilio || ''}
           </div>
-          <div className="pedimento-cell col-span-1 py-0.5 text-center text-[10px]">
+          <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center col-span-1 py-0.5 text-center text-[10px]">
             {vinculacion || ''}
           </div>
         </div>
 
         {/* Facturas section - column headers */}
         <div className="grid grid-cols-7 gap-0 border-gray-400 border-b bg-white">
-          <div className="pedimento-cell py-0.5 text-center font-semibold text-[10px] uppercase">
+          <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center py-0.5 text-center font-semibold text-[10px] uppercase">
             NUM.FACTURA
           </div>
-          <div className="pedimento-cell py-0.5 text-center font-semibold text-[10px] uppercase">
+          <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center py-0.5 text-center font-semibold text-[10px] uppercase">
             FECHA
           </div>
-          <div className="pedimento-cell py-0.5 text-center font-semibold text-[10px] uppercase">
+          <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center py-0.5 text-center font-semibold text-[10px] uppercase">
             INCOTERM
           </div>
-          <div className="pedimento-cell py-0.5 text-center font-semibold text-[10px] uppercase">
+          <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center py-0.5 text-center font-semibold text-[10px] uppercase">
             MONEDA FACT
           </div>
-          <div className="pedimento-cell py-0.5 text-center font-semibold text-[10px] uppercase">
+          <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center py-0.5 text-center font-semibold text-[10px] uppercase">
             VAL.MON.FACT
           </div>
-          <div className="pedimento-cell py-0.5 text-center font-semibold text-[10px] uppercase">
+          <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center py-0.5 text-center font-semibold text-[10px] uppercase">
             FACTOR MON.FACT
           </div>
-          <div className="pedimento-cell py-0.5 text-center font-semibold text-[10px] uppercase">
+          <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center py-0.5 text-center font-semibold text-[10px] uppercase">
             VAL.DOLARES
           </div>
         </div>
 
         {/* Factura data row */}
         <div className="grid grid-cols-7 gap-0 border-gray-400 border-b">
-          <div className="pedimento-cell py-0.5 text-[10px]">
+          <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center py-0.5 text-[10px]">
             {datosFactura.num_factura || ''}
           </div>
-          <div className="pedimento-cell py-0.5 text-center text-[10px]">
+          <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center py-0.5 text-center text-[10px]">
             {datosFactura.fecha_factura || ''}
           </div>
-          <div className="pedimento-cell py-0.5 text-center text-[10px]">
+          <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center py-0.5 text-center text-[10px]">
             {datosFactura.incoterm || ''}
           </div>
-          <div className="pedimento-cell py-0.5 text-center text-[10px]">
+          <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center py-0.5 text-center text-[10px]">
             {datosFactura.moneda_factura || ''}
           </div>
-          <div className="pedimento-cell py-0.5 text-right text-[10px]">
+          <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center py-0.5 text-right text-[10px]">
             {formatNumber(datosFactura.valor_moneda_factura)}
           </div>
-          <div className="pedimento-cell py-0.5 text-right text-[10px]">
+          <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center py-0.5 text-right text-[10px]">
             {datosFactura.factor_moneda_factura?.toFixed(8) || ''}
           </div>
-          <div className="pedimento-cell py-0.5 text-right text-[10px]">
+          <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center py-0.5 text-right text-[10px]">
             {formatNumber(datosFactura.valor_dolares_factura)}
           </div>
         </div>

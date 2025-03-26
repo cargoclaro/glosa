@@ -50,8 +50,7 @@ const PedimentoPartidas: React.FC<PedimentoPartidasProps> = ({
 
   return (
     <div
-      className="pedimento-section"
-      style={{ '--animation-order': 4 } as React.CSSProperties}
+      className="mb-4 w-full border border-gray-400"
     >
       <div className="border border-gray-400">
         <div className="border-gray-400 border-b bg-gray-300 py-0.5 text-center font-bold text-[9px] uppercase">

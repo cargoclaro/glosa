@@ -54,11 +54,10 @@ const PedimentoHeader: React.FC<PedimentoHeaderProps> = ({
 
   return (
     <div
-      className="pedimento-section"
-      style={{ '--animation-order': 0 } as React.CSSProperties}
+      className="mb-4 w-full border border-gray-400"
     >
       <div className="grid grid-cols-12 gap-0">
-        <div className="pedimento-section-title col-span-12 py-0.5 text-[11px]">
+        <div className="bg-gray-200 text-center text-xs py-1 uppercase font-semibold border-b border-gray-400 col-span-12 py-0.5 text-[11px]">
           PEDIMENTO
         </div>
       </div>
@@ -73,22 +72,22 @@ const PedimentoHeader: React.FC<PedimentoHeaderProps> = ({
         )}
         onClick={() => onClick('Número de pedimento')}
       >
-        <div className="pedimento-cell pedimento-label col-span-3 py-0.5 text-[10px]">
+        <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center bg-gray-100 text-xs uppercase font-semibold col-span-3 py-0.5 text-[10px]">
           NUM. PEDIMENTO:
         </div>
-        <div className="pedimento-cell pedimento-value col-span-3 py-0.5 text-[10px]">
+        <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center text-xs font-normal col-span-3 py-0.5 text-[10px]">
           {pedimento.encabezado_del_pedimento.num_pedimento}
         </div>
-        <div className="pedimento-cell pedimento-label col-span-2 py-0.5 text-[10px]">
+        <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center bg-gray-100 text-xs uppercase font-semibold col-span-2 py-0.5 text-[10px]">
           T.OPER
         </div>
-        <div className="pedimento-cell pedimento-value col-span-1 py-0.5 text-[10px]">
+        <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center text-xs font-normal col-span-1 py-0.5 text-[10px]">
           {pedimento.encabezado_del_pedimento.tipo_oper}
         </div>
-        <div className="pedimento-cell pedimento-label col-span-2 py-0.5 text-[10px]">
+        <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center bg-gray-100 text-xs uppercase font-semibold col-span-2 py-0.5 text-[10px]">
           CVE. PEDIMENTO:
         </div>
-        <div className="pedimento-cell pedimento-value col-span-1 py-0.5 text-[10px]">
+        <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center text-xs font-normal col-span-1 py-0.5 text-[10px]">
           {pedimento.encabezado_del_pedimento.cve_pedim}
         </div>
       </div>
@@ -105,10 +104,10 @@ const PedimentoHeader: React.FC<PedimentoHeaderProps> = ({
           )}
           onClick={() => onClick('Clave de destino/origen')}
         >
-          <div className="pedimento-cell pedimento-label col-span-1 py-0.5 text-[10px]">
+          <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center bg-gray-100 text-xs uppercase font-semibold col-span-1 py-0.5 text-[10px]">
             DESTINO:
           </div>
-          <div className="pedimento-cell pedimento-value col-span-1 py-0.5 text-[10px]">
+          <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center text-xs font-normal col-span-1 py-0.5 text-[10px]">
             {pedimento.encabezado_del_pedimento.destino_origen}
           </div>
         </div>
@@ -123,10 +122,10 @@ const PedimentoHeader: React.FC<PedimentoHeaderProps> = ({
           )}
           onClick={() => onClick('Operación monetaria')}
         >
-          <div className="pedimento-cell pedimento-label col-span-1 py-0.5 text-[10px]">
+          <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center bg-gray-100 text-xs uppercase font-semibold col-span-1 py-0.5 text-[10px]">
             TIPO CAMBIO:
           </div>
-          <div className="pedimento-cell pedimento-value col-span-1 py-0.5 text-[10px]">
+          <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center text-xs font-normal col-span-1 py-0.5 text-[10px]">
             {pedimento.encabezado_del_pedimento.tipo_cambio?.toFixed(5) || '-'}
           </div>
         </div>
@@ -141,19 +140,19 @@ const PedimentoHeader: React.FC<PedimentoHeaderProps> = ({
           )}
           onClick={() => onClick('Pesos y bultos')}
         >
-          <div className="pedimento-cell pedimento-label col-span-1 py-0.5 text-[10px]">
+          <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center bg-gray-100 text-xs uppercase font-semibold col-span-1 py-0.5 text-[10px]">
             PESO BRUTO:
           </div>
-          <div className="pedimento-cell pedimento-value col-span-1 py-0.5 text-[10px]">
+          <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center text-xs font-normal col-span-1 py-0.5 text-[10px]">
             {pedimento.encabezado_del_pedimento.peso_bruto?.toFixed(3) || '-'}
           </div>
         </div>
 
         <div className="col-span-2 grid grid-cols-2">
-          <div className="pedimento-cell pedimento-label col-span-1 py-0.5 text-[10px]">
+          <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center bg-gray-100 text-xs uppercase font-semibold col-span-1 py-0.5 text-[10px]">
             ADUANA E/S:
           </div>
-          <div className="pedimento-cell pedimento-value col-span-1 py-0.5 text-[10px]">
+          <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center text-xs font-normal col-span-1 py-0.5 text-[10px]">
             {pedimento.encabezado_del_pedimento.aduana_entrada_salida}
           </div>
         </div>
@@ -170,28 +169,28 @@ const PedimentoHeader: React.FC<PedimentoHeaderProps> = ({
           )}
           onClick={() => onClick('Datos del transporte')}
         >
-          <div className="pedimento-section-title py-0.5 text-[11px]">
+          <div className="bg-gray-200 text-center text-xs py-1 uppercase font-semibold border-b border-gray-400 py-0.5 text-[11px]">
             MEDIOS DE TRANSPORTE
           </div>
           <div className="grid grid-cols-3 gap-0 border-gray-400 border-b">
-            <div className="pedimento-cell pedimento-label py-0.5 text-center text-[10px]">
+            <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center bg-gray-100 text-xs uppercase font-semibold py-0.5 text-center text-[10px]">
               ENTRADA/SALIDA:
             </div>
-            <div className="pedimento-cell pedimento-label py-0.5 text-center text-[10px]">
+            <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center bg-gray-100 text-xs uppercase font-semibold py-0.5 text-center text-[10px]">
               ARRIBO:
             </div>
-            <div className="pedimento-cell pedimento-label py-0.5 text-center text-[10px]">
+            <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center bg-gray-100 text-xs uppercase font-semibold py-0.5 text-center text-[10px]">
               SALIDA:
             </div>
           </div>
           <div className="grid grid-cols-3 gap-0">
-            <div className="pedimento-cell pedimento-value py-0.5 text-center text-[10px]">
+            <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center text-xs font-normal py-0.5 text-center text-[10px]">
               {pedimento.medios_transporte.entrada_salida || '-'}
             </div>
-            <div className="pedimento-cell pedimento-value py-0.5 text-center text-[10px]">
+            <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center text-xs font-normal py-0.5 text-center text-[10px]">
               {pedimento.medios_transporte.arribo || '-'}
             </div>
-            <div className="pedimento-cell pedimento-value py-0.5 text-center text-[10px]">
+            <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center text-xs font-normal py-0.5 text-center text-[10px]">
               {pedimento.medios_transporte.salida || '-'}
             </div>
           </div>
@@ -208,26 +207,26 @@ const PedimentoHeader: React.FC<PedimentoHeaderProps> = ({
           onClick={() => onClick('Operación monetaria')}
         >
           <div className="grid grid-cols-2 gap-0 border-gray-400 border-b">
-            <div className="pedimento-cell pedimento-label py-0.5 text-[10px]">
+            <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center bg-gray-100 text-xs uppercase font-semibold py-0.5 text-[10px]">
               VALOR DOLARES:
             </div>
-            <div className="pedimento-cell pedimento-value py-0.5 text-right text-[10px]">
+            <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center text-xs font-normal py-0.5 text-right text-[10px]">
               {formatNumber(pedimento.valores.valor_dolares || 0)}
             </div>
           </div>
           <div className="grid grid-cols-2 gap-0 border-gray-400 border-b">
-            <div className="pedimento-cell pedimento-label py-0.5 text-[10px]">
+            <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center bg-gray-100 text-xs uppercase font-semibold py-0.5 text-[10px]">
               VALOR ADUANA:
             </div>
-            <div className="pedimento-cell pedimento-value py-0.5 text-right text-[10px]">
+            <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center text-xs font-normal py-0.5 text-right text-[10px]">
               {formatNumber(pedimento.valores.valor_aduana || 0)}
             </div>
           </div>
           <div className="grid grid-cols-2 gap-0">
-            <div className="pedimento-cell pedimento-label py-0.5 text-[10px]">
+            <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center bg-gray-100 text-xs uppercase font-semibold py-0.5 text-[10px]">
               PRECIO PAGADO/VALOR COMERCIAL:
             </div>
-            <div className="pedimento-cell pedimento-value py-0.5 text-right text-[10px]">
+            <div className="px-2 border-r last:border-r-0 border-gray-400 text-xs min-h-6 flex items-center text-xs font-normal py-0.5 text-right text-[10px]">
               {formatNumber(
                 pedimento.valores.precio_pagado_valor_comercial || 0
               )}
