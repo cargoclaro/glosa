@@ -47,7 +47,7 @@ const Detailed = ({ data }: { data: validation }) => {
       >
         ANÁLISIS DETALLADO: <span className="font-semibold">{data.name}</span>
       </h1>
-      <div className="flex flex-col gap-4 rounded-md border border-cargoClaroOrange p-2">
+      <div className="flex flex-col gap-4 rounded-md border border-primary p-2">
         <h2>
           Análisis:{' '}
           <span className="font-medium">

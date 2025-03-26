@@ -57,14 +57,14 @@ const LinkComp = ({ to, span, icon }: ILinkComp) => {
     <Link href={to} className="group flex gap-1">
       <div
         className={cn(
-          'h-auto w-1 rounded-e-3xl group-hover:bg-cargoClaroOrange',
-          isActive && 'bg-cargoClaroOrange'
+          'h-auto w-1 rounded-e-3xl group-hover:bg-primary',
+          isActive && 'bg-primary'
         )}
       />
       <div
         className={cn(
-          'flex w-full gap-2 px-4 py-2 group-hover:bg-cargoClaroOrange/30',
-          isActive && 'bg-cargoClaroOrange/30'
+          'flex w-full gap-2 px-4 py-2 group-hover:bg-primary/30',
+          isActive && 'bg-primary/30'
         )}
       >
         {icon === 'home' ? <Square2x2 /> : <GlobeAlt strokeWidth={1} />}

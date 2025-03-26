@@ -68,7 +68,7 @@ export const GlossDataTableColumns: ColumnDef<IDumpGlosses>[] = [
         <Link
           aria-label="View gloss report"
           href={`/gloss/${row.getValue('id')}`}
-          className="line-clamp-1 max-w-max rounded-xl bg-cargoClaroOrange p-2 text-white hover:bg-cargoClaroOrange/80"
+          className="line-clamp-1 max-w-max rounded-xl bg-primary p-2 text-white hover:bg-primary/80"
         >
           <RightArrow size="size-4" strokeWidth={4} />
         </Link>

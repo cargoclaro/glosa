@@ -64,7 +64,7 @@ const GlossIdPage = async (props: { params: Promise<{ id: string }> }) => {
         <p>
           <Link
             href={`/gloss/${id}/analysis`}
-            className="rounded-md border border-white bg-cargoClaroOrange px-12 py-2 text-sm text-white shadow-black/50 shadow-md hover:bg-cargoClaroOrange/80"
+            className="rounded-md border border-white bg-primary px-12 py-2 text-sm text-white shadow-black/50 shadow-md hover:bg-primary/80"
           >
             Ver análisis
           </Link>

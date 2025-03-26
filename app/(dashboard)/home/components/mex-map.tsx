@@ -148,7 +148,7 @@ const MexMap = () => {
               r="10"
               fill="currentColor"
               key={custom.customId}
-              className="text-cargoClaroOrange"
+              className="text-primary"
               cx={
                 latLonToSvgCoords(
                   custom.custom.latitude,

@@ -267,9 +267,9 @@ const GenericTabLi = ({ title, active, onClick }: IGenericTabLi) => (
       title={title}
       onClick={onClick}
       className={cn(
-        'min-w-64 border-b-2 pb-2 text-center hover:border-cargoClaroOrange/80 hover:text-cargoClaroOrange/80',
+        'min-w-64 border-b-2 pb-2 text-center hover:border-primary/80 hover:text-primary/80',
         active
-          ? 'border-cargoClaroOrange text-cargoClaroOrange'
+          ? 'border-primary text-primary'
           : 'border-black'
       )}
     >
@@ -392,7 +392,7 @@ const VerifiedButton = ({
           mutation.isPending && 'cursor-not-allowed opacity-50',
           isVerified
             ? 'cursor-not-allowed bg-gray-300 text-gray-900'
-            : 'bg-cargoClaroOrange text-white hover:bg-cargoClaroOrange/80'
+            : 'bg-primary text-white hover:bg-primary/80'
         )}
       >
         {buttonContent}

@@ -24,7 +24,7 @@ const GlossHistory = ({ history }: { history: CustomGlossTable[] }) => {
                     {gloss.importerName}
                   </small>
                 </div>
-                <div className="rounded-xl bg-cargoClaroOrange p-2 text-white group-hover:bg-cargoClaroOrange/80">
+                <div className="rounded-xl bg-primary p-2 text-white group-hover:bg-primary/80">
                   <RightArrow size="size-4" strokeWidth={4} />
                 </div>
               </Link>
