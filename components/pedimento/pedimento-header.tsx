@@ -61,32 +61,76 @@ const PedimentoHeader: React.FC<PedimentoHeaderProps> = ({
       </div>
 
       {/* Número de Pedimento Section */}
-      <div
-        className={cn(
-          'grid cursor-pointer grid-cols-12 gap-0 border-gray-400 border-b',
-          'overflow-hidden rounded-md border-2',
-          getHighlightBorder('Número de pedimento'),
-          getHighlightFill('Número de pedimento')
-        )}
-        onClick={() => onClick('Número de pedimento')}
-      >
-        <div className="col-span-3 flex min-h-6 items-center border-gray-400 border-r bg-gray-100 px-2 py-0.5 font-semibold text-[10px] text-xs text-xs uppercase last:border-r-0">
-          NUM. PEDIMENTO:
+      <div className="grid grid-cols-12 gap-0 border-gray-400 border-b">
+        <div
+          className={cn(
+            'col-span-5 grid cursor-pointer grid-cols-5',
+            'overflow-hidden rounded-md border-2',
+            getHighlightBorder('Número de pedimento'),
+            getHighlightFill('Número de pedimento')
+          )}
+          onClick={() => onClick('Número de pedimento')}
+        >
+          <div className="col-span-3 flex min-h-6 items-center border-gray-400 border-r bg-gray-100 px-2 py-0.5 font-semibold text-[10px] text-xs text-xs uppercase last:border-r-0">
+            NUM. PEDIMENTO:
+          </div>
+          <div className="col-span-2 flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 font-normal text-[10px] text-xs text-xs last:border-r-0">
+            {pedimento.encabezado_del_pedimento.num_pedimento}
+          </div>
         </div>
-        <div className="col-span-3 flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 font-normal text-[10px] text-xs text-xs last:border-r-0">
-          {pedimento.encabezado_del_pedimento.num_pedimento}
+        
+        {/* T.OPER */}
+        <div
+          className={cn(
+            'col-span-2 grid cursor-pointer grid-cols-2',
+            'overflow-hidden rounded-md border-2',
+            getHighlightBorder('Tipo de operación'),
+            getHighlightFill('Tipo de operación')
+          )}
+          onClick={() => onClick('Tipo de operación')}
+        >
+          <div className="col-span-1 flex min-h-6 items-center border-gray-400 border-r bg-gray-100 px-2 py-0.5 font-semibold text-[10px] text-xs text-xs uppercase last:border-r-0">
+            T.OPER
+          </div>
+          <div className="col-span-1 flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 font-normal text-[10px] text-xs text-xs last:border-r-0">
+            {pedimento.encabezado_del_pedimento.tipo_oper}
+          </div>
         </div>
-        <div className="col-span-2 flex min-h-6 items-center border-gray-400 border-r bg-gray-100 px-2 py-0.5 font-semibold text-[10px] text-xs text-xs uppercase last:border-r-0">
-          T.OPER
+          
+        {/* CVE. PEDIMENTO */}
+        <div
+          className={cn(
+            'col-span-3 grid cursor-pointer grid-cols-3',
+            'overflow-hidden rounded-md border-2',
+            getHighlightBorder('Tipo de operación'),
+            getHighlightFill('Tipo de operación')
+          )}
+          onClick={() => onClick('Tipo de operación')}
+        >
+          <div className="col-span-2 flex min-h-6 items-center border-gray-400 border-r bg-gray-100 px-2 py-0.5 font-semibold text-[10px] text-xs text-xs uppercase last:border-r-0">
+            CVE. PEDIMENTO:
+          </div>
+          <div className="col-span-1 flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 font-normal text-[10px] text-xs text-xs last:border-r-0">
+            {pedimento.encabezado_del_pedimento.cve_pedim}
+          </div>
         </div>
-        <div className="col-span-1 flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 font-normal text-[10px] text-xs text-xs last:border-r-0">
-          {pedimento.encabezado_del_pedimento.tipo_oper}
-        </div>
-        <div className="col-span-2 flex min-h-6 items-center border-gray-400 border-r bg-gray-100 px-2 py-0.5 font-semibold text-[10px] text-xs text-xs uppercase last:border-r-0">
-          CVE. PEDIMENTO:
-        </div>
-        <div className="col-span-1 flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 font-normal text-[10px] text-xs text-xs last:border-r-0">
-          {pedimento.encabezado_del_pedimento.cve_pedim}
+          
+        {/* REGIMEN */}
+        <div
+          className={cn(
+            'col-span-2 grid cursor-pointer grid-cols-2',
+            'overflow-hidden rounded-md border-2',
+            getHighlightBorder('Tipo de operación'),
+            getHighlightFill('Tipo de operación')
+          )}
+          onClick={() => onClick('Tipo de operación')}
+        >
+          <div className="col-span-1 flex min-h-6 items-center border-gray-400 border-r bg-gray-100 px-2 py-0.5 font-semibold text-[10px] text-xs text-xs uppercase last:border-r-0">
+            REGIMEN:
+          </div>
+          <div className="col-span-1 flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 font-normal text-[10px] text-xs text-xs last:border-r-0">
+            IMD
+          </div>
         </div>
       </div>
 
@@ -230,12 +274,6 @@ const PedimentoHeader: React.FC<PedimentoHeaderProps> = ({
               )}
             </div>
           </div>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-12 gap-0 border-gray-400 border-t">
-        <div className="col-span-12 py-0.5 text-right text-[9px] italic">
-          Página {page} de {totalPages}
         </div>
       </div>
     </div>
