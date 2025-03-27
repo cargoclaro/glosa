@@ -1,4 +1,5 @@
 import { defineConfig } from 'vitest/config'
+import tsconfigPaths from 'vite-tsconfig-paths'
 import dotenv from 'dotenv'
 import ms from 'ms'
 
@@ -12,4 +13,5 @@ export default defineConfig({
     // Pass through all environment variables
     env: process.env,
   },
+  plugins: [tsconfigPaths()],
 })
