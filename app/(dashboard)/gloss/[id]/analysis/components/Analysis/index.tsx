@@ -315,7 +315,7 @@ const GenericTabComponent = ({ data, handleClick }: IGenericTabComponent) => {
                 title={origin}
                 className="flex items-center gap-2.5 px-4 py-3 rounded-lg bg-[#f6eeff] hover:bg-[#f0e6ff] transition-colors duration-200"
               >
-                <Document className="text-white" />
+                <Document />
                 <span className="text-sm font-medium">{origin.toUpperCase()}</span>
               </div>
             </li>
@@ -443,12 +443,12 @@ const StatusHeader = ({ status }: { status: boolean }) => (
   >
     {status ? (
       <>
-        <Check className="h-5 w-5 text-green-600" />
+        <Check customClass="h-5 w-5 text-green-600" />
         <span>Todo parece bien</span>
       </>
     ) : (
       <>
-        <ExclamationTriangle className="h-5 w-5 text-yellow-600" />
+        <ExclamationTriangle customClass="h-5 w-5 text-yellow-600" />
         <span>Verificar datos</span>
       </>
     )}
