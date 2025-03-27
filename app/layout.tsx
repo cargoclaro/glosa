@@ -37,7 +37,7 @@ export default function RootLayout({
       <body
         suppressHydrationWarning
         className={cn(
-          'mx-auto min-h-screen w-full max-w-[1440px] bg-[#f8f9fd]',
+          'mx-auto min-h-screen w-full max-w-[1440px] bg-[#F9FAFB] bg-[radial-gradient(rgba(120,120,130,0.15)_0.75px,transparent_0.75px)] bg-[size:25px_25px]',
           inter.className
         )}
       >

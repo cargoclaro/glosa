@@ -7,7 +7,7 @@ interface IGenericCard {
 
 const GenericCard = ({ customClass, children }: IGenericCard) => {
   return (
-    <section className={cn('rounded-2xl bg-white p-4 shadow-md', customClass)}>
+    <section className={cn('rounded-2xl bg-white p-4 shadow-sm ring-1 ring-gray-100', customClass)}>
       {children}
     </section>
   );

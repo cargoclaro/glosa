@@ -12,7 +12,7 @@ const Header = () => {
   return (
     <header
       className={cn(
-        'sticky top-0 z-10 bg-[#f8f9fd]',
+        'sticky top-0 z-10 bg-[#F1F5F9]',
         isAnalysisPage && 'hidden'
       )}
     >

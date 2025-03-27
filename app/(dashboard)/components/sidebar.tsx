@@ -13,7 +13,7 @@ const Sidebar = () => {
   return (
     <aside
       className={cn(
-        '-translate-x-full fixed top-0 z-20 h-screen w-48 bg-white transition-transform sm:translate-x-0',
+        '-translate-x-full fixed top-0 z-20 h-screen w-48 bg-[#F1F5F9] transition-transform sm:translate-x-0',
         isAnalysisPage && 'hidden'
       )}
     >
