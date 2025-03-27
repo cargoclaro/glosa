@@ -15,7 +15,6 @@ interface PedimentoHeaderProps {
 const PedimentoHeader: React.FC<PedimentoHeaderProps> = ({
   pedimento,
   page,
-  totalPages,
   tabs = [],
   onClick,
   tabInfoSelected = { name: '', isCorrect: false, isVerified: false },

@@ -76,23 +76,6 @@ const getHighlightBorderClass = (
     return DEFAULT_HIGHLIGHT_BORDER_CLASS;
 };
 
-// Determines the FILL color for data cells based on the selected item status
-const getHighlightFillClass = (
-    sectionName: string,
-    tabInfoSelected: TabInfoSelected
-): string => {
-    if (tabInfoSelected.name !== sectionName) {
-        // Not the selected item, no fill
-        return '';
-    }
-
-    // It IS the selected item, determine fill based on its status
-    return tabInfoSelected.isCorrect || tabInfoSelected.isVerified
-        ? 'bg-green-100/50'
-        : 'bg-yellow-100/50';
-};
-
-
 // --- Sub-Components (Cell, Row, Section Components) ---
 
 const Cell: React.FC<React.PropsWithChildren<CellProps>> = ({
