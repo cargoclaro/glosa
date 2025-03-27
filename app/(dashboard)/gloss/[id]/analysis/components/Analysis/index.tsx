@@ -285,30 +285,62 @@ const GenericTabComponent = ({ data, handleClick }: IGenericTabComponent) => {
   const uniqueOrigins = Array.from(
     new Set(data.context.map((item) => item.origin))
   );
+  const [showAllOrigins, setShowAllOrigins] = useState(false);
+  
+  // Display only first 3 documents initially
+  const displayOrigins = showAllOrigins 
+    ? uniqueOrigins 
+    : uniqueOrigins.slice(0, 3);
+  
+  // Check if we need to show the "Show more" button
+  const hasMoreOrigins = uniqueOrigins.length > 3;
+  
   return (
     <>
       <StatusHeader status={data.isCorrect} />
       <SectionDivider title="Pasos de Validación" icon={<ArrowTrendingUp />} />
+      <p className="text-center text-sm italic text-gray-600 mb-2">
+        Haga <strong>clic</strong> en las validaciones para ver una explicación detallada
+      </p>
       <DataListForSummaryCard
         data={data.validations}
         handleDetail={handleClick}
       />
       <SectionDivider title="Fuentes" icon={<DocMagniGlass />} />
-      <ul className="mt-4 flex max-h-[160px] flex-col gap-1 overflow-y-auto">
-        {uniqueOrigins.map((origin, index) => (
-          <li key={index} className="">
-            <p
-              title={origin}
-              className="inline-flex w-full items-center justify-center gap-1 truncate rounded-full border border-purple-400 bg-purple-100 px-12 py-2 text-center"
+      <div className="relative">
+        <ul className="mt-4 flex flex-col gap-2 max-h-40 overflow-y-auto pr-1 mb-4">
+          {displayOrigins.map((origin, index) => (
+            <li key={index} className="w-full">
+              <div
+                title={origin}
+                className="flex items-center gap-2.5 px-4 py-3 rounded-lg bg-[#f6eeff] hover:bg-[#f0e6ff] transition-colors duration-200"
+              >
+                <Document className="text-white" />
+                <span className="text-sm font-medium">{origin.toUpperCase()}</span>
+              </div>
+            </li>
+          ))}
+        </ul>
+        {hasMoreOrigins && (
+          <div className="flex justify-center mt-4 mb-4">
+            <button
+              onClick={() => setShowAllOrigins(!showAllOrigins)}
+              className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors duration-200"
+              title={showAllOrigins ? "Mostrar menos" : `Mostrar ${uniqueOrigins.length - 3} más`}
             >
-              <span>
-                <Document />
-              </span>
-              {origin.toUpperCase()}
-            </p>
-          </li>
-        ))}
-      </ul>
+              {showAllOrigins ? (
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-black">
+                  <path d="m18 15-6-6-6 6"/>
+                </svg>
+              ) : (
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-black">
+                  <path d="m6 9 6 6 6-6"/>
+                </svg>
+              )}
+            </button>
+          </div>
+        )}
+      </div>
       <div className="mb-4 border-t border-t-black" />
       <VerifiedButton
         tabId={data.id}
@@ -403,13 +435,23 @@ const StatusHeader = ({ status }: { status: boolean }) => (
   <h2
     title={status ? 'El análisis fue correcto' : 'El análisis no fue correcto'}
     className={cn(
-      'mt-4 truncate rounded-full border px-12 py-2 text-center',
+      'mt-4 flex items-center justify-center gap-2 truncate rounded-md py-3 px-4 text-center w-full',
       status
-        ? 'border-green-400 bg-green-100'
-        : 'border-yellow-400 bg-yellow-100'
+        ? 'bg-green-100 text-green-800'
+        : 'bg-yellow-100 text-yellow-800'
     )}
   >
-    {status ? 'Todo parece bien' : 'Verificar datos'}
+    {status ? (
+      <>
+        <Check className="h-5 w-5 text-green-600" />
+        <span>Todo parece bien</span>
+      </>
+    ) : (
+      <>
+        <ExclamationTriangle className="h-5 w-5 text-yellow-600" />
+        <span>Verificar datos</span>
+      </>
+    )}
   </h2>
 );
 
