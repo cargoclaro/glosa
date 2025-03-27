@@ -34,6 +34,7 @@ interface CellProps extends React.HTMLAttributes<HTMLDivElement> {
   align?: 'left' | 'center' | 'right';
   isLast?: boolean;
   isHighlighted?: boolean;
+  isValid?: boolean;
 }
 
 interface RowProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -79,11 +80,8 @@ const getHighlightBorderClass = (
 // --- Sub-Components (Cell, Row, Section Components) ---
 
 const Cell: React.FC<React.PropsWithChildren<CellProps>> = ({
-    children, colSpan = 1, isHeader = false, align = 'left', isLast = false, isHighlighted = false, className, ...props
+    children, colSpan = 1, isHeader = false, align = 'left', isLast = false, isHighlighted = false, isValid = false, className, ...props
 }) => {
-    // Get validation status from props
-    const isValid = props['data-is-correct'] === true || props['data-is-verified'] === true;
-    
     return (
     <div
         className={cn(
@@ -146,16 +144,16 @@ const PartidaHeaderSectionRevised: React.FC<{
         <Cell isHeader align="center" colSpan={2} isLast>P.O/D</Cell>
       </Row>
       <Row>
-        <Cell colSpan={1} isHighlighted={isHighlighted} data-is-correct={isValid} data-is-verified={isValid}>{partida.fraccion}</Cell>
-        <Cell colSpan={2} isHighlighted={isHighlighted} data-is-correct={isValid} data-is-verified={isValid}>{partida.nico}</Cell>
-        <Cell align="center" colSpan={1} isHighlighted={isHighlighted} data-is-correct={isValid} data-is-verified={isValid}>{partida.vinc}</Cell>
-        <Cell align="center" colSpan={1} isHighlighted={isHighlighted} data-is-correct={isValid} data-is-verified={isValid}>{partida.met_val}</Cell>
-        <Cell align="center" colSpan={1} isHighlighted={isHighlighted} data-is-correct={isValid} data-is-verified={isValid}>{partida.umc}</Cell>
-        <Cell align="right" colSpan={1} isHighlighted={isHighlighted} data-is-correct={isValid} data-is-verified={isValid}>{formatNumber(partida.cantidad_umc)}</Cell>
-        <Cell align="center" colSpan={1} isHighlighted={isHighlighted} data-is-correct={isValid} data-is-verified={isValid}>{partida.umt}</Cell>
-        <Cell align="right" colSpan={1} isHighlighted={isHighlighted} data-is-correct={isValid} data-is-verified={isValid}>{formatNumber(partida.cantidad_umt)}</Cell>
-        <Cell colSpan={1} isHighlighted={isHighlighted} data-is-correct={isValid} data-is-verified={isValid}>{partida.p_v_c}</Cell>
-        <Cell colSpan={2} isLast isHighlighted={isHighlighted} data-is-correct={isValid} data-is-verified={isValid}>{partida.p_o_d}</Cell>
+        <Cell colSpan={1} isHighlighted={isHighlighted} isValid={isValid}>{partida.fraccion}</Cell>
+        <Cell colSpan={2} isHighlighted={isHighlighted} isValid={isValid}>{partida.nico}</Cell>
+        <Cell align="center" colSpan={1} isHighlighted={isHighlighted} isValid={isValid}>{partida.vinc}</Cell>
+        <Cell align="center" colSpan={1} isHighlighted={isHighlighted} isValid={isValid}>{partida.met_val}</Cell>
+        <Cell align="center" colSpan={1} isHighlighted={isHighlighted} isValid={isValid}>{partida.umc}</Cell>
+        <Cell align="right" colSpan={1} isHighlighted={isHighlighted} isValid={isValid}>{formatNumber(partida.cantidad_umc)}</Cell>
+        <Cell align="center" colSpan={1} isHighlighted={isHighlighted} isValid={isValid}>{partida.umt}</Cell>
+        <Cell align="right" colSpan={1} isHighlighted={isHighlighted} isValid={isValid}>{formatNumber(partida.cantidad_umt)}</Cell>
+        <Cell colSpan={1} isHighlighted={isHighlighted} isValid={isValid}>{partida.p_v_c}</Cell>
+        <Cell colSpan={2} isLast isHighlighted={isHighlighted} isValid={isValid}>{partida.p_o_d}</Cell>
       </Row>
     </>
 );
@@ -172,8 +170,8 @@ const PartidaDescriptionSection: React.FC<{
       <Cell isHeader align="center" colSpan={11} isLast>DESCRIPCION</Cell>
     </Row>
     <Row>
-      <Cell align="center" isHighlighted={isHighlighted} data-is-correct={isValid} data-is-verified={isValid}>{partida.sec ?? partidaNumber}</Cell>
-      <Cell colSpan={11} isLast isHighlighted={isHighlighted} data-is-correct={isValid} data-is-verified={isValid}>{partida.descripcion}</Cell>
+      <Cell align="center" isHighlighted={isHighlighted} isValid={isValid}>{partida.sec ?? partidaNumber}</Cell>
+      <Cell colSpan={11} isLast isHighlighted={isHighlighted} isValid={isValid}>{partida.descripcion}</Cell>
     </Row>
   </>
 );
@@ -191,10 +189,10 @@ const PartidaValuationSection: React.FC<{
       <Cell isHeader align="center" colSpan={3} isLast>VAL. AGREG.</Cell>
     </Row>
     <Row>
-      <Cell align="right" colSpan={3} isHighlighted={isHighlighted} data-is-correct={isValid} data-is-verified={isValid}>{formatNumber(partida.val_adu)}</Cell>
-      <Cell align="right" colSpan={3} isHighlighted={isHighlighted} data-is-correct={isValid} data-is-verified={isValid}>{formatNumber(partida.imp_precio_pag)}</Cell>
-      <Cell align="right" colSpan={3} isHighlighted={isHighlighted} data-is-correct={isValid} data-is-verified={isValid}>{formatNumber(partida.precio_unit)}</Cell>
-      <Cell align="right" colSpan={3} isLast isHighlighted={isHighlighted} data-is-correct={isValid} data-is-verified={isValid}>{formatNumber(partida.val_agreg)}</Cell>
+      <Cell align="right" colSpan={3} isHighlighted={isHighlighted} isValid={isValid}>{formatNumber(partida.val_adu)}</Cell>
+      <Cell align="right" colSpan={3} isHighlighted={isHighlighted} isValid={isValid}>{formatNumber(partida.imp_precio_pag)}</Cell>
+      <Cell align="right" colSpan={3} isHighlighted={isHighlighted} isValid={isValid}>{formatNumber(partida.precio_unit)}</Cell>
+      <Cell align="right" colSpan={3} isLast isHighlighted={isHighlighted} isValid={isValid}>{formatNumber(partida.val_agreg)}</Cell>
     </Row>
   </>
 );
@@ -211,9 +209,9 @@ const PartidaBrandModelSection: React.FC<{
       <Cell isHeader align="center" colSpan={4} isLast>CÓDIGO PRODUCTO</Cell>
     </Row>
     <Row>
-      <Cell colSpan={4} isHighlighted={isHighlighted} data-is-correct={isValid} data-is-verified={isValid}>{partida.marca}</Cell>
-      <Cell colSpan={4} isHighlighted={isHighlighted} data-is-correct={isValid} data-is-verified={isValid}>{partida.modelo}</Cell>
-      <Cell colSpan={4} isLast isHighlighted={isHighlighted} data-is-correct={isValid} data-is-verified={isValid}>{partida.codigo_producto}</Cell>
+      <Cell colSpan={4} isHighlighted={isHighlighted} isValid={isValid}>{partida.marca}</Cell>
+      <Cell colSpan={4} isHighlighted={isHighlighted} isValid={isValid}>{partida.modelo}</Cell>
+      <Cell colSpan={4} isLast isHighlighted={isHighlighted} isValid={isValid}>{partida.codigo_producto}</Cell>
     </Row>
   </>
 );
@@ -236,16 +234,16 @@ const PartidaContributionsSection: React.FC<{
     </Row>
     {partida.contribuciones?.map((contribucion, idx) => (
       <Row key={idx} gridCols={5} className={cn({ 'border-b-0': idx === (partida.contribuciones?.length ?? 0) - 1 })}>
-        <Cell isHighlighted={isHighlighted} data-is-correct={isValid} data-is-verified={isValid}>{contribucion.con}</Cell>
-        <Cell align="right" isHighlighted={isHighlighted} data-is-correct={isValid} data-is-verified={isValid}>{formatTasa(contribucion.tasa)}</Cell>
-        <Cell align="center" isHighlighted={isHighlighted} data-is-correct={isValid} data-is-verified={isValid}>{contribucion.t_t}</Cell>
-        <Cell align="center" isHighlighted={isHighlighted} data-is-correct={isValid} data-is-verified={isValid}>{contribucion.f_p}</Cell>
-        <Cell align="right" isLast isHighlighted={isHighlighted} data-is-correct={isValid} data-is-verified={isValid}>{formatNumber(contribucion.importe)}</Cell>
+        <Cell isHighlighted={isHighlighted} isValid={isValid}>{contribucion.con}</Cell>
+        <Cell align="right" isHighlighted={isHighlighted} isValid={isValid}>{formatTasa(contribucion.tasa)}</Cell>
+        <Cell align="center" isHighlighted={isHighlighted} isValid={isValid}>{contribucion.t_t}</Cell>
+        <Cell align="center" isHighlighted={isHighlighted} isValid={isValid}>{contribucion.f_p}</Cell>
+        <Cell align="right" isLast isHighlighted={isHighlighted} isValid={isValid}>{formatNumber(contribucion.importe)}</Cell>
       </Row>
     ))}
     {(partida.contribuciones?.length ?? 0) === 0 && (
        <Row gridCols={5}>
-         <Cell colSpan={5} align="center" isLast className="text-gray-500 italic" isHighlighted={isHighlighted} data-is-correct={isValid} data-is-verified={isValid}>Sin contribuciones</Cell>
+         <Cell colSpan={5} align="center" isLast className="text-gray-500 italic" isHighlighted={isHighlighted} isValid={isValid}>Sin contribuciones</Cell>
        </Row>
     )}
   </>
@@ -268,15 +266,15 @@ const PartidaIdentifiersSection: React.FC<{
     </Row>
     {partida.identificadores?.map((identificador, idx) => (
       <Row key={idx} className={cn({ 'border-b-0': idx === (partida.identificadores?.length ?? 0) - 1 })}>
-        <Cell align="center" colSpan={3} isHighlighted={isHighlighted} data-is-correct={isValid} data-is-verified={isValid}>{identificador.clave}</Cell>
-        <Cell align="center" colSpan={3} isHighlighted={isHighlighted} data-is-correct={isValid} data-is-verified={isValid}>{identificador.complemento1}</Cell>
-        <Cell align="center" colSpan={3} isHighlighted={isHighlighted} data-is-correct={isValid} data-is-verified={isValid}>{identificador.complemento2}</Cell>
-        <Cell align="center" colSpan={3} isLast isHighlighted={isHighlighted} data-is-correct={isValid} data-is-verified={isValid}>{identificador.complemento3}</Cell>
+        <Cell align="center" colSpan={3} isHighlighted={isHighlighted} isValid={isValid}>{identificador.clave}</Cell>
+        <Cell align="center" colSpan={3} isHighlighted={isHighlighted} isValid={isValid}>{identificador.complemento1}</Cell>
+        <Cell align="center" colSpan={3} isHighlighted={isHighlighted} isValid={isValid}>{identificador.complemento2}</Cell>
+        <Cell align="center" colSpan={3} isLast isHighlighted={isHighlighted} isValid={isValid}>{identificador.complemento3}</Cell>
       </Row>
     ))}
      {(partida.identificadores?.length ?? 0) === 0 && (
        <Row>
-         <Cell colSpan={12} align="center" isLast className="text-gray-500 italic" isHighlighted={isHighlighted} data-is-correct={isValid} data-is-verified={isValid}>Sin identificadores</Cell>
+         <Cell colSpan={12} align="center" isLast className="text-gray-500 italic" isHighlighted={isHighlighted} isValid={isValid}>Sin identificadores</Cell>
        </Row>
     )}
   </>
@@ -292,7 +290,7 @@ const PartidaObservationsSection: React.FC<{
       <Cell isHeader align="center" colSpan={12} isLast>OBSERVACIONES A NIVEL PARTIDA</Cell>
     </Row>
     <Row className="border-b-0"> {/* Last internal row, remove bottom border */}
-      <Cell colSpan={12} isLast className="py-2" isHighlighted={isHighlighted} data-is-correct={isValid} data-is-verified={isValid}>
+      <Cell colSpan={12} isLast className="py-2" isHighlighted={isHighlighted} isValid={isValid}>
         {partida.observaciones ? partida.observaciones :
           (partida.marca || partida.modelo) ? (
             <div className="space-y-1">
