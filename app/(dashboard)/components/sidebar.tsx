@@ -18,15 +18,18 @@ const Sidebar = () => {
       )}
     >
       <div className="h-full overflow-y-auto">
-        <div className="my-10 size-auto pr-10">
-          <Image
-            src="/assets/images/logo.webp"
-            alt="Cargo Claro Logo"
-            width={100}
-            height={100}
-            className="size-full"
-            priority
-          />
+        <div className="flex flex-col items-center justify-center my-6 px-3">
+          <div className="flex items-center gap-2">
+            <Image
+              src="/assets/images/logo_transparente.png"
+              alt="Cargo Claro Icon"
+              width={35}
+              height={30}
+              className="object-contain h-auto"
+              priority
+            />
+            <span className="text-lg font-semibold text-gray-800">Cargo Claro</span>
+          </div>
         </div>
         <ul className="space-y-2">
           <li>
