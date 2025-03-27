@@ -20,7 +20,7 @@ const GlossHistory = ({ history }: { history: CustomGlossTable[] }) => {
             <li key={gloss.id} className="border-b border-gray-100 pb-3 last:border-b-0 last:pb-0">
               <Link
                 href={`/gloss/${gloss.id}`}
-                className="group flex items-center justify-between hover:bg-gray-50 rounded-lg transition-colors duration-200 p-3"
+                className="group flex items-center justify-between hover:bg-orange-50 rounded-lg transition-colors duration-200 p-3"
               >
                 <div className="flex-grow">
                   <p className="text-base font-medium text-gray-900">{gloss.importerName}</p>
