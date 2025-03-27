@@ -24,6 +24,6 @@
     },
     "allowJs": true
   },
-  "include": ["**/*.{ts,tsx,js,mjs}", "**/*.d.ts", ".next/types/**/*.ts"],
+  "include": ["**/*.{ts,tsx,js,mjs}", "**/*.spec.ts", "**/*.test.ts", "**/*.d.ts", ".next/types/**/*.ts"],
   "exclude": ["node_modules"]
 }
