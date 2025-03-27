@@ -16,39 +16,44 @@ async function MyInfo() {
   const { publicMetadata } = await client.organizations.getOrganization({
     organizationId: orgId,
   });
+  
   return (
     <GenericCard>
-      <p className="text-center font-bold text-lg">
-        Patente:{' '}
-        <span className="font-normal">{`#${publicMetadata?.patente}`}</span>
-      </p>
-      <div className="mt-4 flex justify-center">
-        <Image
-          src={user.imageUrl}
-          alt="User profile"
-          className="size-20 rounded-full"
-          width={64}
-          height={64}
-          priority
-        />
+      {/* User profile section - centered with email */}
+      <div className="flex flex-col items-center mb-5">
+        <div className="mb-3">
+          <Image
+            src={user.imageUrl}
+            alt="User profile"
+            className="rounded-full"
+            width={84}
+            height={84}
+            priority
+          />
+        </div>
+        
+        <p className="text-center text-gray-700">
+          {user.emailAddresses && user.emailAddresses.length > 0 && (
+            user.emailAddresses[0]?.emailAddress
+          )}
+        </p>
       </div>
-      {/* <div className="flex justify-start mt-2 text-xl">
-        <p className="font-semibold text-left mr-2">Aduanas:</p>
-        <ul
-          title={
-            user.customs &&
-            user.customs.map((custom) => custom.custom.city).join(", ")
-          }
-          className="flex flex-col sm:flex-row gap-1 truncate"
-        >
-          {user.customs.map((custom, index) => (
-            <li key={custom.customId}>
-              {custom.custom.city}
-              {index !== user.customs.length - 1 ? "," : ""}
-            </li>
-          ))}
-        </ul>
-      </div> */}
+      
+      {/* Organization info header - matching screenshot exactly */}
+      <div>
+        <div className="flex items-center mb-2">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-orange-500 mr-2" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
+          </svg>
+          <h3 className="text-orange-500 font-medium">Información de Organización</h3>
+        </div>
+        
+        {/* Patent info - simple key-value display */}
+        <div className="flex justify-between items-center py-2">
+          <span className="text-gray-700">Patente</span>
+          <span className="font-medium">#{publicMetadata?.patente || '9999'}</span>
+        </div>
+      </div>
     </GenericCard>
   );
 }
