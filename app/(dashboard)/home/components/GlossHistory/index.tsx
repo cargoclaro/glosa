@@ -1,14 +1,17 @@
 'use client';
 
 import { GenericCard } from '@/shared/components';
-import { RightArrow } from '@/shared/icons';
+import { Clock, RightArrow } from '@/shared/icons';
 import Link from 'next/link';
 import type { CustomGlossTable } from '~/db/schema';
 
 const GlossHistory = ({ history }: { history: CustomGlossTable[] }) => {
   return (
     <GenericCard customClass="h-full min-h-[500px] flex flex-col">
-      <h1 className="font-semibold text-xl">Historial Reciente de Glosas</h1>
+      <h1 className="font-semibold text-xl flex items-center gap-2">
+        <Clock size="size-6" customClass="text-black" />
+        Historial Reciente de Glosas
+      </h1>
       <div className="my-2 border-gray-300 border-t" />
       {history && history.length > 0 ? (
         <ul className="flex flex-col gap-3 flex-grow">
