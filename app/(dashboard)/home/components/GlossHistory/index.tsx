@@ -7,11 +7,11 @@ import type { CustomGlossTable } from '~/db/schema';
 
 const GlossHistory = ({ history }: { history: CustomGlossTable[] }) => {
   return (
-    <GenericCard>
-      <h1 className=" font-semibold text-xl">Historial Reciente de Glosas</h1>
+    <GenericCard customClass="h-full min-h-[500px] flex flex-col">
+      <h1 className="font-semibold text-xl">Historial Reciente de Glosas</h1>
       <div className="my-2 border-gray-300 border-t" />
       {history && history.length > 0 ? (
-        <ul className="flex flex-col gap-2">
+        <ul className="flex flex-col gap-3 flex-grow">
           {history.map((gloss) => (
             <li key={gloss.id}>
               <Link
@@ -32,7 +32,7 @@ const GlossHistory = ({ history }: { history: CustomGlossTable[] }) => {
           ))}
         </ul>
       ) : (
-        <div className="text-center">
+        <div className="text-center flex-grow flex flex-col justify-center">
           <p className="font-bold text-lg">No tienes glosas recientes</p>
           <p>{`Comienza a glosar por medio del botón "Nueva Glosa"`}</p>
         </div>

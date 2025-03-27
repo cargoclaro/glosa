@@ -1,6 +1,5 @@
 import { GenericCard } from '@/shared/components';
-import { CalendarDays, ClipboardDocumentList, Clock } from '@/shared/icons';
-import { getTimePassed } from '@/shared/utils/get-time-passed';
+import { ClipboardDocumentList, Clock } from '@/shared/icons';
 import { auth } from '@clerk/nextjs/server';
 import { currentUser } from '@clerk/nextjs/server';
 import { db } from '~/db';
@@ -46,20 +45,6 @@ const Summary = async () => {
           </div>
         </div>
         <small>Glosas Realizadas</small>
-      </GenericCard>
-      <GenericCard customClass="h-[140px]">
-        <div className="flex justify-between gap-1">
-          <p
-            title={`${getTimePassed({ pastDate: new Date(user.createdAt) })}`}
-            className="truncate font-bold text-2xl"
-          >
-            {getTimePassed({ pastDate: new Date(user.createdAt) })}
-          </p>
-          <div className="h-full rounded-full bg-purple-100/60 p-3 text-purple-400">
-            <CalendarDays />
-          </div>
-        </div>
-        <small>Trabajando Juntos</small>
       </GenericCard>
     </div>
   );
