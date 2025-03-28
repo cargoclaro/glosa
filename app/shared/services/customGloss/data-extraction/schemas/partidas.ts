@@ -33,11 +33,34 @@ export const partidasSchema = z.object({
   codigo_producto: z.string().describe('Código de producto').nullable(),
   imp_precio_pag: z.number().describe('Importe de precio pagado'),
   precio_unit: z.number().describe('Precio unitario'),
-  val_com_dls: z.number().describe('Valor comercial en dólares - Aparece como "VAL. COM. DLS." en el documento').nullable(),
-  cantidad_umtc: z.number().describe('Cantidad en unidad de medida de comercialización - Aparece como "CANTIDAD UMTC" en el documento').nullable(),
-  firma_descargo: z.string().describe('Firma de descargo - Aparece como "FIRMA DESCARGO" en el documento').nullable(),
-  num_permiso: z.string().describe('Número de permiso o NOM - Aparece como "NUM. PERMISO O NOM" en el documento').nullable(),
-  clave: z.string().describe('Clave - Aparece como "CLAVE" en el documento').nullable(),
+  val_com_dls: z
+    .number()
+    .describe(
+      'Valor comercial en dólares - Aparece como "VAL. COM. DLS." en el documento'
+    )
+    .nullable(),
+  cantidad_umtc: z
+    .number()
+    .describe(
+      'Cantidad en unidad de medida de comercialización - Aparece como "CANTIDAD UMTC" en el documento'
+    )
+    .nullable(),
+  firma_descargo: z
+    .string()
+    .describe(
+      'Firma de descargo - Aparece como "FIRMA DESCARGO" en el documento'
+    )
+    .nullable(),
+  num_permiso: z
+    .string()
+    .describe(
+      'Número de permiso o NOM - Aparece como "NUM. PERMISO O NOM" en el documento'
+    )
+    .nullable(),
+  clave: z
+    .string()
+    .describe('Clave - Aparece como "CLAVE" en el documento')
+    .nullable(),
   identificadores: z.array(
     z.object({
       clave: z.string().describe('Clave de identificador'),
