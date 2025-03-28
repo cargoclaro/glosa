@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { expectToBeDefined } from '~/lib/vitest/utils';
 import { classifyDocuments } from './classification';
-import type { DocumentType } from './classification';
+import type { DocumentType } from './utils';
 
 describe('Classification', () => {
   interface TestCase {
@@ -116,7 +116,9 @@ describe('Classification', () => {
     for (const file of classifiedFiles) {
       const expectedType = urlToExpectedTypeMap.get(file.ufsUrl);
       expectToBeDefined(expectedType);
-      expect.soft(file.documentType).toBe(expectedType);
+      expect.soft(file.documentType, `Document type for ${file.ufsUrl}`).toBe(
+        expectedType
+      );
     }
   });
 });

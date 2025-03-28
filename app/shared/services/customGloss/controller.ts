@@ -22,7 +22,7 @@ import {
   CustomGlossTabValidationStepActionToTake,
 } from '~/db/schema';
 import { classifyDocuments } from './classification';
-import type { DocumentType } from './classification';
+import type { DocumentType } from './utils';
 import { extractTextFromPDFs } from './data-extraction';
 import { glosaExpo } from './glosa/expo';
 import { glosaImpo } from './glosa/impo';

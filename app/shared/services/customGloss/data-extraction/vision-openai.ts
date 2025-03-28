@@ -1,7 +1,7 @@
 import { openai } from '@ai-sdk/openai';
 import { generateObject } from 'ai';
 import type { z } from 'zod';
-import type { DocumentType } from '../classification';
+import type { DocumentType } from '../utils';
 
 export async function extractTextFromImageOpenAI<T extends z.ZodType>(
   pdfFile: File,

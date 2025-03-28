@@ -2,21 +2,8 @@ import { google } from '@ai-sdk/google';
 import { generateObject } from 'ai';
 import { Langfuse } from 'langfuse';
 import { z } from 'zod';
-
-const documentTypes = [
-  'pedimento',
-  'documentoDeTransporte',
-  'factura',
-  'carta318',
-  'cartaCesionDeDerechos',
-  'cove',
-  'rrna',
-  'listaDeEmpaque',
-  'cfdi',
-  'otros',
-] as const;
-
-export type DocumentType = (typeof documentTypes)[number];
+import { documentTypes } from './utils';
+import type { DocumentType } from './utils';
 
 export async function classifyDocuments<
   T extends { ufsUrl: string; name?: string },
