@@ -11,6 +11,7 @@ import {
   LeftChevron,
   RightArrow,
   RightChevron,
+  Info,
 } from '@/shared/icons';
 import { markTabAsVerifiedByTabIdNCustomGlossID } from '@/shared/services/customGloss/controller';
 import { useMutation } from '@tanstack/react-query';
@@ -299,25 +300,21 @@ const GenericTabComponent = ({ data, handleClick }: IGenericTabComponent) => {
     <>
       <StatusHeader status={data.isCorrect} />
       <SectionDivider title="Pasos de Validación" icon={<ArrowTrendingUp />} />
-      <p className="mb-2 text-center text-gray-600 text-sm italic">
-        Haga <strong>clic</strong> en las validaciones para ver una explicación
-        detallada
-      </p>
       <DataListForSummaryCard
         data={data.validations}
         handleDetail={handleClick}
       />
       <SectionDivider title="Fuentes" icon={<DocMagniGlass />} />
       <div className="relative">
-        <ul className="mt-4 mb-4 flex max-h-40 flex-col gap-2 overflow-y-auto pr-1">
+        <ul className="mt-2 mb-2 flex max-h-32 flex-col gap-1.5 overflow-y-auto pr-1">
           {displayOrigins.map((origin, index) => (
             <li key={index} className="w-full">
               <div
                 title={origin}
-                className="flex items-center gap-2.5 rounded-lg bg-[#f6eeff] px-4 py-3 transition-colors duration-200 hover:bg-[#f0e6ff]"
+                className="flex items-center gap-2 rounded-lg bg-[#f6eeff] px-3 py-2 transition-colors duration-200 hover:bg-[#f0e6ff]"
               >
                 <Document />
-                <span className="font-medium text-sm">
+                <span className="font-medium text-xs">
                   {origin.toUpperCase()}
                 </span>
               </div>
@@ -325,10 +322,10 @@ const GenericTabComponent = ({ data, handleClick }: IGenericTabComponent) => {
           ))}
         </ul>
         {hasMoreOrigins && (
-          <div className="mt-4 mb-4 flex justify-center">
+          <div className="mt-2 mb-2 flex justify-center">
             <button
               onClick={() => setShowAllOrigins(!showAllOrigins)}
-              className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 transition-colors duration-200 hover:bg-gray-200"
+              className="flex h-7 w-7 items-center justify-center rounded-full bg-gray-100 transition-colors duration-200 hover:bg-gray-200"
               title={
                 showAllOrigins
                   ? 'Mostrar menos'
@@ -338,8 +335,8 @@ const GenericTabComponent = ({ data, handleClick }: IGenericTabComponent) => {
               {showAllOrigins ? (
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
+                  width="14"
+                  height="14"
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
@@ -353,8 +350,8 @@ const GenericTabComponent = ({ data, handleClick }: IGenericTabComponent) => {
               ) : (
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
+                  width="14"
+                  height="14"
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
@@ -370,7 +367,7 @@ const GenericTabComponent = ({ data, handleClick }: IGenericTabComponent) => {
           </div>
         )}
       </div>
-      <div className="mb-4 border-t border-t-black" />
+      <div className="mt-1 mb-3 border-t border-t-black" />
       <VerifiedButton
         tabId={data.id}
         isVerified={data.isVerified}
@@ -387,12 +384,12 @@ interface ISectionDivider {
 
 const SectionDivider = ({ title, icon }: ISectionDivider) => (
   <>
-    <DashedLine customClass="mt-4" />
-    <p className="flex items-center justify-center gap-1 py-2 font-bold">
+    <DashedLine customClass="mt-3" />
+    <p className="flex items-center justify-center gap-1 py-1.5 font-bold">
       <span>{icon}</span>
       {title}
     </p>
-    <DashedLine customClass="mb-4" />
+    <DashedLine customClass="mb-3" />
   </>
 );
 
@@ -464,7 +461,7 @@ const StatusHeader = ({ status }: { status: boolean }) => (
   <h2
     title={status ? 'El análisis fue correcto' : 'El análisis no fue correcto'}
     className={cn(
-      'mt-4 flex w-full items-center justify-center gap-2 truncate rounded-md px-4 py-3 text-center',
+      'mt-2 flex w-full items-center justify-center gap-2 truncate rounded-md px-4 py-2 text-center',
       status ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
     )}
   >
@@ -495,35 +492,99 @@ const DataListForSummaryCard = ({
   data,
   handleDetail,
 }: IDataListForSummaryCard) => {
+  const [activeTooltip, setActiveTooltip] = useState<number | null>(null);
+
+  const handleTooltipToggle = (e: React.MouseEvent, id: number) => {
+    e.stopPropagation();
+    setActiveTooltip(activeTooltip === id ? null : id);
+  };
+
+  // Add click away listener
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      // Only close if clicking outside tooltip and its button
+      const target = e.target as HTMLElement;
+      if (activeTooltip !== null && !target.closest('.tooltip-container')) {
+        setActiveTooltip(null);
+      }
+    };
+
+    document.addEventListener('click', handleClickOutside);
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, [activeTooltip]);
+
   return (
-    <ul className="my-4 flex max-h-[300px] flex-col gap-4 overflow-y-auto overflow-x-hidden">
+    <ul className="my-2 flex max-h-[320px] flex-col gap-2 overflow-y-auto overflow-x-hidden px-1">
       {data.map((item) => (
         <li
           key={item.id}
-          onClick={() => handleDetail(item)}
-          className={cn(
-            'group flex cursor-pointer flex-col items-center justify-between gap-2 rounded-lg border p-2 text-sm sm:flex-row lg:flex-col xl:flex-row',
-            item.isCorrect
-              ? 'border-green-500 bg-green-100/50 text-green-500 hover:bg-green-100/80'
-              : 'border-yellow-500 bg-yellow-100/50 text-yellow-500 hover:bg-yellow-100/80'
-          )}
+          className="group relative flex flex-col rounded-lg border border-gray-200 bg-white shadow hover:shadow-md transition-all duration-200"
         >
-          {item.isCorrect ? (
-            <span>
-              <Check />
-            </span>
-          ) : (
-            <span>
-              <ExclamationTriangle />
-            </span>
-          )}
-          <p className="font-semibold text-black">
-            {`${item.name}: `}
-            <span className="font-normal">{item.description}</span>
-          </p>
-          <span className="animate-infinite rounded-full border-2 border-black p-1 text-black group-hover:animate-pulse">
-            <RightArrow size="size-4" strokeWidth={4} />
-          </span>
+          {/* Left status indicator */}
+          <div 
+            className={cn(
+              "absolute left-0 top-0 bottom-0 w-1 rounded-l-lg",
+              item.isCorrect ? "bg-green-500" : "bg-yellow-400"
+            )}
+          />
+
+          {/* Main content area */}
+          <div className="w-full px-3 py-2.5">
+            <div className="flex justify-between items-start mb-1.5">
+              {/* Title */}
+              <h3 className="text-base font-medium text-gray-900">{item.name}</h3>
+              
+              {/* Info button moved to top right */}
+              <div className="tooltip-container relative">
+                <button 
+                  type="button"
+                  className="rounded-full p-0.5 text-gray-400 bg-gray-50 hover:bg-gray-100 transition-colors duration-200"
+                  onClick={(e) => handleTooltipToggle(e, item.id)}
+                  aria-label="Mostrar más información"
+                  title="Ver descripción"
+                >
+                  <Info size="size-3.5" />
+                </button>
+                {activeTooltip === item.id && (
+                  <div 
+                    className="tooltip-container absolute z-50 right-0 top-full mt-1.5 w-64 rounded-lg bg-white p-2 text-xs text-gray-800 shadow-lg border border-gray-200"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <div className="font-medium mb-0.5">Descripción:</div>
+                    <div className="text-gray-600 text-xs">{item.description}</div>
+                  </div>
+                )}
+              </div>
+            </div>
+            
+            {/* Bottom row with status indicator and detailed analysis link */}
+            <div className="flex items-center justify-between mt-3">
+              {/* Status indicator moved to bottom left */}
+              {item.isCorrect ? (
+                <div className="flex items-center">
+                  <Check customClass="h-4 w-4 text-green-500 mr-1" />
+                  <span className="text-xs text-gray-900">Correcto</span>
+                </div>
+              ) : (
+                <div className="flex items-center">
+                  <ExclamationTriangle customClass="h-4 w-4 text-yellow-500 mr-1" />
+                  <span className="text-xs text-gray-900">Revisar</span>
+                </div>
+              )}
+
+              {/* "Ver análisis detallado" button with subtle orange hover */}
+              <button
+                type="button"
+                onClick={() => handleDetail(item)}
+                className="group/btn flex items-center gap-0.5 text-orange-500 hover:text-white px-2 py-1 rounded transition-all duration-300 text-xs font-medium bg-white hover:bg-orange-500 border border-orange-200 cursor-pointer"
+              >
+                <span>Ver análisis detallado</span>
+                <RightArrow size="size-3" strokeWidth={2} customClass="transition-transform duration-200 group-hover/btn:translate-x-0.5" />
+              </button>
+            </div>
+          </div>
         </li>
       ))}
     </ul>
