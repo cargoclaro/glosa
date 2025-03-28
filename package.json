@@ -18,15 +18,15 @@
     "pnpm:check": "pnpm outdated --compatible",
     "pnpm:update": "pnpm update",
     "nextjs:build": "next build",
-    "playwright:test": "playwright test",
+    "playwright:bdd": "playwright test",
+    "vitest:tdd": "vitest run",
     "vercel:link": "vercel link",
     "vercel:pull": "vercel env pull .env --environment=development",
     "db:push": "drizzle-kit push --force",
     "db:studio": "drizzle-kit studio",
     "db:reset": "tsx db/reset.ts",
     "dev:xml-to-json": "tsx app/\\(dashboard\\)/home/components/Header/glosa/xml-to-json.ts",
-    "dev:proceso-de-equivalencia": "tsx app/shared/services/customGloss/glosa/processdofequivalencia.ts",
-    "test:glosa": "vitest run"
+    "dev:proceso-de-equivalencia": "tsx app/shared/services/customGloss/glosa/processdofequivalencia.ts"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^1.2.2",
