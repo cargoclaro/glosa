@@ -2,6 +2,7 @@ import { LeftArrow } from '@/shared/icons';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import { PDFCarouselViewer } from '~/components/pdf-carousel';
 import { db } from '~/db';
 
 type IDynamicMetadata = {
@@ -14,7 +15,7 @@ export async function generateMetadata({
   const id = (await params).id;
 
   return {
-    title: `Resumen de Glosa ${id}`,
+    title: `Documentos de Operación ${id}`,
   };
 }
 
@@ -49,26 +50,79 @@ const GlossIdPage = async (props: { params: Promise<{ id: string }> }) => {
     notFound();
   }
 
+  // Debug info about files
+  console.log('Files found:', customGloss.files?.length || 0);
+  customGloss.files?.forEach((file, index) => {
+    console.log(`File ${index + 1}:`, {
+      id: file.id,
+      name: file.name,
+      url: file.url,
+      documentType: file.documentType || 'unknown'
+    });
+  });
+
+  // Find importer name if it exists in the context data
+  let importerName = '';
+  if (customGloss.tabs?.length > 0) {
+    for (const tab of customGloss.tabs) {
+      if (tab.context?.length > 0) {
+        for (const context of tab.context) {
+          if (context.data?.length > 0) {
+            for (const data of context.data) {
+              if (
+                data.name.toLowerCase().includes('importador') ||
+                data.name.toLowerCase().includes('razon_social')
+              ) {
+                importerName = data.value || '';
+                break;
+              }
+            }
+          }
+          if (importerName) break;
+        }
+      }
+      if (importerName) break;
+    }
+  }
+
+  // Use the importerName from the CustomGloss if it exists
+  if (!importerName && customGloss.importerName) {
+    importerName = customGloss.importerName;
+  }
+
+  // Fallback importer name
+  if (!importerName) {
+    importerName = `Operación ${id}`;
+  }
+
+  // Use the files from the database
+  const files = customGloss.files || [];
+
   return (
-    <article>
-      <h1 className="font-bold text-2xl">
-        <Link className="inline-flex items-center gap-2" href="/gloss">
-          <span>
-            <LeftArrow strokeWidth={3} />
-          </span>
-          Mis Operaciones
-        </Link>
-      </h1>
-      <div className="mt-4 flex flex-col gap-4">
-        <p>{customGloss.summary}</p>
-        <p>
-          <Link
-            href={`/gloss/${id}/analysis`}
-            className="rounded-md border border-white bg-primary px-12 py-2 text-sm text-white shadow-black/50 shadow-md hover:bg-primary/80"
-          >
-            Ver análisis
+    <article className="mx-auto max-w-6xl">
+      <div className="mb-6 flex items-center justify-between">
+        <h1 className="font-bold text-2xl">
+          <Link className="inline-flex items-center gap-2" href="/gloss">
+            <span>
+              <LeftArrow strokeWidth={3} />
+            </span>
+            Mis Operaciones
           </Link>
-        </p>
+        </h1>
+        <Link
+          href={`/gloss/${id}/analysis`}
+          className="rounded-md border border-white bg-primary px-6 py-2 text-sm text-white shadow-black/50 shadow-md hover:bg-primary/80"
+        >
+          Ver análisis detallado
+        </Link>
+      </div>
+
+      {/* PDF Carousel Viewer */}
+      <div className="rounded-xl bg-white p-6 shadow-lg">
+        <PDFCarouselViewer 
+          files={files} 
+          importerName={importerName}
+        />
       </div>
     </article>
   );
