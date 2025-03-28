@@ -1,6 +1,7 @@
 import type { Cove } from '@/shared/services/customGloss/data-extraction/schemas';
 import type { CustomGlossTabTable } from '~/db/schema';
 import { cn } from '~/lib/utils';
+import { getHighlightBorder, getHighlightFill } from './utils/highlight-styles';
 
 type CoveMerchandiseProps = {
   cove: Cove;
@@ -17,24 +18,6 @@ export function CoveMerchandise({
   onClick,
   tabInfoSelected = { name: '', isCorrect: false, isVerified: false },
 }: CoveMerchandiseProps) {
-  // Helper functions to determine highlight styles
-  const getHighlightBorder = (section: string) => {
-    const tab = tabs.find((tab) => tab.name === section);
-    return tab?.isCorrect || tab?.isVerified
-      ? 'border-green-500'
-      : 'border-yellow-400';
-  };
-
-  const getHighlightFill = (section: string) => {
-    if (tabInfoSelected.name !== section) {
-      return '';
-    }
-
-    return tabInfoSelected.isCorrect || tabInfoSelected.isVerified
-      ? 'bg-green-100/50'
-      : 'bg-yellow-100/50';
-  };
-
   // Get all merchandise items except the first one (which is displayed on the recipient page)
   const allItems = cove.datos_mercancia?.slice(1) || [];
 
@@ -93,8 +76,8 @@ export function CoveMerchandise({
                 <div
                   className={cn(
                     'mb-1 cursor-pointer overflow-hidden rounded-md border-2',
-                    getHighlightBorder('Validación de mercancías'),
-                    getHighlightFill('Validación de mercancías')
+                    getHighlightBorder('Validación de mercancías', tabs),
+                    getHighlightFill('Validación de mercancías', tabInfoSelected)
                   )}
                   onClick={() => onClick('Datos de la mercancía')}
                 >

@@ -3,13 +3,13 @@ import { cn } from '~/lib/utils';
 import IdentificadoresTable from './identificadores/identificadores-table';
 import LiquidacionTable from './liquidacion/liquidacion-table';
 import TasasTable from './tasas/tasas-table';
+import { getHighlightBorder, getHighlightFill } from './utils/highlight-styles';
 
 import type { CustomGlossTabTable } from '~/db/schema';
 
 interface PedimentoIdentificadoresProps {
   identificadoresNivelPedimento: {
     clave_seccion_aduanera: string;
-    marcas_numeros_bultos: string;
   };
   identificadoresPedimento: Array<{
     clave: string;
@@ -52,33 +52,15 @@ const PedimentoIdentificadores: React.FC<PedimentoIdentificadoresProps> = ({
   onClick,
   tabInfoSelected = { name: '', isCorrect: false, isVerified: false },
 }) => {
-  // Helper functions to determine highlight styles
-  const getHighlightBorder = (section: string) => {
-    const tab = tabs.find((tab) => tab.name === section);
-    return tab?.isCorrect || tab?.isVerified
-      ? 'border-green-500'
-      : 'border-yellow-400';
-  };
-
-  const getHighlightFill = (section: string) => {
-    if (tabInfoSelected.name !== section) {
-      return '';
-    }
-
-    return tabInfoSelected.isCorrect || tabInfoSelected.isVerified
-      ? 'bg-green-100/50'
-      : 'bg-yellow-100/50';
-  };
-
   return (
     <div
       className={cn(
         'mb-4 w-full cursor-pointer border border-gray-400',
         'overflow-hidden rounded-md border-2',
-        getHighlightBorder('Clave de destino/origen'),
-        getHighlightFill('Clave de destino/origen')
+        getHighlightBorder('Identificadores nivel pedimento', tabs),
+        getHighlightFill('Identificadores nivel pedimento', tabInfoSelected)
       )}
-      onClick={() => onClick('Clave de destino/origen')}
+      onClick={() => onClick('Identificadores nivel pedimento')}
     >
       <div className="grid grid-cols-12 gap-0">
         <div className="col-span-4">
@@ -103,27 +85,6 @@ const PedimentoIdentificadores: React.FC<PedimentoIdentificadoresProps> = ({
           </div>
           <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-center font-normal text-[10px] text-xs text-xs last:border-r-0">
             {identificadoresNivelPedimento.clave_seccion_aduanera}
-          </div>
-        </div>
-      </div>
-
-      <div className="mt-2 grid grid-cols-12 gap-0">
-        <div className="col-span-8">
-          <div className="border-gray-400 border-b bg-gray-200 py-0.5 py-1 text-center font-semibold text-[11px] text-xs uppercase">
-            MARCAS, NUMEROS Y TOTAL DE BULTOS:
-          </div>
-          <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 font-normal text-[10px] text-xs text-xs last:border-r-0">
-            {identificadoresNivelPedimento.marcas_numeros_bultos}
-          </div>
-        </div>
-        <div className="col-span-4">
-          <div className="flex h-full flex-col">
-            <div className="border-gray-400 border-b bg-gray-200 py-0.5 py-1 text-center font-semibold text-[10px] text-black text-xs uppercase tracking-wider">
-              1/2
-            </div>
-            <div className="flex flex min-h-6 flex-1 items-center items-center justify-center border-gray-400 border-r px-2 py-0.5 text-center font-normal text-[10px] text-xs text-xs last:border-r-0">
-              2
-            </div>
           </div>
         </div>
       </div>

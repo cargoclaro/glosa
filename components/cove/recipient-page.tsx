@@ -1,6 +1,7 @@
 import type { Cove } from '@/shared/services/customGloss/data-extraction/schemas';
 import type { CustomGlossTabTable } from '~/db/schema';
 import { cn } from '~/lib/utils';
+import { getHighlightBorder, getHighlightFill } from './utils/highlight-styles';
 
 interface ICoveRecipientProps {
   cove: Cove;
@@ -15,24 +16,6 @@ export function CoveRecipient({
   onClick,
   tabInfoSelected = { name: '', isCorrect: false, isVerified: false },
 }: ICoveRecipientProps) {
-  // Helper functions to determine highlight styles
-  const getHighlightBorder = (section: string) => {
-    const tab = tabs.find((tab) => tab.name === section);
-    return tab?.isCorrect || tab?.isVerified
-      ? 'border-green-500'
-      : 'border-yellow-400';
-  };
-
-  const getHighlightFill = (section: string) => {
-    if (tabInfoSelected.name !== section) {
-      return '';
-    }
-
-    return tabInfoSelected.isCorrect || tabInfoSelected.isVerified
-      ? 'bg-green-100/50'
-      : 'bg-yellow-100/50';
-  };
-
   return (
     <div className="min-h-screen bg-linear-to-b from-gray-50 to-gray-100">
       <div className="container mx-auto px-2 py-4">
@@ -78,8 +61,8 @@ export function CoveRecipient({
               <div
                 className={cn(
                   'mb-1 cursor-pointer overflow-hidden rounded-md border-2',
-                  getHighlightBorder('Datos Proveedor Destinatario'),
-                  getHighlightFill('Datos Proveedor Destinatario')
+                  getHighlightBorder('Datos Proveedor Destinatario', tabs),
+                  getHighlightFill('Datos Proveedor Destinatario', tabInfoSelected)
                 )}
                 onClick={() => onClick('Datos generales del destinatario')}
               >
@@ -139,8 +122,8 @@ export function CoveRecipient({
                 <div
                   className={cn(
                     'mb-1 cursor-pointer overflow-hidden rounded-md border-2',
-                    getHighlightBorder('Datos Proveedor Destinatario'),
-                    getHighlightFill('Datos Proveedor Destinatario')
+                    getHighlightBorder('Datos Proveedor Destinatario', tabs),
+                    getHighlightFill('Datos Proveedor Destinatario', tabInfoSelected)
                   )}
                   onClick={() => onClick('Domicilio del destinatario')}
                 >
@@ -249,8 +232,8 @@ export function CoveRecipient({
               <div
                 className={cn(
                   'mb-1 cursor-pointer overflow-hidden rounded-md border-2',
-                  getHighlightBorder('Validación de mercancías'),
-                  getHighlightFill('Validación de mercancías')
+                  getHighlightBorder('Validación de mercancías', tabs),
+                  getHighlightFill('Validación de mercancías', tabInfoSelected)
                 )}
                 onClick={() => onClick('Datos de la mercancía')}
               >

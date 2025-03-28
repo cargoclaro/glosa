@@ -1,0 +1,56 @@
+import type { CustomGlossTabTable } from '~/db/schema';
+
+/**
+ * Determines the border color based on validation status
+ */
+export const getHighlightBorder = (
+  section: string,
+  tabs: CustomGlossTabTable[] = []
+): string => {
+  const tab = tabs.find((tab) => tab.name === section);
+  return tab?.isCorrect || tab?.isVerified
+    ? 'border-green-500'
+    : 'border-yellow-400';
+};
+
+/**
+ * Determines the background fill color for the selected section
+ * and applies reduced opacity for non-selected sections
+ */
+export const getHighlightFill = (
+  section: string,
+  tabInfoSelected: { name: string; isCorrect: boolean; isVerified: boolean }
+): string => {
+  // If this is the selected section
+  if (tabInfoSelected.name === section) {
+    return tabInfoSelected.isCorrect || tabInfoSelected.isVerified
+      ? 'bg-green-100/50'
+      : 'bg-yellow-100/50';
+  }
+  
+  // If this is not the selected section, apply reduced opacity (60% opacity)
+  // This allows non-selected boxes to fade into the background but still be visible
+  return 'opacity-60';
+};
+
+/**
+ * Get combined highlight classes (border + fill) for a section
+ * This is a convenience function for components that want both classes at once
+ */
+export const getHighlightClasses = (
+  section: string,
+  tabs: CustomGlossTabTable[] = [],
+  tabInfoSelected: { name: string; isCorrect: boolean; isVerified: boolean } = {
+    name: '',
+    isCorrect: false,
+    isVerified: false,
+  }
+): string => {
+  // We treat the empty tabInfoSelected.name as a special case to avoid applying opacity
+  // This ensures backward compatibility with components that don't expect opacity reduction
+  const fillClass = tabInfoSelected.name === '' 
+    ? '' 
+    : getHighlightFill(section, tabInfoSelected);
+    
+  return `${getHighlightBorder(section, tabs)} ${fillClass}`;
+}; 

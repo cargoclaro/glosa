@@ -2,6 +2,7 @@ import type { Partida } from '@/shared/services/customGloss/data-extraction/sche
 import type React from 'react';
 import type { CustomGlossTabTable } from '~/db/schema';
 import { cn } from '~/lib/utils';
+import { getHighlightBorder, getHighlightFill } from './utils/highlight-styles';
 
 // --- Type Definitions ---
 
@@ -43,7 +44,6 @@ interface RowProps extends React.HTMLAttributes<HTMLDivElement> {
 
 // --- Constants ---
 const BORDER_CLASS = 'border-gray-400'; // Default border for internal elements
-const DEFAULT_HIGHLIGHT_BORDER_CLASS = 'border-gray-400'; // Default for the outer border-2
 const HEADER_BG_CLASS = 'bg-gray-300';
 const TEXT_SIZE_CLASS = 'text-[9px]';
 const PADDING_CLASS = 'px-1 py-0.5';
@@ -60,22 +60,6 @@ const formatNumber = (num: number | null | undefined): string => {
 const formatTasa = (num: number | null | undefined): string => {
   if (num === null || num === undefined) return '-';
   return num.toFixed(6);
-};
-
-// Determines the BORDER color based on the presence and status in the 'tabs' array
-const getHighlightBorderClass = (
-  sectionName: string,
-  tabs: CustomGlossTabTable[] = []
-): string => {
-  const tab = tabs.find((t) => t.name === sectionName);
-  if (tab) {
-    // If a corresponding tab exists, determine border color
-    return tab.isCorrect || tab.isVerified
-      ? 'border-green-500'
-      : 'border-yellow-400';
-  }
-  // If no corresponding tab, use the default border color for the border-2
-  return DEFAULT_HIGHLIGHT_BORDER_CLASS;
 };
 
 // --- Sub-Components (Cell, Row, Section Components) ---
@@ -568,25 +552,22 @@ const PartidaItem: React.FC<PartidaItemProps> = ({
   tabInfoSelected, // Receive the full object
 }) => {
   const partidaNumber = index + 1;
-  const partidaSectionName = `Partida ${partidaNumber}`;
+  const sectionName = `Partida ${partidaNumber}`;
 
-  // Use the restored helper functions but only for the border color
-  const borderClass = getHighlightBorderClass(partidaSectionName, tabs);
-
-  // Determine if this partida is the one selected
-  const isHighlighted = tabInfoSelected.name === partidaSectionName;
-
-  // Determine if this partida is valid (correct or verified)
-  const isValid = tabInfoSelected.isCorrect || tabInfoSelected.isVerified;
+  // Use the new functions for highlighting
+  const isHighlighted = tabInfoSelected?.name === sectionName;
+  
+  // Determine valid state for proper coloring based on tabInfoSelected
+  const isValid = tabInfoSelected?.isCorrect || tabInfoSelected?.isVerified;
 
   return (
     <div
       className={cn(
-        'mb-4 cursor-pointer overflow-hidden rounded', // Base styles + rounded corners
-        'border-2', // Always apply border-2 thickness
-        borderClass // Apply border color (green, yellow, or default gray)
+        'mb-4 border-2 rounded-md overflow-hidden cursor-pointer', // outer container styling
+        getHighlightBorder(sectionName, tabs), // border color based on validation status
+        getHighlightFill(sectionName, tabInfoSelected) // background and opacity styling
       )}
-      onClick={() => onClick(partidaSectionName)}
+      onClick={() => onClick(sectionName)}
     >
       {/* Add the PARTIDAS title to each partida item */}
       <PartidaTitleSection />

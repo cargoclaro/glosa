@@ -1,5 +1,7 @@
 import type React from 'react';
 import type { CustomGlossTabTable } from '~/db/schema';
+import { cn } from '~/lib/utils';
+import { getHighlightBorder, getHighlightFill } from './utils/highlight-styles';
 
 interface PedimentoContenedoresProps {
   numero: string;
@@ -12,9 +14,20 @@ interface PedimentoContenedoresProps {
 const PedimentoContenedores: React.FC<PedimentoContenedoresProps> = ({
   numero,
   tipo,
+  tabs = [],
+  onClick,
+  tabInfoSelected = { name: '', isCorrect: false, isVerified: false },
 }) => {
   return (
-    <div className="mb-4 w-full border border-gray-400">
+    <div 
+      className={cn(
+        'mb-4 w-full border border-gray-400 cursor-pointer',
+        'overflow-hidden rounded-md border-2',
+        getHighlightBorder('Datos del transporte', tabs),
+        getHighlightFill('Datos del transporte', tabInfoSelected)
+      )}
+      onClick={() => onClick('Datos del transporte')}
+    >
       <div className="border border-gray-400">
         <div className="flex min-h-6 items-center border-gray-400 border-gray-400 border-r border-b bg-gray-200 bg-gray-200 px-2 py-0.5 py-1 text-center text-center font-bold font-semibold text-[10px] text-black text-xs text-xs uppercase tracking-wider last:border-r-0">
           CONTENEDORES/ CARRO DE FERROCARRIL/ NÚMERO ECONÓMICO DEL VEHÍCULO
