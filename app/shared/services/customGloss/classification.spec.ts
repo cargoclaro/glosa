@@ -1,16 +1,15 @@
 import { describe, expect, it } from 'vitest';
 import { expectToBeDefined } from '~/lib/vitest/utils';
-import { classifyDocuments } from './classification';
-import type { DocumentType } from './utils';
+import { classifyDocuments, type Classification } from './classification';
 
 describe('Classification', () => {
   interface TestCase {
-    documentType: DocumentType;
+    classification: Classification;
     fileUrls: string[];
   }
   const testCases: TestCase[] = [
     {
-      documentType: 'carta318',
+      classification: 'Carta Regla 3.1.8',
       fileUrls: [
         'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15Vk6xFysC0QwoBJsWz9AMZTXgeVDlIUcOYFa4',
         'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15d4sdeUMah63MQ4ULAyrOudGFkmN5TBsKeVRl',
@@ -19,16 +18,17 @@ describe('Classification', () => {
         'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15sRQlbKdGH6Y152uanyQckEJU0xmhI7Ml9WbA',
         'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y153eCpVzBhnLpbl6it5NaGkD4BTRJsU8jFoO2K',
         'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15VInFhpNsC0QwoBJsWz9AMZTXgeVDlIUcOYFa',
+        'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15AF3N1bVEhI73SMs1mOVHTgc05pWuYPnbZRty',
       ],
     },
     {
-      documentType: 'cove',
+      classification: 'Cove',
       fileUrls: [
         'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15u1EQuvyES0lPex1mXBWQop7GAjJIMsDCUZk2',
       ],
     },
     {
-      documentType: 'factura',
+      classification: 'Factura',
       fileUrls: [
         'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15KDcF7h24cxAwqMmpsYVRUeW6jkbtTlr5Qf7D',
         'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15M1vUn907FYSfgKGA9JUX3rIQ2amz4bTDeNjd',
@@ -46,33 +46,35 @@ describe('Classification', () => {
       ],
     },
     {
-      documentType: 'listaDeEmpaque',
+      classification: 'Packing List',
       fileUrls: [
         'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15P5NLJRxkozZNG45DnM3Oy1CRlXrVAEjFKYBm',
-        'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15Y6qUlCHjXIrsoaGCginAhSTQkP245ld9H0yU',
         'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15U6jQv754gXutEPfbM3xZokBl6wDHdjnC8LAK',
         'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15Qv9MjZmP3ThsNJt5xqeOK1fAPnj4uVgcvWRl',
-        'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15jnqfKkXiXu6oPELDcp4qty5SYJUsk1xhTNwm',
         'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15YZPve7HjXIrsoaGCginAhSTQkP245ld9H0yU',
         'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15QvzLn1LP3ThsNJt5xqeOK1fAPnj4uVgcvWRl',
-        'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y154kOCZmAZyVxPdXUvHtS0WcsbRhYGfge7EjTp',
         'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y150DvPWbozluNwmWerUvXsTP7dntpA69DgMq1C',
         'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15JwHxSp6zLoABGKujt2Tp51WEDQH0FRheI6Sn',
       ],
     },
     {
-      documentType: 'documentoDeTransporte',
+      classification: 'Bill of Lading',
       fileUrls: [
-        'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15AF3N1bVEhI73SMs1mOVHTgc05pWuYPnbZRty',
+        'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15Y6qUlCHjXIrsoaGCginAhSTQkP245ld9H0yU',
+        'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15jnqfKkXiXu6oPELDcp4qty5SYJUsk1xhTNwm',
+        'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y154kOCZmAZyVxPdXUvHtS0WcsbRhYGfge7EjTp',
+      ]
+    },
+    {
+      classification: 'Air Waybill',
+      fileUrls: [
         'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15bEYET5z4sCMTwv8SiueyUEh9X7BFO4rKQIp5',
         'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y156xhtNS1lBozqeKEFZX0D348m9hsYyRkctGC5',
         'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15Vhu1uUsC0QwoBJsWz9AMZTXgeVDlIUcOYFa4',
-        'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15rTBz5vc8K93NPqdLxJlVXocZwzYSjOkybiuR',
-        'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15c1QI1UVcvCh6jLY2TW18xoSftlQJw0FzIEAK',
-      ],
+      ]
     },
     {
-      documentType: 'pedimento',
+      classification: 'Pedimento',
       fileUrls: [
         'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15zV3W89SgutyXdVR43qhBYaSHWfrT9MLbDjkN',
         'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15RC2dzWjBNb7QDtefE4Jkcj0LXAp19KrPC5ny',
@@ -96,7 +98,7 @@ describe('Classification', () => {
     const allFiles = testCases.flatMap((testCase) =>
       testCase.fileUrls.map((ufsUrl) => ({
         ufsUrl,
-        expectedDocumentType: testCase.documentType,
+        expectedClassification: testCase.classification,
       }))
     );
 
@@ -109,14 +111,14 @@ describe('Classification', () => {
 
     // Create a mapping from ufsUrl to expected document type
     const urlToExpectedTypeMap = new Map(
-      allFiles.map((file) => [file.ufsUrl, file.expectedDocumentType])
+      allFiles.map((file) => [file.ufsUrl, file.expectedClassification])
     );
 
     // Check if each file was correctly classified
     for (const file of classifiedFiles) {
       const expectedType = urlToExpectedTypeMap.get(file.ufsUrl);
       expectToBeDefined(expectedType);
-      expect.soft(file.documentType, `Document type for ${file.ufsUrl}`).toBe(
+      expect.soft(file.classification, `Classification for ${file.ufsUrl}`).toBe(
         expectedType
       );
     }
