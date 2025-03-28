@@ -315,11 +315,17 @@ export const analysis = api
         glossId: newCustomGloss.id,
       };
     } catch (error) {
+      if (error instanceof Error) {
+        return {
+          success: false,
+          message: error.message,
+        };
+      }
       // biome-ignore lint/suspicious/noConsole: Should be reported to Sentry
       console.error(error);
       return {
         success: false,
-        message: 'Ocurrió un error interno',
+        message: `Ocurrió un error interno: ${error}`,
       };
     }
   });
