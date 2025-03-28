@@ -73,6 +73,7 @@ export async function classifyDocuments(
       } = await generateObject({
         model: google('gemini-2.0-flash-001'),
         ...telemetryConfig,
+        seed: 42,
         system: `
         Eres un experto en análisis y clasificación de documentos aduaneros.
         

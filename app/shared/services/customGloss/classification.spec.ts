@@ -1,45 +1,117 @@
 import { describe, it, expect } from 'vitest';
 import { classifyDocuments } from './classification';
 import type { DocumentType } from './classification';
-import { expectToBeDefined } from '~/lib/utils';
+import { expectToBeDefined } from '~/lib/vitest/utils';
 
 describe('Classification', () => {
-  it('should correctly classify a regular "expediente"', async () => {
-    interface TestFile {
-      ufsUrl: string;
-      expectedDocumentType: DocumentType;
+  interface TestCase {
+    documentType: DocumentType;
+    fileUrls: string[];
+  }
+  const testCases: TestCase[] = [
+    {
+      documentType: 'carta318',
+      fileUrls: [
+        "https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15Vk6xFysC0QwoBJsWz9AMZTXgeVDlIUcOYFa4",
+        "https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15d4sdeUMah63MQ4ULAyrOudGFkmN5TBsKeVRl",
+        "https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y153mEQatBhnLpbl6it5NaGkD4BTRJsU8jFoO2K",
+        "https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y153KY9n8BhnLpbl6it5NaGkD4BTRJsU8jFoO2K",
+        "https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15sRQlbKdGH6Y152uanyQckEJU0xmhI7Ml9WbA",
+        "https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y153eCpVzBhnLpbl6it5NaGkD4BTRJsU8jFoO2K",
+        "https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15VInFhpNsC0QwoBJsWz9AMZTXgeVDlIUcOYFa",
+      ]
+    },
+    {
+      documentType: 'cove',
+      fileUrls: [
+        'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15u1EQuvyES0lPex1mXBWQop7GAjJIMsDCUZk2'
+      ]
+    },
+    {
+      documentType: 'factura',
+      fileUrls: [
+        'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15KDcF7h24cxAwqMmpsYVRUeW6jkbtTlr5Qf7D',
+        "https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15M1vUn907FYSfgKGA9JUX3rIQ2amz4bTDeNjd",
+        "https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15P7iu6tIxkozZNG45DnM3Oy1CRlXrVAEjFKYB",
+        "https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15hNsoakFivngwCHKuLPbSFNEMV217joIx9qfk",
+        "https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15R98CiWjBNb7QDtefE4Jkcj0LXAp19KrPC5ny",
+        "https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15WePKBq3wjBm5PIGkCivebVrsyDL3Mfap4oEZ",
+        "https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15DY8emWvXf1H4BGpPhqDTbi9LIkRoZlxA503e",
+        "https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y154oMDbcAZyVxPdXUvHtS0WcsbRhYGfge7EjTp",
+        "https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15KgUEE124cxAwqMmpsYVRUeW6jkbtTlr5Qf7D",
+        "https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15aYazRw0RiU9Wd36XkuP4qMsp7xZS2nIEhTNz",
+        "https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15OgKYdGq3sqVEtiorhnZIFDfCcbMey8HJpjTU",
+        "https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15dL2OcXaMah63MQ4ULAyrOudGFkmN5TBsKeVR",
+        "https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15dhOithMah63MQ4ULAyrOudGFkmN5TBsKeVRl",
+      ]
+    },
+    {
+      documentType: 'listaDeEmpaque',
+      fileUrls: [
+        'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15P5NLJRxkozZNG45DnM3Oy1CRlXrVAEjFKYBm',
+        'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15Y6qUlCHjXIrsoaGCginAhSTQkP245ld9H0yU',
+        'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15U6jQv754gXutEPfbM3xZokBl6wDHdjnC8LAK',
+        'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15Qv9MjZmP3ThsNJt5xqeOK1fAPnj4uVgcvWRl',
+        'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15jnqfKkXiXu6oPELDcp4qty5SYJUsk1xhTNwm',
+        'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15YZPve7HjXIrsoaGCginAhSTQkP245ld9H0yU',
+        'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15QvzLn1LP3ThsNJt5xqeOK1fAPnj4uVgcvWRl',
+        'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y154kOCZmAZyVxPdXUvHtS0WcsbRhYGfge7EjTp',
+        'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y150DvPWbozluNwmWerUvXsTP7dntpA69DgMq1C',
+        'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15JwHxSp6zLoABGKujt2Tp51WEDQH0FRheI6Sn',
+      ]
+    },
+    {
+      documentType: 'documentoDeTransporte',
+      fileUrls: [
+        'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15AF3N1bVEhI73SMs1mOVHTgc05pWuYPnbZRty',
+        "https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15bEYET5z4sCMTwv8SiueyUEh9X7BFO4rKQIp5",
+        "https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y156xhtNS1lBozqeKEFZX0D348m9hsYyRkctGC5",
+        'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15Vhu1uUsC0QwoBJsWz9AMZTXgeVDlIUcOYFa4',
+        'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15rTBz5vc8K93NPqdLxJlVXocZwzYSjOkybiuR',
+        'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15c1QI1UVcvCh6jLY2TW18xoSftlQJw0FzIEAK',
+      ]
+    },
+    {
+      documentType: 'pedimento',
+      fileUrls: [
+        'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15zV3W89SgutyXdVR43qhBYaSHWfrT9MLbDjkN',
+        "https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15RC2dzWjBNb7QDtefE4Jkcj0LXAp19KrPC5ny",
+        "https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15sZosE3GH6Y152uanyQckEJU0xmhI7Ml9WbAj",
+        "https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y1505BkNhozluNwmWerUvXsTP7dntpA69DgMq1C",
+        "https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15zM2uZQrSgutyXdVR43qhBYaSHWfrT9MLbDjk",
+        "https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15cIQMudVcvCh6jLY2TW18xoSftlQJw0FzIEAK",
+        "https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15mWGiMerE2uXJiL0QAGTzsqlyf96tYwco47Dn",
+        "https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15atV3D30RiU9Wd36XkuP4qMsp7xZS2nIEhTNz",
+        "https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15JOd9KTh6zLoABGKujt2Tp51WEDQH0FRheI6S",
+        "https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15xPXHg7vVzZoT1kgBtS2DfJw4AMx5qLjKYOWG",
+        "https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15XFI4wFQ3p02PnBlWqwL7baCzMhxf4mHoEDc9",
+        "https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y151oxYkBOdKsYBGW4XISFeRC5wmafh0qJ89ktM",
+        "https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15YWstnNHjXIrsoaGCginAhSTQkP245ld9H0yU",
+      ]
     }
-    const testFiles: TestFile[] = [
-      {
-        ufsUrl: 'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15u1EQuvyES0lPex1mXBWQop7GAjJIMsDCUZk2',
-        expectedDocumentType: 'cove'
-      },
-      {
-        ufsUrl: 'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15KDcF7h24cxAwqMmpsYVRUeW6jkbtTlr5Qf7D',
-        expectedDocumentType: 'factura'
-      },
-      {
-        ufsUrl: 'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15P5NLJRxkozZNG45DnM3Oy1CRlXrVAEjFKYBm',
-        expectedDocumentType: 'listaDeEmpaque'
-      },
-      {
-        ufsUrl: 'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15AF3N1bVEhI73SMs1mOVHTgc05pWuYPnbZRty',
-        expectedDocumentType: 'documentoDeTransporte'
-      },
-      {
-        ufsUrl: 'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15zV3W89SgutyXdVR43qhBYaSHWfrT9MLbDjkN',
-        expectedDocumentType: 'pedimento'
-      }
-    ];
+  ];
 
-    const classifiedFiles = await classifyDocuments(testFiles.map(testFile => ({
-      ufsUrl: testFile.ufsUrl
-    })));
+  it.concurrent('should correctly classify documents', async () => {
+    // Create a flat array of all file URLs
+    const allFiles = testCases.flatMap(testCase => 
+      testCase.fileUrls.map(ufsUrl => ({ ufsUrl, expectedDocumentType: testCase.documentType }))
+    );
 
-    for (const testFile of testFiles) {
-      const classifiedFile = classifiedFiles.find(classifiedFile => classifiedFile.ufsUrl === testFile.ufsUrl);
-      expectToBeDefined(classifiedFile);
-      expect(classifiedFile.documentType).toBe(testFile.expectedDocumentType);
+    // Classify all files at once
+    const classifiedFiles = await classifyDocuments(allFiles.map(({ ufsUrl }) => ({ ufsUrl })));
+
+    expect(classifiedFiles).toHaveLength(allFiles.length);
+    
+    // Create a mapping from ufsUrl to expected document type
+    const urlToExpectedTypeMap = new Map(
+      allFiles.map(file => [file.ufsUrl, file.expectedDocumentType])
+    );
+    
+    // Check if each file was correctly classified
+    for (const file of classifiedFiles) {
+      const expectedType = urlToExpectedTypeMap.get(file.ufsUrl);
+      expectToBeDefined(expectedType);
+      expect.soft(file.documentType).toBe(expectedType);
     }
   });
 });
