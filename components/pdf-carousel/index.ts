@@ -1,1 +1,1 @@
-export { default as PDFCarouselViewer } from './pdf-carousel-viewer'; 
+export { default as PDFCarouselViewer } from './pdf-carousel-viewer';

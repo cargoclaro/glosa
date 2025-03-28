@@ -62,7 +62,7 @@ export default function GlossDataTable<TData, TValue>({
 
   return (
     <section className="pb-8">
-      <h2 className="font-semibold text-2xl mb-6">Tus Expedientes</h2>
+      <h2 className="mb-6 font-semibold text-2xl">Tus Expedientes</h2>
       <div className="flex flex-col gap-4 py-4 md:flex-row">
         <div className="relative flex-1">
           <label
@@ -77,7 +77,7 @@ export default function GlossDataTable<TData, TValue>({
             value={table.getState().globalFilter}
             placeholder="Buscar por nombre de importador"
             onChange={(event) => setGlobalFilter(event.target.value)}
-            className="h-12 w-full rounded-xl border border-gray-200 pr-4 pl-12 text-sm shadow-sm transition-all focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none md:max-w-md"
+            className="h-12 w-full rounded-xl border border-gray-200 pr-4 pl-12 text-sm shadow-sm transition-all focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 md:max-w-md"
           />
         </div>
         <div className="relative">
@@ -90,7 +90,7 @@ export default function GlossDataTable<TData, TValue>({
           <select
             id="operationStatusSelect"
             aria-label="operationStatusSelect"
-            className="h-12 w-full appearance-none rounded-xl border border-gray-200 pl-12 pr-10 text-sm shadow-sm transition-all focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none"
+            className="h-12 w-full appearance-none rounded-xl border border-gray-200 pr-10 pl-12 text-sm shadow-sm transition-all focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
             defaultValue={(() => {
               const filterValue = table
                 .getColumn('operationStatus')
@@ -108,22 +108,35 @@ export default function GlossDataTable<TData, TValue>({
             <option value="DONE">Completado</option>
           </select>
           <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4">
-            <svg className="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            <svg
+              className="h-4 w-4 text-gray-400"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M19 9l-7 7-7-7"
+              />
             </svg>
           </div>
         </div>
       </div>
-      <div className="rounded-xl border border-gray-200 bg-white shadow-sm overflow-hidden">
+      <div className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
         <Table>
           <TableHeader className="bg-gray-50/80">
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id} className="border-b border-gray-200">
+              <TableRow
+                key={headerGroup.id}
+                className="border-gray-200 border-b"
+              >
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead 
+                    <TableHead
                       key={header.id}
-                      className="px-6 py-4 text-sm font-semibold text-gray-700"
+                      className="px-6 py-4 font-semibold text-gray-700 text-sm"
                     >
                       {header.isPlaceholder
                         ? null
@@ -144,8 +157,8 @@ export default function GlossDataTable<TData, TValue>({
                   key={row.id}
                   data-state={row.getIsSelected() && 'selected'}
                   className={cn(
-                    "border-b border-gray-100 transition-colors hover:bg-orange-50/60 last:border-none cursor-pointer",
-                    rowIndex % 2 === 0 ? "bg-white" : "bg-gray-50/30"
+                    'cursor-pointer border-gray-100 border-b transition-colors last:border-none hover:bg-orange-50/60',
+                    rowIndex % 2 === 0 ? 'bg-white' : 'bg-gray-50/30'
                   )}
                 >
                   {row.getVisibleCells().map((cell) => {
@@ -154,50 +167,76 @@ export default function GlossDataTable<TData, TValue>({
                       const status = cell.getValue() as string;
                       return (
                         <TableCell key={cell.id} className="px-6 py-4">
-                          <div 
+                          <div
                             className={cn(
-                              "inline-flex items-center px-3 py-1 rounded-full text-xs font-medium",
-                              status === 'IN_PROGRESS' ? "bg-amber-100 text-amber-700 border border-amber-200" : 
-                              status === 'DONE' ? "bg-green-100 text-green-700 border border-green-200" : 
-                              "bg-gray-100 text-gray-700 border border-gray-200"
+                              'inline-flex items-center rounded-full px-3 py-1 font-medium text-xs',
+                              status === 'IN_PROGRESS'
+                                ? 'border border-amber-200 bg-amber-100 text-amber-700'
+                                : status === 'DONE'
+                                  ? 'border border-green-200 bg-green-100 text-green-700'
+                                  : 'border border-gray-200 bg-gray-100 text-gray-700'
                             )}
                           >
-                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                            {flexRender(
+                              cell.column.columnDef.cell,
+                              cell.getContext()
+                            )}
                           </div>
                         </TableCell>
                       );
                     }
-                    
+
                     // Special styling for the action button column
                     if (cell.column.id === 'actions') {
                       return (
-                        <TableCell key={cell.id} className="px-3 py-4 text-right">
+                        <TableCell
+                          key={cell.id}
+                          className="px-3 py-4 text-right"
+                        >
                           <button
-                            className="rounded-full bg-primary/10 p-2.5 text-primary hover:bg-orange-500 hover:text-white transition-all duration-200 hover:shadow-md"
+                            className="rounded-full bg-primary/10 p-2.5 text-primary transition-all duration-200 hover:bg-orange-500 hover:text-white hover:shadow-md"
                             aria-label="View details"
                           >
-                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                              <path d="M6 12L10 8L6 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                            <svg
+                              width="16"
+                              height="16"
+                              viewBox="0 0 16 16"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M6 12L10 8L6 4"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              />
                             </svg>
                           </button>
                         </TableCell>
                       );
                     }
-                    
+
                     // Styling for the ID column (hash)
                     if (cell.column.id === 'id') {
                       return (
                         <TableCell key={cell.id} className="px-6 py-4">
-                          <span className="font-mono text-xs text-gray-600">
-                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                          <span className="font-mono text-gray-600 text-xs">
+                            {flexRender(
+                              cell.column.columnDef.cell,
+                              cell.getContext()
+                            )}
                           </span>
                         </TableCell>
                       );
                     }
-                    
+
                     return (
                       <TableCell key={cell.id} className="px-6 py-4">
-                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
                       </TableCell>
                     );
                   })}
@@ -205,10 +244,23 @@ export default function GlossDataTable<TData, TValue>({
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={columns.length} className="h-24 text-center text-gray-500">
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-24 text-center text-gray-500"
+                >
                   <div className="flex flex-col items-center justify-center gap-2">
-                    <svg className="h-10 w-10 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    <svg
+                      className="h-10 w-10 text-gray-400"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={1.5}
+                        d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
                     </svg>
                     <p>No se encontraron expedientes</p>
                   </div>
@@ -218,20 +270,22 @@ export default function GlossDataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
-      <div className="mt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-        <p className="font-medium text-sm text-gray-700 order-2 sm:order-1">
+      <div className="mt-6 flex flex-col items-center justify-between gap-4 sm:flex-row">
+        <p className="order-2 font-medium text-gray-700 text-sm sm:order-1">
           {`Página ${table.getState().pagination.pageIndex + 1} de ${table.getPageCount()}`}
         </p>
-        <div className="flex items-center gap-2 order-1 sm:order-2">
-          <div className="flex rounded-lg overflow-hidden border border-gray-200 shadow-sm">
+        <div className="order-1 flex items-center gap-2 sm:order-2">
+          <div className="flex overflow-hidden rounded-lg border border-gray-200 shadow-sm">
             <button
               type="button"
               aria-label="Go to first page"
               onClick={() => table.setPageIndex(0)}
               disabled={!table.getCanPreviousPage()}
               className={cn(
-                'p-2.5 transition-all border-r border-gray-200',
-                !table.getCanPreviousPage() ? 'cursor-not-allowed text-gray-300 bg-gray-50' : 'text-gray-700 hover:bg-gray-50'
+                'border-gray-200 border-r p-2.5 transition-all',
+                table.getCanPreviousPage()
+                  ? 'text-gray-700 hover:bg-gray-50'
+                  : 'cursor-not-allowed bg-gray-50 text-gray-300'
               )}
             >
               <LeftDoubleChevron />
@@ -242,8 +296,10 @@ export default function GlossDataTable<TData, TValue>({
               onClick={() => table.previousPage()}
               disabled={!table.getCanPreviousPage()}
               className={cn(
-                'p-2.5 transition-all border-r border-gray-200',
-                !table.getCanPreviousPage() ? 'cursor-not-allowed text-gray-300 bg-gray-50' : 'text-gray-700 hover:bg-gray-50'
+                'border-gray-200 border-r p-2.5 transition-all',
+                table.getCanPreviousPage()
+                  ? 'text-gray-700 hover:bg-gray-50'
+                  : 'cursor-not-allowed bg-gray-50 text-gray-300'
               )}
             >
               <LeftChevron />
@@ -254,8 +310,10 @@ export default function GlossDataTable<TData, TValue>({
               onClick={() => table.nextPage()}
               disabled={!table.getCanNextPage()}
               className={cn(
-                'p-2.5 transition-all border-r border-gray-200',
-                !table.getCanNextPage() ? 'cursor-not-allowed text-gray-300 bg-gray-50' : 'text-gray-700 hover:bg-gray-50'
+                'border-gray-200 border-r p-2.5 transition-all',
+                table.getCanNextPage()
+                  ? 'text-gray-700 hover:bg-gray-50'
+                  : 'cursor-not-allowed bg-gray-50 text-gray-300'
               )}
             >
               <RightChevron />
@@ -267,7 +325,9 @@ export default function GlossDataTable<TData, TValue>({
               disabled={!table.getCanNextPage()}
               className={cn(
                 'p-2.5 transition-all',
-                !table.getCanNextPage() ? 'cursor-not-allowed text-gray-300 bg-gray-50' : 'text-gray-700 hover:bg-gray-50'
+                table.getCanNextPage()
+                  ? 'text-gray-700 hover:bg-gray-50'
+                  : 'cursor-not-allowed bg-gray-50 text-gray-300'
               )}
             >
               <RightDoubleChevron />

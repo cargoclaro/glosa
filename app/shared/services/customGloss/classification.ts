@@ -75,7 +75,8 @@ export async function classifyDocuments<
         model: openai('gpt-4o'),
         ...telemetryConfig,
         seed: 42,
-        system: 'Eres un experto en análisis y clasificación de documentos aduaneros.',
+        system:
+          'Eres un experto en análisis y clasificación de documentos aduaneros.',
         schema: z.object({
           classification: z.enum(classifications).describe(`
             La carta de regla 3.1.8 es un complemento de la factura, ten cuidado de no clasificarla como factura.

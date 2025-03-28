@@ -1,4 +1,4 @@
-export const documentTypes = [
+const documentTypes = [
   'pedimento',
   'documentoDeTransporte',
   'factura',

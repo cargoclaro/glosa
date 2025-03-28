@@ -57,7 +57,7 @@ const GlossIdPage = async (props: { params: Promise<{ id: string }> }) => {
       id: file.id,
       name: file.name,
       url: file.url,
-      documentType: file.documentType || 'unknown'
+      documentType: file.documentType || 'unknown',
     });
   });
 
@@ -119,10 +119,7 @@ const GlossIdPage = async (props: { params: Promise<{ id: string }> }) => {
 
       {/* PDF Carousel Viewer */}
       <div className="rounded-xl bg-white p-6 shadow-lg">
-        <PDFCarouselViewer 
-          files={files} 
-          importerName={importerName}
-        />
+        <PDFCarouselViewer files={files} importerName={importerName} />
       </div>
     </article>
   );

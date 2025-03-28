@@ -1,6 +1,4 @@
 'use client';
-
-import React from 'react';
 import { GlobeAlt, Square2x2 } from '@/shared/icons';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -14,7 +12,7 @@ const Sidebar = () => {
   return (
     <aside
       className={cn(
-        '-translate-x-full fixed top-0 z-20 h-screen w-48 bg-white shadow-md border-r border-gray-100 transition-transform sm:translate-x-0',
+        '-translate-x-full fixed top-0 z-20 h-screen w-48 border-gray-100 border-r bg-white shadow-md transition-transform sm:translate-x-0',
         isAnalysisPage && 'hidden'
       )}
     >
@@ -64,19 +62,24 @@ const LinkComp = ({ to, span, icon }: ILinkComp) => {
       <div
         className={cn(
           'flex w-full items-center gap-3 rounded-lg px-3 py-2 transition-all duration-200 ease-in-out',
-          isActive 
-            ? 'bg-gradient-to-r from-orange-50 to-orange-100 text-orange-600 shadow-sm' 
+          isActive
+            ? 'bg-gradient-to-r from-orange-50 to-orange-100 text-orange-600 shadow-sm'
             : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
         )}
       >
         <div className="flex h-6 w-6 items-center justify-center">
           {icon === 'home' ? (
-            <Square2x2 className={cn('h-5 w-5', isActive && 'text-orange-600')} />
+            <Square2x2
+              className={cn('h-5 w-5', isActive && 'text-orange-600')}
+            />
           ) : (
-            <GlobeAlt strokeWidth={1.5} className={cn('h-5 w-5', isActive && 'text-orange-600')} />
+            <GlobeAlt
+              strokeWidth={1.5}
+              className={cn('h-5 w-5', isActive && 'text-orange-600')}
+            />
           )}
         </div>
-        <span className="text-sm font-medium">{span}</span>
+        <span className="font-medium text-sm">{span}</span>
       </div>
     </Link>
   );

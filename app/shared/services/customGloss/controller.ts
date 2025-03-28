@@ -21,16 +21,45 @@ import {
   CustomGlossTabValidationStep,
   CustomGlossTabValidationStepActionToTake,
 } from '~/db/schema';
-import { classifyDocuments } from './classification';
-import type { DocumentType } from './utils';
+import { type Classification, classifyDocuments } from './classification';
 import { extractTextFromPDFs } from './data-extraction';
 import { glosaExpo } from './glosa/expo';
 import { glosaImpo } from './glosa/impo';
 import { uploadFiles } from './upload-files';
+import type { DocumentType } from './utils';
 
 config();
 
 const langfuse = new Langfuse();
+
+/**
+ * Maps Classification types to DocumentType
+ */
+function mapClassificationToDocumentType(
+  classification: Classification
+): DocumentType {
+  switch (classification) {
+    case 'Pedimento':
+      return 'pedimento';
+    case 'Bill of Lading':
+    case 'Air Waybill':
+      return 'documentoDeTransporte';
+    case 'Factura':
+      return 'factura';
+    case 'Carta Regla 3.1.8':
+      return 'carta318';
+    case 'Carta de cesión de derechos':
+      return 'cartaCesionDeDerechos';
+    case 'Cove':
+      return 'cove';
+    case 'Packing List':
+      return 'listaDeEmpaque';
+    case 'CFDI':
+      return 'cfdi';
+    default:
+      return 'otros';
+  }
+}
 
 interface IRead {
   id?: string;
@@ -124,10 +153,19 @@ export const analysis = api
         name: 'Glosa de Pedimento',
       });
       const successfulUploads = await uploadFiles(files);
-      const classifications = await classifyDocuments(
+      const classificationResults = await classifyDocuments(
         successfulUploads,
         parentTraceId
       );
+
+      // Transform classification results to include documentType
+      const classifications = classificationResults.map((file) => {
+        return {
+          ...file,
+          documentType: mapClassificationToDocumentType(file.classification),
+        };
+      });
+
       // Now group the classifications by document type, taking only the first file of each type.
       const groupedClassifications = classifications.reduce(
         (acc, curr) => {
@@ -188,10 +226,10 @@ export const analysis = api
 
       // Batch insert files
       await db.insert(CustomGlossFile).values(
-        classifications.map(({ name, ufsUrl, documentType }) => ({
+        classificationResults.map(({ name, ufsUrl, classification }) => ({
           name,
           url: ufsUrl,
-          documentType,
+          documentType: mapClassificationToDocumentType(classification),
           customGlossId: newCustomGloss.id,
         }))
       );

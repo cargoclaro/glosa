@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { expectToBeDefined } from '~/lib/vitest/utils';
-import { classifyDocuments, type Classification } from './classification';
+import { type Classification, classifyDocuments } from './classification';
 
 describe('Classification', () => {
   interface TestCase {
@@ -63,7 +63,7 @@ describe('Classification', () => {
         'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15Y6qUlCHjXIrsoaGCginAhSTQkP245ld9H0yU',
         'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15jnqfKkXiXu6oPELDcp4qty5SYJUsk1xhTNwm',
         'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y154kOCZmAZyVxPdXUvHtS0WcsbRhYGfge7EjTp',
-      ]
+      ],
     },
     {
       classification: 'Air Waybill',
@@ -71,7 +71,7 @@ describe('Classification', () => {
         'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15bEYET5z4sCMTwv8SiueyUEh9X7BFO4rKQIp5',
         'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y156xhtNS1lBozqeKEFZX0D348m9hsYyRkctGC5',
         'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15Vhu1uUsC0QwoBJsWz9AMZTXgeVDlIUcOYFa4',
-      ]
+      ],
     },
     {
       classification: 'Pedimento',
@@ -118,9 +118,9 @@ describe('Classification', () => {
     for (const file of classifiedFiles) {
       const expectedType = urlToExpectedTypeMap.get(file.ufsUrl);
       expectToBeDefined(expectedType);
-      expect.soft(file.classification, `Classification for ${file.ufsUrl}`).toBe(
-        expectedType
-      );
+      expect
+        .soft(file.classification, `Classification for ${file.ufsUrl}`)
+        .toBe(expectedType);
     }
   });
 });
