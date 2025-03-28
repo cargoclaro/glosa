@@ -18,17 +18,10 @@ const documentTypes = [
 
 export type DocumentType = (typeof documentTypes)[number];
 
-export async function classifyDocuments(
-  files: {
-    ufsUrl: string;
-    name?: string;
-  }[],
+export async function classifyDocuments<T extends { ufsUrl: string; name?: string }>(
+  files: T[],
   parentTraceId?: string
-): Promise<{
-  ufsUrl: string;
-  name?: string;
-  documentType: DocumentType;
-}[]> {
+): Promise<(T & { documentType: DocumentType })[]> {
   const langfuse = new Langfuse();
   if (parentTraceId) {
     langfuse.event({
@@ -36,15 +29,14 @@ export async function classifyDocuments(
       name: 'Classification',
     });
   }
-  const fetchedFiles = await Promise.all(files.map(async ({ ufsUrl, name }) => {
-    const response = await fetch(ufsUrl);
+  const fetchedFiles = await Promise.all(files.map(async (file) => {
+    const response = await fetch(file.ufsUrl);
     const base64 = Buffer.from(await response.arrayBuffer()).toString('base64');
     const contentType = response.headers.get('content-type') || 'application/octet-stream';
     return {
-      ufsUrl,
+      ...file,
       base64,
       type: contentType,
-      name,
     };
   }));
   return await Promise.all(
