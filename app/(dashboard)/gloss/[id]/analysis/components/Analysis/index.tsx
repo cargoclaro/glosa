@@ -3,7 +3,6 @@
 import { GenericCard, Modal } from '@/shared/components';
 import { useModal } from '@/shared/hooks';
 import {
-  ArrowTrendingUp,
   Check,
   DocMagniGlass,
   Document,
@@ -12,12 +11,13 @@ import {
   RightArrow,
   RightChevron,
   Info,
+  ClipboardDocumentList,
 } from '@/shared/icons';
 import { markTabAsVerifiedByTabIdNCustomGlossID } from '@/shared/services/customGloss/controller';
 import { useMutation } from '@tanstack/react-query';
 import type { InferSelectModel } from 'drizzle-orm';
 import { Loader2 } from 'lucide-react';
-import { type JSX, useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import type {
   CustomGloss,
   CustomGlossTab,
@@ -89,8 +89,17 @@ const Analysis = ({
   const scrollToTab = (index: number) => {
     if (scrollContainerRef.current) {
       const container = scrollContainerRef.current;
-      const tabWidth = container.firstElementChild?.clientWidth || 100;
-      container.scrollTo({ left: index * (tabWidth + 16), behavior: 'smooth' });
+      const tabElement = container.children[index] as HTMLElement;
+      if (tabElement) {
+        // Calculate center position: tab's left position + half its width - half container width
+        const tabRect = tabElement.getBoundingClientRect();
+        const containerRect = container.getBoundingClientRect();
+        const tabCenter = tabElement.offsetLeft + (tabRect.width / 2);
+        const scrollPosition = tabCenter - (containerRect.width / 2);
+        
+        // Scroll to center the tab
+        container.scrollTo({ left: scrollPosition, behavior: 'smooth' });
+      }
     }
   };
 
@@ -207,37 +216,43 @@ const Analysis = ({
       <Modal isOpen={isOpen} onClose={closeMenu} menuRef={menuRef}>
         <Detailed data={dataForDetail} />
       </Modal>
-      <GenericCard>
-        <div className="relative w-full">
+      <GenericCard customClass="bg-white">
+        <div className="relative w-full mb-4">
           <button
             type="button"
-            className="absolute top-0 left-0 rounded-full bg-white/70 p-1 shadow-md transition-colors duration-200 hover:bg-white/90"
+            className="absolute top-1/2 -translate-y-1/2 left-0 rounded-full bg-[#f8f8f8] p-1.5 shadow-sm transition-colors duration-200 hover:bg-[#f0f0f0] z-10"
             onClick={handlePrevious}
           >
-            <LeftChevron />
+            <LeftChevron size="size-4" />
           </button>
-          <ul
-            ref={scrollContainerRef}
-            style={{ scrollbarWidth: 'none' }}
-            className="flex gap-4 overflow-x-scroll font-semibold"
-          >
-            {tabs.map((tab) => (
-              <GenericTabLi
-                key={tab.id}
-                title={tab.name}
-                active={tabSelected === tab.name}
-                onClick={() => handleTabClick(tab.name)}
-              />
-            ))}
-          </ul>
+          <div className="mx-8 rounded-lg">
+            <div className="flex justify-center items-center">
+              <div className="py-2 px-4">
+                <button
+                  type="button"
+                  title={tabSelected}
+                  className="relative px-6 py-2.5 rounded-lg text-center transition-all duration-200 min-w-[180px] border bg-blue-50/80 text-blue-600 font-medium shadow-sm border-blue-200/70"
+                >
+                  <div className="flex flex-col items-center justify-center">
+                    <p className="line-clamp-1 text-sm whitespace-nowrap mx-auto">{tabSelected}</p>
+                  </div>
+                  <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1/2 h-0.5 bg-blue-500 rounded-full"></span>
+                </button>
+              </div>
+            </div>
+          </div>
           <button
             type="button"
-            className="absolute top-0 right-0 rounded-full bg-white/70 p-1 shadow-md transition-colors duration-200 hover:bg-white/90"
+            className="absolute top-1/2 -translate-y-1/2 right-0 rounded-full bg-[#f8f8f8] p-1.5 shadow-sm transition-colors duration-200 hover:bg-[#f0f0f0] z-10"
             onClick={handleNext}
           >
-            <RightChevron />
+            <RightChevron size="size-4" />
           </button>
         </div>
+        
+        {/* Divider after navbar */}
+        <div className="w-full h-px bg-[#e8e8e8] mb-6"></div>
+        
         {tabs.map(
           (tab) =>
             tabSelected === tab.name && (
@@ -255,28 +270,6 @@ const Analysis = ({
 
 export default Analysis;
 
-interface IGenericTabLi {
-  title: string;
-  active: boolean;
-  onClick: () => void;
-}
-
-const GenericTabLi = ({ title, active, onClick }: IGenericTabLi) => (
-  <li>
-    <button
-      type="button"
-      title={title}
-      onClick={onClick}
-      className={cn(
-        'min-w-64 border-b-2 pb-2 text-center hover:border-primary/80 hover:text-primary/80',
-        active ? 'border-primary text-primary' : 'border-black'
-      )}
-    >
-      <p className="line-clamp-1">{title}</p>
-    </button>
-  </li>
-);
-
 interface IGenericTabComponent {
   data: tabs;
   handleClick: (data: tabs['validations'][number]) => void;
@@ -287,6 +280,7 @@ const GenericTabComponent = ({ data, handleClick }: IGenericTabComponent) => {
     new Set(data.context.map((item) => item.origin))
   );
   const [showAllOrigins, setShowAllOrigins] = useState(false);
+  const [showSources, setShowSources] = useState(false);
 
   // Display only first 3 documents initially
   const displayOrigins = showAllOrigins
@@ -299,75 +293,148 @@ const GenericTabComponent = ({ data, handleClick }: IGenericTabComponent) => {
   return (
     <>
       <StatusHeader status={data.isCorrect} />
-      <SectionDivider title="Pasos de Validación" icon={<ArrowTrendingUp />} />
-      <DataListForSummaryCard
-        data={data.validations}
-        handleDetail={handleClick}
-      />
-      <SectionDivider title="Fuentes" icon={<DocMagniGlass />} />
-      <div className="relative">
-        <ul className="mt-2 mb-2 flex max-h-32 flex-col gap-1.5 overflow-y-auto pr-1">
-          {displayOrigins.map((origin, index) => (
-            <li key={index} className="w-full">
-              <div
-                title={origin}
-                className="flex items-center gap-2 rounded-lg bg-[#f6eeff] px-3 py-2 transition-colors duration-200 hover:bg-[#f0e6ff]"
+      
+      {/* Divider after status header */}
+      <div className="w-full h-px bg-[#e8e8e8] my-6"></div>
+      
+      {/* Validation Steps directly as main content */}
+      <div className="mb-8">
+        <div className="flex items-center gap-2 mb-3">
+          <ClipboardDocumentList size="size-4.5" strokeWidth={2} customClass="text-[#333333]" />
+          <h3 className="text-base font-semibold text-[#333333] tracking-tight">
+            Pasos de Validación
+          </h3>
+        </div>
+        <DataListForSummaryCard
+          data={data.validations}
+          handleDetail={handleClick}
+        />
+      </div>
+      
+      {/* Divider */}
+      <div className="w-full h-px bg-[#e8e8e8] my-8"></div>
+      
+      {/* Sources Section without Container - Collapsible */}
+      <div className="mb-8">
+        <div 
+          className="flex items-center justify-between mb-3 cursor-pointer" 
+          onClick={() => setShowSources(!showSources)}
+        >
+          <div className="flex items-center gap-2">
+            <DocMagniGlass size="size-4.5" customClass="text-[#333333]" />
+            <h3 className="text-base font-semibold text-[#333333] tracking-tight">
+              Fuentes
+            </h3>
+          </div>
+          <button
+            type="button"
+            className="flex h-6 w-6 items-center justify-center rounded-full bg-[#f5f5f5] transition-colors duration-200 hover:bg-[#eaeaea]"
+            aria-label={showSources ? "Colapsar" : "Expandir"}
+            title={showSources ? "Colapsar" : "Expandir"}
+          >
+            {showSources ? (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="text-[#555555]"
               >
-                <Document />
-                <span className="font-medium text-xs">
-                  {origin.toUpperCase()}
-                </span>
+                <path d="m18 15-6-6-6 6" />
+              </svg>
+            ) : (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="text-[#555555]"
+              >
+                <path d="m6 9 6 6 6-6" />
+              </svg>
+            )}
+          </button>
+        </div>
+        
+        {showSources && (
+          <div className="relative">
+            <ul className="flex max-h-32 flex-col gap-2 overflow-y-auto pr-1">
+              {displayOrigins.map((origin, index) => (
+                <li key={index} className="w-full">
+                  <div
+                    title={origin}
+                    className="flex items-center gap-2.5 rounded-lg bg-[#f8f2ff] px-3.5 py-2.5 transition-colors duration-200 hover:bg-[#f0e6ff] border border-[#efe4ff] shadow-sm"
+                  >
+                    <Document size="size-4" customClass="text-purple-500" />
+                    <span className="font-medium text-xs text-gray-700">
+                      {origin.toUpperCase()}
+                    </span>
+                  </div>
+                </li>
+              ))}
+            </ul>
+            {hasMoreOrigins && (
+              <div className="mt-3 flex justify-center">
+                <button
+                  onClick={() => setShowAllOrigins(!showAllOrigins)}
+                  className="flex h-7 w-7 items-center justify-center rounded-full bg-gray-100 transition-colors duration-200 hover:bg-gray-200"
+                  title={
+                    showAllOrigins
+                      ? 'Mostrar menos'
+                      : `Mostrar ${uniqueOrigins.length - 3} más`
+                  }
+                >
+                  {showAllOrigins ? (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="text-black"
+                    >
+                      <path d="m18 15-6-6-6 6" />
+                    </svg>
+                  ) : (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="text-black"
+                    >
+                      <path d="m6 9 6 6 6-6" />
+                    </svg>
+                  )}
+                </button>
               </div>
-            </li>
-          ))}
-        </ul>
-        {hasMoreOrigins && (
-          <div className="mt-2 mb-2 flex justify-center">
-            <button
-              onClick={() => setShowAllOrigins(!showAllOrigins)}
-              className="flex h-7 w-7 items-center justify-center rounded-full bg-gray-100 transition-colors duration-200 hover:bg-gray-200"
-              title={
-                showAllOrigins
-                  ? 'Mostrar menos'
-                  : `Mostrar ${uniqueOrigins.length - 3} más`
-              }
-            >
-              {showAllOrigins ? (
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="14"
-                  height="14"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="text-black"
-                >
-                  <path d="m18 15-6-6-6 6" />
-                </svg>
-              ) : (
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="14"
-                  height="14"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="text-black"
-                >
-                  <path d="m6 9 6 6 6-6" />
-                </svg>
-              )}
-            </button>
+            )}
           </div>
         )}
       </div>
-      <div className="mt-1 mb-3 border-t border-t-black" />
+      
+      {/* Divider */}
+      <div className="w-full h-px bg-[#e8e8e8] mb-8"></div>
+      
       <VerifiedButton
         tabId={data.id}
         isVerified={data.isVerified}
@@ -376,22 +443,6 @@ const GenericTabComponent = ({ data, handleClick }: IGenericTabComponent) => {
     </>
   );
 };
-
-interface ISectionDivider {
-  title: string;
-  icon: JSX.Element;
-}
-
-const SectionDivider = ({ title, icon }: ISectionDivider) => (
-  <>
-    <DashedLine customClass="mt-3" />
-    <p className="flex items-center justify-center gap-1 py-1.5 font-bold">
-      <span>{icon}</span>
-      {title}
-    </p>
-    <DashedLine customClass="mb-3" />
-  </>
-);
 
 interface IVerifiedButton {
   tabId: string;
@@ -428,7 +479,12 @@ const VerifiedButton = ({
       </span>
     );
   } else if (isVerified) {
-    buttonContent = 'Análisis Verificado';
+    buttonContent = (
+      <span className="flex items-center justify-center">
+        <Check size="size-4" strokeWidth={2} customClass="mr-2 text-green-500" />
+        Análisis Verificado
+      </span>
+    );
   } else {
     buttonContent = 'Marcar como verificado';
   }
@@ -444,11 +500,11 @@ const VerifiedButton = ({
         disabled={isVerified || mutation.isPending}
         onClick={() => mutation.mutate()}
         className={cn(
-          'rounded-md border border-white px-12 py-2 text-sm shadow-black/50 shadow-md',
+          'rounded-md px-6 py-2 text-sm transition-all duration-300',
           mutation.isPending && 'cursor-not-allowed opacity-50',
           isVerified
-            ? 'cursor-not-allowed bg-gray-300 text-gray-900'
-            : 'bg-primary text-white hover:bg-primary/80'
+            ? 'cursor-not-allowed bg-transparent text-gray-700'
+            : 'text-blue-600 hover:bg-blue-600 hover:text-white bg-transparent border border-blue-300'
         )}
       >
         {buttonContent}
@@ -458,29 +514,32 @@ const VerifiedButton = ({
 };
 
 const StatusHeader = ({ status }: { status: boolean }) => (
-  <h2
-    title={status ? 'El análisis fue correcto' : 'El análisis no fue correcto'}
-    className={cn(
-      'mt-2 flex w-full items-center justify-center gap-2 truncate rounded-md px-4 py-2 text-center',
-      status ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
-    )}
-  >
-    {status ? (
-      <>
-        <Check customClass="h-5 w-5 text-green-600" />
-        <span>Todo parece bien</span>
-      </>
-    ) : (
-      <>
-        <ExclamationTriangle customClass="h-5 w-5 text-yellow-600" />
-        <span>Verificar datos</span>
-      </>
-    )}
-  </h2>
-);
-
-const DashedLine = ({ customClass = '' }: { customClass?: string }) => (
-  <div className={cn('border-b border-b-black border-dashed', customClass)} />
+  <div className="mt-2 mb-4 rounded-xl border border-[#e8e8e8] bg-white shadow-sm overflow-hidden">
+    <div className={cn(
+      "px-4 py-3",
+      status 
+        ? "bg-green-100/90 border-green-200/90" 
+        : "bg-yellow-50/70 border-yellow-100/70"
+    )}>
+      <div className="flex items-center justify-center gap-2">
+        {status ? (
+          <>
+            <Check size="size-4.5" strokeWidth={2} customClass="text-green-600" />
+            <h3 className="text-base font-semibold text-green-700 tracking-tight">
+              Todo parece bien
+            </h3>
+          </>
+        ) : (
+          <>
+            <ExclamationTriangle customClass="h-4.5 w-4.5 text-yellow-500" />
+            <h3 className="text-base font-semibold text-[#333333] tracking-tight">
+              Verificar datos
+            </h3>
+          </>
+        )}
+      </div>
+    </div>
+  </div>
 );
 
 interface IDataListForSummaryCard {
@@ -520,13 +579,17 @@ const DataListForSummaryCard = ({
       {data.map((item) => (
         <li
           key={item.id}
-          className="group relative flex flex-col rounded-lg border border-gray-200 bg-white shadow hover:shadow-md transition-all duration-200"
+          className="group relative flex flex-col rounded-lg border bg-white shadow hover:shadow-md transition-all duration-200"
+          style={{
+            borderColor: item.isCorrect ? '#10b98180' : '#fbbf2480',  // green-500 or yellow-400 colors with alpha
+            borderWidth: '1px',
+          }}
         >
           {/* Left status indicator */}
           <div 
             className={cn(
               "absolute left-0 top-0 bottom-0 w-1 rounded-l-lg",
-              item.isCorrect ? "bg-green-500" : "bg-yellow-400"
+              item.isCorrect ? "bg-green-500/80" : "bg-yellow-400/80"
             )}
           />
 
@@ -534,26 +597,26 @@ const DataListForSummaryCard = ({
           <div className="w-full px-3 py-2.5">
             <div className="flex justify-between items-start mb-1.5">
               {/* Title */}
-              <h3 className="text-base font-medium text-gray-900">{item.name}</h3>
+              <h3 className="text-base font-medium text-[#333333]">{item.name}</h3>
               
               {/* Info button moved to top right */}
               <div className="tooltip-container relative">
                 <button 
                   type="button"
-                  className="rounded-full p-0.5 text-gray-400 bg-gray-50 hover:bg-gray-100 transition-colors duration-200"
+                  className="rounded-full p-0.5 text-[#777777] bg-[#f5f5f5] hover:bg-[#eaeaea] transition-colors duration-200"
                   onClick={(e) => handleTooltipToggle(e, item.id)}
                   aria-label="Mostrar más información"
                   title="Ver descripción"
                 >
-                  <Info size="size-3.5" />
+                  <Info size="size-4" />
                 </button>
                 {activeTooltip === item.id && (
                   <div 
-                    className="tooltip-container absolute z-50 right-0 top-full mt-1.5 w-64 rounded-lg bg-white p-2 text-xs text-gray-800 shadow-lg border border-gray-200"
+                    className="tooltip-container absolute z-50 right-0 top-full mt-1.5 w-64 rounded-lg bg-white p-2 text-xs text-[#555555] shadow-lg border border-[#e8e8e8]"
                     onClick={(e) => e.stopPropagation()}
                   >
                     <div className="font-medium mb-0.5">Descripción:</div>
-                    <div className="text-gray-600 text-xs">{item.description}</div>
+                    <div className="text-[#666666] text-xs">{item.description}</div>
                   </div>
                 )}
               </div>
@@ -564,21 +627,21 @@ const DataListForSummaryCard = ({
               {/* Status indicator moved to bottom left */}
               {item.isCorrect ? (
                 <div className="flex items-center">
-                  <Check customClass="h-4 w-4 text-green-500 mr-1" />
-                  <span className="text-xs text-gray-900">Correcto</span>
+                  <Check customClass="h-4 w-4 text-green-500 mr-1.5" />
+                  <span className="text-sm text-[#444444] font-medium">Correcto</span>
                 </div>
               ) : (
                 <div className="flex items-center">
-                  <ExclamationTriangle customClass="h-4 w-4 text-yellow-500 mr-1" />
-                  <span className="text-xs text-gray-900">Revisar</span>
+                  <ExclamationTriangle customClass="h-4 w-4 text-yellow-500 mr-1.5" />
+                  <span className="text-sm text-[#444444] font-medium">Revisar</span>
                 </div>
               )}
 
-              {/* "Ver análisis detallado" button with subtle orange hover */}
+              {/* "Ver análisis detallado" button with no border in default state, only fill on hover */}
               <button
                 type="button"
                 onClick={() => handleDetail(item)}
-                className="group/btn flex items-center gap-0.5 text-orange-500 hover:text-white px-2 py-1 rounded transition-all duration-300 text-xs font-medium bg-white hover:bg-orange-500 border border-orange-200 cursor-pointer"
+                className="group/btn flex items-center gap-0.5 text-blue-500 hover:text-white px-2 py-1 rounded transition-all duration-300 text-xs font-medium bg-transparent hover:bg-blue-500/90 cursor-pointer"
               >
                 <span>Ver análisis detallado</span>
                 <RightArrow size="size-3" strokeWidth={2} customClass="transition-transform duration-200 group-hover/btn:translate-x-0.5" />
