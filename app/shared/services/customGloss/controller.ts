@@ -314,7 +314,9 @@ export const analysis = api
         success: true,
         glossId: newCustomGloss.id,
       };
-    } catch {
+    } catch (error) {
+      // biome-ignore lint/suspicious/noConsole: Should be reported to Sentry
+      console.error(error);
       return {
         success: false,
         message: 'Ocurrió un error interno',
