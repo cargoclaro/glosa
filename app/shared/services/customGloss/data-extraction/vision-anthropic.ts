@@ -1,7 +1,7 @@
 import { anthropic } from '@ai-sdk/anthropic';
 import { generateObject } from 'ai';
 import type { z } from 'zod';
-import type { DocumentType } from '../classification';
+import type { DocumentType } from '../utils';
 
 export async function extractTextFromImageAnthropic<T extends z.ZodType>(
   pdfFile: File,

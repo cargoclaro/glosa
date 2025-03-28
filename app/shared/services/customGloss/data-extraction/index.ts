@@ -1,7 +1,7 @@
 import { Langfuse } from 'langfuse';
 import { traceable } from 'langsmith/traceable';
 import type { UploadedFileData } from 'uploadthing/types';
-import type { DocumentType } from '../classification';
+import type { DocumentType } from '../utils';
 import {
   carta318Schema,
   cartaSesionSchema,

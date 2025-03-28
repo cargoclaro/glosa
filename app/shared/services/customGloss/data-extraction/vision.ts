@@ -1,6 +1,6 @@
 import { google } from '@ai-sdk/google';
 import { generateText } from 'ai';
-import type { DocumentType } from '../classification';
+import type { DocumentType } from '../utils';
 
 export async function extractTextFromImage(
   pdfFile: File,

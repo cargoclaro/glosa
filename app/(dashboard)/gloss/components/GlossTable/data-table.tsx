@@ -61,15 +61,15 @@ export default function GlossDataTable<TData, TValue>({
   });
 
   return (
-    <section>
-      <h2 className="font-semibold text-xl">Busca tus Expedientes</h2>
-      <div className="flex flex-col gap-2 py-2 md:flex-row">
-        <div className="relative">
+    <section className="pb-8">
+      <h2 className="mb-6 font-semibold text-2xl">Tus Expedientes</h2>
+      <div className="flex flex-col gap-4 py-4 md:flex-row">
+        <div className="relative flex-1">
           <label
             htmlFor="globalFilter"
-            className="absolute inset-y-0 start-0 flex items-center ps-3"
+            className="absolute inset-y-0 start-0 flex items-center ps-4"
           >
-            <Search size="size-4" customClass="text-gray-400" />
+            <Search size="size-5" customClass="text-gray-400" />
           </label>
           <input
             type="text"
@@ -77,20 +77,20 @@ export default function GlossDataTable<TData, TValue>({
             value={table.getState().globalFilter}
             placeholder="Buscar por nombre de importador"
             onChange={(event) => setGlobalFilter(event.target.value)}
-            className="h-10 w-full rounded-md border pr-3 pl-10 text-sm md:w-80"
+            className="h-12 w-full rounded-xl border border-gray-200 pr-4 pl-12 text-sm shadow-sm transition-all focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 md:max-w-md"
           />
         </div>
         <div className="relative">
           <label
             htmlFor="operationStatusSelect"
-            className="absolute inset-y-0 start-0 flex items-center ps-3"
+            className="absolute inset-y-0 start-0 flex items-center ps-4"
           >
-            <Funnel size="size-4" customClass="text-gray-400" />
+            <Funnel size="size-5" customClass="text-gray-400" />
           </label>
           <select
             id="operationStatusSelect"
             aria-label="operationStatusSelect"
-            className="h-10 w-full rounded-md border pl-10 text-sm"
+            className="h-12 w-full appearance-none rounded-xl border border-gray-200 pr-10 pl-12 text-sm shadow-sm transition-all focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
             defaultValue={(() => {
               const filterValue = table
                 .getColumn('operationStatus')
@@ -107,107 +107,232 @@ export default function GlossDataTable<TData, TValue>({
             <option value="IN_PROGRESS">Pendiente</option>
             <option value="DONE">Completado</option>
           </select>
+          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4">
+            <svg
+              className="h-4 w-4 text-gray-400"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M19 9l-7 7-7-7"
+              />
+            </svg>
+          </div>
         </div>
       </div>
-      <Table>
-        <TableHeader>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map((header) => {
-                return (
-                  <TableHead key={header.id}>
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                  </TableHead>
-                );
-              })}
-            </TableRow>
-          ))}
-        </TableHeader>
-        <TableBody className="bg-white">
-          {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map((row) => (
+      <div className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
+        <Table>
+          <TableHeader className="bg-gray-50/80">
+            {table.getHeaderGroups().map((headerGroup) => (
               <TableRow
-                key={row.id}
-                data-state={row.getIsSelected() && 'selected'}
+                key={headerGroup.id}
+                className="border-gray-200 border-b"
               >
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
-                ))}
+                {headerGroup.headers.map((header) => {
+                  return (
+                    <TableHead
+                      key={header.id}
+                      className="px-6 py-4 font-semibold text-gray-700 text-sm"
+                    >
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
+                    </TableHead>
+                  );
+                })}
               </TableRow>
-            ))
-          ) : (
-            <TableRow>
-              <TableCell colSpan={columns.length} className="h-24 text-center">
-                No se encontraron expedientes
-              </TableCell>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
-      <div className="mt-4 flex justify-between gap-2">
-        <p className="font-medium text-sm">
+            ))}
+          </TableHeader>
+          <TableBody>
+            {table.getRowModel().rows?.length ? (
+              table.getRowModel().rows.map((row, rowIndex) => (
+                <TableRow
+                  key={row.id}
+                  data-state={row.getIsSelected() && 'selected'}
+                  className={cn(
+                    'cursor-pointer border-gray-100 border-b transition-colors last:border-none hover:bg-orange-50/60',
+                    rowIndex % 2 === 0 ? 'bg-white' : 'bg-gray-50/30'
+                  )}
+                >
+                  {row.getVisibleCells().map((cell) => {
+                    // Special styling for operation status column
+                    if (cell.column.id === 'operationStatus') {
+                      const status = cell.getValue() as string;
+                      return (
+                        <TableCell key={cell.id} className="px-6 py-4">
+                          <div
+                            className={cn(
+                              'inline-flex items-center rounded-full px-3 py-1 font-medium text-xs',
+                              status === 'IN_PROGRESS'
+                                ? 'border border-amber-200 bg-amber-100 text-amber-700'
+                                : status === 'DONE'
+                                  ? 'border border-green-200 bg-green-100 text-green-700'
+                                  : 'border border-gray-200 bg-gray-100 text-gray-700'
+                            )}
+                          >
+                            {flexRender(
+                              cell.column.columnDef.cell,
+                              cell.getContext()
+                            )}
+                          </div>
+                        </TableCell>
+                      );
+                    }
+
+                    // Special styling for the action button column
+                    if (cell.column.id === 'actions') {
+                      return (
+                        <TableCell
+                          key={cell.id}
+                          className="px-3 py-4 text-right"
+                        >
+                          <button
+                            className="rounded-full bg-primary/10 p-2.5 text-primary transition-all duration-200 hover:bg-orange-500 hover:text-white hover:shadow-md"
+                            aria-label="View details"
+                          >
+                            <svg
+                              width="16"
+                              height="16"
+                              viewBox="0 0 16 16"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M6 12L10 8L6 4"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              />
+                            </svg>
+                          </button>
+                        </TableCell>
+                      );
+                    }
+
+                    // Styling for the ID column (hash)
+                    if (cell.column.id === 'id') {
+                      return (
+                        <TableCell key={cell.id} className="px-6 py-4">
+                          <span className="font-mono text-gray-600 text-xs">
+                            {flexRender(
+                              cell.column.columnDef.cell,
+                              cell.getContext()
+                            )}
+                          </span>
+                        </TableCell>
+                      );
+                    }
+
+                    return (
+                      <TableCell key={cell.id} className="px-6 py-4">
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
+                    );
+                  })}
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-24 text-center text-gray-500"
+                >
+                  <div className="flex flex-col items-center justify-center gap-2">
+                    <svg
+                      className="h-10 w-10 text-gray-400"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={1.5}
+                        d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                    <p>No se encontraron expedientes</p>
+                  </div>
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </div>
+      <div className="mt-6 flex flex-col items-center justify-between gap-4 sm:flex-row">
+        <p className="order-2 font-medium text-gray-700 text-sm sm:order-1">
           {`Página ${table.getState().pagination.pageIndex + 1} de ${table.getPageCount()}`}
         </p>
-        <div className="flex items-center justify-end space-x-2">
-          <button
-            type="button"
-            aria-label="Go to first page"
-            onClick={() => table.setPageIndex(0)}
-            disabled={!table.getCanPreviousPage()}
-            className={cn(
-              'rounded-md p-2 text-white',
-              !table.getCanPreviousPage() && 'cursor-not-allowed bg-gray-300',
-              table.getCanPreviousPage() && 'bg-primary hover:bg-primary/80'
-            )}
-          >
-            <LeftDoubleChevron />
-          </button>
-          <button
-            type="button"
-            aria-label="Go to previous page"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-            className={cn(
-              'rounded-md p-2 text-white',
-              !table.getCanPreviousPage() && 'cursor-not-allowed bg-gray-300',
-              table.getCanPreviousPage() && 'bg-primary hover:bg-primary/80'
-            )}
-          >
-            <LeftChevron />
-          </button>
-          <button
-            type="button"
-            aria-label="Go to next page"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
-            className={cn(
-              'rounded-md p-2 text-white',
-              !table.getCanNextPage() && 'cursor-not-allowed bg-gray-300',
-              table.getCanNextPage() && 'bg-primary hover:bg-primary/80'
-            )}
-          >
-            <RightChevron />
-          </button>
-          <button
-            type="button"
-            aria-label="Go to last page"
-            onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-            disabled={!table.getCanNextPage()}
-            className={cn(
-              'rounded-md p-2 text-white',
-              !table.getCanNextPage() && 'cursor-not-allowed bg-gray-300',
-              table.getCanNextPage() && 'bg-primary hover:bg-primary/80'
-            )}
-          >
-            <RightDoubleChevron />
-          </button>
+        <div className="order-1 flex items-center gap-2 sm:order-2">
+          <div className="flex overflow-hidden rounded-lg border border-gray-200 shadow-sm">
+            <button
+              type="button"
+              aria-label="Go to first page"
+              onClick={() => table.setPageIndex(0)}
+              disabled={!table.getCanPreviousPage()}
+              className={cn(
+                'border-gray-200 border-r p-2.5 transition-all',
+                table.getCanPreviousPage()
+                  ? 'text-gray-700 hover:bg-gray-50'
+                  : 'cursor-not-allowed bg-gray-50 text-gray-300'
+              )}
+            >
+              <LeftDoubleChevron />
+            </button>
+            <button
+              type="button"
+              aria-label="Go to previous page"
+              onClick={() => table.previousPage()}
+              disabled={!table.getCanPreviousPage()}
+              className={cn(
+                'border-gray-200 border-r p-2.5 transition-all',
+                table.getCanPreviousPage()
+                  ? 'text-gray-700 hover:bg-gray-50'
+                  : 'cursor-not-allowed bg-gray-50 text-gray-300'
+              )}
+            >
+              <LeftChevron />
+            </button>
+            <button
+              type="button"
+              aria-label="Go to next page"
+              onClick={() => table.nextPage()}
+              disabled={!table.getCanNextPage()}
+              className={cn(
+                'border-gray-200 border-r p-2.5 transition-all',
+                table.getCanNextPage()
+                  ? 'text-gray-700 hover:bg-gray-50'
+                  : 'cursor-not-allowed bg-gray-50 text-gray-300'
+              )}
+            >
+              <RightChevron />
+            </button>
+            <button
+              type="button"
+              aria-label="Go to last page"
+              onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+              disabled={!table.getCanNextPage()}
+              className={cn(
+                'p-2.5 transition-all',
+                table.getCanNextPage()
+                  ? 'text-gray-700 hover:bg-gray-50'
+                  : 'cursor-not-allowed bg-gray-50 text-gray-300'
+              )}
+            >
+              <RightDoubleChevron />
+            </button>
+          </div>
         </div>
       </div>
     </section>
