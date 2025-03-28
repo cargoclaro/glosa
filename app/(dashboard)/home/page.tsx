@@ -1,7 +1,13 @@
 import { auth } from '@clerk/nextjs/server';
 import type { Metadata } from 'next';
 import { db } from '~/db';
-import { DailyGlossesGraph, GlossHistory, Header, MyInfo, Summary } from './components';
+import {
+  DailyGlossesGraph,
+  GlossHistory,
+  Header,
+  MyInfo,
+  Summary,
+} from './components';
 
 export const metadata: Metadata = {
   title: 'Administración',
@@ -14,19 +20,17 @@ const HomePage = async () => {
     orderBy: (gloss, { desc }) => [desc(gloss.createdAt)],
     limit: 6,
   });
-  
+
   // Get all glosses for the graph (last 30 days)
   const thirtyDaysAgo = new Date();
   thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-  
+
   const allGlosses = await db.query.CustomGloss.findMany({
-    where: (gloss, { and, eq, gte }) => and(
-      eq(gloss.userId, userId),
-      gte(gloss.createdAt, thirtyDaysAgo)
-    ),
+    where: (gloss, { and, eq, gte }) =>
+      and(eq(gloss.userId, userId), gte(gloss.createdAt, thirtyDaysAgo)),
     orderBy: (gloss, { desc }) => [desc(gloss.createdAt)],
   });
-  
+
   if (!myLatestGlosses) {
     return <div>No hay glosas recientes</div>;
   }

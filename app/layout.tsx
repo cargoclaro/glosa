@@ -5,12 +5,12 @@ import {
 } from '@/shared/components/providers';
 import { esMX } from '@clerk/localizations';
 import { ClerkProvider } from '@clerk/nextjs';
-import { Inter } from 'next/font/google';
 import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
 import { cn } from '~/lib/utils';
 
 // Initialize Inter font
-const inter = Inter({ 
+const inter = Inter({
   subsets: ['latin'],
   display: 'swap', // Ensures text remains visible during font loading
   variable: '--font-inter', // Optional: for use in CSS variables

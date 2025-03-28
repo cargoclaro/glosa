@@ -16,11 +16,11 @@ async function MyInfo() {
   const { publicMetadata } = await client.organizations.getOrganization({
     organizationId: orgId,
   });
-  
+
   return (
     <GenericCard>
       {/* User profile section - centered with email */}
-      <div className="flex flex-col items-center mb-5">
+      <div className="mb-5 flex flex-col items-center">
         <div className="mb-3">
           <Image
             src={user.imageUrl}
@@ -31,27 +31,36 @@ async function MyInfo() {
             priority
           />
         </div>
-        
+
         <p className="text-center text-gray-700">
-          {user.emailAddresses && user.emailAddresses.length > 0 && (
-            user.emailAddresses[0]?.emailAddress
-          )}
+          {user.emailAddresses &&
+            user.emailAddresses.length > 0 &&
+            user.emailAddresses[0]?.emailAddress}
         </p>
       </div>
-      
+
       {/* Organization info header - matching screenshot exactly */}
       <div>
-        <div className="flex items-center mb-2">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-orange-500 mr-2" viewBox="0 0 20 20" fill="currentColor">
+        <div className="mb-2 flex items-center">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="mr-2 h-5 w-5 text-orange-500"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
             <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
           </svg>
-          <h3 className="text-orange-500 font-medium">Información de Organización</h3>
+          <h3 className="font-medium text-orange-500">
+            Información de Organización
+          </h3>
         </div>
-        
+
         {/* Patent info - simple key-value display */}
-        <div className="flex justify-between items-center py-2">
+        <div className="flex items-center justify-between py-2">
           <span className="text-gray-700">Patente</span>
-          <span className="font-medium">#{publicMetadata?.patente || '9999'}</span>
+          <span className="font-medium">
+            #{publicMetadata?.patente || '9999'}
+          </span>
         </div>
       </div>
     </GenericCard>

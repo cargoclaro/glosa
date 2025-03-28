@@ -18,7 +18,9 @@ const documentTypes = [
 
 export type DocumentType = (typeof documentTypes)[number];
 
-export async function classifyDocuments<T extends { ufsUrl: string; name?: string }>(
+export async function classifyDocuments<
+  T extends { ufsUrl: string; name?: string },
+>(
   files: T[],
   parentTraceId?: string
 ): Promise<(T & { documentType: DocumentType })[]> {
@@ -29,16 +31,21 @@ export async function classifyDocuments<T extends { ufsUrl: string; name?: strin
       name: 'Classification',
     });
   }
-  const fetchedFiles = await Promise.all(files.map(async (file) => {
-    const response = await fetch(file.ufsUrl);
-    const base64 = Buffer.from(await response.arrayBuffer()).toString('base64');
-    const contentType = response.headers.get('content-type') || 'application/octet-stream';
-    return {
-      ...file,
-      base64,
-      type: contentType,
-    };
-  }));
+  const fetchedFiles = await Promise.all(
+    files.map(async (file) => {
+      const response = await fetch(file.ufsUrl);
+      const base64 = Buffer.from(await response.arrayBuffer()).toString(
+        'base64'
+      );
+      const contentType =
+        response.headers.get('content-type') || 'application/octet-stream';
+      return {
+        ...file,
+        base64,
+        type: contentType,
+      };
+    })
+  );
   return await Promise.all(
     fetchedFiles.map(async (fetchedFile) => {
       // We assume all xml files are cfdis
@@ -48,18 +55,20 @@ export async function classifyDocuments<T extends { ufsUrl: string; name?: strin
           documentType: 'cfdi' as const,
         };
       }
-      const telemetryConfig = parentTraceId ? {
-        experimental_telemetry: {
-          isEnabled: true,
-          functionId: fetchedFile.name,
-          metadata: {
-            langfuseTraceId: parentTraceId,
-            langfuseUpdateParent: false,
-            fileUrl: fetchedFile.ufsUrl,
-          },
-        },
-      } : {};
-      
+      const telemetryConfig = parentTraceId
+        ? {
+            experimental_telemetry: {
+              isEnabled: true,
+              functionId: fetchedFile.name,
+              metadata: {
+                langfuseTraceId: parentTraceId,
+                langfuseUpdateParent: false,
+                fileUrl: fetchedFile.ufsUrl,
+              },
+            },
+          }
+        : {};
+
       const {
         object: { documentType },
       } = await generateObject({

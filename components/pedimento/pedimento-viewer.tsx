@@ -117,7 +117,7 @@ const PedimentoViewer = ({
     <div
       className={cn('relative flex w-full flex-col overflow-hidden', className)}
     >
-      <div className="bg-white mx-auto w-full max-w-4xl overflow-hidden rounded-xl shadow-xl transition-all duration-500">
+      <div className="mx-auto w-full max-w-4xl overflow-hidden rounded-xl bg-white shadow-xl transition-all duration-500">
         <div className="overflow-x-auto p-3">
           {currentPage === 1 && (
             <div className="flex w-full flex-col gap-2">

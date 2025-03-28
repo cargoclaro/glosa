@@ -286,21 +286,22 @@ const GenericTabComponent = ({ data, handleClick }: IGenericTabComponent) => {
     new Set(data.context.map((item) => item.origin))
   );
   const [showAllOrigins, setShowAllOrigins] = useState(false);
-  
+
   // Display only first 3 documents initially
-  const displayOrigins = showAllOrigins 
-    ? uniqueOrigins 
+  const displayOrigins = showAllOrigins
+    ? uniqueOrigins
     : uniqueOrigins.slice(0, 3);
-  
+
   // Check if we need to show the "Show more" button
   const hasMoreOrigins = uniqueOrigins.length > 3;
-  
+
   return (
     <>
       <StatusHeader status={data.isCorrect} />
       <SectionDivider title="Pasos de Validación" icon={<ArrowTrendingUp />} />
-      <p className="text-center text-sm italic text-gray-600 mb-2">
-        Haga <strong>clic</strong> en las validaciones para ver una explicación detallada
+      <p className="mb-2 text-center text-gray-600 text-sm italic">
+        Haga <strong>clic</strong> en las validaciones para ver una explicación
+        detallada
       </p>
       <DataListForSummaryCard
         data={data.validations}
@@ -308,33 +309,61 @@ const GenericTabComponent = ({ data, handleClick }: IGenericTabComponent) => {
       />
       <SectionDivider title="Fuentes" icon={<DocMagniGlass />} />
       <div className="relative">
-        <ul className="mt-4 flex flex-col gap-2 max-h-40 overflow-y-auto pr-1 mb-4">
+        <ul className="mt-4 mb-4 flex max-h-40 flex-col gap-2 overflow-y-auto pr-1">
           {displayOrigins.map((origin, index) => (
             <li key={index} className="w-full">
               <div
                 title={origin}
-                className="flex items-center gap-2.5 px-4 py-3 rounded-lg bg-[#f6eeff] hover:bg-[#f0e6ff] transition-colors duration-200"
+                className="flex items-center gap-2.5 rounded-lg bg-[#f6eeff] px-4 py-3 transition-colors duration-200 hover:bg-[#f0e6ff]"
               >
                 <Document />
-                <span className="text-sm font-medium">{origin.toUpperCase()}</span>
+                <span className="font-medium text-sm">
+                  {origin.toUpperCase()}
+                </span>
               </div>
             </li>
           ))}
         </ul>
         {hasMoreOrigins && (
-          <div className="flex justify-center mt-4 mb-4">
+          <div className="mt-4 mb-4 flex justify-center">
             <button
               onClick={() => setShowAllOrigins(!showAllOrigins)}
-              className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors duration-200"
-              title={showAllOrigins ? "Mostrar menos" : `Mostrar ${uniqueOrigins.length - 3} más`}
+              className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 transition-colors duration-200 hover:bg-gray-200"
+              title={
+                showAllOrigins
+                  ? 'Mostrar menos'
+                  : `Mostrar ${uniqueOrigins.length - 3} más`
+              }
             >
               {showAllOrigins ? (
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-black">
-                  <path d="m18 15-6-6-6 6"/>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="text-black"
+                >
+                  <path d="m18 15-6-6-6 6" />
                 </svg>
               ) : (
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-black">
-                  <path d="m6 9 6 6 6-6"/>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="text-black"
+                >
+                  <path d="m6 9 6 6 6-6" />
                 </svg>
               )}
             </button>
@@ -435,10 +464,8 @@ const StatusHeader = ({ status }: { status: boolean }) => (
   <h2
     title={status ? 'El análisis fue correcto' : 'El análisis no fue correcto'}
     className={cn(
-      'mt-4 flex items-center justify-center gap-2 truncate rounded-md py-3 px-4 text-center w-full',
-      status
-        ? 'bg-green-100 text-green-800'
-        : 'bg-yellow-100 text-yellow-800'
+      'mt-4 flex w-full items-center justify-center gap-2 truncate rounded-md px-4 py-3 text-center',
+      status ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
     )}
   >
     {status ? (

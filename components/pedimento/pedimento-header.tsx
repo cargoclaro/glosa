@@ -77,7 +77,7 @@ const PedimentoHeader: React.FC<PedimentoHeaderProps> = ({
             {pedimento.encabezado_del_pedimento.num_pedimento}
           </div>
         </div>
-        
+
         {/* T.OPER */}
         <div
           className={cn(
@@ -95,7 +95,7 @@ const PedimentoHeader: React.FC<PedimentoHeaderProps> = ({
             {pedimento.encabezado_del_pedimento.tipo_oper}
           </div>
         </div>
-          
+
         {/* CVE. PEDIMENTO */}
         <div
           className={cn(
@@ -113,7 +113,7 @@ const PedimentoHeader: React.FC<PedimentoHeaderProps> = ({
             {pedimento.encabezado_del_pedimento.cve_pedim}
           </div>
         </div>
-          
+
         {/* REGIMEN */}
         <div
           className={cn(

@@ -18,17 +18,19 @@ const Sidebar = () => {
       )}
     >
       <div className="h-full overflow-y-auto">
-        <div className="flex flex-col items-center justify-center my-6 px-3">
+        <div className="my-6 flex flex-col items-center justify-center px-3">
           <div className="flex items-center gap-2">
             <Image
               src="/assets/images/logo_transparente.png"
               alt="Cargo Claro Icon"
               width={35}
               height={30}
-              className="object-contain h-auto"
+              className="h-auto object-contain"
               priority
             />
-            <span className="text-lg font-semibold text-gray-800">Cargo Claro</span>
+            <span className="font-semibold text-gray-800 text-lg">
+              Cargo Claro
+            </span>
           </div>
         </div>
         <ul className="space-y-2">
