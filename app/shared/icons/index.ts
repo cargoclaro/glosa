@@ -1,6 +1,5 @@
 export { default as ArrowTrendingUp } from './arrow-trending-up';
 export { default as ArrowsUpDown } from './arrows-up-down';
-export { default as CalendarDays } from './calendar-days';
 export { default as Check } from './check';
 export { default as ClipboardDocumentList } from './clipboard-document-list';
 export { default as Clock } from './clock';

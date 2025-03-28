@@ -285,30 +285,91 @@ const GenericTabComponent = ({ data, handleClick }: IGenericTabComponent) => {
   const uniqueOrigins = Array.from(
     new Set(data.context.map((item) => item.origin))
   );
+  const [showAllOrigins, setShowAllOrigins] = useState(false);
+
+  // Display only first 3 documents initially
+  const displayOrigins = showAllOrigins
+    ? uniqueOrigins
+    : uniqueOrigins.slice(0, 3);
+
+  // Check if we need to show the "Show more" button
+  const hasMoreOrigins = uniqueOrigins.length > 3;
+
   return (
     <>
       <StatusHeader status={data.isCorrect} />
       <SectionDivider title="Pasos de Validación" icon={<ArrowTrendingUp />} />
+      <p className="mb-2 text-center text-gray-600 text-sm italic">
+        Haga <strong>clic</strong> en las validaciones para ver una explicación
+        detallada
+      </p>
       <DataListForSummaryCard
         data={data.validations}
         handleDetail={handleClick}
       />
       <SectionDivider title="Fuentes" icon={<DocMagniGlass />} />
-      <ul className="mt-4 flex max-h-[160px] flex-col gap-1 overflow-y-auto">
-        {uniqueOrigins.map((origin, index) => (
-          <li key={index} className="">
-            <p
-              title={origin}
-              className="inline-flex w-full items-center justify-center gap-1 truncate rounded-full border border-purple-400 bg-purple-100 px-12 py-2 text-center"
-            >
-              <span>
+      <div className="relative">
+        <ul className="mt-4 mb-4 flex max-h-40 flex-col gap-2 overflow-y-auto pr-1">
+          {displayOrigins.map((origin, index) => (
+            <li key={index} className="w-full">
+              <div
+                title={origin}
+                className="flex items-center gap-2.5 rounded-lg bg-[#f6eeff] px-4 py-3 transition-colors duration-200 hover:bg-[#f0e6ff]"
+              >
                 <Document />
-              </span>
-              {origin.toUpperCase()}
-            </p>
-          </li>
-        ))}
-      </ul>
+                <span className="font-medium text-sm">
+                  {origin.toUpperCase()}
+                </span>
+              </div>
+            </li>
+          ))}
+        </ul>
+        {hasMoreOrigins && (
+          <div className="mt-4 mb-4 flex justify-center">
+            <button
+              onClick={() => setShowAllOrigins(!showAllOrigins)}
+              className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 transition-colors duration-200 hover:bg-gray-200"
+              title={
+                showAllOrigins
+                  ? 'Mostrar menos'
+                  : `Mostrar ${uniqueOrigins.length - 3} más`
+              }
+            >
+              {showAllOrigins ? (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="text-black"
+                >
+                  <path d="m18 15-6-6-6 6" />
+                </svg>
+              ) : (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="text-black"
+                >
+                  <path d="m6 9 6 6 6-6" />
+                </svg>
+              )}
+            </button>
+          </div>
+        )}
+      </div>
       <div className="mb-4 border-t border-t-black" />
       <VerifiedButton
         tabId={data.id}
@@ -403,13 +464,21 @@ const StatusHeader = ({ status }: { status: boolean }) => (
   <h2
     title={status ? 'El análisis fue correcto' : 'El análisis no fue correcto'}
     className={cn(
-      'mt-4 truncate rounded-full border px-12 py-2 text-center',
-      status
-        ? 'border-green-400 bg-green-100'
-        : 'border-yellow-400 bg-yellow-100'
+      'mt-4 flex w-full items-center justify-center gap-2 truncate rounded-md px-4 py-3 text-center',
+      status ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
     )}
   >
-    {status ? 'Todo parece bien' : 'Verificar datos'}
+    {status ? (
+      <>
+        <Check customClass="h-5 w-5 text-green-600" />
+        <span>Todo parece bien</span>
+      </>
+    ) : (
+      <>
+        <ExclamationTriangle customClass="h-5 w-5 text-yellow-600" />
+        <span>Verificar datos</span>
+      </>
+    )}
   </h2>
 );
 

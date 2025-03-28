@@ -1,7 +1,6 @@
 import { google } from '@ai-sdk/google';
 import { generateObject } from 'ai';
 import { Langfuse } from 'langfuse';
-import type { UploadedFileData } from 'uploadthing/types';
 import { z } from 'zod';
 
 const documentTypes = [
@@ -19,37 +18,63 @@ const documentTypes = [
 
 export type DocumentType = (typeof documentTypes)[number];
 
-export async function classifyDocuments(
-  uploadedFiles: (UploadedFileData & { originalFile: File })[],
-  parentTraceId: string
-) {
+export async function classifyDocuments<
+  T extends { ufsUrl: string; name?: string },
+>(
+  files: T[],
+  parentTraceId?: string
+): Promise<(T & { documentType: DocumentType })[]> {
   const langfuse = new Langfuse();
-  langfuse.event({
-    traceId: parentTraceId,
-    name: 'Classification',
-  });
+  if (parentTraceId) {
+    langfuse.event({
+      traceId: parentTraceId,
+      name: 'Classification',
+    });
+  }
+  const fetchedFiles = await Promise.all(
+    files.map(async (file) => {
+      const response = await fetch(file.ufsUrl);
+      const base64 = Buffer.from(await response.arrayBuffer()).toString(
+        'base64'
+      );
+      const contentType =
+        response.headers.get('content-type') || 'application/octet-stream';
+      return {
+        ...file,
+        base64,
+        type: contentType,
+      };
+    })
+  );
   return await Promise.all(
-    uploadedFiles.map(async (uploadedFile) => {
+    fetchedFiles.map(async (fetchedFile) => {
       // We assume all xml files are cfdis
-      if (uploadedFile.type === 'text/xml') {
+      if (fetchedFile.type === 'text/xml') {
         return {
-          ...uploadedFile,
+          ...fetchedFile,
           documentType: 'cfdi' as const,
         };
       }
+      const telemetryConfig = parentTraceId
+        ? {
+            experimental_telemetry: {
+              isEnabled: true,
+              functionId: fetchedFile.name,
+              metadata: {
+                langfuseTraceId: parentTraceId,
+                langfuseUpdateParent: false,
+                fileUrl: fetchedFile.ufsUrl,
+              },
+            },
+          }
+        : {};
+
       const {
         object: { documentType },
       } = await generateObject({
         model: google('gemini-2.0-flash-001'),
-        experimental_telemetry: {
-          isEnabled: true,
-          functionId: uploadedFile.name,
-          metadata: {
-            langfuseTraceId: parentTraceId,
-            langfuseUpdateParent: false,
-            fileUrl: uploadedFile.ufsUrl,
-          },
-        },
+        ...telemetryConfig,
+        seed: 42,
         system: `
         Eres un experto en análisis y clasificación de documentos aduaneros.
         
@@ -105,8 +130,8 @@ export async function classifyDocuments(
             content: [
               {
                 type: 'file',
-                data: `data:${uploadedFile.type};base64,${Buffer.from(await uploadedFile.originalFile.arrayBuffer()).toString('base64')}`,
-                mimeType: uploadedFile.type,
+                data: `data:${fetchedFile.type};base64,${fetchedFile.base64}`,
+                mimeType: fetchedFile.type,
               },
             ],
           },
@@ -114,7 +139,7 @@ export async function classifyDocuments(
       });
 
       return {
-        ...uploadedFile,
+        ...fetchedFile,
         documentType,
       };
     })

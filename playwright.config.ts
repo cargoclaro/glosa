@@ -4,6 +4,7 @@ import ms from 'ms';
 export default defineConfig({
   fullyParallel: false,
   timeout: ms('5m'),
+  testMatch: '**/*.test.ts',
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: Boolean(process.env['CI']),
   use: {

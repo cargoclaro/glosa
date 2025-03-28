@@ -13,20 +13,25 @@ const Sidebar = () => {
   return (
     <aside
       className={cn(
-        '-translate-x-full fixed top-0 z-20 h-screen w-48 bg-white transition-transform sm:translate-x-0',
+        '-translate-x-full fixed top-0 z-20 h-screen w-48 bg-[#F1F5F9] transition-transform sm:translate-x-0',
         isAnalysisPage && 'hidden'
       )}
     >
       <div className="h-full overflow-y-auto">
-        <div className="my-10 size-auto pr-10">
-          <Image
-            src="/assets/images/logo.webp"
-            alt="Cargo Claro Logo"
-            width={100}
-            height={100}
-            className="size-full"
-            priority
-          />
+        <div className="my-6 flex flex-col items-center justify-center px-3">
+          <div className="flex items-center gap-2">
+            <Image
+              src="/assets/images/logo_transparente.png"
+              alt="Cargo Claro Icon"
+              width={35}
+              height={30}
+              className="h-auto object-contain"
+              priority
+            />
+            <span className="font-semibold text-gray-800 text-lg">
+              Cargo Claro
+            </span>
+          </div>
         </div>
         <ul className="space-y-2">
           <li>
