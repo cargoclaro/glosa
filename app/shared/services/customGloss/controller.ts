@@ -21,7 +21,7 @@ import {
   CustomGlossTabValidationStep,
   CustomGlossTabValidationStepActionToTake,
 } from '~/db/schema';
-import { type Classification, classifyDocuments } from './classification';
+import { type Classification, classifyDocuments } from './classification/classification';
 import { extractTextFromPDFs } from './data-extraction';
 import { glosaExpo } from './glosa/expo';
 import { glosaImpo } from './glosa/impo';
@@ -48,8 +48,6 @@ function mapClassificationToDocumentType(
       return 'factura';
     case 'Carta Regla 3.1.8':
       return 'carta318';
-    case 'Carta de cesión de derechos':
-      return 'cartaCesionDeDerechos';
     case 'Cove':
       return 'cove';
     case 'Packing List':
