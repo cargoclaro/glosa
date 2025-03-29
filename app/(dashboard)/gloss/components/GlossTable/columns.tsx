@@ -1,6 +1,6 @@
 'use client';
 
-import { ArrowsUpDown, RightArrow } from '@/shared/icons';
+import { ArrowsUpDown } from '@/shared/icons';
 import type { ColumnDef } from '@tanstack/react-table';
 import Link from 'next/link';
 import { cn } from '~/lib/utils';
@@ -36,24 +36,29 @@ export const GlossDataTableColumns: ColumnDef<IDumpGlosses>[] = [
           className="flex items-center gap-2"
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
         >
-          Estado de la operación
+          Estado de la glosa
           <ArrowsUpDown size="size-4" />
         </button>
       );
     },
     cell: ({ row }) => {
+      // New cleaner status indicator inspired by Perplexity
+      const isPending = row.getValue('operationStatus') === 'IN_PROGRESS';
       return (
-        <p
+        <div
           className={cn(
-            row.getValue('operationStatus') === 'IN_PROGRESS'
-              ? 'max-w-min rounded-full border border-yellow-700 bg-yellow-50 px-4 py-2 text-yellow-700'
-              : 'max-w-min rounded-full border border-green-700 bg-green-50 px-4 py-2 text-green-700'
+            'inline-flex items-center text-sm font-medium',
+            isPending ? 'text-amber-600' : 'text-emerald-600'
           )}
         >
-          {row.getValue('operationStatus') === 'IN_PROGRESS'
-            ? 'Pendiente'
-            : 'Completado'}
-        </p>
+          <span 
+            className={cn(
+              'mr-1.5 h-2 w-2 rounded-full',
+              isPending ? 'bg-amber-500' : 'bg-emerald-500'
+            )} 
+          />
+          {isPending ? 'Por glosar' : 'Glosado'}
+        </div>
       );
     },
   },
@@ -64,13 +69,30 @@ export const GlossDataTableColumns: ColumnDef<IDumpGlosses>[] = [
   {
     id: 'actions',
     cell: ({ row }) => {
+      const id = row.getValue('id');
       return (
         <Link
           aria-label="View gloss report"
-          href={`/gloss/${row.getValue('id')}`}
-          className="line-clamp-1 max-w-max rounded-xl bg-primary p-2 text-white hover:bg-primary/80"
+          href={`/gloss/${id}`}
+          className="inline-flex items-center justify-center gap-1.5 rounded-md bg-orange-500 px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500/20"
         >
-          <RightArrow size="size-4" strokeWidth={4} />
+          Ver
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            className="ml-0.5"
+          >
+            <path
+              d="M9 6l6 6-6 6"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
         </Link>
       );
     },
