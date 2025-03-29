@@ -93,7 +93,7 @@ describe('Classification', () => {
     },
   ];
 
-  it.concurrent('should correctly classify documents', async () => {
+  it('should correctly classify documents', async () => {
     // Create a flat array of all file URLs
     const allFiles = testCases.flatMap((testCase) =>
       testCase.fileUrls.map((ufsUrl) => ({
