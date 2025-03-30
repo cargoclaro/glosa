@@ -3,64 +3,62 @@ import { generateObject, NoObjectGeneratedError } from 'ai';
 import { coveSchema, pedimentoSchema, billOfLadingSchema, airWaybillSchema, facturaSchema, cartaRegla318Schema, packingListSchema } from './schemas';
 import { err, ok } from 'neverthrow';
 
-export async function extractAndStructureCoves(
-  fileUrls: string[],
+export async function extractAndStructureCove(
+  fileUrl: string,
   parentTraceId?: string,
 ) {
-  return await Promise.all(fileUrls.map(async (url) => {
-    const telemetryConfig = parentTraceId
-      ? {
-        experimental_telemetry: {
-          isEnabled: true,
-          functionId: 'Cove',
-          metadata: {
-            langfuseTraceId: parentTraceId,
-            langfuseUpdateParent: false,
-            fileUrl: url,
-          },
+  const telemetryConfig = parentTraceId
+    ? {
+      experimental_telemetry: {
+        isEnabled: true,
+        functionId: 'Cove',
+        metadata: {
+          langfuseTraceId: parentTraceId,
+          langfuseUpdateParent: false,
+          fileUrl: fileUrl,
         },
-      }
-      : {};
-    try {
-      const { object } = await generateObject({
-        model: google('gemini-2.0-flash-001'),
-        ...telemetryConfig,
-        schema: coveSchema,
-        messages: [
-          {
-            role: 'user',
-            content: [
-              {
-                type: 'text',
-                text: 'Estructura el documento en base al esquema proporcionado.',
-              },
-              {
-                type: 'file',
-                data: `${url}`,
-                mimeType: 'application/pdf',
-              },
-            ],
-          },
-        ],
-      });
-      return ok(object);
-    } catch (error) {
-      if (NoObjectGeneratedError.isInstance(error)) {
-        return err({
-          type: 'NoObjectGenerated',
-          message: error.message,
-          cause: error.cause,
-          fileUrl: url,
-        });
-      }
+      },
+    }
+    : {};
+  try {
+    const { object } = await generateObject({
+      model: google('gemini-2.0-flash-001'),
+      ...telemetryConfig,
+      schema: coveSchema,
+      messages: [
+        {
+          role: 'user',
+          content: [
+            {
+              type: 'text',
+              text: 'Estructura el documento en base al esquema proporcionado.',
+            },
+            {
+              type: 'file',
+              data: `${fileUrl}`,
+              mimeType: 'application/pdf',
+            },
+          ],
+        },
+      ],
+    });
+    return ok(object);
+  } catch (error) {
+    if (NoObjectGeneratedError.isInstance(error)) {
       return err({
-        type: 'UnknownError',
-        message: 'Unknown error',
-        fileUrl: url,
+        type: 'NoObjectGenerated',
+        message: error.message,
+        cause: error.cause,
+        fileUrl: fileUrl,
       });
     }
-  })
-  );
+    return err({
+      type: 'UnknownError',
+      message: 'Unknown error',
+      fileUrl: fileUrl,
+    });
+  }
+
 }
 
 export async function extractAndStructurePedimento(
@@ -120,130 +118,122 @@ export async function extractAndStructurePedimento(
   }
 }
 
-export async function extractAndStructureCartasRegla318(
-  fileUrls: string[],
+export async function extractAndStructureCartaRegla318(
+  fileUrl: string,
   parentTraceId?: string,
 ) {
-  return await Promise.all(
-    fileUrls.map(async (url) => {
-      const telemetryConfig = parentTraceId
-        ? {
-          experimental_telemetry: {
-            isEnabled: true,
-            functionId: 'Carta Regla 3.1.8',
-            metadata: {
-              langfuseTraceId: parentTraceId,
-              langfuseUpdateParent: false,
-              fileUrl: url,
-            },
-          },
-        }
-        : {};
-      try {
-        const { object } = await generateObject({
-          model: google('gemini-2.0-flash-001'),
-          seed: 42,
-          ...telemetryConfig,
-          schema: cartaRegla318Schema,
-          messages: [
+  const telemetryConfig = parentTraceId
+    ? {
+      experimental_telemetry: {
+        isEnabled: true,
+        functionId: 'Carta Regla 3.1.8',
+        metadata: {
+          langfuseTraceId: parentTraceId,
+          langfuseUpdateParent: false,
+          fileUrl: fileUrl,
+        },
+      },
+    }
+    : {};
+  try {
+    const { object } = await generateObject({
+      model: google('gemini-2.0-flash-001'),
+      seed: 42,
+      ...telemetryConfig,
+      schema: cartaRegla318Schema,
+      messages: [
+        {
+          role: 'user',
+          content: [
             {
-              role: 'user',
-              content: [
-                {
-                  type: 'text',
-                  text: 'Estructura el documento en base al esquema proporcionado.',
-                },
-                {
-                  type: 'file',
-                  data: `${url}`,
-                  mimeType: 'application/pdf',
-                },
-              ],
+              type: 'text',
+              text: 'Estructura el documento en base al esquema proporcionado.',
+            },
+            {
+              type: 'file',
+              data: `${fileUrl}`,
+              mimeType: 'application/pdf',
             },
           ],
-        });
+        },
+      ],
+    });
 
-        return ok(object);
-      } catch (error) {
-        if (NoObjectGeneratedError.isInstance(error)) {
-          return err({
-            type: 'NoObjectGenerated',
-            message: error.message,
-            cause: error.cause,
-            fileUrl: url,
-          });
-        }
-        return err({
-          type: 'UnknownError',
-          message: 'Unknown error',
-          fileUrl: url,
-        });
-      }
-    })
-  );
+    return ok(object);
+  } catch (error) {
+    if (NoObjectGeneratedError.isInstance(error)) {
+      return err({
+        type: 'NoObjectGenerated',
+        message: error.message,
+        cause: error.cause,
+        fileUrl: fileUrl,
+      });
+    }
+    return err({
+      type: 'UnknownError',
+      message: 'Unknown error',
+      fileUrl: fileUrl,
+    });
+  }
 }
 
-export async function extractAndStructureFacturas(
-  fileUrls: string[],
+export async function extractAndStructureFactura(
+  fileUrl: string,
   parentTraceId?: string,
 ) {
-  return await Promise.all(
-    fileUrls.map(async (url) => {
-      const telemetryConfig = parentTraceId
-        ? {
-          experimental_telemetry: {
-            isEnabled: true,
-            functionId: 'Factura',
-            metadata: {
-              langfuseTraceId: parentTraceId,
-              langfuseUpdateParent: false,
-              fileUrl: url,
-            },
-          },
-        }
-        : {};
-      try {
-        const { object } = await generateObject({
-          model: google('gemini-2.0-flash-001'),
-          seed: 42,
-          ...telemetryConfig,
-          schema: facturaSchema,
-          messages: [
+  const telemetryConfig = parentTraceId
+    ? {
+      experimental_telemetry: {
+        isEnabled: true,
+        functionId: 'Factura',
+        metadata: {
+          langfuseTraceId: parentTraceId,
+          langfuseUpdateParent: false,
+          fileUrl: fileUrl,
+        },
+      },
+    }
+    : {};
+  try {
+    const { object } = await generateObject({
+      model: google('gemini-2.0-flash-001'),
+      seed: 42,
+      ...telemetryConfig,
+      schema: facturaSchema,
+      messages: [
+        {
+          role: 'user',
+          content: [
             {
-              role: 'user',
-              content: [
-                {
-                  type: 'text',
-                  text: 'Estructura el documento en base al esquema proporcionado.',
-                },
-                {
-                  type: 'file',
-                  data: `${url}`,
-                  mimeType: 'application/pdf',
-                },
-              ],
+              type: 'text',
+              text: 'Estructura el documento en base al esquema proporcionado.',
+            },
+            {
+              type: 'file',
+              data: `${fileUrl}`,
+              mimeType: 'application/pdf',
             },
           ],
-        });
+        },
+      ],
+    });
 
-        return ok(object);
-      } catch (error) {
-        if (NoObjectGeneratedError.isInstance(error)) {
-          return err({
-            type: 'NoObjectGenerated',
-            message: error.message,
-            cause: error.cause,
-            fileUrl: url,
-          });
-        }
-        return err({
-          type: 'UnknownError',
-          message: 'Unknown error',
-          fileUrl: url,
-        });
-      }
-    })
-  );
+    return ok(object);
+  } catch (error) {
+    if (NoObjectGeneratedError.isInstance(error)) {
+      return err({
+        type: 'NoObjectGenerated',
+        message: error.message,
+        cause: error.cause,
+        fileUrl: fileUrl,
+      });
+    }
+    return err({
+      type: 'UnknownError',
+      message: 'Unknown error',
+      fileUrl: fileUrl,
+    });
+  }
 }
 
 export async function extractAndStructurePackingList(
