@@ -1,0 +1,56 @@
+[
+  {
+    "fileUrl": "https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15P5NLJRxkozZNG45DnM3Oy1CRlXrVAEjFKYBm",
+    "expectedOutput": {
+      "mercancias": [
+        {
+          "cantidad": 3
+        }
+      ],
+      "pesoBruto": 1650,
+      "unidadDeMedida": "lb"
+    }
+  },
+  {
+    "fileUrl": "https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y150DvPWbozluNwmWerUvXsTP7dntpA69DgMq1C",
+    "expectedOutput": {
+      "mercancias": [
+        {
+          "cantidad": 1204
+        }
+      ],
+      "pesoBruto": 1383.48,
+      "unidadDeMedida": "kg"
+    }
+  },
+  {
+    "fileUrl": "https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15Qv9MjZmP3ThsNJt5xqeOK1fAPnj4uVgcvWRl",
+    "expectedOutput": {
+      "mercancias": [
+        {
+          "cantidad": 800
+        }
+      ],
+      "pesoBruto": 20.393,
+      "unidadDeMedida": "lb"
+    }
+  },
+  {
+    "fileUrl": "https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15YZPve7HjXIrsoaGCginAhSTQkP245ld9H0yU",
+    "expectedOutput": {
+      "mercancias": [
+        {
+          "cantidad": 6160
+        },
+        {
+          "cantidad": 87
+        },
+        {
+          "cantidad": 240
+        }
+      ],
+      "pesoBruto": 34514,
+      "unidadDeMedida": "lb"
+    }
+  }
+]

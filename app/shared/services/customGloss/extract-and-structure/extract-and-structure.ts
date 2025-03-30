@@ -302,25 +302,6 @@ export async function extractAndStructurePackingList(
       ],
     });
 
-    // Extract the last part of the URL to use as filename
-    const filename = fileUrl.split('/').pop();
-    if (filename) {
-      const fs = require('fs');
-      const path = require('path');
-      const outputDir = path.join(process.cwd(), 'extracted_data');
-      
-      // Create directory if it doesn't exist
-      if (!fs.existsSync(outputDir)) {
-        fs.mkdirSync(outputDir, { recursive: true });
-      }
-      
-      // Write the extracted data to a JSON file
-      fs.writeFileSync(
-        path.join(outputDir, `${filename}.json`),
-        JSON.stringify(object, null, 2)
-      );
-    }
-
     return object;
   } catch (error) {
     if (NoObjectGeneratedError.isInstance(error)) {
