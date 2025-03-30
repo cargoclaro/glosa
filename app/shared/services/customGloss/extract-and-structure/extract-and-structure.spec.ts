@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { extractAndStructurePackingList } from './extract-and-structure';
 import packingListFixture from './fixtures/packing-list.json';
 
-describe('Extract and Structure', () => {
+describe.concurrent('Extract and Structure', () => {
   it('should correctly extract and structure packing lists', async () => {
     const packingListResults = await Promise.all(
       packingListFixture.map(async ({ fileUrl }) => {
