@@ -1,6 +1,6 @@
 'use client';
 import todayIs from '@/shared/utils/today-is';
-import { MessageCircle } from 'lucide-react';
+import { HelpCircle } from 'lucide-react';
 // import NotificationsMenu from "./NotificationsMenu";
 import { usePathname } from 'next/navigation';
 import { cn } from '~/lib/utils';
@@ -34,11 +34,11 @@ const Header = () => {
               <li className="flex items-center">
                 <button
                   onClick={handleWhatsAppHelp}
-                  className="hover:-translate-y-0.5 flex transform items-center gap-1.5 rounded-full bg-gradient-to-r from-green-500 to-green-600 px-4 py-2 font-medium text-sm text-white shadow-sm transition-all duration-300 ease-in-out hover:from-green-600 hover:to-green-700 hover:shadow-md"
+                  className="inline-flex items-center gap-1.5 rounded-md border border-green-500 bg-white px-3 py-1.5 text-sm font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-green-500/20"
                   aria-label="Ayuda por WhatsApp"
                 >
-                  <MessageCircle className="h-4 w-4" />
                   <span>Ayuda</span>
+                  <HelpCircle className="h-4 w-4 ml-0.5" />
                 </button>
               </li>
               <li className="flex items-center">

@@ -12,6 +12,7 @@ export default defineConfig({
     include: ['**/*.spec.ts'],
     // Pass through all environment variables
     env: process.env,
+    watch: false,
   },
   plugins: [tsconfigPaths()],
 });

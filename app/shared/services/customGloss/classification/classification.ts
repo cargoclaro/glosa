@@ -9,10 +9,10 @@ const classifications = [
   'Air Waybill',
   'Factura',
   'Carta Regla 3.1.8',
-  'Carta de cesión de derechos',
   'Cove',
   'Packing List',
   'CFDI',
+  'Archivo con múltiples documentos (iguales o distintos)',
   'Otros',
 ] as const;
 
@@ -72,7 +72,7 @@ export async function classifyDocuments<
       const {
         object: { classification },
       } = await generateObject({
-        model: openai('gpt-4o'),
+        model: openai('gpt-4o-2024-11-20'),
         ...telemetryConfig,
         seed: 42,
         system:
@@ -81,6 +81,8 @@ export async function classifyDocuments<
           classification: z.enum(classifications).describe(`
             La carta de regla 3.1.8 es un complemento de la factura, ten cuidado de no clasificarla como factura.
             Este documento lee como una carta legal, referenciando la ley aduanera y el reglamento de comercio exterior.
+
+            Verifica si en el archivo existen diferentes números de factura; esto es un indicador clave de que el archivo contiene múltiples documentos.
           `),
         }),
         messages: [

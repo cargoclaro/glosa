@@ -18,19 +18,21 @@ const Sidebar = () => {
     >
       <div className="h-full overflow-y-auto">
         <div className="my-6 flex flex-col items-center justify-center px-3">
-          <div className="flex items-center gap-2">
-            <Image
-              src="/assets/images/logo_transparente.png"
-              alt="Cargo Claro Icon"
-              width={35}
-              height={30}
-              className="h-auto object-contain"
-              priority
-            />
-            <span className="font-semibold text-gray-800 text-lg">
-              Cargo Claro
-            </span>
-          </div>
+          <Link href="/home" className="transition-transform hover:scale-105">
+            <div className="flex items-center gap-2">
+              <Image
+                src="/assets/images/logo_transparente.png"
+                alt="Cargo Claro Icon"
+                width={35}
+                height={30}
+                className="h-auto object-contain"
+                priority
+              />
+              <span className="font-semibold text-gray-800 text-lg">
+                Cargo Claro
+              </span>
+            </div>
+          </Link>
         </div>
         <ul className="mt-6 space-y-1 px-2">
           <li>

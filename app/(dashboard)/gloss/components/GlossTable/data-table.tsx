@@ -7,6 +7,7 @@ import {
   RightChevron,
   RightDoubleChevron,
   Search,
+  ClipboardDocumentList,
 } from '@/shared/icons';
 import {
   type ColumnDef,
@@ -62,7 +63,10 @@ export default function GlossDataTable<TData, TValue>({
 
   return (
     <section className="pb-8">
-      <h2 className="mb-6 font-semibold text-2xl">Tus Expedientes</h2>
+      <h2 className="mb-6 flex items-center gap-2 font-semibold text-2xl">
+        <ClipboardDocumentList customClass="text-orange-500" size="size-7" />
+        Tus Expedientes
+      </h2>
       <div className="flex flex-col gap-4 py-4 md:flex-row">
         <div className="relative flex-1">
           <label
@@ -103,9 +107,9 @@ export default function GlossDataTable<TData, TValue>({
                 ?.setFilterValue(event.target.value)
             }
           >
-            <option value="">Estado de la operación</option>
-            <option value="IN_PROGRESS">Pendiente</option>
-            <option value="DONE">Completado</option>
+            <option value="">Estado de la glosa</option>
+            <option value="IN_PROGRESS">Por glosar</option>
+            <option value="DONE">Glosado</option>
           </select>
           <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4">
             <svg
@@ -164,24 +168,12 @@ export default function GlossDataTable<TData, TValue>({
                   {row.getVisibleCells().map((cell) => {
                     // Special styling for operation status column
                     if (cell.column.id === 'operationStatus') {
-                      const status = cell.getValue() as string;
                       return (
                         <TableCell key={cell.id} className="px-6 py-4">
-                          <div
-                            className={cn(
-                              'inline-flex items-center rounded-full px-3 py-1 font-medium text-xs',
-                              status === 'IN_PROGRESS'
-                                ? 'border border-amber-200 bg-amber-100 text-amber-700'
-                                : status === 'DONE'
-                                  ? 'border border-green-200 bg-green-100 text-green-700'
-                                  : 'border border-gray-200 bg-gray-100 text-gray-700'
-                            )}
-                          >
-                            {flexRender(
-                              cell.column.columnDef.cell,
-                              cell.getContext()
-                            )}
-                          </div>
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext()
+                          )}
                         </TableCell>
                       );
                     }
@@ -193,26 +185,10 @@ export default function GlossDataTable<TData, TValue>({
                           key={cell.id}
                           className="px-3 py-4 text-right"
                         >
-                          <button
-                            className="rounded-full bg-primary/10 p-2.5 text-primary transition-all duration-200 hover:bg-orange-500 hover:text-white hover:shadow-md"
-                            aria-label="View details"
-                          >
-                            <svg
-                              width="16"
-                              height="16"
-                              viewBox="0 0 16 16"
-                              fill="none"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                d="M6 12L10 8L6 4"
-                                stroke="currentColor"
-                                strokeWidth="2"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                              />
-                            </svg>
-                          </button>
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext()
+                          )}
                         </TableCell>
                       );
                     }

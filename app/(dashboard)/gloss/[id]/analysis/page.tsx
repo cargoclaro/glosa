@@ -70,9 +70,24 @@ const GlossIdAnalysis = async (props: {
         <div className="mx-auto w-full">
           <Link
             href="/"
-            className="rounded-md border border-black px-4 py-2 text-sm transition-colors duration-200 hover:bg-gray-100"
+            className="inline-flex items-center justify-center rounded-full border border-orange-200 bg-orange-50 p-1.5 text-xs shadow-sm transition-colors duration-200 hover:bg-orange-100"
+            aria-label="Back to home"
+            title="Back to home"
           >
-            Home
+            <svg 
+              xmlns="http://www.w3.org/2000/svg" 
+              width="16" 
+              height="16" 
+              viewBox="0 0 24 24" 
+              fill="none" 
+              stroke="currentColor" 
+              strokeWidth="2" 
+              strokeLinecap="round" 
+              strokeLinejoin="round" 
+              className="text-orange-500"
+            >
+              <path d="m15 18-6-6 6-6" />
+            </svg>
           </Link>
         </div>
         <Documents data={customGloss.files} />

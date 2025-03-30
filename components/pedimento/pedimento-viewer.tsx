@@ -13,6 +13,7 @@ import PedimentoImportador from './pedimento-importador';
 import PedimentoIncrementables from './pedimento-incrementables';
 import PedimentoPartidas from './pedimento-partidas';
 import PedimentoProveedor from './pedimento-proveedor';
+import PedimentoMarcasBultos from './pedimento-marcas-bultos';
 
 interface PedimentoViewerProps {
   pedimento: Pedimento;
@@ -179,14 +180,22 @@ const PedimentoViewer = ({
                 />
               </div>
               <div className="w-full">
+                <PedimentoMarcasBultos
+                  marcasNumerosBultos={
+                    pedimento.identificadores_nivel_pedimento
+                      .marcas_numeros_bultos || ''
+                  }
+                  tabs={tabs}
+                  onClick={onClick}
+                  tabInfoSelected={tabInfoSelected}
+                />
+              </div>
+              <div className="w-full">
                 <PedimentoIdentificadores
                   identificadoresNivelPedimento={{
                     clave_seccion_aduanera:
                       pedimento.identificadores_nivel_pedimento
                         .clave_seccion_aduanera || '',
-                    marcas_numeros_bultos:
-                      pedimento.identificadores_nivel_pedimento
-                        .marcas_numeros_bultos || '',
                   }}
                   identificadoresPedimento={pedimento.identificadores_pedimento.map(
                     (id) => ({

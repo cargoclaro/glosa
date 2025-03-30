@@ -1,4 +1,5 @@
 import { LeftArrow } from '@/shared/icons';
+import { Square2x2 } from '@/shared/icons';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
@@ -103,8 +104,9 @@ const GlossIdPage = async (props: { params: Promise<{ id: string }> }) => {
       <div className="mb-6 flex items-center justify-between">
         <h1 className="font-bold text-2xl">
           <Link className="inline-flex items-center gap-2" href="/gloss">
-            <span>
-              <LeftArrow strokeWidth={3} />
+            <span className="inline-flex items-center">
+              <LeftArrow size="size-6" strokeWidth={2} customClass="text-orange-500 mr-2" />
+              <Square2x2 size="size-6" strokeWidth={2} customClass="text-orange-500" isFilled={true} />
             </span>
             Mis Operaciones
           </Link>

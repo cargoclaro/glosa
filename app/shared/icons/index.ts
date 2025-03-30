@@ -8,6 +8,7 @@ export { default as Document } from './document';
 export { default as ExclamationTriangle } from './exclamation-triangle';
 export { default as Funnel } from './funnel';
 export { default as GlobeAlt } from './globe-alt';
+export { default as Info } from './info';
 export { default as LeftArrow } from './left-arrow';
 export { default as LeftChevron } from './left-chevron';
 export { default as LeftDoubleChevron } from './left-double-chevron';

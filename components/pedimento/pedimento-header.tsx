@@ -2,6 +2,7 @@ import type { Pedimento } from '@/shared/services/customGloss/data-extraction/sc
 import type React from 'react';
 import type { CustomGlossTabTable } from '~/db/schema';
 import { cn } from '~/lib/utils';
+import { getHighlightBorder, getHighlightFill } from './utils/highlight-styles';
 
 interface PedimentoHeaderProps {
   pedimento: Pedimento;
@@ -29,24 +30,6 @@ const PedimentoHeader: React.FC<PedimentoHeaderProps> = ({
     }).format(num);
   };
 
-  // Helper functions to determine highlight styles
-  const getHighlightBorder = (section: string) => {
-    const tab = tabs.find((tab) => tab.name === section);
-    return tab?.isCorrect || tab?.isVerified
-      ? 'border-green-500'
-      : 'border-yellow-400';
-  };
-
-  const getHighlightFill = (section: string) => {
-    if (tabInfoSelected.name !== section) {
-      return '';
-    }
-
-    return tabInfoSelected.isCorrect || tabInfoSelected.isVerified
-      ? 'bg-green-100/50'
-      : 'bg-yellow-100/50';
-  };
-
   if (page !== 1) {
     return null; // Don't show header on page 2
   }
@@ -65,8 +48,8 @@ const PedimentoHeader: React.FC<PedimentoHeaderProps> = ({
           className={cn(
             'col-span-5 grid cursor-pointer grid-cols-5',
             'overflow-hidden rounded-md border-2',
-            getHighlightBorder('Número de pedimento'),
-            getHighlightFill('Número de pedimento')
+            getHighlightBorder('Número de pedimento', tabs),
+            getHighlightFill('Número de pedimento', tabInfoSelected)
           )}
           onClick={() => onClick('Número de pedimento')}
         >
@@ -83,8 +66,8 @@ const PedimentoHeader: React.FC<PedimentoHeaderProps> = ({
           className={cn(
             'col-span-2 grid cursor-pointer grid-cols-2',
             'overflow-hidden rounded-md border-2',
-            getHighlightBorder('Tipo de operación'),
-            getHighlightFill('Tipo de operación')
+            getHighlightBorder('Tipo de operación', tabs),
+            getHighlightFill('Tipo de operación', tabInfoSelected)
           )}
           onClick={() => onClick('Tipo de operación')}
         >
@@ -101,8 +84,8 @@ const PedimentoHeader: React.FC<PedimentoHeaderProps> = ({
           className={cn(
             'col-span-3 grid cursor-pointer grid-cols-3',
             'overflow-hidden rounded-md border-2',
-            getHighlightBorder('Tipo de operación'),
-            getHighlightFill('Tipo de operación')
+            getHighlightBorder('Tipo de operación', tabs),
+            getHighlightFill('Tipo de operación', tabInfoSelected)
           )}
           onClick={() => onClick('Tipo de operación')}
         >
@@ -119,8 +102,8 @@ const PedimentoHeader: React.FC<PedimentoHeaderProps> = ({
           className={cn(
             'col-span-2 grid cursor-pointer grid-cols-2',
             'overflow-hidden rounded-md border-2',
-            getHighlightBorder('Tipo de operación'),
-            getHighlightFill('Tipo de operación')
+            getHighlightBorder('Tipo de operación', tabs),
+            getHighlightFill('Tipo de operación', tabInfoSelected)
           )}
           onClick={() => onClick('Tipo de operación')}
         >
@@ -140,8 +123,8 @@ const PedimentoHeader: React.FC<PedimentoHeaderProps> = ({
           className={cn(
             'col-span-2 grid cursor-pointer grid-cols-2',
             'overflow-hidden rounded-md border-2',
-            getHighlightBorder('Clave de destino/origen'),
-            getHighlightFill('Clave de destino/origen')
+            getHighlightBorder('Clave de destino/origen', tabs),
+            getHighlightFill('Clave de destino/origen', tabInfoSelected)
           )}
           onClick={() => onClick('Clave de destino/origen')}
         >
@@ -158,8 +141,8 @@ const PedimentoHeader: React.FC<PedimentoHeaderProps> = ({
           className={cn(
             'col-span-4 grid cursor-pointer grid-cols-2',
             'overflow-hidden rounded-md border-2',
-            getHighlightBorder('Operación monetaria'),
-            getHighlightFill('Operación monetaria')
+            getHighlightBorder('Operación monetaria', tabs),
+            getHighlightFill('Operación monetaria', tabInfoSelected)
           )}
           onClick={() => onClick('Operación monetaria')}
         >
@@ -176,8 +159,8 @@ const PedimentoHeader: React.FC<PedimentoHeaderProps> = ({
           className={cn(
             'col-span-4 grid cursor-pointer grid-cols-2',
             'overflow-hidden rounded-md border-2',
-            getHighlightBorder('Pesos y bultos'),
-            getHighlightFill('Pesos y bultos')
+            getHighlightBorder('Pesos y bultos', tabs),
+            getHighlightFill('Pesos y bultos', tabInfoSelected)
           )}
           onClick={() => onClick('Pesos y bultos')}
         >
@@ -205,8 +188,8 @@ const PedimentoHeader: React.FC<PedimentoHeaderProps> = ({
           className={cn(
             'col-span-6 cursor-pointer border-gray-400 border-r',
             'overflow-hidden rounded-md border-2',
-            getHighlightBorder('Datos del transporte'),
-            getHighlightFill('Datos del transporte')
+            getHighlightBorder('Datos del transporte', tabs),
+            getHighlightFill('Datos del transporte', tabInfoSelected)
           )}
           onClick={() => onClick('Datos del transporte')}
         >
@@ -242,8 +225,8 @@ const PedimentoHeader: React.FC<PedimentoHeaderProps> = ({
           className={cn(
             'col-span-6 cursor-pointer',
             'overflow-hidden rounded-md border-2',
-            getHighlightBorder('Operación monetaria'),
-            getHighlightFill('Operación monetaria')
+            getHighlightBorder('Operación monetaria', tabs),
+            getHighlightFill('Operación monetaria', tabInfoSelected)
           )}
           onClick={() => onClick('Operación monetaria')}
         >
