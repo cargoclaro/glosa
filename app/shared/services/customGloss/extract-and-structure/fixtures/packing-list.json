@@ -7,8 +7,10 @@
           "cantidad": 3
         }
       ],
-      "pesoBruto": 1650,
-      "unidadDeMedida": "lb"
+      "pesoBruto": {
+        "valor": 1650,
+        "unidadDeMedida": "lb"
+      }
     }
   },
   {
@@ -19,8 +21,10 @@
           "cantidad": 1204
         }
       ],
-      "pesoBruto": 1383.48,
-      "unidadDeMedida": "kg"
+      "pesoBruto": {
+        "valor": 1383.48,
+        "unidadDeMedida": "kg"
+      }
     }
   },
   {
@@ -31,8 +35,10 @@
           "cantidad": 800
         }
       ],
-      "pesoBruto": 20.393,
-      "unidadDeMedida": "lb"
+      "pesoBruto": {
+        "valor": 20.393,
+        "unidadDeMedida": "lb"
+      }
     }
   },
   {
@@ -49,8 +55,10 @@
           "cantidad": 240
         }
       ],
-      "pesoBruto": 34514,
-      "unidadDeMedida": "lb"
+      "pesoBruto": {
+        "valor": 34514,
+        "unidadDeMedida": "lb"
+      }
     }
   }
 ]
