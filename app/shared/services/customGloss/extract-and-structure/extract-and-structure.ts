@@ -1,6 +1,7 @@
 import { google } from '@ai-sdk/google';
 import { generateObject, NoObjectGeneratedError } from 'ai';
 import { coveSchema, pedimentoSchema, billOfLadingSchema, airWaybillSchema, facturaSchema, cartaRegla318Schema, packingListSchema } from './schemas';
+import { err, ok } from 'neverthrow';
 
 export async function extractAndStructureCoves(
   fileUrls: string[],
@@ -42,25 +43,21 @@ export async function extractAndStructureCoves(
           },
         ],
       });
-      return object;
+      return ok(object);
     } catch (error) {
       if (NoObjectGeneratedError.isInstance(error)) {
-        return {
-          error: {
-            type: 'NoObjectGenerated',
-            message: error.message,
-            cause: error.cause,
-            fileUrl: url,
-          },
-        };
-      }
-      return {
-        error: {
-          type: 'UnknownError',
-          message: 'Unknown error',
+        return err({
+          type: 'NoObjectGenerated',
+          message: error.message,
+          cause: error.cause,
           fileUrl: url,
-        },
-      };
+        });
+      }
+      return err({
+        type: 'UnknownError',
+        message: 'Unknown error',
+        fileUrl: url,
+      });
     }
   })
   );
@@ -107,23 +104,19 @@ export async function extractAndStructurePedimento(
       ],
     });
 
-    return object;
+    return ok(object);
   } catch (error) {
     if (NoObjectGeneratedError.isInstance(error)) {
-      return {
-        error: {
-          type: 'NoObjectGenerated',
-          message: error.message,
-          cause: error.cause,
-        },
-      };
+      return err({
+        type: 'NoObjectGenerated',
+        message: error.message,
+        cause: error.cause,
+      });
     }
-    return {
-      error: {
-        type: 'UnknownError',
-        message: 'Unknown error',
-      },
-    };
+    return err({
+      type: 'UnknownError',
+      message: 'Unknown error',
+    });
   }
 }
 
@@ -170,25 +163,21 @@ export async function extractAndStructureCartasRegla318(
           ],
         });
 
-        return object;
+        return ok(object);
       } catch (error) {
         if (NoObjectGeneratedError.isInstance(error)) {
-          return {
-            error: {
-              type: 'NoObjectGenerated',
-              message: error.message,
-              cause: error.cause,
-              fileUrl: url,
-            },
-          };
-        }
-        return {
-          error: {
-            type: 'UnknownError',
-            message: 'Unknown error',
+          return err({
+            type: 'NoObjectGenerated',
+            message: error.message,
+            cause: error.cause,
             fileUrl: url,
-          },
-        };
+          });
+        }
+        return err({
+          type: 'UnknownError',
+          message: 'Unknown error',
+          fileUrl: url,
+        });
       }
     })
   );
@@ -237,25 +226,21 @@ export async function extractAndStructureFacturas(
           ],
         });
 
-        return object;
+        return ok(object);
       } catch (error) {
         if (NoObjectGeneratedError.isInstance(error)) {
-          return {
-            error: {
-              type: 'NoObjectGenerated',
-              message: error.message,
-              cause: error.cause,
-              fileUrl: url,
-            },
-          };
-        }
-        return {
-          error: {
-            type: 'UnknownError',
-            message: 'Unknown error',
+          return err({
+            type: 'NoObjectGenerated',
+            message: error.message,
+            cause: error.cause,
             fileUrl: url,
-          },
-        };
+          });
+        }
+        return err({
+          type: 'UnknownError',
+          message: 'Unknown error',
+          fileUrl: url,
+        });
       }
     })
   );
@@ -302,23 +287,19 @@ export async function extractAndStructurePackingList(
       ],
     });
 
-    return object;
+    return ok(object);
   } catch (error) {
     if (NoObjectGeneratedError.isInstance(error)) {
-      return {
-        error: {
-          type: 'NoObjectGenerated',
-          message: error.message,
-          cause: error.cause,
-        },
-      };
+      return err({
+        type: 'NoObjectGenerated',
+        message: error.message,
+        cause: error.cause,
+      });
     }
-    return {
-      error: {
-        type: 'UnknownError',
-        message: 'Unknown error',
-      },
-    };
+    return err({
+      type: 'UnknownError',
+      message: 'Unknown error',
+    });
   }
 }
 
@@ -363,23 +344,19 @@ export async function extractAndStructureBillOfLading(
       ],
     });
 
-    return object;
+    return ok(object);
   } catch (error) {
     if (NoObjectGeneratedError.isInstance(error)) {
-      return {
-        error: {
-          type: 'NoObjectGenerated',
-          message: error.message,
-          cause: error.cause,
-        },
-      };
+      return err({
+        type: 'NoObjectGenerated',
+        message: error.message,
+        cause: error.cause,
+      });
     }
-    return {
-      error: {
-        type: 'UnknownError',
-        message: 'Unknown error',
-      },
-    };
+    return err({
+      type: 'UnknownError',
+      message: 'Unknown error',
+    });
   }
 }
 
@@ -424,22 +401,18 @@ export async function extractAndStructureAirWaybill(
       ],
     });
 
-    return object;
+    return ok(object);
   } catch (error) {
     if (NoObjectGeneratedError.isInstance(error)) {
-      return {
-        error: {
-          type: 'NoObjectGenerated',
-          message: error.message,
-          cause: error.cause,
-        },
-      };
+      return err({
+        type: 'NoObjectGenerated',
+        message: error.message,
+        cause: error.cause,
+      });
     }
-    return {
-      error: {
-        type: 'UnknownError',
-        message: 'Unknown error',
-      },
-    };
+    return err({
+      type: 'UnknownError',
+      message: 'Unknown error',
+    });
   }
 }
