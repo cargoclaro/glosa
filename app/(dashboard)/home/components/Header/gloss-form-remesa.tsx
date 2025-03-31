@@ -172,12 +172,6 @@ const GlossFormRemesa = () => {
           {mutation.isPending ? (
             <>
               <LoadingBar />
-              <p className="text-center font-semibold text-xl">
-                Analizando los documentos... <br />
-                <small>
-                  No actualice ni cierre la página, por favor, espere.
-                </small>
-              </p>
             </>
           ) : (
             <>
