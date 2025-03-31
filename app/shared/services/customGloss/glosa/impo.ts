@@ -2,9 +2,9 @@ import { traceable } from 'langsmith/traceable';
 import type {
   Carta318,
   Invoice,
-  PackingList,
   TransportDocument,
 } from '../data-extraction/mkdown_schemas';
+import type { PackingList } from '../extract-and-structure/schemas';
 import type { Cove, Pedimento } from '../data-extraction/schemas';
 import { tracedCoveValidationStepsImpo } from './cove/validation_steps_impo';
 import { tracedPedimentoValidationStepsImpo } from './pedimento/validation_steps_impo';

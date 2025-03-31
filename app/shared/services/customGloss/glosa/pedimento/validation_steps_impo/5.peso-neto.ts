@@ -1,7 +1,7 @@
 import { traceable } from 'langsmith/traceable';
 import type { Carta318 } from '../../../data-extraction/mkdown_schemas/carta-318';
 import type { Invoice } from '../../../data-extraction/mkdown_schemas/invoice';
-import type { PackingList } from '../../../data-extraction/mkdown_schemas/packing-list';
+import type { PackingList } from '../../../extract-and-structure/schemas';
 import type { TransportDocument } from '../../../data-extraction/mkdown_schemas/transport-document';
 import type { Pedimento } from '../../../data-extraction/schemas';
 import { glosar } from '../../validation-result';
@@ -20,7 +20,6 @@ async function validatePesosYBultos(
 
   // Get markdown representations
   const transportDocmkdown = transportDocument?.markdown_representation;
-  const packingListmkdown = packingList?.markdown_representation;
   const invoicemkdown = invoice?.markdown_representation;
   const carta318mkdown = carta318?.markdown_representation;
 
@@ -44,7 +43,7 @@ async function validatePesosYBultos(
           ],
         },
         'Lista de empaque': {
-          data: [{ name: 'Lista de empaque', value: packingListmkdown }],
+          data: [{ name: 'Lista de empaque', value: JSON.stringify(packingList, null, 2) }],
         },
         Factura: {
           data: [{ name: 'Factura', value: invoicemkdown }],
