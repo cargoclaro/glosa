@@ -72,12 +72,14 @@ const LinkComp = ({ to, span, icon }: ILinkComp) => {
         <div className="flex h-6 w-6 items-center justify-center">
           {icon === 'home' ? (
             <Square2x2
-              className={cn('h-5 w-5', isActive && 'text-orange-600')}
+              size="size-5"
+              customClass={cn(isActive && 'text-orange-600')}
             />
           ) : (
             <GlobeAlt
+              size="size-5"
+              customClass={cn(isActive && 'text-orange-600')}
               strokeWidth={1.5}
-              className={cn('h-5 w-5', isActive && 'text-orange-600')}
             />
           )}
         </div>
