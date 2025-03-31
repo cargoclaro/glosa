@@ -206,15 +206,42 @@ const PDFCarouselViewer = ({
   const renderDocumentContent = () => {
     if (!currentDocument) return null;
 
-    // Check if it's a PDF by extension or document type
+    const fileName = currentDocument.name.toLowerCase();
+    const documentType = currentDocument.documentType?.toLowerCase() || '';
+    const fileUrl = currentDocument.url.toLowerCase();
+
+    // Check if it's a PDF by extension, URL pattern, document type, or known document names
     const isPdf =
-      currentDocument.url.toLowerCase().endsWith('.pdf') ||
-      currentDocument.url.toUpperCase().endsWith('.PDF') ||
-      (currentDocument.documentType &&
-        (currentDocument.documentType.toLowerCase().includes('pdf') ||
-          currentDocument.documentType.toLowerCase() === 'pedimento' ||
-          currentDocument.documentType.toLowerCase() === 'cove' ||
-          currentDocument.documentType.toLowerCase() === 'factura'));
+      fileUrl.endsWith('.pdf') ||
+      fileUrl.includes('.pdf') ||
+      documentType.includes('pdf') ||
+      documentType === 'pedimento' ||
+      documentType === 'cove' ||
+      documentType === 'factura' ||
+      documentType === 'carta318' ||
+      documentType.includes('carta') ||
+      documentType === 'documentodetransporte' ||
+      documentType.includes('transporte') ||
+      documentType.includes('guia') ||
+      documentType === 'listaDeEmpaque' ||
+      documentType.includes('packing') ||
+      documentType.includes('lista') ||
+      documentType.includes('empaque') ||
+      fileName.includes('carta 3.1.8') ||
+      fileName.includes('carta318') ||
+      fileName.includes('pedimento') ||
+      fileName.includes('cove') ||
+      fileName.includes('factura') ||
+      fileName.includes('guia') ||
+      fileName.includes('aerea') ||
+      fileName.includes('aérea') ||
+      fileName.includes('transporte') ||
+      fileName.includes('transport') ||
+      fileName.includes('guide') ||
+      fileName.includes('packing') ||
+      fileName.includes('lista') ||
+      fileName.includes('empaque') ||
+      fileName.includes('list');
 
     if (isPdf) {
       // For PDFs, use direct embedding with Google PDF Viewer as a fallback
@@ -225,8 +252,31 @@ const PDFCarouselViewer = ({
             className="h-full w-full"
             title={currentDocument.name || 'PDF Document'}
             onError={(e) => {
+              console.log('Google PDF viewer failed, trying direct embedding');
               // If Google Viewer fails, try direct embedding
               e.currentTarget.src = currentDocument.url;
+              
+              // Add event listener to handle potential direct embedding failure
+              e.currentTarget.onload = () => {
+                // Check if iframe loaded correctly
+                if (e.currentTarget.contentDocument?.body?.childElementCount === 0) {
+                  console.log('Direct embedding failed, providing download link');
+                  // If iframe is empty, replace with download link
+                  const container = e.currentTarget.parentElement;
+                  if (container) {
+                    const fallbackDiv = document.createElement('div');
+                    fallbackDiv.className = 'flex h-full w-full flex-col items-center justify-center';
+                    fallbackDiv.innerHTML = `
+                      <p class="mb-4 text-gray-600">No se pudo cargar el documento correctamente.</p>
+                      <a href="${currentDocument.url}" target="_blank" rel="noreferrer" 
+                         class="rounded-md bg-primary px-4 py-2 text-white hover:bg-primary/80">
+                        Abrir documento en nueva pestaña
+                      </a>
+                    `;
+                    container.replaceChild(fallbackDiv, e.currentTarget);
+                  }
+                }
+              };
             }}
           />
         </div>
