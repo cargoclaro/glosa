@@ -12,12 +12,10 @@ describe.concurrent('Extract and Structure', () => {
     );
 
     for (const { packingListResult, fileUrl } of packingListResults) {
-      expect.soft(packingListResult.isOk(), `Result should be Ok for: ${fileUrl}`).toBe(true);
-      
-      if (packingListResult.isOk()) {
-        const data = packingListResult.value;
-        expect.soft(data, `Result data should be defined for: ${fileUrl}`).toBeDefined();
-      }
+      // Find the expected output for the current fileUrl
+      const fixture = packingListFixture.find(item => item.fileUrl === fileUrl);
+      expect.soft(packingListResult, `Result data should match expected output for: ${fileUrl}`)
+        .toEqual(fixture?.expectedOutput);
     }
   });
 });
