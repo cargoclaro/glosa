@@ -65,7 +65,7 @@ const GlossForm = () => {
 
   let labelColor: string;
   if (files) {
-    if (mutation.error) {
+    if (mutation.error || (mutation.data && !mutation.data.success)) {
       labelColor = 'border-red-500 bg-red-50';
     } else {
       labelColor = 'border-green-500 bg-green-50';
@@ -76,7 +76,7 @@ const GlossForm = () => {
 
   let filePickerTextColor: string;
   if (files) {
-    if (mutation.error) {
+    if (mutation.error || (mutation.data && !mutation.data.success)) {
       filePickerTextColor = 'text-red-500';
     } else {
       filePickerTextColor = 'text-green-500';
@@ -111,7 +111,7 @@ const GlossForm = () => {
           <div className="flex flex-col items-center justify-center p-5">
             <Upload
               size="size-10"
-              color={files ? (mutation.error ? 'red' : 'green') : ''}
+              color={files ? (mutation.error || (mutation.data && !mutation.data.success) ? 'red' : 'green') : ''}
             />
             <p className={cn('mb-2 text-center text-sm', filePickerTextColor)}>
               <span className="font-semibold">Click para subir</span>
