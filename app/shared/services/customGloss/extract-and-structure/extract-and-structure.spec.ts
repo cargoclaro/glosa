@@ -120,7 +120,7 @@ describe('Extract and Structure', () => {
               "valor_unitario": 7150,
               "valor_total": 7150,
               "valor_total_dolares": 7150,
-              "numeros_serie": null
+              "numeros_serie": []
             }
           ]
         }
@@ -156,9 +156,9 @@ describe('Extract and Structure', () => {
             "nombre_razon_social": "SACC ASESORES ADUANEROS EN COMERCIO EXTERIOR SA DE CV",
             "domicilio": {
               "calle": "EBANO",
-              "numero_exterior": "42033",
-              "numero_interior": "301",
-              "codigo_postal": "B",
+              "numero_exterior": "301",
+              "numero_interior": "B",
+              "codigo_postal": "42033",
               "colonia": "LOS CEDROS",
               "localidad": "PACHUCA",
               "entidad_federativa": "HIDALGO",
@@ -532,7 +532,7 @@ describe('Extract and Structure', () => {
               "valor_unitario": 3.660606,
               "valor_total": 4407.37,
               "valor_total_dolares": 4407.37,
-              "numeros_serie": null
+              "numeros_serie": []
             }
           ]
         }
@@ -557,9 +557,9 @@ describe('Extract and Structure', () => {
               "numero_interior": null,
               "codigo_postal": "50306",
               "colonia": null,
-              "localidad": "DES MOINES",
+              "localidad": null,
               "entidad_federativa": "IOWA",
-              "municipio": null,
+              "municipio": "DES MOINES",
               "pais": "USA"
             }
           },
@@ -587,7 +587,7 @@ describe('Extract and Structure', () => {
               "valor_unitario": 1.98,
               "valor_total": 26190.65,
               "valor_total_dolares": 26190.65,
-              "numeros_serie": null
+              "numeros_serie": []
             },
             {
               "descripcion_mercancia": "RECIPIENTES DE PLASTICO",
@@ -597,7 +597,7 @@ describe('Extract and Structure', () => {
               "valor_unitario": 238.49,
               "valor_total": 1430.94,
               "valor_total_dolares": 1430.94,
-              "numeros_serie": null
+              "numeros_serie": []
             }
           ]
         }
@@ -652,7 +652,7 @@ describe('Extract and Structure', () => {
               "valor_unitario": 1.1,
               "valor_total": 330,
               "valor_total_dolares": 330,
-              "numeros_serie": null
+              "numeros_serie": []
             }
           ]
         }
@@ -707,7 +707,7 @@ describe('Extract and Structure', () => {
               "valor_unitario": 42.09,
               "valor_total": 420.9,
               "valor_total_dolares": 420.9,
-              "numeros_serie": null
+              "numeros_serie": []
             }
           ]
         }

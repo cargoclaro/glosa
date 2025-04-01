@@ -181,8 +181,7 @@ export const coveSchema = z.object({
           .array(z.string())
           .describe(
             "Array of serial numbers for the merchandise, e.g., ['1234567890', '0987654321']."
-          )
-          .nullable(),
+          ),
       })
       .describe('Details about the merchandise.')
   ),
