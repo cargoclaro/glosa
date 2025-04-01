@@ -14,6 +14,7 @@ import PedimentoIncrementables from './pedimento-incrementables';
 import PedimentoPartidas from './pedimento-partidas';
 import PedimentoProveedor from './pedimento-proveedor';
 import PedimentoMarcasBultos from './pedimento-marcas-bultos';
+import { getHighlightBorder, getHighlightFill } from './utils/highlight-styles';
 
 interface PedimentoViewerProps {
   pedimento: Pedimento;
@@ -267,7 +268,15 @@ const PedimentoViewer = ({
                   tabInfoSelected={tabInfoSelected}
                 />
               </div>
-              <div className="mb-4 w-full w-full border border border-gray-400 border-gray-400">
+              <div 
+                className={cn(
+                  'mb-4 w-full border border-gray-400 cursor-pointer',
+                  'overflow-hidden rounded-md border-2',
+                  getHighlightBorder('Datos del transporte', tabs),
+                  getHighlightFill('Datos del transporte', tabInfoSelected)
+                )}
+                onClick={() => onClick('Datos del transporte')}
+              >
                 <div className="grid grid-cols-12 gap-0 border-gray-400 border-b">
                   <div className="col-span-12 bg-gray-200 py-0.5 text-center font-semibold text-[10px] uppercase">
                     NUMERO (GUIA/ORDEN EMBARQUE)/ID:

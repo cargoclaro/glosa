@@ -42,7 +42,6 @@ interface PedimentoIdentificadoresProps {
 }
 
 const PedimentoIdentificadores: React.FC<PedimentoIdentificadoresProps> = ({
-  identificadoresNivelPedimento,
   identificadoresPedimento,
   fechaEntrada,
   fechaPago,
@@ -53,44 +52,16 @@ const PedimentoIdentificadores: React.FC<PedimentoIdentificadoresProps> = ({
   tabInfoSelected = { name: '', isCorrect: false, isVerified: false },
 }) => {
   return (
-    <div
-      className={cn(
-        'mb-4 w-full cursor-pointer border border-gray-400',
-        'overflow-hidden rounded-md border-2',
-        getHighlightBorder('Identificadores nivel pedimento', tabs),
-        getHighlightFill('Identificadores nivel pedimento', tabInfoSelected)
-      )}
-      onClick={() => onClick('Identificadores nivel pedimento')}
-    >
-      <div className="grid grid-cols-12 gap-0">
-        <div className="col-span-4">
-          <div className="border-gray-400 border-b bg-gray-200 py-0.5 py-1 text-center font-semibold text-[11px] text-xs uppercase">
-            CÓDIGO DE ACEPTACIÓN:
-          </div>
-          <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 font-normal text-[10px] text-xs text-xs last:border-r-0">
-            &nbsp;
-          </div>
-        </div>
-        <div className="col-span-4">
-          <div className="border-gray-400 border-b bg-gray-200 py-0.5 py-1 text-center font-semibold text-[11px] text-xs uppercase">
-            CODIGO DE BARRAS
-          </div>
-          <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 font-normal text-[10px] text-xs text-xs last:border-r-0">
-            &nbsp;
-          </div>
-        </div>
-        <div className="col-span-4">
-          <div className="border-gray-400 border-b bg-gray-200 py-0.5 py-1 text-center font-semibold text-[11px] text-xs uppercase">
-            CLAVE DE LA SECCION ADUANERA DE DESPACHO:
-          </div>
-          <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-center font-normal text-[10px] text-xs text-xs last:border-r-0">
-            {identificadoresNivelPedimento.clave_seccion_aduanera}
-          </div>
-        </div>
-      </div>
-
+    <div className="mb-4 w-full">
       <div className="mt-2 grid grid-cols-2 gap-0">
-        <div className="col-span-1">
+        <div 
+          className={cn(
+            'col-span-1 cursor-pointer border border-gray-400 overflow-hidden rounded-md border-2',
+            getHighlightBorder('Operacion monetaria', tabs),
+            getHighlightFill('Operacion monetaria', tabInfoSelected)
+          )}
+          onClick={() => onClick('Operacion monetaria')}
+        >
           <div className="border-gray-400 border-b bg-gray-200 py-0.5 py-1 text-center font-semibold text-[11px] text-xs uppercase">
             FECHAS
           </div>
