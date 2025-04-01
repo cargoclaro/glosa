@@ -18,7 +18,7 @@ async function validateRfcFormat(
   const observaciones = pedimento.observaciones_a_nivel_pedimento;
 
   const validation = {
-    name: 'Validación de los RFC',
+    name: 'RFC',
     description:
       'Valida el formato y consistencia de los RFC entre el pedimento, COVE y carta 3.1.8',
     prompt:
@@ -56,7 +56,7 @@ async function validateCesionDerechos(
   const observaciones = pedimento.observaciones_a_nivel_pedimento;
 
   const validation = {
-    name: 'Validación de cesión de derechos y carta 3.1.8',
+    name: 'Cesión de derechos',
     description:
       'Valida que los datos de la cesión de derechos coincidan con la carta 3.1.8 y que las fechas sean correctas',
     prompt:
@@ -119,7 +119,7 @@ async function validateDatosImportador(
     : '';
 
   const validation = {
-    name: 'Validación de datos del importador',
+    name: 'Datos importador',
     description:
       'Valida que los datos del importador coincidan entre el pedimento, COVE y carta 3.1.8',
     prompt:
@@ -183,7 +183,7 @@ async function validateDatosProveedor(
     : '';
 
   const validation = {
-    name: 'Validación de datos comerciales del proveedor',
+    name: 'Datos proveedor',
     description:
       'Valida que los datos del proveedor (tax ID, domicilio y razón social) coincidan entre el pedimento, COVE y carta 318',
     prompt:
@@ -230,7 +230,7 @@ async function validateFechasYFolios(
   const observaciones = pedimento.observaciones_a_nivel_pedimento;
 
   const validation = {
-    name: 'Validación de fechas de emisión',
+    name: 'Fechas de emisión',
     description:
       'Valida que las fechas de emisión de los documentos sean consistentes',
     prompt:
@@ -288,7 +288,7 @@ async function validateMonedaYEquivalencia(
   const observaciones = pedimento.observaciones_a_nivel_pedimento;
 
   const validation = {
-    name: 'Validación de moneda y factor de equivalencia',
+    name: 'Moneda y factor de equivalencia',
     description:
       'Valida que la moneda y los valores declarados coincidan entre los documentos y que el factor de conversión sea correcto',
     prompt:

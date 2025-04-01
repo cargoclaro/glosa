@@ -20,7 +20,7 @@ async function validateCoherenciaOrigenDestino(
   const transportDocumentmkdown = transportDocument?.markdown_representation;
 
   const validation = {
-    name: 'Coherencia con origen/destino',
+    name: 'Tipo Operación',
     description:
       'Valida que el tipo de operación sea consistente con el origen y destino de las mercancías',
     prompt:
@@ -54,7 +54,7 @@ async function validateClavePedimento(traceId: string, pedimento: Pedimento) {
   const observaciones = pedimento.observaciones_a_nivel_pedimento;
 
   const validation = {
-    name: 'Validación de clave de pedimento',
+    name: 'Clave de pedimento',
     description:
       'Valida que la clave de pedimento sea válida para el tipo de operación según el Apéndice 2',
     prompt:
@@ -89,7 +89,7 @@ async function validateRegimen(traceId: string, pedimento: Pedimento) {
   const observaciones = pedimento.observaciones_a_nivel_pedimento;
 
   const validation = {
-    name: 'Validación de régimen',
+    name: 'Régimen',
     description:
       'Valida que el régimen sea válido para el tipo de operación según el Apéndice 16',
     prompt:

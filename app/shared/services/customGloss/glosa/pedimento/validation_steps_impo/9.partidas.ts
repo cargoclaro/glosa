@@ -38,7 +38,7 @@ async function validateFraccionArancelaria(
   }
 
   const validation = {
-    name: 'Validación de fracción arancelaria',
+    name: 'Fracción arancelaria',
     description:
       'Verificación de que la fracción arancelaria declarada en cada partida exista en el sistema de Tax Finder y sea válida según la información del pedimento',
     prompt:
@@ -90,7 +90,7 @@ async function validateCoherenciaUMT(
     clavePais: paisOrigenDestino,
   });
   const validation = {
-    name: 'Validación de unidad de medida de la tarifa',
+    name: 'UMT',
     description:
       'Verificación de que la unidad de medida de la tarifa declarada en la partida exista en el apéndice 7 y corresponda con la fracción arancelaria en Tax Finder',
     prompt:
@@ -135,7 +135,7 @@ async function validateCoherenciaUMC(
   const invoicemkdown = invoice?.markdown_representation;
 
   const validation = {
-    name: 'Validación de unidad de medida comercial',
+    name: 'UMC',
     description:
       'Verificación de que la unidad de medida comercial declarada en la partida coincida con la factura y COVE, y corresponda con el Apéndice 7',
     prompt:
@@ -186,7 +186,7 @@ async function validatePaisVenta(
   const observaciones = pedimento?.observaciones_a_nivel_pedimento;
 
   const validation = {
-    name: 'Validación del país de venta',
+    name: 'País de venta',
     description:
       'Verificación de que el país de venta declarado en el pedimento coincida con el país de la dirección del proveedor en los documentos soporte',
     prompt:
@@ -233,7 +233,7 @@ async function validatePaisOrigen(
   const observaciones = pedimento?.observaciones_a_nivel_pedimento;
 
   const validation = {
-    name: 'Validación del país de origen',
+    name: 'País de origen',
     description:
       "Verificación de que el país de origen declarado en el pedimento coincida con la leyenda 'hecho en...' en los documentos soporte",
     prompt:
@@ -282,7 +282,7 @@ async function validateDescripcionMercancia(
   const observaciones = pedimento?.observaciones_a_nivel_pedimento;
 
   const validation = {
-    name: 'Validación de descripción de mercancía',
+    name: 'Descripción de mercancía',
     description:
       'Verificación de que la descripción de la mercancía en el pedimento coincida con la descripción en los documentos soporte',
     prompt:
@@ -368,7 +368,7 @@ async function validateTarifasArancelarias(
   };
 
   const validation = {
-    name: 'Validación de tarifas arancelarias',
+    name: 'Tarifas arancelarias',
     description:
       'Verificación de que las tarifas arancelarias declaradas en la partida coincidan con las tarifas vigentes en el Tax Finder',
     prompt:
@@ -447,7 +447,7 @@ async function validateCalculosPartidas(
 
   // Construct validation object
   const validation = {
-    name: 'Validación Cálculos de Partidas',
+    name: 'Cálculos de Partidas',
     description:
       'Verificación de que los valores calculados para la partida coincidan con los valores declarados en el pedimento',
     prompt: `
@@ -492,7 +492,7 @@ async function validateNumerosSerie(
   const numerosSeriesCove = cove?.datos_mercancia?.[0]?.numeros_serie || [];
 
   const validation = {
-    name: 'Validación de números de serie, modelo y parte',
+    name: 'Números de serie, modelo y parte',
     description:
       'Verificación de que los números de serie, modelo y parte declarados en el pedimento coincidan con los declarados en el COVE',
     prompt:
@@ -532,7 +532,7 @@ async function validateIdentificadores(
     IDENTIFICADORES[identificador.clave as keyof typeof IDENTIFICADORES];
 
   const validation = {
-    name: 'Validación de identificadores',
+    name: 'Identificadores',
     description:
       'Verificación de que los complementos del identificador coincidan con los valores permitidos en el apéndice 8',
     prompt:

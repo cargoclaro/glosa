@@ -19,7 +19,7 @@ async function validateTransportDocumentEntryDate(
   const observaciones = pedimento.observaciones_a_nivel_pedimento;
 
   const validation = {
-    name: 'Fecha de entrada del documento de transporte',
+    name: 'Fecha de entrada',
     description:
       'Valida que la fecha del documento de transporte no sea posterior al pedimento',
     prompt:
@@ -132,7 +132,7 @@ async function validateValSeguros(
     name: 'Val. Seguros',
     // A more detailed explanation of the validation's goal.
     description:
-      "Verifica que el campo 'Val. Seguros' (valor total de las mercancías aseguradas en MXN) cumpla con los lineamientos de llenado: valor correcto, formato adecuado (numérico, 12 dígitos en importación), y reglas de llenado/omisión según el tipo de operación (ej. pedimentos complementarios, Anexo 22).",
+      "Verifica que el campo 'Val. Seguros' (valor total de las mercancías aseguradas en MXN) cumpla con los lineamientos de llenado: valor correcto, formato adecuado, y reglas de llenado/omisión según el tipo de operación (ej. pedimentos complementarios, Anexo 22).",
     // The core instructions for the AI model. We break down the validation steps clearly.
     prompt: `El campo 'Val. Seguros' declara el valor total de las mercancías cubiertas por el seguro, en moneda nacional (MXN). Tu tarea es verificar este campo siguiendo estos puntos:
 1.  **Valor Declarado:** Confirma si el valor declarado en 'Val. Seguros' (${valSeguros}) corresponde razonablemente al valor total de las mercancías aseguradas. Usa como referencia el 'Precio pagado / valor comercial' (${precioPagadoValorComercial}) y la información en la Factura. El valor asegurado debería cubrir, al menos, el valor comercial de las mercancías.
@@ -428,7 +428,7 @@ async function validateValorDolares(
   const carta318mkdown = carta318?.markdown_representation;
 
   const validation = {
-    name: 'Valor en dólares del pedimento',
+    name: 'Valor dólares',
     description:
       'Valida que el valor en dólares del pedimento sea igual al valor aduana dividido entre el tipo de cambio',
     prompt:
@@ -470,7 +470,7 @@ async function validateValorComercial(
   const carta318mkdown = carta318?.markdown_representation;
 
   const validation = {
-    name: 'Valor comercial del pedimento',
+    name: 'Precio pagado',
     description:
       'Valida que el valor comercial sea igual al valor aduana menos los incrementables y que coincida con el valor de la factura',
     prompt:
@@ -513,7 +513,7 @@ async function validateValorAduana(
   const carta318mkdown = carta318?.markdown_representation;
 
   const validation = {
-    name: 'Valor aduana del pedimento',
+    name: 'Valor aduana',
     description:
       'Valida que el valor aduana sea igual al valor en dólares más incrementables multiplicado por el tipo de cambio',
     prompt:

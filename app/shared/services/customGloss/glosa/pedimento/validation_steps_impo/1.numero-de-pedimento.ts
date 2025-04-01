@@ -8,7 +8,7 @@ async function validateLongitud(pedimento: Pedimento, traceId: string) {
   const longitud = numeroPedimentoSinEspacios.length;
 
   const validation = {
-    name: 'Longitud',
+    name: 'Num. Pedimento (15 dígitos)',
     description: 'Valida que el número de pedimento tenga 15 dígitos',
     prompt: 'El número de pedimento debe contar con 15 dígitos.',
     contexts: {
@@ -39,7 +39,7 @@ async function validateAñoPedimento(pedimento: Pedimento, traceId: string) {
   const añoActual = new Date().getFullYear();
 
   const validation = {
-    name: 'Año del pedimento',
+    name: 'Num. Pedimento (Año)',
     description:
       'Valida que los primeros dos dígitos del pedimento correspondan al año actual',
     prompt:

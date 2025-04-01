@@ -8,7 +8,7 @@ async function validateClaveApendice15(traceId: string, pedimento: Pedimento) {
   const observaciones = pedimento.observaciones_a_nivel_pedimento;
 
   const validation = {
-    name: 'Validación de clave',
+    name: 'Destino/Origen',
     prompt: 'La clave de destino/origen debe existir en el Apéndice 15',
     description: 'La clave de destino/origen debe existir en el Apéndice 15',
     contexts: {
