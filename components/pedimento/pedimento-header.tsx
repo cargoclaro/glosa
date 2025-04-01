@@ -35,7 +35,7 @@ const PedimentoHeader: React.FC<PedimentoHeaderProps> = ({
   }
 
   return (
-    <div className="mb-4 w-full border border-gray-400">
+    <div className="mb-4 w-full border border-gray-400 rounded-md overflow-hidden">
       <div className="grid grid-cols-12 gap-0">
         <div className="col-span-12 border-gray-400 border-b bg-gray-200 py-0.5 py-1 text-center font-semibold text-[11px] text-xs uppercase">
           PEDIMENTO
@@ -43,11 +43,11 @@ const PedimentoHeader: React.FC<PedimentoHeaderProps> = ({
       </div>
 
       {/* Número de Pedimento Section */}
-      <div className="grid grid-cols-12 gap-0 border-gray-400 border-b">
+      <div className="grid grid-cols-12 gap-0">
         <div
           className={cn(
             'col-span-5 grid cursor-pointer grid-cols-5',
-            'overflow-hidden rounded-md border-2',
+            'overflow-hidden rounded-md border-2 border-green-400',
             getHighlightBorder('Número de pedimento', tabs),
             getHighlightFill('Número de pedimento', tabInfoSelected)
           )}
@@ -65,7 +65,7 @@ const PedimentoHeader: React.FC<PedimentoHeaderProps> = ({
         <div
           className={cn(
             'col-span-2 grid cursor-pointer grid-cols-2',
-            'overflow-hidden rounded-md border-2',
+            'overflow-hidden rounded-md border-2 border-green-400',
             getHighlightBorder('Tipo de operación', tabs),
             getHighlightFill('Tipo de operación', tabInfoSelected)
           )}
@@ -83,7 +83,7 @@ const PedimentoHeader: React.FC<PedimentoHeaderProps> = ({
         <div
           className={cn(
             'col-span-3 grid cursor-pointer grid-cols-3',
-            'overflow-hidden rounded-md border-2',
+            'overflow-hidden rounded-md border-2 border-green-400',
             getHighlightBorder('Tipo de operación', tabs),
             getHighlightFill('Tipo de operación', tabInfoSelected)
           )}
@@ -101,7 +101,7 @@ const PedimentoHeader: React.FC<PedimentoHeaderProps> = ({
         <div
           className={cn(
             'col-span-2 grid cursor-pointer grid-cols-2',
-            'overflow-hidden rounded-md border-2',
+            'overflow-hidden rounded-md border-2 border-green-400',
             getHighlightBorder('Tipo de operación', tabs),
             getHighlightFill('Tipo de operación', tabInfoSelected)
           )}
@@ -117,12 +117,12 @@ const PedimentoHeader: React.FC<PedimentoHeaderProps> = ({
       </div>
 
       {/* Destino and Operación Monetaria Section */}
-      <div className="grid grid-cols-12 gap-0 border-gray-400 border-b">
+      <div className="grid grid-cols-12 gap-0">
         {/* Destino/Origen */}
         <div
           className={cn(
             'col-span-2 grid cursor-pointer grid-cols-2',
-            'overflow-hidden rounded-md border-2',
+            'overflow-hidden rounded-md border-2 border-green-400',
             getHighlightBorder('Clave de destino/origen', tabs),
             getHighlightFill('Clave de destino/origen', tabInfoSelected)
           )}
@@ -140,7 +140,7 @@ const PedimentoHeader: React.FC<PedimentoHeaderProps> = ({
         <div
           className={cn(
             'col-span-4 grid cursor-pointer grid-cols-2',
-            'overflow-hidden rounded-md border-2',
+            'overflow-hidden rounded-md border-2 border-yellow-400',
             getHighlightBorder('Operación monetaria', tabs),
             getHighlightFill('Operación monetaria', tabInfoSelected)
           )}
@@ -158,7 +158,7 @@ const PedimentoHeader: React.FC<PedimentoHeaderProps> = ({
         <div
           className={cn(
             'col-span-4 grid cursor-pointer grid-cols-2',
-            'overflow-hidden rounded-md border-2',
+            'overflow-hidden rounded-md border-2 border-yellow-400',
             getHighlightBorder('Pesos y bultos', tabs),
             getHighlightFill('Pesos y bultos', tabInfoSelected)
           )}
@@ -172,8 +172,17 @@ const PedimentoHeader: React.FC<PedimentoHeaderProps> = ({
           </div>
         </div>
 
-        <div className="col-span-2 grid grid-cols-2">
-          <div className="col-span-1 flex min-h-6 items-center border-gray-400 border-r bg-gray-100 px-2 py-0.5 font-semibold text-[10px] text-xs text-xs uppercase last:border-r-0">
+        {/* ADUANA E/S */}
+        <div
+          className={cn(
+            'col-span-2 grid cursor-pointer grid-cols-2',
+            'overflow-hidden rounded-md border-2 border-yellow-400',
+            getHighlightBorder('Aduana de entrada/salida', tabs),
+            getHighlightFill('Aduana de entrada/salida', tabInfoSelected)
+          )}
+          onClick={() => onClick('Aduana de entrada/salida')}
+        >
+          <div className="col-span-1 flex min-h-6 items-center border-gray-400 border-r bg-gray-100 px-1 py-0.5 font-semibold text-[8px] text-xs uppercase last:border-r-0">
             ADUANA E/S:
           </div>
           <div className="col-span-1 flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 font-normal text-[10px] text-xs text-xs last:border-r-0">
@@ -186,8 +195,8 @@ const PedimentoHeader: React.FC<PedimentoHeaderProps> = ({
         {/* Transporte section */}
         <div
           className={cn(
-            'col-span-6 cursor-pointer border-gray-400 border-r',
-            'overflow-hidden rounded-md border-2',
+            'col-span-6 cursor-pointer',
+            'overflow-hidden rounded-md border-2 border-yellow-400',
             getHighlightBorder('Datos del transporte', tabs),
             getHighlightFill('Datos del transporte', tabInfoSelected)
           )}
@@ -224,7 +233,7 @@ const PedimentoHeader: React.FC<PedimentoHeaderProps> = ({
         <div
           className={cn(
             'col-span-6 cursor-pointer',
-            'overflow-hidden rounded-md border-2',
+            'overflow-hidden rounded-md border-2 border-yellow-400',
             getHighlightBorder('Operación monetaria', tabs),
             getHighlightFill('Operación monetaria', tabInfoSelected)
           )}

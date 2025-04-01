@@ -96,7 +96,7 @@ const DocumentIcon = ({ fileType, className }: { fileType: string; className?: s
 
 const Documents = ({ data }: { data: CustomGlossFileTable[] }) => {
   return (
-    <GenericCard customClass="bg-white shadow-sm">
+    <GenericCard customClass="bg-white shadow-sm border-[1px] border-blue-500">
       <div className="flex items-center justify-center gap-2 border-b border-[#e8e8e8] pb-3 mb-4">
         <svg
           xmlns="http://www.w3.org/2000/svg"

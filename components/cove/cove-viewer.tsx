@@ -180,7 +180,9 @@ export function CoveViewer({
 
   return (
     <div className="relative">
-      {renderPage()}
+      <div className="mx-auto w-full max-w-4xl overflow-hidden rounded-xl bg-white shadow-xl transition-all duration-500 border-[1px] border-blue-500">
+        {renderPage()}
+      </div>
 
       <div className="container mx-auto mt-1 flex items-center justify-center space-x-2 px-2 py-2">
         {/* First page button */}
