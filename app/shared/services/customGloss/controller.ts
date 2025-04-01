@@ -184,6 +184,20 @@ export const analysis = api
         >
       );
 
+      const { pedimento: classifiedPedimento, cove: classifiedCove } = groupedClassifications;
+      if (!classifiedPedimento) {
+        return {
+          success: false,
+          message: 'El pedimento es obligatorio para realizar la glosa electrónica.',
+        };
+      }
+      if (!classifiedCove) {
+        return {
+          success: false,
+          message: 'El cove es obligatorio para realizar la glosa electrónica.',
+        };
+      }
+
       const documents = await extractTextFromPDFs(
         groupedClassifications,
         parentTraceId
@@ -191,7 +205,7 @@ export const analysis = api
       const { pedimento, cove } = documents;
       if (!pedimento || !cove) {
         throw new Error(
-          'El pedimento y el cove son obligatorios para realizar la glosa electrónica.'
+          'Should never happen'
         );
       }
       const operationType = pedimento.encabezado_del_pedimento?.tipo_oper;

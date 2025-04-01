@@ -24,6 +24,12 @@ describe('Classification', () => {
       classification: 'Cove',
       fileUrls: [
         'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15u1EQuvyES0lPex1mXBWQop7GAjJIMsDCUZk2',
+        "https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15XadhI2Q3p02PnBlWqwL7baCzMhxf4mHoEDc9",
+        "https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15HyVqAoWCjnmTGoQ3c9SyIxeudvRq4iEBXMF7",
+        "https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15Fn3r61gpw0UmYxiesJuoAgDqlBLkHvzhTSZ3",
+        "https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15IDryccR2Okng1Id8jPzMFLQmSoW4e9tbTJcr",
+        "https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15zkxGeSgutyXdVR43qhBYaSHWfrT9MLbDjkNA",
+        "https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15MgmsGr907FYSfgKGA9JUX3rIQ2amz4bTDeNj",
       ],
     },
     {
@@ -93,6 +99,7 @@ describe('Classification', () => {
         'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y153mEQatBhnLpbl6it5NaGkD4BTRJsU8jFoO2K',
         'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15M1vUn907FYSfgKGA9JUX3rIQ2amz4bTDeNjd',
         'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15DY8emWvXf1H4BGpPhqDTbi9LIkRoZlxA503e',
+        "https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15AVS8DnEhI73SMs1mOVHTgc05pWuYPnbZRtyq",
       ],
     },
   ];

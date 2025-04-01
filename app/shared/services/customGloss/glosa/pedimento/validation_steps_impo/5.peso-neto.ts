@@ -24,7 +24,7 @@ async function validatePesosYBultos(
   const carta318mkdown = carta318?.markdown_representation;
 
   const validation = {
-    name: 'Validación de pesos y bultos',
+    name: 'Peso bruto',
     description:
       'Valida que los pesos y bultos declarados en el pedimento coincidan con los documentos anexos',
     prompt:
@@ -72,7 +72,7 @@ async function validateBultos(
   const transportDocmkdown = transportDocument?.markdown_representation;
 
   const validation = {
-    name: 'Coincidencia de bultos',
+    name: 'Marcas, números y total de bultos',
     description:
       'Valida que el número total de bultos coincida entre el pedimento y el documento de transporte',
     prompt:

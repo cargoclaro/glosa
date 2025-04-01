@@ -18,7 +18,7 @@ async function validateTipoTransporte(
   const transportDocmkdown = transportDocument?.markdown_representation;
 
   const validation = {
-    name: 'Clave del tipo de transporte',
+    name: 'Tipo de transporte',
     description:
       'Valida que la clave del tipo de transporte coincida con el tipo de transporte utilizado',
     prompt:

@@ -1,6 +1,6 @@
 import { openai } from '@ai-sdk/openai';
 import { generateObject } from 'ai';
-import { packingListSchema } from './schemas';
+import { packingListSchema, coveSchema } from './schemas';
 
 export async function extractAndStructurePackingList(
   fileUrl: string,
@@ -24,6 +24,49 @@ export async function extractAndStructurePackingList(
     seed: 42,
     ...telemetryConfig,
     schema: packingListSchema,
+    messages: [
+      {
+        role: 'user',
+        content: [
+          {
+            type: 'text',
+            text: 'Estructura el documento en base al esquema proporcionado.',
+          },
+          {
+            type: 'file',
+            data: `${fileUrl}`,
+            mimeType: 'application/pdf',
+          },
+        ],
+      },
+    ],
+  });
+
+  return object;
+}
+
+export async function extractAndStructureCove(
+  fileUrl: string,
+  parentTraceId?: string,
+) {
+  const telemetryConfig = parentTraceId
+    ? {
+      experimental_telemetry: {
+        isEnabled: true,
+        functionId: 'Cove',
+        metadata: {
+          langfuseTraceId: parentTraceId,
+          langfuseUpdateParent: false,
+          fileUrl,
+        },
+      },
+    }
+    : {};
+  const { object } = await generateObject({
+    model: openai('gpt-4o-2024-11-20'),
+    seed: 42,
+    ...telemetryConfig,
+    schema: coveSchema,
     messages: [
       {
         role: 'user',
