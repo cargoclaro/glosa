@@ -232,26 +232,19 @@ export const analysis = api
         }))
       );
 
-      for (const { sectionName, validations } of gloss) {
+      await Promise.all(gloss.map(async ({ sectionName, validations }) => {
         const data = {
           name: sectionName,
-          isCorrect: validations.every(
-            ({ validation: { isValid } }) => isValid
-          ),
+          isCorrect: validations.every(({ validation: { isValid } }) => isValid),
           fullContext: true,
           isVerified: false,
           customGlossId: newCustomGloss.id,
         };
-        const [insertedTab] = await db
-          .insert(CustomGlossTab)
-          .values(data)
-          .returning();
-
+        const [insertedTab] = await db.insert(CustomGlossTab).values(data).returning();
         if (!insertedTab) {
           throw new Error('Failed to create CustomGlossTab record');
         }
-
-        for (const { contexts, validation } of validations) {
+        await Promise.all(validations.map(async ({ contexts, validation }) => {
           const [insertedValidationStep] = await db
             .insert(CustomGlossTabValidationStep)
             .values({
@@ -259,54 +252,41 @@ export const analysis = api
               description: validation.description,
               llmAnalysis: validation.llmAnalysis,
               isCorrect: validation.isValid,
-              customGlossTabId: insertedTab.id,
+              customGlossTabId: insertedTab.id
             })
             .returning();
-
           if (!insertedValidationStep) {
-            throw new Error(
-              'Failed to create CustomGlossTabValidationStep record'
-            );
+            throw new Error('Failed to create CustomGlossTabValidationStep record');
           }
-
-          for (const action of validation.actionsToTake) {
-            await db.insert(CustomGlossTabValidationStepActionToTake).values({
-              description: action,
-              customGlossTabValidationStepId: insertedValidationStep.id,
-            });
-          }
-
-          // Process each context type
-          for (const [contextType, origins] of Object.entries(contexts)) {
-            // Process each origin
-            for (const [origin, contextValue] of Object.entries(origins)) {
-              const [insertedContext] = await db
-                .insert(CustomGlossTabContext)
-                .values({
+          await Promise.all([
+            ...validation.actionsToTake.map(action =>
+              db.insert(CustomGlossTabValidationStepActionToTake).values({
+                description: action,
+                customGlossTabValidationStepId: insertedValidationStep.id
+              })
+            ),
+            ...Object.entries(contexts).flatMap(([contextType, origins]) =>
+              Object.entries(origins).map(async ([origin, contextValue]) => {
+                const [insertedContext] = await db.insert(CustomGlossTabContext).values({
                   type: contextType as CustomGlossTabContextTypes,
                   origin,
-                  customGlossTabId: insertedTab.id,
-                })
-                .returning();
-
-              if (!insertedContext) {
-                throw new Error(
-                  'Failed to create CustomGlossTabContext record'
-                );
-              }
-
-              // Create context data records
-              for (const { name, value } of contextValue.data) {
-                await db.insert(CustomGlossTabContextData).values({
-                  name,
-                  value: value === undefined ? 'N/A' : JSON.stringify(value),
-                  customGlossTabContextId: insertedContext.id,
-                });
-              }
-            }
-          }
-        }
-      }
+                  customGlossTabId: insertedTab.id
+                }).returning();
+                if (!insertedContext) {
+                  throw new Error('Failed to create CustomGlossTabContext record');
+                }
+                await Promise.all(contextValue.data.map(({ name, value }) =>
+                  db.insert(CustomGlossTabContextData).values({
+                    name,
+                    value: value === undefined ? 'N/A' : JSON.stringify(value),
+                    customGlossTabContextId: insertedContext.id
+                  })
+                ));
+              })
+            )
+          ]);
+        }));
+      }));
 
       return {
         success: true,
