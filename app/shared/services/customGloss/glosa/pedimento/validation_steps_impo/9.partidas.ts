@@ -2,8 +2,8 @@ import { traceable } from 'langsmith/traceable';
 import type {
   Carta318,
   Invoice,
-  PackingList,
 } from '../../../data-extraction/mkdown_schemas';
+import type { PackingList } from '../../../extract-and-structure/schemas';
 import type {
   Cove,
   Partida,
@@ -183,7 +183,6 @@ async function validatePaisVenta(
   const carta318mkdown = carta318?.markdown_representation;
 
   // Extraer el país de la dirección de facturación del packing
-  const packingmkdown = packing?.markdown_representation;
   const observaciones = pedimento?.observaciones_a_nivel_pedimento;
 
   const validation = {
@@ -204,7 +203,7 @@ async function validatePaisVenta(
           data: [{ name: 'Invoice', value: invoicemkdown }],
         },
         'Packing List': {
-          data: [{ name: 'Packing List', value: packingmkdown }],
+          data: [{ name: 'Packing List', value: JSON.stringify(packing, null, 2) }],
         },
         'Carta 318': {
           data: [{ name: 'Carta 318', value: carta318mkdown }],
@@ -228,7 +227,6 @@ async function validatePaisOrigen(
   // Extraer el país de origen del pedimento
   const paisOrigenDestino = partida.p_o_d || '';
 
-  const packingmkdown = packing?.markdown_representation;
   const carta318mkdown = carta318?.markdown_representation;
   const invoicemkdown = invoice?.markdown_representation;
 
@@ -252,7 +250,7 @@ async function validatePaisOrigen(
           data: [{ name: 'Invoice', value: invoicemkdown }],
         },
         Packing: {
-          data: [{ name: 'Packing List', value: packingmkdown }],
+          data: [{ name: 'Packing List', value: JSON.stringify(packing, null, 2) }],
         },
         'Carta 318': {
           data: [{ name: 'Carta 318', value: carta318mkdown }],

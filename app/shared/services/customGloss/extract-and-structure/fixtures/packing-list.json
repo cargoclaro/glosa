@@ -28,20 +28,6 @@
     }
   },
   {
-    "fileUrl": "https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15Qv9MjZmP3ThsNJt5xqeOK1fAPnj4uVgcvWRl",
-    "expectedOutput": {
-      "mercancias": [
-        {
-          "cantidad": 800
-        }
-      ],
-      "pesoBruto": {
-        "valor": 20.393,
-        "unidadDeMedida": "lb"
-      }
-    }
-  },
-  {
     "fileUrl": "https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15YZPve7HjXIrsoaGCginAhSTQkP245ld9H0yU",
     "expectedOutput": {
       "mercancias": [

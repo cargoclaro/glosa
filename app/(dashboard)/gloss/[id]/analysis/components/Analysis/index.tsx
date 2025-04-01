@@ -216,7 +216,7 @@ const Analysis = ({
       <Modal isOpen={isOpen} onClose={closeMenu} menuRef={menuRef}>
         <Detailed data={dataForDetail} />
       </Modal>
-      <GenericCard customClass="bg-white">
+      <GenericCard customClass="bg-white border-[1px] border-blue-500">
         <div className="relative w-full mb-4">
           <button
             type="button"

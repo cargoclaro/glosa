@@ -1,9 +1,9 @@
 import { traceable } from 'langsmith/traceable';
 import type {
   Cfdi,
-  PackingList,
   TransportDocument,
 } from '../../../data-extraction/mkdown_schemas';
+import type { PackingList } from '../../../extract-and-structure/schemas';
 import type { Pedimento } from '../../../data-extraction/schemas';
 import { glosar } from '../../validation-result';
 
@@ -17,7 +17,6 @@ async function validatePesosYBultos(
   // Extract weight values from pedimento
   const pesoBrutoPedimento = pedimento.encabezado_del_pedimento?.peso_bruto;
   const cfdiMkdown = cfdi?.markdown_representation;
-  const packingListMkdown = packingList?.markdown_representation;
   const transportDocmkdown = transportDocument?.markdown_representation;
 
   const validation = {
@@ -35,7 +34,7 @@ async function validatePesosYBultos(
           data: [{ name: 'Transport Document', value: transportDocmkdown }],
         },
         listaDeEmpaque: {
-          data: [{ name: 'Packing List', value: packingListMkdown }],
+          data: [{ name: 'Packing List', value: JSON.stringify(packingList, null, 2) }],
         },
         cfdi: {
           data: [{ name: 'CFDI', value: cfdiMkdown }],

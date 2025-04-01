@@ -21,10 +21,10 @@ const PedimentoMarcasBultos: React.FC<PedimentoMarcasBultosProps> = ({
       className={cn(
         'mb-4 w-full border border-gray-400 cursor-pointer',
         'overflow-hidden rounded-md border-2',
-        getHighlightBorder('Datos del transporte', tabs),
-        getHighlightFill('Datos del transporte', tabInfoSelected)
+        getHighlightBorder('Pesos y bultos', tabs),
+        getHighlightFill('Pesos y bultos', tabInfoSelected)
       )}
-      onClick={() => onClick('Datos del transporte')}
+      onClick={() => onClick('Pesos y bultos')}
     >
       <div className="border-gray-400 border-b bg-gray-200 py-0.5 py-1 text-center font-semibold text-[11px] text-xs uppercase">
         MARCAS, NÚMEROS Y TOTAL DE BULTOS

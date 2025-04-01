@@ -1,9 +1,8 @@
 import type React from 'react';
-import { cn } from '~/lib/utils';
 import IdentificadoresTable from './identificadores/identificadores-table';
 import LiquidacionTable from './liquidacion/liquidacion-table';
 import TasasTable from './tasas/tasas-table';
-import { getHighlightBorder, getHighlightFill } from './utils/highlight-styles';
+import FechasTable from './fechas/fechas-table';
 
 import type { CustomGlossTabTable } from '~/db/schema';
 
@@ -42,7 +41,6 @@ interface PedimentoIdentificadoresProps {
 }
 
 const PedimentoIdentificadores: React.FC<PedimentoIdentificadoresProps> = ({
-  identificadoresNivelPedimento,
   identificadoresPedimento,
   fechaEntrada,
   fechaPago,
@@ -53,65 +51,16 @@ const PedimentoIdentificadores: React.FC<PedimentoIdentificadoresProps> = ({
   tabInfoSelected = { name: '', isCorrect: false, isVerified: false },
 }) => {
   return (
-    <div
-      className={cn(
-        'mb-4 w-full cursor-pointer border border-gray-400',
-        'overflow-hidden rounded-md border-2',
-        getHighlightBorder('Identificadores nivel pedimento', tabs),
-        getHighlightFill('Identificadores nivel pedimento', tabInfoSelected)
-      )}
-      onClick={() => onClick('Identificadores nivel pedimento')}
-    >
-      <div className="grid grid-cols-12 gap-0">
-        <div className="col-span-4">
-          <div className="border-gray-400 border-b bg-gray-200 py-0.5 py-1 text-center font-semibold text-[11px] text-xs uppercase">
-            CÓDIGO DE ACEPTACIÓN:
-          </div>
-          <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 font-normal text-[10px] text-xs text-xs last:border-r-0">
-            &nbsp;
-          </div>
-        </div>
-        <div className="col-span-4">
-          <div className="border-gray-400 border-b bg-gray-200 py-0.5 py-1 text-center font-semibold text-[11px] text-xs uppercase">
-            CODIGO DE BARRAS
-          </div>
-          <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 font-normal text-[10px] text-xs text-xs last:border-r-0">
-            &nbsp;
-          </div>
-        </div>
-        <div className="col-span-4">
-          <div className="border-gray-400 border-b bg-gray-200 py-0.5 py-1 text-center font-semibold text-[11px] text-xs uppercase">
-            CLAVE DE LA SECCION ADUANERA DE DESPACHO:
-          </div>
-          <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-center font-normal text-[10px] text-xs text-xs last:border-r-0">
-            {identificadoresNivelPedimento.clave_seccion_aduanera}
-          </div>
-        </div>
-      </div>
-
+    <div className="mb-4 w-full">
       <div className="mt-2 grid grid-cols-2 gap-0">
         <div className="col-span-1">
-          <div className="border-gray-400 border-b bg-gray-200 py-0.5 py-1 text-center font-semibold text-[11px] text-xs uppercase">
-            FECHAS
-          </div>
-          <div className="grid grid-cols-1 gap-0">
-            <div className="grid grid-cols-3 gap-0">
-              <div className="col-span-1 flex min-h-6 items-center border-gray-400 border-r bg-gray-100 px-2 py-0.5 font-semibold text-[10px] text-xs text-xs uppercase last:border-r-0">
-                ENTRADA
-              </div>
-              <div className="col-span-2 flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 font-normal text-[10px] text-xs text-xs last:border-r-0">
-                {fechaEntrada}
-              </div>
-            </div>
-            <div className="grid grid-cols-3 gap-0">
-              <div className="col-span-1 flex min-h-6 items-center border-gray-400 border-r bg-gray-100 px-2 py-0.5 font-semibold text-[10px] text-xs text-xs uppercase last:border-r-0">
-                PAGO
-              </div>
-              <div className="col-span-2 flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 font-normal text-[10px] text-xs text-xs last:border-r-0">
-                {fechaPago}
-              </div>
-            </div>
-          </div>
+          <FechasTable 
+            fechaEntrada={fechaEntrada}
+            fechaPago={fechaPago}
+            tabs={tabs}
+            onClick={onClick}
+            tabInfoSelected={tabInfoSelected}
+          />
         </div>
         <div className="col-span-1">
           <div className="border-gray-400 border-b bg-gray-200 py-0.5 py-1 text-center font-semibold text-[11px] text-xs uppercase">

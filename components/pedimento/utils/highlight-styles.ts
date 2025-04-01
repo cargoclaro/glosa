@@ -15,7 +15,7 @@ export const getHighlightBorder = (
 
 /**
  * Determines the background fill color for the selected section
- * and applies reduced opacity for non-selected sections
+ * and applies opacity for non-selected sections
  */
 export const getHighlightFill = (
   section: string,
@@ -28,8 +28,8 @@ export const getHighlightFill = (
       : 'bg-yellow-100/50';
   }
   
-  // If this is not the selected section, apply reduced opacity (60% opacity)
-  // This allows non-selected boxes to fade into the background but still be visible
+  // If this is not the selected section, apply opacity only
+  // Using Tailwind's 60% opacity creates good visual distinction while maintaining readability
   return 'opacity-60';
 };
 
@@ -46,8 +46,8 @@ export const getHighlightClasses = (
     isVerified: false,
   }
 ): string => {
-  // We treat the empty tabInfoSelected.name as a special case to avoid applying opacity
-  // This ensures backward compatibility with components that don't expect opacity reduction
+  // We treat the empty tabInfoSelected.name as a special case to avoid applying visual effects
+  // This ensures backward compatibility with components that don't expect visual effects
   const fillClass = tabInfoSelected.name === '' 
     ? '' 
     : getHighlightFill(section, tabInfoSelected);

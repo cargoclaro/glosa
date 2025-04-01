@@ -84,24 +84,70 @@ async function validateValSeguros(
   transportDocument?: TransportDocument,
   carta318?: Carta318
 ) {
+  // --- Teaching Moment: Understanding the Data We Need ---
+  // To validate the 'Val. Seguros' field correctly, we need several pieces of information
+  // from the 'pedimento' (customs declaration) and potentially other documents.
+  // Let's gather them first.
+
+  // Get the Incoterm (International Commercial Term) from the invoice data section of the pedimento.
+  // Incoterms define the responsibilities of buyers and sellers, including insurance obligations.
   const incoterm = pedimento.datos_factura?.incoterm;
+
+  // Get the 'Val. Seguros' (Value of Insurance) from the incrementables section.
+  // This is the field we are primarily validating. It represents the total value of goods covered by insurance.
   const valSeguros = pedimento.incrementables?.valor_seguros;
+
+  // Get the 'Precio pagado / valor comercial' (Price paid / commercial value) from the values section.
+  // This is the value of the goods themselves, which helps us check if the insurance amount is reasonable.
   const precioPagadoValorComercial =
     pedimento.valores?.precio_pagado_valor_comercial;
+
+  // Get the 'Tipo de cambio' (Exchange Rate) from the header.
+  // This might be needed if insurance details in other documents are in foreign currency.
   const tipoCambio = pedimento.encabezado_del_pedimento?.tipo_cambio;
+
+  // Get the 'Clave de Pedimento' (Pedimento Key/Code) from the header.
+  // This code tells us the type of customs operation (e.g., definitive import, temporary, complementary).
+  // It's crucial for knowing if the 'Val. Seguros' field should even be filled out.
+  const clavePedimento = pedimento.encabezado_del_pedimento?.cve_pedim;
+
+  // Get any general observations from the pedimento.
+  // These might contain relevant notes about insurance or the operation type.
   const observaciones = pedimento.observaciones_a_nivel_pedimento;
+
+  // Get the markdown representations of related documents, if they exist.
+  // These provide context and supporting evidence for the values declared.
+  // The '?' means "if this document exists, get its markdown, otherwise it's undefined".
   const carta318mkdown = carta318?.markdown_representation;
   const invoicemkdown = invoice?.markdown_representation;
   const transportDocmkdown = transportDocument?.markdown_representation;
 
+  // --- Teaching Moment: Setting up the Validation Task ---
+  // Now we define the validation task for the AI model.
+  // We give it a name, a description of what it needs to do, a detailed prompt (instructions),
+  // and the context (the data it needs to perform the validation).
+
   const validation = {
+    // A short name for this specific validation check.
     name: 'Val. Seguros',
+    // A more detailed explanation of the validation's goal.
     description:
-      'Valida que el valor asegurado declarado en el pedimento coincida con el valor comercial',
-    prompt:
-      'El Val. Seguros es el valor que se asegura y debe ser igual al precio pagado / valor comercial del pedimento. Verifica si este valor está correctamente declarado comparando con la documentación disponible. Ten en cuenta que los incoterms pueden afectar la inclusión de los seguros en el valor de aduana.',
+      "Verifica que el campo 'Val. Seguros' (valor total de las mercancías aseguradas en MXN) cumpla con los lineamientos de llenado: valor correcto, formato adecuado (numérico, 12 dígitos en importación), y reglas de llenado/omisión según el tipo de operación (ej. pedimentos complementarios, Anexo 22).",
+    // The core instructions for the AI model. We break down the validation steps clearly.
+    prompt: `El campo 'Val. Seguros' declara el valor total de las mercancías cubiertas por el seguro, en moneda nacional (MXN). Tu tarea es verificar este campo siguiendo estos puntos:
+1.  **Valor Declarado:** Confirma si el valor declarado en 'Val. Seguros' (${valSeguros}) corresponde razonablemente al valor total de las mercancías aseguradas. Usa como referencia el 'Precio pagado / valor comercial' (${precioPagadoValorComercial}) y la información en la Factura. El valor asegurado debería cubrir, al menos, el valor comercial de las mercancías.
+2.  **Formato:** Verifica que el valor '${valSeguros}' sea numérico. Para importaciones, el formato esperado suele ser de 12 caracteres numéricos, sin espacios ni otros caracteres. Señala cualquier desviación de este formato.
+3.  **Condiciones de Llenado:**
+    *   El valor no debe ser CERO si el costo del seguro ya está incluido en el valor en aduana o si el seguro es aplicable y contratado.
+    *   Verifica si el campo debe llenarse o puede omitirse. Según el Anexo 22 de las RGCE, en ciertos casos como pedimentos complementarios (Clave de Pedimento: ${clavePedimento}) o tránsitos específicos, este campo es opcional o no debe llenarse. Revisa la 'Clave de Pedimento' y las 'Observaciones' para determinar si aplica alguna de estas excepciones.
+4.  **Incoterm:** Considera el Incoterm ('${incoterm}'), ya que define quién es responsable de contratar y pagar el seguro.
+
+Analiza toda la información proporcionada (Pedimento, Factura, Carta 3.1.8, Documento de Transporte) para realizar esta validación y explica tu razonamiento paso a paso.`,
+    // Providing the data (context) the AI needs. We categorize it into PROVIDED (from user documents)
+    // and EXTERNAL (like regulations or standard definitions).
     contexts: {
       PROVIDED: {
+        // Data directly from the main document being analyzed (Pedimento).
         Pedimento: {
           data: [
             { name: 'Val. Seguros', value: valSeguros },
@@ -110,10 +156,12 @@ async function validateValSeguros(
               name: 'Precio pagado / valor comercial',
               value: precioPagadoValorComercial,
             },
+            { name: 'Clave de Pedimento', value: clavePedimento }, // Added Clave Pedimento
             { name: 'Observaciones', value: observaciones },
             { name: 'Incoterm', value: incoterm },
           ],
         },
+        // Data from supporting documents.
         'Carta 318': {
           data: [{ name: 'Carta 318', value: carta318mkdown }],
         },
@@ -127,14 +175,27 @@ async function validateValSeguros(
         },
       },
       EXTERNAL: {
-        'Apendice 14': {
-          data: [{ name: 'Apendice 14', value: apendice14 }],
+        // External information like appendices or regulations.
+        'Apendice 14 (Incoterms)': {
+          // Renamed for clarity
+          data: [{ name: 'Definiciones Incoterm (Apendice 14)', value: apendice14 }], // Value description updated
         },
+        // --- Teaching Moment: Adding Regulatory Context ---
+        // We should ideally include relevant parts of Annex 22 here regarding the non-filling rules.
+        // For now, we've included the instruction in the prompt, but adding the actual text
+        // from Annex 22 would make the AI's validation even more robust.
+        // 'Anexo 22 (Reglas de Llenado)': {
+        //   data: [{ name: 'Extracto Anexo 22 sobre Val. Seguros', value: '...' }], // Placeholder
+        // },
       },
     },
-  } as const;
+  } as const; // 'as const' helps TypeScript understand the exact structure and values.
 
-  return await glosar(validation, traceId, 'o3-mini');
+  // --- Teaching Moment: Calling the AI ---
+  // Finally, we send the validation task (including the prompt and context)
+  // to our 'glosar' function, which handles the communication with the AI model.
+  // We also pass the 'traceId' for tracking/logging purposes and specify which AI model to use.
+  return await glosar(validation, traceId, 'o3-mini'); // Using 'o3-mini' model
 }
 
 async function validateSeguros(
