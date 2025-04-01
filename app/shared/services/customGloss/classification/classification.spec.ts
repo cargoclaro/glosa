@@ -16,7 +16,6 @@ describe('Classification', () => {
         'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y153KY9n8BhnLpbl6it5NaGkD4BTRJsU8jFoO2K',
         'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15sRQlbKdGH6Y152uanyQckEJU0xmhI7Ml9WbA',
         'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y153eCpVzBhnLpbl6it5NaGkD4BTRJsU8jFoO2K',
-        'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15VInFhpNsC0QwoBJsWz9AMZTXgeVDlIUcOYFa',
         'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15AF3N1bVEhI73SMs1mOVHTgc05pWuYPnbZRty',
       ],
     },
