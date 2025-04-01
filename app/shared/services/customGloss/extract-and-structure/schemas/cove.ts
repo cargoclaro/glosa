@@ -78,6 +78,7 @@ export const coveSchema = z.object({
           codigo_postal: z.string().describe("Postal code, e.g., '06830'."),
           colonia: z
             .string()
+            .nullable()
             .describe(
               "Neighborhood or subdivision, e.g., 'GREENWICH CONNECTICUT'."
             ),
@@ -120,6 +121,7 @@ export const coveSchema = z.object({
           codigo_postal: z.string().describe("Postal code, e.g., '08400'."),
           colonia: z
             .string()
+            .nullable()
             .describe("Neighborhood or subdivision, e.g., 'GRANJAS MEXICO'."),
           localidad: z
             .string()
@@ -184,11 +186,6 @@ export const coveSchema = z.object({
       })
       .describe('Details about the merchandise.')
   ),
-  document_summary: z
-    .string()
-    .describe(
-      'Un resumen detallado del documento COVE, incluyendo detalles de la transacción y contexto que puede ser útil para un humano. Este campo es obligatorio y debe ser generado por el LLM, no está proporcionado en el documento.'
-    ),
 });
 
 export type Cove = z.infer<typeof coveSchema>;
