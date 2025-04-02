@@ -86,51 +86,23 @@ export const coveSchema = z.object({
     municipio: z.string(),
     pais: z.string(),
   }),
-  datosMercancia: z.array(
-    z
-      .object({
-        descripcionMercancia: z
-          .string()
-          .describe(
-            "Descripción genérica de la mercancía, ej., 'PIGMENTOS A BASE DE DIOXIDO DE TITANIO'."
-          )
-          .nullable(),
-        claveUmc: z
-          .string()
-          .describe("Código para la unidad de medida, ej., 'POUND'.")
-          .nullable(),
-        cantidadUmc: z
-          .number()
-          .describe(
-            "Cantidad de mercancía en la unidad de medida especificada, ej., '11023.00'."
-          )
-          .nullable(),
-        tipoMoneda: z
-          .string()
-          .describe(
-            "Tipo de moneda utilizada en la transacción, ej., 'US Dollar'."
-          )
-          .nullable(),
-        valorUnitario: z
-          .number()
-          .describe("Valor unitario de la mercancía, ej., '1.69'.")
-          .nullable(),
-        valorTotal: z
-          .number()
-          .describe("Valor total de la mercancía, ej., '18628.87'.")
-          .nullable(),
-        valorTotalDolares: z
-          .number()
-          .describe("Valor total de la mercancía en USD, ej., '1866.00'.")
-          .nullable(),
-        numerosSerie: z
-          .array(z.string())
-          .describe(
-            "Array de números de serie de la mercancía, ej., ['1234567890', '0987654321']."
-          ),
-      })
-      .describe('Detalles sobre la mercancía.')
-  ),
+  mercancias: z.array(z.object({
+    datosDeLaMercancia: z.object({
+      descripcionGenericaDeLaMercancia: z.string(),
+      claveUMC: z.string(),
+      cantidadUMC: z.number(),
+      tipoMoneda: z.string(),
+      valorUnitario: z.number(),
+      valorTotal: z.number(),
+      valorTotalEnDolares: z.number(),
+    }),
+    descripcionDeLaMercancia: z.object({
+      marca: z.string(),
+      modelo: z.string(),
+      submodelo: z.string(),
+      numeroDeSerie: z.string(),
+    }).nullable(),
+  })),
 });
 
 export type Cove = z.infer<typeof coveSchema>;
