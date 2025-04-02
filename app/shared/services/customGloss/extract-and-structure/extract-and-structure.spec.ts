@@ -86,16 +86,16 @@ describe('Extract and Structure', () => {
             "tipoDeIdentificador": "TAX ID",
             "taxIdSinTaxIdRfcCurp": "20-8374868",
             "nombresORazonSocial": "IMPERIAL ALLOYS CORP",
-            "apellidoPaterno": "",
-            "apellidoMaterno": ""
+            "apellidoPaterno": null,
+            "apellidoMaterno": null
           },
           "domicilioDelProveedor": {
             "calle": "E 103RD STREET",
             "numeroExterior": "1031",
-            "numeroInterior": "",
+            "numeroInterior": null,
             "codigoPostal": "60628",
-            "colonia": "",
-            "localidad": "",
+            "colonia": null,
+            "localidad": null,
             "entidadFederativa": "ILLINOIS",
             "municipio": "CHICAGO",
             "pais": "USA"
@@ -104,16 +104,16 @@ describe('Extract and Structure', () => {
             "tipoDeIdentificador": "RFC",
             "taxIdSinTaxIdRfcCurp": "MALB640521U17",
             "nombresORazonSocial": "BERNHARD MACHTEL LANG",
-            "apellidoPaterno": "",
-            "apellidoMaterno": ""
+            "apellidoPaterno": null,
+            "apellidoMaterno": null
           },
           "domicilioDelDestinatario": {
             "calle": "PROLONGACION PASEO DE LA LLAVE",
             "numeroExterior": "8",
-            "numeroInterior": "",
+            "numeroInterior": null,
             "codigoPostal": "76815",
             "colonia": "SAN GIL",
-            "localidad": "",
+            "localidad": null,
             "entidadFederativa": "QUERE",
             "municipio": "SAN JUAN DEL RIO",
             "pais": "MEX"
@@ -144,21 +144,21 @@ describe('Extract and Structure', () => {
             "numeroDeFactura": "S/N",
             "tipoDeFigura": "Agente Aduanal",
             "fechaExpedicion": new Date("2021-08-11T00:00:00.000Z"),
-            "observaciones": ""
+            "observaciones": null
           },
           "datosGeneralesDelProveedor": {
             "tipoDeIdentificador": "TAX ID",
             "taxIdSinTaxIdRfcCurp": "561893440",
             "nombresORazonSocial": "ANDERSON AMERICA",
-            "apellidoPaterno": "",
-            "apellidoMaterno": ""
+            "apellidoPaterno": null,
+            "apellidoMaterno": null
           },
           "domicilioDelProveedor": {
             "calle": "SOUTHERN LOOP BLVD",
             "numeroExterior": "10620",
-            "numeroInterior": "",
+            "numeroInterior": null,
             "codigoPostal": "28134",
-            "colonia": "",
+            "colonia": null,
             "localidad": "PINEVILLE",
             "entidadFederativa": "PINEVILLE",
             "municipio": "PINEVILLE",
@@ -168,8 +168,8 @@ describe('Extract and Structure', () => {
             "tipoDeIdentificador": "RFC",
             "taxIdSinTaxIdRfcCurp": "SAA200430EUA",
             "nombresORazonSocial": "SACC ASESORES ADUANEROS EN COMERCIO EXTERIOR SA DE CV",
-            "apellidoPaterno": "",
-            "apellidoMaterno": ""
+            "apellidoPaterno": null,
+            "apellidoMaterno": null
           },
           "domicilioDelDestinatario": {
             "calle": "EBANO",
@@ -280,22 +280,22 @@ describe('Extract and Structure', () => {
             "numeroDeFactura": "442073",
             "tipoDeFigura": "Agente Aduanal",
             "fechaExpedicion": new Date("2024-11-22T00:00:00.000Z"),
-            "observaciones": ""
+            "observaciones": null
           },
           "datosGeneralesDelProveedor": {
             "tipoDeIdentificador": "TAX ID",
             "taxIdSinTaxIdRfcCurp": "SN",
             "nombresORazonSocial": "PIROBLOC",
-            "apellidoPaterno": "",
-            "apellidoMaterno": ""
+            "apellidoPaterno": null,
+            "apellidoMaterno": null
           },
           "domicilioDelProveedor": {
             "calle": "POL. SANTIGA C. BLANQUERS",
             "numeroExterior": "2",
-            "numeroInterior": "",
+            "numeroInterior": null,
             "codigoPostal": "08130",
-            "colonia": "",
-            "localidad": "",
+            "colonia": null,
+            "localidad": null,
             "entidadFederativa": "BARCELONA",
             "municipio": "STA. PERPETUA MOGODA",
             "pais": "ESP"
@@ -304,16 +304,16 @@ describe('Extract and Structure', () => {
             "tipoDeIdentificador": "RFC",
             "taxIdSinTaxIdRfcCurp": "MFM030526RW7",
             "nombresORazonSocial": "MISSION FOODS MEXICO, S. DE R.L. DE C.V.",
-            "apellidoPaterno": "",
-            "apellidoMaterno": ""
+            "apellidoPaterno": null,
+            "apellidoMaterno": null
           },
           "domicilioDelDestinatario": {
             "calle": "AV. PROF. HUMBERTO RAMOS LOZANO",
             "numeroExterior": "882",
             "numeroInterior": "S/N",
             "codigoPostal": "66610",
-            "colonia": "",
-            "localidad": "",
+            "colonia": null,
+            "localidad": null,
             "entidadFederativa": "NUEVO LEON",
             "municipio": "APODACA",
             "pais": "MEX"
@@ -506,13 +506,13 @@ describe('Extract and Structure', () => {
             "tipoDeIdentificador": "TAX ID",
             "taxIdSinTaxIdRfcCurp": "91370306080896344J",
             "nombresORazonSocial": "ZIBO BAODA AUTO PARTS LOGISTICS CO., LTD",
-            "apellidoPaterno": "",
-            "apellidoMaterno": ""
+            "apellidoPaterno": null,
+            "apellidoMaterno": null
           },
           "domicilioDelProveedor": {
             "calle": "ZHOULONG ROAD",
             "numeroExterior": "7888",
-            "numeroInterior": "",
+            "numeroInterior": null,
             "codigoPostal": "255000",
             "colonia": "ZHOUCUN",
             "localidad": "ZIBO",
@@ -524,8 +524,8 @@ describe('Extract and Structure', () => {
             "tipoDeIdentificador": "RFC",
             "taxIdSinTaxIdRfcCurp": "FCM211118K81",
             "nombresORazonSocial": "FAW CAMION MEXICO SA DE CV",
-            "apellidoPaterno": "",
-            "apellidoMaterno": ""
+            "apellidoPaterno": null,
+            "apellidoMaterno": null
           },
           "domicilioDelDestinatario": {
             "calle": "CANTU",
@@ -533,7 +533,7 @@ describe('Extract and Structure', () => {
             "numeroInterior": "103",
             "codigoPostal": "11590",
             "colonia": "ANZURES",
-            "localidad": "",
+            "localidad": null,
             "entidadFederativa": "CIUDAD DE MÉXICO",
             "municipio": "MIGUEL HIDALGO",
             "pais": "MEXICO (ESTADOS UNIDOS MEXICANOS)"
@@ -550,10 +550,10 @@ describe('Extract and Structure', () => {
                 "valorTotalEnDolares": 14186.16
               },
               "descripcionDeLaMercancia": {
-                "marca": "",
+                "marca": null,
                 "modelo": "612640130438",
-                "submodelo": "",
-                "numeroDeSerie": ""
+                "submodelo": null,
+                "numeroDeSerie": null
               }
             }
           ]
@@ -575,16 +575,16 @@ describe('Extract and Structure', () => {
             "tipoDeIdentificador": "TAX ID",
             "taxIdSinTaxIdRfcCurp": "82-5221873",
             "nombresORazonSocial": "GROUP CARGO LIFT INC.",
-            "apellidoPaterno": "",
-            "apellidoMaterno": ""
+            "apellidoPaterno": null,
+            "apellidoMaterno": null
           },
           "domicilioDelProveedor": {
             "calle": "KUYKENDAHL RD E. 500",
             "numeroExterior": "25420",
-            "numeroInterior": "",
+            "numeroInterior": null,
             "codigoPostal": "77375",
-            "colonia": "",
-            "localidad": "",
+            "colonia": null,
+            "localidad": null,
             "entidadFederativa": "TX",
             "municipio": "THE WOODLANDS",
             "pais": "USA"
@@ -593,16 +593,16 @@ describe('Extract and Structure', () => {
             "tipoDeIdentificador": "RFC",
             "taxIdSinTaxIdRfcCurp": "CLI080312JG1",
             "nombresORazonSocial": "CARGO LIFT, S.A. DE C.V.",
-            "apellidoPaterno": "",
-            "apellidoMaterno": ""
+            "apellidoPaterno": null,
+            "apellidoMaterno": null
           },
           "domicilioDelDestinatario": {
             "calle": "TEZOZOMOC",
             "numeroExterior": "94",
-            "numeroInterior": "",
+            "numeroInterior": null,
             "codigoPostal": "02700",
             "colonia": "SAN MIGUEL AMANTLA",
-            "localidad": "",
+            "localidad": null,
             "entidadFederativa": "CDMX",
             "municipio": "AZCAPOTZALCO",
             "pais": "MEX"
@@ -639,16 +639,16 @@ describe('Extract and Structure', () => {
             "tipoDeIdentificador": "TAX ID",
             "taxIdSinTaxIdRfcCurp": "42-0886654",
             "nombresORazonSocial": "KEMIN FOOD TECNOLOGIES, INC",
-            "apellidoPaterno": "",
-            "apellidoMaterno": ""
+            "apellidoPaterno": null,
+            "apellidoMaterno": null
           },
           "domicilioDelProveedor": {
             "calle": "MAURY STREET",
             "numeroExterior": "2100",
-            "numeroInterior": "",
+            "numeroInterior": null,
             "codigoPostal": "50306",
-            "colonia": "",
-            "localidad": "",
+            "colonia": null,
+            "localidad": null,
             "entidadFederativa": "IOWA",
             "municipio": "DES MOINES",
             "pais": "USA"
@@ -657,16 +657,16 @@ describe('Extract and Structure', () => {
             "tipoDeIdentificador": "RFC",
             "taxIdSinTaxIdRfcCurp": "MAV940325CE8",
             "nombresORazonSocial": "MOLINOS AZTECA DE VERACRUZ SA DE CV",
-            "apellidoPaterno": "",
-            "apellidoMaterno": ""
+            "apellidoPaterno": null,
+            "apellidoMaterno": null
           },
           "domicilioDelDestinatario": {
             "calle": "CARRETERA XALAPA VERACRUZ",
             "numeroExterior": "KM 94",
-            "numeroInterior": "",
+            "numeroInterior": null,
             "codigoPostal": "91697",
             "colonia": "LOMA DE TEJERIA",
-            "localidad": "",
+            "localidad": null,
             "entidadFederativa": "VERACRUZ",
             "municipio": "VERACRUZ",
             "pais": "MEX"
@@ -715,16 +715,16 @@ describe('Extract and Structure', () => {
             "tipoDeIdentificador": "TAX ID",
             "taxIdSinTaxIdRfcCurp": "741465790",
             "nombresORazonSocial": "KULKONI, INC.",
-            "apellidoPaterno": "",
-            "apellidoMaterno": ""
+            "apellidoPaterno": null,
+            "apellidoMaterno": null
           },
           "domicilioDelProveedor": {
             "calle": "GARDEN OAKS",
             "numeroExterior": "502",
-            "numeroInterior": "",
+            "numeroInterior": null,
             "codigoPostal": "77018",
-            "colonia": "",
-            "localidad": "",
+            "colonia": null,
+            "localidad": null,
             "entidadFederativa": "TX",
             "municipio": "HOUSTON",
             "pais": "USA"
@@ -733,8 +733,8 @@ describe('Extract and Structure', () => {
             "tipoDeIdentificador": "RFC",
             "taxIdSinTaxIdRfcCurp": "SER870126EA3",
             "nombresORazonSocial": "SERVICABLES, S.A. DE C.V.",
-            "apellidoPaterno": "",
-            "apellidoMaterno": ""
+            "apellidoPaterno": null,
+            "apellidoMaterno": null
           },
           "domicilioDelDestinatario": {
             "calle": "DR. BALMIS",
@@ -742,7 +742,7 @@ describe('Extract and Structure', () => {
             "numeroInterior": "B",
             "codigoPostal": "06720",
             "colonia": "DOCTORES",
-            "localidad": "",
+            "localidad": null,
             "entidadFederativa": "CDMX",
             "municipio": "MEXICO",
             "pais": "MEX"
