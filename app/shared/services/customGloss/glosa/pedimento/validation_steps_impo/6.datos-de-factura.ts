@@ -2,7 +2,8 @@ import { traceable } from 'langsmith/traceable';
 import type { Carta318 } from '../../../data-extraction/mkdown_schemas/carta-318';
 import type { CartaSesion } from '../../../data-extraction/mkdown_schemas/carta-sesion';
 import type { Invoice } from '../../../data-extraction/mkdown_schemas/invoice';
-import type { Cove, Pedimento } from '../../../data-extraction/schemas';
+import type { Pedimento } from '../../../data-extraction/schemas';
+import type { Cove } from '../../../extract-and-structure/schemas';
 import { getExchangeRate } from '../../exchange-rate';
 import { glosar } from '../../validation-result';
 

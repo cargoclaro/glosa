@@ -1,4 +1,4 @@
-import type { Cove } from '@/shared/services/customGloss/data-extraction/schemas';
+import type { Cove } from '@/shared/services/customGloss/extract-and-structure/schemas';
 import type { CustomGlossTabTable } from '~/db/schema';
 import { cn } from '~/lib/utils';
 import { getHighlightBorder, getHighlightFill } from './utils/highlight-styles';

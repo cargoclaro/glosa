@@ -3,9 +3,8 @@ import type {
   Carta318,
   Invoice,
 } from '../../../data-extraction/mkdown_schemas';
-import type { PackingList } from '../../../extract-and-structure/schemas';
+import type { PackingList, Cove } from '../../../extract-and-structure/schemas';
 import type {
-  Cove,
   Partida,
   Pedimento,
 } from '../../../data-extraction/schemas';

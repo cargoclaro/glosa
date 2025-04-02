@@ -1,7 +1,7 @@
 import type {
-  Cove,
   Pedimento,
 } from '@/shared/services/customGloss/data-extraction/schemas';
+import type { Cove } from '@/shared/services/customGloss/extract-and-structure/schemas';
 import { relations } from 'drizzle-orm';
 import {
   boolean,

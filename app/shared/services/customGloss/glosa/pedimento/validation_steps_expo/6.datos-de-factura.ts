@@ -3,7 +3,8 @@ import type {
   CartaSesion,
   Cfdi,
 } from '../../../data-extraction/mkdown_schemas';
-import type { Cove, Pedimento } from '../../../data-extraction/schemas';
+import type { Pedimento } from '../../../data-extraction/schemas';
+import type { Cove } from '../../../extract-and-structure/schemas';
 import { glosar } from '../../validation-result';
 
 async function validateRfcFormat(

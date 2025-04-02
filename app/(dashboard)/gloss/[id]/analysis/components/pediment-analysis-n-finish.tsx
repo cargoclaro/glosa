@@ -1,6 +1,6 @@
 'use client';
 
-import type { Cove } from '@/shared/services/customGloss/data-extraction/schemas';
+import type { Cove } from '@/shared/services/customGloss/extract-and-structure/schemas';
 import type { Pedimento } from '@/shared/services/customGloss/data-extraction/schemas';
 import type { InferSelectModel } from 'drizzle-orm';
 import { useState } from 'react';

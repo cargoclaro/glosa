@@ -1,4 +1,4 @@
-import type { Cove } from '@/shared/services/customGloss/data-extraction/schemas';
+import type { Cove } from '@/shared/services/customGloss/extract-and-structure/schemas';
 import { ArrowLeft, ArrowRight, ChevronFirst, ChevronLast } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import type { CustomGlossTabTable } from '~/db/schema';

@@ -3,7 +3,7 @@ import type {
   Carta318,
   Invoice,
 } from '../../../data-extraction/mkdown_schemas';
-import type { Cove } from '../../../data-extraction/schemas';
+import type { Cove } from '../../../extract-and-structure/schemas';
 import { glosar } from '../../validation-result';
 
 /**
