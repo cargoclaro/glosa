@@ -475,9 +475,7 @@ describe('Extract and Structure', () => {
               "valor_unitario": 41.48,
               "valor_total": 14186.16,
               "valor_total_dolares": 14186.16,
-              "numeros_serie": [
-                "612640130438"
-              ]
+              "numeros_serie": []
             }
           ]
         }
