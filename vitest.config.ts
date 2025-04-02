@@ -8,7 +8,7 @@ dotenv.config();
 
 export default defineConfig({
   test: {
-    testTimeout: ms('1m'),
+    testTimeout: ms('3m'),
     include: ['**/*.spec.ts'],
     // Pass through all environment variables
     env: process.env,

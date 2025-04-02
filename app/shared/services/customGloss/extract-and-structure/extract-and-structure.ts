@@ -62,8 +62,11 @@ export async function extractAndStructureCove(
       },
     }
     : {};
-  const { object } = await generateObject({
-    model: openai('gpt-4o-2024-11-20'),
+  const { object, usage: { promptTokens, completionTokens } } = await generateObject({
+    model: openai('o1-2024-12-17'),
+    providerOptions: {
+      openai: { reasoningEffort: 'high' },
+    },
     seed: 42,
     ...telemetryConfig,
     schema: coveSchema,
@@ -84,6 +87,7 @@ export async function extractAndStructureCove(
       },
     ],
   });
+  console.log({ promptTokens, completionTokens });
 
   return object;
 }
