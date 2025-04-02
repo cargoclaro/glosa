@@ -17,18 +17,18 @@ async function validateMercancias(
   carta318?: Carta318
 ) {
   // Extract merchandise data from COVE
-  const datosMercanciaCove = cove.datos_mercancia;
+  const datosMercanciaCove = cove.mercancias;
   const invoiceMkdown = invoice?.markdown_representation;
   const carta318Mkdown = carta318?.markdown_representation;
 
   // Create a simplified view of COVE merchandise data
   const mercanciasCoveFormatted = datosMercanciaCove
     ? datosMercanciaCove.map((mercancia) => ({
-        descripcion: mercancia?.descripcion_mercancia,
-        cantidad: mercancia?.cantidad_umc,
-        unidadMedida: mercancia?.clave_umc,
-        valorUnitario: mercancia?.valor_unitario,
-        valorTotal: mercancia?.valor_total,
+        descripcion: mercancia?.datosDeLaMercancia?.descripcionGenericaDeLaMercancia,
+        cantidad: mercancia?.datosDeLaMercancia?.cantidadUMC,
+        unidadMedida: mercancia?.datosDeLaMercancia?.claveUMC,
+        valorUnitario: mercancia?.datosDeLaMercancia?.valorUnitario,
+        valorTotal: mercancia?.datosDeLaMercancia?.valorTotal,
       }))
     : undefined;
 
@@ -72,11 +72,11 @@ async function validateValorTotalDolares(
   carta318?: Carta318
 ) {
   // Extract total value from COVE
-  const valorTotalDolaresCove = cove.datos_mercancia?.reduce(
-    (sum, mercancia) => sum + (mercancia.valor_total_dolares || 0),
+  const valorTotalDolaresCove = cove.mercancias?.reduce(
+    (sum, mercancia) => sum + (mercancia.datosDeLaMercancia.valorTotalEnDolares || 0),
     0
   );
-  const observacionesCove = cove.observaciones || '';
+  const observacionesCove = cove.datosDelAcuseDeValor.observaciones;
   const invoiceMkdown = invoice?.markdown_representation;
   const carta318Mkdown = carta318?.markdown_representation;
 
@@ -118,7 +118,8 @@ async function validateNumeroSerie(
   invoice?: Invoice,
   carta318?: Carta318
 ) {
-  const numeroSerieCove = cove.datos_mercancia[0]?.numeros_serie;
+  // TODO: Do this in a loop, instead of just checking the first mercancia
+  const numeroSerieCove = cove.mercancias[0]?.descripcionDeLaMercancia?.numeroDeSerie;
   const invoiceMkdown = invoice?.markdown_representation;
   const carta318Mkdown = carta318?.markdown_representation;
 
@@ -134,7 +135,7 @@ async function validateNumeroSerie(
           data: [
             {
               name: 'Descripción',
-              value: cove.datos_mercancia[0]?.descripcion_mercancia,
+              value: cove.mercancias[0]?.datosDeLaMercancia?.descripcionGenericaDeLaMercancia,
             },
             { name: 'Numero de serie', value: numeroSerieCove },
           ],

@@ -14,7 +14,7 @@ async function validateRfcFormat(
   carta318?: Carta318
 ) {
   const rfcPedimento = pedimento.datos_importador?.rfc;
-  const rfcCove = cove?.datos_generales_destinatario?.rfc_destinatario;
+  const rfcCove = cove?.datosGeneralesDelDestinatario?.taxIdSinTaxIdRfcCurp;
   const carta318mkdown = carta318?.markdown_representation;
   const observaciones = pedimento.observaciones_a_nivel_pedimento;
 
@@ -93,12 +93,12 @@ async function validateDatosImportador(
   carta318?: Carta318
 ) {
   const rfcPedimento = pedimento.datos_importador?.rfc;
-  const rfcCove = cove?.datos_generales_destinatario?.rfc_destinatario;
+  const rfcCove = cove?.datosGeneralesDelDestinatario?.taxIdSinTaxIdRfcCurp;
   const domicilioPedimento = pedimento.datos_importador?.domicilio;
-  const domicilioCove = cove?.datos_generales_destinatario?.domicilio;
+  const domicilioCove = cove?.domicilioDelDestinatario;
   const razonSocialPedimento = pedimento.datos_importador?.razon_social;
   const razonSocialCove =
-    cove?.datos_generales_destinatario?.nombre_razon_social;
+    cove?.datosGeneralesDelDestinatario.nombresORazonSocial;
 
   const carta318mkdown = carta318?.markdown_representation;
   const observaciones = pedimento.observaciones_a_nivel_pedimento;
@@ -106,13 +106,13 @@ async function validateDatosImportador(
   const domicilioCoveCompleto = domicilioCove
     ? [
         domicilioCove.calle,
-        domicilioCove.numero_exterior,
-        domicilioCove.numero_interior,
+        domicilioCove.numeroExterior,
+        domicilioCove.numeroInterior,
         domicilioCove.colonia,
         domicilioCove.localidad,
         domicilioCove.municipio,
-        domicilioCove.entidad_federativa,
-        domicilioCove.codigo_postal,
+        domicilioCove.entidadFederativa,
+        domicilioCove.codigoPostal,
         domicilioCove.pais,
       ]
         .filter(Boolean)
@@ -163,10 +163,10 @@ async function validateDatosProveedor(
 ) {
   const nombreProveedorPedimento = pedimento.nombre_razon_social;
   const nombreProveedorCove =
-    cove?.datos_generales_proveedor?.nombre_razon_social;
+    cove?.datosGeneralesDelProveedor.nombresORazonSocial;
   const domicilioProveedorPedimento = pedimento.domicilio;
-  const domicilioProveedorCove = cove?.datos_generales_proveedor?.domicilio;
-  const idProveedorCove = cove?.datos_generales_proveedor?.identificador;
+  const domicilioProveedorCove = cove?.domicilioDelProveedor;
+  const idProveedorCove = cove?.datosGeneralesDelProveedor?.taxIdSinTaxIdRfcCurp;
 
   const carta318mkdown = carta318?.markdown_representation;
   const observaciones = pedimento.observaciones_a_nivel_pedimento;
@@ -174,9 +174,9 @@ async function validateDatosProveedor(
   const domicilioProveedorCoveCompleto = domicilioProveedorCove
     ? [
         domicilioProveedorCove.calle,
-        domicilioProveedorCove.numero_exterior,
+        domicilioProveedorCove.numeroExterior,
         domicilioProveedorCove.colonia,
-        domicilioProveedorCove.codigo_postal,
+        domicilioProveedorCove.codigoPostal,
         domicilioProveedorCove.pais,
       ]
         .filter(Boolean)
@@ -224,7 +224,7 @@ async function validateFechasYFolios(
   carta318?: Carta318
 ) {
   const fechaEntradaPedimento = pedimento.fecha_entrada_presentacion;
-  const fechaExpedicionCove = cove?.fecha_expedicion;
+  const fechaExpedicionCove = cove?.datosDelAcuseDeValor.fechaExpedicion;
 
   const invoicemkdown = invoice?.markdown_representation;
   const carta318mkdown = carta318?.markdown_representation;
@@ -268,10 +268,11 @@ async function validateMonedaYEquivalencia(
   invoice?: Invoice
 ) {
   const monedaPedimento = pedimento.datos_factura?.moneda_factura;
-  const monedaCove = cove?.datos_mercancia?.[0]?.tipo_moneda;
+  // TODO: Do this in a loop, instead of just checking the first mercancia
+  const monedaCove = cove?.mercancias[0]?.datosDeLaMercancia?.tipoMoneda;
   const valorDolaresPedimento = pedimento.datos_factura?.valor_dolares_factura;
-  const valorDolaresCoveTotal = cove?.datos_mercancia?.reduce(
-    (sum, item) => sum + (item?.valor_total_dolares || 0),
+  const valorDolaresCoveTotal = cove?.mercancias?.reduce(
+    (sum, item) => sum + (item?.datosDeLaMercancia?.valorTotalEnDolares || 0),
     0
   );
   const valorFactura = pedimento.datos_factura?.valor_moneda_factura;

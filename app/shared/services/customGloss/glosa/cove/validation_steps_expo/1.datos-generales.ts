@@ -8,7 +8,7 @@ import { glosar } from '../../validation-result';
  */
 async function validateNumeroFactura(traceId: string, cove: Cove, cfdi?: Cfdi) {
   // Extract invoice numbers from different sources
-  const numeroFacturaCove = cove.numero_factura;
+  const numeroFacturaCove = cove.datosDelAcuseDeValor.numeroDeFactura;
   const cfdiMkdown = cfdi?.markdown_representation;
 
   const validation = {
@@ -41,7 +41,7 @@ async function validateFechaExpedicion(
   cfdi?: Cfdi
 ) {
   // Extract invoice dates from different sources
-  const fechaExpedicionCove = cove.fecha_expedicion;
+  const fechaExpedicionCove = cove.datosDelAcuseDeValor.fechaExpedicion;
   const cfdiMkdown = cfdi?.markdown_representation;
 
   const validation = {
@@ -70,7 +70,8 @@ async function validateFechaExpedicion(
  */
 async function validateRfc(traceId: string, cove: Cove, cfdi?: Cfdi) {
   // Extract RFC values from different sources
-  const rfcCove = cove.datos_generales_destinatario?.rfc_destinatario;
+  // Se supone que este valor siempre es el RFC en la exportación
+  const rfcCove = cove.datosGeneralesDelDestinatario.taxIdSinTaxIdRfcCurp;
   const cfdiMkdown = cfdi?.markdown_representation;
   const validation = {
     name: 'RFC (Exportación)',

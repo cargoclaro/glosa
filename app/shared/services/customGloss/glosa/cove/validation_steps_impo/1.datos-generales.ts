@@ -17,7 +17,7 @@ async function validateNumeroFactura(
   carta318?: Carta318
 ) {
   // Extract invoice numbers from different sources
-  const numeroFacturaCove = cove.numero_factura;
+  const numeroFacturaCove = cove.datosDelAcuseDeValor.numeroDeFactura;
   const invoiceMkdown = invoice?.markdown_representation;
   const carta318Mkdown = carta318?.markdown_representation;
 
@@ -55,7 +55,7 @@ async function validateFechaExpedicion(
   carta318?: Carta318
 ) {
   // Extract invoice dates from different sources
-  const fechaExpedicionCove = cove.fecha_expedicion;
+  const fechaExpedicionCove = cove.datosDelAcuseDeValor.fechaExpedicion;
   const invoiceMkdown = invoice?.markdown_representation;
   const carta318Mkdown = carta318?.markdown_representation;
   const currentDate = new Date();

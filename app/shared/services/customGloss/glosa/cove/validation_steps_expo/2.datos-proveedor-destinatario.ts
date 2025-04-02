@@ -13,11 +13,11 @@ async function validateDatosGeneralesProveedor(
   cfdi?: Cfdi
 ) {
   // Extract supplier data from different sources
-  const identificadorCove = cove.datos_generales_proveedor?.identificador;
+  const identificadorCove = cove.datosGeneralesDelProveedor.taxIdSinTaxIdRfcCurp;
   const tipoIdentificadorCove =
-    cove.datos_generales_proveedor?.tipo_identificador;
+    cove.datosGeneralesDelProveedor.tipoDeIdentificador;
   const nombreRazonSocialCove =
-    cove.datos_generales_proveedor?.nombre_razon_social;
+    cove.datosGeneralesDelProveedor.nombresORazonSocial;
   const cfdiMkdown = cfdi?.markdown_representation;
 
   const validation = {
@@ -55,15 +55,15 @@ async function validateDomicilioProveedor(
   cfdi?: Cfdi
 ) {
   // Extract supplier address data from different sources
-  const domicilioCove = cove.datos_generales_proveedor?.domicilio;
+  const domicilioCove = cove.domicilioDelProveedor;
 
   // Compose full address string for comparison
   const domicilioCoveCompleto = domicilioCove
     ? [
         domicilioCove.calle,
-        domicilioCove.numero_exterior,
+        domicilioCove.numeroExterior,
         domicilioCove.colonia,
-        domicilioCove.codigo_postal,
+        domicilioCove.codigoPostal,
         domicilioCove.pais,
       ]
         .filter(Boolean)
@@ -103,10 +103,11 @@ async function validateDatosGeneralesDestinatario(
   cfdi?: Cfdi
 ) {
   // Extract recipient data from different sources
+  // Se supone que este valor siempre es el RFC en la exportación
   const rfcDestinatarioCove =
-    cove.datos_generales_destinatario?.rfc_destinatario;
+    cove.datosGeneralesDelDestinatario.taxIdSinTaxIdRfcCurp;
   const nombreRazonSocialCove =
-    cove.datos_generales_destinatario?.nombre_razon_social;
+    cove.datosGeneralesDelDestinatario.nombresORazonSocial;
   const cfdiMkdown = cfdi?.markdown_representation;
 
   const validation = {
@@ -143,15 +144,15 @@ async function validateDomicilioDestinatario(
   cfdi?: Cfdi
 ) {
   // Extract recipient address data from different sources
-  const domicilioCove = cove.datos_generales_destinatario?.domicilio;
+  const domicilioCove = cove.domicilioDelDestinatario;
 
   // Compose full address string for comparison
   const domicilioCoveCompleto = domicilioCove
     ? [
         domicilioCove.calle,
-        domicilioCove.numero_exterior,
+        domicilioCove.numeroExterior,
         domicilioCove.colonia,
-        domicilioCove.codigo_postal,
+        domicilioCove.codigoPostal,
         domicilioCove.pais,
       ]
         .filter(Boolean)

@@ -14,7 +14,6 @@ import {
 import { coveSchema, pedimentoSchema } from './schemas/';
 import { extractTextFromImage } from './vision';
 import { extractTextFromImageAnthropic } from './vision-anthropic';
-import { extractTextFromImageOpenAI } from './vision-openai';
 import { extractAndStructurePackingList, extractAndStructureCove } from '../extract-and-structure/extract-and-structure';
 
 const documentToSchema = {

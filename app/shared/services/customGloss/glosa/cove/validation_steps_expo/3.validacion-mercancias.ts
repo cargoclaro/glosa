@@ -9,16 +9,17 @@ import { glosar } from '../../validation-result';
  */
 async function validateMercancias(traceId: string, cove: Cove, cfdi?: Cfdi) {
   // Extract merchandise data from COVE
-  const datosMercanciaCove = cove.datos_mercancia;
+  const datosMercanciaCove = cove.mercancias;
   const cfdiMkdown = cfdi?.markdown_representation;
   // Create a simplified view of COVE merchandise data
+  // TODO: Do this in a loop, instead of just checking the first mercancia
   const mercanciasCoveFormatted = datosMercanciaCove
     ? {
-        descripcion: datosMercanciaCove[0]?.descripcion_mercancia,
-        cantidad: datosMercanciaCove[0]?.cantidad_umc,
-        unidadMedida: datosMercanciaCove[0]?.clave_umc,
-        valorUnitario: datosMercanciaCove[0]?.valor_unitario,
-        valorTotal: datosMercanciaCove[0]?.valor_total,
+        descripcion: datosMercanciaCove[0]?.datosDeLaMercancia.descripcionGenericaDeLaMercancia,
+        cantidad: datosMercanciaCove[0]?.datosDeLaMercancia.cantidadUMC,
+        unidadMedida: datosMercanciaCove[0]?.datosDeLaMercancia.claveUMC,
+        valorUnitario: datosMercanciaCove[0]?.datosDeLaMercancia.valorUnitario,
+        valorTotal: datosMercanciaCove[0]?.datosDeLaMercancia.valorTotal,
       }
     : undefined;
 
@@ -67,8 +68,9 @@ async function validateValorTotalDolares(
   cfdi?: Cfdi
 ) {
   // Extract total value from COVE
-  const valorTotalDolaresCove = cove.datos_mercancia[0]?.valor_total_dolares;
-  const observacionesCove = cove.observaciones || '';
+  // TODO: Do this in a loop, instead of just checking the first mercancia
+  const valorTotalDolaresCove = cove.mercancias[0]?.datosDeLaMercancia.valorTotalEnDolares;
+  const observacionesCove = cove.datosDelAcuseDeValor.observaciones;
   const cfdiMkdown = cfdi?.markdown_representation;
   const validation = {
     name: 'Valor total en dolares',
@@ -104,7 +106,8 @@ async function validateNumeroSerie(
   invoice?: Invoice,
   cfdi?: Cfdi
 ) {
-  const numeroSerieCove = cove.datos_mercancia[0]?.numeros_serie;
+  // TODO: Do this in a loop, instead of just checking the first mercancia
+  const numeroSerieCove = cove.mercancias[0]?.descripcionDeLaMercancia?.numeroDeSerie;
   const invoiceMkdown = invoice?.markdown_representation;
   const cfdiMkdown = cfdi?.markdown_representation;
 
@@ -120,7 +123,7 @@ async function validateNumeroSerie(
           data: [
             {
               name: 'Descripción',
-              value: cove.datos_mercancia[0]?.descripcion_mercancia,
+              value: cove.mercancias[0]?.datosDeLaMercancia?.descripcionGenericaDeLaMercancia,
             },
             { name: 'Numero de serie', value: numeroSerieCove },
           ],

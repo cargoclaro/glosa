@@ -30,12 +30,12 @@ export function CoveViewer({
 
   // Get merchandise items, skipping the first one which is displayed on the recipient page
   const merchandiseItems = useMemo(() => {
-    if (!cove.datos_mercancia?.length) {
+    if (!cove.mercancias?.length) {
       return [];
     }
     // Skip the first item since it's displayed on the recipient page
-    return cove.datos_mercancia.slice(1);
-  }, [cove.datos_mercancia]);
+    return cove.mercancias.slice(1);
+  }, [cove.mercancias]);
 
   // Calculate total number of merchandise pages needed
   const totalMerchandisePages = useMemo(() => {
@@ -180,7 +180,7 @@ export function CoveViewer({
 
   return (
     <div className="relative">
-      <div className="mx-auto w-full max-w-4xl overflow-hidden rounded-xl bg-white shadow-xl transition-all duration-500 border-[1px] border-blue-500">
+      <div className='mx-auto w-full max-w-4xl overflow-hidden rounded-xl border-[1px] border-blue-500 bg-white shadow-xl transition-all duration-500'>
         {renderPage()}
       </div>
 

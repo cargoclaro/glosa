@@ -15,7 +15,8 @@ async function validateRfcFormat(
 ) {
   // Extract RFC values from documents
   const rfcPedimento = pedimento.datos_importador?.rfc;
-  const rfcCove = cove?.datos_generales_destinatario?.rfc_destinatario;
+  // Se supone que este valor siempre es el RFC en la exportación
+  const rfcCove = cove?.datosGeneralesDelDestinatario?.taxIdSinTaxIdRfcCurp;
   const cfdiMkdown = cfdi?.markdown_representation;
 
   const validation = {
@@ -85,16 +86,17 @@ async function validateDatosImportador(
 ) {
   // Extract values from documents
   const rfcPedimento = pedimento.datos_importador?.rfc;
-  const rfcCove = cove?.datos_generales_destinatario?.rfc_destinatario;
+  // Se supone que este valor siempre es el RFC en la exportación
+  const rfcCove = cove?.datosGeneralesDelDestinatario?.taxIdSinTaxIdRfcCurp;
 
   const domicilioPedimento = pedimento.datos_importador?.domicilio;
-  const domicilioCove = cove?.datos_generales_destinatario?.domicilio;
+  const domicilioCove = cove.domicilioDelDestinatario;
   const domicilioCoveCompleto = domicilioCove
     ? [
         domicilioCove.calle,
-        domicilioCove.numero_exterior,
+        domicilioCove.numeroExterior,
         domicilioCove.colonia,
-        domicilioCove.codigo_postal,
+        domicilioCove.codigoPostal,
         domicilioCove.pais,
       ]
         .filter(Boolean)
@@ -103,7 +105,7 @@ async function validateDatosImportador(
 
   const razonSocialPedimento = pedimento.datos_importador?.razon_social;
   const razonSocialCove =
-    cove?.datos_generales_destinatario?.nombre_razon_social;
+    cove.datosGeneralesDelDestinatario.nombresORazonSocial;
 
   const cfdiMkdown = cfdi?.markdown_representation;
 
@@ -148,16 +150,16 @@ async function validateDatosProveedor(
   // Extract values from documents
   const nombreProveedorPedimento = pedimento.nombre_razon_social;
   const nombreProveedorCove =
-    cove?.datos_generales_proveedor?.nombre_razon_social;
+    cove?.datosGeneralesDelProveedor.nombresORazonSocial;
 
   const domicilioProveedorPedimento = pedimento.domicilio;
-  const domicilioProveedorCove = cove?.datos_generales_proveedor?.domicilio;
+  const domicilioProveedorCove = cove.domicilioDelProveedor;
   const domicilioProveedorCoveCompleto = domicilioProveedorCove
     ? [
         domicilioProveedorCove.calle,
-        domicilioProveedorCove.numero_exterior,
+        domicilioProveedorCove.numeroExterior,
         domicilioProveedorCove.colonia,
-        domicilioProveedorCove.codigo_postal,
+        domicilioProveedorCove.codigoPostal,
         domicilioProveedorCove.pais,
       ]
         .filter(Boolean)
@@ -165,7 +167,8 @@ async function validateDatosProveedor(
     : '';
 
   const idProveedorPedimento = pedimento.id_fiscal;
-  const idProveedorCove = cove?.datos_generales_proveedor?.identificador;
+  // Se supone que este valor siempre es el RFC en la exportación
+  const idProveedorCove = cove?.datosGeneralesDelProveedor?.taxIdSinTaxIdRfcCurp;
 
   const cfdiMkdown = cfdi?.markdown_representation;
 
@@ -209,10 +212,10 @@ async function validateFechasYFolios(
 ) {
   // Extract values from documents
   const fechaEntradaPedimento = pedimento.fecha_entrada_presentacion;
-  const fechaExpedicionCove = cove?.fecha_expedicion;
+  const fechaExpedicionCove = cove?.datosDelAcuseDeValor.fechaExpedicion;
 
   const numeroCovePedimento = pedimento.cove;
-  const numeroCove = cove?.acuse_valor;
+  const numeroCove = cove?.datosDelAcuseDeValor.numeroDeFactura;
 
   const cfdiMkdown = cfdi?.markdown_representation;
 
@@ -254,7 +257,8 @@ async function validateMonedaYEquivalencia(
 ) {
   // Moneda
   const monedaPedimento = pedimento.datos_factura?.moneda_factura;
-  const monedaCove = cove?.datos_mercancia?.[0]?.tipo_moneda;
+  // TODO: Do this in a loop, instead of just checking the first mercancia
+  const monedaCove = cove.mercancias[0]?.datosDeLaMercancia?.tipoMoneda;
 
   // Valores DOF
   const factorDof = 1.5;
@@ -262,7 +266,8 @@ async function validateMonedaYEquivalencia(
 
   // Extract values from documents
   const valorDolaresPedimento = pedimento.datos_factura?.valor_dolares_factura;
-  const valorDolaresCove = cove?.datos_mercancia?.[0]?.valor_total_dolares;
+  // TODO: Do this in a loop, instead of just checking the first mercancia
+  const valorDolaresCove = cove.mercancias[0]?.datosDeLaMercancia?.valorTotalEnDolares;
 
   // Valor factura from pedimento:
   const valorFactura = pedimento.datos_factura?.valor_moneda_factura;

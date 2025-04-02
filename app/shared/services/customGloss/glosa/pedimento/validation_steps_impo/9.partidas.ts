@@ -129,7 +129,8 @@ async function validateCoherenciaUMC(
 ) {
   // Extraer partidas con información de UMC
   const partidasUMC = partida.umc || '';
-  const claveUmcCove = cove?.datos_mercancia?.[0]?.clave_umc;
+  // TODO: Do this in a loop, instead of just checking the first mercancia
+  const claveUmcCove = cove?.mercancias[0]?.datosDeLaMercancia?.claveUMC;
   const carta318mkdown = carta318?.markdown_representation;
   const invoicemkdown = invoice?.markdown_representation;
 
@@ -274,7 +275,8 @@ async function validateDescripcionMercancia(
   const partidasDescripcionMercancia = partida.descripcion || '';
 
   // Extraer la descripción de la mercancía del COVE, factura y carta 318
-  const descripcionCove = cove?.datos_mercancia?.[0]?.descripcion_mercancia;
+  // TODO: Do this in a loop, instead of just checking the first mercancia
+  const descripcionCove = cove?.mercancias[0]?.datosDeLaMercancia.descripcionGenericaDeLaMercancia;
   const invoicemkdown = invoice?.markdown_representation;
   const carta318mkdown = carta318?.markdown_representation;
 
@@ -488,7 +490,8 @@ async function validateNumerosSerie(
   const observaciones_partida = partida.observaciones;
   const observaciones_nivel_pedimento =
     pedimento?.observaciones_a_nivel_pedimento;
-  const numerosSeriesCove = cove?.datos_mercancia?.[0]?.numeros_serie || [];
+  // TODO: Do this in a loop, instead of just checking the first mercancia
+  const numerosSeriesCove = cove?.mercancias[0]?.descripcionDeLaMercancia?.numeroDeSerie;
 
   const validation = {
     name: 'Números de serie, modelo y parte',

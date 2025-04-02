@@ -32,13 +32,13 @@ export function CoveRecipient({
         <h3 className="mb-1 font-semibold text-sm">
           Datos del Acuse de Valor{' '}
           <span className="font-bold text-zinc-700">
-            {cove.acuse_valor}
+            {cove.datosDelAcuseDeValor.idCove}
           </span>
         </h3>
       </div>
 
       {/* Recipient Data */}
-      {cove.datos_generales_destinatario && (
+      {cove.datosGeneralesDelDestinatario && (
         <div className="border-b p-2">
           <h3 className="mb-1 font-semibold text-sm">
             Datos generales del destinatario
@@ -68,7 +68,7 @@ export function CoveRecipient({
               </div>
               <div className="p-1">
                 <p className="text-xs">
-                  {cove.datos_generales_destinatario.rfc_destinatario ||
+                  {cove.datosGeneralesDelDestinatario.taxIdSinTaxIdRfcCurp ||
                     '—'}
                 </p>
               </div>
@@ -89,7 +89,7 @@ export function CoveRecipient({
 
               <div className="border-r p-1 md:col-span-1">
                 <p className="text-xs">
-                  {cove.datos_generales_destinatario.nombre_razon_social ||
+                  {cove.datosGeneralesDelDestinatario.nombresORazonSocial ||
                     '—'}
                 </p>
               </div>
@@ -103,7 +103,7 @@ export function CoveRecipient({
           </div>
 
           {/* Address */}
-          {cove.datos_generales_destinatario.domicilio && (
+          {cove.domicilioDelDestinatario && (
             <div
               className={cn(
                 'mb-1 cursor-pointer overflow-hidden rounded-md border-2',
@@ -131,14 +131,13 @@ export function CoveRecipient({
 
                 <div className="border-r p-1 md:col-span-1">
                   <p className="text-xs">
-                    {cove.datos_generales_destinatario.domicilio.calle ||
+                    {cove.domicilioDelDestinatario.calle ||
                       '—'}
                   </p>
                 </div>
                 <div className="border-r p-1">
                   <p className="text-xs">
-                    {cove.datos_generales_destinatario.domicilio
-                      .numero_exterior || '—'}
+                    {cove.domicilioDelDestinatario.numeroExterior || '—'}
                   </p>
                 </div>
                 <div className="border-r p-1">
@@ -146,8 +145,7 @@ export function CoveRecipient({
                 </div>
                 <div className="p-1">
                   <p className="text-xs">
-                    {cove.datos_generales_destinatario.domicilio
-                      .codigo_postal || '—'}
+                    {cove.domicilioDelDestinatario.codigoPostal || '—'}
                   </p>
                 </div>
               </div>
@@ -162,7 +160,7 @@ export function CoveRecipient({
 
                 <div className="border-r p-1">
                   <p className="text-xs">
-                    {cove.datos_generales_destinatario.domicilio.colonia ||
+                    {cove.domicilioDelDestinatario.colonia ||
                       '—'}
                   </p>
                 </div>
@@ -196,7 +194,7 @@ export function CoveRecipient({
 
                 <div className="p-1">
                   <p className="text-xs">
-                    {cove.datos_generales_destinatario.domicilio.pais ||
+                    {cove.domicilioDelDestinatario.pais ||
                       '—'}
                   </p>
                 </div>
@@ -207,7 +205,7 @@ export function CoveRecipient({
       )}
 
       {/* First Merchandise Item */}
-      {cove.datos_mercancia && cove.datos_mercancia.length > 0 && (
+      {cove.mercancias && cove.mercancias.length > 0 && (
         <div className="border-b p-2">
           <h3 className="mb-1 font-semibold text-sm">
             Datos de la mercancía
@@ -241,13 +239,13 @@ export function CoveRecipient({
                   {/* Second row - values for description spans two columns */}
                   <tr>
                     <td colSpan={2} className="border p-1 text-xs">
-                      {cove.datos_mercancia[0]?.descripcion_mercancia ||
+                      {cove.mercancias[0]?.datosDeLaMercancia.descripcionGenericaDeLaMercancia ||
                         '—'}
                     </td>
                     <td className="border p-1 text-xs">
-                      {cove.datos_mercancia[0]?.cantidad_umc
+                      {cove.mercancias[0]?.datosDeLaMercancia.cantidadUMC
                         ? Number(
-                            cove.datos_mercancia[0].cantidad_umc
+                            cove.mercancias[0]?.datosDeLaMercancia.cantidadUMC
                           ).toLocaleString('en-US', {
                             minimumFractionDigits: 3,
                             maximumFractionDigits: 3,
@@ -272,14 +270,14 @@ export function CoveRecipient({
                   {/* Fourth row - values for unit */}
                   <tr>
                     <td className="border p-1 text-xs">
-                      {cove.datos_mercancia[0]?.clave_umc || '—'}
+                      {cove.mercancias[0]?.datosDeLaMercancia.claveUMC || '—'}
                     </td>
                     <td className="border p-1 text-xs">
-                      {cove.datos_mercancia[0]?.tipo_moneda || '—'}
+                      {cove.mercancias[0]?.datosDeLaMercancia.tipoMoneda || '—'}
                     </td>
                     <td className="border p-1 text-xs">
-                      {cove.datos_mercancia[0]?.valor_unitario
-                        ? `$ ${cove.datos_mercancia[0].valor_unitario.toLocaleString(
+                      {cove.mercancias[0]?.datosDeLaMercancia.valorUnitario
+                        ? `$ ${cove.mercancias[0]?.datosDeLaMercancia.valorUnitario.toLocaleString(
                             'en-US',
                             {
                               minimumFractionDigits: 6,
@@ -306,8 +304,8 @@ export function CoveRecipient({
                   {/* Sixth row - values for totals */}
                   <tr>
                     <td colSpan={2} className="border p-1 text-xs">
-                      {cove.datos_mercancia[0]?.valor_total
-                        ? `$ ${cove.datos_mercancia[0].valor_total.toLocaleString(
+                      {cove.mercancias[0]?.datosDeLaMercancia.valorTotal
+                        ? `$ ${cove.mercancias[0]?.datosDeLaMercancia.valorTotal.toLocaleString(
                             'en-US',
                             {
                               minimumFractionDigits: 6,
@@ -317,8 +315,8 @@ export function CoveRecipient({
                         : '—'}
                     </td>
                     <td className="border p-1 text-xs">
-                      {cove.datos_mercancia[0]?.valor_total_dolares
-                        ? `$ ${cove.datos_mercancia[0].valor_total_dolares.toLocaleString(
+                      {cove.mercancias[0]?.datosDeLaMercancia.valorTotalEnDolares
+                        ? `$ ${cove.mercancias[0]?.datosDeLaMercancia.valorTotalEnDolares.toLocaleString(
                             'en-US',
                             {
                               minimumFractionDigits: 4,
@@ -331,8 +329,8 @@ export function CoveRecipient({
                 </tbody>
               </table>
 
-              {cove.datos_mercancia[0]?.numeros_serie &&
-                cove.datos_mercancia[0].numeros_serie.length > 0 && (
+              {cove.mercancias[0]?.descripcionDeLaMercancia?.numeroDeSerie &&
+                cove.mercancias[0]?.descripcionDeLaMercancia?.numeroDeSerie.length > 0 && (
                   <div className="mt-1 grid grid-cols-1 gap-1 border-x border-b">
                     <div className="bg-gray-100 p-1">
                       <h4 className="font-medium text-xs">
@@ -342,7 +340,7 @@ export function CoveRecipient({
 
                     <div className="p-1">
                       <p className="text-xs">
-                        {cove.datos_mercancia[0].numeros_serie.join(', ') ||
+                        {cove.mercancias[0]?.descripcionDeLaMercancia?.numeroDeSerie ||
                           '—'}
                       </p>
                     </div>
