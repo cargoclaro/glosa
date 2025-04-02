@@ -1,6 +1,6 @@
 import { openai } from '@ai-sdk/openai';
 import { generateObject } from 'ai';
-import { packingListSchema, coveSchema } from './schemas';
+import { packingListSchema, datosGeneralesSchema, mercanciaSchema } from './schemas';
 
 export async function extractAndStructurePackingList(
   fileUrl: string,
@@ -60,23 +60,43 @@ export async function extractAndStructureCove(
           fileUrl,
         },
       },
-    }
+    } 
     : {};
-  const { object } = await generateObject({
-    model: openai('o1-2024-12-17'),
-    providerOptions: {
-      openai: { reasoningEffort: 'high' },
-    },
+  const { object: datosGenerales } = await generateObject({
+    model: openai('gpt-4o-2024-11-20'),
     seed: 42,
     ...telemetryConfig,
-    schema: coveSchema,
+    schema: datosGeneralesSchema,
     messages: [
       {
         role: 'user',
         content: [
           {
             type: 'text',
-            text: 'Estructura el documento en base al esquema proporcionado.',
+            text: 'Structure the document based on the provided schema. Keep the text "exactly as is", no exceptions.',
+          },
+          {
+            type: 'file',
+            data: `${fileUrl}`,
+            mimeType: 'application/pdf',
+          },
+        ],
+      },
+    ],
+  });
+  const { object: mercancias } = await generateObject({
+    model: openai('gpt-4o-2024-11-20'),
+    seed: 42,
+    ...telemetryConfig,
+    output: 'array',
+    schema: mercanciaSchema,
+    messages: [
+      {
+        role: 'user',
+        content: [
+          {
+            type: 'text',
+            text: 'Structure the document based on the provided schema. Keep the text "exactly as is", no exceptions.',
           },
           {
             type: 'file',
@@ -88,5 +108,8 @@ export async function extractAndStructureCove(
     ],
   });
 
-  return object;
+  return {
+    ...datosGenerales,
+    mercancias,
+  };
 }

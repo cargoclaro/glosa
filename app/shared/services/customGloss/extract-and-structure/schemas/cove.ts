@@ -1,7 +1,7 @@
 import moment from 'moment';
 import { z } from 'zod';
 
-export const coveSchema = z.object({
+export const datosGeneralesSchema = z.object({
   datosDelAcuseDeValor: z.object({
     idCove: z
       .string()
@@ -74,23 +74,28 @@ export const coveSchema = z.object({
     municipio: z.string(),
     pais: z.string(),
   }),
-  mercancias: z.array(z.object({
-    datosDeLaMercancia: z.object({
-      descripcionGenericaDeLaMercancia: z.string(),
-      claveUMC: z.string(),
-      cantidadUMC: z.number(),
-      tipoMoneda: z.string(),
-      valorUnitario: z.number(),
-      valorTotal: z.number(),
-      valorTotalEnDolares: z.number(),
-    }),
-    descripcionDeLaMercancia: z.object({
-      marca: z.string(),
-      modelo: z.string(),
-      submodelo: z.string(),
-      numeroDeSerie: z.string(),
-    }).nullable().describe("Casi nunca aparece"),
-  })),
+});
+
+export const mercanciaSchema = z.object({
+  datosDeLaMercancia: z.object({
+    descripcionGenericaDeLaMercancia: z.string(),
+    claveUMC: z.string(),
+    cantidadUMC: z.number(),
+    tipoMoneda: z.string(),
+    valorUnitario: z.number(),
+    valorTotal: z.number(),
+    valorTotalEnDolares: z.number(),
+  }),
+  descripcionDeLaMercancia: z.object({
+    marca: z.string(),
+    modelo: z.string(),
+    submodelo: z.string(),
+    numeroDeSerie: z.string(),
+  }).nullable().describe("Casi nunca aparece"),
+});
+
+const coveSchema = datosGeneralesSchema.extend({
+  mercancias: z.array(mercanciaSchema),
 });
 
 export type Cove = z.infer<typeof coveSchema>;
