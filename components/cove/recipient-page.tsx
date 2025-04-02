@@ -94,10 +94,14 @@ export function CoveRecipient({
                 </p>
               </div>
               <div className="border-r p-1">
-                <p className="text-xs">—</p>
+                <p className="text-xs">
+                  {cove.datosGeneralesDelDestinatario.apellidoPaterno || '—'}
+                </p>
               </div>
               <div className="p-1">
-                <p className="text-xs">—</p>
+                <p className="text-xs">
+                  {cove.datosGeneralesDelDestinatario.apellidoMaterno || '—'}
+                </p>
               </div>
             </div>
           </div>
@@ -141,7 +145,9 @@ export function CoveRecipient({
                   </p>
                 </div>
                 <div className="border-r p-1">
-                  <p className="text-xs">—</p>
+                  <p className="text-xs">
+                    {cove.domicilioDelDestinatario.numeroInterior || '—'}
+                  </p>
                 </div>
                 <div className="p-1">
                   <p className="text-xs">
@@ -165,7 +171,9 @@ export function CoveRecipient({
                   </p>
                 </div>
                 <div className="p-1">
-                  <p className="text-xs">—</p>
+                  <p className="text-xs">
+                    {cove.domicilioDelDestinatario.localidad || '—'}
+                  </p>
                 </div>
               </div>
 
@@ -180,10 +188,10 @@ export function CoveRecipient({
                 </div>
 
                 <div className="border-r p-1">
-                  <p className="text-xs">—</p>
+                  <p className="text-xs">{cove.domicilioDelDestinatario.entidadFederativa || '—'}</p>
                 </div>
                 <div className="p-1">
-                  <p className="text-xs">—</p>
+                  <p className="text-xs">{cove.domicilioDelDestinatario.municipio || '—'}</p>
                 </div>
               </div>
 
