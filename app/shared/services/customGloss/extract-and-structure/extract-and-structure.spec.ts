@@ -147,7 +147,7 @@ describe('Extract and Structure', () => {
             "observaciones": ""
           },
           "datosGeneralesDelProveedor": {
-            "tipoDeIdentificador": "TAX_ID",
+            "tipoDeIdentificador": "TAX ID",
             "taxIdSinTaxIdRfcCurp": "561893440",
             "nombresORazonSocial": "ANDERSON AMERICA",
             "apellidoPaterno": "",
@@ -712,7 +712,7 @@ describe('Extract and Structure', () => {
             "observaciones": "SE ANEXAN DOCUMENTOS DIGITALIZADOS(FACTURA, TRADUCCION, PACKING)"
           },
           "datosGeneralesDelProveedor": {
-            "tipoDeIdentificador": "Tax ID",
+            "tipoDeIdentificador": "TAX ID",
             "taxIdSinTaxIdRfcCurp": "741465790",
             "nombresORazonSocial": "KULKONI, INC.",
             "apellidoPaterno": "",

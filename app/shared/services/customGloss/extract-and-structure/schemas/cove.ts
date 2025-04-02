@@ -35,7 +35,7 @@ export const datosGeneralesSchema = z.object({
     observaciones: z.string(),
   }),
   datosGeneralesDelProveedor: z.object({
-    tipoDeIdentificador: z.string(),
+    tipoDeIdentificador: z.enum(['TAX ID', 'RFC']),
     taxIdSinTaxIdRfcCurp: z.string(),
     nombresORazonSocial: z.string(),
     apellidoPaterno: z.string(),
@@ -53,7 +53,7 @@ export const datosGeneralesSchema = z.object({
     pais: z.string(),
   }),
   datosGeneralesDelDestinatario: z.object({
-    tipoDeIdentificador: z.string(),
+    tipoDeIdentificador: z.enum(['TAX ID', 'RFC']),
     taxIdSinTaxIdRfcCurp: z.string(),
     nombresORazonSocial: z.string(),
     apellidoPaterno: z.string(),
