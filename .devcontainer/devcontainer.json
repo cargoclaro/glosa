@@ -32,7 +32,8 @@
         "mylesmurphy.prettify-ts",
         "streetsidesoftware.code-spell-checker",
         "streetsidesoftware.code-spell-checker-spanish",
-        "biomejs.biome"
+        "biomejs.biome",
+        "vitest.explorer"
       ]
     }
   }

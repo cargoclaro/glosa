@@ -71,647 +71,698 @@ describe('Extract and Structure', () => {
   it('should correctly extract and structure cove', async () => {
     const coveFixture = [
       {
-        "fileUrl": "https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15u1EQuvyES0lPex1mXBWQop7GAjJIMsDCUZk2",
-        "expectedOutput": {
-          "acuse_valor": "COVE257E4H7I4",
-          "tipo_operacion": "Importación",
-          "relacion_facturas": "SIN RELACIÓN DE FACTURAS",
-          "numero_factura": "TS-25032025",
-          "tipo_figura": "Agente Aduanal",
-          "fecha_expedicion": new Date("2025-03-25T00:00:00.000Z"),
-          "observaciones": "SE ANEXAN DOCUMENTOS DIGITALIZADOS(FACTURA, TRADUCCION, PACKING)",
-          "datos_generales_proveedor": {
-            "tipo_identificador": "TAX ID",
-            "identificador": "20-8374868",
-            "nombre_razon_social": "IMPERIAL ALLOYS CORP",
-            "domicilio": {
-              "calle": "E 103RD STREET",
-              "numero_exterior": "1031",
-              "numero_interior": null,
-              "codigo_postal": "60628",
-              "colonia": null,
-              "localidad": null,
-              "entidad_federativa": "ILLINOIS",
-              "municipio": "CHICAGO",
-              "pais": "USA"
-            }
+        fileUrl: "https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15u1EQuvyES0lPex1mXBWQop7GAjJIMsDCUZk2",
+        expectedOutput: {
+          "datosDelAcuseDeValor": {
+            "idCove": "COVE257E4H7I4",
+            "tipoDeOperacion": "Importación",
+            "relacionDeFacturas": "SIN RELACIÓN DE FACTURAS",
+            "numeroDeFactura": "TS-25032025",
+            "tipoDeFigura": "Agente Aduanal",
+            "fechaExpedicion": new Date("2025-03-25T00:00:00.000Z"),
+            "observaciones": "SE ANEXAN DOCUMENTOS DIGITALIZADOS(FACTURA, TRADUCCION, PACKING)"
           },
-          "datos_generales_destinatario": {
-            "rfc_destinatario": "MALB640521U17",
-            "nombre_razon_social": "BERNHARD MACHTEL LANG",
-            "domicilio": {
-              "calle": "PROLONGACION PASEO DE LA LLAVE",
-              "numero_exterior": "8",
-              "numero_interior": null,
-              "codigo_postal": "76815",
-              "colonia": "SAN GIL",
-              "localidad": null,
-              "entidad_federativa": "QUERE",
-              "municipio": "SAN JUAN DEL RIO",
-              "pais": "MEX"
-            }
+          "datosGeneralesDelProveedor": {
+            "tipoDeIdentificador": "TAX ID",
+            "taxIdSinTaxIdRfcCurp": "20-8374868",
+            "nombresORazonSocial": "IMPERIAL ALLOYS CORP",
+            "apellidoPaterno": "",
+            "apellidoMaterno": ""
           },
-          "datos_mercancia": [
+          "domicilioDelProveedor": {
+            "calle": "E 103RD STREET",
+            "numeroExterior": "1031",
+            "numeroInterior": "",
+            "codigoPostal": "60628",
+            "colonia": "",
+            "localidad": "",
+            "entidadFederativa": "ILLINOIS",
+            "municipio": "CHICAGO",
+            "pais": "USA"
+          },
+          "datosGeneralesDelDestinatario": {
+            "tipoDeIdentificador": "RFC",
+            "taxIdSinTaxIdRfcCurp": "MALB640521U17",
+            "nombresORazonSocial": "BERNHARD MACHTEL LANG",
+            "apellidoPaterno": "",
+            "apellidoMaterno": ""
+          },
+          "domicilioDelDestinatario": {
+            "calle": "PROLONGACION PASEO DE LA LLAVE",
+            "numeroExterior": "8",
+            "numeroInterior": "",
+            "codigoPostal": "76815",
+            "colonia": "SAN GIL",
+            "localidad": "",
+            "entidadFederativa": "QUERE",
+            "municipio": "SAN JUAN DEL RIO",
+            "pais": "MEX"
+          },
+          "mercancias": [
             {
-              "descripcion_mercancia": "POLVO DE NICKEL",
-              "clave_umc": "EACH",
-              "cantidad_umc": 1,
-              "tipo_moneda": "US Dolar",
-              "valor_unitario": 7150,
-              "valor_total": 7150,
-              "valor_total_dolares": 7150,
-              "numeros_serie": null
+              "datosDeLaMercancia": {
+                "descripcionGenericaDeLaMercancia": "POLVO DE NICKEL",
+                "claveUMC": "EACH",
+                "cantidadUMC": 1,
+                "tipoMoneda": "US Dolar",
+                "valorUnitario": 7150,
+                "valorTotal": 7150,
+                "valorTotalEnDolares": 7150
+              },
+              "descripcionDeLaMercancia": null
             }
           ]
         }
       },
       {
-        "fileUrl": "https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15XadhI2Q3p02PnBlWqwL7baCzMhxf4mHoEDc9",
-        "expectedOutput": {
-          "acuse_valor": "COVE214J371P6",
-          "tipo_operacion": "Importación",
-          "relacion_facturas": "SIN RELACION DE FACTURAS",
-          "numero_factura": "S/N",
-          "tipo_figura": "Agente Aduanal",
-          "fecha_expedicion": new Date("2021-08-11T00:00:00.000Z"),
-          "observaciones": null,
-          "datos_generales_proveedor": {
-            "tipo_identificador": "TAX_ID",
-            "identificador": "561893440",
-            "nombre_razon_social": "ANDERSON AMERICA",
-            "domicilio": {
-              "calle": "SOUTHERN LOOP BLVD",
-              "numero_exterior": "10620",
-              "numero_interior": null,
-              "codigo_postal": "28134",
-              "colonia": null,
-              "localidad": "PINEVILLE",
-              "entidad_federativa": "PINEVILLE",
-              "municipio": "PINEVILLE",
-              "pais": "ESTADOS UNIDOS DE AMERICA"
-            }
+        fileUrl: "https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15XadhI2Q3p02PnBlWqwL7baCzMhxf4mHoEDc9",
+        expectedOutput: {
+          "datosDelAcuseDeValor": {
+            "idCove": "COVE214J371P6",
+            "tipoDeOperacion": "Importación",
+            "relacionDeFacturas": "SIN RELACION DE FACTURAS",
+            "numeroDeFactura": "S/N",
+            "tipoDeFigura": "Agente Aduanal",
+            "fechaExpedicion": new Date("2021-08-11T00:00:00.000Z"),
+            "observaciones": ""
           },
-          "datos_generales_destinatario": {
-            "rfc_destinatario": "SAA200430EUA",
-            "nombre_razon_social": "SACC ASESORES ADUANEROS EN COMERCIO EXTERIOR SA DE CV",
-            "domicilio": {
-              "calle": "EBANO",
-              "numero_exterior": "42033",
-              "numero_interior": "301",
-              "codigo_postal": "B",
-              "colonia": "LOS CEDROS",
-              "localidad": "PACHUCA",
-              "entidad_federativa": "HIDALGO",
-              "municipio": "PACHUCA DE SOTO",
-              "pais": "MEXICO (ESTADOS UNIDOS MEXICANOS)"
-            }
+          "datosGeneralesDelProveedor": {
+            "tipoDeIdentificador": "TAX ID",
+            "taxIdSinTaxIdRfcCurp": "561893440",
+            "nombresORazonSocial": "ANDERSON AMERICA",
+            "apellidoPaterno": "",
+            "apellidoMaterno": ""
           },
-          "datos_mercancia": [
+          "domicilioDelProveedor": {
+            "calle": "SOUTHERN LOOP BLVD",
+            "numeroExterior": "10620",
+            "numeroInterior": "",
+            "codigoPostal": "28134",
+            "colonia": "",
+            "localidad": "PINEVILLE",
+            "entidadFederativa": "PINEVILLE",
+            "municipio": "PINEVILLE",
+            "pais": "ESTADOS UNIDOS DE AMERICA"
+          },
+          "datosGeneralesDelDestinatario": {
+            "tipoDeIdentificador": "RFC",
+            "taxIdSinTaxIdRfcCurp": "SAA200430EUA",
+            "nombresORazonSocial": "SACC ASESORES ADUANEROS EN COMERCIO EXTERIOR SA DE CV",
+            "apellidoPaterno": "",
+            "apellidoMaterno": ""
+          },
+          "domicilioDelDestinatario": {
+            "calle": "EBANO",
+            "numeroExterior": "301",
+            "numeroInterior": "B",
+            "codigoPostal": "42033",
+            "colonia": "LOS CEDROS",
+            "localidad": "PACHUCA",
+            "entidadFederativa": "HIDALGO",
+            "municipio": "PACHUCA DE SOTO",
+            "pais": "MEXICO (ESTADOS UNIDOS MEXICANOS)"
+          },
+          "mercancias": [
             {
-              "descripcion_mercancia": "PIÑON",
-              "clave_umc": "piece",
-              "cantidad_umc": 2,
-              "tipo_moneda": "US Dollar",
-              "valor_unitario": 328,
-              "valor_total": 656,
-              "valor_total_dolares": 656,
-              "numeros_serie": []
+              "datosDeLaMercancia": {
+                "descripcionGenericaDeLaMercancia": "PIÑON",
+                "claveUMC": "piece",
+                "cantidadUMC": 2,
+                "tipoMoneda": "US Dollar",
+                "valorUnitario": 328,
+                "valorTotal": 656,
+                "valorTotalEnDolares": 656
+              },
+              "descripcionDeLaMercancia": null
             },
             {
-              "descripcion_mercancia": "POLEAS",
-              "clave_umc": "piece",
-              "cantidad_umc": 2,
-              "tipo_moneda": "US Dollar",
-              "valor_unitario": 172,
-              "valor_total": 344,
-              "valor_total_dolares": 344,
-              "numeros_serie": []
+              "datosDeLaMercancia": {
+                "descripcionGenericaDeLaMercancia": "POLEAS",
+                "claveUMC": "piece",
+                "cantidadUMC": 2,
+                "tipoMoneda": "US Dollar",
+                "valorUnitario": 172,
+                "valorTotal": 344,
+                "valorTotalEnDolares": 344
+              },
+              "descripcionDeLaMercancia": null
             },
             {
-              "descripcion_mercancia": "POLEAS",
-              "clave_umc": "piece",
-              "cantidad_umc": 2,
-              "tipo_moneda": "US Dollar",
-              "valor_unitario": 80,
-              "valor_total": 160,
-              "valor_total_dolares": 160,
-              "numeros_serie": []
+              "datosDeLaMercancia": {
+                "descripcionGenericaDeLaMercancia": "POLEAS",
+                "claveUMC": "piece",
+                "cantidadUMC": 2,
+                "tipoMoneda": "US Dollar",
+                "valorUnitario": 80,
+                "valorTotal": 160,
+                "valorTotalEnDolares": 160
+              },
+              "descripcionDeLaMercancia": null
             },
             {
-              "descripcion_mercancia": "POLEAS",
-              "clave_umc": "piece",
-              "cantidad_umc": 2,
-              "tipo_moneda": "US Dollar",
-              "valor_unitario": 140,
-              "valor_total": 280,
-              "valor_total_dolares": 280,
-              "numeros_serie": []
+              "datosDeLaMercancia": {
+                "descripcionGenericaDeLaMercancia": "POLEAS",
+                "claveUMC": "piece",
+                "cantidadUMC": 2,
+                "tipoMoneda": "US Dollar",
+                "valorUnitario": 140,
+                "valorTotal": 280,
+                "valorTotalEnDolares": 280
+              },
+              "descripcionDeLaMercancia": null
             },
             {
-              "descripcion_mercancia": "POLEAS",
-              "clave_umc": "piece",
-              "cantidad_umc": 2,
-              "tipo_moneda": "US Dollar",
-              "valor_unitario": 115,
-              "valor_total": 230,
-              "valor_total_dolares": 230,
-              "numeros_serie": []
+              "datosDeLaMercancia": {
+                "descripcionGenericaDeLaMercancia": "POLEAS",
+                "claveUMC": "piece",
+                "cantidadUMC": 2,
+                "tipoMoneda": "US Dollar",
+                "valorUnitario": 115,
+                "valorTotal": 230,
+                "valorTotalEnDolares": 230
+              },
+              "descripcionDeLaMercancia": null
             },
             {
-              "descripcion_mercancia": "CHUMACERA",
-              "clave_umc": "piece",
-              "cantidad_umc": 2,
-              "tipo_moneda": "US Dollar",
-              "valor_unitario": 200,
-              "valor_total": 400,
-              "valor_total_dolares": 400,
-              "numeros_serie": []
+              "datosDeLaMercancia": {
+                "descripcionGenericaDeLaMercancia": "CHUMACERA",
+                "claveUMC": "piece",
+                "cantidadUMC": 2,
+                "tipoMoneda": "US Dollar",
+                "valorUnitario": 200,
+                "valorTotal": 400,
+                "valorTotalEnDolares": 400
+              },
+              "descripcionDeLaMercancia": null
             },
             {
-              "descripcion_mercancia": "PARTE PARA SIERRA",
-              "clave_umc": "piece",
-              "cantidad_umc": 1,
-              "tipo_moneda": "US Dollar",
-              "valor_unitario": 310,
-              "valor_total": 310,
-              "valor_total_dolares": 310,
-              "numeros_serie": []
+              "datosDeLaMercancia": {
+                "descripcionGenericaDeLaMercancia": "PARTE PARA SIERRA",
+                "claveUMC": "piece",
+                "cantidadUMC": 1,
+                "tipoMoneda": "US Dollar",
+                "valorUnitario": 310,
+                "valorTotal": 310,
+                "valorTotalEnDolares": 310
+              },
+              "descripcionDeLaMercancia": null
             }
           ]
-        }
+        },
       },
       {
-        "fileUrl": "https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15HyVqAoWCjnmTGoQ3c9SyIxeudvRq4iEBXMF7",
-        "expectedOutput": {
-          "acuse_valor": "COVE2477XYCQ5",
-          "tipo_operacion": "Importación",
-          "relacion_facturas": "SIN RELACIÓN DE FACTURAS",
-          "numero_factura": "442073",
-          "tipo_figura": "Agente Aduanal",
-          "fecha_expedicion": new Date("2024-11-22T00:00:00.000Z"),
-          "observaciones": null,
-          "datos_generales_proveedor": {
-            "tipo_identificador": "TAX ID",
-            "identificador": "SN",
-            "nombre_razon_social": "PIROBLOC",
-            "domicilio": {
-              "calle": "POL. SANTIGA C. BLANQUERS",
-              "numero_exterior": "2",
-              "numero_interior": null,
-              "codigo_postal": "08130",
-              "colonia": null,
-              "localidad": null,
-              "entidad_federativa": "BARCELONA",
-              "municipio": "STA. PERPETUA MOGODA",
-              "pais": "ESP"
-            }
+        fileUrl: "https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15HyVqAoWCjnmTGoQ3c9SyIxeudvRq4iEBXMF7",
+        expectedOutput: {
+          "datosDelAcuseDeValor": {
+            "idCove": "COVE2477XYCQ5",
+            "tipoDeOperacion": "Importación",
+            "relacionDeFacturas": "SIN RELACIÓN DE FACTURAS",
+            "numeroDeFactura": "442073",
+            "tipoDeFigura": "Agente Aduanal",
+            "fechaExpedicion": new Date("2024-11-22T00:00:00.000Z"),
+            "observaciones": ""
           },
-          "datos_generales_destinatario": {
-            "rfc_destinatario": "MFM030526RW7",
-            "nombre_razon_social": "MISSION FOODS MEXICO, S. DE R.L. DE C.V.",
-            "domicilio": {
-              "calle": "AV. PROF. HUMBERTO RAMOS LOZANO",
-              "numero_exterior": "882",
-              "numero_interior": "S/N",
-              "codigo_postal": "66610",
-              "colonia": null,
-              "localidad": null,
-              "entidad_federativa": "NUEVO LEON",
-              "municipio": "APODACA",
-              "pais": "MEX"
-            }
+          "datosGeneralesDelProveedor": {
+            "tipoDeIdentificador": "TAX ID",
+            "taxIdSinTaxIdRfcCurp": "SN",
+            "nombresORazonSocial": "PIROBLOC",
+            "apellidoPaterno": "",
+            "apellidoMaterno": ""
           },
-          "datos_mercancia": [
+          "domicilioDelProveedor": {
+            "calle": "POL. SANTIGA C. BLANQUERS",
+            "numeroExterior": "2",
+            "numeroInterior": "",
+            "codigoPostal": "08130",
+            "colonia": "",
+            "localidad": "",
+            "entidadFederativa": "BARCELONA",
+            "municipio": "STA. PERPETUA MOGODA",
+            "pais": "ESP"
+          },
+          "datosGeneralesDelDestinatario": {
+            "tipoDeIdentificador": "RFC",
+            "taxIdSinTaxIdRfcCurp": "MFM030526RW7",
+            "nombresORazonSocial": "MISSION FOODS MEXICO, S. DE R.L. DE C.V.",
+            "apellidoPaterno": "",
+            "apellidoMaterno": ""
+          },
+          "domicilioDelDestinatario": {
+            "calle": "AV. PROF. HUMBERTO RAMOS LOZANO",
+            "numeroExterior": "882",
+            "numeroInterior": "S/N",
+            "codigoPostal": "66610",
+            "colonia": "",
+            "localidad": "",
+            "entidadFederativa": "NUEVO LEON",
+            "municipio": "APODACA",
+            "pais": "MEX"
+          },
+          "mercancias": [
             {
-              "descripcion_mercancia": "PRESOSTATO",
-              "clave_umc": "PIECE",
-              "cantidad_umc": 1,
-              "tipo_moneda": "EUR",
-              "valor_unitario": 83,
-              "valor_total": 83,
-              "valor_total_dolares": 86.32,
-              "numeros_serie": []
+              "datosDeLaMercancia": {
+                "descripcionGenericaDeLaMercancia": "PRESOSTATO",
+                "claveUMC": "PIECE",
+                "cantidadUMC": 1,
+                "tipoMoneda": "EUR",
+                "valorUnitario": 83,
+                "valorTotal": 83,
+                "valorTotalEnDolares": 86.32
+              },
+              "descripcionDeLaMercancia": null
             },
             {
-              "descripcion_mercancia": "TUBO DE PLASTICO",
-              "clave_umc": "PIECE",
-              "cantidad_umc": 1,
-              "tipo_moneda": "EUR",
-              "valor_unitario": 5,
-              "valor_total": 5,
-              "valor_total_dolares": 5.2,
-              "numeros_serie": []
+              "datosDeLaMercancia": {
+                "descripcionGenericaDeLaMercancia": "TUBO DE PLASTICO",
+                "claveUMC": "PIECE",
+                "cantidadUMC": 1,
+                "tipoMoneda": "EUR",
+                "valorUnitario": 5,
+                "valorTotal": 5,
+                "valorTotalEnDolares": 5.2
+              },
+              "descripcionDeLaMercancia": null
             },
             {
-              "descripcion_mercancia": "CABLES ELECTRICOS CON PIEZAS DE CONEXION",
-              "clave_umc": "PIECE",
-              "cantidad_umc": 3,
-              "tipo_moneda": "EUR",
-              "valor_unitario": 10.95,
-              "valor_total": 32.88,
-              "valor_total_dolares": 34.2,
-              "numeros_serie": []
+              "datosDeLaMercancia": {
+                "descripcionGenericaDeLaMercancia": "CABLES ELECTRICOS CON PIEZAS DE CONEXION",
+                "claveUMC": "PIECE",
+                "cantidadUMC": 3,
+                "tipoMoneda": "EUR",
+                "valorUnitario": 10.95,
+                "valorTotal": 32.88,
+                "valorTotalEnDolares": 34.2
+              },
+              "descripcionDeLaMercancia": null
             },
             {
-              "descripcion_mercancia": "JUNTA",
-              "clave_umc": "PIECE",
-              "cantidad_umc": 1,
-              "tipo_moneda": "EUR",
-              "valor_unitario": 9.86,
-              "valor_total": 9.86,
-              "valor_total_dolares": 10.25,
-              "numeros_serie": []
+              "datosDeLaMercancia": {
+                "descripcionGenericaDeLaMercancia": "JUNTA",
+                "claveUMC": "PIECE",
+                "cantidadUMC": 1,
+                "tipoMoneda": "EUR",
+                "valorUnitario": 9.86,
+                "valorTotal": 9.86,
+                "valorTotalEnDolares": 10.25
+              },
+              "descripcionDeLaMercancia": null
             },
             {
-              "descripcion_mercancia": "JUNTA",
-              "clave_umc": "PIECE",
-              "cantidad_umc": 1,
-              "tipo_moneda": "EUR",
-              "valor_unitario": 3.06,
-              "valor_total": 3.06,
-              "valor_total_dolares": 3.18,
-              "numeros_serie": []
+              "datosDeLaMercancia": {
+                "descripcionGenericaDeLaMercancia": "JUNTA",
+                "claveUMC": "PIECE",
+                "cantidadUMC": 1,
+                "tipoMoneda": "EUR",
+                "valorUnitario": 3.06,
+                "valorTotal": 3.06,
+                "valorTotalEnDolares": 3.18
+              },
+              "descripcionDeLaMercancia": null
             },
             {
-              "descripcion_mercancia": "RODAMIENTOS",
-              "clave_umc": "PIECE",
-              "cantidad_umc": 2,
-              "tipo_moneda": "EUR",
-              "valor_unitario": 27.18,
-              "valor_total": 54.36,
-              "valor_total_dolares": 56.53,
-              "numeros_serie": []
+              "datosDeLaMercancia": {
+                "descripcionGenericaDeLaMercancia": "RODAMIENTOS",
+                "claveUMC": "PIECE",
+                "cantidadUMC": 2,
+                "tipoMoneda": "EUR",
+                "valorUnitario": 27.18,
+                "valorTotal": 54.36,
+                "valorTotalEnDolares": 56.53
+              },
+              "descripcionDeLaMercancia": null
             },
             {
-              "descripcion_mercancia": "ACOPLAMIENTO",
-              "clave_umc": "PIECE",
-              "cantidad_umc": 1,
-              "tipo_moneda": "EUR",
-              "valor_unitario": 272.21,
-              "valor_total": 272.21,
-              "valor_total_dolares": 283.1,
-              "numeros_serie": []
+              "datosDeLaMercancia": {
+                "descripcionGenericaDeLaMercancia": "ACOPLAMIENTO",
+                "claveUMC": "PIECE",
+                "cantidadUMC": 1,
+                "tipoMoneda": "EUR",
+                "valorUnitario": 272.21,
+                "valorTotal": 272.21,
+                "valorTotalEnDolares": 283.1
+              },
+              "descripcionDeLaMercancia": null
             },
             {
-              "descripcion_mercancia": "PARTES PARA BOMBAS ELEVADORES DE LIQUIDOS",
-              "clave_umc": "PIECE",
-              "cantidad_umc": 1,
-              "tipo_moneda": "EUR",
-              "valor_unitario": 2054.53,
-              "valor_total": 2054.53,
-              "valor_total_dolares": 2136.71,
-              "numeros_serie": []
+              "datosDeLaMercancia": {
+                "descripcionGenericaDeLaMercancia": "PARTES PARA BOMBAS ELEVADORES DE LIQUIDOS",
+                "claveUMC": "PIECE",
+                "cantidadUMC": 1,
+                "tipoMoneda": "EUR",
+                "valorUnitario": 2054.53,
+                "valorTotal": 2054.53,
+                "valorTotalEnDolares": 2136.71
+              },
+              "descripcionDeLaMercancia": null
             },
             {
-              "descripcion_mercancia": "JUNTA",
-              "clave_umc": "PIECE",
-              "cantidad_umc": 2,
-              "tipo_moneda": "EUR",
-              "valor_unitario": 189.58,
-              "valor_total": 379.16,
-              "valor_total_dolares": 394.33,
-              "numeros_serie": []
+              "datosDeLaMercancia": {
+                "descripcionGenericaDeLaMercancia": "JUNTA",
+                "claveUMC": "PIECE",
+                "cantidadUMC": 2,
+                "tipoMoneda": "EUR",
+                "valorUnitario": 189.58,
+                "valorTotal": 379.16,
+                "valorTotalEnDolares": 394.33
+              },
+              "descripcionDeLaMercancia": null
             },
             {
-              "descripcion_mercancia": "JUNTA",
-              "clave_umc": "PIECE",
-              "cantidad_umc": 2,
-              "tipo_moneda": "EUR",
-              "valor_unitario": 189.77,
-              "valor_total": 379.58,
-              "valor_total_dolares": 394.76,
-              "numeros_serie": []
+              "datosDeLaMercancia": {
+                "descripcionGenericaDeLaMercancia": "JUNTA",
+                "claveUMC": "PIECE",
+                "cantidadUMC": 2,
+                "tipoMoneda": "EUR",
+                "valorUnitario": 189.77,
+                "valorTotal": 379.58,
+                "valorTotalEnDolares": 394.76
+              },
+              "descripcionDeLaMercancia": null
             },
             {
-              "descripcion_mercancia": "QUEMADOR DE GAS",
-              "clave_umc": "PIECE",
-              "cantidad_umc": 1,
-              "tipo_moneda": "EUR",
-              "valor_unitario": 7375.8,
-              "valor_total": 7375.8,
-              "valor_total_dolares": 7670.83,
-              "numeros_serie": []
+              "datosDeLaMercancia": {
+                "descripcionGenericaDeLaMercancia": "QUEMADOR DE GAS",
+                "claveUMC": "PIECE",
+                "cantidadUMC": 1,
+                "tipoMoneda": "EUR",
+                "valorUnitario": 7375.8,
+                "valorTotal": 7375.8,
+                "valorTotalEnDolares": 7670.83
+              },
+              "descripcionDeLaMercancia": null
             },
             {
-              "descripcion_mercancia": "QUEMADOR DE GAS",
-              "clave_umc": "PIECE",
-              "cantidad_umc": 1,
-              "tipo_moneda": "EUR",
-              "valor_unitario": 14033.63,
-              "valor_total": 14033.63,
-              "valor_total_dolares": 14594.98,
-              "numeros_serie": []
+              "datosDeLaMercancia": {
+                "descripcionGenericaDeLaMercancia": "QUEMADOR DE GAS",
+                "claveUMC": "PIECE",
+                "cantidadUMC": 1,
+                "tipoMoneda": "EUR",
+                "valorUnitario": 14033.63,
+                "valorTotal": 14033.63,
+                "valorTotalEnDolares": 14594.98
+              },
+              "descripcionDeLaMercancia": null
             },
             {
-              "descripcion_mercancia": "ACEITE PARAFINICO",
-              "clave_umc": "PIECE",
-              "cantidad_umc": 1,
-              "tipo_moneda": "EUR",
-              "valor_unitario": 1808.56,
-              "valor_total": 1808.56,
-              "valor_total_dolares": 1880.9,
-              "numeros_serie": []
+              "datosDeLaMercancia": {
+                "descripcionGenericaDeLaMercancia": "ACEITE PARAFINICO",
+                "claveUMC": "PIECE",
+                "cantidadUMC": 1,
+                "tipoMoneda": "EUR",
+                "valorUnitario": 1808.56,
+                "valorTotal": 1808.56,
+                "valorTotalEnDolares": 1880.9
+              },
+              "descripcionDeLaMercancia": null
             },
             {
-              "descripcion_mercancia": "ACEITE PARAFINICO",
-              "clave_umc": "PIECE",
-              "cantidad_umc": 3,
-              "tipo_moneda": "EUR",
-              "valor_unitario": 1808.56,
-              "valor_total": 5425.68,
-              "valor_total_dolares": 5642.71,
-              "numeros_serie": []
+              "datosDeLaMercancia": {
+                "descripcionGenericaDeLaMercancia": "ACEITE PARAFINICO",
+                "claveUMC": "PIECE",
+                "cantidadUMC": 3,
+                "tipoMoneda": "EUR",
+                "valorUnitario": 1808.56,
+                "valorTotal": 5425.68,
+                "valorTotalEnDolares": 5642.71
+              },
+              "descripcionDeLaMercancia": null
             }
           ]
-        }
+        },
       },
       {
-        "fileUrl": "https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15Fn3r61gpw0UmYxiesJuoAgDqlBLkHvzhTSZ3",
-        "expectedOutput": {
-          "acuse_valor": "COVE2366LNKC3",
-          "tipo_operacion": "IMPORTACIÓN",
-          "relacion_facturas": "SIN RELACIÓN DE FACTURAS",
-          "numero_factura": "BP230828MXG064",
-          "tipo_figura": "AGENTE ADUANAL",
-          "fecha_expedicion": new Date("2023-08-28T00:00:00.000Z"),
-          "observaciones": "FLETES AEREO: 500.00 USD",
-          "datos_generales_proveedor": {
-            "tipo_identificador": "TAX ID",
-            "identificador": "91370306080896344J",
-            "nombre_razon_social": "ZIBO BAODA AUTO PARTS LOGISTICS CO., LTD",
-            "domicilio": {
-              "calle": "ZHOULONG ROAD",
-              "numero_exterior": "7888",
-              "numero_interior": null,
-              "codigo_postal": "255000",
-              "colonia": "ZHOUCUN",
-              "localidad": "ZIBO",
-              "entidad_federativa": "SHANDONG",
-              "municipio": "NANJIAO",
-              "pais": "CHINA (REPUBLICA POPULAR)"
-            }
+        fileUrl: "https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15Fn3r61gpw0UmYxiesJuoAgDqlBLkHvzhTSZ3",
+        expectedOutput: {
+          "datosDelAcuseDeValor": {
+            "idCove": "COVE2366LNKC3",
+            "tipoDeOperacion": "IMPORTACIÓN",
+            "relacionDeFacturas": "SIN RELACIÓN DE FACTURAS",
+            "numeroDeFactura": "BP230828MXG064",
+            "tipoDeFigura": "AGENTE ADUANAL",
+            "fechaExpedicion": new Date("2023-08-28T00:00:00.000Z"),
+            "observaciones": "FLETES AEREO: 500.00 USD"
           },
-          "datos_generales_destinatario": {
-            "rfc_destinatario": "FCM211118K81",
-            "nombre_razon_social": "FAW CAMION MEXICO SA DE CV",
-            "domicilio": {
-              "calle": "CANTU",
-              "numero_exterior": "9",
-              "numero_interior": "103",
-              "codigo_postal": "11590",
-              "colonia": "ANZURES",
-              "localidad": null,
-              "entidad_federativa": "CIUDAD DE MÉXICO",
-              "municipio": "MIGUEL HIDALGO",
-              "pais": "MEXICO (ESTADOS UNIDOS MEXICANOS)"
-            }
+          "datosGeneralesDelProveedor": {
+            "tipoDeIdentificador": "TAX ID",
+            "taxIdSinTaxIdRfcCurp": "91370306080896344J",
+            "nombresORazonSocial": "ZIBO BAODA AUTO PARTS LOGISTICS CO., LTD",
+            "apellidoPaterno": "",
+            "apellidoMaterno": ""
           },
-          "datos_mercancia": [
+          "domicilioDelProveedor": {
+            "calle": "ZHOULONG ROAD",
+            "numeroExterior": "7888",
+            "numeroInterior": "",
+            "codigoPostal": "255000",
+            "colonia": "ZHOUCUN",
+            "localidad": "ZIBO",
+            "entidadFederativa": "SHANDONG",
+            "municipio": "NANJIAO",
+            "pais": "CHINA (REPUBLICA POPULAR)"
+          },
+          "datosGeneralesDelDestinatario": {
+            "tipoDeIdentificador": "RFC",
+            "taxIdSinTaxIdRfcCurp": "FCM211118K81",
+            "nombresORazonSocial": "FAW CAMION MEXICO SA DE CV",
+            "apellidoPaterno": "",
+            "apellidoMaterno": ""
+          },
+          "domicilioDelDestinatario": {
+            "calle": "CANTU",
+            "numeroExterior": "9",
+            "numeroInterior": "103",
+            "codigoPostal": "11590",
+            "colonia": "ANZURES",
+            "localidad": "",
+            "entidadFederativa": "CIUDAD DE MÉXICO",
+            "municipio": "MIGUEL HIDALGO",
+            "pais": "MEXICO (ESTADOS UNIDOS MEXICANOS)"
+          },
+          "mercancias": [
             {
-              "descripcion_mercancia": "FILTROS",
-              "clave_umc": "PIECE",
-              "cantidad_umc": 342,
-              "tipo_moneda": "USD Dolar",
-              "valor_unitario": 41.48,
-              "valor_total": 14186.16,
-              "valor_total_dolares": 14186.16,
-              "numeros_serie": [
-                "612640130438"
-              ]
+              "datosDeLaMercancia": {
+                "descripcionGenericaDeLaMercancia": "FILTROS",
+                "claveUMC": "PIECE",
+                "cantidadUMC": 342,
+                "tipoMoneda": "USD Dolar",
+                "valorUnitario": 41.48,
+                "valorTotal": 14186.16,
+                "valorTotalEnDolares": 14186.16
+              },
+              "descripcionDeLaMercancia": {
+                "marca": "",
+                "modelo": "612640130438",
+                "submodelo": "",
+                "numeroDeSerie": ""
+              }
             }
           ]
-        }
+        },
       },
       {
-        "fileUrl": "https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15IDryccR2Okng1Id8jPzMFLQmSoW4e9tbTJcr",
-        "expectedOutput": {
-          "acuse_valor": "COVE246Z26KR8",
-          "tipo_operacion": "Importación",
-          "relacion_facturas": "SIN RELACIÓN DE FACTURAS",
-          "numero_factura": "12783",
-          "tipo_figura": "Agente Aduanal",
-          "fecha_expedicion": new Date("2024-08-07T00:00:00.000Z"),
-          "observaciones": "SE ANEXAN DOCUMENTOS DIGITALIZADOS(FACTURA, TRADUCCION, PACKING)",
-          "datos_generales_proveedor": {
-            "tipo_identificador": "TAX ID",
-            "identificador": "82-5221873",
-            "nombre_razon_social": "GROUP CARGO LIFT INC.",
-            "domicilio": {
-              "calle": "KUYKENDAHL RD E. 500",
-              "numero_exterior": "25420",
-              "numero_interior": null,
-              "codigo_postal": "77375",
-              "colonia": null,
-              "localidad": null,
-              "entidad_federativa": "TX",
-              "municipio": "THE WOODLANDS",
-              "pais": "USA"
-            }
+        fileUrl: "https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15IDryccR2Okng1Id8jPzMFLQmSoW4e9tbTJcr",
+        expectedOutput: {
+          "datosDelAcuseDeValor": {
+            "idCove": "COVE246Z26KR8",
+            "tipoDeOperacion": "Importación",
+            "relacionDeFacturas": "SIN RELACIÓN DE FACTURAS",
+            "numeroDeFactura": "12783",
+            "tipoDeFigura": "Agente Aduanal",
+            "fechaExpedicion": new Date("2024-08-07T00:00:00.000Z"),
+            "observaciones": "SE ANEXAN DOCUMENTOS DIGITALIZADOS(FACTURA, TRADUCCION, PACKING)"
           },
-          "datos_generales_destinatario": {
-            "rfc_destinatario": "CLI080312JG1",
-            "nombre_razon_social": "CARGO LIFT, S.A. DE C.V.",
-            "domicilio": {
-              "calle": "TEZOZOMOC",
-              "numero_exterior": "94",
-              "numero_interior": null,
-              "codigo_postal": "02700",
-              "colonia": "SAN MIGUEL AMANTLA",
-              "localidad": null,
-              "entidad_federativa": "CDMX",
-              "municipio": "AZCAPOTZALCO",
-              "pais": "MEX"
-            }
+          "datosGeneralesDelProveedor": {
+            "tipoDeIdentificador": "TAX ID",
+            "taxIdSinTaxIdRfcCurp": "82-5221873",
+            "nombresORazonSocial": "GROUP CARGO LIFT INC.",
+            "apellidoPaterno": "",
+            "apellidoMaterno": ""
           },
-          "datos_mercancia": [
+          "domicilioDelProveedor": {
+            "calle": "KUYKENDAHL RD E. 500",
+            "numeroExterior": "25420",
+            "numeroInterior": "",
+            "codigoPostal": "77375",
+            "colonia": "",
+            "localidad": "",
+            "entidadFederativa": "TX",
+            "municipio": "THE WOODLANDS",
+            "pais": "USA"
+          },
+          "datosGeneralesDelDestinatario": {
+            "tipoDeIdentificador": "RFC",
+            "taxIdSinTaxIdRfcCurp": "CLI080312JG1",
+            "nombresORazonSocial": "CARGO LIFT, S.A. DE C.V.",
+            "apellidoPaterno": "",
+            "apellidoMaterno": ""
+          },
+          "domicilioDelDestinatario": {
+            "calle": "TEZOZOMOC",
+            "numeroExterior": "94",
+            "numeroInterior": "",
+            "codigoPostal": "02700",
+            "colonia": "SAN MIGUEL AMANTLA",
+            "localidad": "",
+            "entidadFederativa": "CDMX",
+            "municipio": "AZCAPOTZALCO",
+            "pais": "MEX"
+          },
+          "mercancias": [
             {
-              "descripcion_mercancia": "CABLE DE ACERO NO ROTATORIO",
-              "clave_umc": "LINEAR METRE",
-              "cantidad_umc": 1204,
-              "tipo_moneda": "US Dolar",
-              "valor_unitario": 3.660606,
-              "valor_total": 4407.37,
-              "valor_total_dolares": 4407.37,
-              "numeros_serie": null
+              "datosDeLaMercancia": {
+                "descripcionGenericaDeLaMercancia": "CABLE DE ACERO NO ROTATORIO",
+                "claveUMC": "LINEAR METRE",
+                "cantidadUMC": 1204,
+                "tipoMoneda": "US Dolar",
+                "valorUnitario": 3.660606,
+                "valorTotal": 4407.37,
+                "valorTotalEnDolares": 4407.37
+              },
+              "descripcionDeLaMercancia": null
             }
           ]
-        }
+        },
       },
       {
-        "fileUrl": "https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15zkxGeSgutyXdVR43qhBYaSHWfrT9MLbDjkNA",
-        "expectedOutput": {
-          "acuse_valor": "COVE24762H063",
-          "tipo_operacion": "Importación",
-          "relacion_facturas": "SIN RELACIÓN DE FACTURAS",
-          "numero_factura": "2413575",
-          "tipo_figura": "Agente Aduanal",
-          "fecha_expedicion": new Date("2024-11-13T00:00:00.000Z"),
-          "observaciones": "SE ANEXAN DOCUMENTOS DIGITALIZADOS(FACTURA, TRADUCCION, PACKING)",
-          "datos_generales_proveedor": {
-            "tipo_identificador": "TAX ID",
-            "identificador": "42-0886654",
-            "nombre_razon_social": "KEMIN FOOD TECNOLOGIES, INC",
-            "domicilio": {
-              "calle": "MAURY STREET",
-              "numero_exterior": "2100",
-              "numero_interior": null,
-              "codigo_postal": "50306",
-              "colonia": null,
-              "localidad": "DES MOINES",
-              "entidad_federativa": "IOWA",
-              "municipio": null,
-              "pais": "USA"
-            }
+        fileUrl: "https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15zkxGeSgutyXdVR43qhBYaSHWfrT9MLbDjkNA",
+        expectedOutput: {
+          "datosDelAcuseDeValor": {
+            "idCove": "COVE24762H063",
+            "tipoDeOperacion": "Importación",
+            "relacionDeFacturas": "SIN RELACIÓN DE FACTURAS",
+            "numeroDeFactura": "2413575",
+            "tipoDeFigura": "Agente Aduanal",
+            "fechaExpedicion": new Date("2024-11-13T00:00:00.000Z"),
+            "observaciones": "SE ANEXAN DOCUMENTOS DIGITALIZADOS(FACTURA, TRADUCCION, PACKING)"
           },
-          "datos_generales_destinatario": {
-            "rfc_destinatario": "MAV940325CE8",
-            "nombre_razon_social": "MOLINOS AZTECA DE VERACRUZ SA DE CV",
-            "domicilio": {
-              "calle": "CARRETERA XALAPA VERACRUZ",
-              "numero_exterior": "KM 94",
-              "numero_interior": null,
-              "codigo_postal": "91697",
-              "colonia": "LOMA DE TEJERIA",
-              "localidad": null,
-              "entidad_federativa": "VERACRUZ",
-              "municipio": "VERACRUZ",
-              "pais": "MEX"
-            }
+          "datosGeneralesDelProveedor": {
+            "tipoDeIdentificador": "TAX ID",
+            "taxIdSinTaxIdRfcCurp": "42-0886654",
+            "nombresORazonSocial": "KEMIN FOOD TECNOLOGIES, INC",
+            "apellidoPaterno": "",
+            "apellidoMaterno": ""
           },
-          "datos_mercancia": [
+          "domicilioDelProveedor": {
+            "calle": "MAURY STREET",
+            "numeroExterior": "2100",
+            "numeroInterior": "",
+            "codigoPostal": "50306",
+            "colonia": "",
+            "localidad": "",
+            "entidadFederativa": "IOWA",
+            "municipio": "DES MOINES",
+            "pais": "USA"
+          },
+          "datosGeneralesDelDestinatario": {
+            "tipoDeIdentificador": "RFC",
+            "taxIdSinTaxIdRfcCurp": "MAV940325CE8",
+            "nombresORazonSocial": "MOLINOS AZTECA DE VERACRUZ SA DE CV",
+            "apellidoPaterno": "",
+            "apellidoMaterno": ""
+          },
+          "domicilioDelDestinatario": {
+            "calle": "CARRETERA XALAPA VERACRUZ",
+            "numeroExterior": "KM 94",
+            "numeroInterior": "",
+            "codigoPostal": "91697",
+            "colonia": "LOMA DE TEJERIA",
+            "localidad": "",
+            "entidadFederativa": "VERACRUZ",
+            "municipio": "VERACRUZ",
+            "pais": "MEX"
+          },
+          "mercancias": [
             {
-              "descripcion_mercancia": "CONSERVADOR GRADO ALIMENTICIO PARA TORTILLAS DE MAIZ",
-              "clave_umc": "POUND",
-              "cantidad_umc": 13227.6,
-              "tipo_moneda": "US Dolar",
-              "valor_unitario": 1.98,
-              "valor_total": 26190.65,
-              "valor_total_dolares": 26190.65,
-              "numeros_serie": null
+              "datosDeLaMercancia": {
+                "descripcionGenericaDeLaMercancia": "CONSERVADOR GRADO ALIMENTICIO PARA TORTILLAS DE MAIZ",
+                "claveUMC": "POUND",
+                "cantidadUMC": 13227.6,
+                "tipoMoneda": "US Dolar",
+                "valorUnitario": 1.98,
+                "valorTotal": 26190.65,
+                "valorTotalEnDolares": 26190.65
+              },
+              "descripcionDeLaMercancia": null
             },
             {
-              "descripcion_mercancia": "RECIPIENTES DE PLASTICO",
-              "clave_umc": "EACH",
-              "cantidad_umc": 6,
-              "tipo_moneda": "US Dolar",
-              "valor_unitario": 238.49,
-              "valor_total": 1430.94,
-              "valor_total_dolares": 1430.94,
-              "numeros_serie": null
+              "datosDeLaMercancia": {
+                "descripcionGenericaDeLaMercancia": "RECIPIENTES DE PLASTICO",
+                "claveUMC": "EACH",
+                "cantidadUMC": 6,
+                "tipoMoneda": "US Dolar",
+                "valorUnitario": 238.49,
+                "valorTotal": 1430.94,
+                "valorTotalEnDolares": 1430.94
+              },
+              "descripcionDeLaMercancia": null
             }
           ]
-        }
+        },
       },
       {
-        "fileUrl": "https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15MgmsGr907FYSfgKGA9JUX3rIQ2amz4bTDeNj",
-        "expectedOutput": {
-          "acuse_valor": "COVE246XNYVY7",
-          "tipo_operacion": "Importación",
-          "relacion_facturas": "SIN RELACIÓN DE FACTURAS",
-          "numero_factura": "420120",
-          "tipo_figura": "Agente Aduanal",
-          "fecha_expedicion": new Date("2024-07-24T00:00:00.000Z"),
-          "observaciones": "SE ANEXAN DOCUMENTOS DIGITALIZADOS(FACTURA, TRADUCCION, PACKING)",
-          "datos_generales_proveedor": {
-            "tipo_identificador": "TAX ID",
-            "identificador": "741465790",
-            "nombre_razon_social": "KULKONI, INC.",
-            "domicilio": {
-              "calle": "GARDEN OAKS",
-              "numero_exterior": "502",
-              "numero_interior": null,
-              "codigo_postal": "77018",
-              "colonia": null,
-              "localidad": null,
-              "entidad_federativa": "TX",
-              "municipio": "HOUSTON",
-              "pais": "USA"
-            }
+        fileUrl: "https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15MgmsGr907FYSfgKGA9JUX3rIQ2amz4bTDeNj",
+        expectedOutput: {
+          "datosDelAcuseDeValor": {
+            "idCove": "COVE246XNYVY7",
+            "tipoDeOperacion": "Importación",
+            "relacionDeFacturas": "SIN RELACIÓN DE FACTURAS",
+            "numeroDeFactura": "420120",
+            "tipoDeFigura": "Agente Aduanal",
+            "fechaExpedicion": new Date("2024-07-24T00:00:00.000Z"),
+            "observaciones": "SE ANEXAN DOCUMENTOS DIGITALIZADOS(FACTURA, TRADUCCION, PACKING)"
           },
-          "datos_generales_destinatario": {
-            "rfc_destinatario": "SER870126EA3",
-            "nombre_razon_social": "SERVICABLES, S.A. DE C.V.",
-            "domicilio": {
-              "calle": "DR. BALMIS",
-              "numero_exterior": "91",
-              "numero_interior": "B",
-              "codigo_postal": "06720",
-              "colonia": "DOCTORES",
-              "localidad": null,
-              "entidad_federativa": "CDMX",
-              "municipio": "MEXICO",
-              "pais": "MEX"
-            }
+          "datosGeneralesDelProveedor": {
+            "tipoDeIdentificador": "TAX ID",
+            "taxIdSinTaxIdRfcCurp": "741465790",
+            "nombresORazonSocial": "KULKONI, INC.",
+            "apellidoPaterno": "",
+            "apellidoMaterno": ""
           },
-          "datos_mercancia": [
+          "domicilioDelProveedor": {
+            "calle": "GARDEN OAKS",
+            "numeroExterior": "502",
+            "numeroInterior": "",
+            "codigoPostal": "77018",
+            "colonia": "",
+            "localidad": "",
+            "entidadFederativa": "TX",
+            "municipio": "HOUSTON",
+            "pais": "USA"
+          },
+          "datosGeneralesDelDestinatario": {
+            "tipoDeIdentificador": "RFC",
+            "taxIdSinTaxIdRfcCurp": "SER870126EA3",
+            "nombresORazonSocial": "SERVICABLES, S.A. DE C.V.",
+            "apellidoPaterno": "",
+            "apellidoMaterno": ""
+          },
+          "domicilioDelDestinatario": {
+            "calle": "DR. BALMIS",
+            "numeroExterior": "91",
+            "numeroInterior": "B",
+            "codigoPostal": "06720",
+            "colonia": "DOCTORES",
+            "localidad": "",
+            "entidadFederativa": "CDMX",
+            "municipio": "MEXICO",
+            "pais": "MEX"
+          },
+          "mercancias": [
             {
-              "descripcion_mercancia": "GRAPAS",
-              "clave_umc": "EACH",
-              "cantidad_umc": 300,
-              "tipo_moneda": "US Dolar",
-              "valor_unitario": 1.1,
-              "valor_total": 330,
-              "valor_total_dolares": 330,
-              "numeros_serie": null
+              "datosDeLaMercancia": {
+                "descripcionGenericaDeLaMercancia": "GRAPAS",
+                "claveUMC": "EACH",
+                "cantidadUMC": 300,
+                "tipoMoneda": "US Dolar",
+                "valorUnitario": 1.1,
+                "valorTotal": 330,
+                "valorTotalEnDolares": 330
+              },
+              "descripcionDeLaMercancia": null
             }
           ]
-        }
+        },
       },
-      {
-        "fileUrl": "https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15AVS8DnEhI73SMs1mOVHTgc05pWuYPnbZRtyq",
-        "expectedOutput": {
-          "acuse_valor": "COVE246VWFYW6",
-          "tipo_operacion": "Importación",
-          "relacion_facturas": "SIN RELACIÓN DE FACTURAS",
-          "numero_factura": "28605",
-          "tipo_figura": "Agente Aduanal",
-          "fecha_expedicion": new Date("2024-05-31T00:00:00.000Z"),
-          "observaciones": "SE ANEXAN DOCUMENTOS DIGITALIZADOS(FACTURA, TRADUCCION, PACKING)",
-          "datos_generales_proveedor": {
-            "tipo_identificador": "TAX ID",
-            "identificador": "34-0117420",
-            "nombre_razon_social": "TEXAS OILPATCH SERVICES LLC.",
-            "domicilio": {
-              "calle": "VISTA ROAD",
-              "numero_exterior": "3515",
-              "numero_interior": null,
-              "codigo_postal": "77504",
-              "colonia": null,
-              "localidad": null,
-              "entidad_federativa": "TX",
-              "municipio": "PASADENA",
-              "pais": "USA"
-            }
-          },
-          "datos_generales_destinatario": {
-            "rfc_destinatario": "COF141010UT9",
-            "nombre_razon_social": "COMERCIALIZADORA OFFSHORE, S.A. DE C.V.",
-            "domicilio": {
-              "calle": "GALICIA",
-              "numero_exterior": "2",
-              "numero_interior": null,
-              "codigo_postal": "05039",
-              "colonia": "AHUATENCO",
-              "localidad": null,
-              "entidad_federativa": "CDMX",
-              "municipio": "CUAJIMALPA DE MORELOS",
-              "pais": "MEX"
-            }
-          },
-          "datos_mercancia": [
-            {
-              "descripcion_mercancia": "CADENA DE RODILLOS PARA TRANSMISION DE MOVIMIENTOS",
-              "clave_umc": "LINEAR FOOT",
-              "cantidad_umc": 10,
-              "tipo_moneda": "US Dolar",
-              "valor_unitario": 42.09,
-              "valor_total": 420.9,
-              "valor_total_dolares": 420.9,
-              "numeros_serie": null
-            }
-          ]
-        }
-      }
     ] as const;
     const coveResults = await Promise.all(
       coveFixture.map(async ({ fileUrl }) => {
