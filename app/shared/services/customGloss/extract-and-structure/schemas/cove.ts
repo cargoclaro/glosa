@@ -36,9 +36,7 @@ export const datosGeneralesSchema = z.object({
   }),
   datosGeneralesDelProveedor: z.object({
     tipoDeIdentificador: z.string(),
-    identificador: z
-      .string()
-      .describe("Aparece como 'Tax ID/Sin Tax ID/RFC/CURP'"),
+    taxIdSinTaxIdRfcCurp: z.string(),
     nombresORazonSocial: z.string(),
     apellidoPaterno: z.string(),
     apellidoMaterno: z.string(),
@@ -56,9 +54,7 @@ export const datosGeneralesSchema = z.object({
   }),
   datosGeneralesDelDestinatario: z.object({
     tipoDeIdentificador: z.string(),
-    identificador: z
-      .string()
-      .describe("Aparece como 'Tax ID/Sin Tax ID/RFC/CURP'"),
+    taxIdSinTaxIdRfcCurp: z.string(),
     nombresORazonSocial: z.string(),
     apellidoPaterno: z.string(),
     apellidoMaterno: z.string(),

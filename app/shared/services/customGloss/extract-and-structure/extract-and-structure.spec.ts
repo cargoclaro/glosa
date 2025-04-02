@@ -84,7 +84,7 @@ describe('Extract and Structure', () => {
           },
           "datosGeneralesDelProveedor": {
             "tipoDeIdentificador": "TAX ID",
-            "identificador": "20-8374868",
+            "taxIdSinTaxIdRfcCurp": "20-8374868",
             "nombresORazonSocial": "IMPERIAL ALLOYS CORP",
             "apellidoPaterno": "",
             "apellidoMaterno": ""
@@ -102,7 +102,7 @@ describe('Extract and Structure', () => {
           },
           "datosGeneralesDelDestinatario": {
             "tipoDeIdentificador": "RFC",
-            "identificador": "MALB640521U17",
+            "taxIdSinTaxIdRfcCurp": "MALB640521U17",
             "nombresORazonSocial": "BERNHARD MACHTEL LANG",
             "apellidoPaterno": "",
             "apellidoMaterno": ""
@@ -148,7 +148,7 @@ describe('Extract and Structure', () => {
           },
           "datosGeneralesDelProveedor": {
             "tipoDeIdentificador": "TAX_ID",
-            "identificador": "561893440",
+            "taxIdSinTaxIdRfcCurp": "561893440",
             "nombresORazonSocial": "ANDERSON AMERICA",
             "apellidoPaterno": "",
             "apellidoMaterno": ""
@@ -166,7 +166,7 @@ describe('Extract and Structure', () => {
           },
           "datosGeneralesDelDestinatario": {
             "tipoDeIdentificador": "RFC",
-            "identificador": "SAA200430EUA",
+            "taxIdSinTaxIdRfcCurp": "SAA200430EUA",
             "nombresORazonSocial": "SACC ASESORES ADUANEROS EN COMERCIO EXTERIOR SA DE CV",
             "apellidoPaterno": "",
             "apellidoMaterno": ""
@@ -284,7 +284,7 @@ describe('Extract and Structure', () => {
           },
           "datosGeneralesDelProveedor": {
             "tipoDeIdentificador": "TAX ID",
-            "identificador": "SN",
+            "taxIdSinTaxIdRfcCurp": "SN",
             "nombresORazonSocial": "PIROBLOC",
             "apellidoPaterno": "",
             "apellidoMaterno": ""
@@ -302,7 +302,7 @@ describe('Extract and Structure', () => {
           },
           "datosGeneralesDelDestinatario": {
             "tipoDeIdentificador": "RFC",
-            "identificador": "MFM030526RW7",
+            "taxIdSinTaxIdRfcCurp": "MFM030526RW7",
             "nombresORazonSocial": "MISSION FOODS MEXICO, S. DE R.L. DE C.V.",
             "apellidoPaterno": "",
             "apellidoMaterno": ""
@@ -504,7 +504,7 @@ describe('Extract and Structure', () => {
           },
           "datosGeneralesDelProveedor": {
             "tipoDeIdentificador": "TAX ID",
-            "identificador": "91370306080896344J",
+            "taxIdSinTaxIdRfcCurp": "91370306080896344J",
             "nombresORazonSocial": "ZIBO BAODA AUTO PARTS LOGISTICS CO., LTD",
             "apellidoPaterno": "",
             "apellidoMaterno": ""
@@ -522,7 +522,7 @@ describe('Extract and Structure', () => {
           },
           "datosGeneralesDelDestinatario": {
             "tipoDeIdentificador": "RFC",
-            "identificador": "FCM211118K81",
+            "taxIdSinTaxIdRfcCurp": "FCM211118K81",
             "nombresORazonSocial": "FAW CAMION MEXICO SA DE CV",
             "apellidoPaterno": "",
             "apellidoMaterno": ""
@@ -573,7 +573,7 @@ describe('Extract and Structure', () => {
           },
           "datosGeneralesDelProveedor": {
             "tipoDeIdentificador": "TAX ID",
-            "identificador": "82-5221873",
+            "taxIdSinTaxIdRfcCurp": "82-5221873",
             "nombresORazonSocial": "GROUP CARGO LIFT INC.",
             "apellidoPaterno": "",
             "apellidoMaterno": ""
@@ -591,7 +591,7 @@ describe('Extract and Structure', () => {
           },
           "datosGeneralesDelDestinatario": {
             "tipoDeIdentificador": "RFC",
-            "identificador": "CLI080312JG1",
+            "taxIdSinTaxIdRfcCurp": "CLI080312JG1",
             "nombresORazonSocial": "CARGO LIFT, S.A. DE C.V.",
             "apellidoPaterno": "",
             "apellidoMaterno": ""
@@ -637,7 +637,7 @@ describe('Extract and Structure', () => {
           },
           "datosGeneralesDelProveedor": {
             "tipoDeIdentificador": "TAX ID",
-            "identificador": "42-0886654",
+            "taxIdSinTaxIdRfcCurp": "42-0886654",
             "nombresORazonSocial": "KEMIN FOOD TECNOLOGIES, INC",
             "apellidoPaterno": "",
             "apellidoMaterno": ""
@@ -655,7 +655,7 @@ describe('Extract and Structure', () => {
           },
           "datosGeneralesDelDestinatario": {
             "tipoDeIdentificador": "RFC",
-            "identificador": "MAV940325CE8",
+            "taxIdSinTaxIdRfcCurp": "MAV940325CE8",
             "nombresORazonSocial": "MOLINOS AZTECA DE VERACRUZ SA DE CV",
             "apellidoPaterno": "",
             "apellidoMaterno": ""
@@ -713,7 +713,7 @@ describe('Extract and Structure', () => {
           },
           "datosGeneralesDelProveedor": {
             "tipoDeIdentificador": "Tax ID",
-            "identificador": "741465790",
+            "taxIdSinTaxIdRfcCurp": "741465790",
             "nombresORazonSocial": "KULKONI, INC.",
             "apellidoPaterno": "",
             "apellidoMaterno": ""
@@ -731,7 +731,7 @@ describe('Extract and Structure', () => {
           },
           "datosGeneralesDelDestinatario": {
             "tipoDeIdentificador": "RFC",
-            "identificador": "SER870126EA3",
+            "taxIdSinTaxIdRfcCurp": "SER870126EA3",
             "nombresORazonSocial": "SERVICABLES, S.A. DE C.V.",
             "apellidoPaterno": "",
             "apellidoMaterno": ""
