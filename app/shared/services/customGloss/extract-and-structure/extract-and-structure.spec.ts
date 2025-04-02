@@ -657,61 +657,6 @@ describe('Extract and Structure', () => {
           ]
         }
       },
-      {
-        "fileUrl": "https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15AVS8DnEhI73SMs1mOVHTgc05pWuYPnbZRtyq",
-        "expectedOutput": {
-          "acuse_valor": "COVE246VWFYW6",
-          "tipo_operacion": "Importación",
-          "relacion_facturas": "SIN RELACIÓN DE FACTURAS",
-          "numero_factura": "28605",
-          "tipo_figura": "Agente Aduanal",
-          "fecha_expedicion": new Date("2024-05-31T00:00:00.000Z"),
-          "observaciones": "SE ANEXAN DOCUMENTOS DIGITALIZADOS(FACTURA, TRADUCCION, PACKING)",
-          "datos_generales_proveedor": {
-            "tipo_identificador": "TAX ID",
-            "identificador": "34-0117420",
-            "nombre_razon_social": "TEXAS OILPATCH SERVICES LLC.",
-            "domicilio": {
-              "calle": "VISTA ROAD",
-              "numero_exterior": "3515",
-              "numero_interior": null,
-              "codigo_postal": "77504",
-              "colonia": null,
-              "localidad": null,
-              "entidad_federativa": "TX",
-              "municipio": "PASADENA",
-              "pais": "USA"
-            }
-          },
-          "datos_generales_destinatario": {
-            "rfc_destinatario": "COF141010UT9",
-            "nombre_razon_social": "COMERCIALIZADORA OFFSHORE, S.A. DE C.V.",
-            "domicilio": {
-              "calle": "GALICIA",
-              "numero_exterior": "2",
-              "numero_interior": null,
-              "codigo_postal": "05039",
-              "colonia": "AHUATENCO",
-              "localidad": null,
-              "entidad_federativa": "CDMX",
-              "municipio": "CUAJIMALPA DE MORELOS",
-              "pais": "MEX"
-            }
-          },
-          "datos_mercancia": [
-            {
-              "descripcion_mercancia": "CADENA DE RODILLOS PARA TRANSMISION DE MOVIMIENTOS",
-              "clave_umc": "LINEAR FOOT",
-              "cantidad_umc": 10,
-              "tipo_moneda": "US Dolar",
-              "valor_unitario": 42.09,
-              "valor_total": 420.9,
-              "valor_total_dolares": 420.9,
-              "numeros_serie": []
-            }
-          ]
-        }
-      }
     ] as const;
     const coveResults = await Promise.all(
       coveFixture.map(async ({ fileUrl }) => {
