@@ -34,18 +34,6 @@ export const coveSchema = z.object({
       }),
     observaciones: z.string(),
   }),
-  rfcConPermisosDeConsulta: z.object({
-    rfcDeConsulta: z.string(),
-    nombreORazonSocial: z.string(),
-  }),
-  numeroDePatenteAduanal: z.object({
-    numeroAutorizacionAduanal: z.string()
-  }),
-  datosDeLaFactura: z.object({
-    subdivision: z.string(),
-    certificadoDeOrigen: z.string(),
-    numeroDeExportadorAutorizado: z.string(),
-  }),
   datosGeneralesDelProveedor: z.object({
     tipoDeIdentificador: z.string(),
     identificador: z

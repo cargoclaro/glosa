@@ -82,18 +82,6 @@ describe('Extract and Structure', () => {
             "fechaExpedicion": new Date("2025-03-25T00:00:00.000Z"),
             "observaciones": "SE ANEXAN DOCUMENTOS DIGITALIZADOS(FACTURA, TRADUCCION, PACKING)"
           },
-          "rfcConPermisosDeConsulta": {
-            "rfcDeConsulta": "MALB640521U17",
-            "nombreORazonSocial": "BERNHARD MACHTEL LANG"
-          },
-          "numeroDePatenteAduanal": {
-            "numeroAutorizacionAduanal": "3577"
-          },
-          "datosDeLaFactura": {
-            "subdivision": "Sin subdivisión",
-            "certificadoDeOrigen": "No funge como certificado origen",
-            "numeroDeExportadorAutorizado": ""
-          },
           "datosGeneralesDelProveedor": {
             "tipoDeIdentificador": "TAX ID",
             "identificador": "20-8374868",
