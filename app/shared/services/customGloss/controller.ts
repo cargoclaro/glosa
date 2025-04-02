@@ -164,6 +164,29 @@ export const analysis = api
         };
       });
 
+      // Check for unsupported document types
+      const multipleDocuments = classificationResults.filter(
+        (doc) => doc.classification === 'Archivo con múltiples documentos (iguales o distintos)'
+      );
+      
+      if (multipleDocuments.length > 0) {
+        return {
+          success: false,
+          message: 'Encontramos varios documentos en un solo archivo. Por favor, suba cada documento por separado.',
+        };
+      }
+      
+      const otrosDocuments = classifications.filter(
+        (doc) => doc.documentType === 'otros'
+      );
+      
+      if (otrosDocuments.length > 0) {
+        return {
+          success: false,
+          message: 'Se detectaron documentos no clasificables o no soportados para la glosa electrónica.',
+        };
+      }
+
       // Now group the classifications by document type, taking only the first file of each type.
       const groupedClassifications = classifications.reduce(
         (acc, curr) => {
