@@ -147,7 +147,7 @@ describe('Extract and Structure', () => {
             "observaciones": ""
           },
           "datosGeneralesDelProveedor": {
-            "tipoDeIdentificador": "Tax ID",
+            "tipoDeIdentificador": "TAX_ID",
             "identificador": "561893440",
             "nombresORazonSocial": "ANDERSON AMERICA",
             "apellidoPaterno": "",
@@ -158,7 +158,7 @@ describe('Extract and Structure', () => {
             "numeroExterior": "10620",
             "numeroInterior": "",
             "codigoPostal": "28134",
-            "colonia": "PINEVILLE",
+            "colonia": "",
             "localidad": "PINEVILLE",
             "entidadFederativa": "PINEVILLE",
             "municipio": "PINEVILLE",
@@ -283,7 +283,7 @@ describe('Extract and Structure', () => {
             "observaciones": ""
           },
           "datosGeneralesDelProveedor": {
-            "tipoDeIdentificador": "Tax ID",
+            "tipoDeIdentificador": "TAX ID",
             "identificador": "SN",
             "nombresORazonSocial": "PIROBLOC",
             "apellidoPaterno": "",
@@ -503,7 +503,7 @@ describe('Extract and Structure', () => {
             "observaciones": "FLETES AEREO: 500.00 USD"
           },
           "datosGeneralesDelProveedor": {
-            "tipoDeIdentificador": "Tax ID",
+            "tipoDeIdentificador": "TAX ID",
             "identificador": "91370306080896344J",
             "nombresORazonSocial": "ZIBO BAODA AUTO PARTS LOGISTICS CO., LTD",
             "apellidoPaterno": "",
@@ -550,8 +550,8 @@ describe('Extract and Structure', () => {
                 "valorTotalEnDolares": 14186.16
               },
               "descripcionDeLaMercancia": {
-                "marca": "612640130438",
-                "modelo": "",
+                "marca": "",
+                "modelo": "612640130438",
                 "submodelo": "",
                 "numeroDeSerie": ""
               }
@@ -572,7 +572,7 @@ describe('Extract and Structure', () => {
             "observaciones": "SE ANEXAN DOCUMENTOS DIGITALIZADOS(FACTURA, TRADUCCION, PACKING)"
           },
           "datosGeneralesDelProveedor": {
-            "tipoDeIdentificador": "Tax ID",
+            "tipoDeIdentificador": "TAX ID",
             "identificador": "82-5221873",
             "nombresORazonSocial": "GROUP CARGO LIFT INC.",
             "apellidoPaterno": "",
@@ -584,9 +584,9 @@ describe('Extract and Structure', () => {
             "numeroInterior": "",
             "codigoPostal": "77375",
             "colonia": "",
-            "localidad": "THE WOODLANDS",
+            "localidad": "",
             "entidadFederativa": "TX",
-            "municipio": "",
+            "municipio": "THE WOODLANDS",
             "pais": "USA"
           },
           "datosGeneralesDelDestinatario": {
@@ -636,7 +636,7 @@ describe('Extract and Structure', () => {
             "observaciones": "SE ANEXAN DOCUMENTOS DIGITALIZADOS(FACTURA, TRADUCCION, PACKING)"
           },
           "datosGeneralesDelProveedor": {
-            "tipoDeIdentificador": "Tax ID",
+            "tipoDeIdentificador": "TAX ID",
             "identificador": "42-0886654",
             "nombresORazonSocial": "KEMIN FOOD TECNOLOGIES, INC",
             "apellidoPaterno": "",
@@ -648,9 +648,9 @@ describe('Extract and Structure', () => {
             "numeroInterior": "",
             "codigoPostal": "50306",
             "colonia": "",
-            "localidad": "DES MOINES",
+            "localidad": "",
             "entidadFederativa": "IOWA",
-            "municipio": "",
+            "municipio": "DES MOINES",
             "pais": "USA"
           },
           "datosGeneralesDelDestinatario": {
