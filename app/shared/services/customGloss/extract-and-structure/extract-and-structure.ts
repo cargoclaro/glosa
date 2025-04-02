@@ -46,10 +46,22 @@ export async function extractAndStructurePackingList(
   return object;
 }
 
-async function extractCove(fileUrl: string) {
+export async function extractAndStructureCove(
+  fileUrl: string,
+  parentTraceId?: string,
+) {
   const { text } = await generateText({
     model: google('gemini-2.0-flash-001'),
     seed: 42,
+    experimental_telemetry: {
+      isEnabled: true,
+      functionId: 'Extract cove',
+      metadata: {
+        langfuseTraceId: parentTraceId ?? '',
+        langfuseUpdateParent: false,
+        fileUrl,
+      },
+    },
     messages: [
       {
         role: 'user',
@@ -67,11 +79,6 @@ async function extractCove(fileUrl: string) {
       },
     ],
   });
-
-  return text;
-}
-
-async function structureCove(text: string) {
   const [
     { object: datosGenerales },
     { object: mercancias }
@@ -79,6 +86,15 @@ async function structureCove(text: string) {
     generateObject({
       model: google('gemini-2.0-flash-001'),
       seed: 42,
+      experimental_telemetry: {
+        isEnabled: true,
+        functionId: 'Structure datos generales cove',
+        metadata: {
+          langfuseTraceId: parentTraceId ?? '',
+          langfuseUpdateParent: false,
+          fileUrl,
+        },
+      },
       schema: datosGeneralesSchema,
       messages: [
         {
@@ -99,6 +115,15 @@ async function structureCove(text: string) {
     generateObject({
       model: google('gemini-2.0-flash-001'),
       seed: 42,
+      experimental_telemetry: {
+        isEnabled: true,
+        functionId: 'Structure mercancias cove',
+        metadata: {
+          langfuseTraceId: parentTraceId ?? '',
+          langfuseUpdateParent: false,
+          fileUrl,
+        },
+      },
       output: 'array',
       schema: mercanciaSchema,
       messages: [
@@ -123,12 +148,4 @@ async function structureCove(text: string) {
     ...datosGenerales,
     mercancias,
   };
-}
-
-export async function extractAndStructureCove(
-  fileUrl: string,
-) {
-  const text = await extractCove(fileUrl);
-  const cove = await structureCove(text);
-  return cove;
 }
