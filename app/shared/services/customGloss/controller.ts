@@ -172,7 +172,7 @@ export const analysis = api
       if (multipleDocuments.length > 0) {
         return {
           success: false,
-          message: 'Encontramos varios documentos en un solo archivo. Por favor, suba cada documento por separado.',
+          message: 'Encontramos varios documentos en un solo archivo. No soportamos este tipo de archivos.',
         };
       }
       
