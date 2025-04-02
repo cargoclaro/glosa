@@ -101,7 +101,7 @@ export const coveSchema = z.object({
       modelo: z.string(),
       submodelo: z.string(),
       numeroDeSerie: z.string(),
-    }).nullable(),
+    }).nullable().describe("Casi nunca aparece"),
   })),
 });
 
