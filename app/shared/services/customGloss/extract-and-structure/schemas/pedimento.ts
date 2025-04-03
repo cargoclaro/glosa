@@ -15,7 +15,7 @@ export const partidaSchema = z.object({
     .string()
     .nullable()
     .describe('Un numero del 1 al 22, aparece como "UMT" en el documento'),
-  cantidadUnidadDeMedidaDeTarifa: z.number().nullable(),
+  cantidadUnidadDeMedidaDeTarifa: z.number().nullable().describe('Aparece como "CANTIDAD UMT" en el documento'),
   paisDeVentaOCompra: z.string().nullable().describe('Una clave de pais ISO 3166-1 alfa-3, aparece como "P. V/C." en el documento'),
   paisDeOrigenODestino: z.string().nullable().describe('Una clave de pais ISO 3166-1 alfa-3, aparece como "P. O/D." en el documento'),
   descripcion: z.string(),
