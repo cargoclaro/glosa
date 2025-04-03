@@ -15,42 +15,14 @@ import {
 } from '@/shared/icons';
 import { markTabAsVerifiedByTabIdNCustomGlossID } from '@/shared/services/customGloss/controller';
 import { useMutation } from '@tanstack/react-query';
-import type { InferSelectModel } from 'drizzle-orm';
 import { Loader2 } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import type {
-  CustomGloss,
-  CustomGlossTab,
-  CustomGlossTabContext,
-  CustomGlossTabContextData,
-  CustomGlossTabValidationStep,
-  CustomGlossTabValidationStepActionToTake,
-  CustomGlossTabValidationStepResources,
-} from '~/db/schema';
 import { cn } from '~/lib/utils';
-import type { ITabInfoSelected } from '../pediment-analysis-n-finish';
+import type { ITabInfoSelected, Tabs } from '../types';
 import Detailed from './detailed';
 
-type TabValidation = InferSelectModel<typeof CustomGlossTabValidationStep> & {
-  resources: InferSelectModel<typeof CustomGlossTabValidationStepResources>[];
-  actionsToTake: InferSelectModel<
-    typeof CustomGlossTabValidationStepActionToTake
-  >[];
-  steps: InferSelectModel<typeof CustomGlossTabValidationStep>[];
-};
-
-type TabContext = InferSelectModel<typeof CustomGlossTabContext> & {
-  data: InferSelectModel<typeof CustomGlossTabContextData>[];
-};
-
-type tabs = InferSelectModel<typeof CustomGlossTab> & {
-  context: TabContext[];
-  validations: TabValidation[];
-  customGloss: InferSelectModel<typeof CustomGloss>;
-};
-
 interface IAnalysis {
-  tabs: tabs[];
+  tabs: Tabs[];
   tabSelectedFromDocument: string;
   setTabInfoSelected: (tab: ITabInfoSelected) => void;
 }
@@ -65,7 +37,7 @@ const Analysis = ({
   const [tabSelected, setTabSelected] = useState('Número de pedimento');
 
   const [dataForDetail, setDataForDetail] = useState<
-    tabs['validations'][number]
+    Tabs['validations'][number]
   >({
     id: 0,
     name: '',
@@ -81,7 +53,7 @@ const Analysis = ({
     parentStepId: 0,
   });
 
-  const handleDetail = (data: tabs['validations'][number]) => {
+  const handleDetail = (data: Tabs['validations'][number]) => {
     setDataForDetail(data);
     openMenu();
   };
@@ -271,8 +243,8 @@ const Analysis = ({
 export default Analysis;
 
 interface IGenericTabComponent {
-  data: tabs;
-  handleClick: (data: tabs['validations'][number]) => void;
+  data: Tabs;
+  handleClick: (data: Tabs['validations'][number]) => void;
 }
 
 const GenericTabComponent = ({ data, handleClick }: IGenericTabComponent) => {
@@ -543,8 +515,8 @@ const StatusHeader = ({ status }: { status: boolean }) => (
 );
 
 interface IDataListForSummaryCard {
-  data: tabs['validations'];
-  handleDetail: (data: tabs['validations'][number]) => void;
+  data: Tabs['validations'];
+  handleDetail: (data: Tabs['validations'][number]) => void;
 }
 
 const DataListForSummaryCard = ({

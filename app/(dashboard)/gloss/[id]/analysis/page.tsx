@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { db } from '~/db';
 import { Documents, PedimentAnalysisNFinish } from './components';
+import { Tabs } from './components/types';
 
 type IDynamicMetadata = {
   params: Promise<{ id: string }>;
@@ -95,7 +96,7 @@ const GlossIdAnalysis = async (props: {
       <PedimentAnalysisNFinish
         customGloss={{
           id: customGloss.id,
-          tabs: customGloss.tabs,
+          tabs: customGloss.tabs as unknown as Tabs[],
           files: customGloss.files,
           moneySaved: customGloss.moneySaved,
           cove: customGloss.cove,

@@ -2,54 +2,21 @@
 
 import type { Cove } from '@/shared/services/customGloss/extract-and-structure/schemas';
 import type { Pedimento } from '@/shared/services/customGloss/data-extraction/schemas';
-import type { InferSelectModel } from 'drizzle-orm';
 import { useState } from 'react';
 import { CoveViewer } from '~/components/cove/index';
 import PedimentoViewer from '~/components/pedimento/pedimento-viewer';
 import type { CustomGlossFileTable } from '~/db/schema';
-import type {
-  CustomGloss,
-  CustomGlossTab,
-  CustomGlossTabContext,
-  CustomGlossTabContextData,
-  CustomGlossTabValidationStep,
-  CustomGlossTabValidationStepActionToTake,
-  CustomGlossTabValidationStepResources,
-} from '~/db/schema';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/ui/tabs';
 import { Analysis, SavedNFinish } from '.';
-
-type TabValidation = InferSelectModel<typeof CustomGlossTabValidationStep> & {
-  resources: InferSelectModel<typeof CustomGlossTabValidationStepResources>[];
-  actionsToTake: InferSelectModel<
-    typeof CustomGlossTabValidationStepActionToTake
-  >[];
-  steps: InferSelectModel<typeof CustomGlossTabValidationStep>[];
-};
-
-type TabContext = InferSelectModel<typeof CustomGlossTabContext> & {
-  data: InferSelectModel<typeof CustomGlossTabContextData>[];
-};
-
-type tabs = InferSelectModel<typeof CustomGlossTab> & {
-  context: TabContext[];
-  validations: TabValidation[];
-  customGloss: InferSelectModel<typeof CustomGloss>;
-};
+import { ITabInfoSelected, Tabs as GlossTabs } from './types';
 
 interface IPedimentAnalysisNFinish {
   id: string;
   moneySaved: number;
-  tabs: tabs[];
+  tabs: GlossTabs[];
   files: CustomGlossFileTable[];
   cove: Cove | null;
   pedimento: Pedimento | null;
-}
-
-export interface ITabInfoSelected {
-  name: string;
-  isCorrect: boolean;
-  isVerified: boolean;
 }
 
 const PedimentAnalysisNFinish = ({
