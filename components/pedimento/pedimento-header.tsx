@@ -174,13 +174,7 @@ const PedimentoHeader: React.FC<PedimentoHeaderProps> = ({
 
         {/* ADUANA E/S */}
         <div
-          className={cn(
-            'col-span-2 grid cursor-pointer grid-cols-2',
-            'overflow-hidden rounded-md border-2 border-yellow-400',
-            getHighlightBorder('Aduana de entrada/salida', tabs),
-            getHighlightFill('Aduana de entrada/salida', tabInfoSelected)
-          )}
-          onClick={() => onClick('Aduana de entrada/salida')}
+          className="col-span-2 grid grid-cols-2"
         >
           <div className="col-span-1 flex min-h-6 items-center border-gray-400 border-r bg-gray-100 px-1 py-0.5 font-semibold text-[8px] text-xs uppercase last:border-r-0">
             ADUANA E/S:
