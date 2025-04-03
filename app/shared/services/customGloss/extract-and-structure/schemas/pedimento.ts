@@ -136,8 +136,8 @@ export const datosGeneralesDePedimentoSchema = z.object({
     }),
   identificadoresNivelPedimento: z
     .object({
-      claveSeccionAduanera: z.string().describe("Código numérico de tres dígitos (mostrado como '470' en el documento)").nullable(),
-      marcasNumerosBultos: z.string().describe("Campo que muestra cantidad y tipo de paquetes (por ejemplo, 'S/M S/N 4 BULTOS')").nullable(),
+      claveSeccionAduanera: z.string(),
+      marcasNumerosBultos: z.string().nullable(),
     }),
   idFiscal: z.string().describe('Número de factura extranjera').nullable(),
   cove: z.string().describe('Código alfanumérico de 11 caracteres').nullable(),
