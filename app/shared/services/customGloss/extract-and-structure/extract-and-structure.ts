@@ -1,7 +1,7 @@
 import { openai } from '@ai-sdk/openai';
 import { google } from '@ai-sdk/google';
 import { generateObject, generateText } from 'ai';
-import { packingListSchema, datosGeneralesSchema, mercanciaSchema } from './schemas';
+import { packingListSchema, datosGeneralesSchema, mercanciaSchema, datosGeneralesDePedimentoSchema, partidaSchema } from './schemas';
 
 export async function extractAndStructurePackingList(
   fileUrl: string,
@@ -147,5 +147,69 @@ export async function extractAndStructureCove(
   return {
     ...datosGenerales,
     mercancias,
+  };
+}
+
+export async function extractAndStructurePedimento(
+  fileUrl: string,
+  parentTraceId?: string,
+) {
+  const { object: datosGeneralesDePedimento } = await generateObject({
+    model: google('gemini-2.5-pro-exp-03-25'),
+    seed: 42,
+    schema: datosGeneralesDePedimentoSchema,
+    experimental_telemetry: {
+      isEnabled: true,
+      functionId: 'Extract and structure datos generales de pedimento',
+      metadata: {
+        langfuseTraceId: parentTraceId ?? '',
+        langfuseUpdateParent: false,
+        fileUrl,
+      },
+    },
+    messages: [
+      {
+        role: 'user',
+        content: [
+          {
+            type: 'text',
+            text: 'Extrae los datos generales del pedimento.',
+          },
+          {
+            type: 'file',
+            data: `${fileUrl}`,
+            mimeType: 'application/pdf',
+          },
+        ],
+      },
+    ],
+  });
+
+  const { object: partidas } = await generateObject({
+    model: google('gemini-2.5-pro-exp-03-25'),
+    seed: 42,
+    schema: partidaSchema,
+    output: 'array',
+    messages: [
+      {
+        role: 'user',
+        content: [
+          {
+            type: 'text',
+            text: 'Extrae las partidas del pedimento.',
+          },
+          {
+            type: 'file',
+            data: `${fileUrl}`,
+            mimeType: 'application/pdf',
+          },
+        ],
+      },
+    ],
+  });
+
+  return {
+    ...datosGeneralesDePedimento,
+    partidas,
   };
 }
