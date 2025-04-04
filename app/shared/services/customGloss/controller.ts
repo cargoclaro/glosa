@@ -307,7 +307,8 @@ export const analysis = api
                 const [insertedContext] = await db.insert(CustomGlossTabContext).values({
                   type: contextType as CustomGlossTabContextTypes,
                   origin,
-                  customGlossTabId: insertedTab.id
+                  customGlossTabId: insertedTab.id,
+                  url: "#"
                 }).returning();
                 if (!insertedContext) {
                   throw new Error('Failed to create CustomGlossTabContext record');

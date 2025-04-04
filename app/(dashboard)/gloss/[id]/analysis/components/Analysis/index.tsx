@@ -18,7 +18,7 @@ import { useMutation } from '@tanstack/react-query';
 import { Loader2 } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { cn } from '~/lib/utils';
-import type { ITabInfoSelected, Tabs } from '../types';
+import type { ITabInfoSelected, Tabs, TabContext } from '../types';
 import Detailed from './detailed';
 
 interface IAnalysis {
@@ -35,6 +35,7 @@ const Analysis = ({
   const scrollContainerRef = useRef<HTMLUListElement>(null);
   const { isOpen, openMenu, closeMenu, menuRef } = useModal(false);
   const [tabSelected, setTabSelected] = useState('Número de pedimento');
+  const [selectedTabContexts, setSelectedTabContexts] = useState<TabContext[]>([]);
 
   const [dataForDetail, setDataForDetail] = useState<
     Tabs['validations'][number]
@@ -53,8 +54,9 @@ const Analysis = ({
     parentStepId: 0,
   });
 
-  const handleDetail = (data: Tabs['validations'][number]) => {
+  const handleDetail = (data: Tabs['validations'][number], contexts: TabContext[]) => {
     setDataForDetail(data);
+    setSelectedTabContexts(contexts);
     openMenu();
   };
 
@@ -186,7 +188,11 @@ const Analysis = ({
   return (
     <>
       <Modal isOpen={isOpen} onClose={closeMenu} menuRef={menuRef}>
-        <Detailed data={dataForDetail} />
+        <Detailed 
+          data={dataForDetail} 
+          contexts={selectedTabContexts} 
+          onClose={closeMenu}
+        />
       </Modal>
       <GenericCard customClass="bg-white border-[1px] border-blue-500">
         <div className="relative w-full mb-4">
@@ -231,7 +237,7 @@ const Analysis = ({
               <GenericTabComponent
                 key={tab.id}
                 data={tab}
-                handleClick={(data) => handleDetail(data)}
+                handleClick={(data) => handleDetail(data, tab.context)}
               />
             )
         )}
@@ -244,7 +250,7 @@ export default Analysis;
 
 interface IGenericTabComponent {
   data: Tabs;
-  handleClick: (data: Tabs['validations'][number]) => void;
+  handleClick: (data: Tabs['validations'][number], contexts: TabContext[]) => void;
 }
 
 const GenericTabComponent = ({ data, handleClick }: IGenericTabComponent) => {
@@ -279,7 +285,7 @@ const GenericTabComponent = ({ data, handleClick }: IGenericTabComponent) => {
         </div>
         <DataListForSummaryCard
           data={data.validations}
-          handleDetail={handleClick}
+          handleClick={(validationData) => handleClick(validationData, data.context)}
         />
       </div>
       
@@ -516,12 +522,12 @@ const StatusHeader = ({ status }: { status: boolean }) => (
 
 interface IDataListForSummaryCard {
   data: Tabs['validations'];
-  handleDetail: (data: Tabs['validations'][number]) => void;
+  handleClick: (data: Tabs['validations'][number]) => void;
 }
 
 const DataListForSummaryCard = ({
   data,
-  handleDetail,
+  handleClick,
 }: IDataListForSummaryCard) => {
   const [activeTooltip, setActiveTooltip] = useState<number | null>(null);
 
@@ -612,7 +618,7 @@ const DataListForSummaryCard = ({
               {/* "Ver análisis detallado" button with no border in default state, only fill on hover */}
               <button
                 type="button"
-                onClick={() => handleDetail(item)}
+                onClick={() => handleClick(item)}
                 className="group/btn flex items-center gap-0.5 text-blue-500 hover:text-white px-2 py-1 rounded transition-all duration-300 text-xs font-medium bg-transparent hover:bg-blue-500/90 cursor-pointer"
               >
                 <span>Ver análisis detallado</span>

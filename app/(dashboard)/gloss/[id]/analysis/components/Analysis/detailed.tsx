@@ -9,15 +9,10 @@ import {
   X
 } from 'lucide-react';
 import { cn } from '~/lib/utils';
-import { TabValidation } from '../types';
-import type { InferSelectModel } from 'drizzle-orm';
-import type { 
-  CustomGlossTabValidationStepResources,
-  CustomGlossTabContext,
-  CustomGlossTabContextData,
-  CustomGlossTabValidationStepActionToTake,
-  CustomGlossTabValidationStep
-} from '~/db/schema';
+import { TabValidation, TabContext } from '../types';
+
+// Add CSS for custom scrollbar
+import './styles.css';
 
 // Define interfaces for our context data
 interface ContextItem {
@@ -37,14 +32,15 @@ interface ContextsStructure {
 
 interface DetailedProps {
   data: TabValidation;
+  contexts?: TabContext[];
   onClose: () => void;
 }
 
-// Function to transform database context data into the format needed for our component
+/**
+ * Function to transform database context data into the format needed for our component
+ */
 const transformContextData = (
-  contexts: (InferSelectModel<typeof CustomGlossTabContext> & {
-    data: InferSelectModel<typeof CustomGlossTabContextData>[];
-  })[]
+  contexts: TabContext[]
 ): ContextsStructure => {
   // Create the structure with empty PROVIDED and EXTERNAL objects
   const result: ContextsStructure = {
@@ -69,8 +65,8 @@ const transformContextData = (
         result[category][origin].data.push({
           name: item.name,
           value: item.value,
-          // Description is not directly available in the schema, but we could
-          // add logic here to set description based on other criteria if needed
+          // Description is not directly available in the schema, we could add logic 
+          // here if we needed to derive a description
         });
       }
     }
@@ -79,7 +75,65 @@ const transformContextData = (
   return result;
 };
 
-const Detailed = ({ data, onClose }: DetailedProps) => {
+/**
+ * Helper function to clean up Markdown text by:
+ * - Removing quotes at the beginning 
+ * - Handling escaped characters
+ * - Processing other issues that could affect rendering
+ */
+const cleanMarkdownText = (text: string | undefined | null): string => {
+  if (!text) return '';
+  
+  // Remove quotes at the beginning and end if they exist
+  let cleanedText = text.trim();
+  if ((cleanedText.startsWith('"') && cleanedText.endsWith('"')) || 
+      (cleanedText.startsWith("'") && cleanedText.endsWith("'"))) {
+    cleanedText = cleanedText.substring(1, cleanedText.length - 1);
+  }
+  
+  // Handle literal "\\n" in JSON strings (double backslashes)
+  cleanedText = cleanedText.replace(/\\\\n/g, '\n');
+  
+  // Convert escaped newlines to actual newlines
+  cleanedText = cleanedText.replace(/\\n/g, '\n');
+  
+  // Replace other common escaped characters
+  cleanedText = cleanedText.replace(/\\"/g, '"');
+  cleanedText = cleanedText.replace(/\\'/g, "'");
+  cleanedText = cleanedText.replace(/\\t/g, '\t');
+  
+  // Remove "markdown" prefix if it exists
+  if (cleanedText.startsWith('markdown')) {
+    cleanedText = cleanedText.substring('markdown'.length).trim();
+  }
+  
+  return cleanedText;
+};
+
+/**
+ * Helper function to detect if text is likely markdown
+ */
+const isLikelyMarkdown = (text: string | undefined | null): boolean => {
+  if (!text) return false;
+  
+  // Check for common markdown indicators
+  return (
+    text.includes('\n') || 
+    text.includes('\\n') || 
+    text.includes('**') || 
+    text.includes('*') || 
+    text.includes('_') ||
+    text.includes('#') ||
+    text.includes('- ') ||
+    text.includes('1. ') ||
+    (text.includes('[') && text.includes('](')) ||
+    text.includes('```') ||
+    text.includes('`') ||
+    (text.includes('|') && text.includes('-|-'))
+  );
+};
+
+const Detailed = ({ data, contexts = [], onClose }: DetailedProps) => {
   const [isLlmExpanded, setIsLlmExpanded] = useState(false);
   const [isActionsExpanded, setIsActionsExpanded] = useState(true);
   const [expandedProvidedContext, setExpandedProvidedContext] = useState<Record<string, boolean>>({});
@@ -103,12 +157,12 @@ const Detailed = ({ data, onClose }: DetailedProps) => {
     };
   }, [onClose]);
 
-  // Use real context data from the database
-  const contexts = data.contexts && data.contexts.length > 0 
-    ? transformContextData(data.contexts) 
-    : {
-        PROVIDED: {},
-        EXTERNAL: {}
+  // Use real context data if available, otherwise create empty structure
+  const contextData = contexts.length > 0 
+    ? transformContextData(contexts) 
+    : { 
+        PROVIDED: {}, 
+        EXTERNAL: {} 
       };
 
   const toggleProvidedContext = (contextId: string) => {
@@ -178,7 +232,7 @@ const Detailed = ({ data, onClose }: DetailedProps) => {
         {/* Content container with fixed height */}
         <div className="flex flex-1 min-h-0">
           {/* Left sidebar - independently scrollable */}
-          <div className="w-full md:w-1/3 lg:w-1/4 border-r border-slate-100 overflow-y-auto">
+          <div className="w-full md:w-1/3 lg:w-1/4 border-r border-slate-100 overflow-y-auto custom-scrollbar">
             <div className="p-5 space-y-8">
               {/* Provided Context Section */}
               <div>
@@ -187,8 +241,8 @@ const Detailed = ({ data, onClose }: DetailedProps) => {
                   <h2 className="text-base font-medium text-slate-800">Contexto Proporcionado</h2>
                 </div>
                 
-                {Object.entries(contexts.PROVIDED).length > 0 ? (
-                  Object.entries(contexts.PROVIDED).map(([contextType, contextData]) => (
+                {Object.keys(contextData.PROVIDED).length > 0 ? (
+                  Object.entries(contextData.PROVIDED).map(([contextType, contextData]) => (
                     <div key={contextType} className="border-b border-slate-100">
                       <button 
                         className="w-full flex items-center justify-between py-3 px-2 text-left"
@@ -202,10 +256,10 @@ const Detailed = ({ data, onClose }: DetailedProps) => {
                       <div className={cn(
                         "overflow-hidden transition-all duration-300 ease-out transform origin-top",
                         expandedProvidedContext[contextType] 
-                          ? "max-h-[500px] opacity-100 scale-y-100" 
+                          ? "max-h-[250px] opacity-100 scale-y-100" 
                           : "max-h-0 opacity-0 scale-y-95"
                       )}>
-                        <div className="px-2 pb-4">
+                        <div className="px-2 pb-4 max-h-[230px] overflow-y-auto custom-scrollbar">
                           {contextData.data.map((item, index) => (
                             <div key={index} className="mb-3 border-l-2 border-indigo-200 pl-3">
                               {item.description ? (
@@ -216,7 +270,13 @@ const Detailed = ({ data, onClose }: DetailedProps) => {
                               ) : (
                                 <div className="flex flex-col">
                                   <p className="text-[12.6px] font-medium text-slate-700">{item.name}</p>
-                                  <p className="text-[10.8px] text-indigo-600 mt-1">{item.value}</p>
+                                  {item.value && isLikelyMarkdown(item.value) ? (
+                                    <div className="text-[10.8px] text-indigo-600 mt-1 markdown-content">
+                                      <ReactMarkdown className="text-inherit">{cleanMarkdownText(item.value)}</ReactMarkdown>
+                                    </div>
+                                  ) : (
+                                    <p className="text-[10.8px] text-indigo-600 mt-1">{item.value}</p>
+                                  )}
                                 </div>
                               )}
                             </div>
@@ -226,7 +286,7 @@ const Detailed = ({ data, onClose }: DetailedProps) => {
                     </div>
                   ))
                 ) : (
-                  <p className="text-sm text-slate-500 italic">No hay contexto proporcionado disponible</p>
+                  <p className="text-sm text-slate-500 italic">No se usa contexto proporcionado</p>
                 )}
               </div>
 
@@ -237,8 +297,8 @@ const Detailed = ({ data, onClose }: DetailedProps) => {
                   <h2 className="text-base font-medium text-slate-800">Contexto Externo</h2>
                 </div>
                 
-                {Object.entries(contexts.EXTERNAL).length > 0 ? (
-                  Object.entries(contexts.EXTERNAL).map(([contextType, contextData]) => (
+                {Object.keys(contextData.EXTERNAL).length > 0 ? (
+                  Object.entries(contextData.EXTERNAL).map(([contextType, contextData]) => (
                     <div key={contextType} className="border-b border-slate-100">
                       <button 
                         className="w-full flex items-center justify-between py-3 px-2 text-left"
@@ -252,15 +312,19 @@ const Detailed = ({ data, onClose }: DetailedProps) => {
                       <div className={cn(
                         "overflow-hidden transition-all duration-300 ease-out transform origin-top",
                         expandedExternalContext[contextType] 
-                          ? "max-h-[500px] opacity-100 scale-y-100" 
+                          ? "max-h-[250px] opacity-100 scale-y-100" 
                           : "max-h-0 opacity-0 scale-y-95"
                       )}>
-                        <div className="px-2 pb-4">
+                        <div className="px-2 pb-4 max-h-[230px] overflow-y-auto custom-scrollbar">
                           {contextData.data.map((item, index) => (
                             <div key={index} className="mb-3 border-l-2 border-purple-200 pl-3">
                               <div className="flex flex-col">
                                 <p className="text-[12.6px] font-medium text-slate-700">{item.name}</p>
-                                {item.value && (
+                                {item.value && isLikelyMarkdown(item.value) ? (
+                                  <div className="text-[10.8px] text-purple-600 mt-1 markdown-content">
+                                    <ReactMarkdown className="text-inherit">{cleanMarkdownText(item.value)}</ReactMarkdown>
+                                  </div>
+                                ) : (
                                   <p className="text-[10.8px] text-purple-600 mt-1">{item.value}</p>
                                 )}
                                 {item.description && (
@@ -274,14 +338,14 @@ const Detailed = ({ data, onClose }: DetailedProps) => {
                     </div>
                   ))
                 ) : (
-                  <p className="text-sm text-slate-500 italic">No hay contexto externo disponible</p>
+                  <p className="text-sm text-slate-500 italic">No se usa contexto externo</p>
                 )}
               </div>
             </div>
           </div>
           
           {/* Main content area - independently scrollable */}
-          <div className="w-full md:w-2/3 lg:w-3/4 overflow-y-auto">
+          <div className="w-full md:w-2/3 lg:w-3/4 overflow-y-auto custom-scrollbar">
             <div className="p-6 space-y-5">
               {/* IA Analysis - Main content */}
               <div className={cn("rounded-lg overflow-hidden", 
@@ -321,8 +385,8 @@ const Detailed = ({ data, onClose }: DetailedProps) => {
                     ) : (
                       <div>
                         <h4 className="font-medium text-slate-700 mb-3">Análisis Detallado</h4>
-                        <div className="text-slate-700">
-                          <ReactMarkdown className="text-inherit">{data.llmAnalysis || "No hay análisis disponible"}</ReactMarkdown>
+                        <div className="text-slate-700 max-h-[300px] overflow-y-auto custom-scrollbar pr-2">
+                          <ReactMarkdown className="text-inherit">{cleanMarkdownText(data.llmAnalysis) || "No hay análisis disponible"}</ReactMarkdown>
                         </div>
                         <div className="flex justify-end mt-4">
                           <button 
@@ -358,12 +422,12 @@ const Detailed = ({ data, onClose }: DetailedProps) => {
                 <div className={cn(
                   "overflow-hidden transition-all duration-300 ease-out transform",
                   isActionsExpanded 
-                    ? "max-h-[500px] opacity-100 translate-y-0" 
+                    ? "max-h-[250px] opacity-100 translate-y-0" 
                     : "max-h-0 opacity-0 -translate-y-1"
                 )}>
                   <div className="px-4 pb-4 pt-1">
                     {data.actionsToTake && data.actionsToTake.length > 0 ? (
-                      <ul className="space-y-3">
+                      <ul className="space-y-3 max-h-[200px] overflow-y-auto custom-scrollbar pr-2">
                         {data.actionsToTake.map((action) => (
                           <li key={action.id} className="flex items-start gap-3">
                             <div className="w-4 h-4 mt-0.5 border border-blue-300 rounded-full flex-shrink-0" />
