@@ -168,21 +168,26 @@ export const datosGeneralesDePedimentoSchema = z.object({
       }),
     }),
   }),
-  idFiscal: z.string().describe('Número de factura extranjera. Aparece como "ID FISCAL" en el documento').nullable(),
-  cove: z.string().describe('Código alfanumérico de 11 caracteres. Aparece como "COVE" en el documento').nullable(),
-  nombreRazonSocial: z.string().nullable().describe('Aparece como "NOMBRE, DENOMINACION O RAZON SOCIAL:" en el documento'),
-  domicilio: z.string().nullable().describe('Aparece como "DOMICILIO:" en el documento'),
-  vinculacion: z.enum(['SI', 'NO']).nullable().describe('Aparece como "VINCULACION:" en el documento'),
-  datosFactura: z
-    .object({
-      numFactura: z.string().nullable().describe('Aparece como "NUM. FACTURA" en el documento'),
-      fechaFactura: z.string().describe("Fecha en formato DD/MM/YYYY. Aparece como 'FECHA' en el documento").nullable(),
-      incoterm: z.string().describe("Código de tres letras (ejemplo: 'FCA'). Aparece como 'INCOTERM' en el documento").nullable(),
-      monedaFactura: z.string().describe("Código de moneda de tres letras (ejemplo: 'USD'). Aparece como 'MONEDA/FACT' en el documento").nullable(),
-      valorMonedaFactura: z.number().nullable().describe('Aparece como "VAL. MON. FACT" en el documento'),
-      factorMonedaFactura: z.number().nullable().describe('Aparece como "FACTOR MON. FACT" en el documento'),
-      valorDolaresFactura: z.number().nullable().describe('Aparece como "VAL. DOLARES" en el documento'),
+  datosDelProveedorOComprador: z.object({
+    idFiscal: z.string().nullable().describe('Número de factura extranjera. Etiqueta en el documento: "ID FISCAL"'),
+    nombreRazonSocial: z.string().describe('Etiqueta en el documento: "NOMBRE, DENOMINACION O RAZON SOCIAL"'),
+    domicilio: z.string().nullable().describe('Etiqueta en el documento: "DOMICILIO"'),
+    vinculacion: z.enum(['SI', 'NO']).nullable().describe('Etiqueta en el documento: "VINCULACION"'),
+    facturas: z.object({
+      numeroDeCFDIODocumentoEquivalente: z.string().describe('Etiqueta en el documento: "NUM. FACTURA"'),
+      fecha: z
+        .string()
+        .describe("Etiqueta en el documento: 'FECHA'")
+        .transform(transformFechaEntradaPresentacion),
+      // TODO: Apendice 14
+      incoterm: z.string().describe("Etiqueta en el documento: 'INCOTERM'").nullable(),
+      // TODO: Apendice 5
+      moneda: z.string().describe("Etiqueta en el documento: 'MONEDA/FACT'"),
+      valorMoneda: z.number().describe('Etiqueta en el documento: "VAL. MON. FACT"'),
+      factorMoneda: z.number().describe('Etiqueta en el documento: "FACTOR MON. FACT"'),
+      valorDolares: z.number().describe('Etiqueta en el documento: "VAL. DOLARES"'),
     }),
+  }),
   noGuiaEmbarqueId: z.string().describe("Identificador de embarque según modo de transporte"),
   tipoContenedorVehiculo: z.string().describe("Valor de 2 números entre 1 y 69").nullable(),
   identificadoresPedimento: z
