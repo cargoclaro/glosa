@@ -188,10 +188,12 @@ export async function extractAndStructurePedimento(
 ) {
   const pages = await fetchPdfPages(fileUrl);
 
-  let firstPartidasPageIndex: number | null = null;
+  // Omit the first page, as it is never the 'Partidas' page; classify the next two pages only
+  const pagesToClassify = pages.slice(1, 3);
 
-  for (let i = 0; i < pages.length; i++) {
-    const { object: classification } = await generateObject({
+  // Parallelize classification of all pages to find first 'Partidas' quicker
+  const classificationPromises = pagesToClassify.map((pageBase64) =>
+    generateObject({
       model: google('gemini-2.0-flash-001'),
       seed: 42,
       output: 'enum',
@@ -206,33 +208,33 @@ export async function extractAndStructurePedimento(
             },
             {
               type: 'file',
-              data: `data:application/pdf;base64,${pages[i]}`,
+              data: `data:application/pdf;base64,${pageBase64}`,
               mimeType: 'application/pdf',
             },
           ],
         },
       ],
-    });
-
-    if (classification === 'Partidas') {
-      firstPartidasPageIndex = i;
-      break;
-    }
-  }
-
-  if (firstPartidasPageIndex === null) {
+    })
+  );
+  const classifications = (await Promise.all(classificationPromises)).map(result => result.object);
+  const firstPartidasPageIndex = classifications.findIndex(c => c === 'Partidas');
+  if (firstPartidasPageIndex === -1) {
     throw new Error('No partidas section found in the document');
   }
 
+  // Map index in pagesToClassify back to the original pages array
+  const firstPartidasPageIndexInPages = firstPartidasPageIndex + 1;
+
   // Create PDF with all datos generales pages (including the first partidas page)
-  const datosGeneralesPages = pages.slice(0, firstPartidasPageIndex + 1);
+  const datosGeneralesPages = pages.slice(0, firstPartidasPageIndexInPages + 1);
   const datosGeneralesPdfBase64 = await combinePagesToPdf(datosGeneralesPages);
 
-  // Get all partidas pages starting from firstPartidasPageIndex
-  const partidasPages = pages.slice(firstPartidasPageIndex);
+  // Get all partidas pages starting from firstPartidasPageIndexInPages
+  const partidasPages = pages.slice(firstPartidasPageIndexInPages);
 
-  const { object: datosGeneralesDePedimento } = await generateObject({
-    model: google('gemini-2.0-flash-001'),
+  // Kick off datos-generales and partidas extractions in parallel
+  const datosGeneralesPromise = generateObject({
+    model: google('gemini-2.5-pro-exp-03-25'),
     seed: 42,
     schema: datosGeneralesDePedimentoSchema,
     experimental_telemetry: {
@@ -262,38 +264,41 @@ export async function extractAndStructurePedimento(
     ],
   });
 
-  const partidasResults = await Promise.all(partidasPages.map((pageBase64, index) => generateObject({
-    model: google('gemini-2.5-pro-exp-03-25'),
-    seed: 42,
-    schema: partidaSchema,
-    output: 'array',
-    experimental_telemetry: {
-      isEnabled: true,
-      functionId: `Extract partidas from page ${firstPartidasPageIndex + index}`,
-      metadata: {
-        langfuseTraceId: parentTraceId ?? '',
-        langfuseUpdateParent: false,
-        fileUrl,
-        pageIndex: firstPartidasPageIndex + index,
+  const partidasResultsPromise = Promise.all(partidasPages.map((pageBase64, index) =>
+    generateObject({
+      model: openai('o4-mini-2025-04-16'),
+      temperature: 1,
+      providerOptions: { openai: { reasoningEffort: 'high' } },
+      seed: 42,
+      schema: partidaSchema,
+      output: 'array',
+      experimental_telemetry: {
+        isEnabled: true,
+        functionId: `Extract partidas from page ${firstPartidasPageIndexInPages + index}`,
+        metadata: {
+          langfuseTraceId: parentTraceId ?? '',
+          langfuseUpdateParent: false,
+          fileUrl,
+          pageIndex: firstPartidasPageIndexInPages + index,
+        },
       },
-    },
-    messages: [
-      {
-        role: 'user',
-        content: [
-          {
-            type: 'text',
-            text: 'JSONify the partidas section on this page only.',
-          },
-          {
-            type: 'file',
-            data: `data:application/pdf;base64,${pageBase64}`,
-            mimeType: 'application/pdf',
-          },
-        ],
-      },
-    ],
-  })));
+      messages: [
+        {
+          role: 'user',
+          content: [
+            { type: 'text', text: 'JSONify the partidas section on this page only.' },
+            { type: 'file', data: `data:application/pdf;base64,${pageBase64}`, mimeType: 'application/pdf' },
+          ],
+        },
+      ],
+    })
+  ));
+
+  const [datosGeneralesResponse, partidasResults] = await Promise.all([
+    datosGeneralesPromise,
+    partidasResultsPromise,
+  ]);
+  const datosGeneralesDePedimento = datosGeneralesResponse.object;
 
   // Combine all partidas from all pages
   const partidas = partidasResults.flatMap(result => result.object);

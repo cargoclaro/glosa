@@ -155,7 +155,7 @@ export const datosGeneralesDePedimentoSchema = z.object({
       valorDolaresFactura: z.number().nullable(),
     }),
   noGuiaEmbarqueId: z.string().describe("Identificador de embarque según modo de transporte"),
-  tipoContenedorVehiculo: z.string().describe('Valor de 2 números entre 1 y 69').nullable(),
+  tipoContenedorVehiculo: z.string().describe("Valor de 2 números entre 1 y 69").nullable(),
   identificadoresPedimento: z
     .array(
       z.object({
