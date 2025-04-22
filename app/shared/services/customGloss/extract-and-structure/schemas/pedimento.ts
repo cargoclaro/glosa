@@ -188,18 +188,29 @@ export const datosGeneralesDePedimentoSchema = z.object({
       valorDolares: z.number().describe('Etiqueta en el documento: "VAL. DOLARES"'),
     }),
   }),
-  noGuiaEmbarqueId: z.string().describe("Identificador de embarque según modo de transporte"),
-  tipoContenedorVehiculo: z.string().describe("Valor de 2 números entre 1 y 69").nullable(),
-  identificadoresPedimento: z
-    .array(
-      z.object({
-        clave: z.string().nullable().describe('Aparece como "CLAVE/COMPL. IDENTIFICADOR:" en el documento'),
-        complemento1: z.string().nullable().describe('Aparece como "COMPLEMENTO 1:" en el documento'),
-        complemento2: z.string().nullable().describe('Aparece como "COMPLEMENTO 2:" en el documento'),
-        complemento3: z.string().nullable().describe('Aparece como "COMPLEMENTO 3:" en el documento'),
-      })
-    ),
-  observacionesANivelPedimento: z.string().nullable().describe('Aparece como "OBSERVACIONES:" en el documento'),
+  guiasOManifiestosOConocimientosDeEmbarqueODocumentosDeTransporte: z
+    .object({
+      numeroMaster: z.string(),
+      numeroHouse: z.string(),
+    })
+    .nullable()
+    .describe('Etiqueta en el documento: "NUMERO (GUIA/ORDEN EMBARQUE)/ID"'),
+  contenedoresOEquipoFerrocarrilONumeroEconomicoVehiculo: z
+    .object({
+      numero: z.string().describe('Etiqueta en el documento: "NÚMERO"'),
+      // TODO: Apendice 10
+      tipo: z.string().describe('Etiqueta en el documento: "TIPO"'),
+    })
+    .nullable()
+    .describe('Etiqueta en el documento: "CONTENEDORES/ CARRO DE FERROCARRIL/ NÚMERO ECONÓMICO DEL VEHÍCULO"'),
+  identificadoresPedimento: z.array(z.object({
+    // TODO: Apendice 8
+    clave: z.string().describe('Etiqueta en el documento: "CLAVE/COMPL. IDENTIFICADOR"'),
+    complemento1: z.string().nullable().describe('Etiqueta en el documento: "COMPLEMENTO 1"'),
+    complemento2: z.string().nullable().describe('Etiqueta en el documento: "COMPLEMENTO 2"'),
+    complemento3: z.string().nullable().describe('Etiqueta en el documento: "COMPLEMENTO 3"'),
+  })),
+  observacionesANivelPedimento: z.string().nullable().describe('Etiqueta en el documento: "OBSERVACIONES"'),
 });
 
 const pedimentoSchema = datosGeneralesDePedimentoSchema.extend({
