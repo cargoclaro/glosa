@@ -72,7 +72,7 @@ export const datosGeneralesDePedimentoSchema = z.object({
   encabezadoPrincipalDelPedimento: z.object({
     numeroDePedimento: z.string().describe('Etiqueta en el documento: "NUM. PEDIMENTO"'),
     tipoDeOperacion: z.enum(['IMP', 'EXP', 'TRA']).nullable().describe('Etiqueta en el documento: "T. OPER"'),
-    // TODO: Sacar la lista de claves de pedimento y hacerla un enum
+    // TODO: Apendice 2
     claveDePedimento: z.string().describe('Etiqueta en el documento: "CVE. PEDIMENTO"'),
     regimen: z
       .enum(['IMD', 'EXD', 'ITR', 'ITE', 'ETR', 'ETE', 'DFI', 'RFE', 'TRA', 'RFS'])
@@ -84,7 +84,7 @@ export const datosGeneralesDePedimentoSchema = z.object({
       .describe('Etiqueta en el documento: "DESTINO"'),
     tipoDeCambio: z.number().describe('Etiqueta en el documento: "TIPO CAMBIO"'),
     pesoBruto: z.number().nullable().describe('Etiqueta en el documento: "PESO BRUTO"'),
-    // TODO: Sacar la lista de claves de aduana y hacerla un enum
+    // TODO: Apendice 1
     aduanaEntradaOSalida: z.string().nullable().describe('Etiqueta en el documento: "ADUANA E/S"'),
     mediosTransporte: z.object({
       entradaSalida: z.enum(medioDeTransporteClaves).nullable().describe('Etiqueta en el documento: "ENTRADA/SALIDA"'),
@@ -116,6 +116,14 @@ export const datosGeneralesDePedimentoSchema = z.object({
       descargaDecrementables: z.number().nullable().describe('Etiqueta en el documento: "DESCARGA DECREMENTABLES"'),
       otrosDecrementables: z.number().nullable().describe('Etiqueta en el documento: "OTROS DECREMENTABLES"'),
     }),
+    marcasNumerosBultos: z
+      .object({
+        marcas: z.string().describe('El valor puede ser "S/M" que significa sin marca.'),
+        numeroDeBulto: z.string().describe('El valor puede ser "S/N" que significa sin numero.'),
+        totalDeBultos: z.string(),
+      })
+      .nullable()
+      .describe('Etiqueta en el documento: "MARCAS, NUMEROS Y TOTAL DE BULTOS:"'),
     fechas: z.object({
       entrada: z
         .string()
@@ -143,27 +151,23 @@ export const datosGeneralesDePedimentoSchema = z.object({
         .describe("Etiqueta en el documento: 'ORIGINAL.'"),
     }),
     cuadroDeLiquidacion: z.object({
-      liquidaciones: z
-        .array(z.object({
-          concepto: z.string().nullable().describe('Aparece como "CONCEPTO:" en el documento'),
-          fp: z.number().nullable().describe('Aparece como "F.P.:" en el documento'),
-          importe: z.number().nullable().describe('Aparece como "IMPORTE:" en el documento'),
-        }))
-        .nullable(),
-      totales: z
-        .object({
-          efectivo: z.number().nullable().describe('Aparece como "EFECTIVO:" en el documento'),
-          otros: z.number().nullable().describe('Aparece como "OTROS:" en el documento'),
-          total: z.number().nullable().describe('Aparece como "TOTAL:" en el documento'),
-        })
-        .nullable(),
+      liquidaciones: z.array(z.object({
+        // TODO: Apendice 12
+        concepto: z.string().describe('Etiqueta en el documento: "CONCEPTO"'),
+        fp: z
+          .enum([
+            '0', '2', '4', '5', '6', '7', '8', '9', '12', '13', '14', '15', '16', '18', '19', '21', '22'
+          ])
+          .describe('Etiqueta en el documento: "F.P."'),
+        importe: z.number().describe('Etiqueta en el documento: "IMPORTE"'),
+      })),
+      totales: z.object({
+        efectivo: z.number().describe('Etiqueta en el documento: "EFECTIVO"'),
+        otros: z.number().describe('Etiqueta en el documento: "OTROS"'),
+        total: z.number().describe('Etiqueta en el documento: "TOTAL"'),
+      }),
     }),
   }),
-  identificadoresNivelPedimento: z
-    .object({
-      claveSeccionAduanera: z.string().describe('Aparece como "CLAVE DE LA SECCION ADUANERA DE DESPACHO:" en el documento'),
-      marcasNumerosBultos: z.string().nullable().describe('Aparece como "MARCAS, NUMEROS Y TOTAL DE BULTOS:" en el documento'),
-    }),
   idFiscal: z.string().describe('Número de factura extranjera. Aparece como "ID FISCAL" en el documento').nullable(),
   cove: z.string().describe('Código alfanumérico de 11 caracteres. Aparece como "COVE" en el documento').nullable(),
   nombreRazonSocial: z.string().nullable().describe('Aparece como "NOMBRE, DENOMINACION O RAZON SOCIAL:" en el documento'),
