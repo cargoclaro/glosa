@@ -2,50 +2,59 @@ import { isValid, parse } from 'date-fns';
 import { z, type RefinementCtx } from 'zod';
 
 export const partidaSchema = z.object({
-  secuencia: z.number().describe('Aparece como "SEC" en el documento'),
-  fraccion: z.string(),
-  subdivisionONumeroDeIdentificacionComercial: z.string(),
-  vinculacion: z.enum(['0', '1', '2']).nullable().describe('Aparece como "VINC" en el documento'),
-  metodoDeValoracion: z.enum(['0', '1', '2', '3', '4', '5', '6']).nullable(),
-  unidadDeMedidaComercial: z.enum(['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22']),
-  cantidadUnidadDeMedidaComercial: z.number(),
-  unidadDeMedidaDeTarifa: z.enum(['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22']),
-  cantidadUnidadDeMedidaDeTarifa: z.number().nullable().describe('Aparece como "CANTIDAD UMT" en el documento'),
-  paisDeVentaOCompra: z.string().nullable().describe('Una clave de pais ISO 3166-1 alfa-3, aparece como "P. V/C." en el documento'),
-  paisDeOrigenODestino: z.string().nullable().describe('Una clave de pais ISO 3166-1 alfa-3, aparece como "P. O/D." en el documento'),
-  descripcion: z.string(),
-  valorEnAduanaOValorEnUSD: z.number(),
-  importeDePrecioPagadoOValorComercial: z.number(),
-  precioUnitario: z.number(),
-  valorAgregado: z.number().nullable(),
-  marca: z.string().nullable(),
-  modelo: z.string().nullable(),
-  codigoProducto: z.string().nullable(),
+  secuencia: z.number().describe('Etiqueta en el documento: "SEC"'),
+  fraccion: z.string().describe('Etiqueta en el documento: "FRACC"'),
+  subdivisionONumeroDeIdentificacionComercial: z.string().describe('Etiqueta en el documento: "SUBDIV/NUM. IDENT. COMERCIAL"'),
+  vinculacion: z.enum(['0', '1', '2']).nullable().describe('Etiqueta en el documento: "VINC"'),
+  metodoDeValoracion: z.enum(['0', '1', '2', '3', '4', '5', '6']).nullable().describe('Etiqueta en el documento: "MET VAL"'),
+  unidadDeMedidaComercial: z
+    .enum(['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22'])
+    .describe('Etiqueta en el documento: "UMC"'),
+  cantidadUnidadDeMedidaComercial: z.number().describe('Etiqueta en el documento: "CANTIDAD UMC"'),
+  unidadDeMedidaDeTarifa: z
+    .enum(['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22'])
+    .describe('Etiqueta en el documento: "UMT"'),
+  cantidadUnidadDeMedidaDeTarifa: z.number().nullable().describe('Etiqueta en el documento: "CANTIDAD UMT"'),
+  paisDeVentaOCompra: z.string().nullable().describe('Una clave de pais ISO 3166-1 alfa-3. Etiqueta en el documento: "P. V/C."'),
+  paisDeOrigenODestino: z.string().nullable().describe('Una clave de pais ISO 3166-1 alfa-3. Etiqueta en el documento: "P. O/D."'),
+  descripcion: z.string().describe('Etiqueta en el documento: "DESCRIPCION"'),
+  valorEnAduanaOValorEnUSD: z.number().describe('Etiqueta en el documento: "VAL ADU/USD"'),
+  importeDePrecioPagadoOValorComercial: z.number().describe('Etiqueta en el documento: "IMP. PRECIO PAG."'),
+  precioUnitario: z.number().describe('Etiqueta en el documento: "PRECIO UNIT."'),
+  valorAgregado: z.number().nullable().describe('Etiqueta en el documento: "VAL. AGREG."'),
+  marca: z.string().nullable().describe('Etiqueta en el documento: "MARCA"'),
+  modelo: z.string().nullable().describe('Etiqueta en el documento: "MODELO"'),
+  codigoProducto: z.string().nullable().describe('Etiqueta en el documento: "CODIGO PRODUCTO"'),
   contribuciones: z.array(z.object({
-    contribucion: z.string(),
-    tasa: z.number(),
-    tipoDeTasa: z.string(),
-    formaDePago: z.string(),
-    importe: z.number(),
+    contribucion: z.string().describe('Etiqueta en el documento: "CON."'),
+    tasa: z.number().describe('Etiqueta en el documento: "TASA"'),
+    tipoDeTasa: z.string().describe('Etiqueta en el documento: "T.T."'),
+    formaDePago: z.string().describe('Etiqueta en el documento: "F.P."'),
+    importe: z.number().describe('Etiqueta en el documento: "IMPORTE"'),
   })),
-  regulacionesYRestriccionesNoArancelarias: z.array(z.object({
-    permiso: z
-      .string()
-      .describe('Aparece como "CLAVE" en el documento'),
-    numeroDePermiso: z.string(),
-    firmaDescargo: z
-      .string()
-      .nullable(),
-    valorComercialEnDolares: z.number(),
-    cantidadUnidadDeMedidaDeTarifaOComercial: z.number().describe('Aparece como "CANTIDAD UMT/C" en el documento'),
-  }).nullable()),
+  regulacionesYRestriccionesNoArancelarias: z.array(z
+    .object({
+      permiso: z
+        .string()
+        .describe('Etiqueta en el documento: "CLAVE"'),
+      numeroDePermiso: z.string().describe('Etiqueta en el documento: "NUM. PERMISO"'),
+      firmaDescargo: z
+        .string()
+        .nullable()
+        .describe('Etiqueta en el documento: "FIRMA DESCARGO"'),
+      valorComercialEnDolares: z.number().describe('Etiqueta en el documento: "VAL. COM. DLS."'),
+      cantidadUnidadDeMedidaDeTarifaOComercial: z.number().describe('Etiqueta en el documento: "CANTIDAD UMT/C"'),
+    })
+    .nullable()
+  ),
+  // TODO: Apendice 8
   identificadores: z.array(z.object({
     identificador: z.string(),
     complemento1: z.string().nullable(),
     complemento2: z.string().nullable(),
     complemento3: z.string().nullable(),
   })),
-  observaciones: z.string().nullable(),
+  observacionesANivelPartida: z.string().nullable().describe('Etiqueta en el documento: "OBSERVACIONES"'),
 })
 
 export const medioDeTransporteClaves = ['1', '2', '3', '4', '5', '6', '7', '8', '10', '11', '12', '98', '99'] as const;
