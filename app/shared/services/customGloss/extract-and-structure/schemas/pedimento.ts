@@ -1,5 +1,5 @@
 import { isValid, parse } from 'date-fns';
-import { z } from 'zod';
+import { z, type RefinementCtx } from 'zod';
 
 export const partidaSchema = z.object({
   secuencia: z.number().describe('Aparece como "SEC" en el documento'),
@@ -50,6 +50,24 @@ export const partidaSchema = z.object({
 
 export const medioDeTransporteClaves = ['1', '2', '3', '4', '5', '6', '7', '8', '10', '11', '12', '98', '99'] as const;
 
+function transformFechaEntradaPresentacion(dateStr: string | null, ctx: RefinementCtx) {
+  if (!dateStr) {
+    return null;
+  }
+
+  const parsedDate = parse(dateStr, 'dd/MM/yyyy', new Date());
+
+  if (!isValid(parsedDate)) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: `Formato de fecha inválido: ${dateStr}. Se esperaba DD/MM/YYYY.`,
+    });
+    return null;
+  }
+
+  return parsedDate;
+}
+
 export const datosGeneralesDePedimentoSchema = z.object({
   encabezadoPrincipalDelPedimento: z.object({
     numeroDePedimento: z.string().describe('Etiqueta en el documento: "NUM. PEDIMENTO"'),
@@ -68,73 +86,69 @@ export const datosGeneralesDePedimentoSchema = z.object({
     pesoBruto: z.number().nullable().describe('Etiqueta en el documento: "PESO BRUTO"'),
     // TODO: Sacar la lista de claves de aduana y hacerla un enum
     aduanaEntradaOSalida: z.string().nullable().describe('Etiqueta en el documento: "ADUANA E/S"'),
-    mediosTransporte: z
-      .object({
-        entradaSalida: z.enum(medioDeTransporteClaves).nullable().describe('Etiqueta en el documento: "ENTRADA/SALIDA"'),
-        arribo: z.enum(medioDeTransporteClaves).nullable().describe('Etiqueta en el documento: "ARRIBO"'),
-        salida: z.enum(medioDeTransporteClaves).nullable().describe('Etiqueta en el documento: "SALIDA"'),
-      }),
-  }),
-  valores: z
-    .object({
-      valorDolares: z.number().nullable().describe('Aparece como "VAL. DOLARES:" en el documento'),
-      valorAduana: z.number().nullable().describe('Aparece como "VALOR ADUANA:" en el documento'),
-      precioPagadoValorComercial: z.number().nullable().describe('Aparece como "PRECIO PAGADO/VALOR COMERCIAL:" en el documento'),
+    mediosTransporte: z.object({
+      entradaSalida: z.enum(medioDeTransporteClaves).nullable().describe('Etiqueta en el documento: "ENTRADA/SALIDA"'),
+      arribo: z.enum(medioDeTransporteClaves).nullable().describe('Etiqueta en el documento: "ARRIBO"'),
+      salida: z.enum(medioDeTransporteClaves).nullable().describe('Etiqueta en el documento: "SALIDA"'),
     }),
-  datosImportador: z
-    .object({
-      rfc: z.string().nullable().describe('Aparece como "RFC:" en el documento'),
-      curp: z.string().nullable().describe('Aparece como "CURP:" en el documento'),
-      razonSocial: z.string().describe('Aparece como "NOMBRE, DENOMINACION O RAZON SOCIAL:" en el documento'),
-      domicilio: z.string().nullable().describe('Aparece como "DOMICILIO:" en el documento'),
+    valores: z.object({
+      valorDolares: z.number().nullable().describe('Aparece como "VAL. DOLARES" en el documento'),
+      valorAduana: z.number().nullable().describe('Aparece como "VALOR ADUANA" en el documento'),
+      precioPagadoOValorComercial: z.number().nullable().describe('Aparece como "PRECIO PAGADO/VALOR COMERCIAL" en el documento'),
     }),
-  incrementables: z
-    .object({
-      valorSeguros: z.number().nullable().describe('Aparece como "VAL. SEGUROS:" en el documento'),
-      seguros: z.number().nullable().describe('Aparece como "SEGUROS:" en el documento'),
-      fletes: z.number().nullable().describe('Aparece como "FLETES:" en el documento'),
-      embalajes: z.number().nullable().describe('Aparece como "EMBALAJES:" en el documento'),
-      otrosIncrementables: z.number().nullable().describe('Aparece como "OTROS INCREMENTABLES:" en el documento'),
+    datosImportador: z.object({
+      rfc: z.string().describe('Etiqueta en el documento: "RFC"'),
+      curp: z.string().nullable().describe('Etiqueta en el documento: "CURP"'),
+      razonSocial: z.string().describe('Etiqueta en el documento: "NOMBRE, DENOMINACION O RAZON SOCIAL"'),
+      domicilio: z.string().nullable().describe('Etiqueta en el documento: "DOMICILIO"'),
     }),
-  decrementables: z
-    .object({
-      transporteDecrementables: z.number().nullable().describe('Aparece como "TRANSPORTE DECREMENTABLES:" en el documento'),
-      seguroDecrementables: z.number().nullable().describe('Aparece como "SEGURO DECREMENTABLES:" en el documento'),
-      cargaDecrementables: z.number().nullable().describe('Aparece como "CARGA DECREMENTABLES:" en el documento'),
-      descargaDecrementables: z.number().nullable().describe('Aparece como "DESCARGA DECREMENTABLES:" en el documento'),
-      otrosDecrementables: z.number().nullable().describe('Aparece como "OTROS DECREMENTABLES:" en el documento'),
+    incrementables: z.object({
+      valorSeguros: z.number().nullable().describe('Etiqueta en el documento: "VAL. SEGUROS"'),
+      seguros: z.number().nullable().describe('Etiqueta en el documento: "SEGUROS"'),
+      fletes: z.number().nullable().describe('Etiqueta en el documento: "FLETES"'),
+      embalajes: z.number().nullable().describe('Etiqueta en el documento: "EMBALAJES"'),
+      otrosIncrementables: z.number().nullable().describe('Etiqueta en el documento: "OTROS INCREMENTABLES"'),
     }),
-  fechaEntradaPresentacion: z
-    .string()
-    .describe("Fecha en formato DD/MM/YYYY (por ejemplo, '13/05/2024'). Aparece como 'FECHA (DD/MM/YYYY)' en el documento")
-    .nullable()
-    .transform((dateStr, ctx) => {
-      if (!dateStr) {
-        return null;
-      }
-
-      const parsedDate = parse(dateStr, 'dd/MM/yyyy', new Date());
-
-      if (!isValid(parsedDate)) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: `Formato de fecha inválido: ${dateStr}. Se esperaba DD/MM/YYYY.`,
-        });
-        return null;
-      }
-
-      return parsedDate;
+    decrementables: z.object({
+      transporteDecrementables: z.number().nullable().describe('Etiqueta en el documento: "TRANSPORTE DECREMENTABLES"'),
+      seguroDecrementables: z.number().nullable().describe('Etiqueta en el documento: "SEGURO DECREMENTABLES"'),
+      cargaDecrementables: z.number().nullable().describe('Etiqueta en el documento: "CARGA DECREMENTABLES"'),
+      descargaDecrementables: z.number().nullable().describe('Etiqueta en el documento: "DESCARGA DECREMENTABLES"'),
+      otrosDecrementables: z.number().nullable().describe('Etiqueta en el documento: "OTROS DECREMENTABLES"'),
     }),
-  cuadroDeLiquidacion: z
-    .object({
+    fechas: z.object({
+      entrada: z
+        .string()
+        .describe("Etiqueta en el documento: 'ENTRADA'")
+        .transform(transformFechaEntradaPresentacion),
+      pago: z
+        .string()
+        .describe("Etiqueta en el documento: 'PAGO'")
+        .transform(transformFechaEntradaPresentacion),
+      extraccion: z
+        .string()
+        .nullable()
+        .describe("Etiqueta en el documento: 'EXTRACCIÓN.'"),
+      presentacion: z
+        .string()
+        .nullable()
+        .describe("Etiqueta en el documento: 'PRESENTACIÓN.'"),
+      importacionAEstadosUnidosOCanada: z
+        .string()
+        .nullable()
+        .describe("Etiqueta en el documento: 'IMP. EUA/CAN.'"),
+      original: z
+        .string()
+        .nullable()
+        .describe("Etiqueta en el documento: 'ORIGINAL.'"),
+    }),
+    cuadroDeLiquidacion: z.object({
       liquidaciones: z
-        .array(
-          z.object({
-            concepto: z.string().nullable().describe('Aparece como "CONCEPTO:" en el documento'),
-            fp: z.number().nullable().describe('Aparece como "F.P.:" en el documento'),
-            importe: z.number().nullable().describe('Aparece como "IMPORTE:" en el documento'),
-          })
-        )
+        .array(z.object({
+          concepto: z.string().nullable().describe('Aparece como "CONCEPTO:" en el documento'),
+          fp: z.number().nullable().describe('Aparece como "F.P.:" en el documento'),
+          importe: z.number().nullable().describe('Aparece como "IMPORTE:" en el documento'),
+        }))
         .nullable(),
       totales: z
         .object({
@@ -144,6 +158,7 @@ export const datosGeneralesDePedimentoSchema = z.object({
         })
         .nullable(),
     }),
+  }),
   identificadoresNivelPedimento: z
     .object({
       claveSeccionAduanera: z.string().describe('Aparece como "CLAVE DE LA SECCION ADUANERA DE DESPACHO:" en el documento'),
