@@ -177,12 +177,12 @@ export const datosGeneralesDePedimentoSchema = z.object({
       }),
     }),
   }),
-  datosDelProveedorOComprador: z.object({
+  datosDelProveedorOComprador: z.array(z.object({
     idFiscal: z.string().nullable().describe('Número de factura extranjera. Etiqueta en el documento: "ID FISCAL"'),
     nombreRazonSocial: z.string().describe('Etiqueta en el documento: "NOMBRE, DENOMINACION O RAZON SOCIAL"'),
     domicilio: z.string().nullable().describe('Etiqueta en el documento: "DOMICILIO"'),
     vinculacion: z.enum(['SI', 'NO']).nullable().describe('Etiqueta en el documento: "VINCULACION"'),
-    facturas: z.object({
+    facturas: z.array(z.object({
       numeroDeCFDIODocumentoEquivalente: z.string().describe('Etiqueta en el documento: "NUM. FACTURA"'),
       fecha: z
         .string()
@@ -195,8 +195,8 @@ export const datosGeneralesDePedimentoSchema = z.object({
       valorMoneda: z.number().describe('Etiqueta en el documento: "VAL. MON. FACT"'),
       factorMoneda: z.number().describe('Etiqueta en el documento: "FACTOR MON. FACT"'),
       valorDolares: z.number().describe('Etiqueta en el documento: "VAL. DOLARES"'),
-    }),
-  }),
+    })),
+  })),
   guiasOManifiestosOConocimientosDeEmbarqueODocumentosDeTransporte: z
     .object({
       numeroMaster: z.string(),

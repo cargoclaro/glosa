@@ -782,7 +782,182 @@ describe('Extract and Structure', () => {
     const pedimentoFixture = [
       {
         fileUrl: "https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15zV3W89SgutyXdVR43qhBYaSHWfrT9MLbDjkN",
-        expectedOutput: null
+        expectedOutput: {
+          "encabezadoPrincipalDelPedimento": {
+            "numeroDePedimento": "25 24 3577 5005723",
+            "tipoDeOperacion": "IMP",
+            "claveDePedimento": "A1",
+            "regimen": "IMD",
+            "destino": "9",
+            "tipoDeCambio": 20.2163,
+            "pesoBruto": 250,
+            "aduanaEntradaOSalida": "240",
+            "mediosTransporte": {
+              "entradaSalida": "7",
+              "arribo": "7",
+              "salida": "7"
+            },
+            "valores": {
+              "valorDolares": 7498.32,
+              "valorAduana": 151588,
+              "precioPagadoOValorComercial": 144547
+            },
+            "datosImportador": {
+              "rfc": "EGM981125GX4",
+              "curp": null,
+              "razonSocial": "HEXPOL COMPOUNDING QUERETARO S.A. DE C.V.",
+              "domicilio": "LA NORIA, Num. Ext.: 115, PARQUE INDUSTRIAL QUERETARO, CP 76220, SANTA ROSA JAUREGUI, QUERE, MEX"
+            },
+            "incrementables": {
+              "valorSeguros": 0,
+              "seguros": 0,
+              "fletes": 3807,
+              "embalajes": 0,
+              "otrosIncrementables": 3235
+            },
+            "decrementables": {
+              "transporteDecrementables": 0,
+              "seguroDecrementables": 0,
+              "cargaDecrementables": 0,
+              "descargaDecrementables": 0,
+              "otrosDecrementables": 0
+            },
+            "marcasNumerosBultos": {
+              "marcas": "A-66151",
+              "numeroDeBulto": "1",
+              "totalDeBultos": "1"
+            },
+            "fechas": {
+              "entrada": "2025-03-25T00:00:00.000Z",
+              "pago": "2025-03-25T00:00:00.000Z",
+              "extraccion": null,
+              "presentacion": null,
+              "importacionAEstadosUnidosOCanada": null,
+              "original": null
+            },
+            "cuadroDeLiquidacion": {
+              "liquidaciones": [
+                {
+                  "concepto": "IVA",
+                  "fp": "0",
+                  "importe": 24254
+                },
+                {
+                  "concepto": "IVA PRV",
+                  "fp": "0",
+                  "importe": 46
+                },
+                {
+                  "concepto": "PRV",
+                  "fp": "0",
+                  "importe": 290
+                }
+              ],
+              "totales": {
+                "efectivo": 24590,
+                "otros": 0,
+                "total": 24590
+              }
+            }
+          },
+          "datosDelProveedorOComprador": [
+            {
+              "idFiscal": "13-5409005",
+              "nombreRazonSocial": "EXXONMOBIL CHEMICAL COMPANY",
+              "domicilio": "SPRINGWOODS VILLAGE PARKWAY Num. Ext. 22777 CP 77389 SPRING, TEXAS, USA",
+              "vinculacion": "NO",
+              "facturas": [
+                {
+                  "numeroDeCFDIODocumentoEquivalente": "TS-25032025",
+                  "fecha": "2025-03-25T00:00:00.000Z",
+                  "incoterm": "CPT",
+                  "moneda": "USD",
+                  "valorMoneda": 7150,
+                  "factorMoneda": 1,
+                  "valorDolares": 7150
+                }
+              ]
+            }
+          ],
+          "guiasOManifiestosOConocimientosDeEmbarqueODocumentosDeTransporte": null,
+          "contenedoresOEquipoFerrocarrilONumeroEconomicoVehiculo": {
+            "numero": "XXXXXX",
+            "tipo": "60"
+          },
+          "identificadoresPedimento": [],
+          "observacionesANivelPedimento": "SE ANEXAN DOCUMENTOS DIGITALIZADOS (CONF. ART. 36 A DE LA LEY ADUANERA VIGENTE Y REGLAS GENERALES DE COMERCIO EXTERIOR 3.1.8) PLAZUELA CONSOLIDADO",
+          "partidas": [
+            {
+              "secuencia": 1,
+              "fraccion": "75040001",
+              "subdivisionONumeroDeIdentificacionComercial": "00",
+              "vinculacion": "0",
+              "metodoDeValoracion": "1",
+              "unidadDeMedidaComercial": "6",
+              "cantidadUnidadDeMedidaComercial": 1,
+              "unidadDeMedidaDeTarifa": "1",
+              "cantidadUnidadDeMedidaDeTarifa": 250,
+              "paisDeVentaOCompra": "USA",
+              "paisDeOrigenODestino": "USA",
+              "descripcion": "POLVO DE NICKEL",
+              "valorEnAduanaOValorEnUSD": 151588,
+              "importeDePrecioPagadoOValorComercial": 144547,
+              "precioUnitario": 144547,
+              "valorAgregado": null,
+              "marca": null,
+              "modelo": null,
+              "codigoProducto": null,
+              "contribuciones": [
+                {
+                  "contribucion": "IGI/IGE",
+                  "tasa": 0,
+                  "tipoDeTasa": "1",
+                  "formaDePago": "0",
+                  "importe": 0
+                },
+                {
+                  "contribucion": "IVA",
+                  "tasa": 16,
+                  "tipoDeTasa": "1",
+                  "formaDePago": "0",
+                  "importe": 24254
+                }
+              ],
+              "regulacionesYRestriccionesNoArancelarias": [],
+              "identificadores": [
+                {
+                  "identificador": "EO",
+                  "complemento1": "1",
+                  "complemento2": null,
+                  "complemento3": null
+                },
+                {
+                  "identificador": "MA",
+                  "complemento1": null,
+                  "complemento2": null,
+                  "complemento3": null
+                },
+                {
+                  "identificador": "PO",
+                  "complemento1": "151588",
+                  "complemento2": "IMPERIAL ALLOYS CORP",
+                  "complemento3": null
+                },
+                {
+                  "identificador": "TL",
+                  "complemento1": "USA",
+                  "complemento2": null,
+                  "complemento3": null
+                }
+              ],
+              "observacionesANivelPartida": "ORDEN No. 1"
+            }
+          ]
+        }
+      },
+      {
+        fileUrl: "https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y153CEDoxBhnLpbl6it5NaGkD4BTRJsU8jFoO2K",
+        expectedOutput: null,
       }
     ] as const;
     const pedimentoResults = await Promise.all(
