@@ -827,12 +827,12 @@ describe('Extract and Structure', () => {
             },
             "marcasNumerosBultos": {
               "marcas": "A-66151",
-              "numeroDeBulto": "1",
-              "totalDeBultos": "1"
+              "numeroDeBulto": 1,
+              "totalDeBultos": 1
             },
             "fechas": {
-              "entrada": "2025-03-25T00:00:00.000Z",
-              "pago": "2025-03-25T00:00:00.000Z",
+              "entrada": new Date("2025-03-25T00:00:00.000Z"),
+              "pago": new Date("2025-03-25T00:00:00.000Z"),
               "extraccion": null,
               "presentacion": null,
               "importacionAEstadosUnidosOCanada": null,
@@ -872,7 +872,7 @@ describe('Extract and Structure', () => {
               "facturas": [
                 {
                   "numeroDeCFDIODocumentoEquivalente": "TS-25032025",
-                  "fecha": "2025-03-25T00:00:00.000Z",
+                  "fecha": new Date("2025-03-25T00:00:00.000Z"),
                   "incoterm": "CPT",
                   "moneda": "USD",
                   "valorMoneda": 7150,

@@ -54,7 +54,7 @@ export const partidaSchema = z.object({
     complemento2: z.string().nullable(),
     complemento3: z.string().nullable(),
   })),
-  observacionesANivelPartida: z.string().nullable().describe('Etiqueta en el documento: "OBSERVACIONES"'),
+  observacionesANivelPartida: z.string().nullable().describe('Etiqueta en el documento: "OBSERVACIONES A NIVEL PARTIDA"'),
 })
 
 export const medioDeTransporteClaves = ['1', '2', '3', '4', '5', '6', '7', '8', '10', '11', '12', '98', '99'] as const;
@@ -128,8 +128,8 @@ export const datosGeneralesDePedimentoSchema = z.object({
     marcasNumerosBultos: z
       .object({
         marcas: z.string().describe('El valor puede ser "S/M" que significa sin marca.'),
-        numeroDeBulto: z.string().describe('El valor puede ser "S/N" que significa sin numero.'),
-        totalDeBultos: z.string(),
+        numeroDeBulto: z.number().nullable().describe('El valor puede ser "S/N" que significa sin numero, en ese caso se debe retornar null.'),
+        totalDeBultos: z.number(),
       })
       .nullable()
       .describe('Etiqueta en el documento: "MARCAS, NUMEROS Y TOTAL DE BULTOS:"'),

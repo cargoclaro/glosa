@@ -3,6 +3,7 @@ import { google } from '@ai-sdk/google';
 import { generateObject, generateText } from 'ai';
 import { packingListSchema, datosGeneralesSchema, mercanciaSchema, datosGeneralesDePedimentoSchema, partidaSchema } from './schemas';
 import { PDFDocument } from 'pdf-lib';
+import { z } from 'zod';
 
 /**
  * Fetches a PDF file and returns an array of base64-encoded pages
@@ -194,7 +195,7 @@ export async function extractAndStructurePedimento(
   // Parallelize classification of all pages to find first 'Partidas' quicker
   const classificationPromises = pagesToClassify.map((pageBase64, index) =>
     generateObject({
-      model: google('gemini-2.0-flash-001'),
+      model: google('gemini-2.5-flash-preview-04-17'),
       experimental_telemetry: {
         isEnabled: true,
         // +1 because zero-indexed
@@ -213,7 +214,7 @@ export async function extractAndStructurePedimento(
           content: [
             {
               type: 'text',
-              text: 'Classify this page as "Datos generales" or "Partidas" based on whether it contains a partidas section or table.',
+              text: 'Clasifica esta página como "Datos generales" o "Partidas" según si contiene una sección de partidas. Debe venir información como la fracción, las contribuciones y los identificadores de la partida (no del pedimento general).',
             },
             {
               type: 'file',
@@ -242,7 +243,7 @@ export async function extractAndStructurePedimento(
   const datosGeneralesPromise = generateObject({
     model: openai('o4-mini-2025-04-16'),
     temperature: 1,
-    providerOptions: { openai: { reasoningEffort: 'high' } },
+    providerOptions: { openai: { reasoningEffort: 'medium' } },
     seed: 42,
     schema: datosGeneralesDePedimentoSchema,
     experimental_telemetry: {
@@ -272,17 +273,15 @@ export async function extractAndStructurePedimento(
     ],
   });
 
-  const partidasResultsPromise = Promise.all(partidasPages.map((pageBase64, index) =>
-    generateObject({
-      model: openai('o4-mini-2025-04-16'),
-      temperature: 1,
-      providerOptions: { openai: { reasoningEffort: 'high' } },
+  const partidasResultsPromise = Promise.all(partidasPages.map(async (pageBase64, pageIndex) => {
+    // Count partidas on this page
+    const { object: { partidasCount } } = await generateObject({
+      model: google('gemini-2.5-flash-preview-04-17'),
       seed: 42,
-      schema: partidaSchema,
-      output: 'array',
+      schema: z.object({ partidasCount: z.number() }),
       experimental_telemetry: {
         isEnabled: true,
-        functionId: `Extract partidas from page ${firstPartidasPageIndex + index + 1}`,
+        functionId: `Count partidas on page ${firstPartidasPageIndex + pageIndex + 1}`,
         metadata: {
           langfuseTraceId: parentTraceId,
           langfuseUpdateParent: false,
@@ -293,22 +292,56 @@ export async function extractAndStructurePedimento(
         {
           role: 'user',
           content: [
-            { type: 'text', text: 'JSONify the partidas on this page.' },
+            { type: 'text', text: '¿Cuántas partidas hay en esta página? Devuelve un objeto con la propiedad partidasCount igual al número entre "1" y "4".' },
             { type: 'file', data: `data:application/pdf;base64,${pageBase64}`, mimeType: 'application/pdf' },
           ],
         },
       ],
-    })
-  ));
+    });
 
-  const [datosGeneralesResponse, partidasResults] = await Promise.all([
+    // Extract each partida individually
+    const extractionPromises: Promise<{ object: unknown }>[] = [];
+    // Spanish ordinals for partidas on the page
+    const ordinals = ['primera', 'segunda', 'tercera', 'cuarta', 'quinta', 'sexta', 'séptima', 'octava', 'novena', 'décima'];
+    for (let i = 1; i <= partidasCount; i++) {
+      extractionPromises.push(generateObject({
+        model: openai('o4-mini-2025-04-16'),
+        temperature: 1,
+        providerOptions: { openai: { reasoningEffort: 'medium' } },
+        seed: 42,
+        schema: partidaSchema,
+        experimental_telemetry: {
+          isEnabled: true,
+          functionId: `Extract partida ${i} from page ${firstPartidasPageIndex + pageIndex + 1}`,
+          metadata: {
+            langfuseTraceId: parentTraceId,
+            langfuseUpdateParent: false,
+            fileUrl,
+          },
+        },
+        messages: [
+          {
+            role: 'user',
+            content: [
+              { type: 'text', text: `Extrae la ${ordinals[i - 1]} partida de esta página.` },
+              { type: 'file', data: `data:application/pdf;base64,${pageBase64}`, mimeType: 'application/pdf' },
+            ],
+          },
+        ],
+      }));
+    }
+    const extracted = await Promise.all(extractionPromises);
+    return extracted.map(r => r.object);
+  }));
+
+  const [datosGeneralesResponse, partidasPagesResults] = await Promise.all([
     datosGeneralesPromise,
     partidasResultsPromise,
   ]);
   const datosGeneralesDePedimento = datosGeneralesResponse.object;
 
   // Combine all partidas from all pages
-  const partidas = partidasResults.flatMap(result => result.object);
+  const partidas = partidasPagesResults.flat();
 
   return {
     ...datosGeneralesDePedimento,
