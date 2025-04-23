@@ -184,17 +184,26 @@ export async function extractAndStructureCove(
 
 export async function extractAndStructurePedimento(
   fileUrl: string,
-  parentTraceId?: string,
+  parentTraceId: string,
 ) {
   const pages = await fetchPdfPages(fileUrl);
 
-  // Omit the first page, as it is never the 'Partidas' page; classify the next two pages only
-  const pagesToClassify = pages.slice(1, 3);
+  // Classify the first three pages only
+  const pagesToClassify = pages.slice(0, 3);
 
   // Parallelize classification of all pages to find first 'Partidas' quicker
-  const classificationPromises = pagesToClassify.map((pageBase64) =>
+  const classificationPromises = pagesToClassify.map((pageBase64, index) =>
     generateObject({
       model: google('gemini-2.0-flash-001'),
+      experimental_telemetry: {
+        isEnabled: true,
+        // +1 because zero-indexed
+        functionId: `Classify page ${index + 1}`,
+        metadata: {
+          langfuseTraceId: parentTraceId,
+          langfuseUpdateParent: false,
+        },
+      },
       seed: 42,
       output: 'enum',
       enum: ['Datos generales', 'Partidas'],
@@ -222,26 +231,25 @@ export async function extractAndStructurePedimento(
     throw new Error('No partidas section found in the document');
   }
 
-  // Map index in pagesToClassify back to the original pages array
-  const firstPartidasPageIndexInPages = firstPartidasPageIndex + 1;
-
   // Create PDF with all datos generales pages (including the first partidas page)
-  const datosGeneralesPages = pages.slice(0, firstPartidasPageIndexInPages + 1);
+  const datosGeneralesPages = pages.slice(0, firstPartidasPageIndex + 1);
   const datosGeneralesPdfBase64 = await combinePagesToPdf(datosGeneralesPages);
 
   // Get all partidas pages starting from firstPartidasPageIndexInPages
-  const partidasPages = pages.slice(firstPartidasPageIndexInPages);
+  const partidasPages = pages.slice(firstPartidasPageIndex);
 
   // Kick off datos-generales and partidas extractions in parallel
   const datosGeneralesPromise = generateObject({
-    model: google('gemini-2.5-pro-exp-03-25'),
+    model: openai('o4-mini-2025-04-16'),
+    temperature: 1,
+    providerOptions: { openai: { reasoningEffort: 'high' } },
     seed: 42,
     schema: datosGeneralesDePedimentoSchema,
     experimental_telemetry: {
       isEnabled: true,
       functionId: 'Extract and structure datos generales de pedimento',
       metadata: {
-        langfuseTraceId: parentTraceId ?? '',
+        langfuseTraceId: parentTraceId,
         langfuseUpdateParent: false,
         fileUrl,
       },
@@ -274,12 +282,11 @@ export async function extractAndStructurePedimento(
       output: 'array',
       experimental_telemetry: {
         isEnabled: true,
-        functionId: `Extract partidas from page ${firstPartidasPageIndexInPages + index}`,
+        functionId: `Extract partidas from page ${firstPartidasPageIndex + index + 1}`,
         metadata: {
-          langfuseTraceId: parentTraceId ?? '',
+          langfuseTraceId: parentTraceId,
           langfuseUpdateParent: false,
           fileUrl,
-          pageIndex: firstPartidasPageIndexInPages + index,
         },
       },
       messages: [
