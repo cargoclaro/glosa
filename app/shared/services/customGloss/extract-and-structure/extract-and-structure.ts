@@ -239,13 +239,46 @@ export async function extractAndStructurePedimento(
   // Get all partidas pages starting from firstPartidasPageIndexInPages
   const partidasPages = pages.slice(firstPartidasPageIndex);
 
+  const { encabezadoPrincipalDelPedimento, ...restOfPedimento } = datosGeneralesDePedimentoSchema.shape;
+
   // Kick off datos-generales and partidas extractions in parallel
-  const datosGeneralesPromise = generateObject({
+  const encabezadoPrincipalDelPedimentoPromise = generateObject({
+    model: google('gemini-2.5-pro-preview-03-25'),
+    seed: 42,
+    schema: encabezadoPrincipalDelPedimento,
+    experimental_telemetry: {
+      isEnabled: true,
+      functionId: 'Extract and structure datos generales de pedimento',
+      metadata: {
+        langfuseTraceId: parentTraceId,
+        langfuseUpdateParent: false,
+        fileUrl,
+      },
+    },
+    messages: [
+      {
+        role: 'user',
+        content: [
+          {
+            type: 'text',
+            text: 'Extrae los datos generales del pedimento.',
+          },
+          {
+            type: 'file',
+            data: `data:application/pdf;base64,${datosGeneralesPdfBase64}`,
+            mimeType: 'application/pdf',
+          },
+        ],
+      },
+    ],
+  });
+
+  const restOfPedimentoPromise = generateObject({
     model: openai('o4-mini-2025-04-16'),
     temperature: 1,
     providerOptions: { openai: { reasoningEffort: 'medium' } },
     seed: 42,
-    schema: datosGeneralesDePedimentoSchema,
+    schema: z.object(restOfPedimento),
     experimental_telemetry: {
       isEnabled: true,
       functionId: 'Extract and structure datos generales de pedimento',
@@ -334,11 +367,15 @@ export async function extractAndStructurePedimento(
     return extracted.map(r => r.object);
   }));
 
-  const [datosGeneralesResponse, partidasPagesResults] = await Promise.all([
-    datosGeneralesPromise,
+  const [encabezadoPrincipalDelPedimentoResponse, restOfPedimentoResponse, partidasPagesResults] = await Promise.all([
+    encabezadoPrincipalDelPedimentoPromise,
+    restOfPedimentoPromise,
     partidasResultsPromise,
   ]);
-  const datosGeneralesDePedimento = datosGeneralesResponse.object;
+  const datosGeneralesDePedimento = {
+    encabezadoPrincipalDelPedimento: encabezadoPrincipalDelPedimentoResponse.object,
+    ...restOfPedimentoResponse.object,
+  };
 
   // Combine all partidas from all pages
   const partidas = partidasPagesResults.flat();

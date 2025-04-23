@@ -975,8 +975,8 @@ describe('Extract and Structure', () => {
 
     for (const { pedimentoResult, fileUrl } of pedimentoResults) {
       const fixture = pedimentoFixture.find(item => item.fileUrl === fileUrl);
-      expect.soft(pedimentoResult, `Result data should match expected output for: ${fileUrl}`)
-        .toEqual(fixture?.expectedOutput);
+      expect.soft(JSON.stringify(pedimentoResult), `Result data should match expected output for: ${fileUrl}`)
+        .toEqual(JSON.stringify(fixture?.expectedOutput));
     }
   });
 });
