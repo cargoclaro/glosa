@@ -964,7 +964,7 @@ describe('Extract and Structure', () => {
       }
     ] as const;
     const trace = langfuse.trace({
-      name: 'Glosa de Pedimento',
+      name: 'Test Pedimento Extract and Structure',
     });
     const pedimentoResults = await Promise.all(
       pedimentoFixture.map(async ({ fileUrl }) => {

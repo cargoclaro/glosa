@@ -293,7 +293,7 @@ export async function extractAndStructurePedimento(
         {
           role: 'user',
           content: [
-            { type: 'text', text: 'JSONify the partidas section on this page only.' },
+            { type: 'text', text: 'JSONify the partidas on this page.' },
             { type: 'file', data: `data:application/pdf;base64,${pageBase64}`, mimeType: 'application/pdf' },
           ],
         },
