@@ -1,5 +1,4 @@
 import { describe, expect, it } from 'vitest';
-import { randomUUID } from 'node:crypto';
 import { Langfuse } from 'langfuse';
 import { extractAndStructurePackingList, extractAndStructureCove, extractAndStructurePedimento } from './extract-and-structure';
 
@@ -964,15 +963,12 @@ describe('Extract and Structure', () => {
         expectedOutput: null,
       }
     ] as const;
-    // Generate a trace ID for Langfuse tracking
-    const parentTraceId = randomUUID();
-    langfuse.trace({
-      id: parentTraceId,
+    const trace = langfuse.trace({
       name: 'Glosa de Pedimento',
     });
     const pedimentoResults = await Promise.all(
       pedimentoFixture.map(async ({ fileUrl }) => {
-        const pedimentoResult = await extractAndStructurePedimento(fileUrl, parentTraceId);
+        const pedimentoResult = await extractAndStructurePedimento(fileUrl, trace.id);
         return { pedimentoResult, fileUrl };
       })
     );
