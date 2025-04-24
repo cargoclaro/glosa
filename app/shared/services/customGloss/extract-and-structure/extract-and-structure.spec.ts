@@ -769,9 +769,13 @@ describe('Extract and Structure Cove', () => {
         },
       },
     ] as const;
+    const langfuse = new Langfuse();
+    const trace = langfuse.trace({
+      name: 'Test Extract and Structure Cove',
+    });
     const coveResults = await Promise.all(
       coveFixture.map(async ({ fileUrl }) => {
-        const coveResult = await extractAndStructureCove(fileUrl);
+        const coveResult = await extractAndStructureCove(fileUrl, trace.id);
         return { coveResult, fileUrl };
       })
     );

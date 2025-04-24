@@ -81,16 +81,16 @@ export async function extractAndStructurePackingList(
 
 export async function extractAndStructureCove(
   fileUrl: string,
-  parentTraceId?: string,
+  parentTraceId: string,
 ) {
   const { text } = await generateText({
-    model: google('gemini-2.5-flash-preview-04-17'),
+    model: google('gemini-2.5-pro-preview-03-25'),
     seed: 42,
     experimental_telemetry: {
       isEnabled: true,
       functionId: 'Extract cove',
       metadata: {
-        langfuseTraceId: parentTraceId ?? '',
+        langfuseTraceId: parentTraceId,
         langfuseUpdateParent: false,
         fileUrl,
       },
@@ -123,7 +123,7 @@ export async function extractAndStructureCove(
         isEnabled: true,
         functionId: 'Structure datos generales cove',
         metadata: {
-          langfuseTraceId: parentTraceId ?? '',
+          langfuseTraceId: parentTraceId,
           langfuseUpdateParent: false,
           fileUrl,
         },

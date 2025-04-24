@@ -6,7 +6,7 @@ export const datosGeneralesSchema = z.object({
     idCove: z
       .string()
       .describe(
-        "Aparece al lado derecho de la etiqueta 'Datos del Acuse de Valor' en el documento. Ejemplo: 'COVE247163T13'."
+        "Ejemplo: 'COVE247163T13'."
       ),
     tipoDeOperacion: z.string(),
     relacionDeFacturas: z.string(),
