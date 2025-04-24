@@ -1759,8 +1759,8 @@ describe('Extract and Structure Pedimento', () => {
             },
             "marcasNumerosBultos": {
               "marcas": "A-65777",
-              "numeroDeBulto": "A-65777",
-              "totalDeBultos": 1,
+              "numeroDeBulto": "1/2",
+              "totalDeBultos": 2,
             },
             "mediosTransporte": {
               "arribo": "7",
@@ -1854,7 +1854,7 @@ describe('Extract and Structure Pedimento', () => {
               "observacionesANivelPartida": `MARCA: OLYMPUS
 MODELO: IM021
 NUMERO DE SOLICITUD: 2025CERT0002270-CA-M01
-SERIES: BJGA86117, BJGA86118, BJGA85685`,
+SERIES: BJGA86117,BJGA86118,BJGA85685`,
               "paisDeOrigenODestino": "VNM",
               "paisDeVentaOCompra": "USA",
               "precioUnitario": 14999.33333,
@@ -1996,9 +1996,9 @@ SERIES: BJNA19175, BJNA19174, BJOA23644`,
               "importeDePrecioPagadoOValorComercial": 44998,
               "metodoDeValoracion": "1",
               "observacionesANivelPartida": `MARCA: OM SYSTEM
-        MODELO: IM030
-        NUMERO DE SOLICITUD: 2025CERT0002272-CA-M01
-        SERIES: BJNA19175, BJNA19174, BJOA23644`,
+MODELO: IM030
+NUMERO DE SOLICITUD: 2025CERT0002272-CA-M01
+SERIES: BJNA19175, BJNA19174, BJOA23644`,
               "paisDeOrigenODestino": "VNM",
               "paisDeVentaOCompra": "USA",
               "precioUnitario": 14999.33333,
@@ -2044,8 +2044,8 @@ SERIES: BJNA19175, BJNA19174, BJOA23644`,
               "importeDePrecioPagadoOValorComercial": 29999,
               "metodoDeValoracion": "1",
               "observacionesANivelPartida": `MARCA: OM SYSTEM
-        MODELO: IM027
-        NUMERO DE SOLICITUD: 2025CERT0002268-CA-M01`,
+MODELO: IM027
+NUMERO DE SOLICITUD: 2025CERT0002268-CA-M01`,
               "paisDeOrigenODestino": "VNM",
               "paisDeVentaOCompra": "USA",
               "precioUnitario": 14999.5,
