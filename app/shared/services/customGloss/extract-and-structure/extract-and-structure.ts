@@ -344,7 +344,7 @@ export async function extractAndStructurePedimento(
       extractionPromises.push(generateObject({
         model: openai('o4-mini-2025-04-16'),
         temperature: 1,
-        providerOptions: { openai: { reasoningEffort: 'medium' } },
+        providerOptions: { openai: { reasoningEffort: 'high' } },
         seed: 42,
         schema: partidaSchema,
         experimental_telemetry: {
