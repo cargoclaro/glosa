@@ -1344,7 +1344,7 @@ describe('Extract and Structure Pedimento', () => {
                   "identificador": "PO",
                   "complemento1": "16352",
                   "complemento2": "HEXPOL COMPOUNDING",
-                  "complemento3": null
+                  "complemento3": "."
                 },
                 {
                   "identificador": "TL",
@@ -1458,7 +1458,7 @@ describe('Extract and Structure Pedimento', () => {
                   "identificador": "PO",
                   "complemento1": "133283",
                   "complemento2": "LION COPOLYMER GEISMAR LLC",
-                  "complemento3": null
+                  "complemento3": "."
                 },
                 {
                   "identificador": "TL",
@@ -1521,7 +1521,7 @@ describe('Extract and Structure Pedimento', () => {
                   "identificador": "PO",
                   "complemento1": "591337",
                   "complemento2": "CELANECE POLYMERS HOLDING INC",
-                  "complemento3": null
+                  "complemento3": "."
                 },
                 {
                   "identificador": "TL",
@@ -1584,7 +1584,7 @@ describe('Extract and Structure Pedimento', () => {
                   "identificador": "PO",
                   "complemento1": "235999",
                   "complemento2": "CELANECE POLYMERS HOLDING INC",
-                  "complemento3": null
+                  "complemento3": "."
                 },
                 {
                   "identificador": "TL",
@@ -1647,7 +1647,7 @@ describe('Extract and Structure Pedimento', () => {
                   "identificador": "PO",
                   "complemento1": "226238",
                   "complemento2": "CELANECE POLYMERS HOLDING INC",
-                  "complemento3": null
+                  "complemento3": "."
                 },
                 {
                   "identificador": "TL",
