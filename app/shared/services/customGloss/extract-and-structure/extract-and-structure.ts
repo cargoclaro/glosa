@@ -344,9 +344,7 @@ export async function extractAndStructurePedimento(
     const ordinals = ['primera', 'segunda', 'tercera', 'cuarta', 'quinta', 'sexta', 'séptima', 'octava', 'novena', 'décima'];
     for (let i = 1; i <= partidasCount; i++) {
       extractionPromises.push(generateObject({
-        model: openai('o4-mini-2025-04-16'),
-        temperature: 1,
-        providerOptions: { openai: { reasoningEffort: 'high' } },
+        model: google('gemini-2.5-pro-preview-03-25'),
         seed: 42,
         schema: partidaSchema,
         experimental_telemetry: {
