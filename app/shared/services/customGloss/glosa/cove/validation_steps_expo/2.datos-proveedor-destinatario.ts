@@ -13,7 +13,8 @@ async function validateDatosGeneralesProveedor(
   cfdi?: Cfdi
 ) {
   // Extract supplier data from different sources
-  const identificadorCove = cove.datosGeneralesDelProveedor.taxIdSinTaxIdRfcCurp;
+  const identificadorCove =
+    cove.datosGeneralesDelProveedor.taxIdSinTaxIdRfcCurp;
   const tipoIdentificadorCove =
     cove.datosGeneralesDelProveedor.tipoDeIdentificador;
   const nombreRazonSocialCove =

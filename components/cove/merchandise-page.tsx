@@ -30,7 +30,7 @@ export function CoveMerchandise({
   return (
     <div className="overflow-x-auto p-3">
       {/* COVE Title Section - Similar to Pedimento */}
-      <div className='mb-4 w-full overflow-hidden rounded-md border border-gray-400'>
+      <div className="mb-4 w-full overflow-hidden rounded-md border border-gray-400">
         <div className="grid grid-cols-12 gap-0">
           <div className="col-span-12 border-gray-400 border-b bg-gray-200 py-0.5 py-1 text-center font-semibold text-[11px] text-xs uppercase">
             COVE
@@ -86,17 +86,17 @@ export function CoveMerchandise({
                   {/* Second row - values for description spans two columns */}
                   <tr>
                     <td colSpan={2} className="border p-1 text-xs">
-                      {item.datosDeLaMercancia.descripcionGenericaDeLaMercancia || '—'}
+                      {item.datosDeLaMercancia
+                        .descripcionGenericaDeLaMercancia || '—'}
                     </td>
                     <td className="border p-1 text-xs">
                       {item.datosDeLaMercancia.cantidadUMC
-                        ? Number(item.datosDeLaMercancia.cantidadUMC).toLocaleString(
-                          'en-US',
-                          {
+                        ? Number(
+                            item.datosDeLaMercancia.cantidadUMC
+                          ).toLocaleString('en-US', {
                             minimumFractionDigits: 3,
                             maximumFractionDigits: 3,
-                          }
-                        )
+                          })
                         : '—'}
                     </td>
                   </tr>
@@ -124,10 +124,13 @@ export function CoveMerchandise({
                     </td>
                     <td className="border p-1 text-xs">
                       {item.datosDeLaMercancia.valorUnitario
-                        ? `$ ${item.datosDeLaMercancia.valorUnitario.toLocaleString('en-US', {
-                          minimumFractionDigits: 6,
-                          maximumFractionDigits: 6,
-                        })}`
+                        ? `$ ${item.datosDeLaMercancia.valorUnitario.toLocaleString(
+                            'en-US',
+                            {
+                              minimumFractionDigits: 6,
+                              maximumFractionDigits: 6,
+                            }
+                          )}`
                         : '—'}
                     </td>
                   </tr>
@@ -149,42 +152,44 @@ export function CoveMerchandise({
                   <tr>
                     <td colSpan={2} className="border p-1 text-xs">
                       {item.datosDeLaMercancia.valorTotal
-                        ? `$ ${item.datosDeLaMercancia.valorTotal.toLocaleString('en-US', {
-                          minimumFractionDigits: 6,
-                          maximumFractionDigits: 6,
-                        })}`
+                        ? `$ ${item.datosDeLaMercancia.valorTotal.toLocaleString(
+                            'en-US',
+                            {
+                              minimumFractionDigits: 6,
+                              maximumFractionDigits: 6,
+                            }
+                          )}`
                         : '—'}
                     </td>
                     <td className="border p-1 text-xs">
                       {item.datosDeLaMercancia.valorTotalEnDolares
                         ? `$ ${item.datosDeLaMercancia.valorTotalEnDolares.toLocaleString(
-                          'en-US',
-                          {
-                            minimumFractionDigits: 4,
-                            maximumFractionDigits: 4,
-                          }
-                        )}`
+                            'en-US',
+                            {
+                              minimumFractionDigits: 4,
+                              maximumFractionDigits: 4,
+                            }
+                          )}`
                         : '—'}
                     </td>
                   </tr>
                 </tbody>
               </table>
 
-              {item.descripcionDeLaMercancia?.numeroDeSerie && item.descripcionDeLaMercancia?.numeroDeSerie.length > 0 && (
-                <div className="mt-1 grid grid-cols-1 gap-1 border-x border-b">
-                  <div className="bg-gray-100 p-1">
-                    <h4 className="font-medium text-xs">
-                      Números de serie
-                    </h4>
-                  </div>
+              {item.descripcionDeLaMercancia?.numeroDeSerie &&
+                item.descripcionDeLaMercancia?.numeroDeSerie.length > 0 && (
+                  <div className="mt-1 grid grid-cols-1 gap-1 border-x border-b">
+                    <div className="bg-gray-100 p-1">
+                      <h4 className="font-medium text-xs">Números de serie</h4>
+                    </div>
 
-                  <div className="p-1">
-                    <p className="text-xs">
-                      {item.descripcionDeLaMercancia?.numeroDeSerie || '—'}
-                    </p>
+                    <div className="p-1">
+                      <p className="text-xs">
+                        {item.descripcionDeLaMercancia?.numeroDeSerie || '—'}
+                      </p>
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
             </div>
           </div>
         ))}

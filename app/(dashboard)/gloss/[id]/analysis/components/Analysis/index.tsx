@@ -4,21 +4,21 @@ import { GenericCard, Modal } from '@/shared/components';
 import { useModal } from '@/shared/hooks';
 import {
   Check,
+  ClipboardDocumentList,
   DocMagniGlass,
   Document,
   ExclamationTriangle,
+  Info,
   LeftChevron,
   RightArrow,
   RightChevron,
-  Info,
-  ClipboardDocumentList,
 } from '@/shared/icons';
 import { markTabAsVerifiedByTabIdNCustomGlossID } from '@/shared/services/customGloss/controller';
 import { useMutation } from '@tanstack/react-query';
 import { Loader2 } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { cn } from '~/lib/utils';
-import type { ITabInfoSelected, Tabs, TabContext } from '../types';
+import type { ITabInfoSelected, TabContext, Tabs } from '../types';
 import Detailed from './detailed';
 
 interface IAnalysis {
@@ -35,7 +35,9 @@ const Analysis = ({
   const scrollContainerRef = useRef<HTMLUListElement>(null);
   const { isOpen, openMenu, closeMenu, menuRef } = useModal(false);
   const [tabSelected, setTabSelected] = useState('Número de pedimento');
-  const [selectedTabContexts, setSelectedTabContexts] = useState<TabContext[]>([]);
+  const [selectedTabContexts, setSelectedTabContexts] = useState<TabContext[]>(
+    []
+  );
 
   const [dataForDetail, setDataForDetail] = useState<
     Tabs['validations'][number]
@@ -54,7 +56,10 @@ const Analysis = ({
     parentStepId: 0,
   });
 
-  const handleDetail = (data: Tabs['validations'][number], contexts: TabContext[]) => {
+  const handleDetail = (
+    data: Tabs['validations'][number],
+    contexts: TabContext[]
+  ) => {
     setDataForDetail(data);
     setSelectedTabContexts(contexts);
     openMenu();
@@ -68,9 +73,9 @@ const Analysis = ({
         // Calculate center position: tab's left position + half its width - half container width
         const tabRect = tabElement.getBoundingClientRect();
         const containerRect = container.getBoundingClientRect();
-        const tabCenter = tabElement.offsetLeft + (tabRect.width / 2);
-        const scrollPosition = tabCenter - (containerRect.width / 2);
-        
+        const tabCenter = tabElement.offsetLeft + tabRect.width / 2;
+        const scrollPosition = tabCenter - containerRect.width / 2;
+
         // Scroll to center the tab
         container.scrollTo({ left: scrollPosition, behavior: 'smooth' });
       }
@@ -188,49 +193,51 @@ const Analysis = ({
   return (
     <>
       <Modal isOpen={isOpen} onClose={closeMenu} menuRef={menuRef}>
-        <Detailed 
-          data={dataForDetail} 
-          contexts={selectedTabContexts} 
+        <Detailed
+          data={dataForDetail}
+          contexts={selectedTabContexts}
           onClose={closeMenu}
         />
       </Modal>
       <GenericCard customClass="bg-white border-[1px] border-blue-500">
-        <div className="relative w-full mb-4">
+        <div className="relative mb-4 w-full">
           <button
             type="button"
-            className="absolute top-1/2 -translate-y-1/2 left-0 rounded-full bg-[#f8f8f8] p-1.5 shadow-sm transition-colors duration-200 hover:bg-[#f0f0f0] z-10"
+            className="-translate-y-1/2 absolute top-1/2 left-0 z-10 rounded-full bg-[#f8f8f8] p-1.5 shadow-sm transition-colors duration-200 hover:bg-[#f0f0f0]"
             onClick={handlePrevious}
           >
             <LeftChevron size="size-4" />
           </button>
           <div className="mx-8 rounded-lg">
-            <div className="flex justify-center items-center">
-              <div className="py-2 px-4">
+            <div className="flex items-center justify-center">
+              <div className="px-4 py-2">
                 <button
                   type="button"
                   title={tabSelected}
-                  className="relative px-6 py-2.5 rounded-lg text-center transition-all duration-200 min-w-[180px] border bg-blue-50/80 text-blue-600 font-medium shadow-sm border-blue-200/70"
+                  className="relative min-w-[180px] rounded-lg border border-blue-200/70 bg-blue-50/80 px-6 py-2.5 text-center font-medium text-blue-600 shadow-sm transition-all duration-200"
                 >
                   <div className="flex flex-col items-center justify-center">
-                    <p className="line-clamp-1 text-sm whitespace-nowrap mx-auto">{tabSelected}</p>
+                    <p className="mx-auto line-clamp-1 whitespace-nowrap text-sm">
+                      {tabSelected}
+                    </p>
                   </div>
-                  <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1/2 h-0.5 bg-blue-500 rounded-full"></span>
+                  <span className="-translate-x-1/2 absolute bottom-0 left-1/2 h-0.5 w-1/2 rounded-full bg-blue-500"></span>
                 </button>
               </div>
             </div>
           </div>
           <button
             type="button"
-            className="absolute top-1/2 -translate-y-1/2 right-0 rounded-full bg-[#f8f8f8] p-1.5 shadow-sm transition-colors duration-200 hover:bg-[#f0f0f0] z-10"
+            className="-translate-y-1/2 absolute top-1/2 right-0 z-10 rounded-full bg-[#f8f8f8] p-1.5 shadow-sm transition-colors duration-200 hover:bg-[#f0f0f0]"
             onClick={handleNext}
           >
             <RightChevron size="size-4" />
           </button>
         </div>
-        
+
         {/* Divider after navbar */}
-        <div className="w-full h-px bg-[#e8e8e8] mb-6"></div>
-        
+        <div className="mb-6 h-px w-full bg-[#e8e8e8]"></div>
+
         {tabs.map(
           (tab) =>
             tabSelected === tab.name && (
@@ -250,7 +257,10 @@ export default Analysis;
 
 interface IGenericTabComponent {
   data: Tabs;
-  handleClick: (data: Tabs['validations'][number], contexts: TabContext[]) => void;
+  handleClick: (
+    data: Tabs['validations'][number],
+    contexts: TabContext[]
+  ) => void;
 }
 
 const GenericTabComponent = ({ data, handleClick }: IGenericTabComponent) => {
@@ -271,44 +281,50 @@ const GenericTabComponent = ({ data, handleClick }: IGenericTabComponent) => {
   return (
     <>
       <StatusHeader status={data.isCorrect} />
-      
+
       {/* Divider after status header */}
-      <div className="w-full h-px bg-[#e8e8e8] my-6"></div>
-      
+      <div className="my-6 h-px w-full bg-[#e8e8e8]"></div>
+
       {/* Validation Steps directly as main content */}
       <div className="mb-8">
-        <div className="flex items-center gap-2 mb-3">
-          <ClipboardDocumentList size="size-4.5" strokeWidth={2} customClass="text-[#333333]" />
-          <h3 className="text-base font-semibold text-[#333333] tracking-tight">
+        <div className="mb-3 flex items-center gap-2">
+          <ClipboardDocumentList
+            size="size-4.5"
+            strokeWidth={2}
+            customClass="text-[#333333]"
+          />
+          <h3 className="font-semibold text-[#333333] text-base tracking-tight">
             Pasos de Validación
           </h3>
         </div>
         <DataListForSummaryCard
           data={data.validations}
-          handleClick={(validationData) => handleClick(validationData, data.context)}
+          handleClick={(validationData) =>
+            handleClick(validationData, data.context)
+          }
         />
       </div>
-      
+
       {/* Divider */}
-      <div className="w-full h-px bg-[#e8e8e8] my-8"></div>
-      
+      <div className="my-8 h-px w-full bg-[#e8e8e8]"></div>
+
       {/* Sources Section without Container - Collapsible */}
       <div className="mb-8">
-        <div 
-          className="flex items-center justify-between mb-3 cursor-pointer" 
+        <div
+          className="mb-3 flex cursor-pointer items-center justify-between"
           onClick={() => setShowSources(!showSources)}
         >
           <div className="flex items-center gap-2">
             <DocMagniGlass size="size-4.5" customClass="text-[#333333]" />
-            <h3 className="text-base font-semibold text-[#333333] tracking-tight">
+            <h3 className="font-semibold text-[#333333] text-base tracking-tight">
               Fuentes
             </h3>
           </div>
           <button
             type="button"
             className="flex h-6 w-6 items-center justify-center rounded-full bg-[#f5f5f5] transition-colors duration-200 hover:bg-[#eaeaea]"
-            aria-label={showSources ? "Colapsar" : "Expandir"}
-            title={showSources ? "Colapsar" : "Expandir"}
+            aria-label={showSources ? 'Colapsar' : 'Expandir'}
+            title={showSources ? 'Colapsar' : 'Expandir'}
           >
             {showSources ? (
               <svg
@@ -343,7 +359,7 @@ const GenericTabComponent = ({ data, handleClick }: IGenericTabComponent) => {
             )}
           </button>
         </div>
-        
+
         {showSources && (
           <div className="relative">
             <ul className="flex max-h-32 flex-col gap-2 overflow-y-auto pr-1">
@@ -351,10 +367,10 @@ const GenericTabComponent = ({ data, handleClick }: IGenericTabComponent) => {
                 <li key={index} className="w-full">
                   <div
                     title={origin}
-                    className="flex items-center gap-2.5 rounded-lg bg-[#f8f2ff] px-3.5 py-2.5 transition-colors duration-200 hover:bg-[#f0e6ff] border border-[#efe4ff] shadow-sm"
+                    className="flex items-center gap-2.5 rounded-lg border border-[#efe4ff] bg-[#f8f2ff] px-3.5 py-2.5 shadow-sm transition-colors duration-200 hover:bg-[#f0e6ff]"
                   >
                     <Document size="size-4" customClass="text-purple-500" />
-                    <span className="font-medium text-xs text-gray-700">
+                    <span className="font-medium text-gray-700 text-xs">
                       {origin.toUpperCase()}
                     </span>
                   </div>
@@ -409,10 +425,10 @@ const GenericTabComponent = ({ data, handleClick }: IGenericTabComponent) => {
           </div>
         )}
       </div>
-      
+
       {/* Divider */}
-      <div className="w-full h-px bg-[#e8e8e8] mb-8"></div>
-      
+      <div className="mb-8 h-px w-full bg-[#e8e8e8]"></div>
+
       <VerifiedButton
         tabId={data.id}
         isVerified={data.isVerified}
@@ -459,7 +475,11 @@ const VerifiedButton = ({
   } else if (isVerified) {
     buttonContent = (
       <span className="flex items-center justify-center">
-        <Check size="size-4" strokeWidth={2} customClass="mr-2 text-green-500" />
+        <Check
+          size="size-4"
+          strokeWidth={2}
+          customClass="mr-2 text-green-500"
+        />
         Análisis Verificado
       </span>
     );
@@ -482,7 +502,7 @@ const VerifiedButton = ({
           mutation.isPending && 'cursor-not-allowed opacity-50',
           isVerified
             ? 'cursor-not-allowed bg-transparent text-gray-700'
-            : 'text-blue-600 hover:bg-blue-600 hover:text-white bg-transparent border border-blue-300'
+            : 'border border-blue-300 bg-transparent text-blue-600 hover:bg-blue-600 hover:text-white'
         )}
       >
         {buttonContent}
@@ -492,25 +512,31 @@ const VerifiedButton = ({
 };
 
 const StatusHeader = ({ status }: { status: boolean }) => (
-  <div className="mt-2 mb-4 rounded-xl border border-[#e8e8e8] bg-white shadow-sm overflow-hidden">
-    <div className={cn(
-      "px-4 py-3",
-      status 
-        ? "bg-green-100/90 border-green-200/90" 
-        : "bg-yellow-50/70 border-yellow-100/70"
-    )}>
+  <div className="mt-2 mb-4 overflow-hidden rounded-xl border border-[#e8e8e8] bg-white shadow-sm">
+    <div
+      className={cn(
+        'px-4 py-3',
+        status
+          ? 'border-green-200/90 bg-green-100/90'
+          : 'border-yellow-100/70 bg-yellow-50/70'
+      )}
+    >
       <div className="flex items-center justify-center gap-2">
         {status ? (
           <>
-            <Check size="size-4.5" strokeWidth={2} customClass="text-green-600" />
-            <h3 className="text-base font-semibold text-green-700 tracking-tight">
+            <Check
+              size="size-4.5"
+              strokeWidth={2}
+              customClass="text-green-600"
+            />
+            <h3 className="font-semibold text-base text-green-700 tracking-tight">
               Todo parece bien
             </h3>
           </>
         ) : (
           <>
             <ExclamationTriangle customClass="h-4.5 w-4.5 text-yellow-500" />
-            <h3 className="text-base font-semibold text-[#333333] tracking-tight">
+            <h3 className="font-semibold text-[#333333] text-base tracking-tight">
               Verificar datos
             </h3>
           </>
@@ -557,31 +583,33 @@ const DataListForSummaryCard = ({
       {data.map((item) => (
         <li
           key={item.id}
-          className="group relative flex flex-col rounded-lg border bg-white shadow hover:shadow-md transition-all duration-200"
+          className="group relative flex flex-col rounded-lg border bg-white shadow transition-all duration-200 hover:shadow-md"
           style={{
-            borderColor: item.isCorrect ? '#10b98180' : '#fbbf2480',  // green-500 or yellow-400 colors with alpha
+            borderColor: item.isCorrect ? '#10b98180' : '#fbbf2480', // green-500 or yellow-400 colors with alpha
             borderWidth: '1px',
           }}
         >
           {/* Left status indicator */}
-          <div 
+          <div
             className={cn(
-              "absolute left-0 top-0 bottom-0 w-1 rounded-l-lg",
-              item.isCorrect ? "bg-green-500/80" : "bg-yellow-400/80"
+              'absolute top-0 bottom-0 left-0 w-1 rounded-l-lg',
+              item.isCorrect ? 'bg-green-500/80' : 'bg-yellow-400/80'
             )}
           />
 
           {/* Main content area */}
           <div className="w-full px-3 py-2.5">
-            <div className="flex justify-between items-start mb-1.5">
+            <div className="mb-1.5 flex items-start justify-between">
               {/* Title */}
-              <h3 className="text-base font-medium text-[#333333]">{item.name}</h3>
-              
+              <h3 className="font-medium text-[#333333] text-base">
+                {item.name}
+              </h3>
+
               {/* Info button moved to top right */}
               <div className="tooltip-container relative">
-                <button 
+                <button
                   type="button"
-                  className="rounded-full p-0.5 text-[#777777] bg-[#f5f5f5] hover:bg-[#eaeaea] transition-colors duration-200"
+                  className="rounded-full bg-[#f5f5f5] p-0.5 text-[#777777] transition-colors duration-200 hover:bg-[#eaeaea]"
                   onClick={(e) => handleTooltipToggle(e, item.id)}
                   aria-label="Mostrar más información"
                   title="Ver descripción"
@@ -589,29 +617,35 @@ const DataListForSummaryCard = ({
                   <Info size="size-4" />
                 </button>
                 {activeTooltip === item.id && (
-                  <div 
-                    className="tooltip-container absolute z-50 right-0 top-full mt-1.5 w-64 rounded-lg bg-white p-2 text-xs text-[#555555] shadow-lg border border-[#e8e8e8]"
+                  <div
+                    className="tooltip-container absolute top-full right-0 z-50 mt-1.5 w-64 rounded-lg border border-[#e8e8e8] bg-white p-2 text-[#555555] text-xs shadow-lg"
                     onClick={(e) => e.stopPropagation()}
                   >
-                    <div className="font-medium mb-0.5">Descripción:</div>
-                    <div className="text-[#666666] text-xs">{item.description}</div>
+                    <div className="mb-0.5 font-medium">Descripción:</div>
+                    <div className="text-[#666666] text-xs">
+                      {item.description}
+                    </div>
                   </div>
                 )}
               </div>
             </div>
-            
+
             {/* Bottom row with status indicator and detailed analysis link */}
-            <div className="flex items-center justify-between mt-3">
+            <div className="mt-3 flex items-center justify-between">
               {/* Status indicator moved to bottom left */}
               {item.isCorrect ? (
                 <div className="flex items-center">
                   <Check customClass="h-4 w-4 text-green-500 mr-1.5" />
-                  <span className="text-sm text-[#444444] font-medium">Correcto</span>
+                  <span className="font-medium text-[#444444] text-sm">
+                    Correcto
+                  </span>
                 </div>
               ) : (
                 <div className="flex items-center">
                   <ExclamationTriangle customClass="h-4 w-4 text-yellow-500 mr-1.5" />
-                  <span className="text-sm text-[#444444] font-medium">Revisar</span>
+                  <span className="font-medium text-[#444444] text-sm">
+                    Revisar
+                  </span>
                 </div>
               )}
 
@@ -619,10 +653,14 @@ const DataListForSummaryCard = ({
               <button
                 type="button"
                 onClick={() => handleClick(item)}
-                className="group/btn flex items-center gap-0.5 text-blue-500 hover:text-white px-2 py-1 rounded transition-all duration-300 text-xs font-medium bg-transparent hover:bg-blue-500/90 cursor-pointer"
+                className="group/btn flex cursor-pointer items-center gap-0.5 rounded bg-transparent px-2 py-1 font-medium text-blue-500 text-xs transition-all duration-300 hover:bg-blue-500/90 hover:text-white"
               >
                 <span>Ver análisis detallado</span>
-                <RightArrow size="size-3" strokeWidth={2} customClass="transition-transform duration-200 group-hover/btn:translate-x-0.5" />
+                <RightArrow
+                  size="size-3"
+                  strokeWidth={2}
+                  customClass="transition-transform duration-200 group-hover/btn:translate-x-0.5"
+                />
               </button>
             </div>
           </div>

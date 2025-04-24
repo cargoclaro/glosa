@@ -18,7 +18,8 @@ async function validateDatosGeneralesProveedor(
 ) {
   // Extract supplier data from different sources
   // Se supone que este valor siempre es el RFC en la importación
-  const identificadorCove = cove.datosGeneralesDelProveedor.taxIdSinTaxIdRfcCurp;
+  const identificadorCove =
+    cove.datosGeneralesDelProveedor.taxIdSinTaxIdRfcCurp;
   const tipoIdentificadorCove =
     cove.datosGeneralesDelProveedor.tipoDeIdentificador;
   const nombreRazonSocialCove =

@@ -1,14 +1,14 @@
 'use client';
 
-import type { Cove } from '@/shared/services/customGloss/extract-and-structure/schemas';
 import type { Pedimento } from '@/shared/services/customGloss/data-extraction/schemas';
+import type { Cove } from '@/shared/services/customGloss/extract-and-structure/schemas';
 import { useState } from 'react';
 import { CoveViewer } from '~/components/cove/index';
 import PedimentoViewer from '~/components/pedimento/pedimento-viewer';
 import type { CustomGlossFileTable } from '~/db/schema';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/ui/tabs';
 import { Analysis, SavedNFinish } from '.';
-import { ITabInfoSelected, Tabs as GlossTabs } from './types';
+import type { Tabs as GlossTabs, ITabInfoSelected } from './types';
 
 interface IPedimentAnalysisNFinish {
   id: string;

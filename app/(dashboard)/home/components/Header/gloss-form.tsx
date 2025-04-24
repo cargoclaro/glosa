@@ -111,7 +111,13 @@ const GlossForm = () => {
           <div className="flex flex-col items-center justify-center p-5">
             <Upload
               size="size-10"
-              color={files ? (mutation.error || (mutation.data && !mutation.data.success) ? 'red' : 'green') : ''}
+              color={
+                files
+                  ? mutation.error || (mutation.data && !mutation.data.success)
+                    ? 'red'
+                    : 'green'
+                  : ''
+              }
             />
             <p className={cn('mb-2 text-center text-sm', filePickerTextColor)}>
               <span className="font-semibold">Click para subir</span>

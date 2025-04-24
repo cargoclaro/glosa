@@ -35,7 +35,7 @@ const PedimentoHeader: React.FC<PedimentoHeaderProps> = ({
   }
 
   return (
-    <div className="mb-4 w-full border border-gray-400 rounded-md overflow-hidden">
+    <div className="mb-4 w-full overflow-hidden rounded-md border border-gray-400">
       <div className="grid grid-cols-12 gap-0">
         <div className="col-span-12 border-gray-400 border-b bg-gray-200 py-0.5 py-1 text-center font-semibold text-[11px] text-xs uppercase">
           PEDIMENTO
@@ -173,9 +173,7 @@ const PedimentoHeader: React.FC<PedimentoHeaderProps> = ({
         </div>
 
         {/* ADUANA E/S */}
-        <div
-          className="col-span-2 grid grid-cols-2"
-        >
+        <div className="col-span-2 grid grid-cols-2">
           <div className="col-span-1 flex min-h-6 items-center border-gray-400 border-r bg-gray-100 px-1 py-0.5 font-semibold text-[8px] text-xs uppercase last:border-r-0">
             ADUANA E/S:
           </div>

@@ -5,8 +5,8 @@ import type {
   Invoice,
   TransportDocument,
 } from '../data-extraction/mkdown_schemas';
-import type { PackingList, Cove } from '../extract-and-structure/schemas';
 import type { Pedimento } from '../data-extraction/schemas';
+import type { Cove, PackingList } from '../extract-and-structure/schemas';
 import { tracedCoveValidationStepsExpo } from './cove/validation_steps_expo';
 import { tracedPedimentoValidationStepsExpo } from './pedimento/validation_steps_expo';
 

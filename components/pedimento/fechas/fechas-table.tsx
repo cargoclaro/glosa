@@ -1,7 +1,10 @@
 import type React from 'react';
-import { cn } from '~/lib/utils';
-import { getHighlightBorder, getHighlightFill } from '../utils/highlight-styles';
 import type { CustomGlossTabTable } from '~/db/schema';
+import { cn } from '~/lib/utils';
+import {
+  getHighlightBorder,
+  getHighlightFill,
+} from '../utils/highlight-styles';
 
 interface FechasTableProps {
   fechaEntrada?: string;
@@ -20,11 +23,11 @@ const FechasTable: React.FC<FechasTableProps> = ({
 }) => {
   // The tab name must match exactly what is used throughout the application
   const tabName = 'Operación monetaria';
-  
+
   return (
-    <div 
+    <div
       className={cn(
-        'cursor-pointer border border-gray-400 overflow-hidden rounded-md border-2',
+        'cursor-pointer overflow-hidden rounded-md border border-2 border-gray-400',
         getHighlightBorder(tabName, tabs),
         getHighlightFill(tabName, tabInfoSelected)
       )}
@@ -55,4 +58,4 @@ const FechasTable: React.FC<FechasTableProps> = ({
   );
 };
 
-export default FechasTable; 
+export default FechasTable;

@@ -9,14 +9,18 @@ import type {
   CustomGlossTabValidationStepResources,
 } from '~/db/schema';
 
-export type TabValidation = InferSelectModel<typeof CustomGlossTabValidationStep> & {
+export type TabValidation = InferSelectModel<
+  typeof CustomGlossTabValidationStep
+> & {
   resources: InferSelectModel<typeof CustomGlossTabValidationStepResources>[];
   actionsToTake: InferSelectModel<
     typeof CustomGlossTabValidationStepActionToTake
   >[];
   steps: (InferSelectModel<typeof CustomGlossTabValidationStep> & {
     resources: InferSelectModel<typeof CustomGlossTabValidationStepResources>[];
-    actionsToTake: InferSelectModel<typeof CustomGlossTabValidationStepActionToTake>[];
+    actionsToTake: InferSelectModel<
+      typeof CustomGlossTabValidationStepActionToTake
+    >[];
   })[];
 };
 
@@ -34,4 +38,4 @@ export interface ITabInfoSelected {
   name: string;
   isCorrect: boolean;
   isVerified: boolean;
-} 
+}

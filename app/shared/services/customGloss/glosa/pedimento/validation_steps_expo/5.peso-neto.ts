@@ -3,8 +3,8 @@ import type {
   Cfdi,
   TransportDocument,
 } from '../../../data-extraction/mkdown_schemas';
-import type { PackingList } from '../../../extract-and-structure/schemas';
 import type { Pedimento } from '../../../data-extraction/schemas';
+import type { PackingList } from '../../../extract-and-structure/schemas';
 import { glosar } from '../../validation-result';
 
 async function validatePesosYBultos(
@@ -34,7 +34,12 @@ async function validatePesosYBultos(
           data: [{ name: 'Transport Document', value: transportDocmkdown }],
         },
         listaDeEmpaque: {
-          data: [{ name: 'Packing List', value: JSON.stringify(packingList, null, 2) }],
+          data: [
+            {
+              name: 'Packing List',
+              value: JSON.stringify(packingList, null, 2),
+            },
+          ],
         },
         cfdi: {
           data: [{ name: 'CFDI', value: cfdiMkdown }],

@@ -3,11 +3,8 @@ import type {
   Carta318,
   Invoice,
 } from '../../../data-extraction/mkdown_schemas';
-import type { PackingList, Cove } from '../../../extract-and-structure/schemas';
-import type {
-  Partida,
-  Pedimento,
-} from '../../../data-extraction/schemas';
+import type { Partida, Pedimento } from '../../../data-extraction/schemas';
+import type { Cove, PackingList } from '../../../extract-and-structure/schemas';
 import { apendice7 } from '../../anexo-22/apendice-7';
 import { getFraccionInfo } from '../../tax-finder';
 import { glosar } from '../../validation-result';
@@ -203,7 +200,9 @@ async function validatePaisVenta(
           data: [{ name: 'Invoice', value: invoicemkdown }],
         },
         'Packing List': {
-          data: [{ name: 'Packing List', value: JSON.stringify(packing, null, 2) }],
+          data: [
+            { name: 'Packing List', value: JSON.stringify(packing, null, 2) },
+          ],
         },
         'Carta 318': {
           data: [{ name: 'Carta 318', value: carta318mkdown }],
@@ -250,7 +249,9 @@ async function validatePaisOrigen(
           data: [{ name: 'Invoice', value: invoicemkdown }],
         },
         Packing: {
-          data: [{ name: 'Packing List', value: JSON.stringify(packing, null, 2) }],
+          data: [
+            { name: 'Packing List', value: JSON.stringify(packing, null, 2) },
+          ],
         },
         'Carta 318': {
           data: [{ name: 'Carta 318', value: carta318mkdown }],
@@ -276,7 +277,8 @@ async function validateDescripcionMercancia(
 
   // Extraer la descripción de la mercancía del COVE, factura y carta 318
   // TODO: Do this in a loop, instead of just checking the first mercancia
-  const descripcionCove = cove?.mercancias[0]?.datosDeLaMercancia.descripcionGenericaDeLaMercancia;
+  const descripcionCove =
+    cove?.mercancias[0]?.datosDeLaMercancia.descripcionGenericaDeLaMercancia;
   const invoicemkdown = invoice?.markdown_representation;
   const carta318mkdown = carta318?.markdown_representation;
 
@@ -491,7 +493,8 @@ async function validateNumerosSerie(
   const observaciones_nivel_pedimento =
     pedimento?.observaciones_a_nivel_pedimento;
   // TODO: Do this in a loop, instead of just checking the first mercancia
-  const numerosSeriesCove = cove?.mercancias[0]?.descripcionDeLaMercancia?.numeroDeSerie;
+  const numerosSeriesCove =
+    cove?.mercancias[0]?.descripcionDeLaMercancia?.numeroDeSerie;
 
   const validation = {
     name: 'Números de serie, modelo y parte',

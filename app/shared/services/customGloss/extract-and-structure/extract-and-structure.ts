@@ -1,14 +1,20 @@
-import { openai } from '@ai-sdk/openai';
 import { google } from '@ai-sdk/google';
+import { openai } from '@ai-sdk/openai';
 import { generateObject, generateText } from 'ai';
-import { packingListSchema, datosGeneralesSchema, mercanciaSchema, datosGeneralesDePedimentoSchema, partidaSchema } from './schemas';
 import { PDFDocument } from 'pdf-lib';
 import { z } from 'zod';
+import {
+  datosGeneralesDePedimentoSchema,
+  datosGeneralesSchema,
+  mercanciaSchema,
+  packingListSchema,
+  partidaSchema,
+} from './schemas';
 
 /**
  * Fetches a PDF file and returns an array of base64-encoded pages
  */
-export async function fetchPdfPages(fileUrl: string): Promise<string[]> {
+async function fetchPdfPages(fileUrl: string): Promise<string[]> {
   // Fetch the file content
   const response = await fetch(fileUrl);
   const fileContent = await response.arrayBuffer();
@@ -38,20 +44,20 @@ export async function fetchPdfPages(fileUrl: string): Promise<string[]> {
 
 export async function extractAndStructurePackingList(
   fileUrl: string,
-  parentTraceId?: string,
+  parentTraceId?: string
 ) {
   const telemetryConfig = parentTraceId
     ? {
-      experimental_telemetry: {
-        isEnabled: true,
-        functionId: 'Packing List',
-        metadata: {
-          langfuseTraceId: parentTraceId,
-          langfuseUpdateParent: false,
-          fileUrl,
+        experimental_telemetry: {
+          isEnabled: true,
+          functionId: 'Packing List',
+          metadata: {
+            langfuseTraceId: parentTraceId,
+            langfuseUpdateParent: false,
+            fileUrl,
+          },
         },
-      },
-    }
+      }
     : {};
   const { object } = await generateObject({
     model: google('gemini-2.5-flash-preview-04-17'),
@@ -81,7 +87,7 @@ export async function extractAndStructurePackingList(
 
 export async function extractAndStructureCove(
   fileUrl: string,
-  parentTraceId: string,
+  parentTraceId: string
 ) {
   const { text } = await generateText({
     model: google('gemini-2.5-pro-preview-03-25'),
@@ -112,70 +118,68 @@ export async function extractAndStructureCove(
       },
     ],
   });
-  const [
-    { object: datosGenerales },
-    { object: mercancias }
-  ] = await Promise.all([
-    generateObject({
-      model: google('gemini-2.5-flash-preview-04-17'),
-      seed: 42,
-      experimental_telemetry: {
-        isEnabled: true,
-        functionId: 'Structure datos generales cove',
-        metadata: {
-          langfuseTraceId: parentTraceId,
-          langfuseUpdateParent: false,
-          fileUrl,
+  const [{ object: datosGenerales }, { object: mercancias }] =
+    await Promise.all([
+      generateObject({
+        model: google('gemini-2.5-flash-preview-04-17'),
+        seed: 42,
+        experimental_telemetry: {
+          isEnabled: true,
+          functionId: 'Structure datos generales cove',
+          metadata: {
+            langfuseTraceId: parentTraceId,
+            langfuseUpdateParent: false,
+            fileUrl,
+          },
         },
-      },
-      schema: datosGeneralesSchema,
-      messages: [
-        {
-          role: 'user',
-          content: [
-            {
-              type: 'text',
-              text: 'Structure the document based on the provided schema. Keep the text "exactly as is", no exceptions.',
-            },
-            {
-              type: 'text',
-              text,
-            },
-          ],
+        schema: datosGeneralesSchema,
+        messages: [
+          {
+            role: 'user',
+            content: [
+              {
+                type: 'text',
+                text: 'Structure the document based on the provided schema. Keep the text "exactly as is", no exceptions.',
+              },
+              {
+                type: 'text',
+                text,
+              },
+            ],
+          },
+        ],
+      }),
+      generateObject({
+        model: google('gemini-2.5-flash-preview-04-17'),
+        seed: 42,
+        experimental_telemetry: {
+          isEnabled: true,
+          functionId: 'Structure mercancias cove',
+          metadata: {
+            langfuseTraceId: parentTraceId ?? '',
+            langfuseUpdateParent: false,
+            fileUrl,
+          },
         },
-      ],
-    }),
-    generateObject({
-      model: google('gemini-2.5-flash-preview-04-17'),
-      seed: 42,
-      experimental_telemetry: {
-        isEnabled: true,
-        functionId: 'Structure mercancias cove',
-        metadata: {
-          langfuseTraceId: parentTraceId ?? '',
-          langfuseUpdateParent: false,
-          fileUrl,
-        },
-      },
-      output: 'array',
-      schema: mercanciaSchema,
-      messages: [
-        {
-          role: 'user',
-          content: [
-            {
-              type: 'text',
-              text: 'Structure the document based on the provided schema. Keep the text "exactly as is", no exceptions.',
-            },
-            {
-              type: 'text',
-              text,
-            },
-          ],
-        },
-      ],
-    })
-  ]);
+        output: 'array',
+        schema: mercanciaSchema,
+        messages: [
+          {
+            role: 'user',
+            content: [
+              {
+                type: 'text',
+                text: 'Structure the document based on the provided schema. Keep the text "exactly as is", no exceptions.',
+              },
+              {
+                type: 'text',
+                text,
+              },
+            ],
+          },
+        ],
+      }),
+    ]);
 
   return {
     ...datosGenerales,
@@ -185,7 +189,7 @@ export async function extractAndStructureCove(
 
 export async function extractAndStructurePedimento(
   fileUrl: string,
-  parentTraceId: string,
+  parentTraceId: string
 ) {
   const pages = await fetchPdfPages(fileUrl);
 
@@ -226,8 +230,12 @@ export async function extractAndStructurePedimento(
       ],
     })
   );
-  const classifications = (await Promise.all(classificationPromises)).map(result => result.object);
-  const firstPartidasPageIndex = classifications.findIndex(c => c === 'Partidas');
+  const classifications = (await Promise.all(classificationPromises)).map(
+    (result) => result.object
+  );
+  const firstPartidasPageIndex = classifications.findIndex(
+    (c) => c === 'Partidas'
+  );
   if (firstPartidasPageIndex === -1) {
     throw new Error('No partidas section found in the document');
   }
@@ -237,13 +245,19 @@ export async function extractAndStructurePedimento(
 
   // Split datosGeneralesPages into first page and remaining pages
   const [firstPageBase64, ...otherPagesBase64] = datosGeneralesPages;
-  const firstPagePdfBase64 = await combinePagesToPdf([firstPageBase64 as string]);
-  const otherPagesPdfBase64 = otherPagesBase64.length > 0 ? await combinePagesToPdf(otherPagesBase64) : '';
+  const firstPagePdfBase64 = await combinePagesToPdf([
+    firstPageBase64 as string,
+  ]);
+  const otherPagesPdfBase64 =
+    otherPagesBase64.length > 0
+      ? await combinePagesToPdf(otherPagesBase64)
+      : '';
 
   // Get all partidas pages starting from firstPartidasPageIndexInPages
   const partidasPages = pages.slice(firstPartidasPageIndex);
 
-  const { encabezadoPrincipalDelPedimento, ...restOfPedimento } = datosGeneralesDePedimentoSchema.shape;
+  const { encabezadoPrincipalDelPedimento, ...restOfPedimento } =
+    datosGeneralesDePedimentoSchema.shape;
 
   // Kick off datos-generales and partidas extractions in parallel
   const encabezadoPrincipalDelPedimentoPromise = generateObject({
@@ -312,44 +326,18 @@ export async function extractAndStructurePedimento(
     ],
   });
 
-  const partidasResultsPromise = Promise.all(partidasPages.map(async (pageBase64, pageIndex) => {
-    // Count partidas on this page
-    const { object: { partidasCount } } = await generateObject({
-      model: google('gemini-2.5-flash-preview-04-17'),
-      seed: 42,
-      schema: z.object({ partidasCount: z.number() }),
-      experimental_telemetry: {
-        isEnabled: true,
-        functionId: `Count partidas on page ${firstPartidasPageIndex + pageIndex + 1}`,
-        metadata: {
-          langfuseTraceId: parentTraceId,
-          langfuseUpdateParent: false,
-          fileUrl,
-        },
-      },
-      messages: [
-        {
-          role: 'user',
-          content: [
-            { type: 'text', text: 'Basado en la etiqueta "SEC" cuentas las partidas en esta página. No quiero la cuenta global de todo el pedimento, solo de esta página.' },
-            { type: 'file', data: `data:application/pdf;base64,${pageBase64}`, mimeType: 'application/pdf' },
-          ],
-        },
-      ],
-    });
-
-    // Extract each partida individually
-    const extractionPromises: Promise<{ object: unknown }>[] = [];
-    // Spanish ordinals for partidas on the page
-    const ordinals = ['primera', 'segunda', 'tercera', 'cuarta', 'quinta', 'sexta', 'séptima', 'octava', 'novena', 'décima'];
-    for (let i = 1; i <= partidasCount; i++) {
-      extractionPromises.push(generateObject({
-        model: google('gemini-2.5-pro-preview-03-25'),
+  const partidasResultsPromise = Promise.all(
+    partidasPages.map(async (pageBase64, pageIndex) => {
+      // Count partidas on this page
+      const {
+        object: { partidasCount },
+      } = await generateObject({
+        model: google('gemini-2.5-flash-preview-04-17'),
         seed: 42,
-        schema: partidaSchema,
+        schema: z.object({ partidasCount: z.number() }),
         experimental_telemetry: {
           isEnabled: true,
-          functionId: `Extract partida ${i} from page ${firstPartidasPageIndex + pageIndex + 1}`,
+          functionId: `Count partidas on page ${firstPartidasPageIndex + pageIndex + 1}`,
           metadata: {
             langfuseTraceId: parentTraceId,
             langfuseUpdateParent: false,
@@ -360,24 +348,86 @@ export async function extractAndStructurePedimento(
           {
             role: 'user',
             content: [
-              { type: 'text', text: `Basado en la etiqueta "SEC" extrae la ${ordinals[i - 1]} partida que aparece en esta página. No me refiero a la cuenta global de partidas, sino a las que aparecen en esta página.` },
-              { type: 'file', data: `data:application/pdf;base64,${pageBase64}`, mimeType: 'application/pdf' },
+              {
+                type: 'text',
+                text: 'Basado en la etiqueta "SEC" cuentas las partidas en esta página. No quiero la cuenta global de todo el pedimento, solo de esta página.',
+              },
+              {
+                type: 'file',
+                data: `data:application/pdf;base64,${pageBase64}`,
+                mimeType: 'application/pdf',
+              },
             ],
           },
         ],
-      }));
-    }
-    const extracted = await Promise.all(extractionPromises);
-    return extracted.map(r => r.object);
-  }));
+      });
 
-  const [encabezadoPrincipalDelPedimentoResponse, restOfPedimentoResponse, partidasPagesResults] = await Promise.all([
+      // Extract each partida individually
+      const extractionPromises: Promise<{ object: unknown }>[] = [];
+      // Spanish ordinals for partidas on the page
+      const ordinals = [
+        'primera',
+        'segunda',
+        'tercera',
+        'cuarta',
+        'quinta',
+        'sexta',
+        'séptima',
+        'octava',
+        'novena',
+        'décima',
+      ];
+      for (let i = 1; i <= partidasCount; i++) {
+        extractionPromises.push(
+          generateObject({
+            model: google('gemini-2.5-pro-preview-03-25'),
+            seed: 42,
+            schema: partidaSchema,
+            experimental_telemetry: {
+              isEnabled: true,
+              functionId: `Extract partida ${i} from page ${firstPartidasPageIndex + pageIndex + 1}`,
+              metadata: {
+                langfuseTraceId: parentTraceId,
+                langfuseUpdateParent: false,
+                fileUrl,
+              },
+            },
+            messages: [
+              {
+                role: 'user',
+                content: [
+                  {
+                    type: 'text',
+                    text: `Basado en la etiqueta "SEC" extrae la ${ordinals[i - 1]} partida que aparece en esta página. No me refiero a la cuenta global de partidas, sino a las que aparecen en esta página.`,
+                  },
+                  {
+                    type: 'file',
+                    data: `data:application/pdf;base64,${pageBase64}`,
+                    mimeType: 'application/pdf',
+                  },
+                ],
+              },
+            ],
+          })
+        );
+      }
+      const extracted = await Promise.all(extractionPromises);
+      return extracted.map((r) => r.object);
+    })
+  );
+
+  const [
+    encabezadoPrincipalDelPedimentoResponse,
+    restOfPedimentoResponse,
+    partidasPagesResults,
+  ] = await Promise.all([
     encabezadoPrincipalDelPedimentoPromise,
     restOfPedimentoPromise,
     partidasResultsPromise,
   ]);
   const datosGeneralesDePedimento = {
-    encabezadoPrincipalDelPedimento: encabezadoPrincipalDelPedimentoResponse.object,
+    encabezadoPrincipalDelPedimento:
+      encabezadoPrincipalDelPedimentoResponse.object,
     ...restOfPedimentoResponse.object,
   };
 
@@ -386,14 +436,14 @@ export async function extractAndStructurePedimento(
 
   return {
     ...datosGeneralesDePedimento,
-    partidas
+    partidas,
   };
 }
 
 /**
  * Combines multiple base64-encoded PDF pages into a single PDF
  */
-export async function combinePagesToPdf(pageBase64Strings: string[]): Promise<string> {
+async function combinePagesToPdf(pageBase64Strings: string[]): Promise<string> {
   // Create a new PDF document
   const pdfDoc = await PDFDocument.create();
 
@@ -405,14 +455,19 @@ export async function combinePagesToPdf(pageBase64Strings: string[]): Promise<st
       : pageBase64;
 
     // Convert base64 to Uint8Array
-    if (!base64Data) { continue; }
+    if (!base64Data) {
+      continue;
+    }
     const pageBytes = Buffer.from(base64Data, 'base64');
 
     // Load the page PDF
     const pagePdf = await PDFDocument.load(pageBytes);
 
     // Copy all pages (should just be one) from this page PDF
-    const copiedPages = await pdfDoc.copyPages(pagePdf, pagePdf.getPageIndices());
+    const copiedPages = await pdfDoc.copyPages(
+      pagePdf,
+      pagePdf.getPageIndices()
+    );
 
     // Add each copied page to the new document
     for (const page of copiedPages) {

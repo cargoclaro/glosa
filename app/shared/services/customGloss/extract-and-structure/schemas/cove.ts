@@ -3,11 +3,7 @@ import { z } from 'zod';
 
 export const datosGeneralesSchema = z.object({
   datosDelAcuseDeValor: z.object({
-    idCove: z
-      .string()
-      .describe(
-        "Ejemplo: 'COVE247163T13'."
-      ),
+    idCove: z.string().describe("Ejemplo: 'COVE247163T13'."),
     tipoDeOperacion: z.string(),
     relacionDeFacturas: z.string(),
     numeroDeFactura: z.string(),
@@ -82,12 +78,15 @@ export const mercanciaSchema = z.object({
     valorTotal: z.number(),
     valorTotalEnDolares: z.number(),
   }),
-  descripcionDeLaMercancia: z.object({
-    marca: z.string().nullable(),
-    modelo: z.string(),
-    submodelo: z.string().nullable(),
-    numeroDeSerie: z.string().nullable(),
-  }).nullable().describe("Casi nunca aparece"),
+  descripcionDeLaMercancia: z
+    .object({
+      marca: z.string().nullable(),
+      modelo: z.string(),
+      submodelo: z.string().nullable(),
+      numeroDeSerie: z.string().nullable(),
+    })
+    .nullable()
+    .describe('Casi nunca aparece'),
 });
 
 const coveSchema = datosGeneralesSchema.extend({

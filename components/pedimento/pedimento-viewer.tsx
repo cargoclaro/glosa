@@ -11,9 +11,9 @@ import PedimentoHeader from './pedimento-header';
 import PedimentoIdentificadores from './pedimento-identificadores';
 import PedimentoImportador from './pedimento-importador';
 import PedimentoIncrementables from './pedimento-incrementables';
+import PedimentoMarcasBultos from './pedimento-marcas-bultos';
 import PedimentoPartidas from './pedimento-partidas';
 import PedimentoProveedor from './pedimento-proveedor';
-import PedimentoMarcasBultos from './pedimento-marcas-bultos';
 import { getHighlightBorder, getHighlightFill } from './utils/highlight-styles';
 
 interface PedimentoViewerProps {
@@ -119,7 +119,7 @@ const PedimentoViewer = ({
     <div
       className={cn('relative flex w-full flex-col overflow-hidden', className)}
     >
-      <div className="mx-auto w-full max-w-4xl overflow-hidden rounded-xl bg-white shadow-xl transition-all duration-500 border-[1px] border-blue-500">
+      <div className="mx-auto w-full max-w-4xl overflow-hidden rounded-xl border-[1px] border-blue-500 bg-white shadow-xl transition-all duration-500">
         <div className="overflow-x-auto p-3">
           {currentPage === 1 && (
             <div className="flex w-full flex-col gap-2">
@@ -268,9 +268,9 @@ const PedimentoViewer = ({
                   tabInfoSelected={tabInfoSelected}
                 />
               </div>
-              <div 
+              <div
                 className={cn(
-                  'mb-4 w-full border border-gray-400 cursor-pointer',
+                  'mb-4 w-full cursor-pointer border border-gray-400',
                   'overflow-hidden rounded-md border-2',
                   getHighlightBorder('Datos del transporte', tabs),
                   getHighlightFill('Datos del transporte', tabInfoSelected)

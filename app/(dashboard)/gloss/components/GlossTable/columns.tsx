@@ -47,15 +47,15 @@ export const GlossDataTableColumns: ColumnDef<IDumpGlosses>[] = [
       return (
         <div
           className={cn(
-            'inline-flex items-center text-sm font-medium',
+            'inline-flex items-center font-medium text-sm',
             isPending ? 'text-amber-600' : 'text-emerald-600'
           )}
         >
-          <span 
+          <span
             className={cn(
               'mr-1.5 h-2 w-2 rounded-full',
               isPending ? 'bg-amber-500' : 'bg-emerald-500'
-            )} 
+            )}
           />
           {isPending ? 'Por glosar' : 'Glosado'}
         </div>
@@ -74,7 +74,7 @@ export const GlossDataTableColumns: ColumnDef<IDumpGlosses>[] = [
         <Link
           aria-label="View gloss report"
           href={`/gloss/${id}`}
-          className="inline-flex items-center justify-center gap-1.5 rounded-md bg-orange-500 px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500/20"
+          className="inline-flex items-center justify-center gap-1.5 rounded-md bg-orange-500 px-3 py-1.5 font-medium text-white text-xs transition-colors hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500/20"
         >
           Ver
           <svg

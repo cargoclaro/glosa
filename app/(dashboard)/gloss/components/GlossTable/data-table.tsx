@@ -1,13 +1,13 @@
 'use client';
 
 import {
+  ClipboardDocumentList,
   Funnel,
   LeftChevron,
   LeftDoubleChevron,
   RightChevron,
   RightDoubleChevron,
   Search,
-  ClipboardDocumentList,
 } from '@/shared/icons';
 import {
   type ColumnDef,

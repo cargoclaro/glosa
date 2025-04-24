@@ -1,7 +1,7 @@
 import type React from 'react';
+import type { CustomGlossTabTable } from '~/db/schema';
 import { cn } from '~/lib/utils';
 import { getHighlightBorder, getHighlightFill } from './utils/highlight-styles';
-import type { CustomGlossTabTable } from '~/db/schema';
 
 interface PedimentoMarcasBultosProps {
   marcasNumerosBultos: string;
@@ -19,7 +19,7 @@ const PedimentoMarcasBultos: React.FC<PedimentoMarcasBultosProps> = ({
   return (
     <div
       className={cn(
-        'mb-4 w-full border border-gray-400 cursor-pointer',
+        'mb-4 w-full cursor-pointer border border-gray-400',
         'overflow-hidden rounded-md border-2',
         getHighlightBorder('Pesos y bultos', tabs),
         getHighlightFill('Pesos y bultos', tabInfoSelected)
@@ -36,4 +36,4 @@ const PedimentoMarcasBultos: React.FC<PedimentoMarcasBultosProps> = ({
   );
 };
 
-export default PedimentoMarcasBultos; 
+export default PedimentoMarcasBultos;

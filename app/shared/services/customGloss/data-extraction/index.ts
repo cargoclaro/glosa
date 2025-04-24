@@ -1,20 +1,22 @@
 import { Langfuse } from 'langfuse';
 import { traceable } from 'langsmith/traceable';
 import type { UploadedFileData } from 'uploadthing/types';
+import {
+  extractAndStructureCove,
+  extractAndStructurePackingList,
+} from '../extract-and-structure/extract-and-structure';
 import type { DocumentType } from '../utils';
 import {
   carta318Schema,
   cartaSesionSchema,
   cfdiSchema,
   invoiceSchema,
-  packingListSchema,
   rrnaSchema,
   transportDocumentSchema,
 } from './mkdown_schemas';
-import { coveSchema, pedimentoSchema } from './schemas/';
+import { pedimentoSchema } from './schemas/';
 import { extractTextFromImage } from './vision';
 import { extractTextFromImageAnthropic } from './vision-anthropic';
-import { extractAndStructurePackingList, extractAndStructureCove } from '../extract-and-structure/extract-and-structure';
 
 const documentToSchema = {
   factura: invoiceSchema,
@@ -22,8 +24,6 @@ const documentToSchema = {
   rrna: rrnaSchema,
   documentoDeTransporte: transportDocumentSchema,
   pedimento: pedimentoSchema,
-  listaDeEmpaque: packingListSchema,
-  cove: coveSchema,
   cfdi: cfdiSchema,
   cartaCesionDeDerechos: cartaSesionSchema,
 } as const;
@@ -106,15 +106,9 @@ async function extractTextFromPDFsParallel(
       traceId
     ),
     listaDeEmpaque
-      ? extractAndStructurePackingList(
-          listaDeEmpaque.ufsUrl,
-          traceId
-        )
+      ? extractAndStructurePackingList(listaDeEmpaque.ufsUrl, traceId)
       : null,
-    extractAndStructureCove(
-      cove.ufsUrl,
-      traceId
-    ),
+    extractAndStructureCove(cove.ufsUrl, traceId),
     cfdi
       ? extractTextFromImage(cfdi.originalFile, cfdi.documentType, traceId)
       : null,

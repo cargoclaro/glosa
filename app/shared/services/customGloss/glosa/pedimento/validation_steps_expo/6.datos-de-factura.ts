@@ -168,7 +168,8 @@ async function validateDatosProveedor(
 
   const idProveedorPedimento = pedimento.id_fiscal;
   // Se supone que este valor siempre es el RFC en la exportación
-  const idProveedorCove = cove?.datosGeneralesDelProveedor?.taxIdSinTaxIdRfcCurp;
+  const idProveedorCove =
+    cove?.datosGeneralesDelProveedor?.taxIdSinTaxIdRfcCurp;
 
   const cfdiMkdown = cfdi?.markdown_representation;
 
@@ -267,7 +268,8 @@ async function validateMonedaYEquivalencia(
   // Extract values from documents
   const valorDolaresPedimento = pedimento.datos_factura?.valor_dolares_factura;
   // TODO: Do this in a loop, instead of just checking the first mercancia
-  const valorDolaresCove = cove.mercancias[0]?.datosDeLaMercancia?.valorTotalEnDolares;
+  const valorDolaresCove =
+    cove.mercancias[0]?.datosDeLaMercancia?.valorTotalEnDolares;
 
   // Valor factura from pedimento:
   const valorFactura = pedimento.datos_factura?.valor_moneda_factura;

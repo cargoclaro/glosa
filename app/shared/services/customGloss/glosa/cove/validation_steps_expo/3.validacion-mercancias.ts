@@ -15,7 +15,9 @@ async function validateMercancias(traceId: string, cove: Cove, cfdi?: Cfdi) {
   // TODO: Do this in a loop, instead of just checking the first mercancia
   const mercanciasCoveFormatted = datosMercanciaCove
     ? {
-        descripcion: datosMercanciaCove[0]?.datosDeLaMercancia.descripcionGenericaDeLaMercancia,
+        descripcion:
+          datosMercanciaCove[0]?.datosDeLaMercancia
+            .descripcionGenericaDeLaMercancia,
         cantidad: datosMercanciaCove[0]?.datosDeLaMercancia.cantidadUMC,
         unidadMedida: datosMercanciaCove[0]?.datosDeLaMercancia.claveUMC,
         valorUnitario: datosMercanciaCove[0]?.datosDeLaMercancia.valorUnitario,
@@ -69,7 +71,8 @@ async function validateValorTotalDolares(
 ) {
   // Extract total value from COVE
   // TODO: Do this in a loop, instead of just checking the first mercancia
-  const valorTotalDolaresCove = cove.mercancias[0]?.datosDeLaMercancia.valorTotalEnDolares;
+  const valorTotalDolaresCove =
+    cove.mercancias[0]?.datosDeLaMercancia.valorTotalEnDolares;
   const observacionesCove = cove.datosDelAcuseDeValor.observaciones;
   const cfdiMkdown = cfdi?.markdown_representation;
   const validation = {
@@ -107,7 +110,8 @@ async function validateNumeroSerie(
   cfdi?: Cfdi
 ) {
   // TODO: Do this in a loop, instead of just checking the first mercancia
-  const numeroSerieCove = cove.mercancias[0]?.descripcionDeLaMercancia?.numeroDeSerie;
+  const numeroSerieCove =
+    cove.mercancias[0]?.descripcionDeLaMercancia?.numeroDeSerie;
   const invoiceMkdown = invoice?.markdown_representation;
   const cfdiMkdown = cfdi?.markdown_representation;
 
@@ -123,7 +127,9 @@ async function validateNumeroSerie(
           data: [
             {
               name: 'Descripción',
-              value: cove.mercancias[0]?.datosDeLaMercancia?.descripcionGenericaDeLaMercancia,
+              value:
+                cove.mercancias[0]?.datosDeLaMercancia
+                  ?.descripcionGenericaDeLaMercancia,
             },
             { name: 'Numero de serie', value: numeroSerieCove },
           ],

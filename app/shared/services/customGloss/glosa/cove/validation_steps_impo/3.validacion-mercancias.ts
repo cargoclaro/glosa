@@ -24,7 +24,8 @@ async function validateMercancias(
   // Create a simplified view of COVE merchandise data
   const mercanciasCoveFormatted = datosMercanciaCove
     ? datosMercanciaCove.map((mercancia) => ({
-        descripcion: mercancia?.datosDeLaMercancia?.descripcionGenericaDeLaMercancia,
+        descripcion:
+          mercancia?.datosDeLaMercancia?.descripcionGenericaDeLaMercancia,
         cantidad: mercancia?.datosDeLaMercancia?.cantidadUMC,
         unidadMedida: mercancia?.datosDeLaMercancia?.claveUMC,
         valorUnitario: mercancia?.datosDeLaMercancia?.valorUnitario,
@@ -73,7 +74,8 @@ async function validateValorTotalDolares(
 ) {
   // Extract total value from COVE
   const valorTotalDolaresCove = cove.mercancias?.reduce(
-    (sum, mercancia) => sum + (mercancia.datosDeLaMercancia.valorTotalEnDolares || 0),
+    (sum, mercancia) =>
+      sum + (mercancia.datosDeLaMercancia.valorTotalEnDolares || 0),
     0
   );
   const observacionesCove = cove.datosDelAcuseDeValor.observaciones;
@@ -119,7 +121,8 @@ async function validateNumeroSerie(
   carta318?: Carta318
 ) {
   // TODO: Do this in a loop, instead of just checking the first mercancia
-  const numeroSerieCove = cove.mercancias[0]?.descripcionDeLaMercancia?.numeroDeSerie;
+  const numeroSerieCove =
+    cove.mercancias[0]?.descripcionDeLaMercancia?.numeroDeSerie;
   const invoiceMkdown = invoice?.markdown_representation;
   const carta318Mkdown = carta318?.markdown_representation;
 
@@ -135,7 +138,9 @@ async function validateNumeroSerie(
           data: [
             {
               name: 'Descripción',
-              value: cove.mercancias[0]?.datosDeLaMercancia?.descripcionGenericaDeLaMercancia,
+              value:
+                cove.mercancias[0]?.datosDeLaMercancia
+                  ?.descripcionGenericaDeLaMercancia,
             },
             { name: 'Numero de serie', value: numeroSerieCove },
           ],

@@ -105,8 +105,17 @@ const GlossIdPage = async (props: { params: Promise<{ id: string }> }) => {
         <h1 className="font-bold text-2xl">
           <Link className="inline-flex items-center gap-2" href="/gloss">
             <span className="inline-flex items-center">
-              <LeftArrow size="size-6" strokeWidth={2} customClass="text-orange-500 mr-2" />
-              <Square2x2 size="size-6" strokeWidth={2} customClass="text-orange-500" isFilled={true} />
+              <LeftArrow
+                size="size-6"
+                strokeWidth={2}
+                customClass="text-orange-500 mr-2"
+              />
+              <Square2x2
+                size="size-6"
+                strokeWidth={2}
+                customClass="text-orange-500"
+                isFilled={true}
+              />
             </span>
             Mis Operaciones
           </Link>

@@ -180,7 +180,7 @@ export function CoveViewer({
 
   return (
     <div className="relative">
-      <div className='mx-auto w-full max-w-4xl overflow-hidden rounded-xl border-[1px] border-blue-500 bg-white shadow-xl transition-all duration-500'>
+      <div className="mx-auto w-full max-w-4xl overflow-hidden rounded-xl border-[1px] border-blue-500 bg-white shadow-xl transition-all duration-500">
         {renderPage()}
       </div>
 

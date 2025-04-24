@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { db } from '~/db';
 import { Documents, PedimentAnalysisNFinish } from './components';
-import { Tabs } from './components/types';
+import type { Tabs } from './components/types';
 
 type IDynamicMetadata = {
   params: Promise<{ id: string }>;
@@ -75,16 +75,16 @@ const GlossIdAnalysis = async (props: {
             aria-label="Back to home"
             title="Back to home"
           >
-            <svg 
-              xmlns="http://www.w3.org/2000/svg" 
-              width="16" 
-              height="16" 
-              viewBox="0 0 24 24" 
-              fill="none" 
-              stroke="currentColor" 
-              strokeWidth="2" 
-              strokeLinecap="round" 
-              strokeLinejoin="round" 
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
               className="text-orange-500"
             >
               <path d="m15 18-6-6 6-6" />

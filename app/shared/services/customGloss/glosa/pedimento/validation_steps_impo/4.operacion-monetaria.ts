@@ -178,7 +178,9 @@ Analiza toda la información proporcionada (Pedimento, Factura, Carta 3.1.8, Doc
         // External information like appendices or regulations.
         'Apendice 14 (Incoterms)': {
           // Renamed for clarity
-          data: [{ name: 'Definiciones Incoterm (Apendice 14)', value: apendice14 }], // Value description updated
+          data: [
+            { name: 'Definiciones Incoterm (Apendice 14)', value: apendice14 },
+          ], // Value description updated
         },
         // --- Teaching Moment: Adding Regulatory Context ---
         // We should ideally include relevant parts of Annex 22 here regarding the non-filling rules.

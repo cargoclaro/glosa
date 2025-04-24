@@ -4,8 +4,8 @@ import type {
   Invoice,
   TransportDocument,
 } from '../../../data-extraction/mkdown_schemas';
-import type { PackingList, Cove } from '../../../extract-and-structure/schemas';
 import type { Pedimento } from '../../../data-extraction/schemas';
+import type { Cove, PackingList } from '../../../extract-and-structure/schemas';
 import { tracedNumeroDePedimento } from './1.numero-de-pedimento';
 import { tracedTipoOperacion } from './2.tipo-operacion';
 import { tracedClaveApendice15 } from './3.origen-destino';

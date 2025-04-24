@@ -166,7 +166,8 @@ async function validateDatosProveedor(
     cove?.datosGeneralesDelProveedor.nombresORazonSocial;
   const domicilioProveedorPedimento = pedimento.domicilio;
   const domicilioProveedorCove = cove?.domicilioDelProveedor;
-  const idProveedorCove = cove?.datosGeneralesDelProveedor?.taxIdSinTaxIdRfcCurp;
+  const idProveedorCove =
+    cove?.datosGeneralesDelProveedor?.taxIdSinTaxIdRfcCurp;
 
   const carta318mkdown = carta318?.markdown_representation;
   const observaciones = pedimento.observaciones_a_nivel_pedimento;

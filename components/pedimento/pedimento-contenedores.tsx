@@ -19,9 +19,9 @@ const PedimentoContenedores: React.FC<PedimentoContenedoresProps> = ({
   tabInfoSelected = { name: '', isCorrect: false, isVerified: false },
 }) => {
   return (
-    <div 
+    <div
       className={cn(
-        'mb-4 w-full border border-gray-400 cursor-pointer',
+        'mb-4 w-full cursor-pointer border border-gray-400',
         'overflow-hidden rounded-md border-2',
         getHighlightBorder('Datos del transporte', tabs),
         getHighlightFill('Datos del transporte', tabInfoSelected)
