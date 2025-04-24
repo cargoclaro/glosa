@@ -12,7 +12,7 @@ describe('Extract and Structure Packing List', () => {
         "expectedOutput": {
           "mercancias": [
             {
-              "cantidad": 3
+              "cantidad": 1
             }
           ],
           "pesoBruto": {

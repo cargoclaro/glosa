@@ -1,4 +1,4 @@
-import { openai } from '@ai-sdk/openai';
+import { google } from '@ai-sdk/google';
 import { generateObject } from 'ai';
 import { Langfuse } from 'langfuse';
 import { z } from 'zod';
@@ -72,7 +72,7 @@ export async function classifyDocuments<
       const {
         object: { classification },
       } = await generateObject({
-        model: openai('gpt-4o-2024-11-20'),
+        model: google('gemini-2.5-flash-preview-04-17'),
         ...telemetryConfig,
         seed: 42,
         system:
