@@ -1,7 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { Langfuse } from 'langfuse';
 import { extractAndStructurePackingList, extractAndStructureCove, extractAndStructurePedimento } from './extract-and-structure';
-import sortKeysRecursive from 'sort-keys-recursive';
 
 const langfuse = new Langfuse();
 
@@ -1057,7 +1056,7 @@ describe('Extract and Structure Pedimento', () => {
             {
               "idFiscal": "20-1329172",
               "nombreRazonSocial": "HEXPOL COMPOUNDING",
-              "domicilio": "NO KINSMAN ROAD Num. Ext. 14330 CP 44021 BURTON, OH, USA",
+              "domicilio": "KINSMAN ROAD Num. Ext. 14330 CP 44021 BURTON, OH, USA",
               "vinculacion": "NO",
               "facturas": [
                 {
@@ -1092,7 +1091,7 @@ describe('Extract and Structure Pedimento', () => {
             {
               "idFiscal": "20-8775856",
               "nombreRazonSocial": "LION COPOLYMER GEISMAR LLC",
-              "domicilio": "LOUISIANA HIGHWAY 30 Num. Ext. 36191 CP 70734 GEISMAR, LA, USA",
+              "domicilio": "LOUISIANA HIGHWAY 30 Num. Ext. 36191 CP 70734 GEISMAR,LA, USA",
               "vinculacion": "NO",
               "facturas": [
                 {
@@ -1109,7 +1108,7 @@ describe('Extract and Structure Pedimento', () => {
             {
               "idFiscal": "82-5017927",
               "nombreRazonSocial": "CELANECE POLYMERS HOLDING INC",
-              "domicilio": "W. LAS COLINAS BLVD Num. Ext. 222 Num. Int. 900N CP 75039 IRVING, TX, USA",
+              "domicilio": "W. LAS COLINAS BLVD Num. Ext. 222 Num. Int. 900N CP 75039 IRVING,TX, USA",
               "vinculacion": "NO",
               "facturas": [
                 {
@@ -2152,8 +2151,8 @@ describe('Extract and Structure Pedimento', () => {
       if (!fixture) {
         throw new Error(`Fixture not found for: ${fileUrl}`);
       }
-      expect.soft(sortKeysRecursive(pedimentoResult), `Result data should match expected output for: ${fileUrl}`)
-        .toEqual(sortKeysRecursive(fixture.expectedOutput));
+      expect.soft(pedimentoResult, `Result data should match expected output for: ${fileUrl}`)
+        .toEqual(fixture.expectedOutput);
     }
   });
 });
