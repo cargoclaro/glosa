@@ -3,12 +3,8 @@ import type {
   Carta318,
   Invoice,
 } from '../../../data-extraction/mkdown_schemas';
-import type { PackingList } from '../../../extract-and-structure/schemas';
-import type {
-  Cove,
-  Partida,
-  Pedimento,
-} from '../../../data-extraction/schemas';
+import type { Partida, Pedimento } from '../../../data-extraction/schemas';
+import type { Cove, PackingList } from '../../../extract-and-structure/schemas';
 import { apendice7 } from '../../anexo-22/apendice-7';
 import { getFraccionInfo } from '../../tax-finder';
 import { glosar } from '../../validation-result';
@@ -130,7 +126,8 @@ async function validateCoherenciaUMC(
 ) {
   // Extraer partidas con información de UMC
   const partidasUMC = partida.umc || '';
-  const claveUmcCove = cove?.datos_mercancia?.[0]?.clave_umc;
+  // TODO: Do this in a loop, instead of just checking the first mercancia
+  const claveUmcCove = cove?.mercancias[0]?.datosDeLaMercancia?.claveUMC;
   const carta318mkdown = carta318?.markdown_representation;
   const invoicemkdown = invoice?.markdown_representation;
 
@@ -203,7 +200,9 @@ async function validatePaisVenta(
           data: [{ name: 'Invoice', value: invoicemkdown }],
         },
         'Packing List': {
-          data: [{ name: 'Packing List', value: JSON.stringify(packing, null, 2) }],
+          data: [
+            { name: 'Packing List', value: JSON.stringify(packing, null, 2) },
+          ],
         },
         'Carta 318': {
           data: [{ name: 'Carta 318', value: carta318mkdown }],
@@ -250,7 +249,9 @@ async function validatePaisOrigen(
           data: [{ name: 'Invoice', value: invoicemkdown }],
         },
         Packing: {
-          data: [{ name: 'Packing List', value: JSON.stringify(packing, null, 2) }],
+          data: [
+            { name: 'Packing List', value: JSON.stringify(packing, null, 2) },
+          ],
         },
         'Carta 318': {
           data: [{ name: 'Carta 318', value: carta318mkdown }],
@@ -275,7 +276,9 @@ async function validateDescripcionMercancia(
   const partidasDescripcionMercancia = partida.descripcion || '';
 
   // Extraer la descripción de la mercancía del COVE, factura y carta 318
-  const descripcionCove = cove?.datos_mercancia?.[0]?.descripcion_mercancia;
+  // TODO: Do this in a loop, instead of just checking the first mercancia
+  const descripcionCove =
+    cove?.mercancias[0]?.datosDeLaMercancia.descripcionGenericaDeLaMercancia;
   const invoicemkdown = invoice?.markdown_representation;
   const carta318mkdown = carta318?.markdown_representation;
 
@@ -489,7 +492,9 @@ async function validateNumerosSerie(
   const observaciones_partida = partida.observaciones;
   const observaciones_nivel_pedimento =
     pedimento?.observaciones_a_nivel_pedimento;
-  const numerosSeriesCove = cove?.datos_mercancia?.[0]?.numeros_serie || [];
+  // TODO: Do this in a loop, instead of just checking the first mercancia
+  const numerosSeriesCove =
+    cove?.mercancias[0]?.descripcionDeLaMercancia?.numeroDeSerie;
 
   const validation = {
     name: 'Números de serie, modelo y parte',

@@ -1,4 +1,4 @@
-import type { Cove } from '@/shared/services/customGloss/data-extraction/schemas';
+import type { Cove } from '@/shared/services/customGloss/extract-and-structure/schemas';
 import type { CustomGlossTabTable } from '~/db/schema';
 import { cn } from '~/lib/utils';
 import { getHighlightBorder, getHighlightFill } from './utils/highlight-styles';
@@ -19,7 +19,7 @@ export function CoveHeader({
   return (
     <div className="overflow-x-auto p-3">
       {/* COVE Title Section - Similar to Pedimento */}
-      <div className="mb-4 w-full border border-gray-400 rounded-md overflow-hidden">
+      <div className="mb-4 w-full overflow-hidden rounded-md border border-gray-400">
         <div className="grid grid-cols-12 gap-0">
           <div className="col-span-12 border-gray-400 border-b bg-gray-200 py-0.5 py-1 text-center font-semibold text-[11px] text-xs uppercase">
             COVE
@@ -28,12 +28,12 @@ export function CoveHeader({
       </div>
 
       {/* COVE Identifier Section */}
-      {cove.acuse_valor && (
+      {cove.datosDelAcuseDeValor.idCove && (
         <div className="border-b p-2">
           <h3 className="mb-1 font-semibold text-sm">
             Datos del Acuse de Valor{' '}
             <span className="font-bold text-zinc-700">
-              {cove.acuse_valor}
+              {cove.datosDelAcuseDeValor.idCove}
             </span>
           </h3>
 
@@ -51,22 +51,26 @@ export function CoveHeader({
                 <h4 className="font-medium text-xs">Tipo de operación</h4>
               </div>
               <div className="border-r border-b bg-gray-100 p-1">
-                <h4 className="font-medium text-xs">
-                  Relación de facturas
-                </h4>
+                <h4 className="font-medium text-xs">Relación de facturas</h4>
               </div>
               <div className="border-b bg-gray-100 p-1">
                 <h4 className="font-medium text-xs">No. de factura</h4>
               </div>
 
               <div className="border-r p-1">
-                <p className="text-xs">{cove.tipo_operacion || '—'}</p>
+                <p className="text-xs">
+                  {cove.datosDelAcuseDeValor.tipoDeOperacion || '—'}
+                </p>
               </div>
               <div className="border-r p-1">
-                <p className="text-xs">{cove.relacion_facturas || '—'}</p>
+                <p className="text-xs">
+                  {cove.datosDelAcuseDeValor.relacionDeFacturas || '—'}
+                </p>
               </div>
               <div className="p-1">
-                <p className="text-xs">{cove.numero_factura || '—'}</p>
+                <p className="text-xs">
+                  {cove.datosDelAcuseDeValor.numeroDeFactura || '—'}
+                </p>
               </div>
             </div>
 
@@ -79,11 +83,14 @@ export function CoveHeader({
               </div>
 
               <div className="border-r p-1">
-                <p className="text-xs">{cove.tipo_figura || '—'}</p>
+                <p className="text-xs">
+                  {cove.datosDelAcuseDeValor.tipoDeFigura || '—'}
+                </p>
               </div>
               <div className="p-1">
                 <p className="text-xs">
-                  {JSON.stringify(cove.fecha_expedicion) || '—'}
+                  {JSON.stringify(cove.datosDelAcuseDeValor.fechaExpedicion) ||
+                    '—'}
                 </p>
               </div>
             </div>
@@ -95,14 +102,16 @@ export function CoveHeader({
               <h4 className="font-medium text-xs">Observaciones</h4>
             </div>
             <div className="min-h-[40px] p-1">
-              <p className="text-xs">{cove.observaciones || '—'}</p>
+              <p className="text-xs">
+                {cove.datosDelAcuseDeValor.observaciones || '—'}
+              </p>
             </div>
           </div>
         </div>
       )}
 
       {/* Supplier Data - Datos generales del proveedor */}
-      {cove.datos_generales_proveedor && (
+      {cove.datosGeneralesDelProveedor && (
         <div className="border-b p-2">
           <h3 className="mb-1 font-semibold text-sm">
             Datos generales del proveedor
@@ -118,9 +127,7 @@ export function CoveHeader({
           >
             <div className="grid grid-cols-1 gap-1 border-x border-t border-b md:grid-cols-2">
               <div className="border-r bg-gray-100 p-1">
-                <h4 className="font-medium text-xs">
-                  Tipo de identificador
-                </h4>
+                <h4 className="font-medium text-xs">Tipo de identificador</h4>
               </div>
               <div className="bg-gray-100 p-1">
                 <h4 className="font-medium text-xs">
@@ -130,13 +137,12 @@ export function CoveHeader({
 
               <div className="border-r p-1">
                 <p className="text-xs">
-                  {cove.datos_generales_proveedor.tipo_identificador ||
-                    '—'}
+                  {cove.datosGeneralesDelProveedor.tipoDeIdentificador || '—'}
                 </p>
               </div>
               <div className="p-1">
                 <p className="text-xs">
-                  {cove.datos_generales_proveedor.identificador || '—'}
+                  {cove.datosGeneralesDelProveedor.taxIdSinTaxIdRfcCurp || '—'}
                 </p>
               </div>
             </div>
@@ -156,26 +162,32 @@ export function CoveHeader({
 
               <div className="border-r p-1 md:col-span-1">
                 <p className="text-xs">
-                  {cove.datos_generales_proveedor.nombre_razon_social ||
-                    '—'}
+                  {cove.datosGeneralesDelProveedor.nombresORazonSocial || '—'}
                 </p>
               </div>
               <div className="border-r p-1">
-                <p className="text-xs">—</p>
+                <p className="text-xs">
+                  {cove.datosGeneralesDelProveedor.apellidoPaterno || '—'}
+                </p>
               </div>
               <div className="p-1">
-                <p className="text-xs">—</p>
+                <p className="text-xs">
+                  {cove.datosGeneralesDelProveedor.apellidoMaterno || '—'}
+                </p>
               </div>
             </div>
           </div>
 
           {/* Address - Domicilio del proveedor */}
-          {cove.datos_generales_proveedor.domicilio && (
+          {cove.domicilioDelProveedor && (
             <div
               className={cn(
                 'mb-1 cursor-pointer overflow-hidden rounded-md border-2',
                 getHighlightBorder('Datos Proveedor Destinatario', tabs),
-                getHighlightFill('Datos Proveedor Destinatario', tabInfoSelected)
+                getHighlightFill(
+                  'Datos Proveedor Destinatario',
+                  tabInfoSelected
+                )
               )}
               onClick={() => onClick('Domicilio del proveedor')}
             >
@@ -198,23 +210,22 @@ export function CoveHeader({
 
                 <div className="border-r p-1 md:col-span-1">
                   <p className="text-xs">
-                    {cove.datos_generales_proveedor.domicilio.calle ||
-                      '—'}
+                    {cove.domicilioDelProveedor.calle || '—'}
                   </p>
                 </div>
                 <div className="border-r p-1">
                   <p className="text-xs">
-                    {cove.datos_generales_proveedor.domicilio
-                      .numero_exterior || '—'}
+                    {cove.domicilioDelProveedor.numeroExterior || '—'}
                   </p>
                 </div>
                 <div className="border-r p-1">
-                  <p className="text-xs">—</p>
+                  <p className="text-xs">
+                    {cove.domicilioDelProveedor.numeroInterior || '—'}
+                  </p>
                 </div>
                 <div className="p-1">
                   <p className="text-xs">
-                    {cove.datos_generales_proveedor.domicilio
-                      .codigo_postal || '—'}
+                    {cove.domicilioDelProveedor.codigoPostal || '—'}
                   </p>
                 </div>
               </div>
@@ -229,30 +240,33 @@ export function CoveHeader({
 
                 <div className="border-r p-1">
                   <p className="text-xs">
-                    {cove.datos_generales_proveedor.domicilio.colonia ||
-                      '—'}
+                    {cove.domicilioDelProveedor.colonia || '—'}
                   </p>
                 </div>
                 <div className="p-1">
-                  <p className="text-xs">—</p>
+                  <p className="text-xs">
+                    {cove.domicilioDelProveedor.localidad || '—'}
+                  </p>
                 </div>
               </div>
 
               <div className="mt-1 grid grid-cols-1 gap-1 border-x border-b md:grid-cols-2">
                 <div className="border-r bg-gray-100 p-1">
-                  <h4 className="font-medium text-xs">
-                    Entidad federativa
-                  </h4>
+                  <h4 className="font-medium text-xs">Entidad federativa</h4>
                 </div>
                 <div className="bg-gray-100 p-1">
                   <h4 className="font-medium text-xs">Municipio</h4>
                 </div>
 
                 <div className="border-r p-1">
-                  <p className="text-xs">—</p>
+                  <p className="text-xs">
+                    {cove.domicilioDelProveedor.entidadFederativa || '—'}
+                  </p>
                 </div>
                 <div className="p-1">
-                  <p className="text-xs">—</p>
+                  <p className="text-xs">
+                    {cove.domicilioDelProveedor.municipio || '—'}
+                  </p>
                 </div>
               </div>
 
@@ -263,7 +277,7 @@ export function CoveHeader({
 
                 <div className="p-1">
                   <p className="text-xs">
-                    {cove.datos_generales_proveedor.domicilio.pais || '—'}
+                    {cove.domicilioDelProveedor.pais || '—'}
                   </p>
                 </div>
               </div>

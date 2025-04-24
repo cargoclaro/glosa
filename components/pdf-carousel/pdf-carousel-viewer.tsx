@@ -255,17 +255,22 @@ const PDFCarouselViewer = ({
               console.log('Google PDF viewer failed, trying direct embedding');
               // If Google Viewer fails, try direct embedding
               e.currentTarget.src = currentDocument.url;
-              
+
               // Add event listener to handle potential direct embedding failure
               e.currentTarget.onload = () => {
                 // Check if iframe loaded correctly
-                if (e.currentTarget.contentDocument?.body?.childElementCount === 0) {
-                  console.log('Direct embedding failed, providing download link');
+                if (
+                  e.currentTarget.contentDocument?.body?.childElementCount === 0
+                ) {
+                  console.log(
+                    'Direct embedding failed, providing download link'
+                  );
                   // If iframe is empty, replace with download link
                   const container = e.currentTarget.parentElement;
                   if (container) {
                     const fallbackDiv = document.createElement('div');
-                    fallbackDiv.className = 'flex h-full w-full flex-col items-center justify-center';
+                    fallbackDiv.className =
+                      'flex h-full w-full flex-col items-center justify-center';
                     fallbackDiv.innerHTML = `
                       <p class="mb-4 text-gray-600">No se pudo cargar el documento correctamente.</p>
                       <a href="${currentDocument.url}" target="_blank" rel="noreferrer" 

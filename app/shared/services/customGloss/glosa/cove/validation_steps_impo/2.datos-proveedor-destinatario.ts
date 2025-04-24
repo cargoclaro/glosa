@@ -3,7 +3,7 @@ import type {
   Carta318,
   Invoice,
 } from '../../../data-extraction/mkdown_schemas';
-import type { Cove } from '../../../data-extraction/schemas';
+import type { Cove } from '../../../extract-and-structure/schemas';
 import { glosar } from '../../validation-result';
 
 /**
@@ -17,11 +17,13 @@ async function validateDatosGeneralesProveedor(
   carta318?: Carta318
 ) {
   // Extract supplier data from different sources
-  const identificadorCove = cove.datos_generales_proveedor?.identificador;
+  // Se supone que este valor siempre es el RFC en la importación
+  const identificadorCove =
+    cove.datosGeneralesDelProveedor.taxIdSinTaxIdRfcCurp;
   const tipoIdentificadorCove =
-    cove.datos_generales_proveedor?.tipo_identificador;
+    cove.datosGeneralesDelProveedor.tipoDeIdentificador;
   const nombreRazonSocialCove =
-    cove.datos_generales_proveedor?.nombre_razon_social;
+    cove.datosGeneralesDelProveedor.nombresORazonSocial;
   const invoiceMkdown = invoice?.markdown_representation;
   const carta318Mkdown = carta318?.markdown_representation;
 
@@ -64,19 +66,19 @@ async function validateDomicilioProveedor(
   carta318?: Carta318
 ) {
   // Extract supplier address data from different sources
-  const domicilioCove = cove.datos_generales_proveedor?.domicilio;
+  const domicilioCove = cove.domicilioDelProveedor;
 
   // Compose full address string for comparison
   const domicilioCoveCompleto = domicilioCove
     ? [
         domicilioCove.calle,
-        domicilioCove.numero_exterior,
-        domicilioCove.numero_interior,
+        domicilioCove.numeroExterior,
+        domicilioCove.numeroInterior,
         domicilioCove.colonia,
         domicilioCove.localidad,
         domicilioCove.municipio,
-        domicilioCove.entidad_federativa,
-        domicilioCove.codigo_postal,
+        domicilioCove.entidadFederativa,
+        domicilioCove.codigoPostal,
         domicilioCove.pais,
       ]
         .filter(Boolean)
@@ -121,10 +123,11 @@ async function validateDatosGeneralesDestinatario(
   carta318?: Carta318
 ) {
   // Extract recipient data from different sources
+  // Se supone que este valor siempre es el RFC en la importación
   const rfcDestinatarioCove =
-    cove.datos_generales_destinatario?.rfc_destinatario;
+    cove.datosGeneralesDelDestinatario.taxIdSinTaxIdRfcCurp;
   const nombreRazonSocialCove =
-    cove.datos_generales_destinatario?.nombre_razon_social;
+    cove.datosGeneralesDelDestinatario.nombresORazonSocial;
   const invoiceMkdown = invoice?.markdown_representation;
   const carta318Mkdown = carta318?.markdown_representation;
 
@@ -166,19 +169,19 @@ async function validateDomicilioDestinatario(
   carta318?: Carta318
 ) {
   // Extract recipient address data from different sources
-  const domicilioCove = cove.datos_generales_destinatario?.domicilio;
+  const domicilioCove = cove.domicilioDelDestinatario;
 
   // Compose full address string for comparison
   const domicilioCoveCompleto = domicilioCove
     ? [
         domicilioCove.calle,
-        domicilioCove.numero_exterior,
-        domicilioCove.numero_interior,
+        domicilioCove.numeroExterior,
+        domicilioCove.numeroInterior,
         domicilioCove.colonia,
         domicilioCove.localidad,
         domicilioCove.municipio,
-        domicilioCove.entidad_federativa,
-        domicilioCove.codigo_postal,
+        domicilioCove.entidadFederativa,
+        domicilioCove.codigoPostal,
         domicilioCove.pais,
       ]
         .filter(Boolean)

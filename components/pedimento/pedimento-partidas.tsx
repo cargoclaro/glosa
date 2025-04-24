@@ -556,14 +556,14 @@ const PartidaItem: React.FC<PartidaItemProps> = ({
 
   // Use the new functions for highlighting
   const isHighlighted = tabInfoSelected?.name === sectionName;
-  
+
   // Determine valid state for proper coloring based on tabInfoSelected
   const isValid = tabInfoSelected?.isCorrect || tabInfoSelected?.isVerified;
 
   return (
     <div
       className={cn(
-        'mb-4 border-2 rounded-md overflow-hidden cursor-pointer', // outer container styling
+        'mb-4 cursor-pointer overflow-hidden rounded-md border-2', // outer container styling
         getHighlightBorder(sectionName, tabs), // border color based on validation status
         getHighlightFill(sectionName, tabInfoSelected) // background and opacity styling
       )}

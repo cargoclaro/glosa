@@ -34,11 +34,11 @@ const Header = () => {
               <li className="flex items-center">
                 <button
                   onClick={handleWhatsAppHelp}
-                  className="inline-flex items-center gap-1.5 rounded-md border border-green-500 bg-white px-3 py-1.5 text-sm font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-green-500/20"
+                  className="inline-flex items-center gap-1.5 rounded-md border border-green-500 bg-white px-3 py-1.5 font-medium text-gray-700 text-sm shadow-sm transition-colors hover:bg-gray-50 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-green-500/20"
                   aria-label="Ayuda por WhatsApp"
                 >
                   <span>Ayuda</span>
-                  <HelpCircle className="h-4 w-4 ml-0.5" />
+                  <HelpCircle className="ml-0.5 h-4 w-4" />
                 </button>
               </li>
               <li className="flex items-center">

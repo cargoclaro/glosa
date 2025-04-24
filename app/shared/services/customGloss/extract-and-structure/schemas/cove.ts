@@ -3,11 +3,7 @@ import { z } from 'zod';
 
 export const datosGeneralesSchema = z.object({
   datosDelAcuseDeValor: z.object({
-    idCove: z
-      .string()
-      .describe(
-        "Ejemplo: 'COVE247163T13'."
-      ),
+    idCove: z.string().describe("Ejemplo: 'COVE247163T13'."),
     tipoDeOperacion: z.string(),
     relacionDeFacturas: z.string(),
     numeroDeFactura: z.string(),
@@ -32,22 +28,22 @@ export const datosGeneralesSchema = z.object({
 
         return parsedDate.toDate();
       }),
-    observaciones: z.string(),
+    observaciones: z.string().nullable(),
   }),
   datosGeneralesDelProveedor: z.object({
     tipoDeIdentificador: z.enum(['TAX ID', 'RFC']),
     taxIdSinTaxIdRfcCurp: z.string(),
     nombresORazonSocial: z.string(),
-    apellidoPaterno: z.string(),
-    apellidoMaterno: z.string(),
+    apellidoPaterno: z.string().nullable(),
+    apellidoMaterno: z.string().nullable(),
   }),
   domicilioDelProveedor: z.object({
     calle: z.string(),
     numeroExterior: z.string(),
-    numeroInterior: z.string(),
+    numeroInterior: z.string().nullable(),
     codigoPostal: z.string(),
-    colonia: z.string(),
-    localidad: z.string(),
+    colonia: z.string().nullable(),
+    localidad: z.string().nullable(),
     entidadFederativa: z.string(),
     municipio: z.string(),
     pais: z.string(),
@@ -56,16 +52,16 @@ export const datosGeneralesSchema = z.object({
     tipoDeIdentificador: z.enum(['TAX ID', 'RFC']),
     taxIdSinTaxIdRfcCurp: z.string(),
     nombresORazonSocial: z.string(),
-    apellidoPaterno: z.string(),
-    apellidoMaterno: z.string(),
+    apellidoPaterno: z.string().nullable(),
+    apellidoMaterno: z.string().nullable(),
   }),
   domicilioDelDestinatario: z.object({
     calle: z.string(),
     numeroExterior: z.string(),
-    numeroInterior: z.string(),
+    numeroInterior: z.string().nullable(),
     codigoPostal: z.string(),
-    colonia: z.string(),
-    localidad: z.string(),
+    colonia: z.string().nullable(),
+    localidad: z.string().nullable(),
     entidadFederativa: z.string(),
     municipio: z.string(),
     pais: z.string(),
@@ -82,12 +78,15 @@ export const mercanciaSchema = z.object({
     valorTotal: z.number(),
     valorTotalEnDolares: z.number(),
   }),
-  descripcionDeLaMercancia: z.object({
-    marca: z.string(),
-    modelo: z.string(),
-    submodelo: z.string(),
-    numeroDeSerie: z.string(),
-  }).nullable().describe("Casi nunca aparece"),
+  descripcionDeLaMercancia: z
+    .object({
+      marca: z.string().nullable(),
+      modelo: z.string(),
+      submodelo: z.string().nullable(),
+      numeroDeSerie: z.string().nullable(),
+    })
+    .nullable()
+    .describe('Casi nunca aparece'),
 });
 
 const coveSchema = datosGeneralesSchema.extend({

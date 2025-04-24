@@ -1,6 +1,5 @@
 'use server';
 
-import { randomUUID } from 'node:crypto';
 import { config } from 'dotenv';
 import { and, eq } from 'drizzle-orm';
 import { Langfuse } from 'langfuse';
@@ -21,7 +20,10 @@ import {
   CustomGlossTabValidationStep,
   CustomGlossTabValidationStepActionToTake,
 } from '~/db/schema';
-import { type Classification, classifyDocuments } from './classification/classification';
+import {
+  type Classification,
+  classifyDocuments,
+} from './classification/classification';
 import { extractTextFromPDFs } from './data-extraction';
 import { glosaExpo } from './glosa/expo';
 import { glosaImpo } from './glosa/impo';
@@ -144,16 +146,17 @@ export const analysis = api
   )
   .mutation(async ({ input: { files }, ctx: { userId } }) => {
     try {
-      // Generate a trace ID for Langfuse tracking
-      const parentTraceId = randomUUID();
-      langfuse.trace({
-        id: parentTraceId,
+      const trace = langfuse.trace({
         name: 'Glosa de Pedimento',
       });
       const successfulUploads = await uploadFiles(files);
+      langfuse.event({
+        traceId: trace.id,
+        name: 'Classification',
+      });
       const classificationResults = await classifyDocuments(
         successfulUploads,
-        parentTraceId
+        trace.id
       );
 
       // Transform classification results to include documentType
@@ -166,24 +169,28 @@ export const analysis = api
 
       // Check for unsupported document types
       const multipleDocuments = classificationResults.filter(
-        (doc) => doc.classification === 'Archivo con múltiples documentos (iguales o distintos)'
+        (doc) =>
+          doc.classification ===
+          'Archivo con múltiples documentos (iguales o distintos)'
       );
-      
+
       if (multipleDocuments.length > 0) {
         return {
           success: false,
-          message: 'Encontramos varios documentos en un solo archivo. No soportamos este tipo de archivos.',
+          message:
+            'Encontramos varios documentos en un solo archivo. No soportamos este tipo de archivos.',
         };
       }
-      
+
       const otrosDocuments = classifications.filter(
         (doc) => doc.documentType === 'otros'
       );
-      
+
       if (otrosDocuments.length > 0) {
         return {
           success: false,
-          message: 'Se detectaron documentos no clasificables o no soportados para la glosa electrónica.',
+          message:
+            'Se detectaron documentos no clasificables o no soportados para la glosa electrónica.',
         };
       }
 
@@ -207,11 +214,13 @@ export const analysis = api
         >
       );
 
-      const { pedimento: classifiedPedimento, cove: classifiedCove } = groupedClassifications;
+      const { pedimento: classifiedPedimento, cove: classifiedCove } =
+        groupedClassifications;
       if (!classifiedPedimento) {
         return {
           success: false,
-          message: 'El pedimento es obligatorio para realizar la glosa electrónica.',
+          message:
+            'El pedimento es obligatorio para realizar la glosa electrónica.',
         };
       }
       if (!classifiedCove) {
@@ -223,23 +232,21 @@ export const analysis = api
 
       const documents = await extractTextFromPDFs(
         groupedClassifications,
-        parentTraceId
+        trace.id
       );
       const { pedimento, cove } = documents;
       if (!pedimento || !cove) {
-        throw new Error(
-          'Should never happen'
-        );
+        throw new Error('Should never happen');
       }
       const operationType = pedimento.encabezado_del_pedimento?.tipo_oper;
       const importerName = pedimento.datos_importador?.razon_social;
       langfuse.event({
-        traceId: parentTraceId,
+        traceId: trace.id,
         name: 'Validation Steps',
       });
       const gloss = await (operationType === 'IMP'
-        ? glosaImpo({ ...documents, traceId: parentTraceId })
-        : glosaExpo({ ...documents, traceId: parentTraceId }));
+        ? glosaImpo({ ...documents, traceId: trace.id })
+        : glosaExpo({ ...documents, traceId: trace.id }));
 
       const [newCustomGloss] = await db
         .insert(CustomGloss)
@@ -250,11 +257,10 @@ export const analysis = api
           moneySaved: 1000,
           importerName:
             importerName ?? 'No se encontro la razon social del importador',
-          cove: cove,
-          pedimento: pedimento,
+          cove,
+          pedimento,
         })
         .returning();
-
       if (!newCustomGloss) {
         throw new Error('Failed to create CustomGloss record');
       }
@@ -269,61 +275,93 @@ export const analysis = api
         }))
       );
 
-      await Promise.all(gloss.map(async ({ sectionName, validations }) => {
-        const data = {
-          name: sectionName,
-          isCorrect: validations.every(({ validation: { isValid } }) => isValid),
-          fullContext: true,
-          isVerified: false,
-          customGlossId: newCustomGloss.id,
-        };
-        const [insertedTab] = await db.insert(CustomGlossTab).values(data).returning();
-        if (!insertedTab) {
-          throw new Error('Failed to create CustomGlossTab record');
-        }
-        await Promise.all(validations.map(async ({ contexts, validation }) => {
-          const [insertedValidationStep] = await db
-            .insert(CustomGlossTabValidationStep)
-            .values({
-              name: validation.name,
-              description: validation.description,
-              llmAnalysis: validation.llmAnalysis,
-              isCorrect: validation.isValid,
-              customGlossTabId: insertedTab.id
-            })
-            .returning();
-          if (!insertedValidationStep) {
-            throw new Error('Failed to create CustomGlossTabValidationStep record');
-          }
-          await Promise.all([
-            ...validation.actionsToTake.map(action =>
-              db.insert(CustomGlossTabValidationStepActionToTake).values({
-                description: action,
-                customGlossTabValidationStepId: insertedValidationStep.id
-              })
+      await Promise.all(
+        gloss.map(async ({ sectionName, validations }) => {
+          const data = {
+            name: sectionName,
+            isCorrect: validations.every(
+              ({ validation: { isValid } }) => isValid
             ),
-            ...Object.entries(contexts).flatMap(([contextType, origins]) =>
-              Object.entries(origins).map(async ([origin, contextValue]) => {
-                const [insertedContext] = await db.insert(CustomGlossTabContext).values({
-                  type: contextType as CustomGlossTabContextTypes,
-                  origin,
-                  customGlossTabId: insertedTab.id
-                }).returning();
-                if (!insertedContext) {
-                  throw new Error('Failed to create CustomGlossTabContext record');
-                }
-                await Promise.all(contextValue.data.map(({ name, value }) =>
-                  db.insert(CustomGlossTabContextData).values({
-                    name,
-                    value: value === undefined ? 'N/A' : JSON.stringify(value),
-                    customGlossTabContextId: insertedContext.id
+            fullContext: true,
+            isVerified: false,
+            customGlossId: newCustomGloss.id,
+          };
+          const [insertedTab] = await db
+            .insert(CustomGlossTab)
+            .values(data)
+            .returning();
+          if (!insertedTab) {
+            throw new Error('Failed to create CustomGlossTab record');
+          }
+          await Promise.all(
+            validations.map(async ({ contexts, validation }) => {
+              // Remove null bytes from objects before inserting into the database
+              function removeNullBytes<T>(obj: T): T {
+                const json = JSON.stringify(obj);
+                const cleaned = json.replace(/\\u0000/g, '');
+                return JSON.parse(cleaned) as T;
+              }
+              const cleanedValidation = removeNullBytes(validation);
+              const cleanedTabId = removeNullBytes(insertedTab.id);
+              const [insertedValidationStep] = await db
+                .insert(CustomGlossTabValidationStep)
+                .values({
+                  name: cleanedValidation.name,
+                  description: cleanedValidation.description,
+                  llmAnalysis: cleanedValidation.llmAnalysis,
+                  isCorrect: cleanedValidation.isValid,
+                  customGlossTabId: cleanedTabId,
+                })
+                .returning();
+              if (!insertedValidationStep) {
+                throw new Error(
+                  'Failed to create CustomGlossTabValidationStep record'
+                );
+              }
+              await Promise.all([
+                ...cleanedValidation.actionsToTake.map((action) =>
+                  db.insert(CustomGlossTabValidationStepActionToTake).values({
+                    description: action,
+                    customGlossTabValidationStepId: insertedValidationStep.id,
                   })
-                ));
-              })
-            )
-          ]);
-        }));
-      }));
+                ),
+                ...Object.entries(contexts).flatMap(([contextType, origins]) =>
+                  Object.entries(origins).map(
+                    async ([origin, contextValue]) => {
+                      const [insertedContext] = await db
+                        .insert(CustomGlossTabContext)
+                        .values({
+                          type: contextType as CustomGlossTabContextTypes,
+                          origin,
+                          customGlossTabId: insertedTab.id,
+                          url: '#',
+                        })
+                        .returning();
+                      if (!insertedContext) {
+                        throw new Error(
+                          'Failed to create CustomGlossTabContext record'
+                        );
+                      }
+                      await Promise.all(
+                        contextValue.data.map(({ name, value }) =>
+                          db.insert(CustomGlossTabContextData).values({
+                            name,
+                            value:
+                              value === undefined
+                                ? 'N/A'
+                                : JSON.stringify(value),
+                            customGlossTabContextId: insertedContext.id,
+                          })
+                        )
+                      );
+                    }
+                  )
+                ),
+              ]);
+            })
+          );
+        })
+      );
 
       return {
         success: true,

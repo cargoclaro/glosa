@@ -1,8 +1,8 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { Brain, FileCheck, FileSearch, Loader2, Sparkles } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { Brain, FileCheck, FileSearch, Loader2, Sparkles } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 interface LoadingBarProps {
   duration?: number;
@@ -31,7 +31,7 @@ const steps: Step[] = [
     name: 'Extracción',
     icon: <Brain className="h-5 w-5" />,
     description: 'Extrayendo la información clave de la operación',
-    weight: 0.20, // 20% of total time
+    weight: 0.2, // 20% of total time
     speed: 7, // Pretty fast counter
   },
   {
@@ -39,7 +39,7 @@ const steps: Step[] = [
     name: 'Validación',
     icon: <FileCheck className="h-5 w-5" />,
     description: 'Verificando cada uno de los campos del pedimento',
-    weight: 0.50, // 50% of total time
+    weight: 0.5, // 50% of total time
     speed: 3, // Slow counter - creates perception of complex work
   },
   {
@@ -61,60 +61,64 @@ if (Math.abs(totalWeight - 1.0) > 0.001) {
 // Fun facts about Mexican foreign trade (30 total)
 const FUN_FACTS = [
   // Original 8 facts
-  "¿Sabías? México es el país que más exporta en toda América Latina.",
-  "¿Sabías? En 2023, México superó a China como el principal socio comercial de Estados Unidos.",
-  "¿Sabías? México tiene más de 50 tratados y acuerdos comerciales con diferentes países.",
-  "¿Sabías? México es uno de los mayores exportadores de autos en el mundo.",
-  "¿Sabías? El puerto de Manzanillo es el más importante del Pacífico mexicano.",
-  "¿Sabías? La aduana de Nuevo Laredo es la más activa de América Latina.",
-  "¿Sabías? Además de autos, México exporta aguacates, pantallas planas, cerveza y tequila.",
-  "¿Sabías? Muchas empresas extranjeras usan el programa IMMEX para fabricar en México.",
-  
+  '¿Sabías? México es el país que más exporta en toda América Latina.',
+  '¿Sabías? En 2023, México superó a China como el principal socio comercial de Estados Unidos.',
+  '¿Sabías? México tiene más de 50 tratados y acuerdos comerciales con diferentes países.',
+  '¿Sabías? México es uno de los mayores exportadores de autos en el mundo.',
+  '¿Sabías? El puerto de Manzanillo es el más importante del Pacífico mexicano.',
+  '¿Sabías? La aduana de Nuevo Laredo es la más activa de América Latina.',
+  '¿Sabías? Además de autos, México exporta aguacates, pantallas planas, cerveza y tequila.',
+  '¿Sabías? Muchas empresas extranjeras usan el programa IMMEX para fabricar en México.',
+
   // Additional 22 facts
-  "¿Sabías? El T-MEC (USMCA) sustituyó al TLCAN (NAFTA) como acuerdo comercial entre México, EE.UU. y Canadá en 2020.",
-  "¿Sabías? México exporta más de 400,000 millones de dólares en bienes anualmente.",
-  "¿Sabías? La industria aeroespacial mexicana ha crecido más del 15% anualmente en la última década.",
-  "¿Sabías? México es el mayor productor y exportador de plata en el mundo.",
-  "¿Sabías? Los aguacates mexicanos representan más del 80% de los aguacates consumidos en EE.UU.",
-  "¿Sabías? México es el principal exportador de televisores de pantalla plana del mundo.",
-  "¿Sabías? México tiene 11 zonas económicas especiales para impulsar el comercio exterior.",
-  "¿Sabías? El 80% de las exportaciones mexicanas se dirigen a Estados Unidos.",
-  "¿Sabías? La primera aduana en México se estableció en Veracruz en 1551.",
-  "¿Sabías? México es el tercer país con más acuerdos de libre comercio en el mundo.",
-  "¿Sabías? México es el principal exportador mundial de cervezas.",
-  "¿Sabías? El tequila mexicano está protegido por denominación de origen en más de 40 países.",
-  "¿Sabías? México exporta más de 1.5 millones de vehículos al año.",
-  "¿Sabías? La Ventanilla Única de Comercio Exterior Mexicana (VUCEM) procesa más de 6 millones de trámites al año.",
-  "¿Sabías? México tiene más de 60 puertos marítimos, pero solo 16 manejan el 98% del tráfico comercial.",
-  "¿Sabías? El sector automotriz representa más del 30% de las exportaciones totales de México.",
-  "¿Sabías? México exporta más de 35 millones de cajas de berries (frutos rojos) anualmente.",
-  "¿Sabías? La industria maquiladora emplea a más de 3 millones de personas en México.",
-  "¿Sabías? México es el cuarto exportador mundial de partes de computadoras.",
+  '¿Sabías? El T-MEC (USMCA) sustituyó al TLCAN (NAFTA) como acuerdo comercial entre México, EE.UU. y Canadá en 2020.',
+  '¿Sabías? México exporta más de 400,000 millones de dólares en bienes anualmente.',
+  '¿Sabías? La industria aeroespacial mexicana ha crecido más del 15% anualmente en la última década.',
+  '¿Sabías? México es el mayor productor y exportador de plata en el mundo.',
+  '¿Sabías? Los aguacates mexicanos representan más del 80% de los aguacates consumidos en EE.UU.',
+  '¿Sabías? México es el principal exportador de televisores de pantalla plana del mundo.',
+  '¿Sabías? México tiene 11 zonas económicas especiales para impulsar el comercio exterior.',
+  '¿Sabías? El 80% de las exportaciones mexicanas se dirigen a Estados Unidos.',
+  '¿Sabías? La primera aduana en México se estableció en Veracruz en 1551.',
+  '¿Sabías? México es el tercer país con más acuerdos de libre comercio en el mundo.',
+  '¿Sabías? México es el principal exportador mundial de cervezas.',
+  '¿Sabías? El tequila mexicano está protegido por denominación de origen en más de 40 países.',
+  '¿Sabías? México exporta más de 1.5 millones de vehículos al año.',
+  '¿Sabías? La Ventanilla Única de Comercio Exterior Mexicana (VUCEM) procesa más de 6 millones de trámites al año.',
+  '¿Sabías? México tiene más de 60 puertos marítimos, pero solo 16 manejan el 98% del tráfico comercial.',
+  '¿Sabías? El sector automotriz representa más del 30% de las exportaciones totales de México.',
+  '¿Sabías? México exporta más de 35 millones de cajas de berries (frutos rojos) anualmente.',
+  '¿Sabías? La industria maquiladora emplea a más de 3 millones de personas en México.',
+  '¿Sabías? México es el cuarto exportador mundial de partes de computadoras.',
   "¿Sabías? La marca 'Hecho en México' fue creada en 1978 para promover productos mexicanos.",
-  "¿Sabías? México exporta dispositivos médicos a más de 100 países.",
-  "¿Sabías? El chocolate tiene su origen en México, y hoy el país es un importante exportador de cacao fino."
+  '¿Sabías? México exporta dispositivos médicos a más de 100 países.',
+  '¿Sabías? El chocolate tiene su origen en México, y hoy el país es un importante exportador de cacao fino.',
 ];
 
 // Process-related messages for each step (1-2 messages per step)
 const STEP_MESSAGES = {
-  1: [ // Classification step
-    "Procesando tu documento con inteligencia artificial...",
-    "Analizando patrones de datos para un procesamiento óptimo..."
+  1: [
+    // Classification step
+    'Procesando tu documento con inteligencia artificial...',
+    'Analizando patrones de datos para un procesamiento óptimo...',
   ],
-  2: [ // Extraction step
-    "Extrayendo información clave de la operación...",
-    "Procesando datos relevantes a la operación..."
+  2: [
+    // Extraction step
+    'Extrayendo información clave de la operación...',
+    'Procesando datos relevantes a la operación...',
   ],
-  3: [ // Validation step
-    "Validando cada uno de los campos del pedimento...",
-    "Verificando cumplimiento normativo...",
-    "Analizando consistencia entre documentos...",
-    "Aplicando criterios de validación avanzados..."
+  3: [
+    // Validation step
+    'Validando cada uno de los campos del pedimento...',
+    'Verificando cumplimiento normativo...',
+    'Analizando consistencia entre documentos...',
+    'Aplicando criterios de validación avanzados...',
   ],
-  4: [ // Compilation step
-    "Generando los resultados finales...",
-    "Generando reportes para revisión..."
-  ]
+  4: [
+    // Compilation step
+    'Generando los resultados finales...',
+    'Generando reportes para revisión...',
+  ],
 };
 
 const LoadingBar: React.FC<LoadingBarProps> = ({ duration = 120000 }) => {
@@ -133,7 +137,7 @@ const LoadingBar: React.FC<LoadingBarProps> = ({ duration = 120000 }) => {
         indices.push(randomIndex);
       }
     }
-    return indices.map(index => FUN_FACTS[index]);
+    return indices.map((index) => FUN_FACTS[index]);
   });
 
   useEffect(() => {
@@ -142,25 +146,28 @@ const LoadingBar: React.FC<LoadingBarProps> = ({ duration = 120000 }) => {
     setProgress(0);
     setStepProgress(0);
     setIsComplete(false);
-    
+
     // Use non-linear progress for psychological optimization
     const updateInterval = 50; // Update every 50ms for smooth animation
     const totalUpdates = duration / updateInterval;
     let currentUpdate = 0;
-    
+
     // Calculate step transition points
-    const stepTransitions: number[] = steps.reduce<number[]>((acc, step, index) => {
-      const previousSum = index > 0 ? acc[index - 1] || 0 : 0;
-      acc.push(previousSum + step.weight);
-      return acc;
-    }, []);
-    
+    const stepTransitions: number[] = steps.reduce<number[]>(
+      (acc, step, index) => {
+        const previousSum = index > 0 ? acc[index - 1] || 0 : 0;
+        acc.push(previousSum + step.weight);
+        return acc;
+      },
+      []
+    );
+
     let lastStepIndex = 0;
     let factDisplayed = false;
-    
+
     const timer = setInterval(() => {
       currentUpdate++;
-      
+
       if (currentUpdate >= totalUpdates) {
         // When we reach the end, set full progress and clear interval
         setProgress(100);
@@ -170,13 +177,13 @@ const LoadingBar: React.FC<LoadingBarProps> = ({ duration = 120000 }) => {
         clearInterval(timer);
         return;
       }
-      
+
       // Calculate overall progress with non-linear curve
       // Accelerate faster at beginning, slower in middle, faster at end
       const linearProgress = currentUpdate / totalUpdates;
       const nonLinearProgress = Math.pow(linearProgress, 0.85) * 100;
       setProgress(nonLinearProgress);
-      
+
       // Determine which step we're in
       let currentStepIndex = 0;
       for (let i = 0; i < stepTransitions.length; i++) {
@@ -186,30 +193,33 @@ const LoadingBar: React.FC<LoadingBarProps> = ({ duration = 120000 }) => {
           break;
         }
       }
-      
+
       // Step has changed - update message
       if (currentStepIndex !== lastStepIndex) {
         lastStepIndex = currentStepIndex;
-        
+
         // Reset message rotation for new step
         const stepNum = currentStepIndex + 1;
-        const messagesForStep = STEP_MESSAGES[stepNum as keyof typeof STEP_MESSAGES] || [];
-        
+        const messagesForStep =
+          STEP_MESSAGES[stepNum as keyof typeof STEP_MESSAGES] || [];
+
         if (messagesForStep.length > 0) {
           setCurrentMessage(messagesForStep[0]);
         }
-        
+
         factDisplayed = false;
       }
-      
+
       // Only change message once per step, in the middle of the step
       // and display a fact if we're in the middle of a step (and one hasn't been shown for this step)
       const currentStepInfo = steps[currentStepIndex];
       if (currentStepInfo) {
         // For the step progress, we need to know where in the step we are
-        const prevTransition = currentStepIndex > 0 ? (stepTransitions[currentStepIndex - 1] || 0) : 0;
-        const stepLinearProgress = (linearProgress - prevTransition) / currentStepInfo.weight;
-        
+        const prevTransition =
+          currentStepIndex > 0 ? stepTransitions[currentStepIndex - 1] || 0 : 0;
+        const stepLinearProgress =
+          (linearProgress - prevTransition) / currentStepInfo.weight;
+
         // If we're halfway through a step and haven't shown a fact yet for this step
         if (stepLinearProgress > 0.5 && !factDisplayed) {
           // Show a fun fact in steps 2 and 3 only (indices 1 and 2)
@@ -220,86 +230,90 @@ const LoadingBar: React.FC<LoadingBarProps> = ({ duration = 120000 }) => {
           } else {
             // For other steps, show the second message if available
             const stepNum = currentStepIndex + 1;
-            const messagesForStep = STEP_MESSAGES[stepNum as keyof typeof STEP_MESSAGES] || [];
+            const messagesForStep =
+              STEP_MESSAGES[stepNum as keyof typeof STEP_MESSAGES] || [];
             if (messagesForStep.length > 1) {
               setCurrentMessage(messagesForStep[1]);
             }
             factDisplayed = true;
           }
         }
-        
+
         // Applying the speed factor to make each step's percentage counter move at different rates
         const speedFactor = currentStepInfo.speed / 5; // normalize to 0-2 range
-        const stepVisualProgress = Math.pow(stepLinearProgress, 1 / speedFactor) * 100;
-        
+        const stepVisualProgress =
+          Math.pow(stepLinearProgress, 1 / speedFactor) * 100;
+
         setStepProgress(Math.min(Math.round(stepVisualProgress), 99)); // Cap at 99% until complete
       }
-      
+
       setCurrentStep(currentStepIndex + 1);
     }, updateInterval);
-    
+
     return () => clearInterval(timer);
   }, [duration, selectedFacts]);
 
   return (
-    <div className="w-full max-w-2xl mx-auto">
+    <div className="mx-auto w-full max-w-2xl">
       {/* Message display - engages users while waiting */}
-      <div className="text-center mb-4 h-6 overflow-hidden">
-        <p className="text-sm text-gray-500 animate-fade-in-up">
+      <div className="mb-4 h-6 overflow-hidden text-center">
+        <p className="animate-fade-in-up text-gray-500 text-sm">
           {currentMessage}
         </p>
       </div>
-      
+
       {/* Main progress bar - make it move faster initially */}
-      <div className="h-1.5 w-full bg-gray-100 rounded-full mb-6 overflow-hidden">
-        <div 
+      <div className="mb-6 h-1.5 w-full overflow-hidden rounded-full bg-gray-100">
+        <div
           className="h-full bg-primary transition-all duration-300 ease-out"
           style={{ width: `${progress}%` }}
         />
       </div>
-      
+
       {/* Steps visualization */}
       <div className="grid grid-cols-1 gap-3">
         {steps.map((step) => {
           const isActive = step.id === currentStep;
           const isCompleted = step.id < currentStep || isComplete;
           const isUpcoming = step.id > currentStep;
-          
+
           return (
-            <div 
+            <div
               key={step.id}
               className={cn(
-                "flex items-center gap-4 p-3 rounded-lg transition-all duration-300",
-                isActive && "bg-primary/5 border-l-4 border-primary",
-                isCompleted && "bg-gray-50",
-                isUpcoming && "opacity-50"
+                'flex items-center gap-4 rounded-lg p-3 transition-all duration-300',
+                isActive && 'border-primary border-l-4 bg-primary/5',
+                isCompleted && 'bg-gray-50',
+                isUpcoming && 'opacity-50'
               )}
             >
-              <div 
+              <div
                 className={cn(
-                  "flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300",
-                  isActive && "bg-primary/10 text-primary animate-pulse",
-                  isCompleted && "bg-primary text-white",
-                  isUpcoming && "bg-gray-100 text-gray-400"
+                  'flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full transition-all duration-300',
+                  isActive && 'animate-pulse bg-primary/10 text-primary',
+                  isCompleted && 'bg-primary text-white',
+                  isUpcoming && 'bg-gray-100 text-gray-400'
                 )}
               >
                 {isCompleted ? (
                   <FileCheck className="h-5 w-5" />
                 ) : (
-                  <div className={isActive ? "animate-bouncing" : ""}>
+                  <div className={isActive ? 'animate-bouncing' : ''}>
                     {step.icon}
                   </div>
                 )}
               </div>
-              
+
               <div className="flex-grow">
                 <div className="flex items-center justify-between">
-                  <h3 className={cn(
-                    "font-medium",
-                    isActive && "text-primary",
-                    isCompleted && "text-gray-800",
-                    isUpcoming && "text-gray-500"
-                  )}>
+                  <h3
+                    className={cn(
+                      'font-medium',
+                      isActive && 'text-primary',
+                      isCompleted && 'text-gray-800',
+                      isUpcoming && 'text-gray-500'
+                    )}
+                  >
                     {step.name}
                     {isCompleted && (
                       <span className="ml-2 inline-flex items-center">
@@ -307,25 +321,27 @@ const LoadingBar: React.FC<LoadingBarProps> = ({ duration = 120000 }) => {
                       </span>
                     )}
                   </h3>
-                  
+
                   {/* Step progress indicator - only shown for active step */}
                   {isActive && (
-                    <span className="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full animate-pulse">
+                    <span className="animate-pulse rounded-full bg-primary/10 px-2 py-1 font-medium text-primary text-xs">
                       {stepProgress}%
                     </span>
                   )}
                 </div>
-                
-                <p className={cn(
-                  "text-sm mt-0.5",
-                  isActive && "text-primary/80",
-                  isCompleted && "text-gray-600",
-                  isUpcoming && "text-gray-400"
-                )}>
-                  {isCompleted 
-                    ? "Completado" 
-                    : isActive 
-                      ? step.description + "..."
+
+                <p
+                  className={cn(
+                    'mt-0.5 text-sm',
+                    isActive && 'text-primary/80',
+                    isCompleted && 'text-gray-600',
+                    isUpcoming && 'text-gray-400'
+                  )}
+                >
+                  {isCompleted
+                    ? 'Completado'
+                    : isActive
+                      ? step.description + '...'
                       : step.description}
                 </p>
               </div>

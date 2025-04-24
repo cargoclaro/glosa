@@ -1,8 +1,8 @@
 import type React from 'react';
+import FechasTable from './fechas/fechas-table';
 import IdentificadoresTable from './identificadores/identificadores-table';
 import LiquidacionTable from './liquidacion/liquidacion-table';
 import TasasTable from './tasas/tasas-table';
-import FechasTable from './fechas/fechas-table';
 
 import type { CustomGlossTabTable } from '~/db/schema';
 
@@ -54,7 +54,7 @@ const PedimentoIdentificadores: React.FC<PedimentoIdentificadoresProps> = ({
     <div className="mb-4 w-full">
       <div className="mt-2 grid grid-cols-2 gap-0">
         <div className="col-span-1">
-          <FechasTable 
+          <FechasTable
             fechaEntrada={fechaEntrada}
             fechaPago={fechaPago}
             tabs={tabs}

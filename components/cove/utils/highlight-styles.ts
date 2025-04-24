@@ -27,30 +27,8 @@ export const getHighlightFill = (
       ? 'bg-green-100/50'
       : 'bg-yellow-100/50';
   }
-  
+
   // If this is not the selected section, apply opacity only
   // Using Tailwind's 60% opacity creates good visual distinction while maintaining readability
   return 'opacity-60';
 };
-
-/**
- * Get combined highlight classes (border + fill) for a section
- * This is a convenience function for components that want both classes at once
- */
-export const getHighlightClasses = (
-  section: string,
-  tabs: CustomGlossTabTable[] = [],
-  tabInfoSelected: { name: string; isCorrect: boolean; isVerified: boolean } = {
-    name: '',
-    isCorrect: false,
-    isVerified: false,
-  }
-): string => {
-  // We treat the empty tabInfoSelected.name as a special case to avoid applying visual effects
-  // This ensures backward compatibility with components that don't expect visual effects
-  const fillClass = tabInfoSelected.name === '' 
-    ? '' 
-    : getHighlightFill(section, tabInfoSelected);
-    
-  return `${getHighlightBorder(section, tabs)} ${fillClass}`;
-}; 

@@ -3,7 +3,8 @@ import type {
   Cfdi,
   TransportDocument,
 } from '../../../data-extraction/mkdown_schemas';
-import type { Cove, Pedimento } from '../../../data-extraction/schemas';
+import type { Pedimento } from '../../../data-extraction/schemas';
+import type { Cove } from '../../../extract-and-structure/schemas';
 import { glosar } from '../../validation-result';
 
 // TODO: Agregar DOF y Dia de salida
@@ -83,8 +84,9 @@ async function validateValorComercial(
     pedimento.valores?.precio_pagado_valor_comercial;
   const tipoCambioPedimento = pedimento.encabezado_del_pedimento?.tipo_cambio;
 
-  const valorComercialCOVE = cove.datos_mercancia[0]?.valor_total;
-  const monedaCOVE = cove.datos_mercancia[0]?.tipo_moneda;
+  // TODO: Do this in a loop, instead of just checking the first mercancia
+  const valorComercialCOVE = cove.mercancias[0]?.datosDeLaMercancia?.valorTotal;
+  const monedaCOVE = cove.mercancias[0]?.datosDeLaMercancia?.tipoMoneda;
 
   const cfdiMkdown = cfdi?.markdown_representation;
 
@@ -129,8 +131,9 @@ async function validateValorDolares(
     pedimento.valores?.precio_pagado_valor_comercial;
   const tipoCambioPedimento = pedimento.encabezado_del_pedimento?.tipo_cambio;
 
-  const valorComercialCOVE = cove.datos_mercancia[0]?.valor_total;
-  const monedaCOVE = cove.datos_mercancia[0]?.tipo_moneda;
+  // TODO: Do this in a loop, instead of just checking the first mercancia
+  const valorComercialCOVE = cove.mercancias[0]?.datosDeLaMercancia?.valorTotal;
+  const monedaCOVE = cove.mercancias[0]?.datosDeLaMercancia?.tipoMoneda;
 
   const cfdiMkdown = cfdi?.markdown_representation;
 

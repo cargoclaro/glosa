@@ -1,412 +1,498 @@
 import { isValid, parse } from 'date-fns';
-import { z } from 'zod';
+import { type RefinementCtx, z } from 'zod';
 
-export const pedimentoSchema = z.object({
-  encabezado_del_pedimento: z
-    .object({
-      num_pedimento: z
-        .string()
-        .describe(
-          'A 15-digit number formatted as XX XX XXXX XXXXXXX (2 digits, 2 digits, 4 digits, 7 digits)'
-        )
-        .nullable(),
-      tipo_oper: z
-        .enum(['IMP', 'EXP', 'TRA'])
-        .describe(
-          'Tipo de operación: IMP (Importación), EXP (Exportación/retorno), TRA (Tránsitos)'
-        )
-        .nullable(),
-      cve_pedim: z
-        .string()
-        .describe("2-character code (e.g., 'A1') indicating pedimento type")
-        .nullable(),
-      regimen: z
-        .string()
-        .describe("3-letter code indicating customs regime (e.g., 'IMD')")
-        .nullable(),
-      destino_origen: z
-        .string()
-        .describe('Single digit number indicating destination')
-        .nullable(),
-      tipo_cambio: z
-        .number()
-        .describe('Exchange rate with 5 decimal places (e.g., 16.86600)')
-        .nullable(),
-      peso_bruto: z
-        .number()
-        .describe('Gross weight in kilograms with 3 decimal places')
-        .nullable(),
-      aduana_entrada_salida: z
-        .string()
-        .describe('3-digit code indicating customs office')
-        .nullable(),
+export const partidaSchema = z.object({
+  secuencia: z.number().describe('Etiqueta en el documento: "SEC"'),
+  fraccion: z.string().describe('Etiqueta en el documento: "FRACC"'),
+  subdivisionONumeroDeIdentificacionComercial: z
+    .string()
+    .describe('Etiqueta en el documento: "SUBDIV/NUM. IDENT. COMERCIAL"'),
+  vinculacion: z
+    .enum(['0', '1', '2'])
+    .nullable()
+    .describe('Etiqueta en el documento: "VINC"'),
+  metodoDeValoracion: z
+    .enum(['0', '1', '2', '3', '4', '5', '6'])
+    .nullable()
+    .describe('Etiqueta en el documento: "MET VAL"'),
+  unidadDeMedidaComercial: z
+    .enum([
+      '1',
+      '2',
+      '3',
+      '4',
+      '5',
+      '6',
+      '7',
+      '8',
+      '9',
+      '10',
+      '11',
+      '12',
+      '13',
+      '14',
+      '15',
+      '16',
+      '17',
+      '18',
+      '19',
+      '20',
+      '21',
+      '22',
+    ])
+    .describe('Etiqueta en el documento: "UMC"'),
+  cantidadUnidadDeMedidaComercial: z
+    .number()
+    .describe('Etiqueta en el documento: "CANTIDAD UMC"'),
+  unidadDeMedidaDeTarifa: z
+    .enum([
+      '1',
+      '2',
+      '3',
+      '4',
+      '5',
+      '6',
+      '7',
+      '8',
+      '9',
+      '10',
+      '11',
+      '12',
+      '13',
+      '14',
+      '15',
+      '16',
+      '17',
+      '18',
+      '19',
+      '20',
+      '21',
+      '22',
+    ])
+    .describe('Etiqueta en el documento: "UMT"'),
+  cantidadUnidadDeMedidaDeTarifa: z
+    .number()
+    .nullable()
+    .describe('Etiqueta en el documento: "CANTIDAD UMT"'),
+  paisDeVentaOCompra: z
+    .string()
+    .nullable()
+    .describe(
+      'Una clave de pais ISO 3166-1 alfa-3. Etiqueta en el documento: "P. V/C."'
+    ),
+  paisDeOrigenODestino: z
+    .string()
+    .nullable()
+    .describe(
+      'Una clave de pais ISO 3166-1 alfa-3. Etiqueta en el documento: "P. O/D."'
+    ),
+  descripcion: z.string().describe('Etiqueta en el documento: "DESCRIPCION"'),
+  valorEnAduanaOValorEnUSD: z
+    .number()
+    .describe('Etiqueta en el documento: "VAL ADU/USD"'),
+  importeDePrecioPagadoOValorComercial: z
+    .number()
+    .describe('Etiqueta en el documento: "IMP. PRECIO PAG."'),
+  precioUnitario: z
+    .number()
+    .describe('Etiqueta en el documento: "PRECIO UNIT."'),
+  valorAgregado: z
+    .number()
+    .nullable()
+    .describe('Etiqueta en el documento: "VAL. AGREG."'),
+  codigoProducto: z
+    .string()
+    .nullable()
+    .describe('Etiqueta en el documento: "CODIGO PRODUCTO"'),
+  contribuciones: z.array(
+    z.object({
+      contribucion: z.string().describe('Etiqueta en el documento: "CON."'),
+      tasa: z.number().describe('Etiqueta en el documento: "TASA"'),
+      tipoDeTasa: z.string().describe('Etiqueta en el documento: "T.T."'),
+      formaDePago: z.string().describe('Etiqueta en el documento: "F.P."'),
+      importe: z.number().describe('Etiqueta en el documento: "IMPORTE"'),
     })
-    .describe('Header information of the pedimento (customs document)'),
-  medios_transporte: z
-    .object({
-      entrada_salida: z
-        .string()
-        .describe('Single digit code for entry/exit transport')
-        .nullable(),
+  ),
+  regulacionesYRestriccionesNoArancelarias: z.array(
+    z
+      .object({
+        permiso: z.string().describe('Etiqueta en el documento: "CLAVE"'),
+        numeroDePermiso: z
+          .string()
+          .describe('Etiqueta en el documento: "NUM. PERMISO"'),
+        firmaDescargo: z
+          .string()
+          .nullable()
+          .describe('Etiqueta en el documento: "FIRMA DESCARGO"'),
+        valorComercialEnDolares: z
+          .number()
+          .describe('Etiqueta en el documento: "VAL. COM. DLS."'),
+        cantidadUnidadDeMedidaDeTarifaOComercial: z
+          .number()
+          .describe('Etiqueta en el documento: "CANTIDAD UMT/C"'),
+      })
+      .nullable()
+  ),
+  // TODO: Apendice 8
+  identificadores: z.array(
+    z.object({
+      identificador: z.string(),
+      complemento1: z.string().nullable(),
+      complemento2: z.string().nullable(),
+      complemento3: z.string().nullable(),
+    })
+  ),
+  observacionesANivelPartida: z
+    .string()
+    .nullable()
+    .describe('Etiqueta en el documento: "OBSERVACIONES A NIVEL PARTIDA"'),
+});
+
+const medioDeTransporteClaves = [
+  '1',
+  '2',
+  '3',
+  '4',
+  '5',
+  '6',
+  '7',
+  '8',
+  '10',
+  '11',
+  '12',
+  '98',
+  '99',
+] as const;
+
+function transformFechaEntradaPresentacion(
+  dateStr: string | null,
+  ctx: RefinementCtx
+) {
+  if (!dateStr) {
+    return null;
+  }
+
+  const parsedDate = parse(dateStr, 'dd/MM/yyyy', new Date());
+
+  if (!isValid(parsedDate)) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: `Formato de fecha inválido: ${dateStr}. Se esperaba DD/MM/YYYY.`,
+    });
+    return null;
+  }
+
+  return parsedDate;
+}
+
+export const datosGeneralesDePedimentoSchema = z.object({
+  encabezadoPrincipalDelPedimento: z.object({
+    numeroDePedimento: z
+      .string()
+      .describe('Etiqueta en el documento: "NUM. PEDIMENTO"'),
+    tipoDeOperacion: z
+      .enum(['IMP', 'EXP', 'TRA'])
+      .nullable()
+      .describe('Etiqueta en el documento: "T. OPER"'),
+    // TODO: Apendice 2
+    claveDePedimento: z
+      .string()
+      .describe('Etiqueta en el documento: "CVE. PEDIMENTO"'),
+    regimen: z
+      .enum([
+        'IMD',
+        'EXD',
+        'ITR',
+        'ITE',
+        'ETR',
+        'ETE',
+        'DFI',
+        'RFE',
+        'TRA',
+        'RFS',
+      ])
+      .nullable()
+      .describe('Etiqueta en el documento: "REGIMEN:"'),
+    destino: z
+      .enum(['1', '2', '3', '5', '6', '7', '8', '9', '10', '11'])
+      .nullable()
+      .describe('Etiqueta en el documento: "DESTINO"'),
+    tipoDeCambio: z
+      .number()
+      .describe('Etiqueta en el documento: "TIPO CAMBIO"'),
+    pesoBruto: z
+      .number()
+      .nullable()
+      .describe('Etiqueta en el documento: "PESO BRUTO"'),
+    // TODO: Apendice 1
+    aduanaEntradaOSalida: z
+      .string()
+      .nullable()
+      .describe('Etiqueta en el documento: "ADUANA E/S"'),
+    mediosTransporte: z.object({
+      entradaSalida: z
+        .enum(medioDeTransporteClaves)
+        .nullable()
+        .describe('Etiqueta en el documento: "ENTRADA/SALIDA"'),
       arribo: z
-        .string()
-        .describe('Single digit code for arrival transport')
-        .nullable(),
+        .enum(medioDeTransporteClaves)
+        .nullable()
+        .describe('Etiqueta en el documento: "ARRIBO"'),
       salida: z
-        .string()
-        .describe('Single digit code for departure transport')
-        .nullable(),
-    })
-    .describe('Transportation means'),
-  valores: z
-    .object({
-      valor_dolares: z
+        .enum(medioDeTransporteClaves)
+        .nullable()
+        .describe('Etiqueta en el documento: "SALIDA"'),
+    }),
+    valores: z.object({
+      valorDolares: z
         .number()
-        .describe(
-          'Value in USD with 2 decimal places, always together it is never separated by commas, spaces or any other character'
-        )
-        .nullable(),
-      valor_aduana: z
+        .nullable()
+        .describe('Aparece como "VAL. DOLARES" en el documento'),
+      valorAduana: z
         .number()
-        .describe(
-          'Customs value in MXN, always together it is never separated by commas, spaces or any other character'
-        )
-        .nullable(),
-      precio_pagado_valor_comercial: z
+        .nullable()
+        .describe('Aparece como "VALOR ADUANA" en el documento'),
+      precioPagadoOValorComercial: z
         .number()
+        .nullable()
         .describe(
-          'Commercial value/paid price in MXN, always together it is never separated by commas, spaces or any other character'
-        )
-        .nullable(),
-    })
-    .describe('Values related to the transaction'),
-  datos_importador: z
-    .object({
-      rfc: z
+          'Aparece como "PRECIO PAGADO/VALOR COMERCIAL" en el documento'
+        ),
+    }),
+    datosImportador: z.object({
+      rfc: z.string().describe('Etiqueta en el documento: "RFC"'),
+      curp: z.string().nullable().describe('Etiqueta en el documento: "CURP"'),
+      razonSocial: z
         .string()
-        .describe('12-character RFC code for companies or 13 for individuals')
-        .nullable(),
-      curp: z
-        .string()
-        .describe('18-alphanumeric number CURP identifier (optional)')
-        .nullable(),
-      razon_social: z
-        .string()
-        .describe("Company or individual's full legal name, near the CURP"),
+        .describe(
+          'Etiqueta en el documento: "NOMBRE, DENOMINACION O RAZON SOCIAL"'
+        ),
       domicilio: z
         .string()
-        .describe(
-          'Complete address including street, number, postal code, city, and state'
-        )
-        .nullable(),
-    })
-    .describe('Importer information'),
-  incrementables: z
-    .object({
-      valor_seguros: z
+        .nullable()
+        .describe('Etiqueta en el documento: "DOMICILIO"'),
+    }),
+    incrementables: z.object({
+      valorSeguros: z
         .number()
-        .describe('Aparece en el pedimento como "VAL. SEGUROS".')
-        .nullable(),
+        .nullable()
+        .describe('Etiqueta en el documento: "VAL. SEGUROS"'),
       seguros: z
         .number()
-        .describe('Aparece en el pedimento como "SEGUROS".')
-        .nullable(),
+        .nullable()
+        .describe('Etiqueta en el documento: "SEGUROS"'),
       fletes: z
         .number()
-        .describe('Aparece en el pedimento como "FLETES".')
-        .nullable(),
+        .nullable()
+        .describe('Etiqueta en el documento: "FLETES"'),
       embalajes: z
         .number()
-        .describe('Aparece en el pedimento como "EMBALAJES".')
-        .nullable(),
-      otros_incrementables: z
+        .nullable()
+        .describe('Etiqueta en el documento: "EMBALAJES"'),
+      otrosIncrementables: z
         .number()
-        .describe('Aparece en el pedimento como "OTROS INCREMENTABLES".')
-        .nullable(),
-    })
-    .describe('Additional costs to be added'),
-  decrementables: z
-    .object({
-      transporte_decrementables: z
-        .number()
-        .describe('Deductible transport costs in MXN')
-        .nullable(),
-      seguro_decrementables: z
-        .number()
-        .describe('Deductible insurance costs in MXN')
-        .nullable(),
-      carga_decrementables: z
-        .number()
-        .describe('Deductible loading costs in MXN')
-        .nullable(),
-      descarga_decrementables: z
-        .number()
-        .describe('Deductible unloading costs in MXN')
-        .nullable(),
-      otros_decrementables: z
-        .number()
-        .describe('Other deductible costs in MXN')
-        .nullable(),
-    })
-    .describe('Costs to be deducted'),
-  fecha_entrada_presentacion: z
-    .string()
-    .describe("Date in DD/MM/YYYY format (e.g., '13/05/2024')")
-    .nullable()
-    .transform((dateStr, ctx) => {
-      if (!dateStr) {
-        return null;
-      }
-
-      const parsedDate = parse(dateStr, 'dd/MM/yyyy', new Date());
-
-      if (!isValid(parsedDate)) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: `Invalid date format: ${dateStr}. Expected DD/MM/YYYY.`,
-        });
-        return null;
-      }
-
-      return parsedDate;
+        .nullable()
+        .describe('Etiqueta en el documento: "OTROS INCREMENTABLES"'),
     }),
-  cuadro_de_liquidacion: z
-    .object({
-      liquidaciones: z
-        .array(
-          z.object({
-            concepto: z
-              .string()
-              .describe(
-                'Concept code or name (e.g., "DTA", "PRV", "IVA", "IVA/PRV")'
-              )
-              .nullable(),
-            fp: z
-              .number()
-              .describe('Payment form code, usually a numeric value')
-              .nullable(),
-            importe: z
-              .number()
-              .describe('Amount to be paid for this concept in MXN')
-              .nullable(),
-          })
-        )
-        .describe(
-          'Array of liquidation entries showing taxes and fees to be paid'
-        )
-        .nullable(),
-      totales: z
-        .object({
-          efectivo: z
-            .number()
-            .describe('Total amount to be paid in cash')
-            .nullable(),
-          otros: z
-            .number()
-            .describe('Total amount to be paid through other means')
-            .nullable(),
-          total: z.number().describe('Grand total of all payments').nullable(),
+    decrementables: z.object({
+      transporteDecrementables: z
+        .number()
+        .nullable()
+        .describe('Etiqueta en el documento: "TRANSPORTE DECREMENTABLES"'),
+      seguroDecrementables: z
+        .number()
+        .nullable()
+        .describe('Etiqueta en el documento: "SEGURO DECREMENTABLES"'),
+      cargaDecrementables: z
+        .number()
+        .nullable()
+        .describe('Etiqueta en el documento: "CARGA DECREMENTABLES"'),
+      descargaDecrementables: z
+        .number()
+        .nullable()
+        .describe('Etiqueta en el documento: "DESCARGA DECREMENTABLES"'),
+      otrosDecrementables: z
+        .number()
+        .nullable()
+        .describe('Etiqueta en el documento: "OTROS DECREMENTABLES"'),
+    }),
+    marcasNumerosBultos: z
+      .object({
+        marcas: z
+          .string()
+          .describe('Ej. "A-66151", "S/M" (significa sin marca).'),
+        numeroDeBulto: z
+          .string()
+          .describe('Ej. "1/1", "1/10", "S/N" (significa sin numero).'),
+        totalDeBultos: z.number(),
+      })
+      .nullable()
+      .describe(
+        'Etiqueta en el documento: "MARCAS, NUMEROS Y TOTAL DE BULTOS:"'
+      ),
+    fechas: z.object({
+      entrada: z
+        .string()
+        .describe("Etiqueta en el documento: 'ENTRADA'")
+        .transform(transformFechaEntradaPresentacion),
+      pago: z
+        .string()
+        .describe("Etiqueta en el documento: 'PAGO'")
+        .transform(transformFechaEntradaPresentacion),
+      extraccion: z
+        .string()
+        .nullable()
+        .describe("Etiqueta en el documento: 'EXTRACCIÓN.'"),
+      presentacion: z
+        .string()
+        .nullable()
+        .describe("Etiqueta en el documento: 'PRESENTACIÓN.'"),
+      importacionAEstadosUnidosOCanada: z
+        .string()
+        .nullable()
+        .describe("Etiqueta en el documento: 'IMP. EUA/CAN.'"),
+      original: z
+        .string()
+        .nullable()
+        .describe("Etiqueta en el documento: 'ORIGINAL.'"),
+    }),
+    cuadroDeLiquidacion: z.object({
+      liquidaciones: z.array(
+        z.object({
+          // TODO: Apendice 12
+          concepto: z.string().describe('Etiqueta en el documento: "CONCEPTO"'),
+          fp: z
+            .enum([
+              '0',
+              '2',
+              '4',
+              '5',
+              '6',
+              '7',
+              '8',
+              '9',
+              '12',
+              '13',
+              '14',
+              '15',
+              '16',
+              '18',
+              '19',
+              '21',
+              '22',
+            ])
+            .describe('Etiqueta en el documento: "F.P."'),
+          importe: z.number().describe('Etiqueta en el documento: "IMPORTE"'),
         })
-        .describe('Summary of payment totals')
-        .nullable(),
-    })
-    .describe('Complete liquidation table with entries and totals'),
-  identificadores_nivel_pedimento: z
-    .object({
-      clave_seccion_aduanera: z
+      ),
+      totales: z.object({
+        efectivo: z.number().describe('Etiqueta en el documento: "EFECTIVO"'),
+        otros: z.number().describe('Etiqueta en el documento: "OTROS"'),
+        total: z.number().describe('Etiqueta en el documento: "TOTAL"'),
+      }),
+    }),
+  }),
+  datosDelProveedorOComprador: z.array(
+    z.object({
+      idFiscal: z
         .string()
-        .describe("Three-digit numeric code (shown as '470' in document)")
-        .nullable(),
-      marcas_numeros_bultos: z
+        .nullable()
+        .describe(
+          'Número de factura extranjera. Etiqueta en el documento: "ID FISCAL"'
+        ),
+      nombreRazonSocial: z
         .string()
         .describe(
-          "Text field showing quantity and type of packages (e.g., 'S/M S/N 4 BULTOS')"
-        )
-        .nullable(),
+          'Etiqueta en el documento: "NOMBRE, DENOMINACION O RAZON SOCIAL"'
+        ),
+      domicilio: z
+        .string()
+        .nullable()
+        .describe('Etiqueta en el documento: "DOMICILIO"'),
+      vinculacion: z
+        .enum(['SI', 'NO'])
+        .nullable()
+        .describe('Etiqueta en el documento: "VINCULACION"'),
+      facturas: z.array(
+        z.object({
+          numeroDeCFDIODocumentoEquivalente: z
+            .string()
+            .describe('Etiqueta en el documento: "NUM. FACTURA"'),
+          fecha: z
+            .string()
+            .describe("Etiqueta en el documento: 'FECHA'")
+            .transform(transformFechaEntradaPresentacion),
+          // TODO: Apendice 14
+          incoterm: z
+            .string()
+            .describe("Etiqueta en el documento: 'INCOTERM'")
+            .nullable(),
+          // TODO: Apendice 5
+          moneda: z
+            .string()
+            .describe("Etiqueta en el documento: 'MONEDA/FACT'"),
+          valorMoneda: z
+            .number()
+            .describe('Etiqueta en el documento: "VAL. MON. FACT"'),
+          factorMoneda: z
+            .number()
+            .describe('Etiqueta en el documento: "FACTOR MON. FACT"'),
+          valorDolares: z
+            .number()
+            .describe('Etiqueta en el documento: "VAL. DOLARES"'),
+        })
+      ),
     })
-    .describe('Identifiers at the pedimento level'),
-  id_fiscal: z
-    .string()
-    .describe('Alphanumeric code representing the foreign invoice number. ')
-    .nullable(),
-  cove: z
-    .string()
-    .describe(
-      "Alphanumeric code (shown as 'COVE'); important and has 11 characters"
-    )
-    .nullable(),
-  nombre_razon_social: z
-    .string()
-    .describe(
-      "Company name in uppercase letters (e.g., 'SAIC MOTOR INTERNATIONAL CO., LTD')"
-    )
-    .nullable(),
-  domicilio: z
-    .string()
-    .describe(
-      "Full address with specific format (e.g., 'YESHENG ROAD No. 188 No. Int. ROOM 429H, C.P. 200135, PILOT FREE TRADE ZONE SHANGHAI, CHINA (REPUBLICA POPULAR)')"
-    )
-    .nullable(),
-  vinculacion: z
-    .string()
-    .describe("Two-letter text field ('SI' or 'NO')")
-    .nullable(),
-  datos_factura: z
+  ),
+  guiasOManifiestosOConocimientosDeEmbarqueODocumentosDeTransporte: z
     .object({
-      num_factura: z
-        .string()
-        .describe(
-          'The Mexican invoice number; alphanumeric; if none, leave blank'
-        )
-        .nullable(),
-      fecha_factura: z
-        .string()
-        .describe("Date in DD/MM/YYYY format (e.g., '07/05/2024')")
-        .nullable(),
-      incoterm: z
-        .string()
-        .describe("Three-letter code in uppercase (e.g., 'FCA')")
-        .nullable(),
-      moneda_factura: z
-        .string()
-        .describe("Three-letter currency code (e.g., 'USD')")
-        .nullable(),
-      valor_moneda_factura: z
-        .number()
-        .describe("Decimal number with 2 decimal places (e.g., '1068.75')")
-        .nullable(),
-      factor_moneda_factura: z
-        .number()
-        .describe("Decimal number with 8 decimal places (e.g., '1.00000000')")
-        .nullable(),
-      valor_dolares_factura: z
-        .number()
-        .describe('Value in USD with 2 decimal places')
-        .nullable(),
+      numeroMaster: z.string(),
+      numeroHouse: z.string(),
     })
-    .describe('Invoice data associated with the pedimento'),
-  no_guia_embarque_id: z
-    .string()
+    .nullable()
+    .describe('Etiqueta en el documento: "NUMERO (GUIA/ORDEN EMBARQUE)/ID"'),
+  contenedoresOEquipoFerrocarrilONumeroEconomicoVehiculo: z
+    .object({
+      numero: z.string().describe('Etiqueta en el documento: "NÚMERO"'),
+      // TODO: Apendice 10
+      tipo: z.string().describe('Etiqueta en el documento: "TIPO"'),
+    })
+    .nullable()
     .describe(
-      "The shipment order number is an alphanumeric identifier that varies by transport mode. For land transport, a single number is assigned like 123H456. Maritime transport gets one or two numbers per shipment, formatted for MLB ABCD12345678 and for HLB do not follow an strict format. Air transport can have either one or two numbers - a Master Air Waybill (e.g. 23456789) may or may not contain 'M' and/or a House Air Waybill (e.g. 87654321) may or may not contain 'H'."
+      'Etiqueta en el documento: "CONTENEDORES/ CARRO DE FERROCARRIL/ NÚMERO ECONÓMICO DEL VEHÍCULO"'
     ),
-  tipo_contenedor_vehiculo: z
-    .string()
-    .describe(
-      'Type of container or vehicle; value of 2 numbers. They range from 1 to 69'
-    )
-    .nullable(),
-
-  identificadores_pedimento: z
+  identificadoresPedimento: z
     .array(
       z.object({
+        // TODO: Apendice 8
         clave: z
           .string()
-          .describe("Two-letter code in uppercase (e.g., 'CR', 'SO', 'ED')")
-          .nullable(),
-        complemento_1: z
+          .describe('Etiqueta en el documento: "CLAVE/COMPL. IDENTIFICADOR"'),
+        complemento1: z
           .string()
-          .describe("Alphanumeric value (e.g., '4', 'AA', '0438240ZDKJQ3')")
-          .nullable(),
-        complemento_2: z
+          .nullable()
+          .describe('Etiqueta en el documento: "COMPLEMENTO 1"'),
+        complemento2: z
           .string()
-          .describe('Empty field if not provided')
-          .nullable(),
-        complemento_3: z
+          .nullable()
+          .describe('Etiqueta en el documento: "COMPLEMENTO 2"'),
+        complemento3: z
           .string()
-          .describe('Empty field if not provided')
-          .nullable(),
+          .nullable()
+          .describe('Etiqueta en el documento: "COMPLEMENTO 3"'),
       })
     )
-    .describe('Array of pedimento-level identifiers'),
-  observaciones_a_nivel_pedimento: z
-    .string()
     .describe(
-      'The exact observations at the pedimento level. Transcribe the document as it is, without adding any additional information.'
-    )
-    .nullable(),
-  document_summary: z
-    .string()
-    .describe(
-      'A detailed summary of the document, including details about the rights being transferred and context that can be useful for a human.'
-    )
-    .nullable(),
-  partidas: z.array(z.object({
-    sec: z.number().describe('Número de sección'),
-    fraccion: z.string().describe('Fracción arancelaria'),
-    nico: z.string().describe('Número de identificación comercial'),
-    vinc: z.enum(['0', '1']).describe('Vínculo'),
-    met_val: z.enum(['1']).describe('Método de valoración'),
-    umc: z.string().describe('Unidad de medida comercial'),
-    cantidad_umc: z.number().describe('Cantidad en unidad de medida comercial'),
-    umt: z.string().describe('Unidad de medida de tarifa'),
-    cantidad_umt: z.number().describe('Cantidad en unidad de medida de tarifa'),
-    p_v_c: z.string().describe('País de venta o compra'),
-    p_o_d: z.string().describe('País de origen o destino'),
-    contribuciones: z
-      .array(
-        z.object({
-          con: z.string().describe('Contribución'),
-          tasa: z.number().describe('Tasa de contribución'),
-          t_t: z.string().describe('Tipo de tasa'),
-          f_p: z.string().describe('Forma de pago'),
-          importe: z.number().describe('Importe de la contribución'),
-        })
-      )
-      .nullable(),
-    descripcion: z.string().describe('Descripción del producto'),
-    val_adu: z.number().describe('Valor aduanero'),
-    val_agreg: z.number().describe('Valor agregado').nullable(),
-    marca: z.string().nullable().describe('Marca'),
-    modelo: z.string().nullable().describe('Modelo'),
-    codigo_producto: z.string().describe('Código de producto').nullable(),
-    imp_precio_pag: z.number().describe('Importe de precio pagado'),
-    precio_unit: z.number().describe('Precio unitario'),
-    val_com_dls: z
-      .number()
-      .describe(
-        'Valor comercial en dólares - Aparece como "VAL. COM. DLS." en el documento'
-      )
-      .nullable(),
-    cantidad_umtc: z
-      .number()
-      .describe(
-        'Cantidad en unidad de medida de comercialización - Aparece como "CANTIDAD UMTC" en el documento'
-      )
-      .nullable(),
-    firma_descargo: z
-      .string()
-      .describe(
-        'Firma de descargo - Aparece como "FIRMA DESCARGO" en el documento'
-      )
-      .nullable(),
-    num_permiso: z
-      .string()
-      .describe(
-        'Número de permiso o NOM - Aparece como "NUM. PERMISO O NOM" en el documento'
-      )
-      .nullable(),
-    clave: z
-      .string()
-      .describe('Clave - Aparece como "CLAVE" en el documento')
-      .nullable(),
-    identificadores: z.array(
-      z.object({
-        clave: z.string().describe('Clave de identificador'),
-        complemento1: z.string().describe('Primer complemento').nullable(),
-        complemento2: z.string().describe('Segundo complemento').nullable(),
-        complemento3: z.string().describe('Tercer complemento').nullable(),
-      })
+      'Etiqueta en el documento: "IDENTIFICADORES". No confundir con los identificadores de la partida.'
     ),
-    observaciones: z
-      .array(z.string().describe('Observaciones adicionales'))
-      .nullable(),
-    document_summary: z
-      .string()
-      .describe(
-        'Un resumen detallado de la sección de partidas, incluyendo detalles clave sobre los bienes y contexto que puede ser útil para un humano. Este campo es obligatorio y debe ser generado por el LLM, no está proporcionado en el documento.'
-      ),
-  })),
+  observacionesANivelPedimento: z
+    .string()
+    .nullable()
+    .describe('Etiqueta en el documento: "OBSERVACIONES"'),
+});
+
+const pedimentoSchema = datosGeneralesDePedimentoSchema.extend({
+  partidas: z.array(partidaSchema),
 });
 
 export type Pedimento = z.infer<typeof pedimentoSchema>;
