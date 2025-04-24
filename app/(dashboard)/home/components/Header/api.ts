@@ -1,6 +1,5 @@
 'use server';
 
-import { randomUUID } from 'node:crypto';
 import { config } from 'dotenv';
 import { Langfuse } from 'langfuse';
 import { api } from 'lib/trpc';
@@ -14,9 +13,7 @@ import { uploadFiles } from './glosa/upload-files';
 config();
 
 const langfuse = new Langfuse();
-const parentTraceId = randomUUID();
-langfuse.trace({
-  id: parentTraceId,
+const trace = langfuse.trace({
   name: 'Glosa de Remesa de Exportación',
 });
 
@@ -31,7 +28,7 @@ export const glosarRemesa = api
       const successfulUploads = await uploadFiles(files);
       const classifications = await classifyDocuments(
         successfulUploads,
-        parentTraceId
+        trace.id
       );
 
       const otros = classifications.filter(
@@ -120,7 +117,7 @@ export const glosarRemesa = api
 
       const structuredText = await extractStructuredText(
         groupedDocuments,
-        parentTraceId
+        trace.id
       );
 
       // Array to accumulate all validation errors

@@ -1,6 +1,5 @@
 import { google } from '@ai-sdk/google';
 import { generateObject } from 'ai';
-import { Langfuse } from 'langfuse';
 import { z } from 'zod';
 
 const classifications = [
@@ -22,15 +21,8 @@ export async function classifyDocuments<
   T extends { ufsUrl: string; name?: string },
 >(
   files: T[],
-  parentTraceId?: string
+  parentTraceId: string
 ): Promise<(T & { classification: Classification })[]> {
-  const langfuse = new Langfuse();
-  if (parentTraceId) {
-    langfuse.event({
-      traceId: parentTraceId,
-      name: 'Classification',
-    });
-  }
   const fetchedFiles = await Promise.all(
     files.map(async (file) => {
       const response = await fetch(file.ufsUrl);
@@ -55,25 +47,20 @@ export async function classifyDocuments<
           classification: 'CFDI' as Classification,
         };
       }
-      const telemetryConfig = parentTraceId
-        ? {
-            experimental_telemetry: {
-              isEnabled: true,
-              functionId: fetchedFile.name,
-              metadata: {
-                langfuseTraceId: parentTraceId,
-                langfuseUpdateParent: false,
-                fileUrl: fetchedFile.ufsUrl,
-              },
-            },
-          }
-        : {};
 
       const {
         object: { classification },
       } = await generateObject({
         model: google('gemini-2.5-flash-preview-04-17'),
-        ...telemetryConfig,
+        experimental_telemetry: {
+          isEnabled: true,
+          functionId: fetchedFile.name,
+          metadata: {
+            langfuseTraceId: parentTraceId,
+            langfuseUpdateParent: false,
+            fileUrl: fetchedFile.ufsUrl,
+          },
+        },
         seed: 42,
         system:
           'Eres un experto en análisis y clasificación de documentos aduaneros.',

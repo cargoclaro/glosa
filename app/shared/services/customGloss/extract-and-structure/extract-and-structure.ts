@@ -54,7 +54,7 @@ export async function extractAndStructurePackingList(
     }
     : {};
   const { object } = await generateObject({
-    model: openai('gpt-4o-2024-11-20'),
+    model: google('gemini-2.5-flash-preview-04-17'),
     seed: 42,
     ...telemetryConfig,
     schema: packingListSchema,
@@ -84,7 +84,7 @@ export async function extractAndStructureCove(
   parentTraceId?: string,
 ) {
   const { text } = await generateText({
-    model: google('gemini-2.0-flash-001'),
+    model: google('gemini-2.5-flash-preview-04-17'),
     seed: 42,
     experimental_telemetry: {
       isEnabled: true,
@@ -117,7 +117,7 @@ export async function extractAndStructureCove(
     { object: mercancias }
   ] = await Promise.all([
     generateObject({
-      model: google('gemini-2.0-flash-001'),
+      model: google('gemini-2.5-flash-preview-04-17'),
       seed: 42,
       experimental_telemetry: {
         isEnabled: true,
@@ -146,7 +146,7 @@ export async function extractAndStructureCove(
       ],
     }),
     generateObject({
-      model: google('gemini-2.0-flash-001'),
+      model: google('gemini-2.5-flash-preview-04-17'),
       seed: 42,
       experimental_telemetry: {
         isEnabled: true,

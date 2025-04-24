@@ -1,6 +1,5 @@
 'use server';
 
-import { randomUUID } from 'node:crypto';
 import { config } from 'dotenv';
 import { and, eq } from 'drizzle-orm';
 import { Langfuse } from 'langfuse';
@@ -144,16 +143,17 @@ export const analysis = api
   )
   .mutation(async ({ input: { files }, ctx: { userId } }) => {
     try {
-      // Generate a trace ID for Langfuse tracking
-      const parentTraceId = randomUUID();
-      langfuse.trace({
-        id: parentTraceId,
+      const trace = langfuse.trace({
         name: 'Glosa de Pedimento',
       });
       const successfulUploads = await uploadFiles(files);
+      langfuse.event({
+        traceId: trace.id,
+        name: 'Classification',
+      });
       const classificationResults = await classifyDocuments(
         successfulUploads,
-        parentTraceId
+        trace.id
       );
 
       // Transform classification results to include documentType
@@ -223,7 +223,7 @@ export const analysis = api
 
       const documents = await extractTextFromPDFs(
         groupedClassifications,
-        parentTraceId
+        trace.id
       );
       const { pedimento, cove } = documents;
       if (!pedimento || !cove) {
@@ -234,12 +234,12 @@ export const analysis = api
       const operationType = pedimento.encabezado_del_pedimento?.tipo_oper;
       const importerName = pedimento.datos_importador?.razon_social;
       langfuse.event({
-        traceId: parentTraceId,
+        traceId: trace.id,
         name: 'Validation Steps',
       });
       const gloss = await (operationType === 'IMP'
-        ? glosaImpo({ ...documents, traceId: parentTraceId })
-        : glosaExpo({ ...documents, traceId: parentTraceId }));
+        ? glosaImpo({ ...documents, traceId: trace.id })
+        : glosaExpo({ ...documents, traceId: trace.id }));
 
       // Remove null bytes from objects before inserting into the database
       function removeNullBytes<T>(obj: T): T {

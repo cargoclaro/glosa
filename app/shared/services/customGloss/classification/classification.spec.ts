@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { expectToBeDefined } from '~/lib/vitest/utils';
 import { type Classification, classifyDocuments } from './classification';
+import { Langfuse } from 'langfuse';
 
 describe('Classification', () => {
   interface TestCase {
@@ -103,6 +104,8 @@ describe('Classification', () => {
     },
   ];
 
+  const langfuse = new Langfuse();
+
   it('should correctly classify documents', async () => {
     // Create a flat array of all file URLs
     const allFiles = testCases.flatMap((testCase) =>
@@ -112,9 +115,14 @@ describe('Classification', () => {
       }))
     );
 
+    const trace = langfuse.trace({
+      name: 'Test Classification',
+    });
+
     // Classify all files at once
     const classifiedFiles = await classifyDocuments(
-      allFiles.map(({ ufsUrl }) => ({ ufsUrl }))
+      allFiles.map(({ ufsUrl }) => ({ ufsUrl })),
+      trace.id
     );
 
     expect(classifiedFiles).toHaveLength(allFiles.length);
