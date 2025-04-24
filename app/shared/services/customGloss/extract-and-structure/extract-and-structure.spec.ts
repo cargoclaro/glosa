@@ -4,7 +4,7 @@ import { extractAndStructurePackingList, extractAndStructureCove, extractAndStru
 
 const langfuse = new Langfuse();
 
-describe('Extract and Structure', () => {
+describe('Extract and Structure Packing List', () => {
   it('should correctly extract and structure packing lists', async () => {
     const packingListFixture = [
       {
@@ -70,7 +70,9 @@ describe('Extract and Structure', () => {
         .toEqual(fixture?.expectedOutput);
     }
   });
+});
 
+describe('Extract and Structure Cove', () => {
   it('should correctly extract and structure cove', async () => {
     const coveFixture = [
       {
@@ -780,7 +782,9 @@ describe('Extract and Structure', () => {
         .toEqual(fixture?.expectedOutput);
     }
   });
+});
 
+describe('Extract and Structure Pedimento', () => {
   it('should extract and structure pedimento', async () => {
     const pedimentoFixture = [
       {
