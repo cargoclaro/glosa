@@ -118,10 +118,21 @@ export async function getFraccionInfo({
 
   const parsed = taxfinderResponseSchema.safeParse(resJson);
   if (!parsed.success) {
-    throw new Error(
-      `Taxfinder response validation failed for input ${parsed.data}`,
-      parsed.error
-    );
+    console.error('Taxfinder response validation failed', parsed.error);
+    return {
+        data: {
+            arancel: {
+                unidad_medida: {
+                    clave: '',
+                    descripcion: '',
+                    simbolo: '',
+                },
+            },
+            nicos: [],
+            regulaciones_no_arancelarias: { normas: [] },
+            extra: { ligie_arancel: 0 },
+      },
+    } satisfies z.infer<typeof taxfinderResponseSchema>;
   }
   return parsed.data;
 }

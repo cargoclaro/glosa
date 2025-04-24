@@ -241,6 +241,15 @@ export const analysis = api
         ? glosaImpo({ ...documents, traceId: parentTraceId })
         : glosaExpo({ ...documents, traceId: parentTraceId }));
 
+      // Remove null bytes from objects before inserting into the database
+      function removeNullBytes<T>(obj: T): T {
+        const str = JSON.stringify(obj);
+        const cleaned = str.split('\u0000').join('');
+        return JSON.parse(cleaned) as T;
+      }
+      const sanitizedCove = removeNullBytes(cove);
+      const sanitizedPedimento = removeNullBytes(pedimento);
+
       const [newCustomGloss] = await db
         .insert(CustomGloss)
         .values({
@@ -250,8 +259,8 @@ export const analysis = api
           moneySaved: 1000,
           importerName:
             importerName ?? 'No se encontro la razon social del importador',
-          cove: cove,
-          pedimento: pedimento,
+          cove: sanitizedCove,
+          pedimento: sanitizedPedimento,
         })
         .returning();
 
