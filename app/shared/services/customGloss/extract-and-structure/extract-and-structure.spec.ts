@@ -911,8 +911,6 @@ describe('Extract and Structure Pedimento', () => {
               "importeDePrecioPagadoOValorComercial": 144547,
               "precioUnitario": 144547,
               "valorAgregado": null,
-              "marca": null,
-              "modelo": null,
               "codigoProducto": null,
               "contribuciones": [
                 {
@@ -1056,7 +1054,7 @@ describe('Extract and Structure Pedimento', () => {
             {
               "idFiscal": "20-1329172",
               "nombreRazonSocial": "HEXPOL COMPOUNDING",
-              "domicilio": "KINSMAN ROAD Num. Ext. 14330 CP 44021 BURTON, OH, USA",
+              "domicilio": "KINSMAN ROAD Num. Ext. 14330 CP 44021 BURTON,OH, USA",
               "vinculacion": "NO",
               "facturas": [
                 {
@@ -1197,8 +1195,6 @@ describe('Extract and Structure Pedimento', () => {
               "importeDePrecioPagadoOValorComercial": 4151,
               "precioUnitario": 20.33807,
               "valorAgregado": null,
-              "marca": null,
-              "modelo": null,
               "codigoProducto": null,
               "contribuciones": [
                 {
@@ -1262,8 +1258,6 @@ describe('Extract and Structure Pedimento', () => {
               "importeDePrecioPagadoOValorComercial": 8362,
               "precioUnitario": 55.74667,
               "valorAgregado": null,
-              "marca": null,
-              "modelo": null,
               "codigoProducto": null,
               "contribuciones": [
                 {
@@ -1309,8 +1303,6 @@ describe('Extract and Structure Pedimento', () => {
               "importeDePrecioPagadoOValorComercial": 15921,
               "precioUnitario": 199.51128,
               "valorAgregado": null,
-              "marca": null,
-              "modelo": null,
               "codigoProducto": null,
               "contribuciones": [
                 {
@@ -1361,7 +1353,7 @@ describe('Extract and Structure Pedimento', () => {
                   "complemento3": null
                 }
               ],
-              "observacionesANivelPartida": null
+              "observacionesANivelPartida": "3"
             },
             {
               "secuencia": 4,
@@ -1380,8 +1372,6 @@ describe('Extract and Structure Pedimento', () => {
               "importeDePrecioPagadoOValorComercial": 32314,
               "precioUnitario": 64.628,
               "valorAgregado": null,
-              "marca": null,
-              "modelo": null,
               "codigoProducto": null,
               "contribuciones": [
                 {
@@ -1427,8 +1417,6 @@ describe('Extract and Structure Pedimento', () => {
               "importeDePrecioPagadoOValorComercial": 129767,
               "precioUnitario": 57.67338,
               "valorAgregado": null,
-              "marca": null,
-              "modelo": null,
               "codigoProducto": null,
               "contribuciones": [
                 {
@@ -1498,8 +1486,6 @@ describe('Extract and Structure Pedimento', () => {
               "importeDePrecioPagadoOValorComercial": 575738,
               "precioUnitario": 383.82533,
               "valorAgregado": null,
-              "marca": null,
-              "modelo": null,
               "codigoProducto": null,
               "contribuciones": [
                 {
@@ -1534,7 +1520,7 @@ describe('Extract and Structure Pedimento', () => {
                 {
                   "identificador": "PO",
                   "complemento1": "591337",
-                  "complemento2": "CELANECE POLYMERS HOLDING INC.",
+                  "complemento2": "CELANECE POLYMERS HOLDING INC",
                   "complemento3": null
                 },
                 {
@@ -1563,9 +1549,7 @@ describe('Extract and Structure Pedimento', () => {
               "importeDePrecioPagadoOValorComercial": 229774,
               "precioUnitario": 306.36533,
               "valorAgregado": null,
-              "marca": "235999.00",
-              "modelo": "229774",
-              "codigoProducto": "306.36533",
+              "codigoProducto": null,
               "contribuciones": [
                 {
                   "contribucion": "IGI/IGE",
@@ -1628,8 +1612,6 @@ describe('Extract and Structure Pedimento', () => {
               "importeDePrecioPagadoOValorComercial": 220271,
               "precioUnitario": 293.69467,
               "valorAgregado": null,
-              "marca": null,
-              "modelo": null,
               "codigoProducto": null,
               "contribuciones": [
                 {
@@ -1868,10 +1850,11 @@ describe('Extract and Structure Pedimento', () => {
                 },
               ],
               "importeDePrecioPagadoOValorComercial": 44998,
-              "marca": "OLYMPUS",
               "metodoDeValoracion": "1",
-              "modelo": "IM021",
-              "observacionesANivelPartida": "MARCA: OLYMPUS MODELO: IM021 NUMERO DE SOLICITUD: 2025CERT0002270-CA-M01 SERIES: BJGA86117,BJGA86118,BJGA85685",
+              "observacionesANivelPartida": `MARCA: OLYMPUS
+MODELO: IM021
+NUMERO DE SOLICITUD: 2025CERT0002270-CA-M01
+SERIES: BJGA86117, BJGA86118, BJGA85685`,
               "paisDeOrigenODestino": "VNM",
               "paisDeVentaOCompra": "USA",
               "precioUnitario": 14999.33333,
@@ -1915,13 +1898,11 @@ describe('Extract and Structure Pedimento', () => {
                 },
               ],
               "importeDePrecioPagadoOValorComercial": 29999,
-              "marca": null,
               "metodoDeValoracion": "1",
-              "modelo": null,
               "observacionesANivelPartida": `MARCA: OM SYSTEM
-        MODELO: IM027
-        NUMERO DE SOLICITUD: 2025CERT0002274-CA-M01
-        SERIES: BJRA21329, BJRA21248`,
+MODELO: IM027
+NUMERO DE SOLICITUD: 2025CERT0002274-CA-M01
+SERIES: BJRA21329, BJRA21248`,
               "paisDeOrigenODestino": "VNM",
               "paisDeVentaOCompra": "USA",
               "precioUnitario": 14999.5,
@@ -1965,13 +1946,11 @@ describe('Extract and Structure Pedimento', () => {
                 },
               ],
               "importeDePrecioPagadoOValorComercial": 44998,
-              "marca": null,
               "metodoDeValoracion": "1",
-              "modelo": null,
               "observacionesANivelPartida": `MARCA: OM SYSTEM
-        MODELO: IM030
-        NUMERO DE SOLICITUD: 2025CERT0002271-CA-M01
-        SERIES: BJNA19175, BJNA19174, BJOA23644`,
+MODELO: IM030
+NUMERO DE SOLICITUD: 2025CERT0002271-CA-M01
+SERIES: BJNA19175, BJNA19174, BJOA23644`,
               "paisDeOrigenODestino": "VNM",
               "paisDeVentaOCompra": "USA",
               "precioUnitario": 14999.33333,
@@ -2015,9 +1994,7 @@ describe('Extract and Structure Pedimento', () => {
                 },
               ],
               "importeDePrecioPagadoOValorComercial": 44998,
-              "marca": null,
               "metodoDeValoracion": "1",
-              "modelo": null,
               "observacionesANivelPartida": `MARCA: OM SYSTEM
         MODELO: IM030
         NUMERO DE SOLICITUD: 2025CERT0002272-CA-M01
@@ -2065,9 +2042,7 @@ describe('Extract and Structure Pedimento', () => {
                 },
               ],
               "importeDePrecioPagadoOValorComercial": 29999,
-              "marca": null,
               "metodoDeValoracion": "1",
-              "modelo": null,
               "observacionesANivelPartida": `MARCA: OM SYSTEM
         MODELO: IM027
         NUMERO DE SOLICITUD: 2025CERT0002268-CA-M01`,
@@ -2114,12 +2089,10 @@ describe('Extract and Structure Pedimento', () => {
                 },
               ],
               "importeDePrecioPagadoOValorComercial": 44998,
-              "marca": "OM SYSTEM",
               "metodoDeValoracion": "1",
-              "modelo": "IM032",
               "observacionesANivelPartida": `MARCA: OM SYSTEM
-        MODELO: IM032
-        NUMERO DE SOLICITUD: 2025CERT0002269-CA-M01`,
+MODELO: IM032
+NUMERO DE SOLICITUD: 2025CERT0002269-CA-M01`,
               "paisDeOrigenODestino": "VNM",
               "paisDeVentaOCompra": "USA",
               "precioUnitario": 14999.33333,

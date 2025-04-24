@@ -362,7 +362,7 @@ export async function extractAndStructurePedimento(
           {
             role: 'user',
             content: [
-              { type: 'text', text: `Extrae la ${ordinals[i - 1]} partida de esta página.` },
+              { type: 'text', text: `Basado en la etiqueta "SEC" extrae la ${ordinals[i - 1]} partida que aparece en esta página. No me refiero a la cuenta global de partidas, sino a las que aparecen en esta página.` },
               { type: 'file', data: `data:application/pdf;base64,${pageBase64}`, mimeType: 'application/pdf' },
             ],
           },

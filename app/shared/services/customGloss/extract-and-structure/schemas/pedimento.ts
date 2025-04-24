@@ -22,8 +22,6 @@ export const partidaSchema = z.object({
   importeDePrecioPagadoOValorComercial: z.number().describe('Etiqueta en el documento: "IMP. PRECIO PAG."'),
   precioUnitario: z.number().describe('Etiqueta en el documento: "PRECIO UNIT."'),
   valorAgregado: z.number().nullable().describe('Etiqueta en el documento: "VAL. AGREG."'),
-  marca: z.string().nullable().describe('Etiqueta en el documento: "MARCA"'),
-  modelo: z.string().nullable().describe('Etiqueta en el documento: "MODELO"'),
   codigoProducto: z.string().nullable().describe('Etiqueta en el documento: "CODIGO PRODUCTO"'),
   contribuciones: z.array(z.object({
     contribucion: z.string().describe('Etiqueta en el documento: "CON."'),
@@ -127,8 +125,8 @@ export const datosGeneralesDePedimentoSchema = z.object({
     }),
     marcasNumerosBultos: z
       .object({
-        marcas: z.string().describe('El valor puede ser "S/M" que significa sin marca.'),
-        numeroDeBulto: z.string().describe('El valor puede ser "S/N" que significa sin numero.'),
+        marcas: z.string().describe('Ej. "A-66151", "S/M" (significa sin marca).'),
+        numeroDeBulto: z.string().describe('Ej. "1/1", "1/10", "S/N" (significa sin numero).'),
         totalDeBultos: z.number(),
       })
       .nullable()
