@@ -329,7 +329,7 @@ export async function extractAndStructurePedimento(
         {
           role: 'user',
           content: [
-            { type: 'text', text: '¿Cuántas partidas hay en esta página? Devuelve un objeto con la propiedad partidasCount igual al número entre "1" y "4".' },
+            { type: 'text', text: '¿Cuántas partidas hay en esta página?' },
             { type: 'file', data: `data:application/pdf;base64,${pageBase64}`, mimeType: 'application/pdf' },
           ],
         },
