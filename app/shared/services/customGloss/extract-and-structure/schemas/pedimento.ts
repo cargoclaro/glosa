@@ -128,7 +128,7 @@ export const datosGeneralesDePedimentoSchema = z.object({
     marcasNumerosBultos: z
       .object({
         marcas: z.string().describe('El valor puede ser "S/M" que significa sin marca.'),
-        numeroDeBulto: z.number().nullable().describe('El valor puede ser "S/N" que significa sin numero, en ese caso se debe retornar null.'),
+        numeroDeBulto: z.string().describe('El valor puede ser "S/N" que significa sin numero.'),
         totalDeBultos: z.number(),
       })
       .nullable()
@@ -212,13 +212,15 @@ export const datosGeneralesDePedimentoSchema = z.object({
     })
     .nullable()
     .describe('Etiqueta en el documento: "CONTENEDORES/ CARRO DE FERROCARRIL/ NÚMERO ECONÓMICO DEL VEHÍCULO"'),
-  identificadoresPedimento: z.array(z.object({
-    // TODO: Apendice 8
-    clave: z.string().describe('Etiqueta en el documento: "CLAVE/COMPL. IDENTIFICADOR"'),
-    complemento1: z.string().nullable().describe('Etiqueta en el documento: "COMPLEMENTO 1"'),
-    complemento2: z.string().nullable().describe('Etiqueta en el documento: "COMPLEMENTO 2"'),
-    complemento3: z.string().nullable().describe('Etiqueta en el documento: "COMPLEMENTO 3"'),
-  })),
+  identificadoresPedimento: z.array(z
+    .object({
+      // TODO: Apendice 8
+      clave: z.string().describe('Etiqueta en el documento: "CLAVE/COMPL. IDENTIFICADOR"'),
+      complemento1: z.string().nullable().describe('Etiqueta en el documento: "COMPLEMENTO 1"'),
+      complemento2: z.string().nullable().describe('Etiqueta en el documento: "COMPLEMENTO 2"'),
+      complemento3: z.string().nullable().describe('Etiqueta en el documento: "COMPLEMENTO 3"'),
+    }))
+    .describe('Etiqueta en el documento: "IDENTIFICADORES". No confundir con los identificadores de la partida.'),
   observacionesANivelPedimento: z.string().nullable().describe('Etiqueta en el documento: "OBSERVACIONES"'),
 });
 

@@ -827,7 +827,7 @@ describe('Extract and Structure', () => {
             },
             "marcasNumerosBultos": {
               "marcas": "A-66151",
-              "numeroDeBulto": 1,
+              "numeroDeBulto": "1/1",
               "totalDeBultos": 1
             },
             "fechas": {
@@ -960,7 +960,720 @@ describe('Extract and Structure', () => {
       },
       {
         fileUrl: "https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y153CEDoxBhnLpbl6it5NaGkD4BTRJsU8jFoO2K",
-        expectedOutput: null,
+        expectedOutput: {
+          "encabezadoPrincipalDelPedimento": {
+            "numeroDePedimento": "25 24 3577 5006361",
+            "tipoDeOperacion": "IMP",
+            "claveDePedimento": "A1",
+            "regimen": "IMD",
+            "destino": "9",
+            "tipoDeCambio": 20.438,
+            "pesoBruto": 6184,
+            "aduanaEntradaOSalida": "240",
+            "mediosTransporte": {
+              "entradaSalida": "7",
+              "arribo": "7",
+              "salida": "7"
+            },
+            "valores": {
+              "valorDolares": 61123.99,
+              "valorAduana": 1249251,
+              "precioPagadoOValorComercial": 1216298
+            },
+            "datosImportador": {
+              "rfc": "EGM981125GX4",
+              "curp": null,
+              "razonSocial": "HEXPOL COMPOUNDING QUERETARO S.A. DE C.V.",
+              "domicilio": "LA NORIA, Num. Ext.: 115, PARQUE INDUSTRIAL QUERETARO, CP 76220, SANTA ROSA JAUREGUI, QUERE, MEX"
+            },
+            "incrementables": {
+              "valorSeguros": 1216298,
+              "seguros": 243,
+              "fletes": 18995,
+              "embalajes": 471,
+              "otrosIncrementables": 13244
+            },
+            "decrementables": {
+              "transporteDecrementables": 0,
+              "seguroDecrementables": 0,
+              "cargaDecrementables": 0,
+              "descargaDecrementables": 0,
+              "otrosDecrementables": 0
+            },
+            "marcasNumerosBultos": {
+              "marcas": "A-66288",
+              "numeroDeBulto": "1/10",
+              "totalDeBultos": 10
+            },
+            "fechas": {
+              "entrada": new Date("2025-04-02T00:00:00.000Z"),
+              "pago": new Date("2025-04-02T00:00:00.000Z"),
+              "extraccion": null,
+              "presentacion": null,
+              "importacionAEstadosUnidosOCanada": null,
+              "original": null
+            },
+            "cuadroDeLiquidacion": {
+              "liquidaciones": [
+                {
+                  "concepto": "IGI/IGE",
+                  "fp": "0",
+                  "importe": 3748
+                },
+                {
+                  "concepto": "IVA",
+                  "fp": "0",
+                  "importe": 200550
+                },
+                {
+                  "concepto": "IVA PRV",
+                  "fp": "0",
+                  "importe": 46
+                },
+                {
+                  "concepto": "DTA",
+                  "fp": "0",
+                  "importe": 445
+                },
+                {
+                  "concepto": "PRV",
+                  "fp": "0",
+                  "importe": 290
+                }
+              ],
+              "totales": {
+                "efectivo": 205079,
+                "otros": 0,
+                "total": 205079
+              }
+            }
+          },
+          "datosDelProveedorOComprador": [
+            {
+              "idFiscal": "20-1329172",
+              "nombreRazonSocial": "HEXPOL COMPOUNDING",
+              "domicilio": "NO KINSMAN ROAD Num. Ext. 14330 CP 44021 BURTON, OH, USA",
+              "vinculacion": "NO",
+              "facturas": [
+                {
+                  "numeroDeCFDIODocumentoEquivalente": "3005917289",
+                  "fecha": new Date("2025-03-31T00:00:00.000Z"),
+                  "incoterm": "CPT",
+                  "moneda": "USD",
+                  "valorMoneda": 612.28,
+                  "factorMoneda": 1,
+                  "valorDolares": 612.28
+                },
+                {
+                  "numeroDeCFDIODocumentoEquivalente": "3005917420",
+                  "fecha": new Date("2025-04-01T00:00:00.000Z"),
+                  "incoterm": "CPT",
+                  "moneda": "USD",
+                  "valorMoneda": 778.99,
+                  "factorMoneda": 1,
+                  "valorDolares": 778.99
+                },
+                {
+                  "numeroDeCFDIODocumentoEquivalente": "3005917431",
+                  "fecha": new Date("2025-04-01T00:00:00.000Z"),
+                  "incoterm": "CPT",
+                  "moneda": "USD",
+                  "valorMoneda": 1581.07,
+                  "factorMoneda": 1,
+                  "valorDolares": 1581.07
+                }
+              ]
+            },
+            {
+              "idFiscal": "20-8775856",
+              "nombreRazonSocial": "LION COPOLYMER GEISMAR LLC",
+              "domicilio": "LOUISIANA HIGHWAY 30 Num. Ext. 36191 CP 70734 GEISMAR, LA, USA",
+              "vinculacion": "NO",
+              "facturas": [
+                {
+                  "numeroDeCFDIODocumentoEquivalente": "90165203",
+                  "fecha": new Date("2025-03-31T00:00:00.000Z"),
+                  "incoterm": "FCA",
+                  "moneda": "USD",
+                  "valorMoneda": 6529.46,
+                  "factorMoneda": 1,
+                  "valorDolares": 6529.46
+                }
+              ]
+            },
+            {
+              "idFiscal": "82-5017927",
+              "nombreRazonSocial": "CELANECE POLYMERS HOLDING INC",
+              "domicilio": "W. LAS COLINAS BLVD Num. Ext. 222 Num. Int. 900N CP 75039 IRVING, TX, USA",
+              "vinculacion": "NO",
+              "facturas": [
+                {
+                  "numeroDeCFDIODocumentoEquivalente": "979738924",
+                  "fecha": new Date("2025-03-29T00:00:00.000Z"),
+                  "incoterm": "CPT",
+                  "moneda": "USD",
+                  "valorMoneda": 28170,
+                  "factorMoneda": 1,
+                  "valorDolares": 28170
+                },
+                {
+                  "numeroDeCFDIODocumentoEquivalente": "979738925",
+                  "fecha": new Date("2025-03-29T00:00:00.000Z"),
+                  "incoterm": "CPT",
+                  "moneda": "USD",
+                  "valorMoneda": 11242.5,
+                  "factorMoneda": 1,
+                  "valorDolares": 11242.5
+                },
+                {
+                  "numeroDeCFDIODocumentoEquivalente": "979738926",
+                  "fecha": new Date("2025-03-29T00:00:00.000Z"),
+                  "incoterm": "CPT",
+                  "moneda": "USD",
+                  "valorMoneda": 10777.5,
+                  "factorMoneda": 1,
+                  "valorDolares": 10777.5
+                }
+              ]
+            }
+          ],
+          "guiasOManifiestosOConocimientosDeEmbarqueODocumentosDeTransporte": null,
+          "contenedoresOEquipoFerrocarrilONumeroEconomicoVehiculo": {
+            "numero": "2540",
+            "tipo": "56"
+          },
+          "identificadoresPedimento": [
+            {
+              "clave": "SO",
+              "complemento1": "AA",
+              "complemento2": null,
+              "complemento3": null
+            },
+            {
+              "clave": "ED",
+              "complemento1": "017025115C0R3",
+              "complemento2": null,
+              "complemento3": null
+            },
+            {
+              "clave": "ED",
+              "complemento1": "01922510NQMD1",
+              "complemento2": null,
+              "complemento3": null
+            },
+            {
+              "clave": "ED",
+              "complemento1": "01922510NQML7",
+              "complemento2": null,
+              "complemento3": null
+            },
+            {
+              "clave": "ED",
+              "complemento1": "01922510NQMT1",
+              "complemento2": null,
+              "complemento3": null
+            }
+          ],
+          "observacionesANivelPedimento": "SE ANEXAN DOCUMENTOS DIGITALIZADOS (CONF. ART. 36A DE LA LEY ADUANERA VIGENTE Y REGLAS GENERALES DE COMERCIO EXTERIOR. SE SUBDIVIDE LA PRESENTE FACTURA 90165203, DE CONFORMIDAD CON EL ARTICULO 65 2DO. PARRAFO DEL REGLAMENTO DE LA LEY ADUANERA EN VIGOR.",
+          "partidas": [
+            {
+              "secuencia": 1,
+              "fraccion": "25262001",
+              "subdivisionONumeroDeIdentificacionComercial": "00",
+              "vinculacion": "0",
+              "metodoDeValoracion": "1",
+              "unidadDeMedidaComercial": "1",
+              "cantidadUnidadDeMedidaComercial": 204.1,
+              "unidadDeMedidaDeTarifa": "1",
+              "cantidadUnidadDeMedidaDeTarifa": 204.1,
+              "paisDeVentaOCompra": "USA",
+              "paisDeOrigenODestino": "USA",
+              "descripcion": "TALCO",
+              "valorEnAduanaOValorEnUSD": 4264,
+              "importeDePrecioPagadoOValorComercial": 4151,
+              "precioUnitario": 20.33807,
+              "valorAgregado": null,
+              "marca": null,
+              "modelo": null,
+              "codigoProducto": null,
+              "contribuciones": [
+                {
+                  "contribucion": "IGI/IGE",
+                  "tasa": 0,
+                  "tipoDeTasa": "1",
+                  "formaDePago": "0",
+                  "importe": 0
+                },
+                {
+                  "contribucion": "IVA",
+                  "tasa": 16,
+                  "tipoDeTasa": "1",
+                  "formaDePago": "0",
+                  "importe": 682
+                }
+              ],
+              "regulacionesYRestriccionesNoArancelarias": [],
+              "identificadores": [
+                {
+                  "identificador": "EO",
+                  "complemento1": "1",
+                  "complemento2": null,
+                  "complemento3": null
+                },
+                {
+                  "identificador": "MA",
+                  "complemento1": null,
+                  "complemento2": null,
+                  "complemento3": null
+                },
+                {
+                  "identificador": "PO",
+                  "complemento1": "4264",
+                  "complemento2": "HEXPOL COMPOUNDING",
+                  "complemento3": "."
+                },
+                {
+                  "identificador": "TL",
+                  "complemento1": "USA",
+                  "complemento2": null,
+                  "complemento3": null
+                }
+              ],
+              "observacionesANivelPartida": "1"
+            },
+            {
+              "secuencia": 2,
+              "fraccion": "39019099",
+              "subdivisionONumeroDeIdentificacionComercial": "99",
+              "vinculacion": "0",
+              "metodoDeValoracion": "1",
+              "unidadDeMedidaComercial": "1",
+              "cantidadUnidadDeMedidaComercial": 150,
+              "unidadDeMedidaDeTarifa": "1",
+              "cantidadUnidadDeMedidaDeTarifa": 150,
+              "paisDeVentaOCompra": "USA",
+              "paisDeOrigenODestino": "CHN",
+              "descripcion": "POLIETILENO CLORINATADO",
+              "valorEnAduanaOValorEnUSD": 8589,
+              "importeDePrecioPagadoOValorComercial": 8362,
+              "precioUnitario": 55.74667,
+              "valorAgregado": null,
+              "marca": null,
+              "modelo": null,
+              "codigoProducto": null,
+              "contribuciones": [
+                {
+                  "contribucion": "IGI/IGE",
+                  "tasa": 5,
+                  "tipoDeTasa": "1",
+                  "formaDePago": "0",
+                  "importe": 429
+                },
+                {
+                  "contribucion": "IVA",
+                  "tasa": 16,
+                  "tipoDeTasa": "1",
+                  "formaDePago": "0",
+                  "importe": 1478
+                }
+              ],
+              "regulacionesYRestriccionesNoArancelarias": [],
+              "identificadores": [
+                {
+                  "identificador": "MA",
+                  "complemento1": null,
+                  "complemento2": null,
+                  "complemento3": null
+                }
+              ],
+              "observacionesANivelPartida": "2"
+            },
+            {
+              "secuencia": 3,
+              "fraccion": "39094099",
+              "subdivisionONumeroDeIdentificacionComercial": "99",
+              "vinculacion": "0",
+              "metodoDeValoracion": "1",
+              "unidadDeMedidaComercial": "1",
+              "cantidadUnidadDeMedidaComercial": 79.8,
+              "unidadDeMedidaDeTarifa": "1",
+              "cantidadUnidadDeMedidaDeTarifa": 79.8,
+              "paisDeVentaOCompra": "USA",
+              "paisDeOrigenODestino": "USA",
+              "descripcion": "RESINA DE FENOL-FORMALEIDO",
+              "valorEnAduanaOValorEnUSD": 16352,
+              "importeDePrecioPagadoOValorComercial": 15921,
+              "precioUnitario": 199.51128,
+              "valorAgregado": null,
+              "marca": null,
+              "modelo": null,
+              "codigoProducto": null,
+              "contribuciones": [
+                {
+                  "contribucion": "IGI/IGE",
+                  "tasa": 0,
+                  "tipoDeTasa": "1",
+                  "formaDePago": "0",
+                  "importe": 0
+                },
+                {
+                  "contribucion": "IVA",
+                  "tasa": 16,
+                  "tipoDeTasa": "1",
+                  "formaDePago": "0",
+                  "importe": 2616
+                }
+              ],
+              "regulacionesYRestriccionesNoArancelarias": [],
+              "identificadores": [
+                {
+                  "identificador": "DH",
+                  "complemento1": "1",
+                  "complemento2": null,
+                  "complemento3": null
+                },
+                {
+                  "identificador": "EO",
+                  "complemento1": "1",
+                  "complemento2": null,
+                  "complemento3": null
+                },
+                {
+                  "identificador": "MA",
+                  "complemento1": null,
+                  "complemento2": null,
+                  "complemento3": null
+                },
+                {
+                  "identificador": "PO",
+                  "complemento1": "16352",
+                  "complemento2": "HEXPOL COMPOUNDING",
+                  "complemento3": null
+                },
+                {
+                  "identificador": "TL",
+                  "complemento1": "USA",
+                  "complemento2": null,
+                  "complemento3": null
+                }
+              ],
+              "observacionesANivelPartida": null
+            },
+            {
+              "secuencia": 4,
+              "fraccion": "40025999",
+              "subdivisionONumeroDeIdentificacionComercial": "00",
+              "vinculacion": "0",
+              "metodoDeValoracion": "1",
+              "unidadDeMedidaComercial": "1",
+              "cantidadUnidadDeMedidaComercial": 500,
+              "unidadDeMedidaDeTarifa": "1",
+              "cantidadUnidadDeMedidaDeTarifa": 500,
+              "paisDeVentaOCompra": "USA",
+              "paisDeOrigenODestino": "MEX",
+              "descripcion": "CAUCHO ACRILONITRILO BUTADIENO DIENO",
+              "valorEnAduanaOValorEnUSD": 33189,
+              "importeDePrecioPagadoOValorComercial": 32314,
+              "precioUnitario": 64.628,
+              "valorAgregado": null,
+              "marca": null,
+              "modelo": null,
+              "codigoProducto": null,
+              "contribuciones": [
+                {
+                  "contribucion": "IGI/IGE",
+                  "tasa": 10,
+                  "tipoDeTasa": "1",
+                  "formaDePago": "0",
+                  "importe": 3319
+                },
+                {
+                  "contribucion": "IVA",
+                  "tasa": 16,
+                  "tipoDeTasa": "1",
+                  "formaDePago": "0",
+                  "importe": 5877
+                }
+              ],
+              "regulacionesYRestriccionesNoArancelarias": [],
+              "identificadores": [
+                {
+                  "identificador": "MA",
+                  "complemento1": null,
+                  "complemento2": null,
+                  "complemento3": null
+                }
+              ],
+              "observacionesANivelPartida": "4"
+            },
+            {
+              "secuencia": 5,
+              "fraccion": "40027001",
+              "subdivisionONumeroDeIdentificacionComercial": "00",
+              "vinculacion": "0",
+              "metodoDeValoracion": "1",
+              "unidadDeMedidaComercial": "1",
+              "cantidadUnidadDeMedidaComercial": 2250.033,
+              "unidadDeMedidaDeTarifa": "1",
+              "cantidadUnidadDeMedidaDeTarifa": 2250.033,
+              "paisDeVentaOCompra": "USA",
+              "paisDeOrigenODestino": "USA",
+              "descripcion": "CAUCHO ETILENO PROPILENO DIENO",
+              "valorEnAduanaOValorEnUSD": 133283,
+              "importeDePrecioPagadoOValorComercial": 129767,
+              "precioUnitario": 57.67338,
+              "valorAgregado": null,
+              "marca": null,
+              "modelo": null,
+              "codigoProducto": null,
+              "contribuciones": [
+                {
+                  "contribucion": "IGI/IGE",
+                  "tasa": 0,
+                  "tipoDeTasa": "1",
+                  "formaDePago": "0",
+                  "importe": 0
+                },
+                {
+                  "contribucion": "IVA",
+                  "tasa": 16,
+                  "tipoDeTasa": "1",
+                  "formaDePago": "0",
+                  "importe": 21325
+                }
+              ],
+              "regulacionesYRestriccionesNoArancelarias": [],
+              "identificadores": [
+                {
+                  "identificador": "DH",
+                  "complemento1": "1",
+                  "complemento2": null,
+                  "complemento3": null
+                },
+                {
+                  "identificador": "EO",
+                  "complemento1": "1",
+                  "complemento2": null,
+                  "complemento3": null
+                },
+                {
+                  "identificador": "MA",
+                  "complemento1": null,
+                  "complemento2": null,
+                  "complemento3": null
+                },
+                {
+                  "identificador": "PO",
+                  "complemento1": "133283",
+                  "complemento2": "LION COPOLYMER GEISMAR LLC",
+                  "complemento3": null
+                },
+                {
+                  "identificador": "TL",
+                  "complemento1": "USA",
+                  "complemento2": null,
+                  "complemento3": null
+                }
+              ],
+              "observacionesANivelPartida": "5"
+            },
+            {
+              "secuencia": 6,
+              "fraccion": "39069099",
+              "subdivisionONumeroDeIdentificacionComercial": "00",
+              "vinculacion": "0",
+              "metodoDeValoracion": "1",
+              "unidadDeMedidaComercial": "1",
+              "cantidadUnidadDeMedidaComercial": 1500,
+              "unidadDeMedidaDeTarifa": "1",
+              "cantidadUnidadDeMedidaDeTarifa": 1500,
+              "paisDeVentaOCompra": "USA",
+              "paisDeOrigenODestino": "USA",
+              "descripcion": "COPOLIMERO DE ACRILATO",
+              "valorEnAduanaOValorEnUSD": 591337,
+              "importeDePrecioPagadoOValorComercial": 575738,
+              "precioUnitario": 383.82533,
+              "valorAgregado": null,
+              "marca": null,
+              "modelo": null,
+              "codigoProducto": null,
+              "contribuciones": [
+                {
+                  "contribucion": "IGI/IGE",
+                  "tasa": 0,
+                  "tipoDeTasa": "1",
+                  "formaDePago": "0",
+                  "importe": 0
+                },
+                {
+                  "contribucion": "IVA",
+                  "tasa": 16,
+                  "tipoDeTasa": "1",
+                  "formaDePago": "0",
+                  "importe": 94614
+                }
+              ],
+              "regulacionesYRestriccionesNoArancelarias": [],
+              "identificadores": [
+                {
+                  "identificador": "EO",
+                  "complemento1": "1",
+                  "complemento2": null,
+                  "complemento3": null
+                },
+                {
+                  "identificador": "MA",
+                  "complemento1": null,
+                  "complemento2": null,
+                  "complemento3": null
+                },
+                {
+                  "identificador": "PO",
+                  "complemento1": "591337",
+                  "complemento2": "CELANECE POLYMERS HOLDING INC.",
+                  "complemento3": null
+                },
+                {
+                  "identificador": "TL",
+                  "complemento1": "USA",
+                  "complemento2": null,
+                  "complemento3": null
+                }
+              ],
+              "observacionesANivelPartida": "11"
+            },
+            {
+              "secuencia": 7,
+              "fraccion": "39069099",
+              "subdivisionONumeroDeIdentificacionComercial": "00",
+              "vinculacion": "0",
+              "metodoDeValoracion": "1",
+              "unidadDeMedidaComercial": "1",
+              "cantidadUnidadDeMedidaComercial": 750,
+              "unidadDeMedidaDeTarifa": "1",
+              "cantidadUnidadDeMedidaDeTarifa": 750,
+              "paisDeVentaOCompra": "USA",
+              "paisDeOrigenODestino": "USA",
+              "descripcion": "COPOLIMERO DE ACRILATO",
+              "valorEnAduanaOValorEnUSD": 235999,
+              "importeDePrecioPagadoOValorComercial": 229774,
+              "precioUnitario": 306.36533,
+              "valorAgregado": null,
+              "marca": "235999.00",
+              "modelo": "229774",
+              "codigoProducto": "306.36533",
+              "contribuciones": [
+                {
+                  "contribucion": "IGI/IGE",
+                  "tasa": 0,
+                  "tipoDeTasa": "1",
+                  "formaDePago": "0",
+                  "importe": 0
+                },
+                {
+                  "contribucion": "IVA",
+                  "tasa": 16,
+                  "tipoDeTasa": "1",
+                  "formaDePago": "0",
+                  "importe": 37760
+                }
+              ],
+              "regulacionesYRestriccionesNoArancelarias": [],
+              "identificadores": [
+                {
+                  "identificador": "EO",
+                  "complemento1": "1",
+                  "complemento2": null,
+                  "complemento3": null
+                },
+                {
+                  "identificador": "MA",
+                  "complemento1": null,
+                  "complemento2": null,
+                  "complemento3": null
+                },
+                {
+                  "identificador": "PO",
+                  "complemento1": "235999",
+                  "complemento2": "CELANECE POLYMERS HOLDING INC",
+                  "complemento3": null
+                },
+                {
+                  "identificador": "TL",
+                  "complemento1": "USA",
+                  "complemento2": null,
+                  "complemento3": null
+                }
+              ],
+              "observacionesANivelPartida": "12"
+            },
+            {
+              "secuencia": 8,
+              "fraccion": "39069099",
+              "subdivisionONumeroDeIdentificacionComercial": "00",
+              "vinculacion": "0",
+              "metodoDeValoracion": "1",
+              "unidadDeMedidaComercial": "1",
+              "cantidadUnidadDeMedidaComercial": 750,
+              "unidadDeMedidaDeTarifa": "1",
+              "cantidadUnidadDeMedidaDeTarifa": 750,
+              "paisDeVentaOCompra": "USA",
+              "paisDeOrigenODestino": "CAN",
+              "descripcion": "COPOLIMERO DE ACRILATO",
+              "valorEnAduanaOValorEnUSD": 226238,
+              "importeDePrecioPagadoOValorComercial": 220271,
+              "precioUnitario": 293.69467,
+              "valorAgregado": null,
+              "marca": null,
+              "modelo": null,
+              "codigoProducto": null,
+              "contribuciones": [
+                {
+                  "contribucion": "IGI/IGE",
+                  "tasa": 0,
+                  "tipoDeTasa": "1",
+                  "formaDePago": "0",
+                  "importe": 0
+                },
+                {
+                  "contribucion": "IVA",
+                  "tasa": 16,
+                  "tipoDeTasa": "1",
+                  "formaDePago": "0",
+                  "importe": 36198
+                }
+              ],
+              "regulacionesYRestriccionesNoArancelarias": [],
+              "identificadores": [
+                {
+                  "identificador": "EO",
+                  "complemento1": "1",
+                  "complemento2": null,
+                  "complemento3": null
+                },
+                {
+                  "identificador": "MA",
+                  "complemento1": null,
+                  "complemento2": null,
+                  "complemento3": null
+                },
+                {
+                  "identificador": "PO",
+                  "complemento1": "226238",
+                  "complemento2": "CELANECE POLYMERS HOLDING INC",
+                  "complemento3": null
+                },
+                {
+                  "identificador": "TL",
+                  "complemento1": "CAN",
+                  "complemento2": null,
+                  "complemento3": null
+                }
+              ],
+              "observacionesANivelPartida": "13"
+            }
+          ]
+        },
       }
     ] as const;
     const trace = langfuse.trace({

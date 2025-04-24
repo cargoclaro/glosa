@@ -234,7 +234,11 @@ export async function extractAndStructurePedimento(
 
   // Create PDF with all datos generales pages (including the first partidas page)
   const datosGeneralesPages = pages.slice(0, firstPartidasPageIndex + 1);
-  const datosGeneralesPdfBase64 = await combinePagesToPdf(datosGeneralesPages);
+
+  // Split datosGeneralesPages into first page and remaining pages
+  const [firstPageBase64, ...otherPagesBase64] = datosGeneralesPages;
+  const firstPagePdfBase64 = await combinePagesToPdf([firstPageBase64 as string]);
+  const otherPagesPdfBase64 = otherPagesBase64.length > 0 ? await combinePagesToPdf(otherPagesBase64) : '';
 
   // Get all partidas pages starting from firstPartidasPageIndexInPages
   const partidasPages = pages.slice(firstPartidasPageIndex);
@@ -265,7 +269,7 @@ export async function extractAndStructurePedimento(
           },
           {
             type: 'file',
-            data: `data:application/pdf;base64,${datosGeneralesPdfBase64}`,
+            data: `data:application/pdf;base64,${firstPagePdfBase64}`,
             mimeType: 'application/pdf',
           },
         ],
@@ -276,7 +280,7 @@ export async function extractAndStructurePedimento(
   const restOfPedimentoPromise = generateObject({
     model: openai('o4-mini-2025-04-16'),
     temperature: 1,
-    providerOptions: { openai: { reasoningEffort: 'medium' } },
+    providerOptions: { openai: { reasoningEffort: 'high' } },
     seed: 42,
     schema: z.object(restOfPedimento),
     experimental_telemetry: {
@@ -298,7 +302,7 @@ export async function extractAndStructurePedimento(
           },
           {
             type: 'file',
-            data: `data:application/pdf;base64,${datosGeneralesPdfBase64}`,
+            data: `data:application/pdf;base64,${otherPagesPdfBase64}`,
             mimeType: 'application/pdf',
           },
         ],
