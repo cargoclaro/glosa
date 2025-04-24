@@ -241,15 +241,6 @@ export const analysis = api
         ? glosaImpo({ ...documents, traceId: trace.id })
         : glosaExpo({ ...documents, traceId: trace.id }));
 
-      // Remove null bytes from objects before inserting into the database
-      function removeNullBytes<T>(obj: T): T {
-        const str = JSON.stringify(obj);
-        const cleaned = str.split('\u0000').join('');
-        return JSON.parse(cleaned) as T;
-      }
-      const sanitizedCove = removeNullBytes(cove);
-      const sanitizedPedimento = removeNullBytes(pedimento);
-
       const [newCustomGloss] = await db
         .insert(CustomGloss)
         .values({
@@ -259,11 +250,10 @@ export const analysis = api
           moneySaved: 1000,
           importerName:
             importerName ?? 'No se encontro la razon social del importador',
-          cove: sanitizedCove,
-          pedimento: sanitizedPedimento,
+          cove,
+          pedimento,
         })
         .returning();
-
       if (!newCustomGloss) {
         throw new Error('Failed to create CustomGloss record');
       }
@@ -291,21 +281,29 @@ export const analysis = api
           throw new Error('Failed to create CustomGlossTab record');
         }
         await Promise.all(validations.map(async ({ contexts, validation }) => {
+          // Remove null bytes from objects before inserting into the database
+          function removeNullBytes<T>(obj: T): T {
+            const json = JSON.stringify(obj);
+            const cleaned = json.replace(/\\u0000/g, '');
+            return JSON.parse(cleaned) as T;
+          }
+          const cleanedValidation = removeNullBytes(validation);
+          const cleanedTabId = removeNullBytes(insertedTab.id);
           const [insertedValidationStep] = await db
             .insert(CustomGlossTabValidationStep)
             .values({
-              name: validation.name,
-              description: validation.description,
-              llmAnalysis: validation.llmAnalysis,
-              isCorrect: validation.isValid,
-              customGlossTabId: insertedTab.id
+              name: cleanedValidation.name,
+              description: cleanedValidation.description,
+              llmAnalysis: cleanedValidation.llmAnalysis,
+              isCorrect: cleanedValidation.isValid,
+              customGlossTabId: cleanedTabId
             })
             .returning();
           if (!insertedValidationStep) {
             throw new Error('Failed to create CustomGlossTabValidationStep record');
           }
           await Promise.all([
-            ...validation.actionsToTake.map(action =>
+            ...cleanedValidation.actionsToTake.map(action =>
               db.insert(CustomGlossTabValidationStepActionToTake).values({
                 description: action,
                 customGlossTabValidationStepId: insertedValidationStep.id
