@@ -247,7 +247,9 @@ export async function extractAndStructurePedimento(
 
   // Kick off datos-generales and partidas extractions in parallel
   const encabezadoPrincipalDelPedimentoPromise = generateObject({
-    model: google('gemini-2.5-pro-preview-03-25'),
+    model: openai('o4-mini-2025-04-16'),
+    temperature: 1,
+    providerOptions: { openai: { reasoningEffort: 'high' } },
     seed: 42,
     schema: encabezadoPrincipalDelPedimento,
     experimental_telemetry: {
@@ -329,7 +331,7 @@ export async function extractAndStructurePedimento(
         {
           role: 'user',
           content: [
-            { type: 'text', text: '¿Cuántas partidas hay en esta página?' },
+            { type: 'text', text: 'Basado en la etiqueta "SEC" cuentas las partidas en esta página. No quiero la cuenta global de todo el pedimento, solo de esta página.' },
             { type: 'file', data: `data:application/pdf;base64,${pageBase64}`, mimeType: 'application/pdf' },
           ],
         },

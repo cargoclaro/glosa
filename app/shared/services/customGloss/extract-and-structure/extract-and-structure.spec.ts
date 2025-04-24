@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { Langfuse } from 'langfuse';
 import { extractAndStructurePackingList, extractAndStructureCove, extractAndStructurePedimento } from './extract-and-structure';
+import sortKeysRecursive from 'sort-keys-recursive';
 
 const langfuse = new Langfuse();
 
@@ -2148,8 +2149,11 @@ describe('Extract and Structure Pedimento', () => {
 
     for (const { pedimentoResult, fileUrl } of pedimentoResults) {
       const fixture = pedimentoFixture.find(item => item.fileUrl === fileUrl);
-      expect.soft(pedimentoResult, `Result data should match expected output for: ${fileUrl}`)
-        .toEqual(fixture?.expectedOutput);
+      if (!fixture) {
+        throw new Error(`Fixture not found for: ${fileUrl}`);
+      }
+      expect.soft(sortKeysRecursive(pedimentoResult), `Result data should match expected output for: ${fileUrl}`)
+        .toEqual(sortKeysRecursive(fixture.expectedOutput));
     }
   });
 });
