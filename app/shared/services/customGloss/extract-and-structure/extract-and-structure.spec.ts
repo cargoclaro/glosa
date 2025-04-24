@@ -1678,6 +1678,10 @@ describe('Extract and Structure Pedimento', () => {
             }
           ]
         },
+      },
+      {
+        fileUrl: "https://kvt8mwzpgv.ufs.sh/f/MV48gJe0bTvETRbz7hL76vl9dqARLirIB8Hk3cW0PmtFSjua",
+        expectedOutput: null,
       }
     ] as const;
     const trace = langfuse.trace({
