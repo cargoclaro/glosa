@@ -1,20 +1,17 @@
-import type {
-  Cfdi,
-  TransportDocument,
-} from '../../../data-extraction/mkdown_schemas';
-import type { Pedimento } from '../../../data-extraction/schemas';
+import type { OCR } from '~/lib/utils';
+import type { Pedimento } from '../../../extract-and-structure/schemas';
 import type { PackingList } from '../../../extract-and-structure/schemas';
 import { glosar } from '../../validation-result';
 
 async function validatePesosYBultos(
   traceId: string,
   pedimento: Pedimento,
-  transportDocument?: TransportDocument,
+  transportDocument?: OCR,
   packingList?: PackingList,
-  cfdi?: Cfdi
+  cfdi?: OCR
 ) {
   // Extract weight values from pedimento
-  const pesoBrutoPedimento = pedimento.encabezado_del_pedimento?.peso_bruto;
+  const pesoBrutoPedimento = pedimento.encabezadoPrincipalDelPedimento.pesoBruto;
   const cfdiMkdown = cfdi?.markdown_representation;
   const transportDocmkdown = transportDocument?.markdown_representation;
 
@@ -53,11 +50,11 @@ async function validatePesosYBultos(
 async function validateBultos(
   traceId: string,
   pedimento: Pedimento,
-  transportDocument?: TransportDocument
+  transportDocument?: OCR
 ) {
   // Extract bultos values from pedimento
   const bultosPedimento =
-    pedimento.identificadores_nivel_pedimento?.marcas_numeros_bultos;
+    pedimento.encabezadoPrincipalDelPedimento.marcasNumerosBultos?.totalDeBultos;
   const transportDocmkdown = transportDocument?.markdown_representation;
 
   const validation = {
@@ -89,9 +86,9 @@ export async function pesosYBultos({
   traceId,
 }: {
   pedimento: Pedimento;
-  transportDocument?: TransportDocument;
+  transportDocument?: OCR;
   packingList?: PackingList;
-  cfdi?: Cfdi;
+  cfdi?: OCR;
   traceId: string;
 }) {
   const validationsPromise = await Promise.all([

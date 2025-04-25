@@ -1,5 +1,5 @@
-import type { Cfdi } from '../../../data-extraction/mkdown_schemas';
-import type { Pedimento } from '../../../data-extraction/schemas';
+import type { OCR } from '~/lib/utils';
+import type { Pedimento } from '../../../extract-and-structure/schemas';
 import { glosar } from '../../validation-result';
 
 // Función para validar preferencia arancelaria y certificado de origen
@@ -11,7 +11,7 @@ async function validatePreferenciaArancelaria(
   const partidas = pedimento.partidas || [];
 
   // Extraer identificadores a nivel pedimento para certificados de origen
-  const identificadoresPedimento = pedimento.identificadores_pedimento || [];
+  const identificadoresPedimento = pedimento.identificadoresPedimento || [];
 
   const validation = {
     name: 'Preferencia arancelaria y certificado de origen',
@@ -38,7 +38,7 @@ async function validatePreferenciaArancelaria(
 async function validateCoherenciaUMC(
   traceId: string,
   pedimento: Pedimento,
-  cfdi?: Cfdi
+  cfdi?: OCR
 ) {
   // Extraer partidas con información de UMC
   const partidas = pedimento.partidas || [];
@@ -68,10 +68,10 @@ async function validateCoherenciaUMC(
 async function validateCoherenciaPeso(
   traceId: string,
   pedimento: Pedimento,
-  cfdi?: Cfdi
+  cfdi?: OCR
 ) {
   // Extraer peso bruto del pedimento
-  const pesoBrutoPedimento = pedimento.encabezado_del_pedimento?.peso_bruto;
+  const pesoBrutoPedimento = pedimento.encabezadoPrincipalDelPedimento.pesoBruto;
 
   // Extraer partidas con información de peso
   const partidas = pedimento.partidas || [];
@@ -127,7 +127,7 @@ async function validateCalculoDTA(traceId: string, pedimento: Pedimento) {
 async function validateCalculoContribuciones(
   traceId: string,
   pedimento: Pedimento,
-  cfdi?: Cfdi
+  cfdi?: OCR
 ) {
   // Extraer partidas con contribuciones
   const partidas = pedimento.partidas || [];
@@ -159,7 +159,7 @@ async function validatePermisosIdentificadores(
   pedimento: Pedimento
 ) {
   // Extraer identificadores a nivel pedimento
-  const identificadoresPedimento = pedimento.identificadores_pedimento || [];
+  const identificadoresPedimento = pedimento.identificadoresPedimento || [];
 
   // Extraer partidas con identificadores
   const partidas = pedimento.partidas || [];
@@ -241,7 +241,7 @@ export async function partidas({
   pedimento,
   cfdi,
   traceId,
-}: { pedimento: Pedimento; cfdi?: Cfdi; traceId: string }) {
+}: { pedimento: Pedimento; cfdi?: OCR; traceId: string }) {
   const validationsPromise = await Promise.all([
     validatePreferenciaArancelaria(traceId, pedimento),
     validateCoherenciaUMC(traceId, pedimento, cfdi),

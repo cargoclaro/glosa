@@ -1,9 +1,5 @@
-import type {
-  CartaSesion,
-  Cfdi,
-  TransportDocument,
-} from '../../../data-extraction/mkdown_schemas';
-import type { Pedimento } from '../../../data-extraction/schemas';
+import type { OCR } from '~/lib/utils';
+import type { Pedimento } from '../../../extract-and-structure/schemas';
 import type { Cove, PackingList } from '../../../extract-and-structure/schemas';
 import { numeroDePedimento } from './1.numero-de-pedimento';
 import { tipoOperacion } from './2.tipo-operacion';
@@ -25,9 +21,9 @@ export function pedimentoValidationStepsExpo({
 }: {
   pedimento: Pedimento;
   cove: Cove;
-  cfdi?: Cfdi;
-  cartaSesion?: CartaSesion;
-  transportDocument?: TransportDocument;
+  cfdi?: OCR;
+  cartaSesion?: OCR;
+  transportDocument?: OCR;
   packingList?: PackingList;
   traceId: string;
 }) {

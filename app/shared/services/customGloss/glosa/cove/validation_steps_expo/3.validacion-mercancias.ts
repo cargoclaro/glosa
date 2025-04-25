@@ -1,4 +1,4 @@
-import type { Cfdi, Invoice } from '../../../data-extraction/mkdown_schemas';
+import type { OCR } from '~/lib/utils';
 import type { Cove } from '../../../extract-and-structure/schemas';
 import { glosar } from '../../validation-result';
 
@@ -6,7 +6,7 @@ import { glosar } from '../../validation-result';
  * Validates that the merchandise details in the COVE document match the CFDI for exports.
  * Compares merchandise details between COVE and CFDI.
  */
-async function validateMercancias(traceId: string, cove: Cove, cfdi?: Cfdi) {
+async function validateMercancias(traceId: string, cove: Cove, cfdi?: OCR) {
   // Extract merchandise data from COVE
   const datosMercanciaCove = cove.mercancias;
   const cfdiMkdown = cfdi?.markdown_representation;
@@ -66,7 +66,7 @@ async function validateMercancias(traceId: string, cove: Cove, cfdi?: Cfdi) {
 async function validateValorTotalDolares(
   traceId: string,
   cove: Cove,
-  cfdi?: Cfdi
+  cfdi?: OCR
 ) {
   // Extract total value from COVE
   // TODO: Do this in a loop, instead of just checking the first mercancia
@@ -105,8 +105,8 @@ async function validateValorTotalDolares(
 async function validateNumeroSerie(
   traceId: string,
   cove: Cove,
-  invoice?: Invoice,
-  cfdi?: Cfdi
+  invoice?: OCR,
+  cfdi?: OCR
 ) {
   // TODO: Do this in a loop, instead of just checking the first mercancia
   const numeroSerieCove =
@@ -151,7 +151,7 @@ export async function mercancias({
   invoice,
   cfdi,
   traceId,
-}: { cove: Cove; invoice?: Invoice; cfdi?: Cfdi; traceId: string }) {
+}: { cove: Cove; invoice?: OCR; cfdi?: OCR; traceId: string }) {
   const validationsPromise = await Promise.all([
     validateMercancias(traceId, cove, cfdi),
     validateValorTotalDolares(traceId, cove, cfdi),

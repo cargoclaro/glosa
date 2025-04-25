@@ -7,6 +7,10 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+export type OCR = {
+  markdown_representation: string;
+}
+
 export function transformStringToDate(
   dateStr: string,
   ctx: RefinementCtx

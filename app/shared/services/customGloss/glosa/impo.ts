@@ -1,10 +1,5 @@
-import type {
-  Carta318,
-  Invoice,
-  TransportDocument,
-} from '../data-extraction/mkdown_schemas';
-import type { Pedimento } from '../data-extraction/schemas';
-import type { Cove, PackingList } from '../extract-and-structure/schemas';
+import type { OCR } from '~/lib/utils';
+import type { Cove, PackingList, Pedimento } from '../extract-and-structure/schemas';
 import { coveValidationStepsImpo } from './cove/validation_steps_impo';
 import { pedimentoValidationStepsImpo } from './pedimento/validation_steps_impo';
 
@@ -18,11 +13,11 @@ export async function glosaImpo({
   traceId,
 }: {
   pedimento: Pedimento;
-  transportDocument?: TransportDocument;
+  transportDocument?: OCR;
   packingList?: PackingList;
   cove: Cove;
-  invoice?: Invoice;
-  carta318?: Carta318;
+  invoice?: OCR;
+  carta318?: OCR;
   traceId: string;
 }) {
   const results = await Promise.all([

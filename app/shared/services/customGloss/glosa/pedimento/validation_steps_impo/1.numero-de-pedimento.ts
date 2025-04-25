@@ -1,8 +1,8 @@
-import type { Pedimento } from '../../../data-extraction/schemas';
+import type { Pedimento } from '../../../extract-and-structure/schemas';
 import { glosar } from '../../validation-result';
 
 async function validateLongitud(pedimento: Pedimento, traceId: string) {
-  const numeroPedimento = pedimento.encabezado_del_pedimento?.num_pedimento;
+  const numeroPedimento = pedimento.encabezadoPrincipalDelPedimento.numeroDePedimento;
   const numeroPedimentoSinEspacios = numeroPedimento?.replace(/\s+/g, '') || '';
   const longitud = numeroPedimentoSinEspacios.length;
 
@@ -32,7 +32,7 @@ async function validateLongitud(pedimento: Pedimento, traceId: string) {
 }
 
 async function validateAñoPedimento(pedimento: Pedimento, traceId: string) {
-  const numeroPedimento = pedimento.encabezado_del_pedimento?.num_pedimento;
+  const numeroPedimento = pedimento.encabezadoPrincipalDelPedimento.numeroDePedimento;
   const numeroPedimentoSinEspacios = numeroPedimento?.replace(/\s+/g, '') || '';
   const añoPedimento = numeroPedimentoSinEspacios.slice(0, 2);
   const añoActual = new Date().getFullYear();

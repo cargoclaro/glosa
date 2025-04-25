@@ -1,7 +1,5 @@
-import type { Carta318 } from '../../../data-extraction/mkdown_schemas/carta-318';
-import type { CartaSesion } from '../../../data-extraction/mkdown_schemas/carta-sesion';
-import type { Invoice } from '../../../data-extraction/mkdown_schemas/invoice';
-import type { Pedimento } from '../../../data-extraction/schemas';
+import type { OCR } from '~/lib/utils';
+import type { Pedimento } from '../../../extract-and-structure/schemas';
 import type { Cove } from '../../../extract-and-structure/schemas';
 import { getExchangeRate } from '../../exchange-rate';
 import { glosar } from '../../validation-result';
@@ -10,12 +8,12 @@ async function validateRfcFormat(
   traceId: string,
   pedimento: Pedimento,
   cove: Cove,
-  carta318?: Carta318
+  carta318?: OCR
 ) {
-  const rfcPedimento = pedimento.datos_importador?.rfc;
+  const rfcPedimento = pedimento.encabezadoPrincipalDelPedimento.datosImportador.rfc;
   const rfcCove = cove?.datosGeneralesDelDestinatario?.taxIdSinTaxIdRfcCurp;
   const carta318mkdown = carta318?.markdown_representation;
-  const observaciones = pedimento.observaciones_a_nivel_pedimento;
+  const observaciones = pedimento.observacionesANivelPedimento;
 
   const validation = {
     name: 'RFC',
@@ -47,13 +45,13 @@ async function validateRfcFormat(
 async function validateCesionDerechos(
   traceId: string,
   pedimento: Pedimento,
-  cartaSesion?: CartaSesion,
-  carta318?: Carta318
+  cartaSesion?: OCR,
+  carta318?: OCR
 ) {
-  const fechaEntradaPedimento = pedimento.fecha_entrada_presentacion;
+  const fechaEntradaPedimento = pedimento.encabezadoPrincipalDelPedimento.fechas.entrada;
   const cartaSesionmkdown = cartaSesion?.markdown_representation;
   const carta318mkdown = carta318?.markdown_representation;
-  const observaciones = pedimento.observaciones_a_nivel_pedimento;
+  const observaciones = pedimento.observacionesANivelPedimento;
 
   const validation = {
     name: 'Cesión de derechos',
@@ -89,18 +87,18 @@ async function validateDatosImportador(
   traceId: string,
   pedimento: Pedimento,
   cove: Cove,
-  carta318?: Carta318
+  carta318?: OCR
 ) {
-  const rfcPedimento = pedimento.datos_importador?.rfc;
+  const rfcPedimento = pedimento.encabezadoPrincipalDelPedimento.datosImportador.rfc;
   const rfcCove = cove?.datosGeneralesDelDestinatario?.taxIdSinTaxIdRfcCurp;
-  const domicilioPedimento = pedimento.datos_importador?.domicilio;
+  const domicilioPedimento = pedimento.encabezadoPrincipalDelPedimento.datosImportador.domicilio;
   const domicilioCove = cove?.domicilioDelDestinatario;
-  const razonSocialPedimento = pedimento.datos_importador?.razon_social;
+  const razonSocialPedimento = pedimento.encabezadoPrincipalDelPedimento.datosImportador.razonSocial;
   const razonSocialCove =
     cove?.datosGeneralesDelDestinatario.nombresORazonSocial;
 
   const carta318mkdown = carta318?.markdown_representation;
-  const observaciones = pedimento.observaciones_a_nivel_pedimento;
+  const observaciones = pedimento.observacionesANivelPedimento;
 
   const domicilioCoveCompleto = domicilioCove
     ? [
@@ -158,18 +156,18 @@ async function validateDatosProveedor(
   traceId: string,
   pedimento: Pedimento,
   cove: Cove,
-  carta318?: Carta318
+  carta318?: OCR
 ) {
-  const nombreProveedorPedimento = pedimento.nombre_razon_social;
+  const nombreProveedorPedimento = pedimento.datosDelProveedorOComprador[0]?.nombreRazonSocial;
   const nombreProveedorCove =
     cove?.datosGeneralesDelProveedor.nombresORazonSocial;
-  const domicilioProveedorPedimento = pedimento.domicilio;
+  const domicilioProveedorPedimento = pedimento.datosDelProveedorOComprador[0]?.domicilio;
   const domicilioProveedorCove = cove?.domicilioDelProveedor;
   const idProveedorCove =
     cove?.datosGeneralesDelProveedor?.taxIdSinTaxIdRfcCurp;
 
   const carta318mkdown = carta318?.markdown_representation;
-  const observaciones = pedimento.observaciones_a_nivel_pedimento;
+  const observaciones = pedimento.observacionesANivelPedimento;
 
   const domicilioProveedorCoveCompleto = domicilioProveedorCove
     ? [
@@ -195,7 +193,7 @@ async function validateDatosProveedor(
           data: [
             { name: 'Nombre/Razón social', value: nombreProveedorPedimento },
             { name: 'Domicilio', value: domicilioProveedorPedimento },
-            { name: 'ID Fiscal', value: pedimento.id_fiscal },
+            { name: 'ID Fiscal', value: pedimento.datosDelProveedorOComprador[0]?.idFiscal },
             { name: 'Observaciones', value: observaciones },
           ],
         },
@@ -220,15 +218,15 @@ async function validateFechasYFolios(
   traceId: string,
   pedimento: Pedimento,
   cove: Cove,
-  invoice?: Invoice,
-  carta318?: Carta318
+  invoice?: OCR,
+  carta318?: OCR
 ) {
-  const fechaEntradaPedimento = pedimento.fecha_entrada_presentacion;
+  const fechaEntradaPedimento = pedimento.encabezadoPrincipalDelPedimento.fechas.entrada;
   const fechaExpedicionCove = cove?.datosDelAcuseDeValor.fechaExpedicion;
 
   const invoicemkdown = invoice?.markdown_representation;
   const carta318mkdown = carta318?.markdown_representation;
-  const observaciones = pedimento.observaciones_a_nivel_pedimento;
+  const observaciones = pedimento.observacionesANivelPedimento;
 
   const validation = {
     name: 'Fechas de emisión',
@@ -264,20 +262,20 @@ async function validateMonedaYEquivalencia(
   traceId: string,
   pedimento: Pedimento,
   cove: Cove,
-  carta318?: Carta318,
-  invoice?: Invoice
+  carta318?: OCR,
+  invoice?: OCR
 ) {
-  const monedaPedimento = pedimento.datos_factura?.moneda_factura;
+  const monedaPedimento = pedimento.datosDelProveedorOComprador[0]?.facturas[0]?.moneda;
   // TODO: Do this in a loop, instead of just checking the first mercancia
   const monedaCove = cove?.mercancias[0]?.datosDeLaMercancia?.tipoMoneda;
-  const valorDolaresPedimento = pedimento.datos_factura?.valor_dolares_factura;
+  const valorDolaresPedimento = pedimento.datosDelProveedorOComprador[0]?.facturas[0]?.valorDolares;
   const valorDolaresCoveTotal = cove?.mercancias?.reduce(
     (sum, item) => sum + (item?.datosDeLaMercancia?.valorTotalEnDolares || 0),
     0
   );
-  const valorFactura = pedimento.datos_factura?.valor_moneda_factura;
-  const factorMonedaFactura = pedimento.datos_factura?.factor_moneda_factura;
-  const fechaEntrada = pedimento.fecha_entrada_presentacion;
+  const valorFactura = pedimento.datosDelProveedorOComprador[0]?.facturas[0]?.valorMoneda;
+  const factorMonedaFactura = pedimento.datosDelProveedorOComprador[0]?.facturas[0]?.factorMoneda;
+  const fechaEntrada = pedimento.encabezadoPrincipalDelPedimento.fechas.entrada;
 
   const carta318mkdown = carta318?.markdown_representation;
   const invoicemkdown = invoice?.markdown_representation;
@@ -287,7 +285,7 @@ async function validateMonedaYEquivalencia(
     new Date(fechaEntrada ?? new Date())
   );
 
-  const observaciones = pedimento.observaciones_a_nivel_pedimento;
+  const observaciones = pedimento.observacionesANivelPedimento;
 
   const validation = {
     name: 'Moneda y factor de equivalencia',
@@ -343,9 +341,9 @@ export async function datosDeFactura({
 }: {
   pedimento: Pedimento;
   cove: Cove;
-  carta318?: Carta318;
-  invoice?: Invoice;
-  cartaSesion?: CartaSesion;
+  carta318?: OCR;
+  invoice?: OCR;
+  cartaSesion?: OCR;
   traceId: string;
 }) {
   const validationsPromise = await Promise.all([

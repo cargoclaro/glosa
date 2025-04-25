@@ -1,7 +1,5 @@
-import type { Carta318 } from '../../../data-extraction/mkdown_schemas/carta-318';
-import type { Invoice } from '../../../data-extraction/mkdown_schemas/invoice';
-import type { TransportDocument } from '../../../data-extraction/mkdown_schemas/transport-document';
-import type { Pedimento } from '../../../data-extraction/schemas';
+import type { OCR } from '~/lib/utils';
+import type { Pedimento } from '../../../extract-and-structure/schemas';
 import { apendice14 } from '../../anexo-22/apendice-14';
 import { getExchangeRate } from '../../exchange-rate';
 import { glosar } from '../../validation-result';
@@ -11,11 +9,11 @@ import { glosar } from '../../validation-result';
 async function validateTransportDocumentEntryDate(
   traceId: string,
   pedimento: Pedimento,
-  transportDocument?: TransportDocument
+  transportDocument?: OCR
 ) {
-  const pedimentoEntryDate = pedimento.fecha_entrada_presentacion;
+  const pedimentoEntryDate = pedimento.encabezadoPrincipalDelPedimento.fechas.entrada;
   const transportDocmkdown = transportDocument?.markdown_representation;
-  const observaciones = pedimento.observaciones_a_nivel_pedimento;
+  const observaciones = pedimento.observacionesANivelPedimento;
 
   const validation = {
     name: 'Fecha de entrada',
@@ -44,9 +42,9 @@ async function validateTransportDocumentEntryDate(
 }
 
 async function validateTipoCambio(traceId: string, pedimento: Pedimento) {
-  const tipoCambio = pedimento.encabezado_del_pedimento?.tipo_cambio;
-  const fechaEntrada = pedimento.fecha_entrada_presentacion;
-  const observaciones = pedimento.observaciones_a_nivel_pedimento;
+  const tipoCambio = pedimento.encabezadoPrincipalDelPedimento.tipoDeCambio;
+  const fechaEntrada = pedimento.encabezadoPrincipalDelPedimento.fechas.entrada;
+  const observaciones = pedimento.observacionesANivelPedimento;
   const tipoCambioDOF = await getExchangeRate(
     new Date(fechaEntrada ?? new Date())
   );
@@ -79,9 +77,9 @@ async function validateTipoCambio(traceId: string, pedimento: Pedimento) {
 async function validateValSeguros(
   traceId: string,
   pedimento: Pedimento,
-  invoice?: Invoice,
-  transportDocument?: TransportDocument,
-  carta318?: Carta318
+  invoice?: OCR,
+  transportDocument?: OCR,
+  carta318?: OCR
 ) {
   // --- Teaching Moment: Understanding the Data We Need ---
   // To validate the 'Val. Seguros' field correctly, we need several pieces of information
@@ -90,29 +88,30 @@ async function validateValSeguros(
 
   // Get the Incoterm (International Commercial Term) from the invoice data section of the pedimento.
   // Incoterms define the responsibilities of buyers and sellers, including insurance obligations.
-  const incoterm = pedimento.datos_factura?.incoterm;
+  // TODO: We should iterate over the invoices to get the incoterm from the first one.
+  const incoterm = pedimento.datosDelProveedorOComprador[0]?.facturas[0]?.incoterm;
 
   // Get the 'Val. Seguros' (Value of Insurance) from the incrementables section.
   // This is the field we are primarily validating. It represents the total value of goods covered by insurance.
-  const valSeguros = pedimento.incrementables?.valor_seguros;
+  const valSeguros = pedimento.encabezadoPrincipalDelPedimento.incrementables.valorSeguros;
 
   // Get the 'Precio pagado / valor comercial' (Price paid / commercial value) from the values section.
   // This is the value of the goods themselves, which helps us check if the insurance amount is reasonable.
   const precioPagadoValorComercial =
-    pedimento.valores?.precio_pagado_valor_comercial;
+    pedimento.encabezadoPrincipalDelPedimento.valores.precioPagadoOValorComercial;
 
   // Get the 'Tipo de cambio' (Exchange Rate) from the header.
   // This might be needed if insurance details in other documents are in foreign currency.
-  const tipoCambio = pedimento.encabezado_del_pedimento?.tipo_cambio;
+  const tipoCambio = pedimento.encabezadoPrincipalDelPedimento.tipoDeCambio;
 
   // Get the 'Clave de Pedimento' (Pedimento Key/Code) from the header.
   // This code tells us the type of customs operation (e.g., definitive import, temporary, complementary).
   // It's crucial for knowing if the 'Val. Seguros' field should even be filled out.
-  const clavePedimento = pedimento.encabezado_del_pedimento?.cve_pedim;
+  const clavePedimento = pedimento.encabezadoPrincipalDelPedimento.claveDePedimento;
 
   // Get any general observations from the pedimento.
   // These might contain relevant notes about insurance or the operation type.
-  const observaciones = pedimento.observaciones_a_nivel_pedimento;
+  const observaciones = pedimento.observacionesANivelPedimento;
 
   // Get the markdown representations of related documents, if they exist.
   // These provide context and supporting evidence for the values declared.
@@ -202,14 +201,14 @@ Analiza toda la información proporcionada (Pedimento, Factura, Carta 3.1.8, Doc
 async function validateSeguros(
   traceId: string,
   pedimento: Pedimento,
-  invoice?: Invoice,
-  transportDocument?: TransportDocument,
-  carta318?: Carta318
+  invoice?: OCR,
+  transportDocument?: OCR,
+  carta318?: OCR
 ) {
-  const incoterm = pedimento.datos_factura?.incoterm;
-  const seguros = pedimento.incrementables?.seguros;
-  const tipoCambio = pedimento.encabezado_del_pedimento?.tipo_cambio;
-  const observaciones = pedimento.observaciones_a_nivel_pedimento;
+  const incoterm = pedimento.datosDelProveedorOComprador[0]?.facturas[0]?.incoterm;
+  const seguros = pedimento.encabezadoPrincipalDelPedimento.incrementables.seguros;
+  const tipoCambio = pedimento.encabezadoPrincipalDelPedimento.tipoDeCambio;
+  const observaciones = pedimento.observacionesANivelPedimento;
   const carta318mkdown = carta318?.markdown_representation;
   const invoicemkdown = invoice?.markdown_representation;
   const transportDocmkdown = transportDocument?.markdown_representation;
@@ -256,14 +255,14 @@ async function validateSeguros(
 async function validateFletes(
   traceId: string,
   pedimento: Pedimento,
-  invoice?: Invoice,
-  transportDocument?: TransportDocument,
-  carta318?: Carta318
+  invoice?: OCR,
+  transportDocument?: OCR,
+  carta318?: OCR
 ) {
-  const incoterm = pedimento.datos_factura?.incoterm;
-  const fletes = pedimento.incrementables?.fletes;
-  const tipoCambio = pedimento.encabezado_del_pedimento?.tipo_cambio;
-  const observaciones = pedimento.observaciones_a_nivel_pedimento;
+  const incoterm = pedimento.datosDelProveedorOComprador[0]?.facturas[0]?.incoterm;
+  const fletes = pedimento.encabezadoPrincipalDelPedimento.incrementables.fletes;
+  const tipoCambio = pedimento.encabezadoPrincipalDelPedimento.tipoDeCambio;
+  const observaciones = pedimento.observacionesANivelPedimento;
   const carta318mkdown = carta318?.markdown_representation;
   const invoicemkdown = invoice?.markdown_representation;
   const transportDocmkdown = transportDocument?.markdown_representation;
@@ -310,14 +309,14 @@ async function validateFletes(
 async function validateEmbalajes(
   traceId: string,
   pedimento: Pedimento,
-  invoice?: Invoice,
-  transportDocument?: TransportDocument,
-  carta318?: Carta318
+  invoice?: OCR,
+  transportDocument?: OCR,
+  carta318?: OCR
 ) {
-  const incoterm = pedimento.datos_factura?.incoterm;
-  const embalajes = pedimento.incrementables?.embalajes;
-  const tipoCambio = pedimento.encabezado_del_pedimento?.tipo_cambio;
-  const observaciones = pedimento.observaciones_a_nivel_pedimento;
+  const incoterm = pedimento.datosDelProveedorOComprador[0]?.facturas[0]?.incoterm;
+  const embalajes = pedimento.encabezadoPrincipalDelPedimento.incrementables.embalajes;
+  const tipoCambio = pedimento.encabezadoPrincipalDelPedimento.tipoDeCambio;
+  const observaciones = pedimento.observacionesANivelPedimento;
   const carta318mkdown = carta318?.markdown_representation;
   const invoicemkdown = invoice?.markdown_representation;
   const transportDocmkdown = transportDocument?.markdown_representation;
@@ -364,14 +363,14 @@ async function validateEmbalajes(
 async function validateOtrosIncrementables(
   traceId: string,
   pedimento: Pedimento,
-  invoice?: Invoice,
-  transportDocument?: TransportDocument,
-  carta318?: Carta318
+  invoice?: OCR,
+  transportDocument?: OCR,
+  carta318?: OCR
 ) {
-  const incoterm = pedimento.datos_factura?.incoterm;
-  const otrosIncrementables = pedimento.incrementables?.otros_incrementables;
-  const tipoCambio = pedimento.encabezado_del_pedimento?.tipo_cambio;
-  const observaciones = pedimento.observaciones_a_nivel_pedimento;
+  const incoterm = pedimento.datosDelProveedorOComprador[0]?.facturas[0]?.incoterm;
+  const otrosIncrementables = pedimento.encabezadoPrincipalDelPedimento.incrementables.otrosIncrementables;
+  const tipoCambio = pedimento.encabezadoPrincipalDelPedimento.tipoDeCambio;
+  const observaciones = pedimento.observacionesANivelPedimento;
   const carta318mkdown = carta318?.markdown_representation;
   const invoicemkdown = invoice?.markdown_representation;
   const transportDocmkdown = transportDocument?.markdown_representation;
@@ -418,13 +417,13 @@ async function validateOtrosIncrementables(
 async function validateValorDolares(
   traceId: string,
   pedimento: Pedimento,
-  invoice?: Invoice,
-  carta318?: Carta318
+  invoice?: OCR,
+  carta318?: OCR
 ) {
-  const valorDolares = pedimento.valores?.valor_dolares;
-  const tipoCambio = pedimento.encabezado_del_pedimento?.tipo_cambio;
-  const valorAduana = pedimento.valores?.valor_aduana;
-  const observaciones = pedimento.observaciones_a_nivel_pedimento;
+  const valorDolares = pedimento.encabezadoPrincipalDelPedimento.valores.valorDolares;
+  const tipoCambio = pedimento.encabezadoPrincipalDelPedimento.tipoDeCambio;
+  const valorAduana = pedimento.encabezadoPrincipalDelPedimento.valores.valorAduana;
+  const observaciones = pedimento.observacionesANivelPedimento;
   const invoicemkdown = invoice?.markdown_representation;
   const carta318mkdown = carta318?.markdown_representation;
 
@@ -460,13 +459,13 @@ async function validateValorDolares(
 async function validateValorComercial(
   traceId: string,
   pedimento: Pedimento,
-  invoice?: Invoice,
-  carta318?: Carta318
+  invoice?: OCR,
+  carta318?: OCR
 ) {
-  const valorComercial = pedimento.valores?.precio_pagado_valor_comercial;
-  const valorAduana = pedimento.valores?.valor_aduana;
-  const incrementables = pedimento.incrementables;
-  const observaciones = pedimento.observaciones_a_nivel_pedimento;
+  const valorComercial = pedimento.encabezadoPrincipalDelPedimento.valores.precioPagadoOValorComercial;
+  const valorAduana = pedimento.encabezadoPrincipalDelPedimento.valores.valorAduana;
+  const incrementables = pedimento.encabezadoPrincipalDelPedimento.incrementables;
+  const observaciones = pedimento.observacionesANivelPedimento;
   const invoicemkdown = invoice?.markdown_representation;
   const carta318mkdown = carta318?.markdown_representation;
 
@@ -502,14 +501,14 @@ async function validateValorComercial(
 async function validateValorAduana(
   traceId: string,
   pedimento: Pedimento,
-  invoice?: Invoice,
-  carta318?: Carta318
+  invoice?: OCR,
+  carta318?: OCR
 ) {
-  const valorAduana = pedimento.valores?.valor_aduana;
-  const valorComercial = pedimento.valores?.precio_pagado_valor_comercial;
-  const incrementables = pedimento.incrementables;
-  const tipoCambio = pedimento.encabezado_del_pedimento?.tipo_cambio;
-  const observaciones = pedimento.observaciones_a_nivel_pedimento;
+  const valorAduana = pedimento.encabezadoPrincipalDelPedimento.valores.valorAduana;
+  const valorComercial = pedimento.encabezadoPrincipalDelPedimento.valores.precioPagadoOValorComercial;
+  const incrementables = pedimento.encabezadoPrincipalDelPedimento.incrementables;
+  const tipoCambio = pedimento.encabezadoPrincipalDelPedimento.tipoDeCambio;
+  const observaciones = pedimento.observacionesANivelPedimento;
   const invoicemkdown = invoice?.markdown_representation;
   const carta318mkdown = carta318?.markdown_representation;
 
@@ -551,9 +550,9 @@ export async function operacionMonetaria({
   traceId,
 }: {
   pedimento: Pedimento;
-  invoice?: Invoice;
-  transportDocument?: TransportDocument;
-  carta318?: Carta318;
+  invoice?: OCR;
+  transportDocument?: OCR;
+  carta318?: OCR;
   traceId: string;
 }) {
   const validationsPromise = await Promise.all([

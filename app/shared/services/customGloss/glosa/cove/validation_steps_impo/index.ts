@@ -1,7 +1,4 @@
-import type {
-  Carta318,
-  Invoice,
-} from '../../../data-extraction/mkdown_schemas';
+import type { OCR } from '~/lib/utils';
 import type { Cove } from '../../../extract-and-structure/schemas';
 import { datosGenerales } from './1.datos-generales';
 import { proveedorDestinatario } from './2.datos-proveedor-destinatario';
@@ -14,8 +11,8 @@ export function coveValidationStepsImpo({
   traceId,
 }: {
   cove: Cove;
-  invoice?: Invoice;
-  carta318?: Carta318;
+  invoice?: OCR;
+  carta318?: OCR;
   traceId: string;
 }) {
   return Promise.all([

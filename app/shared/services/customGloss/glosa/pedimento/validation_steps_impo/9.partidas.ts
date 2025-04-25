@@ -1,8 +1,5 @@
-import type {
-  Carta318,
-  Invoice,
-} from '../../../data-extraction/mkdown_schemas';
-import type { Partida, Pedimento } from '../../../data-extraction/schemas';
+import type { OCR } from '~/lib/utils';
+import type { Partida, Pedimento } from '../../../extract-and-structure/schemas';
 import type { Cove, PackingList } from '../../../extract-and-structure/schemas';
 import { apendice7 } from '../../anexo-22/apendice-7';
 import { getFraccionInfo } from '../../tax-finder';
@@ -16,10 +13,10 @@ async function validateFraccionArancelaria(
 ) {
   // Extraer partidas con información de fracción arancelaria
   const fraccion = partida.fraccion;
-  const nico = partida.nico;
-  const paisOrigenDestino = partida.p_o_d;
-  const fechaDeEntrada = pedimento.fecha_entrada_presentacion;
-  const tipoDeOperacion = pedimento.encabezado_del_pedimento.tipo_oper;
+  const nico = partida.subdivisionONumeroDeIdentificacionComercial;
+  const paisOrigenDestino = partida.paisDeOrigenODestino ?? '';
+  const fechaDeEntrada = pedimento.encabezadoPrincipalDelPedimento.fechas.entrada;
+  const tipoDeOperacion = pedimento.encabezadoPrincipalDelPedimento.tipoDeOperacion;
   let fraccionExiste = false;
   if (fechaDeEntrada && tipoDeOperacion && tipoDeOperacion !== 'TRA') {
     await getFraccionInfo({
@@ -62,12 +59,12 @@ async function validateCoherenciaUMT(
   pedimento: Pedimento
 ) {
   // Extraer partidas con información de UMC
-  const partidasUMT = partida.umt || '';
+  const partidasUMT = partida.unidadDeMedidaDeTarifa || '';
   const fraccion = partida.fraccion;
-  const nico = partida.nico;
-  const paisOrigenDestino = partida.p_o_d;
-  const fechaDeEntrada = pedimento.fecha_entrada_presentacion;
-  const tipoDeOperacion = pedimento.encabezado_del_pedimento.tipo_oper;
+  const nico = partida.subdivisionONumeroDeIdentificacionComercial;
+  const paisOrigenDestino = partida.paisDeOrigenODestino ?? '';
+  const fechaDeEntrada = pedimento.encabezadoPrincipalDelPedimento.fechas.entrada;
+  const tipoDeOperacion = pedimento.encabezadoPrincipalDelPedimento.tipoDeOperacion;
   if (!fechaDeEntrada || !tipoDeOperacion || tipoDeOperacion === 'TRA') {
     throw new Error(
       'No se puede validar la unidad de medida de la tarifa, ya que no se tiene fecha de entrada o tipo de operación o es tránsito'
@@ -120,11 +117,11 @@ async function validateCoherenciaUMC(
   traceId: string,
   partida: Partida,
   cove?: Cove,
-  carta318?: Carta318,
-  invoice?: Invoice
+  carta318?: OCR,
+  invoice?: OCR
 ) {
   // Extraer partidas con información de UMC
-  const partidasUMC = partida.umc || '';
+  const partidasUMC = partida.unidadDeMedidaComercial || '';
   // TODO: Do this in a loop, instead of just checking the first mercancia
   const claveUmcCove = cove?.mercancias[0]?.datosDeLaMercancia?.claveUMC;
   const carta318mkdown = carta318?.markdown_representation;
@@ -167,19 +164,19 @@ async function validatePaisVenta(
   traceId: string,
   partida: Partida,
   pedimento?: Pedimento,
-  invoice?: Invoice,
+  invoice?: OCR,
   packing?: PackingList,
-  carta318?: Carta318
+  carta318?: OCR
 ) {
   // Extraer el país de venta del pedimento
-  const partidasPaisVentaCompra = partida.p_v_c || '';
+  const partidasPaisVentaCompra = partida.paisDeVentaOCompra || '';
 
   // Extraer el país de la dirección de facturación de la factura
   const invoicemkdown = invoice?.markdown_representation;
   const carta318mkdown = carta318?.markdown_representation;
 
   // Extraer el país de la dirección de facturación del packing
-  const observaciones = pedimento?.observaciones_a_nivel_pedimento;
+  const observaciones = pedimento?.observacionesANivelPedimento;
 
   const validation = {
     name: 'País de venta',
@@ -218,17 +215,17 @@ async function validatePaisOrigen(
   traceId: string,
   partida: Partida,
   pedimento?: Pedimento,
-  invoice?: Invoice,
+  invoice?: OCR,
   packing?: PackingList,
-  carta318?: Carta318
+  carta318?: OCR
 ) {
   // Extraer el país de origen del pedimento
-  const paisOrigenDestino = partida.p_o_d || '';
+  const paisOrigenDestino = partida.paisDeOrigenODestino ?? '';
 
   const carta318mkdown = carta318?.markdown_representation;
   const invoicemkdown = invoice?.markdown_representation;
 
-  const observaciones = pedimento?.observaciones_a_nivel_pedimento;
+  const observaciones = pedimento?.observacionesANivelPedimento;
 
   const validation = {
     name: 'País de origen',
@@ -268,8 +265,8 @@ async function validateDescripcionMercancia(
   partida: Partida,
   pedimento?: Pedimento,
   cove?: Cove,
-  invoice?: Invoice,
-  carta318?: Carta318
+  invoice?: OCR,
+  carta318?: OCR
 ) {
   // Extraer la descripción de la mercancía del pedimento
   const partidasDescripcionMercancia = partida.descripcion || '';
@@ -281,7 +278,7 @@ async function validateDescripcionMercancia(
   const invoicemkdown = invoice?.markdown_representation;
   const carta318mkdown = carta318?.markdown_representation;
 
-  const observaciones = pedimento?.observaciones_a_nivel_pedimento;
+  const observaciones = pedimento?.observacionesANivelPedimento;
 
   const validation = {
     name: 'Descripción de mercancía',
@@ -327,10 +324,10 @@ async function validateTarifasArancelarias(
   pedimento: Pedimento
 ) {
   const fraccion = partida.fraccion;
-  const nico = partida.nico;
-  const paisOrigenDestino = partida.p_o_d;
-  const fechaDeEntrada = pedimento.fecha_entrada_presentacion;
-  const tipoDeOperacion = pedimento.encabezado_del_pedimento.tipo_oper;
+  const nico = partida.subdivisionONumeroDeIdentificacionComercial;
+  const paisOrigenDestino = partida.paisDeOrigenODestino ?? '';
+  const fechaDeEntrada = pedimento.encabezadoPrincipalDelPedimento.fechas.entrada;
+  const tipoDeOperacion = pedimento.encabezadoPrincipalDelPedimento.tipoDeOperacion;
   if (!fechaDeEntrada || !tipoDeOperacion || tipoDeOperacion === 'TRA') {
     throw new Error(
       'No se puede validar la tarifa arancelaria, ya que no se tiene fecha de entrada o tipo de operación o es tránsito'
@@ -357,15 +354,15 @@ async function validateTarifasArancelarias(
 
   const tasasPartida = {
     iva:
-      partida.contribuciones?.find((contribucion) => contribucion.con === 'IVA')
+      partida.contribuciones?.find((contribucion) => contribucion.contribucion === 'IVA')
         ?.tasa || 0.16,
     ligie_arancel:
       partida.contribuciones?.find(
-        (contribucion) => contribucion.con === 'IGI/IGE'
+        (contribucion) => contribucion.contribucion === 'IGI/IGE'
       )?.tasa || 0,
     ieps_tasas:
       partida.contribuciones?.find(
-        (contribucion) => contribucion.con === 'IEPS'
+        (contribucion) => contribucion.contribucion === 'IEPS'
       )?.tasa || 0,
   };
 
@@ -408,9 +405,9 @@ async function validateCalculosPartidas(
   partida: Partida
 ) {
   // Extract total values from pedimento
-  const valorAduanaTotal = pedimento.valores?.valor_aduana || 0;
+  const valorAduanaTotal = pedimento.encabezadoPrincipalDelPedimento.valores.valorAduana || 0;
   const valorComercialTotal =
-    pedimento.valores?.precio_pagado_valor_comercial || 0;
+    pedimento.encabezadoPrincipalDelPedimento.valores.precioPagadoOValorComercial || 0;
 
   const prorrateo =
     valorComercialTotal !== 0 ? valorAduanaTotal / valorComercialTotal : null;
@@ -422,8 +419,8 @@ async function validateCalculosPartidas(
   const dtaFinal = dtaCalculado < 500 ? 500 : dtaCalculado;
 
   // Values from partida
-  const valorComercialPartida = partida.imp_precio_pag || 0;
-  const cantidadUMC = partida.cantidad_umc || 0;
+  const valorComercialPartida = partida.importeDePrecioPagadoOValorComercial || 0;
+  const cantidadUMC = partida.cantidadUnidadDeMedidaComercial || 0;
 
   // Calculate inferred values for the partida
   const valorAduanaCalculado =
@@ -432,7 +429,7 @@ async function validateCalculosPartidas(
     cantidadUMC !== 0 ? valorComercialPartida / cantidadUMC : null;
   const tasaIGI =
     partida.contribuciones?.find(
-      (contribucion) => contribucion.con === 'IGI/IGE'
+      (contribucion) => contribucion.contribucion === 'IGI/IGE'
     )?.tasa || 0;
   const igiCalculado =
     valorAduanaCalculado !== null
@@ -443,7 +440,7 @@ async function validateCalculosPartidas(
   const baseIVA =
     (valorAduanaCalculado || 0) + (igiCalculado || 0) + dtaProrrateo;
   const tasaIVA =
-    (partida.contribuciones?.find((contribucion) => contribucion.con === 'IVA')
+    (partida.contribuciones?.find((contribucion) => contribucion.contribucion === 'IVA')
       ?.tasa || 16) / 100;
   const ivaCalculado = baseIVA * tasaIVA;
 
@@ -488,9 +485,9 @@ async function validateNumerosSerie(
   partida: Partida,
   cove?: Cove
 ) {
-  const observaciones_partida = partida.observaciones;
+  const observaciones_partida = partida.observacionesANivelPartida;
   const observaciones_nivel_pedimento =
-    pedimento?.observaciones_a_nivel_pedimento;
+    pedimento?.observacionesANivelPedimento;
   // TODO: Do this in a loop, instead of just checking the first mercancia
   const numerosSeriesCove =
     cove?.mercancias[0]?.descripcionDeLaMercancia?.numeroDeSerie;
@@ -528,12 +525,12 @@ async function validateIdentificadores(
   traceId: string,
   identificador: Partida['identificadores'][number]
 ) {
-  if (!(identificador.clave in IDENTIFICADORES)) {
-    throw new Error(`Identificador ${identificador.clave} no encontrado`);
+  if (!(identificador.identificador in IDENTIFICADORES)) {
+    throw new Error(`Identificador ${identificador.identificador} no encontrado`);
   }
   // Hack since TS doesn't narrow string types for some reason
   const identificadorFundamentoLegal =
-    IDENTIFICADORES[identificador.clave as keyof typeof IDENTIFICADORES];
+    IDENTIFICADORES[identificador.identificador as keyof typeof IDENTIFICADORES];
 
   const validation = {
     name: 'Identificadores',
@@ -579,9 +576,9 @@ export async function partidas({
   traceId,
 }: {
   pedimento: Pedimento;
-  invoice?: Invoice;
+  invoice?: OCR;
   cove?: Cove;
-  carta318?: Carta318;
+  carta318?: OCR;
   partida: Partida;
   packing?: PackingList;
   partidaNumber: number;

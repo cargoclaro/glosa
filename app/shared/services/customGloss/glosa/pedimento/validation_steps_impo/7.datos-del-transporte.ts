@@ -1,5 +1,5 @@
-import type { TransportDocument } from '../../../data-extraction/mkdown_schemas/transport-document';
-import type { Pedimento } from '../../../data-extraction/schemas';
+import type { OCR } from '~/lib/utils';
+import type { Pedimento } from '../../../extract-and-structure/schemas';
 import { apendice3 } from '../../anexo-22/apendice-3';
 import { apendice10 } from '../../anexo-22/apendice-10';
 import { glosar } from '../../validation-result';
@@ -7,13 +7,13 @@ import { glosar } from '../../validation-result';
 async function validateTipoTransporte(
   traceId: string,
   pedimento: Pedimento,
-  transportDocument?: TransportDocument
+  transportDocument?: OCR
 ) {
   // Extract transport type from pedimento
-  const tipoTransporte = pedimento.tipo_contenedor_vehiculo;
-  const observaciones = pedimento.observaciones_a_nivel_pedimento;
+  const tipoTransporte = pedimento.contenedoresOEquipoFerrocarrilONumeroEconomicoVehiculo?.tipo;
+  const observaciones = pedimento.observacionesANivelPedimento;
   const tipoTransporteEntradaSalida =
-    pedimento.medios_transporte?.entrada_salida;
+    pedimento.encabezadoPrincipalDelPedimento.tipoDeOperacion;
   const transportDocmkdown = transportDocument?.markdown_representation;
 
   const validation = {
@@ -57,12 +57,12 @@ async function validateTipoTransporte(
 async function validateModalidadMedioTransporte(
   traceId: string,
   pedimento: Pedimento,
-  transportDocument?: TransportDocument
+  transportDocument?: OCR
 ) {
   // Extract transport means from pedimento
   const tipoTransporteEntradaSalida =
-    pedimento.medios_transporte?.entrada_salida;
-  const observaciones = pedimento.observaciones_a_nivel_pedimento;
+    pedimento.encabezadoPrincipalDelPedimento.tipoDeOperacion;
+  const observaciones = pedimento.observacionesANivelPedimento;
 
   // Get markdown representation
   const transportDocmkdown = transportDocument?.markdown_representation;
@@ -104,11 +104,12 @@ async function validateModalidadMedioTransporte(
 async function validateNumeroGuiaEmbarque(
   traceId: string,
   pedimento: Pedimento,
-  transportDocument?: TransportDocument
+  transportDocument?: OCR
 ) {
   // Extract guide/shipment number from pedimento
-  const numeroGuiaEmbarque = pedimento.no_guia_embarque_id;
-  const observaciones = pedimento.observaciones_a_nivel_pedimento;
+  // TODO: No se si deberia ser el Master o el House number
+  const numeroGuiaEmbarque = pedimento.guiasOManifiestosOConocimientosDeEmbarqueODocumentosDeTransporte?.numeroMaster;
+  const observaciones = pedimento.observacionesANivelPedimento;
 
   // Get markdown representation
   const transportDocmkdown = transportDocument?.markdown_representation;
@@ -125,7 +126,7 @@ async function validateNumeroGuiaEmbarque(
             { name: 'Número de guía/embarque', value: numeroGuiaEmbarque },
             {
               name: 'Tipo de transporte',
-              value: pedimento.medios_transporte?.entrada_salida,
+              value: pedimento.encabezadoPrincipalDelPedimento.mediosTransporte.entradaSalida,
             },
             { name: 'Observaciones', value: observaciones },
           ],
@@ -148,7 +149,7 @@ export async function datosDelTransporte({
   traceId,
 }: {
   pedimento: Pedimento;
-  transportDocument?: TransportDocument;
+  transportDocument?: OCR;
   traceId: string;
 }) {
   const validationsPromise = await Promise.all([

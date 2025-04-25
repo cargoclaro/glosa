@@ -1,7 +1,4 @@
-import type {
-  Carta318,
-  Invoice,
-} from '../../../data-extraction/mkdown_schemas';
+import type { OCR } from '~/lib/utils';
 import type { Cove } from '../../../extract-and-structure/schemas';
 import { glosar } from '../../validation-result';
 
@@ -12,8 +9,8 @@ import { glosar } from '../../validation-result';
 async function validateNumeroFactura(
   traceId: string,
   cove: Cove,
-  invoice?: Invoice,
-  carta318?: Carta318
+  invoice?: OCR,
+  carta318?: OCR
 ) {
   // Extract invoice numbers from different sources
   const numeroFacturaCove = cove.datosDelAcuseDeValor.numeroDeFactura;
@@ -50,8 +47,8 @@ async function validateNumeroFactura(
 async function validateFechaExpedicion(
   traceId: string,
   cove: Cove,
-  invoice?: Invoice,
-  carta318?: Carta318
+  invoice?: OCR,
+  carta318?: OCR
 ) {
   // Extract invoice dates from different sources
   const fechaExpedicionCove = cove.datosDelAcuseDeValor.fechaExpedicion;
@@ -93,8 +90,8 @@ export async function datosGenerales({
   traceId,
 }: {
   cove: Cove;
-  invoice?: Invoice;
-  carta318?: Carta318;
+  invoice?: OCR;
+  carta318?: OCR;
   traceId: string;
 }) {
   const validationsPromise = await Promise.all([

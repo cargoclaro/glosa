@@ -1,7 +1,7 @@
 import type {
   Pedimento,
-  TransportDocument,
-} from '../../../data-extraction/schemas';
+} from '../../../extract-and-structure/schemas';
+import type { OCR } from '~/lib/utils';
 import { apendice2 } from '../../anexo-22/apendice-2';
 import { apendice16 } from '../../anexo-22/apendice-16';
 import { glosar } from '../../validation-result';
@@ -13,12 +13,10 @@ import { glosar } from '../../validation-result';
 async function validateCoherenciaOrigenDestino(
   traceId: string,
   pedimento: Pedimento,
-  transportDoc?: TransportDocument
+  transportDoc?: OCR
 ) {
-  const tipoOperacion = pedimento.encabezado_del_pedimento?.tipo_oper;
-  const origen = transportDoc?.origin_country;
-  const destino = transportDoc?.destination_country;
-  const observaciones = pedimento.observaciones_a_nivel_pedimento;
+  const tipoOperacion = pedimento.encabezadoPrincipalDelPedimento.tipoDeOperacion;
+  const observaciones = pedimento.observacionesANivelPedimento;
 
   const validation = {
     name: 'Coherencia con origen/destino',
@@ -36,8 +34,7 @@ async function validateCoherenciaOrigenDestino(
         },
         documentoDeTransporte: {
           data: [
-            { name: 'País de origen', value: origen },
-            { name: 'País de destino', value: destino },
+            { name: 'Markdown', value: transportDoc?.markdown_representation },
           ],
         },
       },
@@ -51,8 +48,8 @@ async function validateCoherenciaOrigenDestino(
  * Validates that the pedimento key is valid for the operation type according to Appendix 2
  */
 async function validateClavePedimento(traceId: string, pedimento: Pedimento) {
-  const tipoOperacion = pedimento.encabezado_del_pedimento?.tipo_oper;
-  const clavePedimento = pedimento.encabezado_del_pedimento?.cve_pedim;
+  const tipoOperacion = pedimento.encabezadoPrincipalDelPedimento.tipoDeOperacion;
+  const clavePedimento = pedimento.encabezadoPrincipalDelPedimento.claveDePedimento;
 
   const validation = {
     name: 'Validación de clave de pedimento',
@@ -84,8 +81,8 @@ async function validateClavePedimento(traceId: string, pedimento: Pedimento) {
  * Validates that the regime is valid for the operation type according to Appendix 16
  */
 async function validateRegimen(traceId: string, pedimento: Pedimento) {
-  const tipoOperacion = pedimento.encabezado_del_pedimento?.tipo_oper;
-  const regimen = pedimento.encabezado_del_pedimento?.regimen;
+  const tipoOperacion = pedimento.encabezadoPrincipalDelPedimento.tipoDeOperacion;
+  const regimen = pedimento.encabezadoPrincipalDelPedimento.regimen;
 
   const validation = {
     name: 'Validación de régimen',
@@ -119,7 +116,7 @@ export async function tipoOperacion({
   traceId,
 }: {
   pedimento: Pedimento;
-  transportDoc?: TransportDocument;
+  transportDoc?: OCR;
   traceId: string;
 }) {
   const validationsPromise = await Promise.all([

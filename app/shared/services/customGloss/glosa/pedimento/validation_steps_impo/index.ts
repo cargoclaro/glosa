@@ -1,9 +1,5 @@
-import type {
-  Carta318,
-  Invoice,
-  TransportDocument,
-} from '../../../data-extraction/mkdown_schemas';
-import type { Pedimento } from '../../../data-extraction/schemas';
+import type { OCR } from '~/lib/utils';
+import type { Pedimento } from '../../../extract-and-structure/schemas';
 import type { Cove, PackingList } from '../../../extract-and-structure/schemas';
 import { numeroDePedimento } from './1.numero-de-pedimento';
 import { tipoOperacion } from './2.tipo-operacion';
@@ -25,10 +21,10 @@ export function pedimentoValidationStepsImpo({
 }: {
   pedimento: Pedimento;
   cove: Cove;
-  transportDocument?: TransportDocument;
+  transportDocument?: OCR;
   packingList?: PackingList;
-  invoice?: Invoice;
-  carta318?: Carta318;
+  invoice?: OCR;
+  carta318?: OCR;
   traceId: string;
 }) {
   return Promise.all([

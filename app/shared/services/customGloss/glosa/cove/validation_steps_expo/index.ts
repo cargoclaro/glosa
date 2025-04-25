@@ -1,4 +1,4 @@
-import type { Cfdi, Invoice } from '../../../data-extraction/mkdown_schemas';
+import type { OCR } from '~/lib/utils';
 import type { Cove } from '../../../extract-and-structure/schemas';
 import { datosGenerales } from './1.datos-generales';
 import { proveedorDestinatario } from './2.datos-proveedor-destinatario';
@@ -9,7 +9,7 @@ export function coveValidationStepsExpo({
   cfdi,
   invoice,
   traceId,
-}: { cove: Cove; cfdi?: Cfdi; invoice?: Invoice; traceId: string }) {
+}: { cove: Cove; cfdi?: OCR; invoice?: OCR; traceId: string }) {
   return Promise.all([
     datosGenerales({ cove, cfdi, traceId }),
     proveedorDestinatario({ cove, cfdi, traceId }),
