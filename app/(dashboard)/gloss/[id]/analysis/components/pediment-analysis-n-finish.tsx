@@ -1,7 +1,6 @@
 'use client';
 
-import type { Pedimento } from '@/shared/services/customGloss/data-extraction/schemas';
-import type { Cove } from '@/shared/services/customGloss/extract-and-structure/schemas';
+import type { Cove, Pedimento } from '@/shared/services/customGloss/extract-and-structure/schemas';
 import { useState } from 'react';
 import { CoveViewer } from '~/components/cove/index';
 import PedimentoViewer from '~/components/pedimento/pedimento-viewer';
