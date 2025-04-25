@@ -1,4 +1,4 @@
-import { traceable } from 'langsmith/traceable';
+
 import type { Cfdi, Invoice } from '../../../data-extraction/mkdown_schemas';
 import type { Cove } from '../../../extract-and-structure/schemas';
 import { glosar } from '../../validation-result';
@@ -147,13 +147,12 @@ async function validateNumeroSerie(
   return await glosar(validation, traceId);
 }
 
-export const tracedMercancias = traceable(
-  async ({
-    cove,
-    invoice,
-    cfdi,
-    traceId,
-  }: { cove: Cove; invoice?: Invoice; cfdi?: Cfdi; traceId: string }) => {
+export async function mercancias({
+  cove,
+  invoice,
+  cfdi,
+  traceId,
+  }: { cove: Cove; invoice?: Invoice; cfdi?: Cfdi; traceId: string }) {
     const validationsPromise = await Promise.all([
       validateMercancias(traceId, cove, cfdi),
       validateValorTotalDolares(traceId, cove, cfdi),
@@ -161,9 +160,7 @@ export const tracedMercancias = traceable(
     ]);
 
     return {
-      sectionName: 'Validación de mercancías',
-      validations: validationsPromise,
-    };
-  },
-  { name: 'Cove S3: Validación de mercancías' }
-);
+    sectionName: 'Validación de mercancías',
+    validations: validationsPromise,
+  };
+}

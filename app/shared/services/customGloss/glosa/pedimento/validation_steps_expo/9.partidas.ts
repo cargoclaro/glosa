@@ -1,4 +1,4 @@
-import { traceable } from 'langsmith/traceable';
+
 import type { Cfdi } from '../../../data-extraction/mkdown_schemas';
 import type { Pedimento } from '../../../data-extraction/schemas';
 import { glosar } from '../../validation-result';
@@ -238,12 +238,11 @@ async function validateRegulacionesNoArancelarias(
   return await glosar(validation, traceId);
 }
 
-export const tracedPartidas = traceable(
-  async ({
-    pedimento,
-    cfdi,
-    traceId,
-  }: { pedimento: Pedimento; cfdi?: Cfdi; traceId: string }) => {
+export async function partidas({
+  pedimento,
+  cfdi,
+  traceId,
+  }: { pedimento: Pedimento; cfdi?: Cfdi; traceId: string }) {
     const validationsPromise = await Promise.all([
       validatePreferenciaArancelaria(traceId, pedimento),
       validateCoherenciaUMC(traceId, pedimento, cfdi),
@@ -258,7 +257,5 @@ export const tracedPartidas = traceable(
     return {
       sectionName: 'Partidas',
       validations: validationsPromise,
-    };
-  },
-  { name: 'Pedimento S9: Partidas' }
-);
+  };
+}

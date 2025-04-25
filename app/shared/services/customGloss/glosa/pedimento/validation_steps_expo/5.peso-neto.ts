@@ -1,4 +1,4 @@
-import { traceable } from 'langsmith/traceable';
+
 import type {
   Cfdi,
   TransportDocument,
@@ -82,20 +82,19 @@ async function validateBultos(
   return await glosar(validation, traceId);
 }
 
-export const tracedPesosYBultos = traceable(
-  async ({
-    pedimento,
-    transportDocument,
-    packingList,
-    cfdi,
-    traceId,
+export async function pesosYBultos({
+  pedimento,
+  transportDocument,
+  packingList,
+  cfdi,
+  traceId,
   }: {
     pedimento: Pedimento;
     transportDocument?: TransportDocument;
     packingList?: PackingList;
     cfdi?: Cfdi;
     traceId: string;
-  }) => {
+  }) {
     const validationsPromise = await Promise.all([
       validatePesosYBultos(
         traceId,
@@ -110,7 +109,5 @@ export const tracedPesosYBultos = traceable(
     return {
       sectionName: 'Pesos y bultos',
       validations: validationsPromise,
-    };
-  },
-  { name: 'Pedimento S5: Pesos y bultos' }
-);
+  };
+}

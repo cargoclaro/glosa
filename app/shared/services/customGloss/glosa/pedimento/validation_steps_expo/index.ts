@@ -1,4 +1,4 @@
-import { traceable } from 'langsmith/traceable';
+
 import type {
   CartaSesion,
   Cfdi,
@@ -6,22 +6,21 @@ import type {
 } from '../../../data-extraction/mkdown_schemas';
 import type { Pedimento } from '../../../data-extraction/schemas';
 import type { Cove, PackingList } from '../../../extract-and-structure/schemas';
-import { tracedNumeroDePedimento } from './1.numero-de-pedimento';
-import { tracedTipoOperacion } from './2.tipo-operacion';
-import { tracedClaveApendice15 } from './3.origen-destino';
-import { tracedOperacionMonetaria } from './4.operacion-monetaria';
-import { tracedPesosYBultos } from './5.peso-neto';
-import { tracedRfcFormat } from './6.datos-de-factura';
-import { tracedTipoTransporte } from './7.datos-del-transporte';
-import { tracedPartidas } from './9.partidas';
+import { numeroDePedimento } from './1.numero-de-pedimento';
+import { tipoOperacion } from './2.tipo-operacion';
+import { claveApendice15 } from './3.origen-destino';
+import { operacionMonetaria } from './4.operacion-monetaria';
+import { pesosYBultos } from './5.peso-neto';
+import { datosDeFactura } from './6.datos-de-factura';
+import { tipoTransporte } from './7.datos-del-transporte';
+import { partidas } from './9.partidas';
 
-export const tracedPedimentoValidationStepsExpo = traceable(
-  async ({
-    pedimento,
-    cove,
-    cfdi,
-    cartaSesion,
-    transportDocument,
+export function pedimentoValidationStepsExpo({
+  pedimento,
+  cove,
+  cfdi,
+  cartaSesion,
+  transportDocument,
     packingList,
     traceId,
   }: {
@@ -32,28 +31,27 @@ export const tracedPedimentoValidationStepsExpo = traceable(
     transportDocument?: TransportDocument;
     packingList?: PackingList;
     traceId: string;
-  }) =>
-    Promise.all([
-      tracedNumeroDePedimento({ pedimento, traceId }),
-      tracedTipoOperacion({ pedimento, traceId }),
-      tracedClaveApendice15({ pedimento, traceId }),
-      tracedOperacionMonetaria({
+  }) {
+    return Promise.all([
+      numeroDePedimento({ pedimento, traceId }),
+      tipoOperacion({ pedimento, traceId }),
+      claveApendice15({ pedimento, traceId }),
+      operacionMonetaria({
         pedimento,
         cove,
         transportDocument,
         cfdi,
         traceId,
       }),
-      tracedPesosYBultos({
+      pesosYBultos({
         pedimento,
         transportDocument,
         packingList,
         cfdi,
         traceId,
       }),
-      tracedRfcFormat({ pedimento, cove, cfdi, cartaSesion, traceId }),
-      tracedTipoTransporte({ pedimento, transportDocument, traceId }),
-      tracedPartidas({ pedimento, cfdi, traceId }),
-    ]),
-  { name: 'Pedimento (Exportación)' }
-);
+      datosDeFactura({ pedimento, cove, cfdi, cartaSesion, traceId }),
+      tipoTransporte({ pedimento, transportDocument, traceId }),
+      partidas({ pedimento, cfdi, traceId }),
+    ]);
+}

@@ -1,4 +1,4 @@
-import { traceable } from 'langsmith/traceable';
+
 import type { Pedimento } from '../../../data-extraction/schemas';
 import { glosar } from '../../validation-result';
 
@@ -63,10 +63,15 @@ async function validateAñoPedimento(traceId: string, pedimento: Pedimento) {
   return await glosar(validation, traceId);
 }
 
-export const tracedNumeroDePedimento = traceable(
-  async ({ pedimento, traceId }: { pedimento: Pedimento; traceId: string }) => {
-    const validationsPromise = await Promise.all([
-      validateLongitud(traceId, pedimento),
+export async function numeroDePedimento({
+  pedimento,
+  traceId,
+}: {
+  pedimento: Pedimento;
+  traceId: string;
+}) {
+  const validationsPromise = await Promise.all([
+    validateLongitud(traceId, pedimento),
       validateAñoPedimento(traceId, pedimento),
     ]);
 
@@ -74,6 +79,4 @@ export const tracedNumeroDePedimento = traceable(
       sectionName: 'Número de pedimento',
       validations: validationsPromise,
     };
-  },
-  { name: 'Pedimento S1: Número de pedimento' }
-);
+}

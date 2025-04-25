@@ -1,4 +1,4 @@
-import { traceable } from 'langsmith/traceable';
+
 import type {
   Carta318,
   Invoice,
@@ -569,13 +569,12 @@ async function validateIdentificadores(
   return await glosar(validation, traceId, 'o3-mini');
 }
 
-export const tracedPartidas = traceable(
-  async ({
-    pedimento,
-    invoice,
-    cove,
-    carta318,
-    partida,
+export async function partidas({
+  pedimento,
+  invoice,
+  cove,
+  carta318,
+  partida,
     packing,
     partidaNumber,
     traceId,
@@ -588,7 +587,7 @@ export const tracedPartidas = traceable(
     packing?: PackingList;
     partidaNumber: number;
     traceId: string;
-  }) => {
+  }) {
     const validationsPromise = await Promise.all([
       validateFraccionArancelaria(traceId, partida, pedimento),
       validateCoherenciaUMC(traceId, partida, cove, carta318, invoice),
@@ -629,6 +628,4 @@ export const tracedPartidas = traceable(
       sectionName: `Partida ${partidaNumber}`,
       validations: validationsPromise,
     };
-  },
-  { name: 'Fraccion' }
-);
+  }

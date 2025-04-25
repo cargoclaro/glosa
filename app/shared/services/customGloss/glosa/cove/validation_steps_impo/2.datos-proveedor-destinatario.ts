@@ -1,4 +1,4 @@
-import { traceable } from 'langsmith/traceable';
+
 import type {
   Carta318,
   Invoice,
@@ -217,18 +217,17 @@ async function validateDomicilioDestinatario(
   return await glosar(validation, traceId, 'o3-mini');
 }
 
-export const tracedChooseDocument = traceable(
-  async ({
-    cove,
-    invoice,
-    carta318,
-    traceId,
+export async function proveedorDestinatario({
+  cove,
+  invoice,
+  carta318,
+  traceId,
   }: {
     cove: Cove;
     invoice?: Invoice;
     carta318?: Carta318;
     traceId: string;
-  }) => {
+  }) {
     const validationsPromise = await Promise.all([
       validateDatosGeneralesProveedor(traceId, cove, invoice, carta318),
       validateDomicilioProveedor(traceId, cove, invoice, carta318),
@@ -239,7 +238,5 @@ export const tracedChooseDocument = traceable(
     return {
       sectionName: 'Datos Proveedor Destinatario',
       validations: validationsPromise,
-    };
-  },
-  { name: 'Cove S2: Datos Proveedor Destinatario' }
-);
+  };
+}

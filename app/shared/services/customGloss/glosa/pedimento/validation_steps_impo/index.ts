@@ -1,4 +1,4 @@
-import { traceable } from 'langsmith/traceable';
+
 import type {
   Carta318,
   Invoice,
@@ -6,22 +6,21 @@ import type {
 } from '../../../data-extraction/mkdown_schemas';
 import type { Pedimento } from '../../../data-extraction/schemas';
 import type { Cove, PackingList } from '../../../extract-and-structure/schemas';
-import { tracedNumeroDePedimento } from './1.numero-de-pedimento';
-import { tracedTipoOperacion } from './2.tipo-operacion';
-import { tracedClaveApendice15 } from './3.origen-destino';
-import { tracedTransportDocumentEntryDate } from './4.operacion-monetaria';
-import { tracedPesosYBultos } from './5.peso-neto';
-import { tracedDatosDeFactura } from './6.datos-de-factura';
-import { tracedTipoTransporte } from './7.datos-del-transporte';
-import { tracedPartidas } from './9.partidas';
+import { numeroDePedimento } from './1.numero-de-pedimento';
+import { tipoOperacion } from './2.tipo-operacion';
+import { claveApendice15 } from './3.origen-destino';
+import { operacionMonetaria } from './4.operacion-monetaria';
+import { pesosYBultos } from './5.peso-neto';
+import { datosDeFactura } from './6.datos-de-factura';
+import { datosDelTransporte } from './7.datos-del-transporte';
+import { partidas } from './9.partidas';
 
-export const tracedPedimentoValidationStepsImpo = traceable(
-  async ({
-    pedimento,
-    cove,
-    transportDocument,
-    packingList,
-    invoice,
+export function pedimentoValidationStepsImpo({
+  pedimento,
+  cove,
+  transportDocument,
+  packingList,
+  invoice,
     carta318,
     traceId,
   }: {
@@ -32,44 +31,44 @@ export const tracedPedimentoValidationStepsImpo = traceable(
     invoice?: Invoice;
     carta318?: Carta318;
     traceId: string;
-  }) =>
-    Promise.all([
-      tracedNumeroDePedimento({ pedimento, traceId }),
-      tracedTipoOperacion({
+  }) {
+    return Promise.all([
+      numeroDePedimento({ pedimento, traceId }),
+      tipoOperacion({
         pedimento,
         ...(transportDocument ? { transportDocument } : {}),
         traceId,
       }),
-      tracedClaveApendice15({ pedimento, traceId }),
-      tracedTransportDocumentEntryDate({
+      claveApendice15({ pedimento, traceId }),
+      operacionMonetaria({
         pedimento,
         ...(invoice ? { invoice } : {}),
         ...(transportDocument ? { transportDocument } : {}),
         ...(carta318 ? { carta318 } : {}),
         traceId,
       }),
-      tracedPesosYBultos({
+      pesosYBultos({
         pedimento,
         ...(transportDocument ? { transportDocument } : {}),
         ...(packingList ? { packingList } : {}),
         ...(invoice ? { invoice } : {}),
         traceId,
       }),
-      tracedDatosDeFactura({
+      datosDeFactura({
         pedimento,
         cove,
         ...(carta318 ? { carta318 } : {}),
         ...(invoice ? { invoice } : {}),
         traceId,
       }),
-      tracedTipoTransporte({
+      datosDelTransporte({
         pedimento,
         ...(transportDocument ? { transportDocument } : {}),
         traceId,
       }),
       ...(pedimento.partidas
         ? pedimento.partidas.map((partida, index) =>
-            tracedPartidas({
+            partidas({
               pedimento,
               invoice,
               cove,
@@ -80,6 +79,5 @@ export const tracedPedimentoValidationStepsImpo = traceable(
             })
           )
         : []),
-    ]),
-  { name: 'Pedimento (Importación)' }
-);
+    ]);
+}

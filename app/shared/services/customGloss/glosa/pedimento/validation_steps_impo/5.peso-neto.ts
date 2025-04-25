@@ -1,4 +1,4 @@
-import { traceable } from 'langsmith/traceable';
+
 import type { Carta318 } from '../../../data-extraction/mkdown_schemas/carta-318';
 import type { Invoice } from '../../../data-extraction/mkdown_schemas/invoice';
 import type { TransportDocument } from '../../../data-extraction/mkdown_schemas/transport-document';
@@ -102,20 +102,19 @@ async function validateBultos(
   return await glosar(validation, traceId, 'o3-mini');
 }
 
-export const tracedPesosYBultos = traceable(
-  async ({
-    pedimento,
-    transportDocument,
-    packingList,
-    invoice,
-    traceId,
+export async function pesosYBultos({
+  pedimento,
+  transportDocument,
+  packingList,
+  invoice,
+  traceId,
   }: {
     pedimento: Pedimento;
     transportDocument?: TransportDocument;
     packingList?: PackingList;
     invoice?: Invoice;
     traceId: string;
-  }) => {
+  }) {
     const validationsPromise = await Promise.all([
       validatePesosYBultos(
         traceId,
@@ -130,7 +129,5 @@ export const tracedPesosYBultos = traceable(
     return {
       sectionName: 'Pesos y bultos',
       validations: validationsPromise,
-    };
-  },
-  { name: 'Pedimento S5: Pesos y bultos' }
-);
+  };
+}

@@ -1,4 +1,3 @@
-import { traceable } from 'langsmith/traceable';
 import type { Cfdi } from '../../../data-extraction/mkdown_schemas';
 import type { Cove } from '../../../extract-and-structure/schemas';
 import { glosar } from '../../validation-result';
@@ -94,22 +93,19 @@ async function validateRfc(traceId: string, cove: Cove, cfdi?: Cfdi) {
   return await glosar(validation, traceId);
 }
 
-export const tracedDatosGenerales = traceable(
-  async ({
-    cove,
-    cfdi,
-    traceId,
-  }: { cove: Cove; cfdi?: Cfdi; traceId: string }) => {
+export async function datosGenerales({
+  cove,
+  cfdi,
+  traceId,
+  }: { cove: Cove; cfdi?: Cfdi; traceId: string }) {
     const validationsPromise = await Promise.all([
       validateNumeroFactura(traceId, cove, cfdi),
       validateFechaExpedicion(traceId, cove, cfdi),
       validateRfc(traceId, cove, cfdi),
     ]);
 
-    return {
-      sectionName: 'Datos Generales',
-      validations: validationsPromise,
-    };
-  },
-  { name: 'Cove S1: Datos Generales' }
-);
+  return {
+    sectionName: 'Datos Generales',
+    validations: validationsPromise,
+  };
+}

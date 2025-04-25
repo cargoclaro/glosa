@@ -1,4 +1,4 @@
-import { traceable } from 'langsmith/traceable';
+
 import type { Carta318 } from '../../../data-extraction/mkdown_schemas/carta-318';
 import type { CartaSesion } from '../../../data-extraction/mkdown_schemas/carta-sesion';
 import type { Invoice } from '../../../data-extraction/mkdown_schemas/invoice';
@@ -334,13 +334,12 @@ async function validateMonedaYEquivalencia(
   return await glosar(validation, traceId, 'o3-mini');
 }
 
-export const tracedDatosDeFactura = traceable(
-  async ({
-    pedimento,
-    cove,
-    carta318,
-    invoice,
-    cartaSesion,
+export async function datosDeFactura({
+  pedimento,
+  cove,
+  carta318,
+  invoice,
+  cartaSesion,
     traceId,
   }: {
     pedimento: Pedimento;
@@ -349,7 +348,7 @@ export const tracedDatosDeFactura = traceable(
     invoice?: Invoice;
     cartaSesion?: CartaSesion;
     traceId: string;
-  }) => {
+  }) {
     const validationsPromise = await Promise.all([
       validateRfcFormat(traceId, pedimento, cove, carta318),
       validateCesionDerechos(traceId, pedimento, cartaSesion, carta318),
@@ -362,7 +361,5 @@ export const tracedDatosDeFactura = traceable(
     return {
       sectionName: 'Datos de factura',
       validations: validationsPromise,
-    };
-  },
-  { name: 'Pedimento S6: Datos de factura' }
-);
+  };
+}

@@ -1,4 +1,4 @@
-import { traceable } from 'langsmith/traceable';
+
 import type { TransportDocument } from '../../../data-extraction/mkdown_schemas/transport-document';
 import type { Pedimento } from '../../../data-extraction/schemas';
 import { apendice2 } from '../../anexo-22/apendice-2';
@@ -115,16 +115,15 @@ async function validateRegimen(traceId: string, pedimento: Pedimento) {
   return await glosar(validation, traceId, 'gpt-4o-mini');
 }
 
-export const tracedTipoOperacion = traceable(
-  async ({
-    pedimento,
-    transportDocument,
-    traceId,
+export async function tipoOperacion({
+  pedimento,
+  transportDocument,
+  traceId,
   }: {
     pedimento: Pedimento;
     transportDocument?: TransportDocument;
     traceId: string;
-  }) => {
+  }) {
     const validationsPromise = await Promise.all([
       validateCoherenciaOrigenDestino(traceId, pedimento, transportDocument),
       validateClavePedimento(traceId, pedimento),
@@ -134,7 +133,5 @@ export const tracedTipoOperacion = traceable(
     return {
       sectionName: 'Tipo de operación',
       validations: validationsPromise,
-    };
-  },
-  { name: 'Pedimento S2: Tipo de operación' }
-);
+  };
+}

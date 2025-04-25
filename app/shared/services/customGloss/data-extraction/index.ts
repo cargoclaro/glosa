@@ -1,5 +1,4 @@
 import { Langfuse } from 'langfuse';
-import { traceable } from 'langsmith/traceable';
 import type { UploadedFileData } from 'uploadthing/types';
 import {
   extractAndStructureCove,
@@ -28,7 +27,7 @@ const documentToSchema = {
   cartaCesionDeDerechos: cartaSesionSchema,
 } as const;
 
-async function extractTextFromPDFsParallel(
+export async function extractTextFromPDFs(
   classifications: Partial<
     Record<
       DocumentType,
@@ -137,7 +136,3 @@ async function extractTextFromPDFsParallel(
     }),
   };
 }
-
-export const extractTextFromPDFs = traceable(extractTextFromPDFsParallel, {
-  name: 'textExtraction',
-});

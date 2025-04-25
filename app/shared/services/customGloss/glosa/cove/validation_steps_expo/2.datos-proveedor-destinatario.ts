@@ -1,4 +1,4 @@
-import { traceable } from 'langsmith/traceable';
+
 import type { Cfdi } from '../../../data-extraction/mkdown_schemas';
 import type { Cove } from '../../../extract-and-structure/schemas';
 import { glosar } from '../../validation-result';
@@ -183,12 +183,11 @@ async function validateDomicilioDestinatario(
   return await glosar(validation, traceId);
 }
 
-export const tracedProveedorDestinatario = traceable(
-  async ({
-    cove,
+export async function proveedorDestinatario({
+  cove,
     cfdi,
     traceId,
-  }: { cove: Cove; cfdi?: Cfdi; traceId: string }) => {
+  }: { cove: Cove; cfdi?: Cfdi; traceId: string }) {
     const validationsPromise = await Promise.all([
       validateDatosGeneralesProveedor(traceId, cove, cfdi),
       validateDomicilioProveedor(traceId, cove, cfdi),
@@ -197,9 +196,7 @@ export const tracedProveedorDestinatario = traceable(
     ]);
 
     return {
-      sectionName: 'Datos Proveedor Destinatario',
-      validations: validationsPromise,
-    };
-  },
-  { name: 'Cove S2: Datos Proveedor Destinatario' }
-);
+    sectionName: 'Datos Proveedor Destinatario',
+    validations: validationsPromise,
+  };
+}

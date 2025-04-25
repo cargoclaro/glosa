@@ -55,7 +55,6 @@
     "fast-xml-parser": "^5.2.1",
     "langfuse": "^3.37.2",
     "langfuse-vercel": "^3.37.2",
-    "langsmith": "^0.3.21",
     "lucide-react": "^0.483.0",
     "moment": "^2.30.1",
     "next": "15.2.3",

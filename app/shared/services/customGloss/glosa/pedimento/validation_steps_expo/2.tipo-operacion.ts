@@ -1,4 +1,4 @@
-import { traceable } from 'langsmith/traceable';
+
 import type {
   Pedimento,
   TransportDocument,
@@ -114,16 +114,15 @@ async function validateRegimen(traceId: string, pedimento: Pedimento) {
   return await glosar(validation, traceId);
 }
 
-export const tracedTipoOperacion = traceable(
-  async ({
-    pedimento,
-    transportDoc,
-    traceId,
+export async function tipoOperacion({
+  pedimento,
+  transportDoc,
+  traceId,
   }: {
     pedimento: Pedimento;
     transportDoc?: TransportDocument;
     traceId: string;
-  }) => {
+  }) {
     const validationsPromise = await Promise.all([
       validateCoherenciaOrigenDestino(traceId, pedimento, transportDoc),
       validateClavePedimento(traceId, pedimento),
@@ -134,6 +133,4 @@ export const tracedTipoOperacion = traceable(
       sectionName: 'Tipo de operación',
       validations: validationsPromise,
     };
-  },
-  { name: 'Pedimento S2: Tipo de operación' }
-);
+  }

@@ -1,4 +1,4 @@
-import { traceable } from 'langsmith/traceable';
+
 import type { TransportDocument } from '../../../data-extraction/mkdown_schemas/transport-document';
 import type { Pedimento } from '../../../data-extraction/schemas';
 import { apendice3 } from '../../anexo-22/apendice-3';
@@ -143,16 +143,15 @@ async function validateNumeroGuiaEmbarque(
   return await glosar(validation, traceId);
 }
 
-export const tracedTipoTransporte = traceable(
-  async ({
-    pedimento,
-    transportDocument,
-    traceId,
+export async function datosDelTransporte({
+  pedimento,
+  transportDocument,
+  traceId,
   }: {
     pedimento: Pedimento;
     transportDocument?: TransportDocument;
     traceId: string;
-  }) => {
+  }) {
     const validationsPromise = await Promise.all([
       validateTipoTransporte(traceId, pedimento, transportDocument),
       validateModalidadMedioTransporte(traceId, pedimento, transportDocument),
@@ -163,6 +162,4 @@ export const tracedTipoTransporte = traceable(
       sectionName: 'Datos del transporte',
       validations: validationsPromise,
     };
-  },
-  { name: 'Pedimento S7: Datos del transporte' }
-);
+}

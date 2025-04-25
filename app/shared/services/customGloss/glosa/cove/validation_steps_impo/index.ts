@@ -1,39 +1,42 @@
-import { traceable } from 'langsmith/traceable';
+
 import type {
   Carta318,
   Invoice,
 } from '../../../data-extraction/mkdown_schemas';
 import type { Cove } from '../../../extract-and-structure/schemas';
-import { tracedDatosGenerales } from './1.datos-generales';
-import { tracedChooseDocument } from './2.datos-proveedor-destinatario';
-import { tracedMercancias } from './3.validacion-mercancias';
+import { datosGenerales } from './1.datos-generales';
+import { proveedorDestinatario } from './2.datos-proveedor-destinatario';
+import { mercancias } from './3.validacion-mercancias';
 
-export const tracedCoveValidationStepsImpo = traceable(
-  async ({
-    cove,
-    invoice,
-    carta318,
-    traceId,
-  }: { cove: Cove; invoice?: Invoice; carta318?: Carta318; traceId: string }) =>
-    Promise.all([
-      tracedDatosGenerales({
+export function coveValidationStepsImpo({
+  cove,
+  invoice,
+  carta318,
+  traceId,
+  }: {
+    cove: Cove;
+    invoice?: Invoice;
+    carta318?: Carta318;
+    traceId: string;
+  }) {
+    return Promise.all([
+      datosGenerales({
         cove,
         ...(invoice ? { invoice } : {}),
         ...(carta318 ? { carta318 } : {}),
         traceId,
       }),
-      tracedChooseDocument({
+      proveedorDestinatario({
         cove,
         ...(invoice ? { invoice } : {}),
         ...(carta318 ? { carta318 } : {}),
         traceId,
       }),
-      tracedMercancias({
+      mercancias({
         cove,
         ...(invoice ? { invoice } : {}),
         ...(carta318 ? { carta318 } : {}),
         traceId,
       }),
-    ]),
-  { name: 'COVE (Importación)' }
-);
+    ]);
+}

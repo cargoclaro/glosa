@@ -1,4 +1,4 @@
-import { traceable } from 'langsmith/traceable';
+
 import type {
   CartaSesion,
   Cfdi,
@@ -317,20 +317,19 @@ async function validateMonedaYEquivalencia(
   return await glosar(validation, traceId);
 }
 
-export const tracedRfcFormat = traceable(
-  async ({
-    pedimento,
-    cove,
-    cfdi,
-    cartaSesion,
-    traceId,
+export async function datosDeFactura({
+  pedimento,
+  cove,
+  cfdi,
+  cartaSesion,
+  traceId,
   }: {
     pedimento: Pedimento;
     cove: Cove;
     cfdi?: Cfdi;
     cartaSesion?: CartaSesion;
     traceId: string;
-  }) => {
+  }) {
     const validationsPromise = await Promise.all([
       validateRfcFormat(traceId, pedimento, cove, cfdi),
       validateCesionDerechos(traceId, pedimento, cartaSesion, cfdi),
@@ -344,6 +343,4 @@ export const tracedRfcFormat = traceable(
       sectionName: 'Datos de factura',
       validations: validationsPromise,
     };
-  },
-  { name: 'Pedimento S6: Datos de factura' }
-);
+}

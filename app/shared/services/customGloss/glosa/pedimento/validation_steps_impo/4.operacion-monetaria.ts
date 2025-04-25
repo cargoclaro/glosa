@@ -1,4 +1,4 @@
-import { traceable } from 'langsmith/traceable';
+
 import type { Carta318 } from '../../../data-extraction/mkdown_schemas/carta-318';
 import type { Invoice } from '../../../data-extraction/mkdown_schemas/invoice';
 import type { TransportDocument } from '../../../data-extraction/mkdown_schemas/transport-document';
@@ -544,20 +544,19 @@ async function validateValorAduana(
   return await glosar(validation, traceId, 'o3-mini');
 }
 
-export const tracedTransportDocumentEntryDate = traceable(
-  async ({
-    pedimento,
-    invoice,
-    transportDocument,
-    carta318,
-    traceId,
+export async function operacionMonetaria({
+  pedimento,
+  invoice,
+  transportDocument,
+  carta318,
+  traceId,
   }: {
     pedimento: Pedimento;
     invoice?: Invoice;
     transportDocument?: TransportDocument;
     carta318?: Carta318;
     traceId: string;
-  }) => {
+  }) {
     const validationsPromise = await Promise.all([
       validateTransportDocumentEntryDate(traceId, pedimento, transportDocument),
       validateTipoCambio(traceId, pedimento),
@@ -593,6 +592,4 @@ export const tracedTransportDocumentEntryDate = traceable(
       sectionName: 'Operación monetaria',
       validations: validationsPromise,
     };
-  },
-  { name: 'Pedimento S4: Operación monetaria' }
-);
+  }
