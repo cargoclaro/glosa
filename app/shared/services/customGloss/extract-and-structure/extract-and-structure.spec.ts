@@ -2177,7 +2177,7 @@ NUMERO DE SOLICITUD: 2025CERT0002269-CA-M01`,
     for (const { pedimentoResult, fileUrl } of pedimentoResults) {
       const fixture = pedimentoFixture.find((item) => item.fileUrl === fileUrl);
       if (!fixture) {
-        throw new Error(`Fixture not found for: ${fileUrl}`);
+        throw new Error('Should never happen');
       }
       expect
         .soft(

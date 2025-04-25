@@ -1,31 +1,29 @@
 import { UTApi } from 'uploadthing/server';
+import { ok, err } from 'neverthrow';
 
 export async function uploadFiles(files: File[]) {
   const utapi = new UTApi();
   const uploadedFiles = await utapi.uploadFiles(files);
 
-  // Check if any uploads failed
-  const failedUploads = uploadedFiles.filter(({ error }) => error !== null);
-  if (failedUploads.length > 0) {
-    throw new Error(
-      `Error al subir ${failedUploads.length} archivo(s): ${failedUploads.map((f) => f.error?.message || 'Error desconocido').join(', ')}`
-    );
+  const firstError = uploadedFiles.find(({ error }) => error !== null);
+  if (firstError?.error) {
+    return err(new Error(firstError.error.message));
   }
 
   // All uploads succeeded, we can safely use the data
-  const successfulUploads = uploadedFiles.map((result, index) => {
+  const successfulUploads = uploadedFiles.map(({ data }, index) => {
     const originalFile = files[index];
     if (!originalFile) {
       throw new Error('Should never happen');
     }
-    if (!result.data) {
+    if (!data) {
       throw new Error('Should never happen');
     }
     return {
-      ...result.data,
+      ...data,
       originalFile,
     };
   });
 
-  return successfulUploads;
+  return ok(successfulUploads);
 }

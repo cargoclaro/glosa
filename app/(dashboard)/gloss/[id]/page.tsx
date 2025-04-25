@@ -51,17 +51,6 @@ const GlossIdPage = async (props: { params: Promise<{ id: string }> }) => {
     notFound();
   }
 
-  // Debug info about files
-  console.log('Files found:', customGloss.files?.length || 0);
-  customGloss.files?.forEach((file, index) => {
-    console.log(`File ${index + 1}:`, {
-      id: file.id,
-      name: file.name,
-      url: file.url,
-      documentType: file.documentType || 'unknown',
-    });
-  });
-
   // Find importer name if it exists in the context data
   let importerName = '';
   if (customGloss.tabs?.length > 0) {

@@ -52,12 +52,6 @@ const steps: Step[] = [
   },
 ];
 
-// Ensure weights add up to 1.0
-const totalWeight = steps.reduce((sum, step) => sum + step.weight, 0);
-if (Math.abs(totalWeight - 1.0) > 0.001) {
-  console.warn(`Step weights do not add up to 1.0 (got ${totalWeight})`);
-}
-
 // Fun facts about Mexican foreign trade (30 total)
 const FUN_FACTS = [
   // Original 8 facts

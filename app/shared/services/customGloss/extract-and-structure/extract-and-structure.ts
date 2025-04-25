@@ -5,12 +5,15 @@ import { PDFDocument } from 'pdf-lib';
 import { z } from 'zod';
 import {
   type Partida,
+  cfdiSchema,
   datosGeneralesDePedimentoSchema,
   datosGeneralesSchema,
   mercanciaSchema,
   packingListSchema,
   partidaSchema,
 } from './schemas';
+import { xmlParser } from './xml-parser';
+import { ok, err } from 'neverthrow';
 
 /**
  * Fetches a PDF file and returns an array of base64-encoded pages
@@ -238,7 +241,7 @@ export async function extractAndStructurePedimento(
     (c) => c === 'Partidas'
   );
   if (firstPartidasPageIndex === -1) {
-    throw new Error('No partidas section found in the document');
+    throw new Error('Should never happen');
   }
 
   // Create PDF with all datos generales pages (including the first partidas page)
@@ -439,6 +442,20 @@ export async function extractAndStructurePedimento(
     ...datosGeneralesDePedimento,
     partidas,
   };
+}
+
+export async function extractAndStructureCFDI(
+  fileUrl: string,
+) {
+  const response = await fetch(fileUrl);
+  const xmlData = await response.text();
+  const cfdiData = cfdiSchema.safeParse(xmlParser.parse(xmlData, true));
+  if (!cfdiData.success) {
+    return err(
+      `Error parsing cfdi: ${cfdiData.error.message}. XML URL: ${fileUrl}`
+    );
+  }
+  return ok(cfdiData.data);
 }
 
 /**

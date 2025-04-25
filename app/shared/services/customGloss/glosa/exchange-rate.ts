@@ -3,6 +3,7 @@ const BANXICO_BASE_URL = 'https://www.banxico.org.mx/SieAPIRest/service/v1';
 import { config } from 'dotenv';
 import { env } from 'lib/env/server';
 import { z } from 'zod';
+import { ok, err } from 'neverthrow';
 
 config();
 
@@ -24,26 +25,24 @@ const oportunoSchema = z.object({
 
 async function isDiaHabil(date: Date, seriesId: string): Promise<boolean> {
   const dateString = date.toISOString().split('T')[0];
+  const response = await fetch(
+    `${BANXICO_BASE_URL}/series/${seriesId}/datos/${dateString}/${dateString}`,
+    {
+      method: 'get',
+      headers: {
+        Accept: 'application/json',
+        'Bmx-Token': env.BANXICO_TOKEN,
+      },
+    }
+  );
 
-  try {
-    const response = await fetch(
-      `${BANXICO_BASE_URL}/series/${seriesId}/datos/${dateString}/${dateString}`,
-      {
-        method: 'get',
-        headers: {
-          Accept: 'application/json',
-          'Bmx-Token': env.BANXICO_TOKEN,
-        },
-      }
-    );
-
-    const data = oportunoSchema.parse(await response.json());
-    // If datos exists and has elements, it's a business day
-    return !!data.bmx.series[0]?.datos && data.bmx.series[0]?.datos.length > 0;
-  } catch {
-    // If we get an error or no data, it's not a business day
+  const result = oportunoSchema.safeParse(await response.json());
+  if (!result.success) {
     return false;
   }
+  const { bmx } = result.data;
+  // If datos exists and has elements, it's a business day
+  return !!bmx.series[0]?.datos && bmx.series[0]?.datos.length > 0;
 }
 
 async function getPreviousDiaHabil(
@@ -104,12 +103,16 @@ export async function getExchangeRate(
     }
   );
 
-  const data = oportunoSchema.parse(await response.json());
+  const result = oportunoSchema.safeParse(await response.json());
+  if (!result.success) {
+    return err('Invalid response from Banxico');
+  }
+  const { bmx } = result.data;
 
-  // Verify that the expected data exists and return the exchange rate value (dato)
-  if (!data.bmx.series[0]?.datos?.[0]) {
-    throw new Error('Exchange rate data not found in the expected format');
+  // Verify that the expected data exists
+  if (!bmx.series[0]?.datos?.[0]) {
+    return err('Exchange rate data not found in the expected format');
   }
 
-  return data.bmx.series[0].datos[0].dato;
+  return ok(bmx.series[0].datos[0].dato);
 }

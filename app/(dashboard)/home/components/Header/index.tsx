@@ -3,16 +3,9 @@
 import { Modal } from '@/shared/components';
 import { useModal } from '@/shared/hooks';
 import GlossForm from './gloss-form';
-import GlossFormRemesa from './gloss-form-remesa';
 
 const Header = () => {
   const { isOpen, openMenu, closeMenu, menuRef } = useModal(false);
-  const {
-    isOpen: isRemesaOpen,
-    openMenu: openRemesaMenu,
-    closeMenu: closeRemesaMenu,
-    menuRef: remesaMenuRef,
-  } = useModal(false);
   return (
     <section className="flex justify-between gap-2">
       <h1 className="font-bold text-2xl">Dashboard de Glosa Aduanal</h1>
@@ -60,32 +53,11 @@ const Header = () => {
                 Glosa Regular
               </button>
             </li>
-            <li>
-              <button
-                type="button"
-                onClick={() => {
-                  document
-                    .getElementById('glosa-dropdown')
-                    ?.classList.add('hidden');
-                  openRemesaMenu();
-                }}
-                className="block w-full px-4 py-2 text-left text-gray-700 text-sm hover:bg-gray-100"
-              >
-                Glosa de Remesa de Exportación
-              </button>
-            </li>
           </ul>
         </div>
       </div>
       <Modal isOpen={isOpen} onClose={closeMenu} menuRef={menuRef}>
         <GlossForm />
-      </Modal>
-      <Modal
-        isOpen={isRemesaOpen}
-        onClose={closeRemesaMenu}
-        menuRef={remesaMenuRef}
-      >
-        <GlossFormRemesa />
       </Modal>
     </section>
   );

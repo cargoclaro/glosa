@@ -7,6 +7,7 @@ import {
 } from '../extract-and-structure/extract-and-structure';
 import type { DocumentType } from '../utils';
 import { extractTextFromImage } from './vision';
+import { ok, err } from 'neverthrow';
 
 export async function extractTextFromPDFs(
   classifications: Partial<
@@ -36,11 +37,11 @@ export async function extractTextFromPDFs(
 
   // Check if required documents are present
   if (!pedimento) {
-    throw new Error('Pedimento document is required');
+    return err('Pedimento document is required');
   }
 
   if (!cove) {
-    throw new Error('COVE document is required');
+    return err('COVE document is required');
   }
 
   // Run all extraction operations in parallel instead of sequentially
