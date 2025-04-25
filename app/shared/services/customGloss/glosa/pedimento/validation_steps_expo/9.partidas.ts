@@ -1,5 +1,4 @@
-import type { OCR } from '~/lib/utils';
-import type { Pedimento } from '../../../extract-and-structure/schemas';
+import type { CFDI, Pedimento } from '../../../extract-and-structure/schemas';
 import { glosar } from '../../validation-result';
 
 // Función para validar preferencia arancelaria y certificado de origen
@@ -38,7 +37,7 @@ async function validatePreferenciaArancelaria(
 async function validateCoherenciaUMC(
   traceId: string,
   pedimento: Pedimento,
-  cfdi?: OCR
+  cfdi?: CFDI
 ) {
   // Extraer partidas con información de UMC
   const partidas = pedimento.partidas || [];
@@ -68,7 +67,7 @@ async function validateCoherenciaUMC(
 async function validateCoherenciaPeso(
   traceId: string,
   pedimento: Pedimento,
-  cfdi?: OCR
+  cfdi?: CFDI
 ) {
   // Extraer peso bruto del pedimento
   const pesoBrutoPedimento =
@@ -128,7 +127,7 @@ async function validateCalculoDTA(traceId: string, pedimento: Pedimento) {
 async function validateCalculoContribuciones(
   traceId: string,
   pedimento: Pedimento,
-  cfdi?: OCR
+  cfdi?: CFDI
 ) {
   // Extraer partidas con contribuciones
   const partidas = pedimento.partidas || [];
@@ -242,7 +241,7 @@ export async function partidas({
   pedimento,
   cfdi,
   traceId,
-}: { pedimento: Pedimento; cfdi?: OCR; traceId: string }) {
+}: { pedimento: Pedimento; cfdi?: CFDI; traceId: string }) {
   const validationsPromise = await Promise.all([
     validatePreferenciaArancelaria(traceId, pedimento),
     validateCoherenciaUMC(traceId, pedimento, cfdi),

@@ -1,14 +1,12 @@
-import type { OCR } from '~/lib/utils';
-import type { Cove } from '../../../extract-and-structure/schemas';
+import type { CFDI, Cove } from '../../../extract-and-structure/schemas';
 import { glosar } from '../../validation-result';
 
 /**
  * Validates that the invoice number in the COVE document matches the CFDI for exports.
  */
-async function validateNumeroFactura(traceId: string, cove: Cove, cfdi?: OCR) {
+async function validateNumeroFactura(traceId: string, cove: Cove, cfdi?: CFDI) {
   // Extract invoice numbers from different sources
   const numeroFacturaCove = cove.datosDelAcuseDeValor.numeroDeFactura;
-  const cfdiMkdown = cfdi?.markdown_representation;
 
   const validation = {
     name: 'Número de Factura (Exportación)',
@@ -22,7 +20,7 @@ async function validateNumeroFactura(traceId: string, cove: Cove, cfdi?: OCR) {
           data: [{ name: 'Número de Factura', value: numeroFacturaCove }],
         },
         cfdi: {
-          data: [{ name: 'CFDI', value: cfdiMkdown }],
+          data: [{ name: 'CFDI', value: cfdi }],
         },
       },
     },
@@ -37,11 +35,10 @@ async function validateNumeroFactura(traceId: string, cove: Cove, cfdi?: OCR) {
 async function validateFechaExpedicion(
   traceId: string,
   cove: Cove,
-  cfdi?: OCR
+  cfdi?: CFDI
 ) {
   // Extract invoice dates from different sources
   const fechaExpedicionCove = cove.datosDelAcuseDeValor.fechaExpedicion;
-  const cfdiMkdown = cfdi?.markdown_representation;
 
   const validation = {
     name: 'Fecha de Expedición (Exportación)',
@@ -55,7 +52,7 @@ async function validateFechaExpedicion(
           data: [{ name: 'Fecha de Expedición', value: fechaExpedicionCove }],
         },
         cfdi: {
-          data: [{ name: 'CFDI', value: cfdiMkdown }],
+          data: [{ name: 'CFDI', value: cfdi }],
         },
       },
     },
@@ -67,11 +64,10 @@ async function validateFechaExpedicion(
 /**
  * Validates that the RFC in the COVE document matches other documents for exports.
  */
-async function validateRfc(traceId: string, cove: Cove, cfdi?: OCR) {
+async function validateRfc(traceId: string, cove: Cove, cfdi?: CFDI) {
   // Extract RFC values from different sources
   // Se supone que este valor siempre es el RFC en la exportación
   const rfcCove = cove.datosGeneralesDelDestinatario.taxIdSinTaxIdRfcCurp;
-  const cfdiMkdown = cfdi?.markdown_representation;
   const validation = {
     name: 'RFC (Exportación)',
     description:
@@ -84,7 +80,7 @@ async function validateRfc(traceId: string, cove: Cove, cfdi?: OCR) {
           data: [{ name: 'RFC', value: rfcCove }],
         },
         cfdi: {
-          data: [{ name: 'CFDI', value: cfdiMkdown }],
+          data: [{ name: 'CFDI', value: cfdi }],
         },
       },
     },
@@ -97,7 +93,7 @@ export async function datosGenerales({
   cove,
   cfdi,
   traceId,
-}: { cove: Cove; cfdi?: OCR; traceId: string }) {
+}: { cove: Cove; cfdi?: CFDI; traceId: string }) {
   const validationsPromise = await Promise.all([
     validateNumeroFactura(traceId, cove, cfdi),
     validateFechaExpedicion(traceId, cove, cfdi),

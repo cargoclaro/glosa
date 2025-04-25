@@ -1,5 +1,5 @@
 import type { OCR } from '~/lib/utils';
-import type { Pedimento } from '../../../extract-and-structure/schemas';
+import type { CFDI, Pedimento } from '../../../extract-and-structure/schemas';
 import type { PackingList } from '../../../extract-and-structure/schemas';
 import { glosar } from '../../validation-result';
 
@@ -8,12 +8,11 @@ async function validatePesosYBultos(
   pedimento: Pedimento,
   transportDocument?: OCR,
   packingList?: PackingList,
-  cfdi?: OCR
+  cfdi?: CFDI
 ) {
   // Extract weight values from pedimento
   const pesoBrutoPedimento =
     pedimento.encabezadoPrincipalDelPedimento.pesoBruto;
-  const cfdiMkdown = cfdi?.markdown_representation;
   const transportDocmkdown = transportDocument?.markdown_representation;
 
   const validation = {
@@ -39,7 +38,7 @@ async function validatePesosYBultos(
           ],
         },
         cfdi: {
-          data: [{ name: 'CFDI', value: cfdiMkdown }],
+          data: [{ name: 'CFDI', value: cfdi }],
         },
       },
     },
@@ -90,7 +89,7 @@ export async function pesosYBultos({
   pedimento: Pedimento;
   transportDocument?: OCR;
   packingList?: PackingList;
-  cfdi?: OCR;
+  cfdi?: CFDI;
   traceId: string;
 }) {
   const validationsPromise = await Promise.all([

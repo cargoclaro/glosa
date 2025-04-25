@@ -1,20 +1,18 @@
 import type { OCR } from '~/lib/utils';
-import type { Pedimento } from '../../../extract-and-structure/schemas';
-import type { Cove } from '../../../extract-and-structure/schemas';
+import type { CFDI, Pedimento, Cove } from '../../../extract-and-structure/schemas';
 import { glosar } from '../../validation-result';
 
 async function validateRfcFormat(
   traceId: string,
   pedimento: Pedimento,
   cove: Cove,
-  cfdi?: OCR
+  cfdi?: CFDI
 ) {
   // Extract RFC values from documents
   const rfcPedimento =
     pedimento.encabezadoPrincipalDelPedimento.datosImportador.rfc;
   // Se supone que este valor siempre es el RFC en la exportación
   const rfcCove = cove?.datosGeneralesDelDestinatario?.taxIdSinTaxIdRfcCurp;
-  const cfdiMkdown = cfdi?.markdown_representation;
 
   const validation = {
     name: 'Validación de los RFC',
@@ -31,7 +29,7 @@ async function validateRfcFormat(
           data: [{ name: 'RFC destinatario', value: rfcCove }],
         },
         cfdi: {
-          data: [{ name: 'CFDI', value: cfdiMkdown }],
+          data: [{ name: 'CFDI', value: cfdi }],
         },
       },
     },
@@ -44,12 +42,11 @@ async function validateCesionDerechos(
   traceId: string,
   pedimento: Pedimento,
   cartaSesion?: OCR,
-  cfdi?: OCR
+  cfdi?: CFDI
 ) {
   // Extract values from documents
   const fechaEntradaPedimento =
     pedimento.encabezadoPrincipalDelPedimento.fechas.entrada;
-  const cfdiMkdown = cfdi?.markdown_representation;
   const cartaSesionMkdown = cartaSesion?.markdown_representation;
 
   const validation = {
@@ -67,7 +64,7 @@ async function validateCesionDerechos(
           data: [{ name: 'Cesión de derechos', value: cartaSesionMkdown }],
         },
         cfdi: {
-          data: [{ name: 'CFDI', value: cfdiMkdown }],
+          data: [{ name: 'CFDI', value: cfdi }],
         },
       },
     },
@@ -80,7 +77,7 @@ async function validateDatosImportador(
   traceId: string,
   pedimento: Pedimento,
   cove: Cove,
-  cfdi?: OCR
+  cfdi?: CFDI
 ) {
   // Extract values from documents
   const rfcPedimento =
@@ -108,8 +105,6 @@ async function validateDatosImportador(
   const razonSocialCove =
     cove.datosGeneralesDelDestinatario.nombresORazonSocial;
 
-  const cfdiMkdown = cfdi?.markdown_representation;
-
   const validation = {
     name: 'Validación de datos del exportador',
     description:
@@ -133,7 +128,7 @@ async function validateDatosImportador(
           ],
         },
         cfdi: {
-          data: [{ name: 'CFDI', value: cfdiMkdown }],
+          data: [{ name: 'CFDI', value: cfdi }],
         },
       },
     },
@@ -146,7 +141,7 @@ async function validateDatosProveedor(
   traceId: string,
   pedimento: Pedimento,
   cove: Cove,
-  cfdi?: OCR
+  cfdi?: CFDI
 ) {
   // Extract values from documents
   const nombreProveedorPedimento =
@@ -175,8 +170,6 @@ async function validateDatosProveedor(
   const idProveedorCove =
     cove?.datosGeneralesDelProveedor?.taxIdSinTaxIdRfcCurp;
 
-  const cfdiMkdown = cfdi?.markdown_representation;
-
   const validation = {
     name: 'Validación de datos comerciales del comprador',
     description:
@@ -200,7 +193,7 @@ async function validateDatosProveedor(
           ],
         },
         cfdi: {
-          data: [{ name: 'CFDI', value: cfdiMkdown }],
+          data: [{ name: 'CFDI', value: cfdi }],
         },
       },
     },
@@ -213,7 +206,7 @@ async function validateFechasYFolios(
   traceId: string,
   pedimento: Pedimento,
   cove: Cove,
-  cfdi?: OCR
+  cfdi?: CFDI
 ) {
   // Extract values from documents
   const fechaEntradaPedimento =
@@ -224,8 +217,6 @@ async function validateFechasYFolios(
     pedimento.datosDelProveedorOComprador[0]?.facturas[0]
       ?.numeroDeCFDIODocumentoEquivalente;
   const numeroCove = cove?.datosDelAcuseDeValor.numeroDeFactura;
-
-  const cfdiMkdown = cfdi?.markdown_representation;
 
   const validation = {
     name: 'Validación de fechas de emisión, números de folio y COVE',
@@ -248,7 +239,7 @@ async function validateFechasYFolios(
           ],
         },
         cfdi: {
-          data: [{ name: 'CFDI', value: cfdiMkdown }],
+          data: [{ name: 'CFDI', value: cfdi }],
         },
       },
     },
@@ -261,7 +252,7 @@ async function validateMonedaYEquivalencia(
   traceId: string,
   pedimento: Pedimento,
   cove: Cove,
-  cfdi?: OCR
+  cfdi?: CFDI
 ) {
   // Moneda
   const monedaPedimento =
@@ -286,8 +277,6 @@ async function validateMonedaYEquivalencia(
   const factorMonedaFactura =
     pedimento.datosDelProveedorOComprador[0]?.facturas[0]?.factorMoneda;
 
-  const cfdiMkdown = cfdi?.markdown_representation;
-
   const validation = {
     name: 'Validación de moneda y factor de equivalencia',
     description:
@@ -311,7 +300,7 @@ async function validateMonedaYEquivalencia(
           ],
         },
         cfdi: {
-          data: [{ name: 'CFDI', value: cfdiMkdown }],
+          data: [{ name: 'CFDI', value: cfdi }],
         },
       },
       EXTERNAL: {
@@ -337,7 +326,7 @@ export async function datosDeFactura({
 }: {
   pedimento: Pedimento;
   cove: Cove;
-  cfdi?: OCR;
+  cfdi?: CFDI;
   cartaSesion?: OCR;
   traceId: string;
 }) {
