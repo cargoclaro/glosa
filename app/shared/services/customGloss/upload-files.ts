@@ -7,7 +7,7 @@ export async function uploadFiles(files: File[]) {
 
   const firstError = uploadedFiles.find(({ error }) => error !== null);
   if (firstError?.error) {
-    return err(new Error(firstError.error.message));
+    return err(firstError.error.message);
   }
 
   // All uploads succeeded, we can safely use the data

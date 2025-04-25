@@ -61,59 +61,6 @@ function mapClassificationToDocumentType(
   }
 }
 
-interface IRead {
-  id?: string;
-  userId?: string;
-  recent?: boolean;
-}
-
-/**
- * Reads CustomGloss data based on provided parameters
- */
-async function read({ id, userId, recent }: IRead) {
-  if (id && userId) {
-    return await db.query.CustomGloss.findFirst({
-      where: (gloss, { eq, and }) =>
-        and(eq(gloss.id, id), eq(gloss.userId, userId)),
-      with: {
-        files: true,
-        alerts: true,
-        tabs: {
-          with: {
-            context: {
-              with: {
-                data: true,
-              },
-            },
-            validations: {
-              with: {
-                resources: true,
-                actionsToTake: true,
-              },
-            },
-          },
-        },
-      },
-    });
-  }
-
-  if (userId && recent) {
-    return await db.query.CustomGloss.findMany({
-      where: (gloss, { eq }) => eq(gloss.userId, userId),
-      orderBy: (gloss, { desc }) => [desc(gloss.createdAt)],
-      limit: 3,
-    });
-  }
-
-  if (userId) {
-    return await db.query.CustomGloss.findMany({
-      where: (gloss, { eq }) => eq(gloss.userId, userId),
-    });
-  }
-
-  throw new Error('Should never happen');
-}
-
 /**
  * Updates a tab with the provided data
  */
@@ -154,8 +101,14 @@ export const analysis = api
         traceId: trace.id,
         name: 'Classification',
       });
+      if (successfulUploads.isErr()) {
+        return {
+          success: false,
+          message: successfulUploads.error,
+        };
+      }
       const classificationResults = await classifyDocuments(
-        successfulUploads,
+        successfulUploads.value,
         trace.id
       );
 
@@ -234,10 +187,13 @@ export const analysis = api
         groupedClassifications,
         trace.id
       );
-      const { pedimento, cove } = documents;
-      if (!pedimento || !cove) {
-        throw new Error('Should never happen');
+      if (documents.isErr()) {
+        return {
+          success: false,
+          message: documents.error,
+        };
       }
+      const { pedimento, cove } = documents.value;
       const operationType =
         pedimento.encabezadoPrincipalDelPedimento.tipoDeOperacion;
       const importerName =
@@ -247,8 +203,8 @@ export const analysis = api
         name: 'Validation Steps',
       });
       const gloss = await (operationType === 'IMP'
-        ? glosaImpo({ ...documents, traceId: trace.id })
-        : glosaExpo({ ...documents, traceId: trace.id }));
+        ? glosaImpo({ ...documents.value, traceId: trace.id })
+        : glosaExpo({ ...documents.value, traceId: trace.id }));
 
       const [newCustomGloss] = await db
         .insert(CustomGloss)
@@ -264,7 +220,7 @@ export const analysis = api
         })
         .returning();
       if (!newCustomGloss) {
-        throw new Error('Failed to create CustomGloss record');
+        throw new Error('Should never happen');
       }
 
       // Batch insert files
@@ -293,7 +249,7 @@ export const analysis = api
             .values(data)
             .returning();
           if (!insertedTab) {
-            throw new Error('Failed to create CustomGlossTab record');
+            throw new Error('Should never happen');
           }
           await Promise.all(
             validations.map(async ({ contexts, validation }) => {
@@ -316,9 +272,7 @@ export const analysis = api
                 })
                 .returning();
               if (!insertedValidationStep) {
-                throw new Error(
-                  'Failed to create CustomGlossTabValidationStep record'
-                );
+                throw new Error('Should never happen');
               }
               await Promise.all([
                 ...cleanedValidation.actionsToTake.map((action) =>
@@ -340,9 +294,7 @@ export const analysis = api
                         })
                         .returning();
                       if (!insertedContext) {
-                        throw new Error(
-                          'Failed to create CustomGlossTabContext record'
-                        );
+                        throw new Error('Should never happen');
                       }
                       await Promise.all(
                         contextValue.data.map(({ name, value }) =>
@@ -385,10 +337,32 @@ export const markTabAsVerifiedByTabIdNCustomGlossID = api
     })
   )
   .mutation(async ({ input: { tabId, customGlossId }, ctx: { userId } }) => {
-    const customGloss = await read({ id: customGlossId, userId });
+    const customGloss = await db.query.CustomGloss.findFirst({
+      where: (gloss, { eq, and }) =>
+        and(eq(gloss.id, customGlossId), eq(gloss.userId, userId)),
+      with: {
+        files: true,
+        alerts: true,
+        tabs: {
+          with: {
+            context: {
+              with: {
+                data: true,
+              },
+            },
+            validations: {
+              with: {
+                resources: true,
+                actionsToTake: true,
+              },
+            },
+          },
+        },
+      },
+    });
 
     if (!customGloss) {
-      throw new Error('Gloss not found');
+      throw new Error('Should never happen');
     }
 
     await updateTabWithCustomGlossId({

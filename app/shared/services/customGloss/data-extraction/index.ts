@@ -97,7 +97,7 @@ export async function extractTextFromPDFs(
       : null,
   ]);
 
-  return {
+  return ok({
     ...(facturaText && { invoice: facturaText }),
     ...(carta318Text && { carta318: carta318Text }),
     ...(rrnasText && { rrnas: rrnasText }),
@@ -111,5 +111,5 @@ export async function extractTextFromPDFs(
     ...(cartaCesionDeDerechosText && {
       cartaSesion: cartaCesionDeDerechosText,
     }),
-  };
+  });
 }
