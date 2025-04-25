@@ -79,10 +79,7 @@ export async function extractTextFromPDFs(
           traceId
         )
       : null,
-    extractAndStructurePedimento(
-      pedimento.ufsUrl,
-      traceId
-    ),
+    extractAndStructurePedimento(pedimento.ufsUrl, traceId),
     listaDeEmpaque
       ? extractAndStructurePackingList(listaDeEmpaque.ufsUrl, traceId)
       : null,

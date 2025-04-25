@@ -71,7 +71,8 @@ async function validateCoherenciaPeso(
   cfdi?: OCR
 ) {
   // Extraer peso bruto del pedimento
-  const pesoBrutoPedimento = pedimento.encabezadoPrincipalDelPedimento.pesoBruto;
+  const pesoBrutoPedimento =
+    pedimento.encabezadoPrincipalDelPedimento.pesoBruto;
 
   // Extraer partidas con información de peso
   const partidas = pedimento.partidas || [];

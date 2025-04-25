@@ -11,7 +11,8 @@ async function validatePesosYBultos(
   cfdi?: OCR
 ) {
   // Extract weight values from pedimento
-  const pesoBrutoPedimento = pedimento.encabezadoPrincipalDelPedimento.pesoBruto;
+  const pesoBrutoPedimento =
+    pedimento.encabezadoPrincipalDelPedimento.pesoBruto;
   const cfdiMkdown = cfdi?.markdown_representation;
   const transportDocmkdown = transportDocument?.markdown_representation;
 
@@ -54,7 +55,8 @@ async function validateBultos(
 ) {
   // Extract bultos values from pedimento
   const bultosPedimento =
-    pedimento.encabezadoPrincipalDelPedimento.marcasNumerosBultos?.totalDeBultos;
+    pedimento.encabezadoPrincipalDelPedimento.marcasNumerosBultos
+      ?.totalDeBultos;
   const transportDocmkdown = transportDocument?.markdown_representation;
 
   const validation = {

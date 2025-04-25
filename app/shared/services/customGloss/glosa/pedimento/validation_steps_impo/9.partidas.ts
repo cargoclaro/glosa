@@ -1,5 +1,8 @@
 import type { OCR } from '~/lib/utils';
-import type { Partida, Pedimento } from '../../../extract-and-structure/schemas';
+import type {
+  Partida,
+  Pedimento,
+} from '../../../extract-and-structure/schemas';
 import type { Cove, PackingList } from '../../../extract-and-structure/schemas';
 import { apendice7 } from '../../anexo-22/apendice-7';
 import { getFraccionInfo } from '../../tax-finder';
@@ -15,8 +18,10 @@ async function validateFraccionArancelaria(
   const fraccion = partida.fraccion;
   const nico = partida.subdivisionONumeroDeIdentificacionComercial;
   const paisOrigenDestino = partida.paisDeOrigenODestino ?? '';
-  const fechaDeEntrada = pedimento.encabezadoPrincipalDelPedimento.fechas.entrada;
-  const tipoDeOperacion = pedimento.encabezadoPrincipalDelPedimento.tipoDeOperacion;
+  const fechaDeEntrada =
+    pedimento.encabezadoPrincipalDelPedimento.fechas.entrada;
+  const tipoDeOperacion =
+    pedimento.encabezadoPrincipalDelPedimento.tipoDeOperacion;
   let fraccionExiste = false;
   if (fechaDeEntrada && tipoDeOperacion && tipoDeOperacion !== 'TRA') {
     await getFraccionInfo({
@@ -63,8 +68,10 @@ async function validateCoherenciaUMT(
   const fraccion = partida.fraccion;
   const nico = partida.subdivisionONumeroDeIdentificacionComercial;
   const paisOrigenDestino = partida.paisDeOrigenODestino ?? '';
-  const fechaDeEntrada = pedimento.encabezadoPrincipalDelPedimento.fechas.entrada;
-  const tipoDeOperacion = pedimento.encabezadoPrincipalDelPedimento.tipoDeOperacion;
+  const fechaDeEntrada =
+    pedimento.encabezadoPrincipalDelPedimento.fechas.entrada;
+  const tipoDeOperacion =
+    pedimento.encabezadoPrincipalDelPedimento.tipoDeOperacion;
   if (!fechaDeEntrada || !tipoDeOperacion || tipoDeOperacion === 'TRA') {
     throw new Error(
       'No se puede validar la unidad de medida de la tarifa, ya que no se tiene fecha de entrada o tipo de operación o es tránsito'
@@ -326,8 +333,10 @@ async function validateTarifasArancelarias(
   const fraccion = partida.fraccion;
   const nico = partida.subdivisionONumeroDeIdentificacionComercial;
   const paisOrigenDestino = partida.paisDeOrigenODestino ?? '';
-  const fechaDeEntrada = pedimento.encabezadoPrincipalDelPedimento.fechas.entrada;
-  const tipoDeOperacion = pedimento.encabezadoPrincipalDelPedimento.tipoDeOperacion;
+  const fechaDeEntrada =
+    pedimento.encabezadoPrincipalDelPedimento.fechas.entrada;
+  const tipoDeOperacion =
+    pedimento.encabezadoPrincipalDelPedimento.tipoDeOperacion;
   if (!fechaDeEntrada || !tipoDeOperacion || tipoDeOperacion === 'TRA') {
     throw new Error(
       'No se puede validar la tarifa arancelaria, ya que no se tiene fecha de entrada o tipo de operación o es tránsito'
@@ -354,8 +363,9 @@ async function validateTarifasArancelarias(
 
   const tasasPartida = {
     iva:
-      partida.contribuciones?.find((contribucion) => contribucion.contribucion === 'IVA')
-        ?.tasa || 0.16,
+      partida.contribuciones?.find(
+        (contribucion) => contribucion.contribucion === 'IVA'
+      )?.tasa || 0.16,
     ligie_arancel:
       partida.contribuciones?.find(
         (contribucion) => contribucion.contribucion === 'IGI/IGE'
@@ -405,9 +415,11 @@ async function validateCalculosPartidas(
   partida: Partida
 ) {
   // Extract total values from pedimento
-  const valorAduanaTotal = pedimento.encabezadoPrincipalDelPedimento.valores.valorAduana || 0;
+  const valorAduanaTotal =
+    pedimento.encabezadoPrincipalDelPedimento.valores.valorAduana || 0;
   const valorComercialTotal =
-    pedimento.encabezadoPrincipalDelPedimento.valores.precioPagadoOValorComercial || 0;
+    pedimento.encabezadoPrincipalDelPedimento.valores
+      .precioPagadoOValorComercial || 0;
 
   const prorrateo =
     valorComercialTotal !== 0 ? valorAduanaTotal / valorComercialTotal : null;
@@ -419,7 +431,8 @@ async function validateCalculosPartidas(
   const dtaFinal = dtaCalculado < 500 ? 500 : dtaCalculado;
 
   // Values from partida
-  const valorComercialPartida = partida.importeDePrecioPagadoOValorComercial || 0;
+  const valorComercialPartida =
+    partida.importeDePrecioPagadoOValorComercial || 0;
   const cantidadUMC = partida.cantidadUnidadDeMedidaComercial || 0;
 
   // Calculate inferred values for the partida
@@ -440,8 +453,9 @@ async function validateCalculosPartidas(
   const baseIVA =
     (valorAduanaCalculado || 0) + (igiCalculado || 0) + dtaProrrateo;
   const tasaIVA =
-    (partida.contribuciones?.find((contribucion) => contribucion.contribucion === 'IVA')
-      ?.tasa || 16) / 100;
+    (partida.contribuciones?.find(
+      (contribucion) => contribucion.contribucion === 'IVA'
+    )?.tasa || 16) / 100;
   const ivaCalculado = baseIVA * tasaIVA;
 
   // Construct validation object
@@ -486,8 +500,7 @@ async function validateNumerosSerie(
   cove?: Cove
 ) {
   const observaciones_partida = partida.observacionesANivelPartida;
-  const observaciones_nivel_pedimento =
-    pedimento?.observacionesANivelPedimento;
+  const observaciones_nivel_pedimento = pedimento?.observacionesANivelPedimento;
   // TODO: Do this in a loop, instead of just checking the first mercancia
   const numerosSeriesCove =
     cove?.mercancias[0]?.descripcionDeLaMercancia?.numeroDeSerie;
@@ -526,11 +539,15 @@ async function validateIdentificadores(
   identificador: Partida['identificadores'][number]
 ) {
   if (!(identificador.identificador in IDENTIFICADORES)) {
-    throw new Error(`Identificador ${identificador.identificador} no encontrado`);
+    throw new Error(
+      `Identificador ${identificador.identificador} no encontrado`
+    );
   }
   // Hack since TS doesn't narrow string types for some reason
   const identificadorFundamentoLegal =
-    IDENTIFICADORES[identificador.identificador as keyof typeof IDENTIFICADORES];
+    IDENTIFICADORES[
+      identificador.identificador as keyof typeof IDENTIFICADORES
+    ];
 
   const validation = {
     name: 'Identificadores',

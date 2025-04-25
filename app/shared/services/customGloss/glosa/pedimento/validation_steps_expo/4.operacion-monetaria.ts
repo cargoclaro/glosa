@@ -1,4 +1,4 @@
-import type{ OCR } from '~/lib/utils';
+import type { OCR } from '~/lib/utils';
 import type { Pedimento } from '../../../extract-and-structure/schemas';
 import type { Cove } from '../../../extract-and-structure/schemas';
 import { glosar } from '../../validation-result';
@@ -11,7 +11,8 @@ async function validateFechaSalida(
   pedimento: Pedimento,
   transportDocument?: OCR
 ) {
-  const pedimentoExitDate = pedimento.encabezadoPrincipalDelPedimento.fechas.presentacion;
+  const pedimentoExitDate =
+    pedimento.encabezadoPrincipalDelPedimento.fechas.presentacion;
   const fechaoperador = '24/07/2025'; //Temporary hardcoded value
 
   const validation = {
@@ -40,7 +41,8 @@ async function validateFechaSalida(
 
 async function validateTipoCambio(traceId: string, pedimento: Pedimento) {
   const tipoCambio = pedimento.encabezadoPrincipalDelPedimento.tipoDeCambio;
-  const fechaSalida = pedimento.encabezadoPrincipalDelPedimento.fechas.presentacion;
+  const fechaSalida =
+    pedimento.encabezadoPrincipalDelPedimento.fechas.presentacion;
   // TODO: Replace with actual DOF API integration
   const tipoCambioDOF = 17.1234; // Temporary hardcoded value
 
@@ -77,8 +79,10 @@ async function validateValorComercial(
   cfdi?: OCR
 ) {
   const valorComercialPedimento =
-    pedimento.encabezadoPrincipalDelPedimento.valores.precioPagadoOValorComercial;
-  const tipoCambioPedimento = pedimento.encabezadoPrincipalDelPedimento.tipoDeCambio;
+    pedimento.encabezadoPrincipalDelPedimento.valores
+      .precioPagadoOValorComercial;
+  const tipoCambioPedimento =
+    pedimento.encabezadoPrincipalDelPedimento.tipoDeCambio;
 
   // TODO: Do this in a loop, instead of just checking the first mercancia
   const valorComercialCOVE = cove.mercancias[0]?.datosDeLaMercancia?.valorTotal;
@@ -122,10 +126,13 @@ async function validateValorDolares(
   cove: Cove,
   cfdi?: OCR
 ) {
-  const valorDolaresPedimento = pedimento.encabezadoPrincipalDelPedimento.valores.valorDolares;
+  const valorDolaresPedimento =
+    pedimento.encabezadoPrincipalDelPedimento.valores.valorDolares;
   const valorComercialPedimento =
-    pedimento.encabezadoPrincipalDelPedimento.valores.precioPagadoOValorComercial;
-  const tipoCambioPedimento = pedimento.encabezadoPrincipalDelPedimento.tipoDeCambio;
+    pedimento.encabezadoPrincipalDelPedimento.valores
+      .precioPagadoOValorComercial;
+  const tipoCambioPedimento =
+    pedimento.encabezadoPrincipalDelPedimento.tipoDeCambio;
 
   // TODO: Do this in a loop, instead of just checking the first mercancia
   const valorComercialCOVE = cove.mercancias[0]?.datosDeLaMercancia?.valorTotal;

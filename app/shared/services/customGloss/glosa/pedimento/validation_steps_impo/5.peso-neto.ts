@@ -12,7 +12,8 @@ async function validatePesosYBultos(
   carta318?: OCR
 ) {
   // Extract weight values from pedimento
-  const pesoBrutoPedimento = pedimento.encabezadoPrincipalDelPedimento.pesoBruto;
+  const pesoBrutoPedimento =
+    pedimento.encabezadoPrincipalDelPedimento.pesoBruto;
   const observaciones = pedimento.observacionesANivelPedimento;
 
   // Get markdown representations
@@ -67,7 +68,8 @@ async function validateBultos(
 ) {
   // Extract bultos values from pedimento
   const bultosPedimento =
-    pedimento.encabezadoPrincipalDelPedimento.marcasNumerosBultos?.totalDeBultos;
+    pedimento.encabezadoPrincipalDelPedimento.marcasNumerosBultos
+      ?.totalDeBultos;
   const observaciones = pedimento.observacionesANivelPedimento;
 
   // Get markdown representation

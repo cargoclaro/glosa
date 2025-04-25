@@ -1,6 +1,6 @@
 import { type ClassValue, clsx } from 'clsx';
-import { twMerge } from 'tailwind-merge';
 import moment from 'moment';
+import { twMerge } from 'tailwind-merge';
 import { type RefinementCtx, z } from 'zod';
 
 export function cn(...inputs: ClassValue[]) {
@@ -9,12 +9,9 @@ export function cn(...inputs: ClassValue[]) {
 
 export type OCR = {
   markdown_representation: string;
-}
+};
 
-export function transformStringToDate(
-  dateStr: string,
-  ctx: RefinementCtx
-) {
+export function transformStringToDate(dateStr: string, ctx: RefinementCtx) {
   const parsedDate = moment(dateStr, 'DD/MM/YYYY');
 
   if (!parsedDate.isValid()) {

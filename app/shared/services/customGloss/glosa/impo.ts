@@ -1,5 +1,9 @@
 import type { OCR } from '~/lib/utils';
-import type { Cove, PackingList, Pedimento } from '../extract-and-structure/schemas';
+import type {
+  Cove,
+  PackingList,
+  Pedimento,
+} from '../extract-and-structure/schemas';
 import { coveValidationStepsImpo } from './cove/validation_steps_impo';
 import { pedimentoValidationStepsImpo } from './pedimento/validation_steps_impo';
 

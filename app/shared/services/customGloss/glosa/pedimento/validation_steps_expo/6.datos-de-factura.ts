@@ -10,7 +10,8 @@ async function validateRfcFormat(
   cfdi?: OCR
 ) {
   // Extract RFC values from documents
-  const rfcPedimento = pedimento.encabezadoPrincipalDelPedimento.datosImportador.rfc;
+  const rfcPedimento =
+    pedimento.encabezadoPrincipalDelPedimento.datosImportador.rfc;
   // Se supone que este valor siempre es el RFC en la exportación
   const rfcCove = cove?.datosGeneralesDelDestinatario?.taxIdSinTaxIdRfcCurp;
   const cfdiMkdown = cfdi?.markdown_representation;
@@ -46,7 +47,8 @@ async function validateCesionDerechos(
   cfdi?: OCR
 ) {
   // Extract values from documents
-  const fechaEntradaPedimento = pedimento.encabezadoPrincipalDelPedimento.fechas.entrada;
+  const fechaEntradaPedimento =
+    pedimento.encabezadoPrincipalDelPedimento.fechas.entrada;
   const cfdiMkdown = cfdi?.markdown_representation;
   const cartaSesionMkdown = cartaSesion?.markdown_representation;
 
@@ -81,11 +83,13 @@ async function validateDatosImportador(
   cfdi?: OCR
 ) {
   // Extract values from documents
-  const rfcPedimento = pedimento.encabezadoPrincipalDelPedimento.datosImportador.rfc;
+  const rfcPedimento =
+    pedimento.encabezadoPrincipalDelPedimento.datosImportador.rfc;
   // Se supone que este valor siempre es el RFC en la exportación
   const rfcCove = cove?.datosGeneralesDelDestinatario?.taxIdSinTaxIdRfcCurp;
 
-  const domicilioPedimento = pedimento.encabezadoPrincipalDelPedimento.datosImportador.domicilio;
+  const domicilioPedimento =
+    pedimento.encabezadoPrincipalDelPedimento.datosImportador.domicilio;
   const domicilioCove = cove.domicilioDelDestinatario;
   const domicilioCoveCompleto = domicilioCove
     ? [
@@ -99,7 +103,8 @@ async function validateDatosImportador(
         .join(' ')
     : '';
 
-  const razonSocialPedimento = pedimento.encabezadoPrincipalDelPedimento.datosImportador.razonSocial;
+  const razonSocialPedimento =
+    pedimento.encabezadoPrincipalDelPedimento.datosImportador.razonSocial;
   const razonSocialCove =
     cove.datosGeneralesDelDestinatario.nombresORazonSocial;
 
@@ -144,11 +149,13 @@ async function validateDatosProveedor(
   cfdi?: OCR
 ) {
   // Extract values from documents
-  const nombreProveedorPedimento = pedimento.datosDelProveedorOComprador[0]?.nombreRazonSocial;
+  const nombreProveedorPedimento =
+    pedimento.datosDelProveedorOComprador[0]?.nombreRazonSocial;
   const nombreProveedorCove =
     cove?.datosGeneralesDelProveedor.nombresORazonSocial;
 
-  const domicilioProveedorPedimento = pedimento.datosDelProveedorOComprador[0]?.domicilio;
+  const domicilioProveedorPedimento =
+    pedimento.datosDelProveedorOComprador[0]?.domicilio;
   const domicilioProveedorCove = cove.domicilioDelProveedor;
   const domicilioProveedorCoveCompleto = domicilioProveedorCove
     ? [
@@ -162,7 +169,8 @@ async function validateDatosProveedor(
         .join(' ')
     : '';
 
-  const idProveedorPedimento = pedimento.datosDelProveedorOComprador[0]?.idFiscal;
+  const idProveedorPedimento =
+    pedimento.datosDelProveedorOComprador[0]?.idFiscal;
   // Se supone que este valor siempre es el RFC en la exportación
   const idProveedorCove =
     cove?.datosGeneralesDelProveedor?.taxIdSinTaxIdRfcCurp;
@@ -208,10 +216,13 @@ async function validateFechasYFolios(
   cfdi?: OCR
 ) {
   // Extract values from documents
-  const fechaEntradaPedimento = pedimento.encabezadoPrincipalDelPedimento.fechas.entrada;
+  const fechaEntradaPedimento =
+    pedimento.encabezadoPrincipalDelPedimento.fechas.entrada;
   const fechaExpedicionCove = cove?.datosDelAcuseDeValor.fechaExpedicion;
 
-  const numeroCovePedimento = pedimento.datosDelProveedorOComprador[0]?.facturas[0]?.numeroDeCFDIODocumentoEquivalente;
+  const numeroCovePedimento =
+    pedimento.datosDelProveedorOComprador[0]?.facturas[0]
+      ?.numeroDeCFDIODocumentoEquivalente;
   const numeroCove = cove?.datosDelAcuseDeValor.numeroDeFactura;
 
   const cfdiMkdown = cfdi?.markdown_representation;
@@ -253,7 +264,8 @@ async function validateMonedaYEquivalencia(
   cfdi?: OCR
 ) {
   // Moneda
-  const monedaPedimento = pedimento.datosDelProveedorOComprador[0]?.facturas[0]?.moneda;
+  const monedaPedimento =
+    pedimento.datosDelProveedorOComprador[0]?.facturas[0]?.moneda;
   // TODO: Do this in a loop, instead of just checking the first mercancia
   const monedaCove = cove.mercancias[0]?.datosDeLaMercancia?.tipoMoneda;
 
@@ -262,14 +274,17 @@ async function validateMonedaYEquivalencia(
   const tipoCambioDOF = 17.1234;
 
   // Extract values from documents
-  const valorDolaresPedimento = pedimento.datosDelProveedorOComprador[0]?.facturas[0]?.valorDolares;
+  const valorDolaresPedimento =
+    pedimento.datosDelProveedorOComprador[0]?.facturas[0]?.valorDolares;
   // TODO: Do this in a loop, instead of just checking the first mercancia
   const valorDolaresCove =
     cove.mercancias[0]?.datosDeLaMercancia?.valorTotalEnDolares;
 
   // Valor factura from pedimento:
-  const valorFactura = pedimento.datosDelProveedorOComprador[0]?.facturas[0]?.valorMoneda;
-  const factorMonedaFactura = pedimento.datosDelProveedorOComprador[0]?.facturas[0]?.factorMoneda;
+  const valorFactura =
+    pedimento.datosDelProveedorOComprador[0]?.facturas[0]?.valorMoneda;
+  const factorMonedaFactura =
+    pedimento.datosDelProveedorOComprador[0]?.facturas[0]?.factorMoneda;
 
   const cfdiMkdown = cfdi?.markdown_representation;
 

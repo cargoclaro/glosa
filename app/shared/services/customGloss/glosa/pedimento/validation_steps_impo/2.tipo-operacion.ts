@@ -13,7 +13,8 @@ async function validateCoherenciaOrigenDestino(
   pedimento: Pedimento,
   transportDocument?: OCR
 ) {
-  const tipoOperacion = pedimento.encabezadoPrincipalDelPedimento.tipoDeOperacion;
+  const tipoOperacion =
+    pedimento.encabezadoPrincipalDelPedimento.tipoDeOperacion;
   const observaciones = pedimento.observacionesANivelPedimento;
 
   const transportDocumentmkdown = transportDocument?.markdown_representation;
@@ -48,8 +49,10 @@ async function validateCoherenciaOrigenDestino(
  * Validates that the pedimento key is valid for the operation type according to Appendix 2
  */
 async function validateClavePedimento(traceId: string, pedimento: Pedimento) {
-  const tipoOperacion = pedimento.encabezadoPrincipalDelPedimento.tipoDeOperacion;
-  const clavePedimento = pedimento.encabezadoPrincipalDelPedimento.claveDePedimento;
+  const tipoOperacion =
+    pedimento.encabezadoPrincipalDelPedimento.tipoDeOperacion;
+  const clavePedimento =
+    pedimento.encabezadoPrincipalDelPedimento.claveDePedimento;
   const observaciones = pedimento.observacionesANivelPedimento;
 
   const validation = {
@@ -83,7 +86,8 @@ async function validateClavePedimento(traceId: string, pedimento: Pedimento) {
  * Validates that the regime is valid for the operation type according to Appendix 16
  */
 async function validateRegimen(traceId: string, pedimento: Pedimento) {
-  const tipoOperacion = pedimento.encabezadoPrincipalDelPedimento.tipoDeOperacion;
+  const tipoOperacion =
+    pedimento.encabezadoPrincipalDelPedimento.tipoDeOperacion;
   const regimen = pedimento.encabezadoPrincipalDelPedimento.regimen;
   const observaciones = pedimento.observacionesANivelPedimento;
 

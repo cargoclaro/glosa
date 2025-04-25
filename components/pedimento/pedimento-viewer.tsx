@@ -103,15 +103,23 @@ const PedimentoViewer = ({
   // Transform liquidaciones from pedimento to match our component's expected structure
   const liquidacionData = {
     conceptos:
-      pedimento.encabezadoPrincipalDelPedimento.cuadroDeLiquidacion.liquidaciones?.map((item) => ({
-        concepto: item.concepto || '',
-        fp: item.fp?.toString() || '0',
-        importe: item.importe || 0,
-      })) || [],
+      pedimento.encabezadoPrincipalDelPedimento.cuadroDeLiquidacion.liquidaciones?.map(
+        (item) => ({
+          concepto: item.concepto || '',
+          fp: item.fp?.toString() || '0',
+          importe: item.importe || 0,
+        })
+      ) || [],
     totales: {
-      efectivo: pedimento.encabezadoPrincipalDelPedimento.cuadroDeLiquidacion.totales?.efectivo || 0,
-      otros: pedimento.encabezadoPrincipalDelPedimento.cuadroDeLiquidacion.totales?.otros || 0,
-      total: pedimento.encabezadoPrincipalDelPedimento.cuadroDeLiquidacion.totales?.total || 0,
+      efectivo:
+        pedimento.encabezadoPrincipalDelPedimento.cuadroDeLiquidacion.totales
+          ?.efectivo || 0,
+      otros:
+        pedimento.encabezadoPrincipalDelPedimento.cuadroDeLiquidacion.totales
+          ?.otros || 0,
+      total:
+        pedimento.encabezadoPrincipalDelPedimento.cuadroDeLiquidacion.totales
+          ?.total || 0,
     },
   };
 
@@ -136,10 +144,18 @@ const PedimentoViewer = ({
               <div className="w-full">
                 <PedimentoImportador
                   datosImportador={{
-                    rfc: pedimento.encabezadoPrincipalDelPedimento.datosImportador.rfc || '',
-                    curp: pedimento.encabezadoPrincipalDelPedimento.datosImportador.curp || '',
-                    razon_social: pedimento.encabezadoPrincipalDelPedimento.datosImportador.razonSocial || '',
-                    domicilio: pedimento.encabezadoPrincipalDelPedimento.datosImportador.domicilio || '',
+                    rfc:
+                      pedimento.encabezadoPrincipalDelPedimento.datosImportador
+                        .rfc || '',
+                    curp:
+                      pedimento.encabezadoPrincipalDelPedimento.datosImportador
+                        .curp || '',
+                    razon_social:
+                      pedimento.encabezadoPrincipalDelPedimento.datosImportador
+                        .razonSocial || '',
+                    domicilio:
+                      pedimento.encabezadoPrincipalDelPedimento.datosImportador
+                        .domicilio || '',
                   }}
                   tabs={tabs}
                   onClick={onClick}
@@ -149,12 +165,21 @@ const PedimentoViewer = ({
               <div className="w-full">
                 <PedimentoIncrementables
                   incrementables={{
-                    val_seguros: pedimento.encabezadoPrincipalDelPedimento.incrementables.valorSeguros || 0,
-                    seguros: pedimento.encabezadoPrincipalDelPedimento.incrementables.seguros || 0,
-                    fletes: pedimento.encabezadoPrincipalDelPedimento.incrementables.fletes || 0,
-                    embalajes: pedimento.encabezadoPrincipalDelPedimento.incrementables.embalajes || 0,
+                    val_seguros:
+                      pedimento.encabezadoPrincipalDelPedimento.incrementables
+                        .valorSeguros || 0,
+                    seguros:
+                      pedimento.encabezadoPrincipalDelPedimento.incrementables
+                        .seguros || 0,
+                    fletes:
+                      pedimento.encabezadoPrincipalDelPedimento.incrementables
+                        .fletes || 0,
+                    embalajes:
+                      pedimento.encabezadoPrincipalDelPedimento.incrementables
+                        .embalajes || 0,
                     otros_incrementables:
-                      pedimento.encabezadoPrincipalDelPedimento.incrementables.otrosIncrementables || 0,
+                      pedimento.encabezadoPrincipalDelPedimento.incrementables
+                        .otrosIncrementables || 0,
                   }}
                   tabs={tabs}
                   onClick={onClick}
@@ -165,15 +190,20 @@ const PedimentoViewer = ({
                 <PedimentoDecrementables
                   decrementables={{
                     transporte_decrementables:
-                      pedimento.encabezadoPrincipalDelPedimento.decrementables.transporteDecrementables || 0,
+                      pedimento.encabezadoPrincipalDelPedimento.decrementables
+                        .transporteDecrementables || 0,
                     seguro_decrementables:
-                      pedimento.encabezadoPrincipalDelPedimento.decrementables.seguroDecrementables || 0,
+                      pedimento.encabezadoPrincipalDelPedimento.decrementables
+                        .seguroDecrementables || 0,
                     carga_decrementables:
-                      pedimento.encabezadoPrincipalDelPedimento.decrementables.cargaDecrementables || 0,
+                      pedimento.encabezadoPrincipalDelPedimento.decrementables
+                        .cargaDecrementables || 0,
                     descarga_decrementables:
-                      pedimento.encabezadoPrincipalDelPedimento.decrementables.descargaDecrementables || 0,
+                      pedimento.encabezadoPrincipalDelPedimento.decrementables
+                        .descargaDecrementables || 0,
                     otros_decrementables:
-                      pedimento.encabezadoPrincipalDelPedimento.decrementables.otrosDecrementables || 0,
+                      pedimento.encabezadoPrincipalDelPedimento.decrementables
+                        .otrosDecrementables || 0,
                   }}
                   tabs={tabs}
                   onClick={onClick}
@@ -183,7 +213,8 @@ const PedimentoViewer = ({
               <div className="w-full">
                 <PedimentoMarcasBultos
                   marcasNumerosBultos={
-                    pedimento.encabezadoPrincipalDelPedimento.marcasNumerosBultos?.marcas || ''
+                    pedimento.encabezadoPrincipalDelPedimento
+                      .marcasNumerosBultos?.marcas || ''
                   }
                   tabs={tabs}
                   onClick={onClick}
@@ -194,7 +225,8 @@ const PedimentoViewer = ({
                 <PedimentoIdentificadores
                   identificadoresNivelPedimento={{
                     clave_seccion_aduanera:
-                      pedimento.encabezadoPrincipalDelPedimento.aduanaEntradaOSalida ?? '-',
+                      pedimento.encabezadoPrincipalDelPedimento
+                        .aduanaEntradaOSalida ?? '-',
                   }}
                   identificadoresPedimento={pedimento.identificadoresPedimento.map(
                     (id) => ({
@@ -204,12 +236,8 @@ const PedimentoViewer = ({
                       complemento_3: id.complemento3 || '',
                     })
                   )}
-                  fechaEntrada={
-                    pedimento.encabezadoPrincipalDelPedimento.fechas.entrada?.toString()
-                  }
-                  fechaPago={
-                    pedimento.encabezadoPrincipalDelPedimento.fechas.presentacion?.toString()
-                  }
+                  fechaEntrada={pedimento.encabezadoPrincipalDelPedimento.fechas.entrada?.toString()}
+                  fechaPago={pedimento.encabezadoPrincipalDelPedimento.fechas.presentacion?.toString()}
                   // Generate tasas from partidas contribuciones if available
                   tasas={
                     pedimento.partidas?.[0]?.contribuciones?.map((c) => ({
@@ -231,7 +259,9 @@ const PedimentoViewer = ({
             <div className="flex w-full flex-col gap-2">
               <div className="w-full">
                 <PedimentoProveedor
-                  datosDelProveedorOComprador={pedimento.datosDelProveedorOComprador}
+                  datosDelProveedorOComprador={
+                    pedimento.datosDelProveedorOComprador
+                  }
                   tabs={tabs}
                   onClick={onClick}
                   tabInfoSelected={tabInfoSelected}
@@ -239,8 +269,16 @@ const PedimentoViewer = ({
               </div>
               <div className="w-full">
                 <PedimentoContenedores
-                  numero={pedimento.contenedoresOEquipoFerrocarrilONumeroEconomicoVehiculo?.numero || ''}
-                  tipo={pedimento.contenedoresOEquipoFerrocarrilONumeroEconomicoVehiculo?.tipo || ''}
+                  numero={
+                    pedimento
+                      .contenedoresOEquipoFerrocarrilONumeroEconomicoVehiculo
+                      ?.numero || ''
+                  }
+                  tipo={
+                    pedimento
+                      .contenedoresOEquipoFerrocarrilONumeroEconomicoVehiculo
+                      ?.tipo || ''
+                  }
                   tabs={tabs}
                   onClick={onClick}
                   tabInfoSelected={tabInfoSelected}
@@ -262,7 +300,9 @@ const PedimentoViewer = ({
                 </div>
                 <div className="grid grid-cols-12 gap-0">
                   <div className="col-span-12 flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-[10px] text-xs last:border-r-0">
-                    {pedimento.guiasOManifiestosOConocimientosDeEmbarqueODocumentosDeTransporte?.numeroMaster || ''}
+                    {pedimento
+                      .guiasOManifiestosOConocimientosDeEmbarqueODocumentosDeTransporte
+                      ?.numeroMaster || ''}
                   </div>
                 </div>
               </div>

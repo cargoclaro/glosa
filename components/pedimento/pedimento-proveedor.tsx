@@ -1,11 +1,11 @@
+import type { Pedimento } from '@/shared/services/customGloss/extract-and-structure/schemas';
 import type React from 'react';
 import type { CustomGlossTabTable } from '~/db/schema';
 import { cn } from '~/lib/utils';
 import { getHighlightBorder, getHighlightFill } from './utils/highlight-styles';
-import type { Pedimento } from '@/shared/services/customGloss/extract-and-structure/schemas';
 
 interface PedimentoProveedorProps {
-  datosDelProveedorOComprador: Pedimento['datosDelProveedorOComprador']
+  datosDelProveedorOComprador: Pedimento['datosDelProveedorOComprador'];
   tabs?: CustomGlossTabTable[];
   onClick: (keyword: string) => void;
   tabInfoSelected?: { name: string; isCorrect: boolean; isVerified: boolean };
@@ -44,95 +44,113 @@ const PedimentoProveedor: React.FC<PedimentoProveedorProps> = ({
             DATOS DEL PROVEEDOR O COMPRADOR
           </div>
 
-          {datosDelProveedorOComprador.map(({ idFiscal, nombreRazonSocial, domicilio, vinculacion, facturas }) => (
-            <>
-              {/* Header row */}
-              <div className="grid grid-cols-12 gap-0 border-gray-400 border-b bg-white">
-              <div className="col-span-2 flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 font-semibold text-[10px] text-xs uppercase last:border-r-0">
-                ID FISCAL:
-              </div>
-              <div className="col-span-5 flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 font-semibold text-[10px] text-xs uppercase last:border-r-0">
-                NOMBRE, DENOMINACION O RAZON SOCIAL:
-              </div>
-              <div className="col-span-4 flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 font-semibold text-[10px] text-xs uppercase last:border-r-0">
-                DOMICILIO:
-              </div>
-              <div className="col-span-1 flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 font-semibold text-[10px] text-xs uppercase last:border-r-0">
-                VINCULACION
-              </div>
-            </div>
-
-            {/* Data row */}
-            <div className="grid grid-cols-12 gap-0 border-gray-400 border-b">
-              <div className="col-span-2 flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-[10px] text-xs last:border-r-0">
-                {idFiscal || ''}
-              </div>
-              <div className="col-span-5 flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-[10px] text-xs last:border-r-0">
-                {nombreRazonSocial || ''}
-              </div>
-              <div className="col-span-4 flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-[10px] text-xs last:border-r-0">
-                {domicilio || ''}
-              </div>
-              <div className="col-span-1 flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-center text-[10px] text-xs last:border-r-0">
-                {vinculacion || ''}
-              </div>
-            </div>
-
-            {facturas.map(({ numeroDeCFDIODocumentoEquivalente, fecha, incoterm, moneda, valorMoneda, factorMoneda, valorDolares }) => (
+          {datosDelProveedorOComprador.map(
+            ({
+              idFiscal,
+              nombreRazonSocial,
+              domicilio,
+              vinculacion,
+              facturas,
+            }) => (
               <>
-              {/* Facturas section - column headers */}
-              <div className="grid grid-cols-7 gap-0 border-gray-400 border-b bg-white">
-                <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-center font-semibold text-[10px] text-xs uppercase last:border-r-0">
-                  NUM.FACTURA
+                {/* Header row */}
+                <div className="grid grid-cols-12 gap-0 border-gray-400 border-b bg-white">
+                  <div className="col-span-2 flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 font-semibold text-[10px] text-xs uppercase last:border-r-0">
+                    ID FISCAL:
+                  </div>
+                  <div className="col-span-5 flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 font-semibold text-[10px] text-xs uppercase last:border-r-0">
+                    NOMBRE, DENOMINACION O RAZON SOCIAL:
+                  </div>
+                  <div className="col-span-4 flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 font-semibold text-[10px] text-xs uppercase last:border-r-0">
+                    DOMICILIO:
+                  </div>
+                  <div className="col-span-1 flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 font-semibold text-[10px] text-xs uppercase last:border-r-0">
+                    VINCULACION
+                  </div>
                 </div>
-                <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-center font-semibold text-[10px] text-xs uppercase last:border-r-0">
-                  FECHA
-                </div>
-                <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-center font-semibold text-[10px] text-xs uppercase last:border-r-0">
-                  INCOTERM
-                </div>
-                <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-center font-semibold text-[10px] text-xs uppercase last:border-r-0">
-                  MONEDA FACT
-                </div>
-                <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-center font-semibold text-[10px] text-xs uppercase last:border-r-0">
-                  VAL.MON.FACT
-                </div>
-                <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-center font-semibold text-[10px] text-xs uppercase last:border-r-0">
-                  FACTOR MON.FACT
-                </div>
-                <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-center font-semibold text-[10px] text-xs uppercase last:border-r-0">
-                  VAL.DOLARES
-                </div>
-              </div>
 
-              {/* Factura data row */}
-              <div className="grid grid-cols-7 gap-0 border-gray-400 border-b">
-                <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-[10px] text-xs last:border-r-0">
-                  {numeroDeCFDIODocumentoEquivalente || ''}
+                {/* Data row */}
+                <div className="grid grid-cols-12 gap-0 border-gray-400 border-b">
+                  <div className="col-span-2 flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-[10px] text-xs last:border-r-0">
+                    {idFiscal || ''}
+                  </div>
+                  <div className="col-span-5 flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-[10px] text-xs last:border-r-0">
+                    {nombreRazonSocial || ''}
+                  </div>
+                  <div className="col-span-4 flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-[10px] text-xs last:border-r-0">
+                    {domicilio || ''}
+                  </div>
+                  <div className="col-span-1 flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-center text-[10px] text-xs last:border-r-0">
+                    {vinculacion || ''}
+                  </div>
                 </div>
-                <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-center text-[10px] text-xs last:border-r-0">
-                  {fecha?.toString() || ''}
-                </div>
-                <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-center text-[10px] text-xs last:border-r-0">
-                  {incoterm || ''}
-                </div>
-                <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-center text-[10px] text-xs last:border-r-0">
-                  {moneda || ''}
-                </div>
-                <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-right text-[10px] text-xs last:border-r-0">
-                  {formatNumber(valorMoneda)}
-                </div>
-                <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-right text-[10px] text-xs last:border-r-0">
-                  {factorMoneda?.toFixed(8) || ''}
-                </div>
-                <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-right text-[10px] text-xs last:border-r-0">
-                  {formatNumber(valorDolares)}
-                </div>
-              </div>
+
+                {facturas.map(
+                  ({
+                    numeroDeCFDIODocumentoEquivalente,
+                    fecha,
+                    incoterm,
+                    moneda,
+                    valorMoneda,
+                    factorMoneda,
+                    valorDolares,
+                  }) => (
+                    <>
+                      {/* Facturas section - column headers */}
+                      <div className="grid grid-cols-7 gap-0 border-gray-400 border-b bg-white">
+                        <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-center font-semibold text-[10px] text-xs uppercase last:border-r-0">
+                          NUM.FACTURA
+                        </div>
+                        <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-center font-semibold text-[10px] text-xs uppercase last:border-r-0">
+                          FECHA
+                        </div>
+                        <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-center font-semibold text-[10px] text-xs uppercase last:border-r-0">
+                          INCOTERM
+                        </div>
+                        <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-center font-semibold text-[10px] text-xs uppercase last:border-r-0">
+                          MONEDA FACT
+                        </div>
+                        <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-center font-semibold text-[10px] text-xs uppercase last:border-r-0">
+                          VAL.MON.FACT
+                        </div>
+                        <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-center font-semibold text-[10px] text-xs uppercase last:border-r-0">
+                          FACTOR MON.FACT
+                        </div>
+                        <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-center font-semibold text-[10px] text-xs uppercase last:border-r-0">
+                          VAL.DOLARES
+                        </div>
+                      </div>
+
+                      {/* Factura data row */}
+                      <div className="grid grid-cols-7 gap-0 border-gray-400 border-b">
+                        <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-[10px] text-xs last:border-r-0">
+                          {numeroDeCFDIODocumentoEquivalente || ''}
+                        </div>
+                        <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-center text-[10px] text-xs last:border-r-0">
+                          {fecha?.toString() || ''}
+                        </div>
+                        <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-center text-[10px] text-xs last:border-r-0">
+                          {incoterm || ''}
+                        </div>
+                        <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-center text-[10px] text-xs last:border-r-0">
+                          {moneda || ''}
+                        </div>
+                        <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-right text-[10px] text-xs last:border-r-0">
+                          {formatNumber(valorMoneda)}
+                        </div>
+                        <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-right text-[10px] text-xs last:border-r-0">
+                          {factorMoneda?.toFixed(8) || ''}
+                        </div>
+                        <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-right text-[10px] text-xs last:border-r-0">
+                          {formatNumber(valorDolares)}
+                        </div>
+                      </div>
+                    </>
+                  )
+                )}
               </>
-              ))}
-            </>
-          ))}
+            )
+          )}
         </div>
       </div>
     </div>

@@ -10,7 +10,8 @@ async function validateTipoTransporte(
   transportDocument?: OCR
 ) {
   // Extract transport type from pedimento
-  const tipoTransporte = pedimento.contenedoresOEquipoFerrocarrilONumeroEconomicoVehiculo?.tipo;
+  const tipoTransporte =
+    pedimento.contenedoresOEquipoFerrocarrilONumeroEconomicoVehiculo?.tipo;
   const observaciones = pedimento.observacionesANivelPedimento;
   const tipoTransporteEntradaSalida =
     pedimento.encabezadoPrincipalDelPedimento.tipoDeOperacion;
@@ -108,7 +109,9 @@ async function validateNumeroGuiaEmbarque(
 ) {
   // Extract guide/shipment number from pedimento
   // TODO: No se si deberia ser el Master o el House number
-  const numeroGuiaEmbarque = pedimento.guiasOManifiestosOConocimientosDeEmbarqueODocumentosDeTransporte?.numeroMaster;
+  const numeroGuiaEmbarque =
+    pedimento.guiasOManifiestosOConocimientosDeEmbarqueODocumentosDeTransporte
+      ?.numeroMaster;
   const observaciones = pedimento.observacionesANivelPedimento;
 
   // Get markdown representation
@@ -126,7 +129,9 @@ async function validateNumeroGuiaEmbarque(
             { name: 'Número de guía/embarque', value: numeroGuiaEmbarque },
             {
               name: 'Tipo de transporte',
-              value: pedimento.encabezadoPrincipalDelPedimento.mediosTransporte.entradaSalida,
+              value:
+                pedimento.encabezadoPrincipalDelPedimento.mediosTransporte
+                  .entradaSalida,
             },
             { name: 'Observaciones', value: observaciones },
           ],

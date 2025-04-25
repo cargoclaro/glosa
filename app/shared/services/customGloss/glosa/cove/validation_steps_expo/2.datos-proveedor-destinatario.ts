@@ -141,7 +141,7 @@ async function validateDatosGeneralesDestinatario(
 async function validateDomicilioDestinatario(
   traceId: string,
   cove: Cove,
-  cfdi?: OCR,
+  cfdi?: OCR
 ) {
   // Extract recipient address data from different sources
   const domicilioCove = cove.domicilioDelDestinatario;

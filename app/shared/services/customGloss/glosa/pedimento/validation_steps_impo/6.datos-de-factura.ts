@@ -10,7 +10,8 @@ async function validateRfcFormat(
   cove: Cove,
   carta318?: OCR
 ) {
-  const rfcPedimento = pedimento.encabezadoPrincipalDelPedimento.datosImportador.rfc;
+  const rfcPedimento =
+    pedimento.encabezadoPrincipalDelPedimento.datosImportador.rfc;
   const rfcCove = cove?.datosGeneralesDelDestinatario?.taxIdSinTaxIdRfcCurp;
   const carta318mkdown = carta318?.markdown_representation;
   const observaciones = pedimento.observacionesANivelPedimento;
@@ -48,7 +49,8 @@ async function validateCesionDerechos(
   cartaSesion?: OCR,
   carta318?: OCR
 ) {
-  const fechaEntradaPedimento = pedimento.encabezadoPrincipalDelPedimento.fechas.entrada;
+  const fechaEntradaPedimento =
+    pedimento.encabezadoPrincipalDelPedimento.fechas.entrada;
   const cartaSesionmkdown = cartaSesion?.markdown_representation;
   const carta318mkdown = carta318?.markdown_representation;
   const observaciones = pedimento.observacionesANivelPedimento;
@@ -89,11 +91,14 @@ async function validateDatosImportador(
   cove: Cove,
   carta318?: OCR
 ) {
-  const rfcPedimento = pedimento.encabezadoPrincipalDelPedimento.datosImportador.rfc;
+  const rfcPedimento =
+    pedimento.encabezadoPrincipalDelPedimento.datosImportador.rfc;
   const rfcCove = cove?.datosGeneralesDelDestinatario?.taxIdSinTaxIdRfcCurp;
-  const domicilioPedimento = pedimento.encabezadoPrincipalDelPedimento.datosImportador.domicilio;
+  const domicilioPedimento =
+    pedimento.encabezadoPrincipalDelPedimento.datosImportador.domicilio;
   const domicilioCove = cove?.domicilioDelDestinatario;
-  const razonSocialPedimento = pedimento.encabezadoPrincipalDelPedimento.datosImportador.razonSocial;
+  const razonSocialPedimento =
+    pedimento.encabezadoPrincipalDelPedimento.datosImportador.razonSocial;
   const razonSocialCove =
     cove?.datosGeneralesDelDestinatario.nombresORazonSocial;
 
@@ -158,10 +163,12 @@ async function validateDatosProveedor(
   cove: Cove,
   carta318?: OCR
 ) {
-  const nombreProveedorPedimento = pedimento.datosDelProveedorOComprador[0]?.nombreRazonSocial;
+  const nombreProveedorPedimento =
+    pedimento.datosDelProveedorOComprador[0]?.nombreRazonSocial;
   const nombreProveedorCove =
     cove?.datosGeneralesDelProveedor.nombresORazonSocial;
-  const domicilioProveedorPedimento = pedimento.datosDelProveedorOComprador[0]?.domicilio;
+  const domicilioProveedorPedimento =
+    pedimento.datosDelProveedorOComprador[0]?.domicilio;
   const domicilioProveedorCove = cove?.domicilioDelProveedor;
   const idProveedorCove =
     cove?.datosGeneralesDelProveedor?.taxIdSinTaxIdRfcCurp;
@@ -193,7 +200,10 @@ async function validateDatosProveedor(
           data: [
             { name: 'Nombre/Razón social', value: nombreProveedorPedimento },
             { name: 'Domicilio', value: domicilioProveedorPedimento },
-            { name: 'ID Fiscal', value: pedimento.datosDelProveedorOComprador[0]?.idFiscal },
+            {
+              name: 'ID Fiscal',
+              value: pedimento.datosDelProveedorOComprador[0]?.idFiscal,
+            },
             { name: 'Observaciones', value: observaciones },
           ],
         },
@@ -221,7 +231,8 @@ async function validateFechasYFolios(
   invoice?: OCR,
   carta318?: OCR
 ) {
-  const fechaEntradaPedimento = pedimento.encabezadoPrincipalDelPedimento.fechas.entrada;
+  const fechaEntradaPedimento =
+    pedimento.encabezadoPrincipalDelPedimento.fechas.entrada;
   const fechaExpedicionCove = cove?.datosDelAcuseDeValor.fechaExpedicion;
 
   const invoicemkdown = invoice?.markdown_representation;
@@ -265,16 +276,20 @@ async function validateMonedaYEquivalencia(
   carta318?: OCR,
   invoice?: OCR
 ) {
-  const monedaPedimento = pedimento.datosDelProveedorOComprador[0]?.facturas[0]?.moneda;
+  const monedaPedimento =
+    pedimento.datosDelProveedorOComprador[0]?.facturas[0]?.moneda;
   // TODO: Do this in a loop, instead of just checking the first mercancia
   const monedaCove = cove?.mercancias[0]?.datosDeLaMercancia?.tipoMoneda;
-  const valorDolaresPedimento = pedimento.datosDelProveedorOComprador[0]?.facturas[0]?.valorDolares;
+  const valorDolaresPedimento =
+    pedimento.datosDelProveedorOComprador[0]?.facturas[0]?.valorDolares;
   const valorDolaresCoveTotal = cove?.mercancias?.reduce(
     (sum, item) => sum + (item?.datosDeLaMercancia?.valorTotalEnDolares || 0),
     0
   );
-  const valorFactura = pedimento.datosDelProveedorOComprador[0]?.facturas[0]?.valorMoneda;
-  const factorMonedaFactura = pedimento.datosDelProveedorOComprador[0]?.facturas[0]?.factorMoneda;
+  const valorFactura =
+    pedimento.datosDelProveedorOComprador[0]?.facturas[0]?.valorMoneda;
+  const factorMonedaFactura =
+    pedimento.datosDelProveedorOComprador[0]?.facturas[0]?.factorMoneda;
   const fechaEntrada = pedimento.encabezadoPrincipalDelPedimento.fechas.entrada;
 
   const carta318mkdown = carta318?.markdown_representation;

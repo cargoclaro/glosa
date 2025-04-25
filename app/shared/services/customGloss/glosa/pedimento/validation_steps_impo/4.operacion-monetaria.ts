@@ -11,7 +11,8 @@ async function validateTransportDocumentEntryDate(
   pedimento: Pedimento,
   transportDocument?: OCR
 ) {
-  const pedimentoEntryDate = pedimento.encabezadoPrincipalDelPedimento.fechas.entrada;
+  const pedimentoEntryDate =
+    pedimento.encabezadoPrincipalDelPedimento.fechas.entrada;
   const transportDocmkdown = transportDocument?.markdown_representation;
   const observaciones = pedimento.observacionesANivelPedimento;
 
@@ -89,16 +90,19 @@ async function validateValSeguros(
   // Get the Incoterm (International Commercial Term) from the invoice data section of the pedimento.
   // Incoterms define the responsibilities of buyers and sellers, including insurance obligations.
   // TODO: We should iterate over the invoices to get the incoterm from the first one.
-  const incoterm = pedimento.datosDelProveedorOComprador[0]?.facturas[0]?.incoterm;
+  const incoterm =
+    pedimento.datosDelProveedorOComprador[0]?.facturas[0]?.incoterm;
 
   // Get the 'Val. Seguros' (Value of Insurance) from the incrementables section.
   // This is the field we are primarily validating. It represents the total value of goods covered by insurance.
-  const valSeguros = pedimento.encabezadoPrincipalDelPedimento.incrementables.valorSeguros;
+  const valSeguros =
+    pedimento.encabezadoPrincipalDelPedimento.incrementables.valorSeguros;
 
   // Get the 'Precio pagado / valor comercial' (Price paid / commercial value) from the values section.
   // This is the value of the goods themselves, which helps us check if the insurance amount is reasonable.
   const precioPagadoValorComercial =
-    pedimento.encabezadoPrincipalDelPedimento.valores.precioPagadoOValorComercial;
+    pedimento.encabezadoPrincipalDelPedimento.valores
+      .precioPagadoOValorComercial;
 
   // Get the 'Tipo de cambio' (Exchange Rate) from the header.
   // This might be needed if insurance details in other documents are in foreign currency.
@@ -107,7 +111,8 @@ async function validateValSeguros(
   // Get the 'Clave de Pedimento' (Pedimento Key/Code) from the header.
   // This code tells us the type of customs operation (e.g., definitive import, temporary, complementary).
   // It's crucial for knowing if the 'Val. Seguros' field should even be filled out.
-  const clavePedimento = pedimento.encabezadoPrincipalDelPedimento.claveDePedimento;
+  const clavePedimento =
+    pedimento.encabezadoPrincipalDelPedimento.claveDePedimento;
 
   // Get any general observations from the pedimento.
   // These might contain relevant notes about insurance or the operation type.
@@ -205,8 +210,10 @@ async function validateSeguros(
   transportDocument?: OCR,
   carta318?: OCR
 ) {
-  const incoterm = pedimento.datosDelProveedorOComprador[0]?.facturas[0]?.incoterm;
-  const seguros = pedimento.encabezadoPrincipalDelPedimento.incrementables.seguros;
+  const incoterm =
+    pedimento.datosDelProveedorOComprador[0]?.facturas[0]?.incoterm;
+  const seguros =
+    pedimento.encabezadoPrincipalDelPedimento.incrementables.seguros;
   const tipoCambio = pedimento.encabezadoPrincipalDelPedimento.tipoDeCambio;
   const observaciones = pedimento.observacionesANivelPedimento;
   const carta318mkdown = carta318?.markdown_representation;
@@ -259,8 +266,10 @@ async function validateFletes(
   transportDocument?: OCR,
   carta318?: OCR
 ) {
-  const incoterm = pedimento.datosDelProveedorOComprador[0]?.facturas[0]?.incoterm;
-  const fletes = pedimento.encabezadoPrincipalDelPedimento.incrementables.fletes;
+  const incoterm =
+    pedimento.datosDelProveedorOComprador[0]?.facturas[0]?.incoterm;
+  const fletes =
+    pedimento.encabezadoPrincipalDelPedimento.incrementables.fletes;
   const tipoCambio = pedimento.encabezadoPrincipalDelPedimento.tipoDeCambio;
   const observaciones = pedimento.observacionesANivelPedimento;
   const carta318mkdown = carta318?.markdown_representation;
@@ -313,8 +322,10 @@ async function validateEmbalajes(
   transportDocument?: OCR,
   carta318?: OCR
 ) {
-  const incoterm = pedimento.datosDelProveedorOComprador[0]?.facturas[0]?.incoterm;
-  const embalajes = pedimento.encabezadoPrincipalDelPedimento.incrementables.embalajes;
+  const incoterm =
+    pedimento.datosDelProveedorOComprador[0]?.facturas[0]?.incoterm;
+  const embalajes =
+    pedimento.encabezadoPrincipalDelPedimento.incrementables.embalajes;
   const tipoCambio = pedimento.encabezadoPrincipalDelPedimento.tipoDeCambio;
   const observaciones = pedimento.observacionesANivelPedimento;
   const carta318mkdown = carta318?.markdown_representation;
@@ -367,8 +378,11 @@ async function validateOtrosIncrementables(
   transportDocument?: OCR,
   carta318?: OCR
 ) {
-  const incoterm = pedimento.datosDelProveedorOComprador[0]?.facturas[0]?.incoterm;
-  const otrosIncrementables = pedimento.encabezadoPrincipalDelPedimento.incrementables.otrosIncrementables;
+  const incoterm =
+    pedimento.datosDelProveedorOComprador[0]?.facturas[0]?.incoterm;
+  const otrosIncrementables =
+    pedimento.encabezadoPrincipalDelPedimento.incrementables
+      .otrosIncrementables;
   const tipoCambio = pedimento.encabezadoPrincipalDelPedimento.tipoDeCambio;
   const observaciones = pedimento.observacionesANivelPedimento;
   const carta318mkdown = carta318?.markdown_representation;
@@ -420,9 +434,11 @@ async function validateValorDolares(
   invoice?: OCR,
   carta318?: OCR
 ) {
-  const valorDolares = pedimento.encabezadoPrincipalDelPedimento.valores.valorDolares;
+  const valorDolares =
+    pedimento.encabezadoPrincipalDelPedimento.valores.valorDolares;
   const tipoCambio = pedimento.encabezadoPrincipalDelPedimento.tipoDeCambio;
-  const valorAduana = pedimento.encabezadoPrincipalDelPedimento.valores.valorAduana;
+  const valorAduana =
+    pedimento.encabezadoPrincipalDelPedimento.valores.valorAduana;
   const observaciones = pedimento.observacionesANivelPedimento;
   const invoicemkdown = invoice?.markdown_representation;
   const carta318mkdown = carta318?.markdown_representation;
@@ -462,9 +478,13 @@ async function validateValorComercial(
   invoice?: OCR,
   carta318?: OCR
 ) {
-  const valorComercial = pedimento.encabezadoPrincipalDelPedimento.valores.precioPagadoOValorComercial;
-  const valorAduana = pedimento.encabezadoPrincipalDelPedimento.valores.valorAduana;
-  const incrementables = pedimento.encabezadoPrincipalDelPedimento.incrementables;
+  const valorComercial =
+    pedimento.encabezadoPrincipalDelPedimento.valores
+      .precioPagadoOValorComercial;
+  const valorAduana =
+    pedimento.encabezadoPrincipalDelPedimento.valores.valorAduana;
+  const incrementables =
+    pedimento.encabezadoPrincipalDelPedimento.incrementables;
   const observaciones = pedimento.observacionesANivelPedimento;
   const invoicemkdown = invoice?.markdown_representation;
   const carta318mkdown = carta318?.markdown_representation;
@@ -504,9 +524,13 @@ async function validateValorAduana(
   invoice?: OCR,
   carta318?: OCR
 ) {
-  const valorAduana = pedimento.encabezadoPrincipalDelPedimento.valores.valorAduana;
-  const valorComercial = pedimento.encabezadoPrincipalDelPedimento.valores.precioPagadoOValorComercial;
-  const incrementables = pedimento.encabezadoPrincipalDelPedimento.incrementables;
+  const valorAduana =
+    pedimento.encabezadoPrincipalDelPedimento.valores.valorAduana;
+  const valorComercial =
+    pedimento.encabezadoPrincipalDelPedimento.valores
+      .precioPagadoOValorComercial;
+  const incrementables =
+    pedimento.encabezadoPrincipalDelPedimento.incrementables;
   const tipoCambio = pedimento.encabezadoPrincipalDelPedimento.tipoDeCambio;
   const observaciones = pedimento.observacionesANivelPedimento;
   const invoicemkdown = invoice?.markdown_representation;

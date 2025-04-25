@@ -1,7 +1,5 @@
-import type {
-  Pedimento,
-} from '../../../extract-and-structure/schemas';
 import type { OCR } from '~/lib/utils';
+import type { Pedimento } from '../../../extract-and-structure/schemas';
 import { apendice2 } from '../../anexo-22/apendice-2';
 import { apendice16 } from '../../anexo-22/apendice-16';
 import { glosar } from '../../validation-result';
@@ -15,7 +13,8 @@ async function validateCoherenciaOrigenDestino(
   pedimento: Pedimento,
   transportDoc?: OCR
 ) {
-  const tipoOperacion = pedimento.encabezadoPrincipalDelPedimento.tipoDeOperacion;
+  const tipoOperacion =
+    pedimento.encabezadoPrincipalDelPedimento.tipoDeOperacion;
   const observaciones = pedimento.observacionesANivelPedimento;
 
   const validation = {
@@ -48,8 +47,10 @@ async function validateCoherenciaOrigenDestino(
  * Validates that the pedimento key is valid for the operation type according to Appendix 2
  */
 async function validateClavePedimento(traceId: string, pedimento: Pedimento) {
-  const tipoOperacion = pedimento.encabezadoPrincipalDelPedimento.tipoDeOperacion;
-  const clavePedimento = pedimento.encabezadoPrincipalDelPedimento.claveDePedimento;
+  const tipoOperacion =
+    pedimento.encabezadoPrincipalDelPedimento.tipoDeOperacion;
+  const clavePedimento =
+    pedimento.encabezadoPrincipalDelPedimento.claveDePedimento;
 
   const validation = {
     name: 'Validación de clave de pedimento',
@@ -81,7 +82,8 @@ async function validateClavePedimento(traceId: string, pedimento: Pedimento) {
  * Validates that the regime is valid for the operation type according to Appendix 16
  */
 async function validateRegimen(traceId: string, pedimento: Pedimento) {
-  const tipoOperacion = pedimento.encabezadoPrincipalDelPedimento.tipoDeOperacion;
+  const tipoOperacion =
+    pedimento.encabezadoPrincipalDelPedimento.tipoDeOperacion;
   const regimen = pedimento.encabezadoPrincipalDelPedimento.regimen;
 
   const validation = {

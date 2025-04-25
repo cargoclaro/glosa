@@ -150,7 +150,9 @@ const PedimentoHeader: React.FC<PedimentoHeaderProps> = ({
             TIPO CAMBIO:
           </div>
           <div className="col-span-1 flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 font-normal text-[10px] text-xs text-xs last:border-r-0">
-            {pedimento.encabezadoPrincipalDelPedimento.tipoDeCambio.toFixed(5) || '-'}
+            {pedimento.encabezadoPrincipalDelPedimento.tipoDeCambio.toFixed(
+              5
+            ) || '-'}
           </div>
         </div>
 
@@ -168,7 +170,8 @@ const PedimentoHeader: React.FC<PedimentoHeaderProps> = ({
             PESO BRUTO:
           </div>
           <div className="col-span-1 flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 font-normal text-[10px] text-xs text-xs last:border-r-0">
-            {pedimento.encabezadoPrincipalDelPedimento.pesoBruto?.toFixed(3) || '-'}
+            {pedimento.encabezadoPrincipalDelPedimento.pesoBruto?.toFixed(3) ||
+              '-'}
           </div>
         </div>
 
@@ -210,13 +213,16 @@ const PedimentoHeader: React.FC<PedimentoHeaderProps> = ({
           </div>
           <div className="grid grid-cols-3 gap-0">
             <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-center font-normal text-[10px] text-xs text-xs last:border-r-0">
-              {pedimento.encabezadoPrincipalDelPedimento.mediosTransporte.entradaSalida || '-'}
+              {pedimento.encabezadoPrincipalDelPedimento.mediosTransporte
+                .entradaSalida || '-'}
             </div>
             <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-center font-normal text-[10px] text-xs text-xs last:border-r-0">
-              {pedimento.encabezadoPrincipalDelPedimento.mediosTransporte.arribo || '-'}
+              {pedimento.encabezadoPrincipalDelPedimento.mediosTransporte
+                .arribo || '-'}
             </div>
             <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-center font-normal text-[10px] text-xs text-xs last:border-r-0">
-              {pedimento.encabezadoPrincipalDelPedimento.mediosTransporte.salida || '-'}
+              {pedimento.encabezadoPrincipalDelPedimento.mediosTransporte
+                .salida || '-'}
             </div>
           </div>
         </div>
@@ -236,7 +242,10 @@ const PedimentoHeader: React.FC<PedimentoHeaderProps> = ({
               VALOR DOLARES:
             </div>
             <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-right font-normal text-[10px] text-xs text-xs last:border-r-0">
-              {formatNumber(pedimento.encabezadoPrincipalDelPedimento.valores.valorDolares || 0)}
+              {formatNumber(
+                pedimento.encabezadoPrincipalDelPedimento.valores
+                  .valorDolares || 0
+              )}
             </div>
           </div>
           <div className="grid grid-cols-2 gap-0 border-gray-400 border-b">
@@ -244,7 +253,10 @@ const PedimentoHeader: React.FC<PedimentoHeaderProps> = ({
               VALOR ADUANA:
             </div>
             <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-right font-normal text-[10px] text-xs text-xs last:border-r-0">
-              {formatNumber(pedimento.encabezadoPrincipalDelPedimento.valores.valorAduana || 0)}
+              {formatNumber(
+                pedimento.encabezadoPrincipalDelPedimento.valores.valorAduana ||
+                  0
+              )}
             </div>
           </div>
           <div className="grid grid-cols-2 gap-0">
@@ -253,7 +265,8 @@ const PedimentoHeader: React.FC<PedimentoHeaderProps> = ({
             </div>
             <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-right font-normal text-[10px] text-xs text-xs last:border-r-0">
               {formatNumber(
-                pedimento.encabezadoPrincipalDelPedimento.valores.precioPagadoOValorComercial || 0
+                pedimento.encabezadoPrincipalDelPedimento.valores
+                  .precioPagadoOValorComercial || 0
               )}
             </div>
           </div>

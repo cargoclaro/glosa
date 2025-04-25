@@ -8,8 +8,10 @@ async function validateTipoTransporte(traceId: string, pedimento: Pedimento) {
   // Extract transport type from pedimento
   const tipoTransporteEntradaSalida =
     pedimento.encabezadoPrincipalDelPedimento.mediosTransporte.entradaSalida;
-  const tipoTransporteArribo = pedimento.encabezadoPrincipalDelPedimento.mediosTransporte.arribo;
-  const tipoTransporteSalida = pedimento.encabezadoPrincipalDelPedimento.mediosTransporte.salida;
+  const tipoTransporteArribo =
+    pedimento.encabezadoPrincipalDelPedimento.mediosTransporte.arribo;
+  const tipoTransporteSalida =
+    pedimento.encabezadoPrincipalDelPedimento.mediosTransporte.salida;
 
   const validation = {
     name: 'Clave del tipo de transporte',
@@ -94,7 +96,9 @@ async function validateNumeroGuiaEmbarque(
 ) {
   // Extract guide/shipment number from pedimento
   // TODO: No se si deberia ser el Master o el House number
-  const numeroGuiaEmbarque = pedimento.guiasOManifiestosOConocimientosDeEmbarqueODocumentosDeTransporte?.numeroMaster;
+  const numeroGuiaEmbarque =
+    pedimento.guiasOManifiestosOConocimientosDeEmbarqueODocumentosDeTransporte
+      ?.numeroMaster;
   const transportDocmkdown = transportDocument?.markdown_representation;
 
   const validation = {
@@ -110,7 +114,9 @@ async function validateNumeroGuiaEmbarque(
             { name: 'Número de guía/embarque', value: numeroGuiaEmbarque },
             {
               name: 'Tipo de transporte',
-              value: pedimento.encabezadoPrincipalDelPedimento.mediosTransporte.entradaSalida,
+              value:
+                pedimento.encabezadoPrincipalDelPedimento.mediosTransporte
+                  .entradaSalida,
             },
           ],
         },

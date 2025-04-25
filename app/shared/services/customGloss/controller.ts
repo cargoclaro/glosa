@@ -238,8 +238,10 @@ export const analysis = api
       if (!pedimento || !cove) {
         throw new Error('Should never happen');
       }
-      const operationType = pedimento.encabezadoPrincipalDelPedimento.tipoDeOperacion;
-      const importerName = pedimento.encabezadoPrincipalDelPedimento.datosImportador.razonSocial;
+      const operationType =
+        pedimento.encabezadoPrincipalDelPedimento.tipoDeOperacion;
+      const importerName =
+        pedimento.encabezadoPrincipalDelPedimento.datosImportador.razonSocial;
       langfuse.event({
         traceId: trace.id,
         name: 'Validation Steps',
