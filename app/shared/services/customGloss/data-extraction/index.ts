@@ -1,10 +1,17 @@
 import { Langfuse } from 'langfuse';
 import type { UploadedFileData } from 'uploadthing/types';
 import {
-  extractAndStructureCove,
-  extractAndStructurePackingList,
   extractAndStructurePedimento,
-} from '../extract-and-structure/extract-and-structure';
+} from '../extract-and-structure/pedimento/extract-and-structure-pedimento';
+import {
+  extractAndStructureCove,
+} from '../extract-and-structure/cove/extract-and-structure-cove';
+import {
+  extractAndStructurePackingList,
+} from '../extract-and-structure/packing-list/extract-and-structure-packing-list';
+import {
+  extractAndStructureCFDI,
+} from '../extract-and-structure/cfdi/extract-and-structure-cfdi';
 import type { DocumentType } from '../utils';
 import { extractTextFromImage } from './vision';
 import { ok, err } from 'neverthrow';
@@ -86,7 +93,7 @@ export async function extractTextFromPDFs(
       : null,
     extractAndStructureCove(cove.ufsUrl, traceId),
     cfdi
-      ? extractTextFromImage(cfdi.originalFile, cfdi.documentType, traceId)
+      ? extractAndStructureCFDI(cfdi.ufsUrl)
       : null,
     cartaCesionDeDerechos
       ? extractTextFromImage(

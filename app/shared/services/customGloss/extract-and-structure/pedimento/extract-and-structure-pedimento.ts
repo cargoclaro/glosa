@@ -1,19 +1,54 @@
 import { google } from '@ai-sdk/google';
 import { openai } from '@ai-sdk/openai';
-import { generateObject, generateText } from 'ai';
+import { generateObject } from 'ai';
 import { PDFDocument } from 'pdf-lib';
 import { z } from 'zod';
 import {
   type Partida,
-  cfdiSchema,
   datosGeneralesDePedimentoSchema,
-  datosGeneralesSchema,
-  mercanciaSchema,
-  packingListSchema,
   partidaSchema,
-} from './schemas';
-import { xmlParser } from './xml-parser';
-import { ok, err } from 'neverthrow';
+} from '../schemas';
+
+/**
+ * Combines multiple base64-encoded PDF pages into a single PDF
+ */
+async function combinePagesToPdf(pageBase64Strings: string[]): Promise<string> {
+  // Create a new PDF document
+  const pdfDoc = await PDFDocument.create();
+
+  // Process each page and add it to the new document
+  for (const pageBase64 of pageBase64Strings) {
+    // Remove data URL prefix if present
+    const base64Data = pageBase64.startsWith('data:')
+      ? pageBase64.split(',')[1]
+      : pageBase64;
+
+    // Convert base64 to Uint8Array
+    if (!base64Data) {
+      continue;
+    }
+    const pageBytes = Buffer.from(base64Data, 'base64');
+
+    // Load the page PDF
+    const pagePdf = await PDFDocument.load(pageBytes);
+
+    // Copy all pages (should just be one) from this page PDF
+    const copiedPages = await pdfDoc.copyPages(
+      pagePdf,
+      pagePdf.getPageIndices()
+    );
+
+    // Add each copied page to the new document
+    for (const page of copiedPages) {
+      pdfDoc.addPage(page);
+    }
+  }
+
+  // Save and convert the new PDF to base64
+  const combinedPdfBytes = await pdfDoc.save();
+  return Buffer.from(combinedPdfBytes).toString('base64');
+}
+
 
 /**
  * Fetches a PDF file and returns an array of base64-encoded pages
@@ -46,150 +81,6 @@ async function fetchPdfPages(fileUrl: string): Promise<string[]> {
   return pageBase64Strings;
 }
 
-export async function extractAndStructurePackingList(
-  fileUrl: string,
-  parentTraceId?: string
-) {
-  const telemetryConfig = parentTraceId
-    ? {
-        experimental_telemetry: {
-          isEnabled: true,
-          functionId: 'Packing List',
-          metadata: {
-            langfuseTraceId: parentTraceId,
-            langfuseUpdateParent: false,
-            fileUrl,
-          },
-        },
-      }
-    : {};
-  const { object } = await generateObject({
-    model: google('gemini-2.5-flash-preview-04-17'),
-    seed: 42,
-    ...telemetryConfig,
-    schema: packingListSchema,
-    messages: [
-      {
-        role: 'user',
-        content: [
-          {
-            type: 'text',
-            text: 'Estructura el documento en base al esquema proporcionado.',
-          },
-          {
-            type: 'file',
-            data: `${fileUrl}`,
-            mimeType: 'application/pdf',
-          },
-        ],
-      },
-    ],
-  });
-
-  return object;
-}
-
-export async function extractAndStructureCove(
-  fileUrl: string,
-  parentTraceId: string
-) {
-  const { text } = await generateText({
-    model: google('gemini-2.5-pro-preview-03-25'),
-    seed: 42,
-    experimental_telemetry: {
-      isEnabled: true,
-      functionId: 'Extract cove',
-      metadata: {
-        langfuseTraceId: parentTraceId,
-        langfuseUpdateParent: false,
-        fileUrl,
-      },
-    },
-    messages: [
-      {
-        role: 'user',
-        content: [
-          {
-            type: 'text',
-            text: 'Transcribe the pdf to markdown',
-          },
-          {
-            type: 'file',
-            data: `${fileUrl}`,
-            mimeType: 'application/pdf',
-          },
-        ],
-      },
-    ],
-  });
-  const [{ object: datosGenerales }, { object: mercancias }] =
-    await Promise.all([
-      generateObject({
-        model: google('gemini-2.5-flash-preview-04-17'),
-        seed: 42,
-        experimental_telemetry: {
-          isEnabled: true,
-          functionId: 'Structure datos generales cove',
-          metadata: {
-            langfuseTraceId: parentTraceId,
-            langfuseUpdateParent: false,
-            fileUrl,
-          },
-        },
-        schema: datosGeneralesSchema,
-        messages: [
-          {
-            role: 'user',
-            content: [
-              {
-                type: 'text',
-                text: 'Structure the document based on the provided schema. Keep the text "exactly as is", no exceptions.',
-              },
-              {
-                type: 'text',
-                text,
-              },
-            ],
-          },
-        ],
-      }),
-      generateObject({
-        model: google('gemini-2.5-flash-preview-04-17'),
-        seed: 42,
-        experimental_telemetry: {
-          isEnabled: true,
-          functionId: 'Structure mercancias cove',
-          metadata: {
-            langfuseTraceId: parentTraceId ?? '',
-            langfuseUpdateParent: false,
-            fileUrl,
-          },
-        },
-        output: 'array',
-        schema: mercanciaSchema,
-        messages: [
-          {
-            role: 'user',
-            content: [
-              {
-                type: 'text',
-                text: 'Structure the document based on the provided schema. Keep the text "exactly as is", no exceptions.',
-              },
-              {
-                type: 'text',
-                text,
-              },
-            ],
-          },
-        ],
-      }),
-    ]);
-
-  return {
-    ...datosGenerales,
-    mercancias,
-  };
-}
 
 export async function extractAndStructurePedimento(
   fileUrl: string,
@@ -442,58 +333,4 @@ export async function extractAndStructurePedimento(
     ...datosGeneralesDePedimento,
     partidas,
   };
-}
-
-export async function extractAndStructureCFDI(
-  fileUrl: string,
-) {
-  const response = await fetch(fileUrl);
-  const xmlData = await response.text();
-  const cfdiData = cfdiSchema.safeParse(xmlParser.parse(xmlData, true));
-  if (!cfdiData.success) {
-    return err(
-      `Error parsing cfdi: ${cfdiData.error.message}. XML URL: ${fileUrl}`
-    );
-  }
-  return ok(cfdiData.data);
-}
-
-/**
- * Combines multiple base64-encoded PDF pages into a single PDF
- */
-async function combinePagesToPdf(pageBase64Strings: string[]): Promise<string> {
-  // Create a new PDF document
-  const pdfDoc = await PDFDocument.create();
-
-  // Process each page and add it to the new document
-  for (const pageBase64 of pageBase64Strings) {
-    // Remove data URL prefix if present
-    const base64Data = pageBase64.startsWith('data:')
-      ? pageBase64.split(',')[1]
-      : pageBase64;
-
-    // Convert base64 to Uint8Array
-    if (!base64Data) {
-      continue;
-    }
-    const pageBytes = Buffer.from(base64Data, 'base64');
-
-    // Load the page PDF
-    const pagePdf = await PDFDocument.load(pageBytes);
-
-    // Copy all pages (should just be one) from this page PDF
-    const copiedPages = await pdfDoc.copyPages(
-      pagePdf,
-      pagePdf.getPageIndices()
-    );
-
-    // Add each copied page to the new document
-    for (const page of copiedPages) {
-      pdfDoc.addPage(page);
-    }
-  }
-
-  // Save and convert the new PDF to base64
-  const combinedPdfBytes = await pdfDoc.save();
-  return Buffer.from(combinedPdfBytes).toString('base64');
 }
