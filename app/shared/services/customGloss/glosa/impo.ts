@@ -38,4 +38,4 @@ export async function glosaImpo({
     coveValidationStepsImpo({ cove, invoice, carta318, traceId }),
   ]);
   return results.flat();
-};
+}

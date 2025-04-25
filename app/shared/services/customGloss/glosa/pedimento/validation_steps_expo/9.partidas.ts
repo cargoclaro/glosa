@@ -1,4 +1,3 @@
-
 import type { Cfdi } from '../../../data-extraction/mkdown_schemas';
 import type { Pedimento } from '../../../data-extraction/schemas';
 import { glosar } from '../../validation-result';
@@ -242,20 +241,20 @@ export async function partidas({
   pedimento,
   cfdi,
   traceId,
-  }: { pedimento: Pedimento; cfdi?: Cfdi; traceId: string }) {
-    const validationsPromise = await Promise.all([
-      validatePreferenciaArancelaria(traceId, pedimento),
-      validateCoherenciaUMC(traceId, pedimento, cfdi),
-      validateCoherenciaPeso(traceId, pedimento, cfdi),
-      validateCalculoDTA(traceId, pedimento),
-      validateCalculoContribuciones(traceId, pedimento, cfdi),
-      validatePermisosIdentificadores(traceId, pedimento),
-      validateRegulacionesArancelarias(traceId, pedimento),
-      validateRegulacionesNoArancelarias(traceId, pedimento),
-    ]);
+}: { pedimento: Pedimento; cfdi?: Cfdi; traceId: string }) {
+  const validationsPromise = await Promise.all([
+    validatePreferenciaArancelaria(traceId, pedimento),
+    validateCoherenciaUMC(traceId, pedimento, cfdi),
+    validateCoherenciaPeso(traceId, pedimento, cfdi),
+    validateCalculoDTA(traceId, pedimento),
+    validateCalculoContribuciones(traceId, pedimento, cfdi),
+    validatePermisosIdentificadores(traceId, pedimento),
+    validateRegulacionesArancelarias(traceId, pedimento),
+    validateRegulacionesNoArancelarias(traceId, pedimento),
+  ]);
 
-    return {
-      sectionName: 'Partidas',
-      validations: validationsPromise,
+  return {
+    sectionName: 'Partidas',
+    validations: validationsPromise,
   };
 }

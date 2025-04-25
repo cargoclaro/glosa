@@ -1,4 +1,3 @@
-
 import type {
   Pedimento,
   TransportDocument,
@@ -118,19 +117,19 @@ export async function tipoOperacion({
   pedimento,
   transportDoc,
   traceId,
-  }: {
-    pedimento: Pedimento;
-    transportDoc?: TransportDocument;
-    traceId: string;
-  }) {
-    const validationsPromise = await Promise.all([
-      validateCoherenciaOrigenDestino(traceId, pedimento, transportDoc),
-      validateClavePedimento(traceId, pedimento),
-      validateRegimen(traceId, pedimento),
-    ]);
+}: {
+  pedimento: Pedimento;
+  transportDoc?: TransportDocument;
+  traceId: string;
+}) {
+  const validationsPromise = await Promise.all([
+    validateCoherenciaOrigenDestino(traceId, pedimento, transportDoc),
+    validateClavePedimento(traceId, pedimento),
+    validateRegimen(traceId, pedimento),
+  ]);
 
-    return {
-      sectionName: 'Tipo de operación',
-      validations: validationsPromise,
-    };
-  }
+  return {
+    sectionName: 'Tipo de operación',
+    validations: validationsPromise,
+  };
+}

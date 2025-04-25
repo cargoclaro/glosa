@@ -1,4 +1,3 @@
-
 import type {
   Carta318,
   Invoice,
@@ -222,21 +221,21 @@ export async function proveedorDestinatario({
   invoice,
   carta318,
   traceId,
-  }: {
-    cove: Cove;
-    invoice?: Invoice;
-    carta318?: Carta318;
-    traceId: string;
-  }) {
-    const validationsPromise = await Promise.all([
-      validateDatosGeneralesProveedor(traceId, cove, invoice, carta318),
-      validateDomicilioProveedor(traceId, cove, invoice, carta318),
-      validateDatosGeneralesDestinatario(traceId, cove, invoice, carta318),
-      validateDomicilioDestinatario(traceId, cove, invoice, carta318),
-    ]);
+}: {
+  cove: Cove;
+  invoice?: Invoice;
+  carta318?: Carta318;
+  traceId: string;
+}) {
+  const validationsPromise = await Promise.all([
+    validateDatosGeneralesProveedor(traceId, cove, invoice, carta318),
+    validateDomicilioProveedor(traceId, cove, invoice, carta318),
+    validateDatosGeneralesDestinatario(traceId, cove, invoice, carta318),
+    validateDomicilioDestinatario(traceId, cove, invoice, carta318),
+  ]);
 
-    return {
-      sectionName: 'Datos Proveedor Destinatario',
-      validations: validationsPromise,
+  return {
+    sectionName: 'Datos Proveedor Destinatario',
+    validations: validationsPromise,
   };
 }

@@ -1,4 +1,3 @@
-
 import type { Carta318 } from '../../../data-extraction/mkdown_schemas/carta-318';
 import type { CartaSesion } from '../../../data-extraction/mkdown_schemas/carta-sesion';
 import type { Invoice } from '../../../data-extraction/mkdown_schemas/invoice';
@@ -340,26 +339,26 @@ export async function datosDeFactura({
   carta318,
   invoice,
   cartaSesion,
-    traceId,
-  }: {
-    pedimento: Pedimento;
-    cove: Cove;
-    carta318?: Carta318;
-    invoice?: Invoice;
-    cartaSesion?: CartaSesion;
-    traceId: string;
-  }) {
-    const validationsPromise = await Promise.all([
-      validateRfcFormat(traceId, pedimento, cove, carta318),
-      validateCesionDerechos(traceId, pedimento, cartaSesion, carta318),
-      validateDatosImportador(traceId, pedimento, cove, carta318),
-      validateDatosProveedor(traceId, pedimento, cove, carta318),
-      validateFechasYFolios(traceId, pedimento, cove, invoice, carta318),
-      validateMonedaYEquivalencia(traceId, pedimento, cove, carta318, invoice),
-    ]);
+  traceId,
+}: {
+  pedimento: Pedimento;
+  cove: Cove;
+  carta318?: Carta318;
+  invoice?: Invoice;
+  cartaSesion?: CartaSesion;
+  traceId: string;
+}) {
+  const validationsPromise = await Promise.all([
+    validateRfcFormat(traceId, pedimento, cove, carta318),
+    validateCesionDerechos(traceId, pedimento, cartaSesion, carta318),
+    validateDatosImportador(traceId, pedimento, cove, carta318),
+    validateDatosProveedor(traceId, pedimento, cove, carta318),
+    validateFechasYFolios(traceId, pedimento, cove, invoice, carta318),
+    validateMonedaYEquivalencia(traceId, pedimento, cove, carta318, invoice),
+  ]);
 
-    return {
-      sectionName: 'Datos de factura',
-      validations: validationsPromise,
+  return {
+    sectionName: 'Datos de factura',
+    validations: validationsPromise,
   };
 }

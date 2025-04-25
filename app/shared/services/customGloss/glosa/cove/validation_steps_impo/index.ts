@@ -1,4 +1,3 @@
-
 import type {
   Carta318,
   Invoice,
@@ -13,30 +12,30 @@ export function coveValidationStepsImpo({
   invoice,
   carta318,
   traceId,
-  }: {
-    cove: Cove;
-    invoice?: Invoice;
-    carta318?: Carta318;
-    traceId: string;
-  }) {
-    return Promise.all([
-      datosGenerales({
-        cove,
-        ...(invoice ? { invoice } : {}),
-        ...(carta318 ? { carta318 } : {}),
-        traceId,
-      }),
-      proveedorDestinatario({
-        cove,
-        ...(invoice ? { invoice } : {}),
-        ...(carta318 ? { carta318 } : {}),
-        traceId,
-      }),
-      mercancias({
-        cove,
-        ...(invoice ? { invoice } : {}),
-        ...(carta318 ? { carta318 } : {}),
-        traceId,
-      }),
-    ]);
+}: {
+  cove: Cove;
+  invoice?: Invoice;
+  carta318?: Carta318;
+  traceId: string;
+}) {
+  return Promise.all([
+    datosGenerales({
+      cove,
+      ...(invoice ? { invoice } : {}),
+      ...(carta318 ? { carta318 } : {}),
+      traceId,
+    }),
+    proveedorDestinatario({
+      cove,
+      ...(invoice ? { invoice } : {}),
+      ...(carta318 ? { carta318 } : {}),
+      traceId,
+    }),
+    mercancias({
+      cove,
+      ...(invoice ? { invoice } : {}),
+      ...(carta318 ? { carta318 } : {}),
+      traceId,
+    }),
+  ]);
 }

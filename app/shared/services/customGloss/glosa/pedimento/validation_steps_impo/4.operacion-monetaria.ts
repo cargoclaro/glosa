@@ -1,4 +1,3 @@
-
 import type { Carta318 } from '../../../data-extraction/mkdown_schemas/carta-318';
 import type { Invoice } from '../../../data-extraction/mkdown_schemas/invoice';
 import type { TransportDocument } from '../../../data-extraction/mkdown_schemas/transport-document';
@@ -550,46 +549,40 @@ export async function operacionMonetaria({
   transportDocument,
   carta318,
   traceId,
-  }: {
-    pedimento: Pedimento;
-    invoice?: Invoice;
-    transportDocument?: TransportDocument;
-    carta318?: Carta318;
-    traceId: string;
-  }) {
-    const validationsPromise = await Promise.all([
-      validateTransportDocumentEntryDate(traceId, pedimento, transportDocument),
-      validateTipoCambio(traceId, pedimento),
-      validateValSeguros(
-        traceId,
-        pedimento,
-        invoice,
-        transportDocument,
-        carta318
-      ),
-      validateSeguros(traceId, pedimento, invoice, transportDocument, carta318),
-      validateFletes(traceId, pedimento, invoice, transportDocument, carta318),
-      validateEmbalajes(
-        traceId,
-        pedimento,
-        invoice,
-        transportDocument,
-        carta318
-      ),
-      validateOtrosIncrementables(
-        traceId,
-        pedimento,
-        invoice,
-        transportDocument,
-        carta318
-      ),
-      validateValorDolares(traceId, pedimento, invoice, carta318),
-      validateValorComercial(traceId, pedimento, invoice, carta318),
-      validateValorAduana(traceId, pedimento, invoice, carta318),
-    ]);
+}: {
+  pedimento: Pedimento;
+  invoice?: Invoice;
+  transportDocument?: TransportDocument;
+  carta318?: Carta318;
+  traceId: string;
+}) {
+  const validationsPromise = await Promise.all([
+    validateTransportDocumentEntryDate(traceId, pedimento, transportDocument),
+    validateTipoCambio(traceId, pedimento),
+    validateValSeguros(
+      traceId,
+      pedimento,
+      invoice,
+      transportDocument,
+      carta318
+    ),
+    validateSeguros(traceId, pedimento, invoice, transportDocument, carta318),
+    validateFletes(traceId, pedimento, invoice, transportDocument, carta318),
+    validateEmbalajes(traceId, pedimento, invoice, transportDocument, carta318),
+    validateOtrosIncrementables(
+      traceId,
+      pedimento,
+      invoice,
+      transportDocument,
+      carta318
+    ),
+    validateValorDolares(traceId, pedimento, invoice, carta318),
+    validateValorComercial(traceId, pedimento, invoice, carta318),
+    validateValorAduana(traceId, pedimento, invoice, carta318),
+  ]);
 
-    return {
-      sectionName: 'Operación monetaria',
-      validations: validationsPromise,
-    };
-  }
+  return {
+    sectionName: 'Operación monetaria',
+    validations: validationsPromise,
+  };
+}

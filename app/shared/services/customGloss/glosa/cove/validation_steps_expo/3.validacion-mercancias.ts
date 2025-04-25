@@ -1,4 +1,3 @@
-
 import type { Cfdi, Invoice } from '../../../data-extraction/mkdown_schemas';
 import type { Cove } from '../../../extract-and-structure/schemas';
 import { glosar } from '../../validation-result';
@@ -152,14 +151,14 @@ export async function mercancias({
   invoice,
   cfdi,
   traceId,
-  }: { cove: Cove; invoice?: Invoice; cfdi?: Cfdi; traceId: string }) {
-    const validationsPromise = await Promise.all([
-      validateMercancias(traceId, cove, cfdi),
-      validateValorTotalDolares(traceId, cove, cfdi),
-      validateNumeroSerie(traceId, cove, invoice, cfdi),
-    ]);
+}: { cove: Cove; invoice?: Invoice; cfdi?: Cfdi; traceId: string }) {
+  const validationsPromise = await Promise.all([
+    validateMercancias(traceId, cove, cfdi),
+    validateValorTotalDolares(traceId, cove, cfdi),
+    validateNumeroSerie(traceId, cove, invoice, cfdi),
+  ]);
 
-    return {
+  return {
     sectionName: 'Validación de mercancías',
     validations: validationsPromise,
   };

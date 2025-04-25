@@ -1,4 +1,3 @@
-
 import type { Carta318 } from '../../../data-extraction/mkdown_schemas/carta-318';
 import type { Invoice } from '../../../data-extraction/mkdown_schemas/invoice';
 import type { TransportDocument } from '../../../data-extraction/mkdown_schemas/transport-document';
@@ -108,26 +107,26 @@ export async function pesosYBultos({
   packingList,
   invoice,
   traceId,
-  }: {
-    pedimento: Pedimento;
-    transportDocument?: TransportDocument;
-    packingList?: PackingList;
-    invoice?: Invoice;
-    traceId: string;
-  }) {
-    const validationsPromise = await Promise.all([
-      validatePesosYBultos(
-        traceId,
-        pedimento,
-        transportDocument,
-        packingList,
-        invoice
-      ),
-      validateBultos(traceId, pedimento, transportDocument),
-    ]);
+}: {
+  pedimento: Pedimento;
+  transportDocument?: TransportDocument;
+  packingList?: PackingList;
+  invoice?: Invoice;
+  traceId: string;
+}) {
+  const validationsPromise = await Promise.all([
+    validatePesosYBultos(
+      traceId,
+      pedimento,
+      transportDocument,
+      packingList,
+      invoice
+    ),
+    validateBultos(traceId, pedimento, transportDocument),
+  ]);
 
-    return {
-      sectionName: 'Pesos y bultos',
-      validations: validationsPromise,
+  return {
+    sectionName: 'Pesos y bultos',
+    validations: validationsPromise,
   };
 }

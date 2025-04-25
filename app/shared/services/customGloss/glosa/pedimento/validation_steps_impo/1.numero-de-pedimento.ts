@@ -1,4 +1,3 @@
-
 import type { Pedimento } from '../../../data-extraction/schemas';
 import { glosar } from '../../validation-result';
 
@@ -68,10 +67,10 @@ export async function numeroDePedimento({
 }) {
   const validationsPromise = await Promise.all([
     validateLongitud(pedimento, traceId),
-      validateAñoPedimento(pedimento, traceId),
-    ]);
+    validateAñoPedimento(pedimento, traceId),
+  ]);
 
-    return {
+  return {
     sectionName: 'Número de pedimento',
     validations: validationsPromise,
   };

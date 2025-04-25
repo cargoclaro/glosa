@@ -1,4 +1,3 @@
-
 import type {
   CartaSesion,
   Cfdi,
@@ -21,37 +20,37 @@ export function pedimentoValidationStepsExpo({
   cfdi,
   cartaSesion,
   transportDocument,
-    packingList,
-    traceId,
-  }: {
-    pedimento: Pedimento;
-    cove: Cove;
-    cfdi?: Cfdi;
-    cartaSesion?: CartaSesion;
-    transportDocument?: TransportDocument;
-    packingList?: PackingList;
-    traceId: string;
-  }) {
-    return Promise.all([
-      numeroDePedimento({ pedimento, traceId }),
-      tipoOperacion({ pedimento, traceId }),
-      claveApendice15({ pedimento, traceId }),
-      operacionMonetaria({
-        pedimento,
-        cove,
-        transportDocument,
-        cfdi,
-        traceId,
-      }),
-      pesosYBultos({
-        pedimento,
-        transportDocument,
-        packingList,
-        cfdi,
-        traceId,
-      }),
-      datosDeFactura({ pedimento, cove, cfdi, cartaSesion, traceId }),
-      tipoTransporte({ pedimento, transportDocument, traceId }),
-      partidas({ pedimento, cfdi, traceId }),
-    ]);
+  packingList,
+  traceId,
+}: {
+  pedimento: Pedimento;
+  cove: Cove;
+  cfdi?: Cfdi;
+  cartaSesion?: CartaSesion;
+  transportDocument?: TransportDocument;
+  packingList?: PackingList;
+  traceId: string;
+}) {
+  return Promise.all([
+    numeroDePedimento({ pedimento, traceId }),
+    tipoOperacion({ pedimento, traceId }),
+    claveApendice15({ pedimento, traceId }),
+    operacionMonetaria({
+      pedimento,
+      cove,
+      transportDocument,
+      cfdi,
+      traceId,
+    }),
+    pesosYBultos({
+      pedimento,
+      transportDocument,
+      packingList,
+      cfdi,
+      traceId,
+    }),
+    datosDeFactura({ pedimento, cove, cfdi, cartaSesion, traceId }),
+    tipoTransporte({ pedimento, transportDocument, traceId }),
+    partidas({ pedimento, cfdi, traceId }),
+  ]);
 }

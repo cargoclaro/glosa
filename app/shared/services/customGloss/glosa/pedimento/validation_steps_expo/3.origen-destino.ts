@@ -1,4 +1,3 @@
-
 import type { Pedimento } from '../../../data-extraction/schemas';
 import { apendice15 } from '../../anexo-22/apendice-15';
 import { glosar } from '../../validation-result';
@@ -39,9 +38,9 @@ export async function claveApendice15({
 }) {
   const validationsPromise = await Promise.all([
     validateClaveApendice15(traceId, pedimento),
-    ]);
+  ]);
 
-    return {
+  return {
     sectionName: 'Clave de destino/origen',
     validations: validationsPromise,
   };

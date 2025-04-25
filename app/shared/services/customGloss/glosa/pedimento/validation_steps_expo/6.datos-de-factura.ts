@@ -1,4 +1,3 @@
-
 import type {
   CartaSesion,
   Cfdi,
@@ -323,24 +322,24 @@ export async function datosDeFactura({
   cfdi,
   cartaSesion,
   traceId,
-  }: {
-    pedimento: Pedimento;
-    cove: Cove;
-    cfdi?: Cfdi;
-    cartaSesion?: CartaSesion;
-    traceId: string;
-  }) {
-    const validationsPromise = await Promise.all([
-      validateRfcFormat(traceId, pedimento, cove, cfdi),
-      validateCesionDerechos(traceId, pedimento, cartaSesion, cfdi),
-      validateDatosImportador(traceId, pedimento, cove, cfdi),
-      validateDatosProveedor(traceId, pedimento, cove, cfdi),
-      validateFechasYFolios(traceId, pedimento, cove, cfdi),
-      validateMonedaYEquivalencia(traceId, pedimento, cove, cfdi),
-    ]);
+}: {
+  pedimento: Pedimento;
+  cove: Cove;
+  cfdi?: Cfdi;
+  cartaSesion?: CartaSesion;
+  traceId: string;
+}) {
+  const validationsPromise = await Promise.all([
+    validateRfcFormat(traceId, pedimento, cove, cfdi),
+    validateCesionDerechos(traceId, pedimento, cartaSesion, cfdi),
+    validateDatosImportador(traceId, pedimento, cove, cfdi),
+    validateDatosProveedor(traceId, pedimento, cove, cfdi),
+    validateFechasYFolios(traceId, pedimento, cove, cfdi),
+    validateMonedaYEquivalencia(traceId, pedimento, cove, cfdi),
+  ]);
 
-    return {
-      sectionName: 'Datos de factura',
-      validations: validationsPromise,
-    };
+  return {
+    sectionName: 'Datos de factura',
+    validations: validationsPromise,
+  };
 }

@@ -1,4 +1,3 @@
-
 import type { TransportDocument } from '../../../data-extraction/mkdown_schemas/transport-document';
 import type { Pedimento } from '../../../data-extraction/schemas';
 import { apendice2 } from '../../anexo-22/apendice-2';
@@ -119,19 +118,19 @@ export async function tipoOperacion({
   pedimento,
   transportDocument,
   traceId,
-  }: {
-    pedimento: Pedimento;
-    transportDocument?: TransportDocument;
-    traceId: string;
-  }) {
-    const validationsPromise = await Promise.all([
-      validateCoherenciaOrigenDestino(traceId, pedimento, transportDocument),
-      validateClavePedimento(traceId, pedimento),
-      validateRegimen(traceId, pedimento),
-    ]);
+}: {
+  pedimento: Pedimento;
+  transportDocument?: TransportDocument;
+  traceId: string;
+}) {
+  const validationsPromise = await Promise.all([
+    validateCoherenciaOrigenDestino(traceId, pedimento, transportDocument),
+    validateClavePedimento(traceId, pedimento),
+    validateRegimen(traceId, pedimento),
+  ]);
 
-    return {
-      sectionName: 'Tipo de operación',
-      validations: validationsPromise,
+  return {
+    sectionName: 'Tipo de operación',
+    validations: validationsPromise,
   };
 }

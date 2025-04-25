@@ -1,4 +1,3 @@
-
 import type { Cfdi } from '../../../data-extraction/mkdown_schemas';
 import type { Cove } from '../../../extract-and-structure/schemas';
 import { glosar } from '../../validation-result';
@@ -185,17 +184,17 @@ async function validateDomicilioDestinatario(
 
 export async function proveedorDestinatario({
   cove,
-    cfdi,
-    traceId,
-  }: { cove: Cove; cfdi?: Cfdi; traceId: string }) {
-    const validationsPromise = await Promise.all([
-      validateDatosGeneralesProveedor(traceId, cove, cfdi),
-      validateDomicilioProveedor(traceId, cove, cfdi),
-      validateDatosGeneralesDestinatario(traceId, cove, cfdi),
-      validateDomicilioDestinatario(traceId, cove, cfdi),
-    ]);
+  cfdi,
+  traceId,
+}: { cove: Cove; cfdi?: Cfdi; traceId: string }) {
+  const validationsPromise = await Promise.all([
+    validateDatosGeneralesProveedor(traceId, cove, cfdi),
+    validateDomicilioProveedor(traceId, cove, cfdi),
+    validateDatosGeneralesDestinatario(traceId, cove, cfdi),
+    validateDomicilioDestinatario(traceId, cove, cfdi),
+  ]);
 
-    return {
+  return {
     sectionName: 'Datos Proveedor Destinatario',
     validations: validationsPromise,
   };

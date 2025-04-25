@@ -1,4 +1,3 @@
-
 import type {
   Cfdi,
   TransportDocument,
@@ -88,26 +87,26 @@ export async function pesosYBultos({
   packingList,
   cfdi,
   traceId,
-  }: {
-    pedimento: Pedimento;
-    transportDocument?: TransportDocument;
-    packingList?: PackingList;
-    cfdi?: Cfdi;
-    traceId: string;
-  }) {
-    const validationsPromise = await Promise.all([
-      validatePesosYBultos(
-        traceId,
-        pedimento,
-        transportDocument,
-        packingList,
-        cfdi
-      ),
-      validateBultos(traceId, pedimento, transportDocument),
-    ]);
+}: {
+  pedimento: Pedimento;
+  transportDocument?: TransportDocument;
+  packingList?: PackingList;
+  cfdi?: Cfdi;
+  traceId: string;
+}) {
+  const validationsPromise = await Promise.all([
+    validatePesosYBultos(
+      traceId,
+      pedimento,
+      transportDocument,
+      packingList,
+      cfdi
+    ),
+    validateBultos(traceId, pedimento, transportDocument),
+  ]);
 
-    return {
-      sectionName: 'Pesos y bultos',
-      validations: validationsPromise,
+  return {
+    sectionName: 'Pesos y bultos',
+    validations: validationsPromise,
   };
 }

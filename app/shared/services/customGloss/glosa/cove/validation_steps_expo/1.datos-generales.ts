@@ -97,12 +97,12 @@ export async function datosGenerales({
   cove,
   cfdi,
   traceId,
-  }: { cove: Cove; cfdi?: Cfdi; traceId: string }) {
-    const validationsPromise = await Promise.all([
-      validateNumeroFactura(traceId, cove, cfdi),
-      validateFechaExpedicion(traceId, cove, cfdi),
-      validateRfc(traceId, cove, cfdi),
-    ]);
+}: { cove: Cove; cfdi?: Cfdi; traceId: string }) {
+  const validationsPromise = await Promise.all([
+    validateNumeroFactura(traceId, cove, cfdi),
+    validateFechaExpedicion(traceId, cove, cfdi),
+    validateRfc(traceId, cove, cfdi),
+  ]);
 
   return {
     sectionName: 'Datos Generales',

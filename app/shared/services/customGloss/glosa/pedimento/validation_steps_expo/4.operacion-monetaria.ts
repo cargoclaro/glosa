@@ -1,4 +1,3 @@
-
 import type {
   Cfdi,
   TransportDocument,
@@ -174,22 +173,22 @@ export async function operacionMonetaria({
   transportDocument,
   cfdi,
   traceId,
-  }: {
-    pedimento: Pedimento;
-    cove: Cove;
-    transportDocument?: TransportDocument;
-    cfdi?: Cfdi;
-    traceId: string;
-  }) {
-    const validationsPromise = await Promise.all([
-      validateFechaSalida(traceId, pedimento, transportDocument),
-      validateTipoCambio(traceId, pedimento),
-      validateValorComercial(traceId, pedimento, cove, cfdi),
-      validateValorDolares(traceId, pedimento, cove, cfdi),
-    ]);
+}: {
+  pedimento: Pedimento;
+  cove: Cove;
+  transportDocument?: TransportDocument;
+  cfdi?: Cfdi;
+  traceId: string;
+}) {
+  const validationsPromise = await Promise.all([
+    validateFechaSalida(traceId, pedimento, transportDocument),
+    validateTipoCambio(traceId, pedimento),
+    validateValorComercial(traceId, pedimento, cove, cfdi),
+    validateValorDolares(traceId, pedimento, cove, cfdi),
+  ]);
 
-    return {
-      sectionName: 'Operación monetaria',
-      validations: validationsPromise,
+  return {
+    sectionName: 'Operación monetaria',
+    validations: validationsPromise,
   };
 }
