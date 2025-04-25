@@ -1,4 +1,4 @@
-import type { Pedimento } from '@/shared/services/customGloss/data-extraction/schemas';
+import type { Pedimento } from '@/shared/services/customGloss/extract-and-structure/schemas';
 import type React from 'react';
 import type { CustomGlossTabTable } from '~/db/schema';
 import { cn } from '~/lib/utils';
@@ -57,7 +57,7 @@ const PedimentoHeader: React.FC<PedimentoHeaderProps> = ({
             NUM. PEDIMENTO:
           </div>
           <div className="col-span-2 flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 font-normal text-[10px] text-xs text-xs last:border-r-0">
-            {pedimento.encabezado_del_pedimento.num_pedimento}
+            {pedimento.encabezadoPrincipalDelPedimento.numeroDePedimento}
           </div>
         </div>
 
@@ -75,7 +75,7 @@ const PedimentoHeader: React.FC<PedimentoHeaderProps> = ({
             T.OPER
           </div>
           <div className="col-span-1 flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 font-normal text-[10px] text-xs text-xs last:border-r-0">
-            {pedimento.encabezado_del_pedimento.tipo_oper}
+            {pedimento.encabezadoPrincipalDelPedimento.tipoDeOperacion}
           </div>
         </div>
 
@@ -93,7 +93,7 @@ const PedimentoHeader: React.FC<PedimentoHeaderProps> = ({
             CVE. PEDIMENTO:
           </div>
           <div className="col-span-1 flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 font-normal text-[10px] text-xs text-xs last:border-r-0">
-            {pedimento.encabezado_del_pedimento.cve_pedim}
+            {pedimento.encabezadoPrincipalDelPedimento.claveDePedimento}
           </div>
         </div>
 
@@ -111,7 +111,7 @@ const PedimentoHeader: React.FC<PedimentoHeaderProps> = ({
             REGIMEN:
           </div>
           <div className="col-span-1 flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 font-normal text-[10px] text-xs text-xs last:border-r-0">
-            IMD
+            {pedimento.encabezadoPrincipalDelPedimento.regimen}
           </div>
         </div>
       </div>
@@ -132,7 +132,7 @@ const PedimentoHeader: React.FC<PedimentoHeaderProps> = ({
             DESTINO:
           </div>
           <div className="col-span-1 flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 font-normal text-[10px] text-xs text-xs last:border-r-0">
-            {pedimento.encabezado_del_pedimento.destino_origen}
+            {pedimento.encabezadoPrincipalDelPedimento.destino}
           </div>
         </div>
 
@@ -150,7 +150,7 @@ const PedimentoHeader: React.FC<PedimentoHeaderProps> = ({
             TIPO CAMBIO:
           </div>
           <div className="col-span-1 flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 font-normal text-[10px] text-xs text-xs last:border-r-0">
-            {pedimento.encabezado_del_pedimento.tipo_cambio?.toFixed(5) || '-'}
+            {pedimento.encabezadoPrincipalDelPedimento.tipoDeCambio.toFixed(5) || '-'}
           </div>
         </div>
 
@@ -168,7 +168,7 @@ const PedimentoHeader: React.FC<PedimentoHeaderProps> = ({
             PESO BRUTO:
           </div>
           <div className="col-span-1 flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 font-normal text-[10px] text-xs text-xs last:border-r-0">
-            {pedimento.encabezado_del_pedimento.peso_bruto?.toFixed(3) || '-'}
+            {pedimento.encabezadoPrincipalDelPedimento.pesoBruto?.toFixed(3) || '-'}
           </div>
         </div>
 
@@ -178,7 +178,7 @@ const PedimentoHeader: React.FC<PedimentoHeaderProps> = ({
             ADUANA E/S:
           </div>
           <div className="col-span-1 flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 font-normal text-[10px] text-xs text-xs last:border-r-0">
-            {pedimento.encabezado_del_pedimento.aduana_entrada_salida}
+            {pedimento.encabezadoPrincipalDelPedimento.aduanaEntradaOSalida}
           </div>
         </div>
       </div>
@@ -198,25 +198,25 @@ const PedimentoHeader: React.FC<PedimentoHeaderProps> = ({
             MEDIOS DE TRANSPORTE
           </div>
           <div className="grid grid-cols-3 gap-0 border-gray-400 border-b">
-            <div className="flex min-h-6 items-center border-gray-400 border-r bg-gray-100 px-2 py-0.5 text-center font-semibold text-[10px] text-xs text-xs uppercase last:border-r-0">
+            <div className="flex min-h-6 items-center border-gray-400 border-r bg-gray-100 px-2 py-0.5 text-center font-semibold text-[10px] text-xs uppercase last:border-r-0">
               ENTRADA/SALIDA:
             </div>
-            <div className="flex min-h-6 items-center border-gray-400 border-r bg-gray-100 px-2 py-0.5 text-center font-semibold text-[10px] text-xs text-xs uppercase last:border-r-0">
+            <div className="flex min-h-6 items-center border-gray-400 border-r bg-gray-100 px-2 py-0.5 text-center font-semibold text-[10px] text-xs uppercase last:border-r-0">
               ARRIBO:
             </div>
-            <div className="flex min-h-6 items-center border-gray-400 border-r bg-gray-100 px-2 py-0.5 text-center font-semibold text-[10px] text-xs text-xs uppercase last:border-r-0">
+            <div className="flex min-h-6 items-center border-gray-400 border-r bg-gray-100 px-2 py-0.5 text-center font-semibold text-[10px] text-xs uppercase last:border-r-0">
               SALIDA:
             </div>
           </div>
           <div className="grid grid-cols-3 gap-0">
             <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-center font-normal text-[10px] text-xs text-xs last:border-r-0">
-              {pedimento.medios_transporte.entrada_salida || '-'}
+              {pedimento.encabezadoPrincipalDelPedimento.mediosTransporte.entradaSalida || '-'}
             </div>
             <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-center font-normal text-[10px] text-xs text-xs last:border-r-0">
-              {pedimento.medios_transporte.arribo || '-'}
+              {pedimento.encabezadoPrincipalDelPedimento.mediosTransporte.arribo || '-'}
             </div>
             <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-center font-normal text-[10px] text-xs text-xs last:border-r-0">
-              {pedimento.medios_transporte.salida || '-'}
+              {pedimento.encabezadoPrincipalDelPedimento.mediosTransporte.salida || '-'}
             </div>
           </div>
         </div>
@@ -236,7 +236,7 @@ const PedimentoHeader: React.FC<PedimentoHeaderProps> = ({
               VALOR DOLARES:
             </div>
             <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-right font-normal text-[10px] text-xs text-xs last:border-r-0">
-              {formatNumber(pedimento.valores.valor_dolares || 0)}
+              {formatNumber(pedimento.encabezadoPrincipalDelPedimento.valores.valorDolares || 0)}
             </div>
           </div>
           <div className="grid grid-cols-2 gap-0 border-gray-400 border-b">
@@ -244,7 +244,7 @@ const PedimentoHeader: React.FC<PedimentoHeaderProps> = ({
               VALOR ADUANA:
             </div>
             <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-right font-normal text-[10px] text-xs text-xs last:border-r-0">
-              {formatNumber(pedimento.valores.valor_aduana || 0)}
+              {formatNumber(pedimento.encabezadoPrincipalDelPedimento.valores.valorAduana || 0)}
             </div>
           </div>
           <div className="grid grid-cols-2 gap-0">
@@ -253,7 +253,7 @@ const PedimentoHeader: React.FC<PedimentoHeaderProps> = ({
             </div>
             <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-right font-normal text-[10px] text-xs text-xs last:border-r-0">
               {formatNumber(
-                pedimento.valores.precio_pagado_valor_comercial || 0
+                pedimento.encabezadoPrincipalDelPedimento.valores.precioPagadoOValorComercial || 0
               )}
             </div>
           </div>
