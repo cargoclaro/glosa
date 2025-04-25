@@ -3,29 +3,10 @@ import type { UploadedFileData } from 'uploadthing/types';
 import {
   extractAndStructureCove,
   extractAndStructurePackingList,
+  extractAndStructurePedimento,
 } from '../extract-and-structure/extract-and-structure';
 import type { DocumentType } from '../utils';
-import {
-  carta318Schema,
-  cartaSesionSchema,
-  cfdiSchema,
-  invoiceSchema,
-  rrnaSchema,
-  transportDocumentSchema,
-} from './mkdown_schemas';
-import { pedimentoSchema } from './schemas/';
 import { extractTextFromImage } from './vision';
-import { extractTextFromImageAnthropic } from './vision-anthropic';
-
-const documentToSchema = {
-  factura: invoiceSchema,
-  carta318: carta318Schema,
-  rrna: rrnaSchema,
-  documentoDeTransporte: transportDocumentSchema,
-  pedimento: pedimentoSchema,
-  cfdi: cfdiSchema,
-  cartaCesionDeDerechos: cartaSesionSchema,
-} as const;
 
 export async function extractTextFromPDFs(
   classifications: Partial<
@@ -98,10 +79,8 @@ export async function extractTextFromPDFs(
           traceId
         )
       : null,
-    extractTextFromImageAnthropic(
-      pedimento.originalFile,
-      pedimento.documentType,
-      documentToSchema.pedimento,
+    extractAndStructurePedimento(
+      pedimento.ufsUrl,
       traceId
     ),
     listaDeEmpaque
