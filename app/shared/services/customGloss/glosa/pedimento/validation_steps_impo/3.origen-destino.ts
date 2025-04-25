@@ -1,11 +1,10 @@
-import { traceable } from 'langsmith/traceable';
-import type { Pedimento } from '../../../data-extraction/schemas';
+import type { Pedimento } from '../../../extract-and-structure/schemas';
 import { apendice15 } from '../../anexo-22/apendice-15';
 import { glosar } from '../../validation-result';
 
 async function validateClaveApendice15(traceId: string, pedimento: Pedimento) {
-  const claveDestinoOrigen = pedimento.encabezado_del_pedimento?.destino_origen;
-  const observaciones = pedimento.observaciones_a_nivel_pedimento;
+  const claveDestinoOrigen = pedimento.encabezadoPrincipalDelPedimento.destino;
+  const observaciones = pedimento.observacionesANivelPedimento;
 
   const validation = {
     name: 'Destino/Origen',
@@ -31,16 +30,19 @@ async function validateClaveApendice15(traceId: string, pedimento: Pedimento) {
   return await glosar(validation, traceId, 'gpt-4o-mini');
 }
 
-export const tracedClaveApendice15 = traceable(
-  async ({ pedimento, traceId }: { pedimento: Pedimento; traceId: string }) => {
-    const validationsPromise = await Promise.all([
-      validateClaveApendice15(traceId, pedimento),
-    ]);
+export async function claveApendice15({
+  pedimento,
+  traceId,
+}: {
+  pedimento: Pedimento;
+  traceId: string;
+}) {
+  const validationsPromise = await Promise.all([
+    validateClaveApendice15(traceId, pedimento),
+  ]);
 
-    return {
-      sectionName: 'Clave de destino/origen',
-      validations: validationsPromise,
-    };
-  },
-  { name: 'Pedimento S3: Clave de destino/origen' }
-);
+  return {
+    sectionName: 'Clave de destino/origen',
+    validations: validationsPromise,
+  };
+}

@@ -1,34 +1,14 @@
 import { Langfuse } from 'langfuse';
-import { traceable } from 'langsmith/traceable';
 import type { UploadedFileData } from 'uploadthing/types';
 import {
   extractAndStructureCove,
   extractAndStructurePackingList,
+  extractAndStructurePedimento,
 } from '../extract-and-structure/extract-and-structure';
 import type { DocumentType } from '../utils';
-import {
-  carta318Schema,
-  cartaSesionSchema,
-  cfdiSchema,
-  invoiceSchema,
-  rrnaSchema,
-  transportDocumentSchema,
-} from './mkdown_schemas';
-import { pedimentoSchema } from './schemas/';
 import { extractTextFromImage } from './vision';
-import { extractTextFromImageAnthropic } from './vision-anthropic';
 
-const documentToSchema = {
-  factura: invoiceSchema,
-  carta318: carta318Schema,
-  rrna: rrnaSchema,
-  documentoDeTransporte: transportDocumentSchema,
-  pedimento: pedimentoSchema,
-  cfdi: cfdiSchema,
-  cartaCesionDeDerechos: cartaSesionSchema,
-} as const;
-
-async function extractTextFromPDFsParallel(
+export async function extractTextFromPDFs(
   classifications: Partial<
     Record<
       DocumentType,
@@ -99,12 +79,7 @@ async function extractTextFromPDFsParallel(
           traceId
         )
       : null,
-    extractTextFromImageAnthropic(
-      pedimento.originalFile,
-      pedimento.documentType,
-      documentToSchema.pedimento,
-      traceId
-    ),
+    extractAndStructurePedimento(pedimento.ufsUrl, traceId),
     listaDeEmpaque
       ? extractAndStructurePackingList(listaDeEmpaque.ufsUrl, traceId)
       : null,
@@ -137,7 +112,3 @@ async function extractTextFromPDFsParallel(
     }),
   };
 }
-
-export const extractTextFromPDFs = traceable(extractTextFromPDFsParallel, {
-  name: 'textExtraction',
-});

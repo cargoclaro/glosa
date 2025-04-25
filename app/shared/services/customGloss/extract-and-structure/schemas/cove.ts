@@ -1,5 +1,5 @@
-import moment from 'moment';
 import { z } from 'zod';
+import { transformStringToDate } from '~/lib/utils';
 
 export const datosGeneralesSchema = z.object({
   datosDelAcuseDeValor: z.object({
@@ -11,23 +11,7 @@ export const datosGeneralesSchema = z.object({
     fechaExpedicion: z
       .string()
       .describe("Fecha de emisión del documento en formato 'DD-MM-YYYY'.")
-      .transform((dateStr, ctx) => {
-        if (!dateStr) {
-          return null;
-        }
-
-        const parsedDate = moment(dateStr, 'DD/MM/YYYY');
-
-        if (!parsedDate.isValid()) {
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            message: `Formato de fecha inválido: ${dateStr}. Se esperaba DD/MM/YYYY.`,
-          });
-          return null;
-        }
-
-        return parsedDate.toDate();
-      }),
+      .transform(transformStringToDate),
     observaciones: z.string().nullable(),
   }),
   datosGeneralesDelProveedor: z.object({

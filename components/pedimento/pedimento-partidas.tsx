@@ -1,4 +1,4 @@
-import type { Partida } from '@/shared/services/customGloss/data-extraction/schemas';
+import type { Partida } from '@/shared/services/customGloss/extract-and-structure/schemas';
 import type React from 'react';
 import type { CustomGlossTabTable } from '~/db/schema';
 import { cn } from '~/lib/utils';
@@ -170,7 +170,7 @@ const PartidaHeaderSectionRevised: React.FC<{
         {partida.fraccion}
       </Cell>
       <Cell colSpan={2} isHighlighted={isHighlighted} isValid={isValid}>
-        {partida.nico}
+        {partida.subdivisionONumeroDeIdentificacionComercial}
       </Cell>
       <Cell
         align="center"
@@ -178,7 +178,7 @@ const PartidaHeaderSectionRevised: React.FC<{
         isHighlighted={isHighlighted}
         isValid={isValid}
       >
-        {partida.vinc}
+        {partida.vinculacion}
       </Cell>
       <Cell
         align="center"
@@ -186,7 +186,7 @@ const PartidaHeaderSectionRevised: React.FC<{
         isHighlighted={isHighlighted}
         isValid={isValid}
       >
-        {partida.met_val}
+        {partida.metodoDeValoracion}
       </Cell>
       <Cell
         align="center"
@@ -194,7 +194,7 @@ const PartidaHeaderSectionRevised: React.FC<{
         isHighlighted={isHighlighted}
         isValid={isValid}
       >
-        {partida.umc}
+        {partida.unidadDeMedidaComercial}
       </Cell>
       <Cell
         align="right"
@@ -202,7 +202,7 @@ const PartidaHeaderSectionRevised: React.FC<{
         isHighlighted={isHighlighted}
         isValid={isValid}
       >
-        {formatNumber(partida.cantidad_umc)}
+        {formatNumber(partida.cantidadUnidadDeMedidaComercial)}
       </Cell>
       <Cell
         align="center"
@@ -210,7 +210,7 @@ const PartidaHeaderSectionRevised: React.FC<{
         isHighlighted={isHighlighted}
         isValid={isValid}
       >
-        {partida.umt}
+        {partida.unidadDeMedidaDeTarifa}
       </Cell>
       <Cell
         align="right"
@@ -218,13 +218,13 @@ const PartidaHeaderSectionRevised: React.FC<{
         isHighlighted={isHighlighted}
         isValid={isValid}
       >
-        {formatNumber(partida.cantidad_umt)}
+        {formatNumber(partida.cantidadUnidadDeMedidaDeTarifa)}
       </Cell>
       <Cell colSpan={1} isHighlighted={isHighlighted} isValid={isValid}>
-        {partida.p_v_c}
+        {partida.paisDeVentaOCompra}
       </Cell>
       <Cell colSpan={2} isLast isHighlighted={isHighlighted} isValid={isValid}>
-        {partida.p_o_d}
+        {partida.paisDeOrigenODestino}
       </Cell>
     </Row>
   </>
@@ -247,7 +247,7 @@ const PartidaDescriptionSection: React.FC<{
     </Row>
     <Row>
       <Cell align="center" isHighlighted={isHighlighted} isValid={isValid}>
-        {partida.sec ?? partidaNumber}
+        {partida.secuencia ?? partidaNumber}
       </Cell>
       <Cell colSpan={11} isLast isHighlighted={isHighlighted} isValid={isValid}>
         {partida.descripcion}
@@ -283,7 +283,7 @@ const PartidaValuationSection: React.FC<{
         isHighlighted={isHighlighted}
         isValid={isValid}
       >
-        {formatNumber(partida.val_adu)}
+        {formatNumber(partida.valorEnAduanaOValorEnUSD)}
       </Cell>
       <Cell
         align="right"
@@ -291,7 +291,7 @@ const PartidaValuationSection: React.FC<{
         isHighlighted={isHighlighted}
         isValid={isValid}
       >
-        {formatNumber(partida.imp_precio_pag)}
+        {formatNumber(partida.importeDePrecioPagadoOValorComercial)}
       </Cell>
       <Cell
         align="right"
@@ -299,7 +299,7 @@ const PartidaValuationSection: React.FC<{
         isHighlighted={isHighlighted}
         isValid={isValid}
       >
-        {formatNumber(partida.precio_unit)}
+        {formatNumber(partida.precioUnitario)}
       </Cell>
       <Cell
         align="right"
@@ -308,7 +308,7 @@ const PartidaValuationSection: React.FC<{
         isHighlighted={isHighlighted}
         isValid={isValid}
       >
-        {formatNumber(partida.val_agreg)}
+        {formatNumber(partida.valorAgregado)}
       </Cell>
     </Row>
   </>
@@ -332,14 +332,10 @@ const PartidaBrandModelSection: React.FC<{
       </Cell>
     </Row>
     <Row>
-      <Cell colSpan={4} isHighlighted={isHighlighted} isValid={isValid}>
-        {partida.marca}
-      </Cell>
-      <Cell colSpan={4} isHighlighted={isHighlighted} isValid={isValid}>
-        {partida.modelo}
-      </Cell>
+      <Cell colSpan={4} isHighlighted={isHighlighted} isValid={isValid} />
+      <Cell colSpan={4} isHighlighted={isHighlighted} isValid={isValid} />
       <Cell colSpan={4} isLast isHighlighted={isHighlighted} isValid={isValid}>
-        {partida.codigo_producto}
+        {partida.codigoProducto}
       </Cell>
     </Row>
   </>
@@ -384,16 +380,16 @@ const PartidaContributionsSection: React.FC<{
         })}
       >
         <Cell isHighlighted={isHighlighted} isValid={isValid}>
-          {contribucion.con}
+          {contribucion.contribucion}
         </Cell>
         <Cell align="right" isHighlighted={isHighlighted} isValid={isValid}>
           {formatTasa(contribucion.tasa)}
         </Cell>
         <Cell align="center" isHighlighted={isHighlighted} isValid={isValid}>
-          {contribucion.t_t}
+          {contribucion.tipoDeTasa}
         </Cell>
         <Cell align="center" isHighlighted={isHighlighted} isValid={isValid}>
-          {contribucion.f_p}
+          {contribucion.formaDePago}
         </Cell>
         <Cell
           align="right"
@@ -460,7 +456,7 @@ const PartidaIdentifiersSection: React.FC<{
           isHighlighted={isHighlighted}
           isValid={isValid}
         >
-          {identificador.clave}
+          {identificador.identificador}
         </Cell>
         <Cell
           align="center"
@@ -527,16 +523,7 @@ const PartidaObservationsSection: React.FC<{
         isHighlighted={isHighlighted}
         isValid={isValid}
       >
-        {partida.observaciones ? (
-          partida.observaciones
-        ) : partida.marca || partida.modelo ? (
-          <div className="space-y-1">
-            {partida.marca && <div>MARCA: {partida.marca}</div>}
-            {partida.modelo && <div>MODELO: {partida.modelo}</div>}
-          </div>
-        ) : (
-          '-'
-        )}
+        {partida.observacionesANivelPartida ?? '-'}
       </Cell>
     </Row>
   </>
@@ -640,7 +627,7 @@ const PedimentoPartidas: React.FC<PedimentoPartidasProps> = ({
       <div>
         {partidas.map((partida, index) => (
           <PartidaItem
-            key={partida.sec ?? index}
+            key={partida.secuencia ?? index}
             partida={partida}
             index={index}
             onClick={onClick}

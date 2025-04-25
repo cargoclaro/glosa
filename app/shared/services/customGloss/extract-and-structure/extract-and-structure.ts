@@ -4,6 +4,7 @@ import { generateObject, generateText } from 'ai';
 import { PDFDocument } from 'pdf-lib';
 import { z } from 'zod';
 import {
+  type Partida,
   datosGeneralesDePedimentoSchema,
   datosGeneralesSchema,
   mercanciaSchema,
@@ -363,7 +364,7 @@ export async function extractAndStructurePedimento(
       });
 
       // Extract each partida individually
-      const extractionPromises: Promise<{ object: unknown }>[] = [];
+      const extractionPromises: Promise<{ object: Partida }>[] = [];
       // Spanish ordinals for partidas on the page
       const ordinals = [
         'primera',

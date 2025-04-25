@@ -1,9 +1,5 @@
-import { traceable } from 'langsmith/traceable';
-import type {
-  CartaSesion,
-  Cfdi,
-} from '../../../data-extraction/mkdown_schemas';
-import type { Pedimento } from '../../../data-extraction/schemas';
+import type { OCR } from '~/lib/utils';
+import type { Pedimento } from '../../../extract-and-structure/schemas';
 import type { Cove } from '../../../extract-and-structure/schemas';
 import { glosar } from '../../validation-result';
 
@@ -11,10 +7,11 @@ async function validateRfcFormat(
   traceId: string,
   pedimento: Pedimento,
   cove: Cove,
-  cfdi?: Cfdi
+  cfdi?: OCR
 ) {
   // Extract RFC values from documents
-  const rfcPedimento = pedimento.datos_importador?.rfc;
+  const rfcPedimento =
+    pedimento.encabezadoPrincipalDelPedimento.datosImportador.rfc;
   // Se supone que este valor siempre es el RFC en la exportación
   const rfcCove = cove?.datosGeneralesDelDestinatario?.taxIdSinTaxIdRfcCurp;
   const cfdiMkdown = cfdi?.markdown_representation;
@@ -46,11 +43,12 @@ async function validateRfcFormat(
 async function validateCesionDerechos(
   traceId: string,
   pedimento: Pedimento,
-  cartaSesion?: CartaSesion,
-  cfdi?: Cfdi
+  cartaSesion?: OCR,
+  cfdi?: OCR
 ) {
   // Extract values from documents
-  const fechaEntradaPedimento = pedimento.fecha_entrada_presentacion;
+  const fechaEntradaPedimento =
+    pedimento.encabezadoPrincipalDelPedimento.fechas.entrada;
   const cfdiMkdown = cfdi?.markdown_representation;
   const cartaSesionMkdown = cartaSesion?.markdown_representation;
 
@@ -82,14 +80,16 @@ async function validateDatosImportador(
   traceId: string,
   pedimento: Pedimento,
   cove: Cove,
-  cfdi?: Cfdi
+  cfdi?: OCR
 ) {
   // Extract values from documents
-  const rfcPedimento = pedimento.datos_importador?.rfc;
+  const rfcPedimento =
+    pedimento.encabezadoPrincipalDelPedimento.datosImportador.rfc;
   // Se supone que este valor siempre es el RFC en la exportación
   const rfcCove = cove?.datosGeneralesDelDestinatario?.taxIdSinTaxIdRfcCurp;
 
-  const domicilioPedimento = pedimento.datos_importador?.domicilio;
+  const domicilioPedimento =
+    pedimento.encabezadoPrincipalDelPedimento.datosImportador.domicilio;
   const domicilioCove = cove.domicilioDelDestinatario;
   const domicilioCoveCompleto = domicilioCove
     ? [
@@ -103,7 +103,8 @@ async function validateDatosImportador(
         .join(' ')
     : '';
 
-  const razonSocialPedimento = pedimento.datos_importador?.razon_social;
+  const razonSocialPedimento =
+    pedimento.encabezadoPrincipalDelPedimento.datosImportador.razonSocial;
   const razonSocialCove =
     cove.datosGeneralesDelDestinatario.nombresORazonSocial;
 
@@ -145,14 +146,16 @@ async function validateDatosProveedor(
   traceId: string,
   pedimento: Pedimento,
   cove: Cove,
-  cfdi?: Cfdi
+  cfdi?: OCR
 ) {
   // Extract values from documents
-  const nombreProveedorPedimento = pedimento.nombre_razon_social;
+  const nombreProveedorPedimento =
+    pedimento.datosDelProveedorOComprador[0]?.nombreRazonSocial;
   const nombreProveedorCove =
     cove?.datosGeneralesDelProveedor.nombresORazonSocial;
 
-  const domicilioProveedorPedimento = pedimento.domicilio;
+  const domicilioProveedorPedimento =
+    pedimento.datosDelProveedorOComprador[0]?.domicilio;
   const domicilioProveedorCove = cove.domicilioDelProveedor;
   const domicilioProveedorCoveCompleto = domicilioProveedorCove
     ? [
@@ -166,7 +169,8 @@ async function validateDatosProveedor(
         .join(' ')
     : '';
 
-  const idProveedorPedimento = pedimento.id_fiscal;
+  const idProveedorPedimento =
+    pedimento.datosDelProveedorOComprador[0]?.idFiscal;
   // Se supone que este valor siempre es el RFC en la exportación
   const idProveedorCove =
     cove?.datosGeneralesDelProveedor?.taxIdSinTaxIdRfcCurp;
@@ -209,13 +213,16 @@ async function validateFechasYFolios(
   traceId: string,
   pedimento: Pedimento,
   cove: Cove,
-  cfdi?: Cfdi
+  cfdi?: OCR
 ) {
   // Extract values from documents
-  const fechaEntradaPedimento = pedimento.fecha_entrada_presentacion;
+  const fechaEntradaPedimento =
+    pedimento.encabezadoPrincipalDelPedimento.fechas.entrada;
   const fechaExpedicionCove = cove?.datosDelAcuseDeValor.fechaExpedicion;
 
-  const numeroCovePedimento = pedimento.cove;
+  const numeroCovePedimento =
+    pedimento.datosDelProveedorOComprador[0]?.facturas[0]
+      ?.numeroDeCFDIODocumentoEquivalente;
   const numeroCove = cove?.datosDelAcuseDeValor.numeroDeFactura;
 
   const cfdiMkdown = cfdi?.markdown_representation;
@@ -254,10 +261,11 @@ async function validateMonedaYEquivalencia(
   traceId: string,
   pedimento: Pedimento,
   cove: Cove,
-  cfdi?: Cfdi
+  cfdi?: OCR
 ) {
   // Moneda
-  const monedaPedimento = pedimento.datos_factura?.moneda_factura;
+  const monedaPedimento =
+    pedimento.datosDelProveedorOComprador[0]?.facturas[0]?.moneda;
   // TODO: Do this in a loop, instead of just checking the first mercancia
   const monedaCove = cove.mercancias[0]?.datosDeLaMercancia?.tipoMoneda;
 
@@ -266,14 +274,17 @@ async function validateMonedaYEquivalencia(
   const tipoCambioDOF = 17.1234;
 
   // Extract values from documents
-  const valorDolaresPedimento = pedimento.datos_factura?.valor_dolares_factura;
+  const valorDolaresPedimento =
+    pedimento.datosDelProveedorOComprador[0]?.facturas[0]?.valorDolares;
   // TODO: Do this in a loop, instead of just checking the first mercancia
   const valorDolaresCove =
     cove.mercancias[0]?.datosDeLaMercancia?.valorTotalEnDolares;
 
   // Valor factura from pedimento:
-  const valorFactura = pedimento.datos_factura?.valor_moneda_factura;
-  const factorMonedaFactura = pedimento.datos_factura?.factor_moneda_factura;
+  const valorFactura =
+    pedimento.datosDelProveedorOComprador[0]?.facturas[0]?.valorMoneda;
+  const factorMonedaFactura =
+    pedimento.datosDelProveedorOComprador[0]?.facturas[0]?.factorMoneda;
 
   const cfdiMkdown = cfdi?.markdown_representation;
 
@@ -317,33 +328,30 @@ async function validateMonedaYEquivalencia(
   return await glosar(validation, traceId);
 }
 
-export const tracedRfcFormat = traceable(
-  async ({
-    pedimento,
-    cove,
-    cfdi,
-    cartaSesion,
-    traceId,
-  }: {
-    pedimento: Pedimento;
-    cove: Cove;
-    cfdi?: Cfdi;
-    cartaSesion?: CartaSesion;
-    traceId: string;
-  }) => {
-    const validationsPromise = await Promise.all([
-      validateRfcFormat(traceId, pedimento, cove, cfdi),
-      validateCesionDerechos(traceId, pedimento, cartaSesion, cfdi),
-      validateDatosImportador(traceId, pedimento, cove, cfdi),
-      validateDatosProveedor(traceId, pedimento, cove, cfdi),
-      validateFechasYFolios(traceId, pedimento, cove, cfdi),
-      validateMonedaYEquivalencia(traceId, pedimento, cove, cfdi),
-    ]);
+export async function datosDeFactura({
+  pedimento,
+  cove,
+  cfdi,
+  cartaSesion,
+  traceId,
+}: {
+  pedimento: Pedimento;
+  cove: Cove;
+  cfdi?: OCR;
+  cartaSesion?: OCR;
+  traceId: string;
+}) {
+  const validationsPromise = await Promise.all([
+    validateRfcFormat(traceId, pedimento, cove, cfdi),
+    validateCesionDerechos(traceId, pedimento, cartaSesion, cfdi),
+    validateDatosImportador(traceId, pedimento, cove, cfdi),
+    validateDatosProveedor(traceId, pedimento, cove, cfdi),
+    validateFechasYFolios(traceId, pedimento, cove, cfdi),
+    validateMonedaYEquivalencia(traceId, pedimento, cove, cfdi),
+  ]);
 
-    return {
-      sectionName: 'Datos de factura',
-      validations: validationsPromise,
-    };
-  },
-  { name: 'Pedimento S6: Datos de factura' }
-);
+  return {
+    sectionName: 'Datos de factura',
+    validations: validationsPromise,
+  };
+}

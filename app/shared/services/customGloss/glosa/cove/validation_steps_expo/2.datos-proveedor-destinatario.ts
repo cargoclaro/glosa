@@ -1,5 +1,4 @@
-import { traceable } from 'langsmith/traceable';
-import type { Cfdi } from '../../../data-extraction/mkdown_schemas';
+import type { OCR } from '~/lib/utils';
 import type { Cove } from '../../../extract-and-structure/schemas';
 import { glosar } from '../../validation-result';
 
@@ -10,7 +9,7 @@ import { glosar } from '../../validation-result';
 async function validateDatosGeneralesProveedor(
   traceId: string,
   cove: Cove,
-  cfdi?: Cfdi
+  cfdi?: OCR
 ) {
   // Extract supplier data from different sources
   const identificadorCove =
@@ -53,7 +52,7 @@ async function validateDatosGeneralesProveedor(
 async function validateDomicilioProveedor(
   traceId: string,
   cove: Cove,
-  cfdi?: Cfdi
+  cfdi?: OCR
 ) {
   // Extract supplier address data from different sources
   const domicilioCove = cove.domicilioDelProveedor;
@@ -101,7 +100,7 @@ async function validateDomicilioProveedor(
 async function validateDatosGeneralesDestinatario(
   traceId: string,
   cove: Cove,
-  cfdi?: Cfdi
+  cfdi?: OCR
 ) {
   // Extract recipient data from different sources
   // Se supone que este valor siempre es el RFC en la exportación
@@ -142,7 +141,7 @@ async function validateDatosGeneralesDestinatario(
 async function validateDomicilioDestinatario(
   traceId: string,
   cove: Cove,
-  cfdi?: Cfdi
+  cfdi?: OCR
 ) {
   // Extract recipient address data from different sources
   const domicilioCove = cove.domicilioDelDestinatario;
@@ -183,23 +182,20 @@ async function validateDomicilioDestinatario(
   return await glosar(validation, traceId);
 }
 
-export const tracedProveedorDestinatario = traceable(
-  async ({
-    cove,
-    cfdi,
-    traceId,
-  }: { cove: Cove; cfdi?: Cfdi; traceId: string }) => {
-    const validationsPromise = await Promise.all([
-      validateDatosGeneralesProveedor(traceId, cove, cfdi),
-      validateDomicilioProveedor(traceId, cove, cfdi),
-      validateDatosGeneralesDestinatario(traceId, cove, cfdi),
-      validateDomicilioDestinatario(traceId, cove, cfdi),
-    ]);
+export async function proveedorDestinatario({
+  cove,
+  cfdi,
+  traceId,
+}: { cove: Cove; cfdi?: OCR; traceId: string }) {
+  const validationsPromise = await Promise.all([
+    validateDatosGeneralesProveedor(traceId, cove, cfdi),
+    validateDomicilioProveedor(traceId, cove, cfdi),
+    validateDatosGeneralesDestinatario(traceId, cove, cfdi),
+    validateDomicilioDestinatario(traceId, cove, cfdi),
+  ]);
 
-    return {
-      sectionName: 'Datos Proveedor Destinatario',
-      validations: validationsPromise,
-    };
-  },
-  { name: 'Cove S2: Datos Proveedor Destinatario' }
-);
+  return {
+    sectionName: 'Datos Proveedor Destinatario',
+    validations: validationsPromise,
+  };
+}

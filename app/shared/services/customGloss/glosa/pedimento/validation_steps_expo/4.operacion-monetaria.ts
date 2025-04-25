@@ -1,9 +1,5 @@
-import { traceable } from 'langsmith/traceable';
-import type {
-  Cfdi,
-  TransportDocument,
-} from '../../../data-extraction/mkdown_schemas';
-import type { Pedimento } from '../../../data-extraction/schemas';
+import type { OCR } from '~/lib/utils';
+import type { Pedimento } from '../../../extract-and-structure/schemas';
 import type { Cove } from '../../../extract-and-structure/schemas';
 import { glosar } from '../../validation-result';
 
@@ -13,9 +9,10 @@ import { glosar } from '../../validation-result';
 async function validateFechaSalida(
   traceId: string,
   pedimento: Pedimento,
-  transportDocument?: TransportDocument
+  transportDocument?: OCR
 ) {
-  const pedimentoExitDate = pedimento.fecha_entrada_presentacion;
+  const pedimentoExitDate =
+    pedimento.encabezadoPrincipalDelPedimento.fechas.presentacion;
   const fechaoperador = '24/07/2025'; //Temporary hardcoded value
 
   const validation = {
@@ -43,8 +40,9 @@ async function validateFechaSalida(
 }
 
 async function validateTipoCambio(traceId: string, pedimento: Pedimento) {
-  const tipoCambio = pedimento.encabezado_del_pedimento?.tipo_cambio;
-  const fechaSalida = pedimento.fecha_entrada_presentacion;
+  const tipoCambio = pedimento.encabezadoPrincipalDelPedimento.tipoDeCambio;
+  const fechaSalida =
+    pedimento.encabezadoPrincipalDelPedimento.fechas.presentacion;
   // TODO: Replace with actual DOF API integration
   const tipoCambioDOF = 17.1234; // Temporary hardcoded value
 
@@ -78,11 +76,13 @@ async function validateValorComercial(
   traceId: string,
   pedimento: Pedimento,
   cove: Cove,
-  cfdi?: Cfdi
+  cfdi?: OCR
 ) {
   const valorComercialPedimento =
-    pedimento.valores?.precio_pagado_valor_comercial;
-  const tipoCambioPedimento = pedimento.encabezado_del_pedimento?.tipo_cambio;
+    pedimento.encabezadoPrincipalDelPedimento.valores
+      .precioPagadoOValorComercial;
+  const tipoCambioPedimento =
+    pedimento.encabezadoPrincipalDelPedimento.tipoDeCambio;
 
   // TODO: Do this in a loop, instead of just checking the first mercancia
   const valorComercialCOVE = cove.mercancias[0]?.datosDeLaMercancia?.valorTotal;
@@ -124,12 +124,15 @@ async function validateValorDolares(
   traceId: string,
   pedimento: Pedimento,
   cove: Cove,
-  cfdi?: Cfdi
+  cfdi?: OCR
 ) {
-  const valorDolaresPedimento = pedimento.valores?.valor_dolares;
+  const valorDolaresPedimento =
+    pedimento.encabezadoPrincipalDelPedimento.valores.valorDolares;
   const valorComercialPedimento =
-    pedimento.valores?.precio_pagado_valor_comercial;
-  const tipoCambioPedimento = pedimento.encabezado_del_pedimento?.tipo_cambio;
+    pedimento.encabezadoPrincipalDelPedimento.valores
+      .precioPagadoOValorComercial;
+  const tipoCambioPedimento =
+    pedimento.encabezadoPrincipalDelPedimento.tipoDeCambio;
 
   // TODO: Do this in a loop, instead of just checking the first mercancia
   const valorComercialCOVE = cove.mercancias[0]?.datosDeLaMercancia?.valorTotal;
@@ -168,31 +171,28 @@ async function validateValorDolares(
   return await glosar(validation, traceId);
 }
 
-export const tracedOperacionMonetaria = traceable(
-  async ({
-    pedimento,
-    cove,
-    transportDocument,
-    cfdi,
-    traceId,
-  }: {
-    pedimento: Pedimento;
-    cove: Cove;
-    transportDocument?: TransportDocument;
-    cfdi?: Cfdi;
-    traceId: string;
-  }) => {
-    const validationsPromise = await Promise.all([
-      validateFechaSalida(traceId, pedimento, transportDocument),
-      validateTipoCambio(traceId, pedimento),
-      validateValorComercial(traceId, pedimento, cove, cfdi),
-      validateValorDolares(traceId, pedimento, cove, cfdi),
-    ]);
+export async function operacionMonetaria({
+  pedimento,
+  cove,
+  transportDocument,
+  cfdi,
+  traceId,
+}: {
+  pedimento: Pedimento;
+  cove: Cove;
+  transportDocument?: OCR;
+  cfdi?: OCR;
+  traceId: string;
+}) {
+  const validationsPromise = await Promise.all([
+    validateFechaSalida(traceId, pedimento, transportDocument),
+    validateTipoCambio(traceId, pedimento),
+    validateValorComercial(traceId, pedimento, cove, cfdi),
+    validateValorDolares(traceId, pedimento, cove, cfdi),
+  ]);
 
-    return {
-      sectionName: 'Operación monetaria',
-      validations: validationsPromise,
-    };
-  },
-  { name: 'Pedimento S4: Operación monetaria' }
-);
+  return {
+    sectionName: 'Operación monetaria',
+    validations: validationsPromise,
+  };
+}

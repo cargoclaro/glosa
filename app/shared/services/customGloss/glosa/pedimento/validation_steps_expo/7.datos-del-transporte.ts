@@ -1,6 +1,5 @@
-import { traceable } from 'langsmith/traceable';
-import type { TransportDocument } from '../../../data-extraction/mkdown_schemas';
-import type { Pedimento } from '../../../data-extraction/schemas';
+import type { OCR } from '~/lib/utils';
+import type { Pedimento } from '../../../extract-and-structure/schemas';
 import { apendice3 } from '../../anexo-22/apendice-3';
 import { apendice10 } from '../../anexo-22/apendice-10';
 import { glosar } from '../../validation-result';
@@ -8,9 +7,11 @@ import { glosar } from '../../validation-result';
 async function validateTipoTransporte(traceId: string, pedimento: Pedimento) {
   // Extract transport type from pedimento
   const tipoTransporteEntradaSalida =
-    pedimento.medios_transporte?.entrada_salida;
-  const tipoTransporteArribo = pedimento.medios_transporte?.arribo;
-  const tipoTransporteSalida = pedimento.medios_transporte?.salida;
+    pedimento.encabezadoPrincipalDelPedimento.mediosTransporte.entradaSalida;
+  const tipoTransporteArribo =
+    pedimento.encabezadoPrincipalDelPedimento.mediosTransporte.arribo;
+  const tipoTransporteSalida =
+    pedimento.encabezadoPrincipalDelPedimento.mediosTransporte.salida;
 
   const validation = {
     name: 'Clave del tipo de transporte',
@@ -50,11 +51,11 @@ async function validateTipoTransporte(traceId: string, pedimento: Pedimento) {
 async function validateModalidadMedioTransporte(
   traceId: string,
   pedimento: Pedimento,
-  transportDocument?: TransportDocument
+  transportDocument?: OCR
 ) {
   // Extract transport means from pedimento
   const tipoTransporteEntradaSalida =
-    pedimento.medios_transporte?.entrada_salida;
+    pedimento.encabezadoPrincipalDelPedimento.mediosTransporte.entradaSalida;
 
   const transportDocmkdown = transportDocument?.markdown_representation;
   const validation = {
@@ -91,10 +92,13 @@ async function validateModalidadMedioTransporte(
 async function validateNumeroGuiaEmbarque(
   traceId: string,
   pedimento: Pedimento,
-  transportDocument?: TransportDocument
+  transportDocument?: OCR
 ) {
   // Extract guide/shipment number from pedimento
-  const numeroGuiaEmbarque = pedimento.no_guia_embarque_id;
+  // TODO: No se si deberia ser el Master o el House number
+  const numeroGuiaEmbarque =
+    pedimento.guiasOManifiestosOConocimientosDeEmbarqueODocumentosDeTransporte
+      ?.numeroMaster;
   const transportDocmkdown = transportDocument?.markdown_representation;
 
   const validation = {
@@ -110,7 +114,9 @@ async function validateNumeroGuiaEmbarque(
             { name: 'Número de guía/embarque', value: numeroGuiaEmbarque },
             {
               name: 'Tipo de transporte',
-              value: pedimento.medios_transporte?.entrada_salida,
+              value:
+                pedimento.encabezadoPrincipalDelPedimento.mediosTransporte
+                  .entradaSalida,
             },
           ],
         },
@@ -124,26 +130,23 @@ async function validateNumeroGuiaEmbarque(
   return await glosar(validation, traceId);
 }
 
-export const tracedTipoTransporte = traceable(
-  async ({
-    pedimento,
-    transportDocument,
-    traceId,
-  }: {
-    pedimento: Pedimento;
-    transportDocument?: TransportDocument;
-    traceId: string;
-  }) => {
-    const validationsPromise = await Promise.all([
-      validateTipoTransporte(traceId, pedimento),
-      validateModalidadMedioTransporte(traceId, pedimento, transportDocument),
-      validateNumeroGuiaEmbarque(traceId, pedimento, transportDocument),
-    ]);
+export async function tipoTransporte({
+  pedimento,
+  transportDocument,
+  traceId,
+}: {
+  pedimento: Pedimento;
+  transportDocument?: OCR;
+  traceId: string;
+}) {
+  const validationsPromise = await Promise.all([
+    validateTipoTransporte(traceId, pedimento),
+    validateModalidadMedioTransporte(traceId, pedimento, transportDocument),
+    validateNumeroGuiaEmbarque(traceId, pedimento, transportDocument),
+  ]);
 
-    return {
-      sectionName: 'Datos del transporte',
-      validations: validationsPromise,
-    };
-  },
-  { name: 'Pedimento S7: Tipo de transporte' }
-);
+  return {
+    sectionName: 'Datos del transporte',
+    validations: validationsPromise,
+  };
+}

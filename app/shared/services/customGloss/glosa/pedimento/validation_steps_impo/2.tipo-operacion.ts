@@ -1,6 +1,5 @@
-import { traceable } from 'langsmith/traceable';
-import type { TransportDocument } from '../../../data-extraction/mkdown_schemas/transport-document';
-import type { Pedimento } from '../../../data-extraction/schemas';
+import type { OCR } from '~/lib/utils';
+import type { Pedimento } from '../../../extract-and-structure/schemas';
 import { apendice2 } from '../../anexo-22/apendice-2';
 import { apendice16 } from '../../anexo-22/apendice-16';
 import { glosar } from '../../validation-result';
@@ -12,10 +11,11 @@ import { glosar } from '../../validation-result';
 async function validateCoherenciaOrigenDestino(
   traceId: string,
   pedimento: Pedimento,
-  transportDocument?: TransportDocument
+  transportDocument?: OCR
 ) {
-  const tipoOperacion = pedimento.encabezado_del_pedimento?.tipo_oper;
-  const observaciones = pedimento.observaciones_a_nivel_pedimento;
+  const tipoOperacion =
+    pedimento.encabezadoPrincipalDelPedimento.tipoDeOperacion;
+  const observaciones = pedimento.observacionesANivelPedimento;
 
   const transportDocumentmkdown = transportDocument?.markdown_representation;
 
@@ -49,9 +49,11 @@ async function validateCoherenciaOrigenDestino(
  * Validates that the pedimento key is valid for the operation type according to Appendix 2
  */
 async function validateClavePedimento(traceId: string, pedimento: Pedimento) {
-  const tipoOperacion = pedimento.encabezado_del_pedimento?.tipo_oper;
-  const clavePedimento = pedimento.encabezado_del_pedimento?.cve_pedim;
-  const observaciones = pedimento.observaciones_a_nivel_pedimento;
+  const tipoOperacion =
+    pedimento.encabezadoPrincipalDelPedimento.tipoDeOperacion;
+  const clavePedimento =
+    pedimento.encabezadoPrincipalDelPedimento.claveDePedimento;
+  const observaciones = pedimento.observacionesANivelPedimento;
 
   const validation = {
     name: 'Clave de pedimento',
@@ -84,9 +86,10 @@ async function validateClavePedimento(traceId: string, pedimento: Pedimento) {
  * Validates that the regime is valid for the operation type according to Appendix 16
  */
 async function validateRegimen(traceId: string, pedimento: Pedimento) {
-  const tipoOperacion = pedimento.encabezado_del_pedimento?.tipo_oper;
-  const regimen = pedimento.encabezado_del_pedimento?.regimen;
-  const observaciones = pedimento.observaciones_a_nivel_pedimento;
+  const tipoOperacion =
+    pedimento.encabezadoPrincipalDelPedimento.tipoDeOperacion;
+  const regimen = pedimento.encabezadoPrincipalDelPedimento.regimen;
+  const observaciones = pedimento.observacionesANivelPedimento;
 
   const validation = {
     name: 'Régimen',
@@ -115,26 +118,23 @@ async function validateRegimen(traceId: string, pedimento: Pedimento) {
   return await glosar(validation, traceId, 'gpt-4o-mini');
 }
 
-export const tracedTipoOperacion = traceable(
-  async ({
-    pedimento,
-    transportDocument,
-    traceId,
-  }: {
-    pedimento: Pedimento;
-    transportDocument?: TransportDocument;
-    traceId: string;
-  }) => {
-    const validationsPromise = await Promise.all([
-      validateCoherenciaOrigenDestino(traceId, pedimento, transportDocument),
-      validateClavePedimento(traceId, pedimento),
-      validateRegimen(traceId, pedimento),
-    ]);
+export async function tipoOperacion({
+  pedimento,
+  transportDocument,
+  traceId,
+}: {
+  pedimento: Pedimento;
+  transportDocument?: OCR;
+  traceId: string;
+}) {
+  const validationsPromise = await Promise.all([
+    validateCoherenciaOrigenDestino(traceId, pedimento, transportDocument),
+    validateClavePedimento(traceId, pedimento),
+    validateRegimen(traceId, pedimento),
+  ]);
 
-    return {
-      sectionName: 'Tipo de operación',
-      validations: validationsPromise,
-    };
-  },
-  { name: 'Pedimento S2: Tipo de operación' }
-);
+  return {
+    sectionName: 'Tipo de operación',
+    validations: validationsPromise,
+  };
+}

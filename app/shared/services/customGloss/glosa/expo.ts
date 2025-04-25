@@ -1,46 +1,42 @@
-import { traceable } from 'langsmith/traceable';
+import type { OCR } from '~/lib/utils';
 import type {
-  CartaSesion,
-  Cfdi,
-  Invoice,
-  TransportDocument,
-} from '../data-extraction/mkdown_schemas';
-import type { Pedimento } from '../data-extraction/schemas';
-import type { Cove, PackingList } from '../extract-and-structure/schemas';
-import { tracedCoveValidationStepsExpo } from './cove/validation_steps_expo';
-import { tracedPedimentoValidationStepsExpo } from './pedimento/validation_steps_expo';
+  Cove,
+  PackingList,
+  Pedimento,
+} from '../extract-and-structure/schemas';
+import { coveValidationStepsExpo } from './cove/validation_steps_expo';
+import { pedimentoValidationStepsExpo } from './pedimento/validation_steps_expo';
 
-export const glosaExpo = traceable(
-  async ({
-    pedimento,
-    transportDocument,
-    packingList,
-    cove,
-    cfdi,
-    cartaSesion,
-    invoice,
-    traceId,
-  }: {
-    pedimento: Pedimento;
-    transportDocument?: TransportDocument;
-    packingList?: PackingList;
-    cove: Cove;
-    cfdi?: Cfdi;
-    cartaSesion?: CartaSesion;
-    invoice?: Invoice;
-    traceId: string;
-  }) =>
-    Promise.all([
-      tracedPedimentoValidationStepsExpo({
-        pedimento,
-        cove,
-        cfdi,
-        cartaSesion,
-        transportDocument,
-        packingList,
-        traceId,
-      }),
-      tracedCoveValidationStepsExpo({ cove, cfdi, invoice, traceId }),
-    ]).then((results) => results.flat()),
-  { name: 'Exportación' }
-);
+export async function glosaExpo({
+  pedimento,
+  transportDocument,
+  packingList,
+  cove,
+  cfdi,
+  cartaSesion,
+  invoice,
+  traceId,
+}: {
+  pedimento: Pedimento;
+  transportDocument?: OCR;
+  packingList?: PackingList;
+  cove: Cove;
+  cfdi?: OCR;
+  cartaSesion?: OCR;
+  invoice?: OCR;
+  traceId: string;
+}) {
+  const results = await Promise.all([
+    pedimentoValidationStepsExpo({
+      pedimento,
+      cove,
+      cfdi,
+      cartaSesion,
+      transportDocument,
+      packingList,
+      traceId,
+    }),
+    coveValidationStepsExpo({ cove, cfdi, invoice, traceId }),
+  ]);
+  return results.flat();
+}

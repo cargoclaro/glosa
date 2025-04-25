@@ -1,5 +1,8 @@
-import { isValid, parse } from 'date-fns';
-import { type RefinementCtx, z } from 'zod';
+import { z } from 'zod';
+import {
+  transformStringToDate,
+  transformStringToDateNullVersion,
+} from '~/lib/utils';
 
 export const partidaSchema = z.object({
   secuencia: z.number().describe('Etiqueta en el documento: "SEC"'),
@@ -148,6 +151,8 @@ export const partidaSchema = z.object({
     .describe('Etiqueta en el documento: "OBSERVACIONES A NIVEL PARTIDA"'),
 });
 
+export type Partida = z.infer<typeof partidaSchema>;
+
 const medioDeTransporteClaves = [
   '1',
   '2',
@@ -163,27 +168,6 @@ const medioDeTransporteClaves = [
   '98',
   '99',
 ] as const;
-
-function transformFechaEntradaPresentacion(
-  dateStr: string | null,
-  ctx: RefinementCtx
-) {
-  if (!dateStr) {
-    return null;
-  }
-
-  const parsedDate = parse(dateStr, 'dd/MM/yyyy', new Date());
-
-  if (!isValid(parsedDate)) {
-    ctx.addIssue({
-      code: z.ZodIssueCode.custom,
-      message: `Formato de fecha inválido: ${dateStr}. Se esperaba DD/MM/YYYY.`,
-    });
-    return null;
-  }
-
-  return parsedDate;
-}
 
 export const datosGeneralesDePedimentoSchema = z.object({
   encabezadoPrincipalDelPedimento: z.object({
@@ -334,27 +318,31 @@ export const datosGeneralesDePedimentoSchema = z.object({
       entrada: z
         .string()
         .describe("Etiqueta en el documento: 'ENTRADA'")
-        .transform(transformFechaEntradaPresentacion),
+        .transform(transformStringToDate),
       pago: z
         .string()
         .describe("Etiqueta en el documento: 'PAGO'")
-        .transform(transformFechaEntradaPresentacion),
+        .transform(transformStringToDate),
       extraccion: z
         .string()
         .nullable()
-        .describe("Etiqueta en el documento: 'EXTRACCIÓN.'"),
+        .describe("Etiqueta en el documento: 'EXTRACCIÓN.'")
+        .transform(transformStringToDateNullVersion),
       presentacion: z
         .string()
         .nullable()
-        .describe("Etiqueta en el documento: 'PRESENTACIÓN.'"),
+        .describe("Etiqueta en el documento: 'PRESENTACIÓN.'")
+        .transform(transformStringToDateNullVersion),
       importacionAEstadosUnidosOCanada: z
         .string()
         .nullable()
-        .describe("Etiqueta en el documento: 'IMP. EUA/CAN.'"),
+        .describe("Etiqueta en el documento: 'IMP. EUA/CAN.'")
+        .transform(transformStringToDateNullVersion),
       original: z
         .string()
         .nullable()
-        .describe("Etiqueta en el documento: 'ORIGINAL.'"),
+        .describe("Etiqueta en el documento: 'ORIGINAL.'")
+        .transform(transformStringToDateNullVersion),
     }),
     cuadroDeLiquidacion: z.object({
       liquidaciones: z.array(
@@ -421,7 +409,7 @@ export const datosGeneralesDePedimentoSchema = z.object({
           fecha: z
             .string()
             .describe("Etiqueta en el documento: 'FECHA'")
-            .transform(transformFechaEntradaPresentacion),
+            .transform(transformStringToDate),
           // TODO: Apendice 14
           incoterm: z
             .string()

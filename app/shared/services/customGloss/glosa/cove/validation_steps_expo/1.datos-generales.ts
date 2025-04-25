@@ -1,12 +1,11 @@
-import { traceable } from 'langsmith/traceable';
-import type { Cfdi } from '../../../data-extraction/mkdown_schemas';
+import type { OCR } from '~/lib/utils';
 import type { Cove } from '../../../extract-and-structure/schemas';
 import { glosar } from '../../validation-result';
 
 /**
  * Validates that the invoice number in the COVE document matches the CFDI for exports.
  */
-async function validateNumeroFactura(traceId: string, cove: Cove, cfdi?: Cfdi) {
+async function validateNumeroFactura(traceId: string, cove: Cove, cfdi?: OCR) {
   // Extract invoice numbers from different sources
   const numeroFacturaCove = cove.datosDelAcuseDeValor.numeroDeFactura;
   const cfdiMkdown = cfdi?.markdown_representation;
@@ -38,7 +37,7 @@ async function validateNumeroFactura(traceId: string, cove: Cove, cfdi?: Cfdi) {
 async function validateFechaExpedicion(
   traceId: string,
   cove: Cove,
-  cfdi?: Cfdi
+  cfdi?: OCR
 ) {
   // Extract invoice dates from different sources
   const fechaExpedicionCove = cove.datosDelAcuseDeValor.fechaExpedicion;
@@ -68,7 +67,7 @@ async function validateFechaExpedicion(
 /**
  * Validates that the RFC in the COVE document matches other documents for exports.
  */
-async function validateRfc(traceId: string, cove: Cove, cfdi?: Cfdi) {
+async function validateRfc(traceId: string, cove: Cove, cfdi?: OCR) {
   // Extract RFC values from different sources
   // Se supone que este valor siempre es el RFC en la exportación
   const rfcCove = cove.datosGeneralesDelDestinatario.taxIdSinTaxIdRfcCurp;
@@ -94,22 +93,19 @@ async function validateRfc(traceId: string, cove: Cove, cfdi?: Cfdi) {
   return await glosar(validation, traceId);
 }
 
-export const tracedDatosGenerales = traceable(
-  async ({
-    cove,
-    cfdi,
-    traceId,
-  }: { cove: Cove; cfdi?: Cfdi; traceId: string }) => {
-    const validationsPromise = await Promise.all([
-      validateNumeroFactura(traceId, cove, cfdi),
-      validateFechaExpedicion(traceId, cove, cfdi),
-      validateRfc(traceId, cove, cfdi),
-    ]);
+export async function datosGenerales({
+  cove,
+  cfdi,
+  traceId,
+}: { cove: Cove; cfdi?: OCR; traceId: string }) {
+  const validationsPromise = await Promise.all([
+    validateNumeroFactura(traceId, cove, cfdi),
+    validateFechaExpedicion(traceId, cove, cfdi),
+    validateRfc(traceId, cove, cfdi),
+  ]);
 
-    return {
-      sectionName: 'Datos Generales',
-      validations: validationsPromise,
-    };
-  },
-  { name: 'Cove S1: Datos Generales' }
-);
+  return {
+    sectionName: 'Datos Generales',
+    validations: validationsPromise,
+  };
+}

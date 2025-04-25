@@ -1,8 +1,4 @@
-import { traceable } from 'langsmith/traceable';
-import type {
-  Carta318,
-  Invoice,
-} from '../../../data-extraction/mkdown_schemas';
+import type { OCR } from '~/lib/utils';
 import type { Cove } from '../../../extract-and-structure/schemas';
 import { glosar } from '../../validation-result';
 
@@ -13,8 +9,8 @@ import { glosar } from '../../validation-result';
 async function validateMercancias(
   traceId: string,
   cove: Cove,
-  invoice?: Invoice,
-  carta318?: Carta318
+  invoice?: OCR,
+  carta318?: OCR
 ) {
   // Extract merchandise data from COVE
   const datosMercanciaCove = cove.mercancias;
@@ -69,8 +65,8 @@ async function validateMercancias(
 async function validateValorTotalDolares(
   traceId: string,
   cove: Cove,
-  invoice?: Invoice,
-  carta318?: Carta318
+  invoice?: OCR,
+  carta318?: OCR
 ) {
   // Extract total value from COVE
   const valorTotalDolaresCove = cove.mercancias?.reduce(
@@ -117,8 +113,8 @@ async function validateValorTotalDolares(
 async function validateNumeroSerie(
   traceId: string,
   cove: Cove,
-  invoice?: Invoice,
-  carta318?: Carta318
+  invoice?: OCR,
+  carta318?: OCR
 ) {
   // TODO: Do this in a loop, instead of just checking the first mercancia
   const numeroSerieCove =
@@ -158,28 +154,25 @@ async function validateNumeroSerie(
   return await glosar(validation, traceId);
 }
 
-export const tracedMercancias = traceable(
-  async ({
-    cove,
-    invoice,
-    carta318,
-    traceId,
-  }: {
-    cove: Cove;
-    invoice?: Invoice;
-    carta318?: Carta318;
-    traceId: string;
-  }) => {
-    const validationsPromise = await Promise.all([
-      validateMercancias(traceId, cove, invoice, carta318),
-      validateValorTotalDolares(traceId, cove, invoice, carta318),
-      validateNumeroSerie(traceId, cove, invoice, carta318),
-    ]);
+export async function mercancias({
+  cove,
+  invoice,
+  carta318,
+  traceId,
+}: {
+  cove: Cove;
+  invoice?: OCR;
+  carta318?: OCR;
+  traceId: string;
+}) {
+  const validationsPromise = await Promise.all([
+    validateMercancias(traceId, cove, invoice, carta318),
+    validateValorTotalDolares(traceId, cove, invoice, carta318),
+    validateNumeroSerie(traceId, cove, invoice, carta318),
+  ]);
 
-    return {
-      sectionName: 'Validación de mercancías',
-      validations: validationsPromise,
-    };
-  },
-  { name: 'Cove S3: Validación de mercancías' }
-);
+  return {
+    sectionName: 'Validación de mercancías',
+    validations: validationsPromise,
+  };
+}

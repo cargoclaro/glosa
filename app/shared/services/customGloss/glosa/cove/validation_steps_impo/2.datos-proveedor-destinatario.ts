@@ -1,8 +1,4 @@
-import { traceable } from 'langsmith/traceable';
-import type {
-  Carta318,
-  Invoice,
-} from '../../../data-extraction/mkdown_schemas';
+import type { OCR } from '~/lib/utils';
 import type { Cove } from '../../../extract-and-structure/schemas';
 import { glosar } from '../../validation-result';
 
@@ -13,8 +9,8 @@ import { glosar } from '../../validation-result';
 async function validateDatosGeneralesProveedor(
   traceId: string,
   cove: Cove,
-  invoice?: Invoice,
-  carta318?: Carta318
+  invoice?: OCR,
+  carta318?: OCR
 ) {
   // Extract supplier data from different sources
   // Se supone que este valor siempre es el RFC en la importación
@@ -62,8 +58,8 @@ async function validateDatosGeneralesProveedor(
 async function validateDomicilioProveedor(
   traceId: string,
   cove: Cove,
-  invoice?: Invoice,
-  carta318?: Carta318
+  invoice?: OCR,
+  carta318?: OCR
 ) {
   // Extract supplier address data from different sources
   const domicilioCove = cove.domicilioDelProveedor;
@@ -119,8 +115,8 @@ async function validateDomicilioProveedor(
 async function validateDatosGeneralesDestinatario(
   traceId: string,
   cove: Cove,
-  invoice?: Invoice,
-  carta318?: Carta318
+  invoice?: OCR,
+  carta318?: OCR
 ) {
   // Extract recipient data from different sources
   // Se supone que este valor siempre es el RFC en la importación
@@ -165,8 +161,8 @@ async function validateDatosGeneralesDestinatario(
 async function validateDomicilioDestinatario(
   traceId: string,
   cove: Cove,
-  invoice?: Invoice,
-  carta318?: Carta318
+  invoice?: OCR,
+  carta318?: OCR
 ) {
   // Extract recipient address data from different sources
   const domicilioCove = cove.domicilioDelDestinatario;
@@ -217,29 +213,26 @@ async function validateDomicilioDestinatario(
   return await glosar(validation, traceId, 'o3-mini');
 }
 
-export const tracedChooseDocument = traceable(
-  async ({
-    cove,
-    invoice,
-    carta318,
-    traceId,
-  }: {
-    cove: Cove;
-    invoice?: Invoice;
-    carta318?: Carta318;
-    traceId: string;
-  }) => {
-    const validationsPromise = await Promise.all([
-      validateDatosGeneralesProveedor(traceId, cove, invoice, carta318),
-      validateDomicilioProveedor(traceId, cove, invoice, carta318),
-      validateDatosGeneralesDestinatario(traceId, cove, invoice, carta318),
-      validateDomicilioDestinatario(traceId, cove, invoice, carta318),
-    ]);
+export async function proveedorDestinatario({
+  cove,
+  invoice,
+  carta318,
+  traceId,
+}: {
+  cove: Cove;
+  invoice?: OCR;
+  carta318?: OCR;
+  traceId: string;
+}) {
+  const validationsPromise = await Promise.all([
+    validateDatosGeneralesProveedor(traceId, cove, invoice, carta318),
+    validateDomicilioProveedor(traceId, cove, invoice, carta318),
+    validateDatosGeneralesDestinatario(traceId, cove, invoice, carta318),
+    validateDomicilioDestinatario(traceId, cove, invoice, carta318),
+  ]);
 
-    return {
-      sectionName: 'Datos Proveedor Destinatario',
-      validations: validationsPromise,
-    };
-  },
-  { name: 'Cove S2: Datos Proveedor Destinatario' }
-);
+  return {
+    sectionName: 'Datos Proveedor Destinatario',
+    validations: validationsPromise,
+  };
+}
