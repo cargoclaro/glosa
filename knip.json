@@ -1,9 +1,5 @@
 {
   "$schema": "https://unpkg.com/knip@5/schema.json",
-  "ignore": [
-    "**/ui/**",
-    "app/(dashboard)/home/components/Header/glosa/xml-to-json.ts",
-    "**/global.setup.{ts,js}"
-  ],
+  "ignore": ["**/ui/**", "**/global.setup.{ts,js}"],
   "ignoreDependencies": ["ultracite", "@clerk/testing", "tw-animate-css"]
 }

@@ -49,7 +49,6 @@ async function combinePagesToPdf(pageBase64Strings: string[]): Promise<string> {
   return Buffer.from(combinedPdfBytes).toString('base64');
 }
 
-
 /**
  * Fetches a PDF file and returns an array of base64-encoded pages
  */
@@ -80,7 +79,6 @@ async function fetchPdfPages(fileUrl: string): Promise<string[]> {
 
   return pageBase64Strings;
 }
-
 
 export async function extractAndStructurePedimento(
   fileUrl: string,

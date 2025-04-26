@@ -1,20 +1,12 @@
 import { Langfuse } from 'langfuse';
+import { err, ok } from 'neverthrow';
 import type { UploadedFileData } from 'uploadthing/types';
-import {
-  extractAndStructurePedimento,
-} from '../extract-and-structure/pedimento/extract-and-structure-pedimento';
-import {
-  extractAndStructureCove,
-} from '../extract-and-structure/cove/extract-and-structure-cove';
-import {
-  extractAndStructurePackingList,
-} from '../extract-and-structure/packing-list/extract-and-structure-packing-list';
-import {
-  extractAndStructureCFDI,
-} from '../extract-and-structure/cfdi/extract-and-structure-cfdi';
+import { extractAndStructureCFDI } from '../extract-and-structure/cfdi/extract-and-structure-cfdi';
+import { extractAndStructureCove } from '../extract-and-structure/cove/extract-and-structure-cove';
+import { extractAndStructurePackingList } from '../extract-and-structure/packing-list/extract-and-structure-packing-list';
+import { extractAndStructurePedimento } from '../extract-and-structure/pedimento/extract-and-structure-pedimento';
 import type { DocumentType } from '../utils';
 import { extractTextFromImage } from './vision';
-import { ok, err } from 'neverthrow';
 
 export async function extractTextFromPDFs(
   classifications: Partial<
@@ -92,9 +84,7 @@ export async function extractTextFromPDFs(
       ? extractAndStructurePackingList(listaDeEmpaque.ufsUrl, traceId)
       : null,
     extractAndStructureCove(cove.ufsUrl, traceId),
-    cfdi
-      ? extractAndStructureCFDI(cfdi.ufsUrl)
-      : null,
+    cfdi ? extractAndStructureCFDI(cfdi.ufsUrl) : null,
     cartaCesionDeDerechos
       ? extractTextFromImage(
           cartaCesionDeDerechos.originalFile,
@@ -103,6 +93,10 @@ export async function extractTextFromPDFs(
         )
       : null,
   ]);
+
+  if (cfdiText?.isErr()) {
+    return cfdiText;
+  }
 
   return ok({
     ...(facturaText && { invoice: facturaText }),
@@ -114,7 +108,7 @@ export async function extractTextFromPDFs(
     pedimento: pedimentoText,
     ...(listaDeEmpaqueText && { packingList: listaDeEmpaqueText }),
     cove: coveText,
-    ...(cfdiText && { cfdi: cfdiText }),
+    ...(cfdiText?.isOk() && { cfdi: cfdiText.value }),
     ...(cartaCesionDeDerechosText && {
       cartaSesion: cartaCesionDeDerechosText,
     }),

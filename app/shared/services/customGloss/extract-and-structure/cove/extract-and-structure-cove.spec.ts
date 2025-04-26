@@ -1,8 +1,6 @@
 import { Langfuse } from 'langfuse';
 import { describe, expect, it } from 'vitest';
-import {
-  extractAndStructureCove,
-} from './extract-and-structure-cove';
+import { extractAndStructureCove } from './extract-and-structure-cove';
 
 describe('Extract and Structure Cove', () => {
   it('should correctly extract and structure cove', async () => {

@@ -2,8 +2,8 @@ const BANXICO_BASE_URL = 'https://www.banxico.org.mx/SieAPIRest/service/v1';
 
 import { config } from 'dotenv';
 import { env } from 'lib/env/server';
+import { err, ok } from 'neverthrow';
 import { z } from 'zod';
-import { ok, err } from 'neverthrow';
 
 config();
 

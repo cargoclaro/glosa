@@ -1,9 +1,9 @@
 import type { OCR } from '~/lib/utils';
 import type {
+  CFDI,
   Cove,
   PackingList,
   Pedimento,
-  CFDI,
 } from '../extract-and-structure/schemas';
 import { coveValidationStepsExpo } from './cove/validation_steps_expo';
 import { pedimentoValidationStepsExpo } from './pedimento/validation_steps_expo';

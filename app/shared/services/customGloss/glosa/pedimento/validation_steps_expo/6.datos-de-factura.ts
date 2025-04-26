@@ -1,5 +1,9 @@
 import type { OCR } from '~/lib/utils';
-import type { CFDI, Pedimento, Cove } from '../../../extract-and-structure/schemas';
+import type {
+  CFDI,
+  Cove,
+  Pedimento,
+} from '../../../extract-and-structure/schemas';
 import { glosar } from '../../validation-result';
 
 async function validateRfcFormat(

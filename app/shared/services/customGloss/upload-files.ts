@@ -1,5 +1,5 @@
+import { err, ok } from 'neverthrow';
 import { UTApi } from 'uploadthing/server';
-import { ok, err } from 'neverthrow';
 
 export async function uploadFiles(files: File[]) {
   const utapi = new UTApi();

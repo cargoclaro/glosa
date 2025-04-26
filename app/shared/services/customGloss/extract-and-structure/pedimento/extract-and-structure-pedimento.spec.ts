@@ -1,8 +1,6 @@
 import { Langfuse } from 'langfuse';
 import { describe, expect, it } from 'vitest';
-import {
-  extractAndStructurePedimento,
-} from './extract-and-structure-pedimento';
+import { extractAndStructurePedimento } from './extract-and-structure-pedimento';
 
 const langfuse = new Langfuse();
 

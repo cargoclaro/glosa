@@ -1,9 +1,6 @@
 import { google } from '@ai-sdk/google';
 import { generateObject, generateText } from 'ai';
-import {
-  datosGeneralesSchema,
-  mercanciaSchema,
-} from '../schemas';
+import { datosGeneralesSchema, mercanciaSchema } from '../schemas';
 
 export async function extractAndStructureCove(
   fileUrl: string,

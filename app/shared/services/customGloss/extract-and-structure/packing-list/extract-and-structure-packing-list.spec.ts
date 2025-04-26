@@ -1,7 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import {
-  extractAndStructurePackingList,
-} from './extract-and-structure-packing-list';
+import { extractAndStructurePackingList } from './extract-and-structure-packing-list';
 
 describe('Extract and Structure Packing List', () => {
   it('should correctly extract and structure packing lists', async () => {

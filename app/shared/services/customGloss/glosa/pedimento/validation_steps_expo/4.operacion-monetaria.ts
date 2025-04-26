@@ -1,5 +1,9 @@
 import type { OCR } from '~/lib/utils';
-import type { Pedimento, Cove, CFDI } from '../../../extract-and-structure/schemas';
+import type {
+  CFDI,
+  Cove,
+  Pedimento,
+} from '../../../extract-and-structure/schemas';
 import { glosar } from '../../validation-result';
 
 // TODO: Agregar DOF y Dia de salida

@@ -25,13 +25,13 @@
     "db:push": "drizzle-kit push --force",
     "db:studio": "drizzle-kit studio",
     "db:reset": "tsx db/reset.ts",
-    "dev:xml-to-json": "tsx app/\\(dashboard\\)/home/components/Header/glosa/xml-to-json.ts",
+    "dev:xml-to-json": "tsx app/shared/services/customGloss/extract-and-structure/cfdi/xml-to-json.ts",
     "dev:proceso-de-equivalencia": "tsx app/shared/services/customGloss/glosa/processdofequivalencia.ts"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^1.2.10",
     "@ai-sdk/google": "^1.2.13",
-    "@ai-sdk/openai": "^1.3.19",
+    "@ai-sdk/openai": "^1.3.20",
     "@clerk/localizations": "^3.14.0",
     "@clerk/nextjs": "^6.18.0",
     "@neondatabase/serverless": "^0.10.4",
@@ -72,7 +72,7 @@
     "zod-form-data": "^2.0.7"
   },
   "devDependencies": {
-    "@anthropic-ai/claude-code": "^0.2.81",
+    "@anthropic-ai/claude-code": "^0.2.86",
     "@biomejs/biome": "1.9.4",
     "@clerk/testing": "^1.5.1",
     "@opentelemetry/auto-instrumentations-node": "^0.58.0",
