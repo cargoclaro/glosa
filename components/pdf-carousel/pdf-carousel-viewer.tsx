@@ -28,19 +28,6 @@ const PDFCarouselViewer = ({
   className,
   importerName = '',
 }: PDFCarouselViewerProps) => {
-  // Log the incoming files for debugging
-  useEffect(() => {
-    console.log('Files received in component:', files.length);
-    files.forEach((file, index) => {
-      console.log(`Component File ${index + 1}:`, {
-        id: file.id,
-        name: file.name,
-        url: file.url,
-        documentType: file.documentType || 'unknown',
-      });
-    });
-  }, [files]);
-
   // Accept all files - we'll handle display appropriately
   const documentFiles = useMemo(() => {
     return files;
@@ -252,7 +239,6 @@ const PDFCarouselViewer = ({
             className="h-full w-full"
             title={currentDocument.name || 'PDF Document'}
             onError={(e) => {
-              console.log('Google PDF viewer failed, trying direct embedding');
               // If Google Viewer fails, try direct embedding
               e.currentTarget.src = currentDocument.url;
 
@@ -262,9 +248,6 @@ const PDFCarouselViewer = ({
                 if (
                   e.currentTarget.contentDocument?.body?.childElementCount === 0
                 ) {
-                  console.log(
-                    'Direct embedding failed, providing download link'
-                  );
                   // If iframe is empty, replace with download link
                   const container = e.currentTarget.parentElement;
                   if (container) {

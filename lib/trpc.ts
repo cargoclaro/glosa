@@ -15,7 +15,7 @@ export const api = trpc.procedure
   .use(async (opts) => {
     const { userId, orgId, has } = await auth.protect();
     if (!orgId) {
-      throw new Error('Organization ID not found');
+      throw new Error('Should never happen');
     }
     const roles = opts.meta?.roles ?? [];
     const permissions = opts.meta?.permissions ?? [];

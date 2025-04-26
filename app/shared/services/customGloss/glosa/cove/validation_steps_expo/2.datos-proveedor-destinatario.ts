@@ -1,5 +1,4 @@
-import type { OCR } from '~/lib/utils';
-import type { Cove } from '../../../extract-and-structure/schemas';
+import type { CFDI, Cove } from '../../../extract-and-structure/schemas';
 import { glosar } from '../../validation-result';
 
 /**
@@ -9,7 +8,7 @@ import { glosar } from '../../validation-result';
 async function validateDatosGeneralesProveedor(
   traceId: string,
   cove: Cove,
-  cfdi?: OCR
+  cfdi?: CFDI
 ) {
   // Extract supplier data from different sources
   const identificadorCove =
@@ -18,7 +17,6 @@ async function validateDatosGeneralesProveedor(
     cove.datosGeneralesDelProveedor.tipoDeIdentificador;
   const nombreRazonSocialCove =
     cove.datosGeneralesDelProveedor.nombresORazonSocial;
-  const cfdiMkdown = cfdi?.markdown_representation;
 
   const validation = {
     name: 'Datos generales del proveedor',
@@ -36,7 +34,7 @@ async function validateDatosGeneralesProveedor(
           ],
         },
         cfdi: {
-          data: [{ name: 'CFDI', value: cfdiMkdown }],
+          data: [{ name: 'CFDI', value: cfdi }],
         },
       },
     },
@@ -52,7 +50,7 @@ async function validateDatosGeneralesProveedor(
 async function validateDomicilioProveedor(
   traceId: string,
   cove: Cove,
-  cfdi?: OCR
+  cfdi?: CFDI
 ) {
   // Extract supplier address data from different sources
   const domicilioCove = cove.domicilioDelProveedor;
@@ -70,8 +68,6 @@ async function validateDomicilioProveedor(
         .join(' ')
     : '';
 
-  const cfdiMkdown = cfdi?.markdown_representation;
-
   const validation = {
     name: 'Domicilio del proveedor',
     description:
@@ -84,7 +80,7 @@ async function validateDomicilioProveedor(
           data: [{ name: 'Domicilio', value: domicilioCoveCompleto }],
         },
         cfdi: {
-          data: [{ name: 'CFDI', value: cfdiMkdown }],
+          data: [{ name: 'CFDI', value: cfdi }],
         },
       },
     },
@@ -100,7 +96,7 @@ async function validateDomicilioProveedor(
 async function validateDatosGeneralesDestinatario(
   traceId: string,
   cove: Cove,
-  cfdi?: OCR
+  cfdi?: CFDI
 ) {
   // Extract recipient data from different sources
   // Se supone que este valor siempre es el RFC en la exportación
@@ -108,7 +104,6 @@ async function validateDatosGeneralesDestinatario(
     cove.datosGeneralesDelDestinatario.taxIdSinTaxIdRfcCurp;
   const nombreRazonSocialCove =
     cove.datosGeneralesDelDestinatario.nombresORazonSocial;
-  const cfdiMkdown = cfdi?.markdown_representation;
 
   const validation = {
     name: 'Datos generales del destinatario',
@@ -125,7 +120,7 @@ async function validateDatosGeneralesDestinatario(
           ],
         },
         cfdi: {
-          data: [{ name: 'CFDI', value: cfdiMkdown }],
+          data: [{ name: 'CFDI', value: cfdi }],
         },
       },
     },
@@ -141,7 +136,7 @@ async function validateDatosGeneralesDestinatario(
 async function validateDomicilioDestinatario(
   traceId: string,
   cove: Cove,
-  cfdi?: OCR
+  cfdi?: CFDI
 ) {
   // Extract recipient address data from different sources
   const domicilioCove = cove.domicilioDelDestinatario;
@@ -159,8 +154,6 @@ async function validateDomicilioDestinatario(
         .join(' ')
     : '';
 
-  const cfdiMkdown = cfdi?.markdown_representation;
-
   const validation = {
     name: 'Domicilio del destinatario',
     description:
@@ -173,7 +166,7 @@ async function validateDomicilioDestinatario(
           data: [{ name: 'Domicilio', value: domicilioCoveCompleto }],
         },
         cfdi: {
-          data: [{ name: 'CFDI', value: cfdiMkdown }],
+          data: [{ name: 'CFDI', value: cfdi }],
         },
       },
     },
@@ -186,7 +179,7 @@ export async function proveedorDestinatario({
   cove,
   cfdi,
   traceId,
-}: { cove: Cove; cfdi?: OCR; traceId: string }) {
+}: { cove: Cove; cfdi?: CFDI; traceId: string }) {
   const validationsPromise = await Promise.all([
     validateDatosGeneralesProveedor(traceId, cove, cfdi),
     validateDomicilioProveedor(traceId, cove, cfdi),

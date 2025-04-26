@@ -1,5 +1,6 @@
 import type { OCR } from '~/lib/utils';
 import type {
+  CFDI,
   Cove,
   PackingList,
   Pedimento,
@@ -21,7 +22,7 @@ export async function glosaExpo({
   transportDocument?: OCR;
   packingList?: PackingList;
   cove: Cove;
-  cfdi?: OCR;
+  cfdi?: CFDI;
   cartaSesion?: OCR;
   invoice?: OCR;
   traceId: string;

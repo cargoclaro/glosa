@@ -166,4 +166,4 @@ export const cfdiSchema = z.object({
   }),
 });
 
-export type Cfdi = z.infer<typeof cfdiSchema>;
+export type CFDI = z.infer<typeof cfdiSchema>;

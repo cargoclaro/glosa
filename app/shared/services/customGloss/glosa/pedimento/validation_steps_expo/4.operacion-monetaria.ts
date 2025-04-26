@@ -1,6 +1,9 @@
 import type { OCR } from '~/lib/utils';
-import type { Pedimento } from '../../../extract-and-structure/schemas';
-import type { Cove } from '../../../extract-and-structure/schemas';
+import type {
+  CFDI,
+  Cove,
+  Pedimento,
+} from '../../../extract-and-structure/schemas';
 import { glosar } from '../../validation-result';
 
 // TODO: Agregar DOF y Dia de salida
@@ -76,7 +79,7 @@ async function validateValorComercial(
   traceId: string,
   pedimento: Pedimento,
   cove: Cove,
-  cfdi?: OCR
+  cfdi?: CFDI
 ) {
   const valorComercialPedimento =
     pedimento.encabezadoPrincipalDelPedimento.valores
@@ -87,8 +90,6 @@ async function validateValorComercial(
   // TODO: Do this in a loop, instead of just checking the first mercancia
   const valorComercialCOVE = cove.mercancias[0]?.datosDeLaMercancia?.valorTotal;
   const monedaCOVE = cove.mercancias[0]?.datosDeLaMercancia?.tipoMoneda;
-
-  const cfdiMkdown = cfdi?.markdown_representation;
 
   const validation = {
     name: 'Valor comercial',
@@ -105,7 +106,7 @@ async function validateValorComercial(
           ],
         },
         cfdi: {
-          data: [{ name: 'CFDI', value: cfdiMkdown }],
+          data: [{ name: 'CFDI', value: cfdi }],
         },
         cove: {
           data: [
@@ -124,7 +125,7 @@ async function validateValorDolares(
   traceId: string,
   pedimento: Pedimento,
   cove: Cove,
-  cfdi?: OCR
+  cfdi?: CFDI
 ) {
   const valorDolaresPedimento =
     pedimento.encabezadoPrincipalDelPedimento.valores.valorDolares;
@@ -137,8 +138,6 @@ async function validateValorDolares(
   // TODO: Do this in a loop, instead of just checking the first mercancia
   const valorComercialCOVE = cove.mercancias[0]?.datosDeLaMercancia?.valorTotal;
   const monedaCOVE = cove.mercancias[0]?.datosDeLaMercancia?.tipoMoneda;
-
-  const cfdiMkdown = cfdi?.markdown_representation;
 
   const validation = {
     name: 'Valor dolares',
@@ -156,7 +155,7 @@ async function validateValorDolares(
           ],
         },
         cfdi: {
-          data: [{ name: 'CFDI', value: cfdiMkdown }],
+          data: [{ name: 'CFDI', value: cfdi }],
         },
         cove: {
           data: [
@@ -181,7 +180,7 @@ export async function operacionMonetaria({
   pedimento: Pedimento;
   cove: Cove;
   transportDocument?: OCR;
-  cfdi?: OCR;
+  cfdi?: CFDI;
   traceId: string;
 }) {
   const validationsPromise = await Promise.all([
