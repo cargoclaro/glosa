@@ -126,7 +126,7 @@ describe('Classification', () => {
       expectToBeDefined(expectedType);
       expect
         .soft(file.classifications, `Classification for ${file.ufsUrl}`)
-        .toBe(expectedType);
+        .toStrictEqual(expectedType);
     }
   });
 
@@ -142,10 +142,6 @@ describe('Classification', () => {
           {
             classification: 'Delivery Ticket',
             startPage: 2,
-          },
-          {
-            classification: 'Delivery Ticket',
-            startPage: 3,
           },
           {
             classification: 'Shipper',
@@ -286,7 +282,7 @@ describe('Classification', () => {
       expectToBeDefined(expectedType);
       expect
         .soft(file.classifications, `Classification for ${file.ufsUrl}`)
-        .toBe(expectedType);
+        .toStrictEqual(expectedType);
     }
     
   });
