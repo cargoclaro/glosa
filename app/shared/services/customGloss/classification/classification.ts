@@ -10,19 +10,41 @@ const classifications = [
   'Carta Regla 3.1.8',
   'Cove',
   'Packing List',
+  'Packing Slip',
+  'Shipper',
+  'Delivery Ticket',
   'CFDI',
-  'Archivo con múltiples documentos (iguales o distintos)',
-  'Otros',
+  'Otro',
 ] as const;
 
 export type Classification = (typeof classifications)[number];
+
+const classificationSchema = z
+  .array(z.object({
+    classification: z
+      .enum(classifications)
+      .describe(`
+      La carta de regla 3.1.8 es un complemento de la factura, ten cuidado de no clasificarla como factura.
+      Este documento lee como una carta legal, referenciando la ley aduanera y el reglamento de comercio exterior.
+
+      Verifica si en el archivo existen diferentes números de factura; esto es un indicador clave de que el archivo contiene múltiples documentos.
+    `),
+    startPage: z
+      .number()
+      .describe(`
+      El número de página en el que comienza el documento.
+    `),
+  }))
+  .describe(`
+    Clasifica los documentos/ el documento en el archivo.
+  `);
 
 export async function classifyDocuments<
   T extends { ufsUrl: string; name?: string },
 >(
   files: T[],
   parentTraceId: string
-): Promise<(T & { classification: Classification })[]> {
+) {
   const fetchedFiles = await Promise.all(
     files.map(async (file) => {
       const response = await fetch(file.ufsUrl);
@@ -44,14 +66,19 @@ export async function classifyDocuments<
       if (fetchedFile.type === 'text/xml') {
         return {
           ...fetchedFile,
-          classification: 'CFDI' as Classification,
+          classifications: [
+            {
+              classification: 'CFDI' as const,
+              startPage: 1,
+            },
+          ],
         };
       }
 
       const {
-        object: { classification },
+        object: classifications,
       } = await generateObject({
-        model: google('gemini-2.5-flash-preview-04-17'),
+        model: google('gemini-2.5-pro-preview-03-25'),
         experimental_telemetry: {
           isEnabled: true,
           functionId: fetchedFile.name,
@@ -62,16 +89,7 @@ export async function classifyDocuments<
           },
         },
         seed: 42,
-        system:
-          'Eres un experto en análisis y clasificación de documentos aduaneros.',
-        schema: z.object({
-          classification: z.enum(classifications).describe(`
-            La carta de regla 3.1.8 es un complemento de la factura, ten cuidado de no clasificarla como factura.
-            Este documento lee como una carta legal, referenciando la ley aduanera y el reglamento de comercio exterior.
-
-            Verifica si en el archivo existen diferentes números de factura; esto es un indicador clave de que el archivo contiene múltiples documentos.
-          `),
-        }),
+        schema: classificationSchema,
         messages: [
           {
             role: 'user',
@@ -88,7 +106,7 @@ export async function classifyDocuments<
 
       return {
         ...fetchedFile,
-        classification,
+        classifications,
       };
     })
   );
