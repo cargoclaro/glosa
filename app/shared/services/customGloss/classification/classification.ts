@@ -40,7 +40,7 @@ const classificationSchema = z
   `);
 
 export async function classifyDocuments<
-  T extends { ufsUrl: string; name?: string },
+  T extends { ufsUrl: string; },
 >(
   files: T[],
   parentTraceId: string
@@ -81,7 +81,7 @@ export async function classifyDocuments<
         model: google('gemini-2.5-pro-preview-03-25'),
         experimental_telemetry: {
           isEnabled: true,
-          functionId: fetchedFile.name,
+          functionId: fetchedFile.ufsUrl,
           metadata: {
             langfuseTraceId: parentTraceId,
             langfuseUpdateParent: false,
