@@ -37,46 +37,6 @@ export async function fetchFileFromUrl(ufsUrl: string): Promise<File> {
 }
 
 /**
- * Combines multiple base64-encoded PDF pages into a single PDF
- */
-export async function combinePagesToPdf(pageBase64Strings: string[]): Promise<string> {
-  // Create a new PDF document
-  const pdfDoc = await PDFDocument.create();
-
-  // Process each page and add it to the new document
-  for (const pageBase64 of pageBase64Strings) {
-    // Remove data URL prefix if present
-    const base64Data = pageBase64.startsWith('data:')
-      ? pageBase64.split(',')[1]
-      : pageBase64;
-
-    // Convert base64 to Uint8Array
-    if (!base64Data) {
-      continue;
-    }
-    const pageBytes = Buffer.from(base64Data, 'base64');
-
-    // Load the page PDF
-    const pagePdf = await PDFDocument.load(pageBytes);
-
-    // Copy all pages (should just be one) from this page PDF
-    const copiedPages = await pdfDoc.copyPages(
-      pagePdf,
-      pagePdf.getPageIndices()
-    );
-
-    // Add each copied page to the new document
-    for (const page of copiedPages) {
-      pdfDoc.addPage(page);
-    }
-  }
-
-  // Save and convert the new PDF to base64
-  const combinedPdfBytes = await pdfDoc.save();
-  return Buffer.from(combinedPdfBytes).toString('base64');
-}
-
-/**
  * Fetches a PDF file and returns an array of base64-encoded pages
  */
 export async function fetchPdfPages(fileUrl: string): Promise<string[]> {

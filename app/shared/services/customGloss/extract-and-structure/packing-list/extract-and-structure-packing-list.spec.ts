@@ -1,5 +1,7 @@
+import { Langfuse } from 'langfuse';
 import { describe, expect, it } from 'vitest';
 import { extractAndStructurePackingList } from './extract-and-structure-packing-list';
+import { fetchFileFromUrl } from 'lib/utils';
 
 describe('Extract and Structure Packing List', () => {
   it('should correctly extract and structure packing lists', async () => {
@@ -56,9 +58,23 @@ describe('Extract and Structure Packing List', () => {
         },
       },
     ] as const;
-    const packingListResults = await Promise.all(
+
+    const langfuse = new Langfuse();
+    const trace = langfuse.trace({
+      name: 'Test Extract and Structure Packing List',
+    });
+
+    // Fetch all files before processing
+    const packingListFiles = await Promise.all(
       packingListFixture.map(async ({ fileUrl }) => {
-        const packingListResult = await extractAndStructurePackingList(fileUrl);
+        const file = await fetchFileFromUrl(fileUrl);
+        return { file, fileUrl };
+      })
+    );
+    
+    const packingListResults = await Promise.all(
+      packingListFiles.map(async ({ file, fileUrl }) => {
+        const packingListResult = await extractAndStructurePackingList(file, trace.id);
         return { packingListResult, fileUrl };
       })
     );

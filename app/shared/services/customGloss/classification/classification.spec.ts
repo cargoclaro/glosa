@@ -134,7 +134,7 @@ describe('Classification', () => {
       const expectedType = filenameToExpectedTypeMap.get(classifiedFile.file.name);
       expectToBeDefined(expectedType);
       expect
-        .soft(classifiedFile.classifications, `Classification for ${classifiedFile.file.name}`)
+        .soft(classifiedFile.classification, `Classification for ${classifiedFile.file.name}`)
         .toStrictEqual(expectedType);
     }
   });
@@ -328,7 +328,7 @@ describe('Classification', () => {
       const expectedType = filenameToExpectedTypeMap.get(classifiedFile.file.name);
       expectToBeDefined(expectedType);
       expect
-        .soft(classifiedFile.classifications, `Classification for ${classifiedFile.file.name}`)
+        .soft(classifiedFile.classification, `Classification for ${classifiedFile.file.name}`)
         .toStrictEqual(expectedType);
     }
   });

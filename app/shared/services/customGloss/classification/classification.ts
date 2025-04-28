@@ -53,7 +53,7 @@ export async function classifyDocuments(
       if (file.type === 'text/xml') {
         return {
           file,
-          classifications: 'CFDI' as const,
+          classification: 'CFDI' as const,
         };
       }
 
@@ -65,7 +65,7 @@ export async function classifyDocuments(
           metadata: {
             langfuseTraceId: parentTraceId,
             langfuseUpdateParent: false,
-            fileUrl: file.name,
+            fileName: file.name,
           },
         },
         seed: 42,
@@ -86,7 +86,7 @@ export async function classifyDocuments(
 
       return {
         file,
-        classifications:
+        classification:
           classifications.length === 1 && classifications[0]
             ? classifications[0].classification
             : classifications,

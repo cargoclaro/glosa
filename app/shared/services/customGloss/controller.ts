@@ -6,7 +6,7 @@ import { Langfuse } from 'langfuse';
 import { api } from 'lib/trpc';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-import { processClassifications } from './classification/process-classifications';
+import { createExpedienteWithoutData } from './classification/create-expediente-without-data';
 import { z } from 'zod';
 import { zfd } from 'zod-form-data';
 import { db } from '~/db';
@@ -100,16 +100,19 @@ export const analysis = api
         traceId: trace.id,
         name: 'Classification',
       });
-      const classificationResults = await classifyDocuments(
-        successfulUploads.value,
+      const classifications = await classifyDocuments(
+        files,
         trace.id
       );
-
-      langfuse.event({
-        traceId: trace.id,
-        name: 'Process Classifications',
-      });
-      const groupedClassifications = await processClassifications(classificationResults);
+      const expedienteWithoutDataResult = await createExpedienteWithoutData(classifications);
+      if (expedienteWithoutDataResult.isErr()) {
+        const { error } = expedienteWithoutDataResult;
+        return {
+          success: false,
+          message: error,
+        };
+      }
+      const { value: groupedClassifications } = expedienteWithoutDataResult;
 
       langfuse.event({
         traceId: trace.id,
@@ -165,12 +168,18 @@ export const analysis = api
 
       // Batch insert files
       await db.insert(CustomGlossFile).values(
-        classificationResults.map(({ name, ufsUrl, classification }) => ({
-          name,
-          url: ufsUrl,
-          documentType: mapClassificationToDocumentType(classification),
-          customGlossId: newCustomGloss.id,
-        }))
+        classifications.map((result) => {
+          const classification = typeof result.classification === 'string' 
+            ? result.classification 
+            : result.classification[0]?.classification || 'Otro';
+          
+          return {
+            name: result.file.name,
+            url: result.file.name, // Replace with actual URL from upload
+            documentType: mapClassificationToDocumentType(classification),
+            customGlossId: newCustomGloss.id,
+          };
+        })
       );
 
       await Promise.all(

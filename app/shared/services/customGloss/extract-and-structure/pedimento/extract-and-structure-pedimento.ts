@@ -1,19 +1,89 @@
 import { google } from '@ai-sdk/google';
 import { openai } from '@ai-sdk/openai';
 import { generateObject } from 'ai';
-import { fetchPdfPages, combinePagesToPdf } from 'lib/utils';
 import { z } from 'zod';
+import { PDFDocument } from 'pdf-lib';
 import {
   type Partida,
   datosGeneralesDePedimentoSchema,
   partidaSchema,
 } from '../schemas';
 
+/**
+ * Splits a PDF into individual pages and returns array of base64-encoded pages
+ */
+async function splitPdfIntoPages(file: File): Promise<string[]> {
+  // Read the file content
+  const fileArrayBuffer = await file.arrayBuffer();
+
+  // Load the PDF document
+  const pdfDoc = await PDFDocument.load(fileArrayBuffer);
+  const pageCount = pdfDoc.getPageCount();
+
+  // Array to store base64 strings for each page
+  const pageBase64Strings: string[] = [];
+
+  // Process each page
+  for (let i = 0; i < pageCount; i++) {
+    // Create a new document with just this page
+    const newPdfDoc = await PDFDocument.create();
+    const [copiedPage] = await newPdfDoc.copyPages(pdfDoc, [i]);
+    newPdfDoc.addPage(copiedPage);
+
+    // Save and convert to base64
+    const pageBytes = await newPdfDoc.save();
+    const base64String = Buffer.from(pageBytes).toString('base64');
+    pageBase64Strings.push(base64String);
+  }
+
+  return pageBase64Strings;
+}
+
+/**
+ * Combines multiple base64-encoded PDF pages into a single PDF
+ */
+async function combinePagesToPdf(pageBase64Strings: string[]): Promise<string> {
+  // Create a new PDF document
+  const pdfDoc = await PDFDocument.create();
+
+  // Process each page and add it to the new document
+  for (const pageBase64 of pageBase64Strings) {
+    // Remove data URL prefix if present
+    const base64Data = pageBase64.startsWith('data:')
+      ? pageBase64.split(',')[1]
+      : pageBase64;
+
+    // Convert base64 to Uint8Array
+    if (!base64Data) {
+      continue;
+    }
+    const pageBytes = Buffer.from(base64Data, 'base64');
+
+    // Load the page PDF
+    const pagePdf = await PDFDocument.load(pageBytes);
+
+    // Copy all pages (should just be one) from this page PDF
+    const copiedPages = await pdfDoc.copyPages(
+      pagePdf,
+      pagePdf.getPageIndices()
+    );
+
+    // Add each copied page to the new document
+    for (const page of copiedPages) {
+      pdfDoc.addPage(page);
+    }
+  }
+
+  // Save and convert the new PDF to base64
+  const combinedPdfBytes = await pdfDoc.save();
+  return Buffer.from(combinedPdfBytes).toString('base64');
+}
+
 export async function extractAndStructurePedimento(
-  fileUrl: string,
+  file: File,
   parentTraceId: string
 ) {
-  const pages = await fetchPdfPages(fileUrl);
+  const pages = await splitPdfIntoPages(file);
 
   // Classify the first three pages only
   const pagesToClassify = pages.slice(0, 3);
@@ -29,6 +99,7 @@ export async function extractAndStructurePedimento(
         metadata: {
           langfuseTraceId: parentTraceId,
           langfuseUpdateParent: false,
+          fileName: file.name,
         },
       },
       seed: 42,
@@ -94,7 +165,7 @@ export async function extractAndStructurePedimento(
       metadata: {
         langfuseTraceId: parentTraceId,
         langfuseUpdateParent: false,
-        fileUrl,
+        fileName: file.name,
       },
     },
     messages: [
@@ -127,7 +198,7 @@ export async function extractAndStructurePedimento(
       metadata: {
         langfuseTraceId: parentTraceId,
         langfuseUpdateParent: false,
-        fileUrl,
+        fileName: file.name,
       },
     },
     messages: [
@@ -163,7 +234,7 @@ export async function extractAndStructurePedimento(
           metadata: {
             langfuseTraceId: parentTraceId,
             langfuseUpdateParent: false,
-            fileUrl,
+            fileName: file.name,
           },
         },
         messages: [
@@ -211,7 +282,7 @@ export async function extractAndStructurePedimento(
               metadata: {
                 langfuseTraceId: parentTraceId,
                 langfuseUpdateParent: false,
-                fileUrl,
+                fileName: file.name,
               },
             },
             messages: [
