@@ -98,12 +98,7 @@ describe('Classification', () => {
     const allFiles = singleDocumentTestCases.flatMap(({ classification, fileUrls }) =>
       fileUrls.map((ufsUrl) => ({
         ufsUrl,
-        expectedClassification: [
-          {
-            classification,
-            startPage: 1,
-          },
-        ],
+        expectedClassification: classification,
       }))
     );
 
@@ -138,22 +133,27 @@ describe('Classification', () => {
           {
             classification: 'Packing List',
             startPage: 1,
+            endPage: 1,
           },
           {
             classification: 'Delivery Ticket',
             startPage: 2,
+            endPage: 3,
           },
           {
             classification: 'Shipper',
             startPage: 4,
+            endPage: 4,
           },
           {
             classification: 'Shipper',
             startPage: 5,
+            endPage: 5,
           },
           {
             classification: 'Shipper',
             startPage: 6,
+            endPage: 6,
           },
         ],
       },
@@ -163,18 +163,22 @@ describe('Classification', () => {
           {
             classification: 'Packing List',
             startPage: 1,
+            endPage: 1,
           },
           {
             classification: 'Packing Slip',
             startPage: 2,
+            endPage: 2,
           },
           {
             classification: 'Packing Slip',
             startPage: 3,
+            endPage: 3,
           },
           {
             classification: 'Packing List',
             startPage: 4,
+            endPage: 4,
           },
         ]
       },
@@ -184,18 +188,22 @@ describe('Classification', () => {
           {
             classification: 'Carta Regla 3.1.8',
             startPage: 1,
+            endPage: 1,
           },
           {
             classification: 'Carta Regla 3.1.8',
             startPage: 2,
+            endPage: 2,
           },
           {
             classification: 'Carta Regla 3.1.8',
             startPage: 3,
+            endPage: 3,
           },
           {
             classification: 'Carta Regla 3.1.8',
             startPage: 4,
+            endPage: 5,
           },
         ]
       },
@@ -205,18 +213,22 @@ describe('Classification', () => {
           {
             classification: 'Factura',
             startPage: 1,
+            endPage: 1,
           },
           {
             classification: 'Factura',
             startPage: 2,
+            endPage: 2,
           },
           {
             classification: 'Factura',
             startPage: 3,
+            endPage: 3,
           },
           {
             classification: 'Factura',
             startPage: 4,
+            endPage: 4,
           },
         ]
       },
@@ -226,18 +238,22 @@ describe('Classification', () => {
           {
             classification: 'Factura',
             startPage: 1,
+            endPage: 1,
           },
           {
             classification: 'Factura',
             startPage: 2,
+            endPage: 2,
           },
           {
             classification: 'Factura',
             startPage: 3,
+            endPage: 3,
           },
           {
             classification: 'Factura',
             startPage: 4,
+            endPage: 4,
           },
         ]
       },
@@ -247,18 +263,22 @@ describe('Classification', () => {
           {
             classification: 'Cove',
             startPage: 1,
+            endPage: 2,
           },
           {
             classification: 'Cove',
             startPage: 3,
+            endPage: 5,
           },
           {
             classification: 'Cove',
             startPage: 6,
+            endPage: 7,
           },
           {
             classification: 'Cove',
             startPage: 8,
+            endPage: 9,
           },
         ]
       }

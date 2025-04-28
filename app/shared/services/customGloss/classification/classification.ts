@@ -34,6 +34,11 @@ const classificationSchema = z
       .describe(`
       El número de página en el que comienza el documento.
     `),
+    endPage: z
+      .number()
+      .describe(`
+      El número de página en el que termina el documento.
+    `),
   }))
   .describe(`
     Clasifica los documentos/ el documento en el archivo.
@@ -66,12 +71,7 @@ export async function classifyDocuments<
       if (fetchedFile.type === 'text/xml') {
         return {
           ...fetchedFile,
-          classifications: [
-            {
-              classification: 'CFDI' as const,
-              startPage: 1,
-            },
-          ],
+          classifications: 'CFDI' as const,
         };
       }
 
@@ -106,7 +106,9 @@ export async function classifyDocuments<
 
       return {
         ...fetchedFile,
-        classifications,
+        classifications: classifications.length === 1 && classifications[0]
+          ? classifications[0].classification 
+          : classifications,
       };
     })
   );

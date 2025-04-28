@@ -6,7 +6,7 @@ import { Langfuse } from 'langfuse';
 import { api } from 'lib/trpc';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-import type { UploadedFileData } from 'uploadthing/types';
+import { processClassifications } from './classification/process-classifications';
 import { z } from 'zod';
 import { zfd } from 'zod-form-data';
 import { db } from '~/db';
@@ -93,96 +93,42 @@ export const analysis = api
   )
   .mutation(async ({ input: { files }, ctx: { userId } }) => {
     try {
+
       const trace = langfuse.trace({
         name: 'Glosa de Pedimento',
       });
-      const successfulUploads = await uploadFiles(files);
+
       langfuse.event({
         traceId: trace.id,
-        name: 'Classification',
+        name: 'Upload Files',
       });
+      const successfulUploads = await uploadFiles(files);
       if (successfulUploads.isErr()) {
         return {
           success: false,
           message: successfulUploads.error,
         };
       }
+
+      langfuse.event({
+        traceId: trace.id,
+        name: 'Classification',
+      });
       const classificationResults = await classifyDocuments(
         successfulUploads.value,
         trace.id
       );
 
-      // Transform classification results to include documentType
-      const classifications = classificationResults.map((file) => {
-        return {
-          ...file,
-          documentType: mapClassificationToDocumentType(file.classification),
-        };
+      langfuse.event({
+        traceId: trace.id,
+        name: 'Process Classifications',
       });
+      const groupedClassifications = await processClassifications(classificationResults);
 
-      // Check for unsupported document types
-      const multipleDocuments = classificationResults.filter(
-        (doc) =>
-          doc.classification ===
-          'Archivo con múltiples documentos (iguales o distintos)'
-      );
-
-      if (multipleDocuments.length > 0) {
-        return {
-          success: false,
-          message:
-            'Encontramos varios documentos en un solo archivo. No soportamos este tipo de archivos.',
-        };
-      }
-
-      const otrosDocuments = classifications.filter(
-        (doc) => doc.documentType === 'otros'
-      );
-
-      if (otrosDocuments.length > 0) {
-        return {
-          success: false,
-          message:
-            'Se detectaron documentos no clasificables o no soportados para la glosa electrónica.',
-        };
-      }
-
-      // Now group the classifications by document type, taking only the first file of each type.
-      const groupedClassifications = classifications.reduce(
-        (acc, curr) => {
-          // Only set the value if it doesn't exist yet (keeping the first file of each type)
-          if (!acc[curr.documentType]) {
-            acc[curr.documentType] = curr;
-          }
-          return acc;
-        },
-        {} as Partial<
-          Record<
-            DocumentType,
-            UploadedFileData & {
-              originalFile: File;
-              documentType: DocumentType;
-            }
-          >
-        >
-      );
-
-      const { pedimento: classifiedPedimento, cove: classifiedCove } =
-        groupedClassifications;
-      if (!classifiedPedimento) {
-        return {
-          success: false,
-          message:
-            'El pedimento es obligatorio para realizar la glosa electrónica.',
-        };
-      }
-      if (!classifiedCove) {
-        return {
-          success: false,
-          message: 'El cove es obligatorio para realizar la glosa electrónica.',
-        };
-      }
-
+      langfuse.event({
+        traceId: trace.id,
+        name: 'Extract and Structure',
+      });
       const documents = await extractTextFromPDFs(
         groupedClassifications,
         trace.id
