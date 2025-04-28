@@ -44,48 +44,28 @@ const classificationSchema = z
     Clasifica los documentos/ el documento en el archivo.
   `);
 
-export async function classifyDocuments<
-  T extends { ufsUrl: string; },
->(
-  files: T[],
+export async function classifyDocuments(
+  files: File[],
   parentTraceId: string
 ) {
-  const fetchedFiles = await Promise.all(
-    files.map(async (file) => {
-      const response = await fetch(file.ufsUrl);
-      const base64 = Buffer.from(await response.arrayBuffer()).toString(
-        'base64'
-      );
-      const contentType =
-        response.headers.get('content-type') || 'application/octet-stream';
-      return {
-        ...file,
-        base64,
-        type: contentType,
-      };
-    })
-  );
   return await Promise.all(
-    fetchedFiles.map(async (fetchedFile) => {
-      // We assume all xml files are cfdis
-      if (fetchedFile.type === 'text/xml') {
+    files.map(async (file) => {
+      if (file.type === 'text/xml') {
         return {
-          ...fetchedFile,
+          file,
           classifications: 'CFDI' as const,
         };
       }
 
-      const {
-        object: classifications,
-      } = await generateObject({
+      const { object: classifications } = await generateObject({
         model: google('gemini-2.5-pro-preview-03-25'),
         experimental_telemetry: {
           isEnabled: true,
-          functionId: fetchedFile.ufsUrl,
+          functionId: file.name,
           metadata: {
             langfuseTraceId: parentTraceId,
             langfuseUpdateParent: false,
-            fileUrl: fetchedFile.ufsUrl,
+            fileUrl: file.name,
           },
         },
         seed: 42,
@@ -96,8 +76,8 @@ export async function classifyDocuments<
             content: [
               {
                 type: 'file',
-                data: `data:${fetchedFile.type};base64,${fetchedFile.base64}`,
-                mimeType: fetchedFile.type,
+                data: `data:${file.type};base64,${Buffer.from(await file.arrayBuffer()).toString('base64')}`,
+                mimeType: file.type,
               },
             ],
           },
@@ -105,10 +85,11 @@ export async function classifyDocuments<
       });
 
       return {
-        ...fetchedFile,
-        classifications: classifications.length === 1 && classifications[0]
-          ? classifications[0].classification 
-          : classifications,
+        file,
+        classifications:
+          classifications.length === 1 && classifications[0]
+            ? classifications[0].classification
+            : classifications,
       };
     })
   );

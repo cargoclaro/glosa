@@ -9,6 +9,18 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 /**
+ * Fetches a file from a URL and returns a File object
+ */
+export async function fetchFileFromUrl(ufsUrl: string): Promise<File> {
+  const response = await fetch(ufsUrl);
+  const blob = await response.blob();
+  // Extract filename from URL
+  const filename = ufsUrl.split('/').pop() || 'document';
+  // Create a new File object
+  return new File([blob], filename, { type: blob.type });
+}
+
+/**
  * Combines multiple base64-encoded PDF pages into a single PDF
  */
 export async function combinePagesToPdf(pageBase64Strings: string[]): Promise<string> {

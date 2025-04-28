@@ -92,24 +92,10 @@ export const analysis = api
     })
   )
   .mutation(async ({ input: { files }, ctx: { userId } }) => {
+    const trace = langfuse.trace({
+      name: 'Glosa de Pedimento',
+    });
     try {
-
-      const trace = langfuse.trace({
-        name: 'Glosa de Pedimento',
-      });
-
-      langfuse.event({
-        traceId: trace.id,
-        name: 'Upload Files',
-      });
-      const successfulUploads = await uploadFiles(files);
-      if (successfulUploads.isErr()) {
-        return {
-          success: false,
-          message: successfulUploads.error,
-        };
-      }
-
       langfuse.event({
         traceId: trace.id,
         name: 'Classification',
@@ -151,6 +137,14 @@ export const analysis = api
       const gloss = await (operationType === 'IMP'
         ? glosaImpo({ ...documents.value, traceId: trace.id })
         : glosaExpo({ ...documents.value, traceId: trace.id }));
+      
+      const uploadedFiles = await uploadFiles(files);
+      if (uploadedFiles.isErr()) {
+        return {
+          success: false,
+          message: uploadedFiles.error,
+        };
+      }
 
       const [newCustomGloss] = await db
         .insert(CustomGloss)

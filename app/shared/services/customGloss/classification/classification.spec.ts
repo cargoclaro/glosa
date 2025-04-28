@@ -2,6 +2,7 @@ import { Langfuse } from 'langfuse';
 import { describe, expect, it } from 'vitest';
 import { expectToBeDefined } from '~/lib/vitest/utils';
 import { classifyDocuments } from './classification';
+import { fetchFileFromUrl } from '~/lib/utils';
 
 describe('Classification', () => {
   const langfuse = new Langfuse();
@@ -94,6 +95,7 @@ describe('Classification', () => {
         ],
       },
     ] as const;
+    
     // Create a flat array of all file URLs
     const allFiles = singleDocumentTestCases.flatMap(({ classification, fileUrls }) =>
       fileUrls.map((ufsUrl) => ({
@@ -102,25 +104,37 @@ describe('Classification', () => {
       }))
     );
 
+    // Fetch all files first
+    const fetchedFiles = await Promise.all(
+      allFiles.map(async ({ ufsUrl, expectedClassification }) => {
+        const file = await fetchFileFromUrl(ufsUrl);
+        return {
+          file,
+          ufsUrl,
+          expectedClassification,
+        };
+      })
+    );
+
     // Classify all files at once
     const classifiedFiles = await classifyDocuments(
-      allFiles.map(({ ufsUrl }) => ({ ufsUrl })),
+      fetchedFiles.map(({ file }) => file),
       trace.id
     );
 
     expect(classifiedFiles).toHaveLength(allFiles.length);
 
-    // Create a mapping from ufsUrl to expected document type
-    const urlToExpectedTypeMap = new Map(
-      allFiles.map((file) => [file.ufsUrl, file.expectedClassification])
+    // Create a mapping from file name to expected document type
+    const filenameToExpectedTypeMap = new Map(
+      fetchedFiles.map((item) => [item.file.name, item.expectedClassification])
     );
 
     // Check if each file was correctly classified
-    for (const file of classifiedFiles) {
-      const expectedType = urlToExpectedTypeMap.get(file.ufsUrl);
+    for (const classifiedFile of classifiedFiles) {
+      const expectedType = filenameToExpectedTypeMap.get(classifiedFile.file.name);
       expectToBeDefined(expectedType);
       expect
-        .soft(file.classifications, `Classification for ${file.ufsUrl}`)
+        .soft(classifiedFile.classifications, `Classification for ${classifiedFile.file.name}`)
         .toStrictEqual(expectedType);
     }
   });
@@ -284,26 +298,38 @@ describe('Classification', () => {
       }
     ] as const;
 
-    const allUfsUrls = multipleDocumentsTestCases.flatMap(({ fileUrl }) => fileUrl);
+    const allUfsUrls = multipleDocumentsTestCases.map(({ fileUrl }) => fileUrl);
 
+    // Fetch all files first
+    const fetchedFiles = await Promise.all(
+      allUfsUrls.map(async (ufsUrl) => {
+        const file = await fetchFileFromUrl(ufsUrl);
+        return { file, ufsUrl };
+      })
+    );
+
+    // Classify all files at once
     const classifiedFiles = await classifyDocuments(
-      allUfsUrls.map((ufsUrl) => ({ ufsUrl })),
+      fetchedFiles.map(({ file }) => file),
       trace.id
     );
 
     expect(classifiedFiles).toHaveLength(allUfsUrls.length);
 
-    const urlToExpectedTypeMap = new Map(
-      multipleDocumentsTestCases.map(({ fileUrl, classification }) => [fileUrl, classification])
+    // Create a mapping from file name to expected document type
+    const filenameToExpectedTypeMap = new Map(
+      fetchedFiles.map((item) => [item.file.name, 
+        multipleDocumentsTestCases.find(testCase => testCase.fileUrl === item.ufsUrl)?.classification
+      ])
     );
 
-    for (const file of classifiedFiles) {
-      const expectedType = urlToExpectedTypeMap.get(file.ufsUrl);
+    // Check if each file was correctly classified
+    for (const classifiedFile of classifiedFiles) {
+      const expectedType = filenameToExpectedTypeMap.get(classifiedFile.file.name);
       expectToBeDefined(expectedType);
       expect
-        .soft(file.classifications, `Classification for ${file.ufsUrl}`)
+        .soft(classifiedFile.classifications, `Classification for ${classifiedFile.file.name}`)
         .toStrictEqual(expectedType);
     }
-    
   });
 });
