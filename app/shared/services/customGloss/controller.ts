@@ -24,7 +24,7 @@ import {
   type Classification,
   classifyDocuments,
 } from './classification/classification';
-import { extractTextFromPDFs } from './data-extraction';
+import { extractAndStructure } from './extract-and-structure';
 import { glosaExpo } from './glosa/expo';
 import { glosaImpo } from './glosa/impo';
 import { uploadFiles } from './upload-files';
@@ -112,31 +112,25 @@ export const analysis = api
           message: error,
         };
       }
-      const { value: groupedClassifications } = expedienteWithoutDataResult;
+      const { value: expedienteWithoutData } = expedienteWithoutDataResult;
 
       langfuse.event({
         traceId: trace.id,
         name: 'Extract and Structure',
       });
-      const documents = await extractTextFromPDFs(
-        groupedClassifications,
+      const expediente = await extractAndStructure(
+        expedienteWithoutData,
         trace.id
       );
-      if (documents.isErr()) {
-        return {
-          success: false,
-          message: documents.error,
-        };
-      }
-      const { pedimento, cove } = documents.value;
-      const operationType =
-        pedimento.encabezadoPrincipalDelPedimento.tipoDeOperacion;
-      const importerName =
-        pedimento.encabezadoPrincipalDelPedimento.datosImportador.razonSocial;
+
       langfuse.event({
         traceId: trace.id,
         name: 'Validation Steps',
       });
+      const operationType =
+        pedimento.encabezadoPrincipalDelPedimento.tipoDeOperacion;
+      const importerName =
+        pedimento.encabezadoPrincipalDelPedimento.datosImportador.razonSocial;
       const gloss = await (operationType === 'IMP'
         ? glosaImpo({ ...documents.value, traceId: trace.id })
         : glosaExpo({ ...documents.value, traceId: trace.id }));
