@@ -131,7 +131,7 @@ export const analysis = api
           timeSaved: 20,
           moneySaved: 1000,
           importerName,
-          cove: expediente.cove,
+          cove: expediente.cove[0],
           pedimento: expediente.pedimento,
         })
         .returning();
