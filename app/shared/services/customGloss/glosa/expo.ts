@@ -43,11 +43,11 @@ export async function glosaExpo({
       packingList: packingList?.[0],
       traceId,
     }),
-    coveValidationStepsExpo({ 
-      cove: firstCove, 
-      cfdi: cfdiResult?.[0], 
-      invoice: factura?.[0], 
-      traceId 
+    coveValidationStepsExpo({
+      cove: firstCove,
+      cfdi: cfdiResult?.[0],
+      invoice: factura?.[0],
+      traceId,
     }),
   ]);
   return results.flat();

@@ -1,8 +1,8 @@
 import { Langfuse } from 'langfuse';
 import { describe, expect, it } from 'vitest';
+import { fetchFileFromUrl } from '~/lib/utils';
 import { expectToBeDefined } from '~/lib/vitest/utils';
 import { classifyDocuments } from './classification';
-import { fetchFileFromUrl } from '~/lib/utils';
 
 describe('Classification', () => {
   const langfuse = new Langfuse();
@@ -95,13 +95,14 @@ describe('Classification', () => {
         ],
       },
     ] as const;
-    
+
     // Create a flat array of all file URLs
-    const allFiles = singleDocumentTestCases.flatMap(({ classification, fileUrls }) =>
-      fileUrls.map((ufsUrl) => ({
-        ufsUrl,
-        expectedClassification: classification,
-      }))
+    const allFiles = singleDocumentTestCases.flatMap(
+      ({ classification, fileUrls }) =>
+        fileUrls.map((ufsUrl) => ({
+          ufsUrl,
+          expectedClassification: classification,
+        }))
     );
 
     // Fetch all files first
@@ -131,10 +132,15 @@ describe('Classification', () => {
 
     // Check if each file was correctly classified
     for (const classifiedFile of classifiedFiles) {
-      const expectedType = filenameToExpectedTypeMap.get(classifiedFile.file.name);
+      const expectedType = filenameToExpectedTypeMap.get(
+        classifiedFile.file.name
+      );
       expectToBeDefined(expectedType);
       expect
-        .soft(classifiedFile.classification, `Classification for ${classifiedFile.file.name}`)
+        .soft(
+          classifiedFile.classification,
+          `Classification for ${classifiedFile.file.name}`
+        )
         .toStrictEqual(expectedType);
     }
   });
@@ -142,7 +148,8 @@ describe('Classification', () => {
   it('should correctly classify multiple document files', async () => {
     const multipleDocumentsTestCases = [
       {
-        fileUrl: 'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15U6jQv754gXutEPfbM3xZokBl6wDHdjnC8LAK',
+        fileUrl:
+          'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15U6jQv754gXutEPfbM3xZokBl6wDHdjnC8LAK',
         classification: [
           {
             classification: 'Packing List',
@@ -172,7 +179,8 @@ describe('Classification', () => {
         ],
       },
       {
-        fileUrl: 'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15JwHxSp6zLoABGKujt2Tp51WEDQH0FRheI6Sn',
+        fileUrl:
+          'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15JwHxSp6zLoABGKujt2Tp51WEDQH0FRheI6Sn',
         classification: [
           {
             classification: 'Packing List',
@@ -194,10 +202,11 @@ describe('Classification', () => {
             startPage: 4,
             endPage: 4,
           },
-        ]
+        ],
       },
       {
-        fileUrl: 'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y153mEQatBhnLpbl6it5NaGkD4BTRJsU8jFoO2K',
+        fileUrl:
+          'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y153mEQatBhnLpbl6it5NaGkD4BTRJsU8jFoO2K',
         classification: [
           {
             classification: 'Carta Regla 3.1.8',
@@ -219,10 +228,11 @@ describe('Classification', () => {
             startPage: 4,
             endPage: 5,
           },
-        ]
+        ],
       },
       {
-        fileUrl: 'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15M1vUn907FYSfgKGA9JUX3rIQ2amz4bTDeNjd',
+        fileUrl:
+          'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15M1vUn907FYSfgKGA9JUX3rIQ2amz4bTDeNjd',
         classification: [
           {
             classification: 'Factura',
@@ -244,10 +254,11 @@ describe('Classification', () => {
             startPage: 4,
             endPage: 4,
           },
-        ]
+        ],
       },
       {
-        fileUrl: 'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15DY8emWvXf1H4BGpPhqDTbi9LIkRoZlxA503e',
+        fileUrl:
+          'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15DY8emWvXf1H4BGpPhqDTbi9LIkRoZlxA503e',
         classification: [
           {
             classification: 'Factura',
@@ -269,10 +280,11 @@ describe('Classification', () => {
             startPage: 4,
             endPage: 4,
           },
-        ]
+        ],
       },
       {
-        fileUrl: 'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15AVS8DnEhI73SMs1mOVHTgc05pWuYPnbZRtyq',
+        fileUrl:
+          'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15AVS8DnEhI73SMs1mOVHTgc05pWuYPnbZRtyq',
         classification: [
           {
             classification: 'Cove',
@@ -294,8 +306,8 @@ describe('Classification', () => {
             startPage: 8,
             endPage: 9,
           },
-        ]
-      }
+        ],
+      },
     ] as const;
 
     const allUfsUrls = multipleDocumentsTestCases.map(({ fileUrl }) => fileUrl);
@@ -318,17 +330,25 @@ describe('Classification', () => {
 
     // Create a mapping from file name to expected document type
     const filenameToExpectedTypeMap = new Map(
-      fetchedFiles.map((item) => [item.file.name, 
-        multipleDocumentsTestCases.find(testCase => testCase.fileUrl === item.ufsUrl)?.classification
+      fetchedFiles.map((item) => [
+        item.file.name,
+        multipleDocumentsTestCases.find(
+          (testCase) => testCase.fileUrl === item.ufsUrl
+        )?.classification,
       ])
     );
 
     // Check if each file was correctly classified
     for (const classifiedFile of classifiedFiles) {
-      const expectedType = filenameToExpectedTypeMap.get(classifiedFile.file.name);
+      const expectedType = filenameToExpectedTypeMap.get(
+        classifiedFile.file.name
+      );
       expectToBeDefined(expectedType);
       expect
-        .soft(classifiedFile.classification, `Classification for ${classifiedFile.file.name}`)
+        .soft(
+          classifiedFile.classification,
+          `Classification for ${classifiedFile.file.name}`
+        )
         .toStrictEqual(expectedType);
     }
   });

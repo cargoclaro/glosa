@@ -1,7 +1,7 @@
 import { Langfuse } from 'langfuse';
+import { fetchFileFromUrl } from 'lib/utils';
 import { describe, expect, it } from 'vitest';
 import { extractAndStructurePackingList } from './extract-and-structure-packing-list';
-import { fetchFileFromUrl } from 'lib/utils';
 
 describe('Extract and Structure Packing List', () => {
   it('should correctly extract and structure packing lists', async () => {
@@ -71,10 +71,13 @@ describe('Extract and Structure Packing List', () => {
         return { file, fileUrl };
       })
     );
-    
+
     const packingListResults = await Promise.all(
       packingListFiles.map(async ({ file, fileUrl }) => {
-        const packingListResult = await extractAndStructurePackingList(file, trace.id);
+        const packingListResult = await extractAndStructurePackingList(
+          file,
+          trace.id
+        );
         return { packingListResult, fileUrl };
       })
     );

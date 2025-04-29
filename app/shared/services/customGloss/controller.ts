@@ -6,7 +6,6 @@ import { Langfuse } from 'langfuse';
 import { api } from 'lib/trpc';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-import { createExpedienteWithoutData } from './classification/create-expediente-without-data';
 import { z } from 'zod';
 import { zfd } from 'zod-form-data';
 import { db } from '~/db';
@@ -21,6 +20,7 @@ import {
   CustomGlossTabValidationStepActionToTake,
 } from '~/db/schema';
 import { classifyDocuments } from './classification/classification';
+import { createExpedienteWithoutData } from './classification/create-expediente-without-data';
 import { extractAndStructure } from './extract-and-structure';
 import { glosaExpo } from './glosa/expo';
 import { glosaImpo } from './glosa/impo';
@@ -69,11 +69,9 @@ export const analysis = api
         traceId: trace.id,
         name: 'Classification',
       });
-      const classifications = await classifyDocuments(
-        files,
-        trace.id
-      );
-      const expedienteWithoutDataResult = await createExpedienteWithoutData(classifications);
+      const classifications = await classifyDocuments(files, trace.id);
+      const expedienteWithoutDataResult =
+        await createExpedienteWithoutData(classifications);
       if (expedienteWithoutDataResult.isErr()) {
         const { error } = expedienteWithoutDataResult;
         return {
@@ -91,7 +89,8 @@ export const analysis = api
         expedienteWithoutData,
         trace.id
       );
-      const operationType = expediente.pedimento.encabezadoPrincipalDelPedimento.tipoDeOperacion;
+      const operationType =
+        expediente.pedimento.encabezadoPrincipalDelPedimento.tipoDeOperacion;
       if (operationType === 'TRA') {
         return {
           success: false,
@@ -112,7 +111,7 @@ export const analysis = api
       const gloss = await (operationType === 'IMP'
         ? glosaImpo({ ...expediente, traceId: trace.id })
         : glosaExpo({ ...expediente, traceId: trace.id }));
-      
+
       const uploadedFilesResult = await uploadFiles(expedienteWithoutData);
       if (uploadedFilesResult.isErr()) {
         return {
@@ -122,7 +121,9 @@ export const analysis = api
       }
       const uploadedFiles = uploadedFilesResult.value;
 
-      const importerName = expediente.pedimento.encabezadoPrincipalDelPedimento.datosImportador.razonSocial;
+      const importerName =
+        expediente.pedimento.encabezadoPrincipalDelPedimento.datosImportador
+          .razonSocial;
       const [newCustomGloss] = await db
         .insert(CustomGloss)
         .values({

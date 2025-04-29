@@ -7,7 +7,7 @@ export async function extractAndStructureCove(
   parentTraceId: string
 ) {
   const fileData = `data:${file.type};base64,${Buffer.from(await file.arrayBuffer()).toString('base64')}`;
-  
+
   const { text } = await generateText({
     model: google('gemini-2.5-pro-preview-03-25'),
     seed: 42,

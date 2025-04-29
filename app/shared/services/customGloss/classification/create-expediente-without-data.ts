@@ -1,6 +1,6 @@
-import type { classifyDocuments, Classification } from './classification';
-import { ok, err } from 'neverthrow';
+import { err, ok } from 'neverthrow';
 import { PDFDocument } from 'pdf-lib';
+import type { Classification, classifyDocuments } from './classification';
 
 type ClassificationResult = Awaited<ReturnType<typeof classifyDocuments>>;
 
@@ -25,7 +25,11 @@ const PDF_EXTENSION_REGEX = /\.pdf$/i;
  */
 async function splitDocumentByClassifications(
   file: File,
-  classifications: Array<{ classification: Classification; startPage: number; endPage: number }>
+  classifications: Array<{
+    classification: Classification;
+    startPage: number;
+    endPage: number;
+  }>
 ): Promise<Array<{ file: File; classification: Classification }>> {
   // Skip if not a PDF file
   if (file.type !== 'application/pdf') {
@@ -47,16 +51,19 @@ async function splitDocumentByClassifications(
     // Validate page range
     const start = Math.max(0, startPage);
     const end = Math.min(pageCount - 1, endPage);
-    
+
     if (start > end || start >= pageCount) {
       continue;
     }
 
     // Create a new document with just these pages
     const newPdfDoc = await PDFDocument.create();
-    const pageIndices = Array.from({ length: end - start + 1 }, (_, i) => start + i);
+    const pageIndices = Array.from(
+      { length: end - start + 1 },
+      (_, i) => start + i
+    );
     const copiedPages = await newPdfDoc.copyPages(pdfDoc, pageIndices);
-    
+
     for (const page of copiedPages) {
       newPdfDoc.addPage(page);
     }
@@ -64,8 +71,10 @@ async function splitDocumentByClassifications(
     // Save and create a new File
     const pdfBytes = await newPdfDoc.save();
     const pdfBlob = new Blob([pdfBytes], { type: 'application/pdf' });
-    const newFileName = `${file.name.replace(PDF_EXTENSION_REGEX, '')}_${classification}_p${start+1}-p${end+1}.pdf`;
-    const newFile = new File([pdfBlob], newFileName, { type: 'application/pdf' });
+    const newFileName = `${file.name.replace(PDF_EXTENSION_REGEX, '')}_${classification}_p${start + 1}-p${end + 1}.pdf`;
+    const newFile = new File([pdfBlob], newFileName, {
+      type: 'application/pdf',
+    });
 
     result.push({
       file: newFile,
@@ -83,14 +92,14 @@ export async function createExpedienteWithoutData(
   const groupedByClassification: GroupedByClassification = {
     'Bill of Lading': [],
     'Air Waybill': [],
-    'Factura': [],
+    Factura: [],
     'Carta Regla 3.1.8': [],
-    'Cove': [],
+    Cove: [],
     'Packing List': [],
     'Packing Slip': [],
-    'Shipper': [],
+    Shipper: [],
     'Delivery Ticket': [],
-    'CFDI': []
+    CFDI: [],
   };
 
   // Process all classification results
@@ -98,7 +107,9 @@ export async function createExpedienteWithoutData(
     // Handle case when classification is a string (single classification)
     if (typeof result.classification === 'string') {
       const classification = result.classification;
-      if (classification === 'Otro') { continue; }
+      if (classification === 'Otro') {
+        continue;
+      }
 
       if (classification === 'Pedimento') {
         if (groupedByClassification.Pedimento) {
@@ -110,22 +121,27 @@ export async function createExpedienteWithoutData(
         const key = classification as NonPedimentoClassification;
         groupedByClassification[key].push(result.file);
       }
-    } 
+    }
     // Handle case when classification is an array
     else if (Array.isArray(result.classification)) {
       // Create array of classification objects with page ranges
-      const classificationItems = result.classification.map(item => ({
+      const classificationItems = result.classification.map((item) => ({
         classification: item.classification,
         startPage: item.startPage,
-        endPage: item.endPage
+        endPage: item.endPage,
       }));
 
       // Split the document based on classifications
-      const splitDocuments = await splitDocumentByClassifications(result.file, classificationItems);
-      
+      const splitDocuments = await splitDocumentByClassifications(
+        result.file,
+        classificationItems
+      );
+
       // Add each split document to the appropriate classification group
       for (const { file, classification } of splitDocuments) {
-        if (classification === 'Otro') { continue; }
+        if (classification === 'Otro') {
+          continue;
+        }
 
         if (classification === 'Pedimento') {
           if (groupedByClassification.Pedimento) {

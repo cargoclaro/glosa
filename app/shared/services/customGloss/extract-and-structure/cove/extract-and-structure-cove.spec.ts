@@ -1,7 +1,7 @@
 import { Langfuse } from 'langfuse';
+import { fetchFileFromUrl } from 'lib/utils';
 import { describe, expect, it } from 'vitest';
 import { extractAndStructureCove } from './extract-and-structure-cove';
-import { fetchFileFromUrl } from 'lib/utils';
 
 describe('Extract and Structure Cove', () => {
   it('should correctly extract and structure cove', async () => {
@@ -719,7 +719,7 @@ describe('Extract and Structure Cove', () => {
     const trace = langfuse.trace({
       name: 'Test Extract and Structure Cove',
     });
-    
+
     // Fetch all files before processing
     const coveFiles = await Promise.all(
       coveFixture.map(async ({ fileUrl }) => {

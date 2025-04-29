@@ -1,19 +1,14 @@
+import { google } from '@ai-sdk/google';
+import { generateText } from 'ai';
+import type { Result } from 'neverthrow';
+import type { createExpedienteWithoutData } from '../classification/create-expediente-without-data';
 import { extractAndStructureCFDI } from './cfdi/extract-and-structure-cfdi';
 import { extractAndStructureCove } from './cove/extract-and-structure-cove';
 import { extractAndStructurePackingList } from './packing-list/extract-and-structure-packing-list';
 import { extractAndStructurePedimento } from './pedimento/extract-and-structure-pedimento';
-import { google } from '@ai-sdk/google';
-import { generateText } from 'ai';
-import type { createExpedienteWithoutData } from '../classification/create-expediente-without-data';
-import type { Result } from 'neverthrow';
 
-async function extractTextFromImage(
-  file: File,
-  traceId: string
-) {
-  const base64Data = Buffer.from(await file.arrayBuffer()).toString(
-    'base64'
-  );
+async function extractTextFromImage(file: File, traceId: string) {
+  const base64Data = Buffer.from(await file.arrayBuffer()).toString('base64');
   const { text } = await generateText({
     model: google('gemini-2.0-flash-001'),
     experimental_telemetry: {
@@ -49,10 +44,11 @@ async function extractTextFromImage(
 }
 
 // Extract only the Ok variant from createExpedienteWithoutData's result
-type expedienteWithoutData =
-  Awaited<ReturnType<typeof createExpedienteWithoutData>> extends Result<infer V, unknown>
-    ? V
-    : never;
+type expedienteWithoutData = Awaited<
+  ReturnType<typeof createExpedienteWithoutData>
+> extends Result<infer V, unknown>
+  ? V
+  : never;
 
 export async function extractAndStructure(
   expedienteWithoutData: expedienteWithoutData,
@@ -60,13 +56,13 @@ export async function extractAndStructure(
 ) {
   const {
     Pedimento: pedimentoFiles,
-    "Bill of Lading": billOfLadingFiles,
-    "Air Waybill": airWaybillFiles,
+    'Bill of Lading': billOfLadingFiles,
+    'Air Waybill': airWaybillFiles,
     Factura: facturaFiles,
-    "Carta Regla 3.1.8": carta318Files,
+    'Carta Regla 3.1.8': carta318Files,
     Cove: coveFiles,
-    "Packing List": packingListFiles,
-    "Packing Slip": packingSlipFiles,
+    'Packing List': packingListFiles,
+    'Packing Slip': packingSlipFiles,
     CFDI: cfdiFiles,
   } = expedienteWithoutData;
 
@@ -84,24 +80,28 @@ export async function extractAndStructure(
     cfdiResult,
   ] = await Promise.all([
     extractAndStructurePedimento(pedimentoFiles, traceId),
-    Promise.all(documentoDeTransporteFiles.map((documentoDeTransporteFile) =>
-      extractTextFromImage(documentoDeTransporteFile, traceId)
-    )),
-    Promise.all(facturaFiles.map((facturaFile) =>
-      extractTextFromImage(facturaFile, traceId)
-    )),
-    Promise.all(carta318Files.map((cartaFile) =>
-      extractTextFromImage(cartaFile, traceId)
-    )),
-    Promise.all(coveFiles.map((coveFile) =>
-      extractAndStructureCove(coveFile, traceId)
-    )),
-    Promise.all(packingFiles.map((packingFile) =>
-      extractAndStructurePackingList(packingFile, traceId)
-    )),
-    Promise.all(cfdiFiles.map((cfdiFile) =>
-      extractAndStructureCFDI(cfdiFile)
-    )),
+    Promise.all(
+      documentoDeTransporteFiles.map((documentoDeTransporteFile) =>
+        extractTextFromImage(documentoDeTransporteFile, traceId)
+      )
+    ),
+    Promise.all(
+      facturaFiles.map((facturaFile) =>
+        extractTextFromImage(facturaFile, traceId)
+      )
+    ),
+    Promise.all(
+      carta318Files.map((cartaFile) => extractTextFromImage(cartaFile, traceId))
+    ),
+    Promise.all(
+      coveFiles.map((coveFile) => extractAndStructureCove(coveFile, traceId))
+    ),
+    Promise.all(
+      packingFiles.map((packingFile) =>
+        extractAndStructurePackingList(packingFile, traceId)
+      )
+    ),
+    Promise.all(cfdiFiles.map((cfdiFile) => extractAndStructureCFDI(cfdiFile))),
   ]);
 
   return {
@@ -112,5 +112,5 @@ export async function extractAndStructure(
     cove,
     packingList,
     cfdiResult,
-  }
+  };
 }

@@ -20,34 +20,27 @@ const classifications = [
 export type Classification = (typeof classifications)[number];
 
 const classificationSchema = z
-  .array(z.object({
-    classification: z
-      .enum(classifications)
-      .describe(`
+  .array(
+    z.object({
+      classification: z.enum(classifications).describe(`
       La carta de regla 3.1.8 es un complemento de la factura, ten cuidado de no clasificarla como factura.
       Este documento lee como una carta legal, referenciando la ley aduanera y el reglamento de comercio exterior.
 
       Verifica si en el archivo existen diferentes números de factura; esto es un indicador clave de que el archivo contiene múltiples documentos.
     `),
-    startPage: z
-      .number()
-      .describe(`
+      startPage: z.number().describe(`
       El número de página en el que comienza el documento.
     `),
-    endPage: z
-      .number()
-      .describe(`
+      endPage: z.number().describe(`
       El número de página en el que termina el documento.
     `),
-  }))
+    })
+  )
   .describe(`
     Clasifica los documentos/ el documento en el archivo.
   `);
 
-export async function classifyDocuments(
-  files: File[],
-  parentTraceId: string
-) {
+export async function classifyDocuments(files: File[], parentTraceId: string) {
   return await Promise.all(
     files.map(async (file) => {
       if (file.type === 'text/xml') {

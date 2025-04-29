@@ -1,7 +1,7 @@
 import { Langfuse } from 'langfuse';
+import { fetchFileFromUrl } from 'lib/utils';
 import { describe, expect, it } from 'vitest';
 import { extractAndStructurePedimento } from './extract-and-structure-pedimento';
-import { fetchFileFromUrl } from 'lib/utils';
 
 const langfuse = new Langfuse();
 
@@ -1346,11 +1346,11 @@ NUMERO DE SOLICITUD: 2025CERT0002269-CA-M01`,
         },
       },
     ] as const;
-    
+
     const trace = langfuse.trace({
       name: 'Test Pedimento Extract and Structure',
     });
-    
+
     // Fetch all files before processing
     const pedimentoFiles = await Promise.all(
       pedimentoFixture.map(async ({ fileUrl }) => {

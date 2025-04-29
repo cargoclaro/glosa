@@ -29,7 +29,7 @@ export async function glosaImpo({
   if (!firstCove) {
     throw new Error('This should never happen');
   }
-  
+
   const results = await Promise.all([
     pedimentoValidationStepsImpo({
       pedimento,
@@ -40,11 +40,11 @@ export async function glosaImpo({
       carta318: carta318?.[0],
       traceId,
     }),
-    coveValidationStepsImpo({ 
-      cove: firstCove, 
-      invoice: factura?.[0], 
-      carta318: carta318?.[0], 
-      traceId 
+    coveValidationStepsImpo({
+      cove: firstCove,
+      invoice: factura?.[0],
+      carta318: carta318?.[0],
+      traceId,
     }),
   ]);
   return results.flat();
