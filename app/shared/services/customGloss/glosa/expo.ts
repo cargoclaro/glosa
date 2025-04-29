@@ -10,34 +10,45 @@ import { pedimentoValidationStepsExpo } from './pedimento/validation_steps_expo'
 
 export async function glosaExpo({
   pedimento,
-  transportDocument,
+  documentoDeTransporte,
   packingList,
   cove,
-  cfdi,
-  cartaSesion,
-  invoice,
+  cfdiResult,
+  carta318,
+  factura,
   traceId,
 }: {
   pedimento: Pedimento;
-  transportDocument?: OCR;
-  packingList?: PackingList;
-  cove: Cove;
-  cfdi?: CFDI;
-  cartaSesion?: OCR;
-  invoice?: OCR;
+  documentoDeTransporte?: OCR[];
+  packingList?: PackingList[];
+  cove: Cove[];
+  cfdiResult?: CFDI[];
+  carta318?: OCR[];
+  factura?: OCR[];
   traceId: string;
 }) {
+  // Ensure cove exists since it's required
+  const firstCove = cove[0];
+  if (!firstCove) {
+    throw new Error('This should never happen');
+  }
+
   const results = await Promise.all([
     pedimentoValidationStepsExpo({
       pedimento,
-      cove,
-      cfdi,
-      cartaSesion,
-      transportDocument,
-      packingList,
+      cove: firstCove,
+      cfdi: cfdiResult?.[0],
+      cartaSesion: carta318?.[0],
+      transportDocument: documentoDeTransporte?.[0],
+      packingList: packingList?.[0],
       traceId,
     }),
-    coveValidationStepsExpo({ cove, cfdi, invoice, traceId }),
+    coveValidationStepsExpo({
+      cove: firstCove,
+      cfdi: cfdiResult?.[0],
+      invoice: factura?.[0],
+      traceId,
+    }),
   ]);
   return results.flat();
 }
