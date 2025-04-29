@@ -1,31 +1,28 @@
-import { Langfuse } from 'langfuse';
-import { err, ok } from 'neverthrow';
-import type { UploadedFileData } from 'uploadthing/types';
 import { extractAndStructureCFDI } from './cfdi/extract-and-structure-cfdi';
 import { extractAndStructureCove } from './cove/extract-and-structure-cove';
 import { extractAndStructurePackingList } from './packing-list/extract-and-structure-packing-list';
 import { extractAndStructurePedimento } from './pedimento/extract-and-structure-pedimento';
-import type { DocumentType } from '../utils';
 import { google } from '@ai-sdk/google';
 import { generateText } from 'ai';
+import type { createExpedienteWithoutData } from '../classification/create-expediente-without-data';
+import type { Result } from 'neverthrow';
 
 async function extractTextFromImage(
-  pdfFile: File,
-  documentType: DocumentType,
+  file: File,
   traceId: string
 ) {
-  const base64Data = Buffer.from(await pdfFile.arrayBuffer()).toString(
+  const base64Data = Buffer.from(await file.arrayBuffer()).toString(
     'base64'
   );
   const { text } = await generateText({
     model: google('gemini-2.0-flash-001'),
     experimental_telemetry: {
       isEnabled: true,
-      functionId: `extract_${documentType}`,
+      functionId: `Extract ${file.name}`,
       metadata: {
         langfuseTraceId: traceId,
         langfuseUpdateParent: false,
-        documentType,
+        fileName: file.name,
       },
     },
     messages: [
@@ -51,109 +48,69 @@ async function extractTextFromImage(
   };
 }
 
+// Extract only the Ok variant from createExpedienteWithoutData's result
+type expedienteWithoutData =
+  Awaited<ReturnType<typeof createExpedienteWithoutData>> extends Result<infer V, unknown>
+    ? V
+    : never;
+
 export async function extractAndStructure(
-  classifications: Partial<
-    Record<
-      DocumentType,
-      UploadedFileData & { originalFile: File; documentType: DocumentType }
-    >
-  >,
+  expedienteWithoutData: expedienteWithoutData,
   traceId: string
 ) {
-  const langfuse = new Langfuse();
-  langfuse.event({
-    traceId: traceId,
-    name: 'Text Extraction and Structuring',
-  });
   const {
-    factura,
-    carta318,
-    rrna,
-    documentoDeTransporte,
-    pedimento,
-    listaDeEmpaque,
-    cove,
-    cfdi,
-    cartaCesionDeDerechos,
-  } = classifications;
+    Pedimento: pedimentoFiles,
+    "Bill of Lading": billOfLadingFiles,
+    "Air Waybill": airWaybillFiles,
+    Factura: facturaFiles,
+    "Carta Regla 3.1.8": carta318Files,
+    Cove: coveFiles,
+    "Packing List": packingListFiles,
+    "Packing Slip": packingSlipFiles,
+    CFDI: cfdiFiles,
+  } = expedienteWithoutData;
 
-  // Check if required documents are present
-  if (!pedimento) {
-    return err('Pedimento document is required');
-  }
-
-  if (!cove) {
-    return err('COVE document is required');
-  }
+  const documentoDeTransporteFiles = [...billOfLadingFiles, ...airWaybillFiles];
+  const packingFiles = [...packingListFiles, ...packingSlipFiles];
 
   // Run all extraction operations in parallel instead of sequentially
   const [
-    facturaText,
-    carta318Text,
-    rrnasText,
-    documentoDeTransporteText,
-    pedimentoText,
-    listaDeEmpaqueText,
-    coveText,
-    cfdiText,
-    cartaCesionDeDerechosText,
+    pedimento,
+    documentoDeTransporte,
+    factura,
+    carta318,
+    cove,
+    packingList,
+    cfdiResult,
   ] = await Promise.all([
-    factura
-      ? extractTextFromImage(
-          factura.originalFile,
-          factura.documentType,
-          traceId
-        )
-      : null,
-    carta318
-      ? extractTextFromImage(
-          carta318.originalFile,
-          carta318.documentType,
-          traceId
-        )
-      : null,
-    rrna
-      ? extractTextFromImage(rrna.originalFile, rrna.documentType, traceId)
-      : null,
-    documentoDeTransporte
-      ? extractTextFromImage(
-          documentoDeTransporte.originalFile,
-          documentoDeTransporte.documentType,
-          traceId
-        )
-      : null,
-    extractAndStructurePedimento(pedimento.ufsUrl, traceId),
-    listaDeEmpaque
-      ? extractAndStructurePackingList(listaDeEmpaque.ufsUrl, traceId)
-      : null,
-    extractAndStructureCove(cove.ufsUrl, traceId),
-    cfdi ? extractAndStructureCFDI(cfdi.ufsUrl) : null,
-    cartaCesionDeDerechos
-      ? extractTextFromImage(
-          cartaCesionDeDerechos.originalFile,
-          cartaCesionDeDerechos.documentType,
-          traceId
-        )
-      : null,
+    extractAndStructurePedimento(pedimentoFiles, traceId),
+    Promise.all(documentoDeTransporteFiles.map((documentoDeTransporteFile) =>
+      extractTextFromImage(documentoDeTransporteFile, traceId)
+    )),
+    Promise.all(facturaFiles.map((facturaFile) =>
+      extractTextFromImage(facturaFile, traceId)
+    )),
+    Promise.all(carta318Files.map((cartaFile) =>
+      extractTextFromImage(cartaFile, traceId)
+    )),
+    Promise.all(coveFiles.map((coveFile) =>
+      extractAndStructureCove(coveFile, traceId)
+    )),
+    Promise.all(packingFiles.map((packingFile) =>
+      extractAndStructurePackingList(packingFile, traceId)
+    )),
+    Promise.all(cfdiFiles.map((cfdiFile) =>
+      extractAndStructureCFDI(cfdiFile)
+    )),
   ]);
 
-  if (cfdiText?.isErr()) {
-    return cfdiText;
+  return {
+    "Pedimento": pedimento,
+    "Documento de Transporte": documentoDeTransporte,
+    "Factura": factura,
+    "Carta 3.1.8": carta318,
+    "Cove": cove,
+    "Packing List": packingList,
+    "CFDI": cfdiResult,
   }
-
-  return ok({
-    ...(facturaText && { invoice: facturaText }),
-    ...(carta318Text && { carta318: carta318Text }),
-    ...(rrnasText && { rrnas: rrnasText }),
-    ...(documentoDeTransporteText && {
-      transportDocument: documentoDeTransporteText,
-    }),
-    pedimento: pedimentoText,
-    ...(listaDeEmpaqueText && { packingList: listaDeEmpaqueText }),
-    cove: coveText,
-    ...(cfdiText?.isOk() && { cfdi: cfdiText.value }),
-    ...(cartaCesionDeDerechosText && {
-      cartaSesion: cartaCesionDeDerechosText,
-    }),
-  });
 }

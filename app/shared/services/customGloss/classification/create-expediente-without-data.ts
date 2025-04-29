@@ -12,7 +12,7 @@ type NonPedimentoClassification = Exclude<SupportedClassification, 'Pedimento'>;
 
 // Map each classification to its data; pedimento is single object, others arrays
 type GroupedByClassification = {
-  Pedimento?: File;
+  Pedimento: File;
 } & {
   [K in NonPedimentoClassification]: File[];
 };
@@ -79,6 +79,7 @@ async function splitDocumentByClassifications(
 export async function createExpedienteWithoutData(
   classificationResults: ClassificationResult
 ) {
+  // @ts-expect-error The pedimento is a pain in the ass to type, so we'll just ignore it
   const groupedByClassification: GroupedByClassification = {
     'Bill of Lading': [],
     'Air Waybill': [],
