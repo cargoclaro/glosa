@@ -105,12 +105,12 @@ export async function extractAndStructure(
   ]);
 
   return {
-    "Pedimento": pedimento,
-    "Documento de Transporte": documentoDeTransporte,
-    "Factura": factura,
-    "Carta 3.1.8": carta318,
-    "Cove": cove,
-    "Packing List": packingList,
-    "CFDI": cfdiResult,
+    pedimento,
+    documentoDeTransporte,
+    factura,
+    carta318,
+    cove,
+    packingList,
+    cfdiResult,
   }
 }

@@ -20,46 +20,15 @@ import {
   CustomGlossTabValidationStep,
   CustomGlossTabValidationStepActionToTake,
 } from '~/db/schema';
-import {
-  type Classification,
-  classifyDocuments,
-} from './classification/classification';
+import { classifyDocuments } from './classification/classification';
 import { extractAndStructure } from './extract-and-structure';
 import { glosaExpo } from './glosa/expo';
 import { glosaImpo } from './glosa/impo';
 import { uploadFiles } from './upload-files';
-import type { DocumentType } from './utils';
 
 config();
 
 const langfuse = new Langfuse();
-
-/**
- * Maps Classification types to DocumentType
- */
-function mapClassificationToDocumentType(
-  classification: Classification
-): DocumentType {
-  switch (classification) {
-    case 'Pedimento':
-      return 'pedimento';
-    case 'Bill of Lading':
-    case 'Air Waybill':
-      return 'documentoDeTransporte';
-    case 'Factura':
-      return 'factura';
-    case 'Carta Regla 3.1.8':
-      return 'carta318';
-    case 'Cove':
-      return 'cove';
-    case 'Packing List':
-      return 'listaDeEmpaque';
-    case 'CFDI':
-      return 'cfdi';
-    default:
-      return 'otros';
-  }
-}
 
 /**
  * Updates a tab with the provided data
@@ -122,18 +91,27 @@ export const analysis = api
         expedienteWithoutData,
         trace.id
       );
+      const operationType = expediente.pedimento.encabezadoPrincipalDelPedimento.tipoDeOperacion;
+      if (operationType === 'TRA') {
+        return {
+          success: false,
+          message: 'El tipo de operación "Transito" no es soportado',
+        };
+      }
+      if (operationType === null) {
+        return {
+          success: false,
+          message: 'Pedimentos complementarios no son soportados',
+        };
+      }
 
       langfuse.event({
         traceId: trace.id,
         name: 'Validation Steps',
       });
-      const operationType =
-        pedimento.encabezadoPrincipalDelPedimento.tipoDeOperacion;
-      const importerName =
-        pedimento.encabezadoPrincipalDelPedimento.datosImportador.razonSocial;
       const gloss = await (operationType === 'IMP'
-        ? glosaImpo({ ...documents.value, traceId: trace.id })
-        : glosaExpo({ ...documents.value, traceId: trace.id }));
+        ? glosaImpo({ ...expediente, traceId: trace.id })
+        : glosaExpo({ ...expediente, traceId: trace.id }));
       
       const uploadedFiles = await uploadFiles(files);
       if (uploadedFiles.isErr()) {
@@ -143,6 +121,7 @@ export const analysis = api
         };
       }
 
+      const importerName = expediente.pedimento.encabezadoPrincipalDelPedimento.datosImportador.razonSocial;
       const [newCustomGloss] = await db
         .insert(CustomGloss)
         .values({
@@ -150,10 +129,9 @@ export const analysis = api
           summary: '',
           timeSaved: 20,
           moneySaved: 1000,
-          importerName:
-            importerName ?? 'No se encontro la razon social del importador',
-          cove,
-          pedimento,
+          importerName,
+          cove: expediente.cove,
+          pedimento: expediente.pedimento,
         })
         .returning();
       if (!newCustomGloss) {
