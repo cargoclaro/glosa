@@ -240,7 +240,8 @@ export const analysis = api
         success: true,
         glossId: newCustomGloss.id,
       };
-    } catch {
+    } catch (error) {
+      console.error(error);
       return {
         success: false,
         message: 'Ocurrió un error interno',
