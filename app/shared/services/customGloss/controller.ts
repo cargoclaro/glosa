@@ -113,13 +113,14 @@ export const analysis = api
         ? glosaImpo({ ...expediente, traceId: trace.id })
         : glosaExpo({ ...expediente, traceId: trace.id }));
       
-      const uploadedFiles = await uploadFiles(files);
-      if (uploadedFiles.isErr()) {
+      const uploadedFilesResult = await uploadFiles(expedienteWithoutData);
+      if (uploadedFilesResult.isErr()) {
         return {
           success: false,
-          message: uploadedFiles.error,
+          message: uploadedFilesResult.error,
         };
       }
+      const uploadedFiles = uploadedFilesResult.value;
 
       const importerName = expediente.pedimento.encabezadoPrincipalDelPedimento.datosImportador.razonSocial;
       const [newCustomGloss] = await db
@@ -140,15 +141,11 @@ export const analysis = api
 
       // Batch insert files
       await db.insert(CustomGlossFile).values(
-        classifications.map((result) => {
-          const classification = typeof result.classification === 'string' 
-            ? result.classification 
-            : result.classification[0]?.classification || 'Otro';
-          
+        uploadedFiles.map((uploadedFile) => {
           return {
-            name: result.file.name,
-            url: result.file.name, // Replace with actual URL from upload
-            documentType: mapClassificationToDocumentType(classification),
+            name: uploadedFile.name,
+            url: uploadedFile.ufsUrl,
+            documentType: uploadedFile.classification,
             customGlossId: newCustomGloss.id,
           };
         })
