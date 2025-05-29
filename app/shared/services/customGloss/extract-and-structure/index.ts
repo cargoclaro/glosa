@@ -68,7 +68,7 @@ export async function extractAndStructure(
 
   const documentoDeTransporteFiles = [...billOfLadingFiles, ...airWaybillFiles];
   const packingFiles = [...packingListFiles, ...packingSlipFiles];
-
+  console.log("Prueba 1");
   // Run all extraction operations in parallel instead of sequentially
   const [
     pedimento,
@@ -103,7 +103,7 @@ export async function extractAndStructure(
     ),
     Promise.all(cfdiFiles.map((cfdiFile) => extractAndStructureCFDI(cfdiFile))),
   ]);
-
+  console.log("Prueba 2");
   return {
     pedimento,
     documentoDeTransporte,
