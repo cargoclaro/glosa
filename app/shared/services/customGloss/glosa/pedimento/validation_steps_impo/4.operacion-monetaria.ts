@@ -138,14 +138,26 @@ async function validateValSeguros(
       "Verifica que el campo 'Val. Seguros' (valor total de las mercancías aseguradas en MXN) cumpla con los lineamientos de llenado: valor correcto, formato adecuado, y reglas de llenado/omisión según el tipo de operación (ej. pedimentos complementarios, Anexo 22).",
     // The core instructions for the AI model. We break down the validation steps clearly.
     prompt: `El campo 'Val. Seguros' declara el valor total de las mercancías cubiertas por el seguro, en moneda nacional (MXN). Tu tarea es verificar este campo siguiendo estos puntos:
-1.  **Valor Declarado:** Confirma si el valor declarado en 'Val. Seguros' (${valSeguros}) corresponde razonablemente al valor total de las mercancías aseguradas. Usa como referencia el 'Precio pagado / valor comercial' (${precioPagadoValorComercial}) y la información en la Factura. El valor asegurado debería cubrir, al menos, el valor comercial de las mercancías.
-2.  **Formato:** Verifica que el valor '${valSeguros}' sea numérico. Para importaciones, el formato esperado suele ser de 12 caracteres numéricos, sin espacios ni otros caracteres. Señala cualquier desviación de este formato.
-3.  **Condiciones de Llenado:**
-    *   El valor no debe ser CERO si el costo del seguro ya está incluido en el valor en aduana o si el seguro es aplicable y contratado.
-    *   Verifica si el campo debe llenarse o puede omitirse. Según el Anexo 22 de las RGCE, en ciertos casos como pedimentos complementarios (Clave de Pedimento: ${clavePedimento}) o tránsitos específicos, este campo es opcional o no debe llenarse. Revisa la 'Clave de Pedimento' y las 'Observaciones' para determinar si aplica alguna de estas excepciones.
-4.  **Incoterm:** Considera el Incoterm ('${incoterm}'), ya que define quién es responsable de contratar y pagar el seguro.
 
-Analiza toda la información proporcionada (Pedimento, Factura, Carta 3.1.8, Documento de Transporte) para realizar esta validación y explica tu razonamiento paso a paso.`,
+1.  **Compatibilidad Incoterm y Seguro (Ref. Apéndice 14):**
+    *   Identifica el Incoterm declarado: '${incoterm}'.
+    *   **Advertencia con CIP/CIF:** Si el Incoterm es CIP o CIF y el campo 'Val. Seguros' (${valSeguros}) tiene un valor numérico mayor que cero (o no está vacío y no es cero), esto generalmente indica una inconsistencia. Según el Apéndice 14, en los Incoterms CIP y CIF, el vendedor contrata y paga el seguro hasta el lugar de destino convenido. Por lo tanto, el costo del seguro ya estaría incluido en el precio de la mercancía y no debería desglosarse por separado en 'Val. Seguros' a menos que existan acuerdos específicos o regulaciones que lo requieran (revisa observaciones). Emite una **advertencia** si este es el caso, justificando con el Apéndice 14.
+    *   Si el Incoterm NO es CIP o CIF, o si es CIP/CIF pero 'Val. Seguros' es cero o está vacío (lo cual es correcto para estos Incoterms), procede con las siguientes validaciones.
+
+2.  **Verificación de Coherencia del Valor del Seguro (si aplica según punto 1):**
+    *   Si el Incoterm permite un valor de seguro declarado (es decir, no es CIP/CIF o siendo CIP/CIF se justifica una declaración separada), o si no es CIP/CIF, verifica que el valor del seguro en 'Val. Seguros' (${valSeguros}) sea **aproximadamente correcto**.
+    *   Compara el valor declarado en 'Val. Seguros' con cualquier monto de seguro indicado en la documentación adjunta (Factura, Carta 3.1.8, Documento de Transporte).
+    *   **Conversión de Moneda:** Si encuentras valores de seguro en moneda extranjera (ej. USD) en los documentos, conviértelos a Pesos Mexicanos (MXN) utilizando el 'Tipo de cambio' del pedimento (${tipoCambio}). El valor convertido debe tener sentido.
+        *   **Ejemplo de coherencia:** Si un documento indica "Insurance: 25 USD" y el tipo de cambio es 22 MXN/USD, el equivalente sería 550 MXN. Si 'Val. Seguros' en el pedimento es cercano a 550 MXN (ej. 549 a 551 MXN), esto es aceptable.
+    *   El valor asegurado debería cubrir, al menos, el 'Precio pagado / valor comercial' (${precioPagadoValorComercial}), a menos que el Incoterm (ej. EXW, FCA donde el comprador asegura) o las condiciones particulares indiquen lo contrario.
+
+3.  **Formato:** Verifica que el valor '${valSeguros}' sea numérico. Para importaciones, el formato esperado suele ser de 12 caracteres numéricos, sin espacios ni otros caracteres. Señala cualquier desviación de este formato.
+
+4.  **Condiciones de Llenado/Omisión (Ref. Anexo 22):**
+    *   El valor en 'Val. Seguros' no debe ser CERO si el costo del seguro *no* está incluido en el valor en aduana (por ejemplo, con Incoterms como EXW, FCA, FAS, FOB donde el seguro es responsabilidad del comprador y se contrata por separado) y el seguro es aplicable y efectivamente contratado.
+    *   Verifica si el campo debe llenarse o puede omitirse. Según el Anexo 22 de las RGCE, en ciertos casos como pedimentos complementarios (Clave de Pedimento: '${clavePedimento}') o tránsitos específicos, este campo es opcional o no debe llenarse. Revisa la 'Clave de Pedimento' y las 'Observaciones' para determinar si aplica alguna de estas excepciones.
+
+Analiza toda la información proporcionada (Pedimento, Factura, Carta 3.1.8, Documento de Transporte, y el Apéndice 14 sobre Incoterms) para realizar esta validación y explica tu razonamiento paso a paso, indicando claramente si encuentras errores, advertencias o si la información es correcta.`,
     // Providing the data (context) the AI needs. We categorize it into PROVIDED (from user documents)
     // and EXTERNAL (like regulations or standard definitions).
     contexts: {
