@@ -54,7 +54,7 @@ async function validateClaveApendice15(traceId: string, pedimento: Pedimento) {
   return await glosar(validation, traceId, 'gpt-4o-mini');
 } */
 
-// We are waiting on confirmation if COVE's have incoterms
+// TODO: We need to support multiple facturas, and cartas regla 318
 /* async function validateIncoterms(traceId: string, pedimento: Pedimento['datosDelProveedorOComprador'][number]['facturas'][number], factura: Factura, CartaRegla318?: CartaRegla318) {
   const incotermPedimento = pedimento.incoterm;
   const incotermFactura = factura.payment_terms;
