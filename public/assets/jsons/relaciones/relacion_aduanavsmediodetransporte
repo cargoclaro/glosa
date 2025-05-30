@@ -1,0 +1,642 @@
+[
+  {
+    "codigo": "01 0",
+    "nombre": "Acapulco, Acapulco de Juárez, Guerrero.",
+    "transportes": [1, 7]
+  },
+  {
+    "codigo": "01 2",
+    "nombre": "Aeropuerto Internacional General Juan N. Álvarez, Acapulco, Guerrero.",
+    "transportes": [4]
+  },
+  {
+    "codigo": "02 0",
+    "nombre": "Agua Prieta, Agua Prieta, Sonora.",
+    "transportes": [7]
+  },
+  {
+    "codigo": "05 0",
+    "nombre": "Subteniente López, Subteniente López, Quintana Roo.",
+    "transportes": [7]
+  },
+  {
+    "codigo": "05 1",
+    "nombre": "Subteniente López II “Chactemal”, Othón P. Blanco, Chetumal, Quintana Roo.",
+    "transportes": [7]
+  },
+  {
+    "codigo": "06 0",
+    "nombre": "Ciudad del Carmen, Ciudad del Carmen, Campeche.",
+    "transportes": [1, 7]
+  },
+  {
+    "codigo": "06 3",
+    "nombre": "Seybaplaya, Champotón, Campeche.",
+    "transportes": [1, 7]
+  },
+  {
+    "codigo": "07 0",
+    "nombre": "Ciudad Juárez, Juárez, Chihuahua.",
+    "transportes": [7]
+  },
+  {
+    "codigo": "07 1",
+    "nombre": "Puente Internacional Zaragoza Isleta, Juárez, Chihuahua.",
+    "transportes": [7]
+  },
+  {
+    "codigo": "07 2",
+    "nombre": "San Jerónimo-Santa Teresa, Juárez, Chihuahua.",
+    "transportes": [7]
+  },
+  {
+    "codigo": "07 3",
+    "nombre": "Aeropuerto Internacional Abraham González, Juárez, Chihuahua.",
+    "transportes": [4]
+  },
+  {
+    "codigo": "07 4",
+    "nombre": "Guadalupe-Tornillo, Guadalupe, Chihuahua.",
+    "transportes": [7]
+  },
+  {
+    "codigo": "08 0",
+    "nombre": "Coatzacoalcos, Coatzacoalcos, Veracruz.",
+    "transportes": [1, 7]
+  },
+  {
+    "codigo": "11 0",
+    "nombre": "Ensenada, Ensenada, Baja California.",
+    "transportes": [1, 7]
+  },
+  {
+    "codigo": "12 0",
+    "nombre": "Guaymas, Guaymas, Sonora.",
+    "transportes": [1, 7]
+  },
+  {
+    "codigo": "14 0",
+    "nombre": "La Paz, La Paz, Baja California Sur.",
+    "transportes": [1, 7]
+  },
+  {
+    "codigo": "14 2",
+    "nombre": "San José del Cabo, Los Cabos, Baja California Sur.",
+    "transportes": [1, 7]
+  },
+  {
+    "codigo": "14 4",
+    "nombre": "Santa Rosalía, Mulegé, Baja California Sur.",
+    "transportes": [1, 7]
+  },
+  {
+    "codigo": "14 7",
+    "nombre": "Pichilingue, La Paz, Baja California Sur.",
+    "transportes": [1, 7]
+  },
+  {
+    "codigo": "14",
+    "nombre": "Los Olivos, La Paz, Baja California Sur.",
+    "transportes": [7]
+  },
+  {
+    "codigo": "16 0",
+    "nombre": "Manzanillo, Manzanillo, Colima.",
+    "transportes": [1, 7]
+  },
+  {
+    "codigo": "16 1",
+    "nombre": "Armería, Armería, Colima.",
+    "transportes": [7]
+  },
+  {
+    "codigo": "17 0",
+    "nombre": "Matamoros, Matamoros, Tamaulipas.",
+    "transportes": [7]
+  },
+  {
+    "codigo": "17 1",
+    "nombre": "Lucio Blanco-Los Indios, Matamoros, Tamaulipas.",
+    "transportes": [7]
+  },
+  {
+    "codigo": "17 2",
+    "nombre": "Ferroviaria de Matamoros, Matamoros, Tamaulipas.",
+    "transportes": [6]
+  },
+  {
+    "codigo": "17",
+    "nombre": "Puerto el Mezquital, Matamoros, Tamaulipas.",
+    "transportes": [1, 7]
+  },
+  {
+    "codigo": "17",
+    "nombre": "Aeropuerto Internacional General Servando Canales, Matamoros, Tamaulipas.",
+    "transportes": [4]
+  },
+  {
+    "codigo": "18 0",
+    "nombre": "Mazatlán, Mazatlán, Sinaloa.",
+    "transportes": [1, 7]
+  },
+  {
+    "codigo": "18 3",
+    "nombre": "Topolobampo, Ahome, Sinaloa.",
+    "transportes": [1, 7]
+  },
+  {
+    "codigo": "19 0",
+    "nombre": "Mexicali, Mexicali, Baja California.",
+    "transportes": [7]
+  },
+  {
+    "codigo": "19 2",
+    "nombre": "Los Algodones, Mexicali, Baja California.",
+    "transportes": [7]
+  },
+  {
+    "codigo": "19 3",
+    "nombre": "San Felipe, Mexicali, Baja California.",
+    "transportes": [1, 7]
+  },
+  {
+    "codigo": "20 0",
+    "nombre": "México, Ciudad de México.",
+    "transportes": [7]
+  },
+  {
+    "codigo": "20 2",
+    "nombre": "Importación y Exportación de Contenedores, Alcaldía Azcapotzalco, Ciudad de México.",
+    "transportes": [7]
+  },
+  {
+    "codigo": "22 0",
+    "nombre": "Naco, Naco, Sonora.",
+    "transportes": [7]
+  },
+  {
+    "codigo": "23 0",
+    "nombre": "Nogales, Nogales, Sonora.",
+    "transportes": [7]
+  },
+  {
+    "codigo": "23 1",
+    "nombre": "Sásabe, Sáric, Sonora.",
+    "transportes": [7]
+  },
+  {
+    "codigo": "23 2",
+    "nombre": "Aeropuerto Internacional General Ignacio Pesqueira García, Hermosillo, Sonora.",
+    "transportes": [4]
+  },
+  {
+    "codigo": "23 3",
+    "nombre": "Ciudad Obregón Adyacente al Aeropuerto de Ciudad Obregón, Cajeme, Sonora.",
+    "transportes": [4]
+  },
+  {
+    "codigo": "23 4",
+    "nombre": "Aeropuerto Internacional de Culiacán, Culiacán, Sinaloa.",
+    "transportes": [4]
+  },
+  {
+    "codigo": "24 0",
+    "nombre": "Nuevo Laredo, Nuevo Laredo, Tamaulipas.",
+    "transportes": [7]
+  },
+  {
+    "codigo": "24",
+    "nombre": "Estación Sánchez, Nuevo Laredo, Tamaulipas.",
+    "transportes": [6]
+  },
+  {
+    "codigo": "24",
+    "nombre": "Aeropuerto Internacional de Nuevo Laredo “Quetzalcóatl”, Nuevo Laredo, Tamaulipas.",
+    "transportes": [4]
+  },
+  {
+    "codigo": "25 0",
+    "nombre": "Ojinaga, Ojinaga, Chihuahua.",
+    "transportes": [7]
+  },
+  {
+    "codigo": "26 0",
+    "nombre": "Puerto Palomas, Puerto Palomas, Chihuahua.",
+    "transportes": [1, 7]
+  },
+  {
+    "codigo": "27 0",
+    "nombre": "Piedras Negras, Piedras Negras, Coahuila de Zaragoza.",
+    "transportes": [7]
+  },
+  {
+    "codigo": "27 1",
+    "nombre": "Aeropuerto Internacional Plan de Guadalupe, Ramos Arizpe, Coahuila de Zaragoza.",
+    "transportes": [4]
+  },
+  {
+    "codigo": "27",
+    "nombre": "Río Escondido, Nava, Coahuila de Zaragoza.",
+    "transportes": [7]
+  },
+  {
+    "codigo": "28 0",
+    "nombre": "Progreso, Progreso, Yucatán.",
+    "transportes": [1, 7]
+  },
+  {
+    "codigo": "28 2",
+    "nombre": "Aeropuerto Internacional Lic. Manuel Crescencio Rejón, Mérida, Yucatán.",
+    "transportes": [4]
+  },
+  {
+    "codigo": "30 0",
+    "nombre": "Ciudad Reynosa, Reynosa, Tamaulipas.",
+    "transportes": [7]
+  },
+  {
+    "codigo": "30 2",
+    "nombre": "Las Flores, Río Bravo, Tamaulipas.",
+    "transportes": [7]
+  },
+  {
+    "codigo": "30 4",
+    "nombre": "Aeropuerto Internacional General. Lucio Blanco, Reynosa, Tamaulipas.",
+    "transportes": [4]
+  },
+  {
+    "codigo": "30 5",
+    "nombre": "Río Bravo-Donna, Río Bravo, Tamaulipas.",
+    "transportes": [7]
+  },
+  {
+    "codigo": "30 6",
+    "nombre": "Anzaldúas, Reynosa, Tamaulipas.",
+    "transportes": [7]
+  },
+  {
+    "codigo": "30 7",
+    "nombre": "Aeropuerto Internacional General Pedro José Méndez, Victoria, Tamaulipas.",
+    "transportes": [4]
+  },
+  {
+    "codigo": "31 0",
+    "nombre": "Salina Cruz, Salina Cruz, Oaxaca.",
+    "transportes": [1, 7]
+  },
+  {
+    "codigo": "31 3",
+    "nombre": "Puerto Chiapas, Tapachula, Chiapas.",
+    "transportes": [1, 7]
+  },
+  {
+    "codigo": "33 0",
+    "nombre": "San Luis Río Colorado, San Luis Río Colorado, Sonora.",
+    "transportes": [7]
+  },
+  {
+    "codigo": "34 0",
+    "nombre": "Ciudad Miguel Alemán, Miguel Alemán, Tamaulipas.",
+    "transportes": [7]
+  },
+  {
+    "codigo": "34 2",
+    "nombre": "Guerrero, Guerrero, Tamaulipas.",
+    "transportes": [7]
+  },
+  {
+    "codigo": "37 0",
+    "nombre": "Ciudad Hidalgo, Ciudad Hidalgo, Chiapas.",
+    "transportes": [7]
+  },
+  {
+    "codigo": "37 2",
+    "nombre": "Ciudad Talismán, Tuxtla Chico, Chiapas.",
+    "transportes": [7]
+  },
+  {
+    "codigo": "37 6",
+    "nombre": "Ciudad Cuauhtémoc, Frontera Comalapa, Chiapas.",
+    "transportes": [7]
+  },
+  {
+    "codigo": "37",
+    "nombre": "Aeropuerto Internacional de Tapachula, Tapachula, Chiapas.",
+    "transportes": [4]
+  },
+  {
+    "codigo": "37 3",
+    "nombre": "Aeropuerto Internacional de Oaxaca, Santa Cruz Xoxocotlán, Oaxaca.",
+    "transportes": [4]
+  },
+  {
+    "codigo": "37 4",
+    "nombre": "Aeropuerto Internacional C.P.A. Carlos Rovirosa Pérez, Ciudad de Villahermosa, Centro, Tabasco.",
+    "transportes": [4]
+  },
+  {
+    "codigo": "37 7",
+    "nombre": "El Ceibo, Tenosique, Tabasco.",
+    "transportes": [7]
+  },
+  {
+    "codigo": "37 8",
+    "nombre": "Cruce Fronterizo Nuevo Orizaba-Ingenieros, Benemérito de las Américas, Chiapas.",
+    "transportes": [7]
+  },
+  {
+    "codigo": "38 0",
+    "nombre": "Tampico, Tampico, Tamaulipas.",
+    "transportes": [1, 7]
+  },
+  {
+    "codigo": "39 0",
+    "nombre": "Tecate, Tecate, Baja California.",
+    "transportes": [7]
+  },
+  {
+    "codigo": "39 1",
+    "nombre": "Loreto, Loreto, Baja California Sur.",
+    "transportes": [1, 7]
+  },
+  {
+    "codigo": "39 2",
+    "nombre": "Cabo San Lucas, Los Cabos, Baja California Sur.",
+    "transportes": [1, 7]
+  },
+  {
+    "codigo": "40 0",
+    "nombre": "Tijuana, Tijuana, Baja California.",
+    "transportes": [7]
+  },
+  {
+    "codigo": "40 2",
+    "nombre": "Aeropuerto Internacional denominado Abelardo L. Rodríguez, Tijuana, Baja California.",
+    "transportes": [4]
+  },
+  {
+    "codigo": "40",
+    "nombre": "Mesa de Otay, Tijuana, Baja California.",
+    "transportes": [7]
+  },
+  {
+    "codigo": "40",
+    "nombre": "Cruce Fronterizo El Chaparral, Tijuana, Baja California.",
+    "transportes": [7]
+  },
+  {
+    "codigo": "40",
+    "nombre": "Cruce Fronterizo Puerta México Este, Tijuana, Baja California.",
+    "transportes": [7]
+  },
+  {
+    "codigo": "42 0",
+    "nombre": "Tuxpan, Tuxpan de Rodríguez Cano, Veracruz.",
+    "transportes": [1, 7]
+  },
+  {
+    "codigo": "42 1",
+    "nombre": "Tuxpan, Tuxpan, Veracruz.",
+    "transportes": [1, 7]
+  },
+  {
+    "codigo": "43 0",
+    "nombre": "Veracruz, Veracruz, Veracruz.",
+    "transportes": [1, 7]
+  },
+  {
+    "codigo": "43 2",
+    "nombre": "Aeropuerto Internacional General Heriberto Jara Corona, Veracruz, Veracruz.",
+    "transportes": [4]
+  },
+  {
+    "codigo": "44 0",
+    "nombre": "Ciudad Acuña, Ciudad Acuña, Coahuila de Zaragoza.",
+    "transportes": [7]
+  },
+  {
+    "codigo": "46 0",
+    "nombre": "Torreón, Torreón, Coahuila de Zaragoza.",
+    "transportes": [7]
+  },
+  {
+    "codigo": "46 2",
+    "nombre": "Gómez Palácio, Gómez Palació, Durango.",
+    "transportes": [7]
+  },
+  {
+    "codigo": "46 3",
+    "nombre": "Aeropuerto Internacional General Guadalupe Victoria, Durango, Durango.",
+    "transportes": [4]
+  },
+  {
+    "codigo": "46 1",
+    "nombre": "Aeropuerto de Torreón, Coahuila de Zaragoza.",
+    "transportes": [4]
+  },
+  {
+    "codigo": "47 0",
+    "nombre": "Aeropuerto Internacional de la Ciudad de México.",
+    "transportes": [4]
+  },
+  {
+    "codigo": "47 1",
+    "nombre": "Satélite, para importación y exportación por vía aérea, Aeropuerto Internacional “Benito Juárez” de la Ciudad de México.",
+    "transportes": [4]
+  },
+  {
+    "codigo": "47 2",
+    "nombre": "Centro Postal Mecanizado, por vía postal y por tráfico aéreo, Aeropuerto Internacional “Benito Juárez” de la Ciudad de México.",
+    "transportes": [4, 5]
+  },
+  {
+    "codigo": "48 0",
+    "nombre": "Guadalajara, Tlajomulco de Zúñiga, Jalisco.",
+    "transportes": [7]
+  },
+  {
+    "codigo": "48 1",
+    "nombre": "Puerto Vallarta, Puerto Vallarta, Jalisco.",
+    "transportes": [1, 7]
+  },
+  {
+    "codigo": "48 4",
+    "nombre": "Terminal Intermodal Ferroviaria, Guadalajara, Jalisco.",
+    "transportes": [6]
+  },
+  {
+    "codigo": "50 0",
+    "nombre": "Sonoyta, Sonoyta, Sonora.",
+    "transportes": [7]
+  },
+  {
+    "codigo": "50 1",
+    "nombre": "San Emeterio, General Plutarco Elías Calles, Sonora.",
+    "transportes": [7]
+  },
+  {
+    "codigo": "51 0",
+    "nombre": "Lázaro Cárdenas, Lázaro Cárdenas, Michoacán.",
+    "transportes": [1, 7]
+  },
+  {
+    "codigo": "51 1",
+    "nombre": "Aeropuerto Internacional Ixtapa-Zihuatanejo, Zihuatanejo de Azueta, Guerrero.",
+    "transportes": [4]
+  },
+  {
+    "codigo": "52 0",
+    "nombre": "Monterrey, General Mariano Escobedo, Nuevo León.",
+    "transportes": [7]
+  },
+  {
+    "codigo": "52 1",
+    "nombre": "Aeropuerto Internacional General Mariano Escobedo, Apodaca, Nuevo León.",
+    "transportes": [4]
+  },
+  {
+    "codigo": "52 3",
+    "nombre": "Salinas Victoria A (terminal ferroviaria), Salinas Victoria, Nuevo León.",
+    "transportes": [6]
+  },
+  {
+    "codigo": "52 4",
+    "nombre": "General Escobedo, General Escobedo, Nuevo León.",
+    "transportes": [7]
+  },
+  {
+    "codigo": "52 5",
+    "nombre": "Salinas Victoria B (Interpuerto), Salinas Victoria, Nuevo León.",
+    "transportes": [6]
+  },
+  {
+    "codigo": "53 0",
+    "nombre": "Cancún, Cancún, Quintana Roo.",
+    "transportes": [1, 4, 7]
+  },
+  {
+    "codigo": "53 2",
+    "nombre": "Aeropuerto Internacional de Cozumel, Cozumel, Quintana Roo.",
+    "transportes": [4]
+  },
+  {
+    "codigo": "53 3",
+    "nombre": "Puerto Morelos, Benito Juárez, Quintana Roo.",
+    "transportes": [1, 7]
+  },
+  {
+    "codigo": "64 0",
+    "nombre": "Querétaro, El Marques y Colón, Querétaro.",
+    "transportes": [7]
+  },
+  {
+    "codigo": "64 7",
+    "nombre": "Hidalgo, Atotonilco de Tula, Hidalgo.",
+    "transportes": [7]
+  },
+  {
+    "codigo": "65 0",
+    "nombre": "Toluca, Toluca, Estado de México.",
+    "transportes": [7]
+  },
+  {
+    "codigo": "65 1",
+    "nombre": "San Cayetano Morelos, Toluca, Estado de México.",
+    "transportes": [7]
+  },
+  {
+    "codigo": "67 0",
+    "nombre": "Chihuahua, Chihuahua, Chihuahua.",
+    "transportes": [7]
+  },
+  {
+    "codigo": "67 2",
+    "nombre": "Aeropuerto Internacional General Roberto Fierro Villalobos, Chihuahua, Chihuahua.",
+    "transportes": [4]
+  },
+  {
+    "codigo": "73 0",
+    "nombre": "Aguascalientes, San Francisco de los Romo, Aguascalientes.",
+    "transportes": [7]
+  },
+  {
+    "codigo": "73 1",
+    "nombre": "Parque Multimodal Interpuerto, San Luis Potosí, San Luis Potosí.",
+    "transportes": [6]
+  },
+  {
+    "codigo": "73 3",
+    "nombre": "Aeropuerto Internacional Ponciano Arriaga, Soledad de Graciano Sánchez, San Luis Potosí.",
+    "transportes": [4]
+  },
+  {
+    "codigo": "73 2",
+    "nombre": "Aeropuerto Internacional General Leobardo C. Ruiz, en Calera, Zacatecas.",
+    "transportes": [4]
+  },
+  {
+    "codigo": "73 4",
+    "nombre": "La Pila-Villa, Villa de Reyes, San Luis Potosí.",
+    "transportes": [7]
+  },
+  {
+    "codigo": "73 5",
+    "nombre": "Aeropuerto Internacional Lic. Jesús Terán Peredo, Aguascalientes, Aguascalientes.",
+    "transportes": [4]
+  },
+  {
+    "codigo": "75 0",
+    "nombre": "Puebla, Heroica Puebla de Zaragoza, Puebla.",
+    "transportes": [7]
+  },
+  {
+    "codigo": "75 1",
+    "nombre": "Cuernavaca, Jiutepec, Morelos.",
+    "transportes": [7]
+  },
+  {
+    "codigo": "75 4",
+    "nombre": "Aeropuerto Internacional Hermanos Serdán, Huejotzingo, Puebla.",
+    "transportes": [4]
+  },
+  {
+    "codigo": "80 0",
+    "nombre": "Colombia, Colombia, Nuevo León.",
+    "transportes": [7]
+  },
+  {
+    "codigo": "81 0",
+    "nombre": "Altamira, Altamira, Tamaulipas.",
+    "transportes": [1, 7]
+  },
+  {
+    "codigo": "82 0",
+    "nombre": "Ciudad Camargo, Camargo, Tamaulipas.",
+    "transportes": [7]
+  },
+  {
+    "codigo": "83 0",
+    "nombre": "Dos Bocas, Paraíso, Tabasco.",
+    "transportes": [1, 7]
+  },
+  {
+    "codigo": "84 0",
+    "nombre": "Guanajuato, Silao de la Victoria, Guanajuato.",
+    "transportes": [7]
+  },
+  {
+    "codigo": "84 1",
+    "nombre": "Celaya, Celaya, Guanajuato.",
+    "transportes": [7]
+  },
+  {
+    "codigo": "84 2",
+    "nombre": "Aeropuerto Internacional de Guanajuato, Silao de la Victoria, Guanajuato.",
+    "transportes": [4]
+  },
+  {
+    "codigo": "85 0",
+    "nombre": "Aeropuerto Internacional Felipe Ángeles, Santa Lucía, Zumpango, Estado de México.",
+    "transportes": [4]
+  }
+]
