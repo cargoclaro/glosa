@@ -54,6 +54,40 @@ async function validateClaveApendice15(traceId: string, pedimento: Pedimento) {
   return await glosar(validation, traceId, 'gpt-4o-mini');
 } */
 
+// We are waiting on confirmation if COVE's have incoterms
+/* async function validateIncoterms(traceId: string, pedimento: Pedimento['datosDelProveedorOComprador'][number]['facturas'][number], factura: Factura, CartaRegla318?: CartaRegla318) {
+  const incotermPedimento = pedimento.incoterm;
+  const incotermFactura = factura.payment_terms;
+  const incotermCartaRegla318 = CartaRegla318?.termino_facturacion;
+
+  const validation = {
+    name: 'Incoterms',
+    prompt: 'Los incoterms deben ser consistentes entre el pedimento, la factura y la carta regla 318',
+    description: 'Los incoterms deben ser consistentes entre el pedimento, la factura y la carta regla 318',
+    contexts: {
+      PROVIDED: {
+        pedimento: {
+          data: [
+            { name: 'Incoterm del pedimento', value: incotermPedimento },
+          ],
+        },
+        factura: {
+          data: [
+            { name: 'Incoterm de la factura', value: incotermFactura },
+          ],
+        },
+        cartaRegla318: {
+          data: [
+            { name: 'Incoterm de la carta regla 318', value: incotermCartaRegla318 },
+          ],
+        },
+      },
+    },
+  } as const;
+
+  return await glosar(validation, traceId, 'gpt-4o-mini');
+} */
+
 export async function claveApendice15({
   pedimento,
   traceId,
