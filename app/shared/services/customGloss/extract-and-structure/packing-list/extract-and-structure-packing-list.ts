@@ -3,26 +3,21 @@ import { generateObject } from 'ai';
 import { packingListSchema } from '../schemas';
 
 export async function extractAndStructurePackingList(
-  fileUrl: string,
-  parentTraceId?: string
+  file: File,
+  parentTraceId: string
 ) {
-  const telemetryConfig = parentTraceId
-    ? {
-        experimental_telemetry: {
-          isEnabled: true,
-          functionId: 'Packing List',
-          metadata: {
-            langfuseTraceId: parentTraceId,
-            langfuseUpdateParent: false,
-            fileUrl,
-          },
-        },
-      }
-    : {};
   const { object } = await generateObject({
     model: google('gemini-2.5-flash-preview-04-17'),
     seed: 42,
-    ...telemetryConfig,
+    experimental_telemetry: {
+      isEnabled: true,
+      functionId: 'Packing List',
+      metadata: {
+        langfuseTraceId: parentTraceId,
+        langfuseUpdateParent: false,
+        fileName: file.name,
+      },
+    },
     schema: packingListSchema,
     messages: [
       {
@@ -34,8 +29,8 @@ export async function extractAndStructurePackingList(
           },
           {
             type: 'file',
-            data: `${fileUrl}`,
-            mimeType: 'application/pdf',
+            data: `data:${file.type};base64,${Buffer.from(await file.arrayBuffer()).toString('base64')}`,
+            mimeType: file.type,
           },
         ],
       },

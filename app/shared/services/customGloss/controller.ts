@@ -6,7 +6,6 @@ import { Langfuse } from 'langfuse';
 import { api } from 'lib/trpc';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-import type { UploadedFileData } from 'uploadthing/types';
 import { z } from 'zod';
 import { zfd } from 'zod-form-data';
 import { db } from '~/db';
@@ -20,46 +19,16 @@ import {
   CustomGlossTabValidationStep,
   CustomGlossTabValidationStepActionToTake,
 } from '~/db/schema';
-import {
-  type Classification,
-  classifyDocuments,
-} from './classification/classification';
-import { extractTextFromPDFs } from './data-extraction';
+import { classifyDocuments } from './classification/classification';
+import { createExpedienteWithoutData } from './classification/create-expediente-without-data';
+import { extractAndStructure } from './extract-and-structure';
 import { glosaExpo } from './glosa/expo';
 import { glosaImpo } from './glosa/impo';
 import { uploadFiles } from './upload-files';
-import type { DocumentType } from './utils';
 
 config();
 
 const langfuse = new Langfuse();
-
-/**
- * Maps Classification types to DocumentType
- */
-function mapClassificationToDocumentType(
-  classification: Classification
-): DocumentType {
-  switch (classification) {
-    case 'Pedimento':
-      return 'pedimento';
-    case 'Bill of Lading':
-    case 'Air Waybill':
-      return 'documentoDeTransporte';
-    case 'Factura':
-      return 'factura';
-    case 'Carta Regla 3.1.8':
-      return 'carta318';
-    case 'Cove':
-      return 'cove';
-    case 'Packing List':
-      return 'listaDeEmpaque';
-    case 'CFDI':
-      return 'cfdi';
-    default:
-      return 'otros';
-  }
-}
 
 /**
  * Updates a tab with the provided data
@@ -92,120 +61,69 @@ export const analysis = api
     })
   )
   .mutation(async ({ input: { files }, ctx: { userId } }) => {
+    const trace = langfuse.trace({
+      name: 'Glosa de Pedimento',
+    });
     try {
-      const trace = langfuse.trace({
-        name: 'Glosa de Pedimento',
-      });
-      const successfulUploads = await uploadFiles(files);
       langfuse.event({
         traceId: trace.id,
         name: 'Classification',
       });
-      if (successfulUploads.isErr()) {
+      const classifications = await classifyDocuments(files, trace.id);
+      const expedienteWithoutDataResult =
+        await createExpedienteWithoutData(classifications);
+      if (expedienteWithoutDataResult.isErr()) {
+        const { error } = expedienteWithoutDataResult;
         return {
           success: false,
-          message: successfulUploads.error,
+          message: error,
         };
       }
-      const classificationResults = await classifyDocuments(
-        successfulUploads.value,
-        trace.id
-      );
+      const { value: expedienteWithoutData } = expedienteWithoutDataResult;
 
-      // Transform classification results to include documentType
-      const classifications = classificationResults.map((file) => {
-        return {
-          ...file,
-          documentType: mapClassificationToDocumentType(file.classification),
-        };
+      langfuse.event({
+        traceId: trace.id,
+        name: 'Extract and Structure',
       });
-
-      // Check for unsupported document types
-      const multipleDocuments = classificationResults.filter(
-        (doc) =>
-          doc.classification ===
-          'Archivo con múltiples documentos (iguales o distintos)'
-      );
-
-      if (multipleDocuments.length > 0) {
-        return {
-          success: false,
-          message:
-            'Encontramos varios documentos en un solo archivo. No soportamos este tipo de archivos.',
-        };
-      }
-
-      const otrosDocuments = classifications.filter(
-        (doc) => doc.documentType === 'otros'
-      );
-
-      if (otrosDocuments.length > 0) {
-        return {
-          success: false,
-          message:
-            'Se detectaron documentos no clasificables o no soportados para la glosa electrónica.',
-        };
-      }
-
-      // Now group the classifications by document type, taking only the first file of each type.
-      const groupedClassifications = classifications.reduce(
-        (acc, curr) => {
-          // Only set the value if it doesn't exist yet (keeping the first file of each type)
-          if (!acc[curr.documentType]) {
-            acc[curr.documentType] = curr;
-          }
-          return acc;
-        },
-        {} as Partial<
-          Record<
-            DocumentType,
-            UploadedFileData & {
-              originalFile: File;
-              documentType: DocumentType;
-            }
-          >
-        >
-      );
-
-      const { pedimento: classifiedPedimento, cove: classifiedCove } =
-        groupedClassifications;
-      if (!classifiedPedimento) {
-        return {
-          success: false,
-          message:
-            'El pedimento es obligatorio para realizar la glosa electrónica.',
-        };
-      }
-      if (!classifiedCove) {
-        return {
-          success: false,
-          message: 'El cove es obligatorio para realizar la glosa electrónica.',
-        };
-      }
-
-      const documents = await extractTextFromPDFs(
-        groupedClassifications,
+      const expediente = await extractAndStructure(
+        expedienteWithoutData,
         trace.id
       );
-      if (documents.isErr()) {
+      const operationType =
+        expediente.pedimento.encabezadoPrincipalDelPedimento.tipoDeOperacion;
+      if (operationType === 'TRA') {
         return {
           success: false,
-          message: documents.error,
+          message: 'El tipo de operación "Transito" no es soportado',
         };
       }
-      const { pedimento, cove } = documents.value;
-      const operationType =
-        pedimento.encabezadoPrincipalDelPedimento.tipoDeOperacion;
-      const importerName =
-        pedimento.encabezadoPrincipalDelPedimento.datosImportador.razonSocial;
+      if (operationType === null) {
+        return {
+          success: false,
+          message: 'Pedimentos complementarios no son soportados',
+        };
+      }
+
       langfuse.event({
         traceId: trace.id,
         name: 'Validation Steps',
       });
       const gloss = await (operationType === 'IMP'
-        ? glosaImpo({ ...documents.value, traceId: trace.id })
-        : glosaExpo({ ...documents.value, traceId: trace.id }));
+        ? glosaImpo({ ...expediente, traceId: trace.id })
+        : glosaExpo({ ...expediente, traceId: trace.id }));
 
+      const uploadedFilesResult = await uploadFiles(expedienteWithoutData);
+      if (uploadedFilesResult.isErr()) {
+        return {
+          success: false,
+          message: uploadedFilesResult.error,
+        };
+      }
+      const uploadedFiles = uploadedFilesResult.value;
+
+      const importerName =
+        expediente.pedimento.encabezadoPrincipalDelPedimento.datosImportador
+          .razonSocial;
       const [newCustomGloss] = await db
         .insert(CustomGloss)
         .values({
@@ -213,10 +131,9 @@ export const analysis = api
           summary: '',
           timeSaved: 20,
           moneySaved: 1000,
-          importerName:
-            importerName ?? 'No se encontro la razon social del importador',
-          cove,
-          pedimento,
+          importerName,
+          cove: expediente.cove[0],
+          pedimento: expediente.pedimento,
         })
         .returning();
       if (!newCustomGloss) {
@@ -225,12 +142,14 @@ export const analysis = api
 
       // Batch insert files
       await db.insert(CustomGlossFile).values(
-        classificationResults.map(({ name, ufsUrl, classification }) => ({
-          name,
-          url: ufsUrl,
-          documentType: mapClassificationToDocumentType(classification),
-          customGlossId: newCustomGloss.id,
-        }))
+        uploadedFiles.map((uploadedFile) => {
+          return {
+            name: uploadedFile.name,
+            url: uploadedFile.ufsUrl,
+            documentType: uploadedFile.classification,
+            customGlossId: newCustomGloss.id,
+          };
+        })
       );
 
       await Promise.all(
@@ -321,7 +240,8 @@ export const analysis = api
         success: true,
         glossId: newCustomGloss.id,
       };
-    } catch {
+    } catch (error) {
+      console.error(error);
       return {
         success: false,
         message: 'Ocurrió un error interno',

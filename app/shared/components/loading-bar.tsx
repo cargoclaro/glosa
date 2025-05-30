@@ -22,7 +22,7 @@ const steps: Step[] = [
     id: 1,
     name: 'Clasificación',
     icon: <FileSearch className="h-5 w-5" />,
-    description: 'Analizando estructura del los documentos',
+    description: 'Analizando estructura de los documentos',
     weight: 0.15, // 15% of total time
     speed: 8, // Fast counter
   },

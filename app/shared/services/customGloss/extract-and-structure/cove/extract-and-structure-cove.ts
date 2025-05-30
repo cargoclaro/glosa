@@ -3,9 +3,11 @@ import { generateObject, generateText } from 'ai';
 import { datosGeneralesSchema, mercanciaSchema } from '../schemas';
 
 export async function extractAndStructureCove(
-  fileUrl: string,
+  file: File,
   parentTraceId: string
 ) {
+  const fileData = `data:${file.type};base64,${Buffer.from(await file.arrayBuffer()).toString('base64')}`;
+
   const { text } = await generateText({
     model: google('gemini-2.5-pro-preview-03-25'),
     seed: 42,
@@ -15,7 +17,7 @@ export async function extractAndStructureCove(
       metadata: {
         langfuseTraceId: parentTraceId,
         langfuseUpdateParent: false,
-        fileUrl,
+        fileName: file.name,
       },
     },
     messages: [
@@ -28,8 +30,8 @@ export async function extractAndStructureCove(
           },
           {
             type: 'file',
-            data: `${fileUrl}`,
-            mimeType: 'application/pdf',
+            data: fileData,
+            mimeType: file.type,
           },
         ],
       },
@@ -46,7 +48,7 @@ export async function extractAndStructureCove(
           metadata: {
             langfuseTraceId: parentTraceId,
             langfuseUpdateParent: false,
-            fileUrl,
+            fileName: file.name,
           },
         },
         schema: datosGeneralesSchema,
@@ -75,7 +77,7 @@ export async function extractAndStructureCove(
           metadata: {
             langfuseTraceId: parentTraceId ?? '',
             langfuseUpdateParent: false,
-            fileUrl,
+            fileName: file.name,
           },
         },
         output: 'array',
