@@ -88,6 +88,30 @@ async function validateClaveApendice15(traceId: string, pedimento: Pedimento) {
   return await glosar(validation, traceId, 'gpt-4o-mini');
 } */
 
+// We are waiting on a catalog of allowed aduana entries/exits given a transport type
+/* async function validateFraccionContraAduana(traceId: string, pedimento: Pedimento, partida: Partida) {
+  const aduanaEntradaOSalida = pedimento.encabezadoPrincipalDelPedimento.aduanaEntradaOSalida;
+  const fraccion = partida.fraccion;
+
+  const validation = {
+    name: 'Fracción contra aduana',
+    prompt: 'La fraccion contra aduana debe ser permitida en la aduana de entrada/salida',
+    description: 'La fraccion contra aduana debe ser permitida en la aduana de entrada/salida',
+    contexts: {
+      PROVIDED: {
+        pedimento: {
+          data: [
+            { name: 'Aduana de entrada/salida', value: aduanaEntradaOSalida },
+            { name: 'Fracción', value: fraccion },
+          ],
+        },
+      },
+    },
+  } as const;
+
+  return await glosar(validation, traceId, 'gpt-4o-mini');
+} */
+
 export async function claveApendice15({
   pedimento,
   traceId,
