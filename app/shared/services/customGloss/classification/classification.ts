@@ -14,6 +14,9 @@ const classifications = [
   'Shipper',
   'Delivery Ticket',
   'CFDI',
+  'Acuse de Transporte',
+  'Certificado de Peso en bodega',
+  'Carta de Instrucciones',
   'Otro',
 ] as const;
 
