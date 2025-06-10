@@ -1,0 +1,87 @@
+{
+    "Grupo E": {
+      "EXW": {
+        "incluye_flete": false,
+        "incluye_seguro": false,
+        "tipo_transporte": "cualquier",
+        "incrementable_flete": "sí",
+        "incrementable_seguro": "sí"
+      }
+    },
+    "Grupo F": {
+      "FCA": {
+        "incluye_flete": false,
+        "incluye_seguro": false,
+        "tipo_transporte": "cualquier",
+        "incrementable_flete": "sí",
+        "incrementable_seguro": "sí"
+      },
+      "FAS": {
+        "incluye_flete": false,
+        "incluye_seguro": false,
+        "tipo_transporte": "marítimo",
+        "incrementable_flete": "sí",
+        "incrementable_seguro": "sí"
+      },
+      "FOB": {
+        "incluye_flete": false,
+        "incluye_seguro": false,
+        "tipo_transporte": "marítimo",
+        "incrementable_flete": "sí",
+        "incrementable_seguro": "sí"
+      }
+    },
+    "Grupo C": {
+      "CFR": {
+        "incluye_flete": true,
+        "incluye_seguro": false,
+        "tipo_transporte": "marítimo",
+        "incrementable_flete": "no",
+        "incrementable_seguro": "sí"
+      },
+      "CIF": {
+        "incluye_flete": true,
+        "incluye_seguro": true,
+        "tipo_transporte": "marítimo",
+        "incrementable_flete": "no",
+        "incrementable_seguro": "no"
+      },
+      "CPT": {
+        "incluye_flete": true,
+        "incluye_seguro": false,
+        "tipo_transporte": "cualquier",
+        "incrementable_flete": "no",
+        "incrementable_seguro": "sí"
+      },
+      "CIP": {
+        "incluye_flete": true,
+        "incluye_seguro": true,
+        "tipo_transporte": "cualquier",
+        "incrementable_flete": "no",
+        "incrementable_seguro": "no"
+      }
+    },
+    "Grupo D": {
+      "DAP": {
+        "incluye_flete": true,
+        "incluye_seguro": false,
+        "tipo_transporte": "cualquier",
+        "incrementable_flete": "no",
+        "incrementable_seguro": "sí"
+      },
+      "DPU": {
+        "incluye_flete": true,
+        "incluye_seguro": false,
+        "tipo_transporte": "cualquier",
+        "incrementable_flete": "no",
+        "incrementable_seguro": "sí"
+      },
+      "DDP": {
+        "incluye_flete": true,
+        "incluye_seguro": false,
+        "tipo_transporte": "cualquier",
+        "incrementable_flete": "no",
+        "incrementable_seguro": "sí"
+      }
+    }
+  }
