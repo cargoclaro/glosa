@@ -104,3 +104,24 @@ export async function datosGenerales({
     validations: validationsPromise,
   };
 }
+
+// TODO: VALIDATION 3 - Tipo de Operación
+// Comparar tipo de operación del COVE con el del pedimento.
+// Validar contra Anexo 22, Apéndice 2.
+// Prompt: "El tipo de operación del COVE debe coincidir con el del pedimento y ser válido según el Apéndice 2."
+
+// TODO: VALIDATION 4 - Subdivisión de Embarque  
+// Validar indicador "Subdivisión" en COVE vs nota de subdivisión en pedimento(s).
+// Verificar que suma de peso y bultos de todas las subdivisiones = total del COVE.
+// Prompt: "Si el COVE marca subdivisión: 1) Cada pedimento debe tener la nota. 2) La suma de peso y bultos debe igualar el total del COVE."
+
+// TODO: VALIDATION 5 - Certificado de Origen / Declaración en Factura
+// Validar casilla "Funje como certificado" y N.º exportador autorizado del COVE.
+// Verificar declaración de origen en factura/packing list.
+// Verificar identificador TE en pedimento por partida.
+// Referencias: Regla 1.9.19, Apéndice 8.
+
+// TODO: VALIDATION 6 - Número de Patente del Agente
+// Comparar patente del agente en COVE con primeros 15 dígitos del pedimento (AA YYYY PPPP NNNNN).
+// Los 4 dígitos de patente deben coincidir.
+// Prompt: "La patente del agente en COVE y pedimento debe ser la misma."

@@ -130,3 +130,13 @@ export async function pesosYBultos({
     validations: validationsPromise,
   };
 }
+
+
+// TODO: Agregar validacion al peso bruto con el acuse de transporte.
+// Prompt:
+// Paso 1: Verifica si el peso bruto declarado en el pedimento es igual o menor que cualquiera de los pesos en el documento de transporte, lista de empaque o factura (si está disponible), certificado de peso del almacén o acuse de transporte (artículo 20, sección 7 de LADUANA).
+// Paso 2: Asegúrate de que haya lógica y consistencia entre los pesos declarados en todos los documentos (pedimento, carta 318, lista de empaque, etc.)
+
+// TODO: Validar el número total de bultos con el acuse de transporte. 
+
+

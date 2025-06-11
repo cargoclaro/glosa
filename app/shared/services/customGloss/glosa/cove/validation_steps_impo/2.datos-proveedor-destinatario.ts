@@ -236,3 +236,24 @@ export async function proveedorDestinatario({
     validations: validationsPromise,
   };
 }
+
+
+// TODO: Del Proveedor: Verificar el RFC, luego el nombre, domicilio y país.
+// TODO: Del Destinatario: Verificar el nombre y domicilio.
+
+// VALIDACIONES FALTANTES BASADAS EN LA VERDAD TERRENA:
+// TODO: VALIDACIÓN 1 - RFC del Proveedor: Asegurar que el RFC del proveedor ≠ RFC del importador
+//       Se necesita información del pedimento para obtener el RFC del importador para la comparación
+// TODO: VALIDACIÓN 2 - Tax ID separado: Crear una validación específica para el Tax ID del proveedor
+//       (actualmente está mezclado con los datos generales)
+// TODO: VALIDACIÓN 4 - Datos del Destinatario con Pedimento: Incluir el pedimento en la validación del destinatario
+//       La validación actual solo utiliza COVE + factura/carta318, falta la comparación con el pedimento
+// TODO: Considerar reestructurar para que coincida más estrechamente con la estructura de validación de la verdad terrena
+
+// BRECHAS IDENTIFICADAS:
+// 1. No hay validación de que el RFC del proveedor ≠ RFC del importador
+// 2. No hay una función de validación separada para el Tax ID
+// 3. No hay integración del pedimento en la validación del destinatario
+// 4. Falta una validación explícita del país para el proveedor
+
+

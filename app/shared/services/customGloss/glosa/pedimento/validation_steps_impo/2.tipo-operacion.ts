@@ -138,3 +138,7 @@ export async function tipoOperacion({
     validations: validationsPromise,
   };
 }
+
+
+// TODO: Agregar la carta de instrucciones y contrastar valores
+// TODO: Agregar comparación con las fracciones arancelarias que se declaran en el pedimento. ej. analisis de riesgo, donde mercancias historicas distintas a las declaradas con este regimen, tipo de operacion y clave de pedimento.

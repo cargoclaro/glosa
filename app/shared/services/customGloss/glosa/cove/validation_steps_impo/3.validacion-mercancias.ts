@@ -176,3 +176,20 @@ export async function mercancias({
     validations: validationsPromise,
   };
 }
+
+// TODO: VALIDATION 4 - Unidad de Medida Comercial vs Catálogo SAT/TIGIE
+// Validar que la clave UMC del COVE exista en el catálogo oficial SAT/TIGIE.
+// Comparar UMC (texto) y clave declaradas en COVE con la unidad en factura/hoja 318.
+// Prompt: "UMC y clave deben coincidir con la factura y existir en el catálogo oficial SAT/TIGIE."
+
+// TODO: VALIDATION 5 - Moneda y Tipo de Cambio
+// Validar que la moneda del COVE coincida con la de la factura.
+// Verificar que el tipo de cambio del pedimento se use correctamente en la conversión a USD.
+// Aplicar tolerancia de ±0.5% en el cálculo: Valor USD = Valor factura × tipo de cambio.
+// Prompt: "Moneda en COVE y factura debe ser la misma. Valor USD en COVE = Valor factura × tipo de cambio (tolerancia ±0.5%)."
+
+// TODO: VALIDATION 6 - Clave UMC vs Descripción (Coherencia)
+// Validar que la clave UMC sea coherente con la descripción de la mercancía.
+// Ejemplo: 'EACH' para piezas, 'KG' para peso, etc.
+// Consultar catálogo UMC SAT/TIGIE para verificar coherencia.
+// Prompt: "La clave UMC debe ser coherente con la descripción. Ejemplo: 'EACH' para piezas. Si no corresponde, marcar error."

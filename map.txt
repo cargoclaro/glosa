@@ -1,0 +1,330 @@
+├── app
+    ├── (dashboard)
+    │   ├── components
+    │   │   ├── Header
+    │   │   │   ├── header.tsx
+    │   │   │   ├── index.ts
+    │   │   │   └── profile-menu.tsx
+    │   │   ├── index.ts
+    │   │   ├── main.tsx
+    │   │   └── sidebar.tsx
+    │   ├── gloss
+    │   │   ├── [id]
+    │   │   │   ├── analysis
+    │   │   │   │   ├── components
+    │   │   │   │   │   ├── Analysis
+    │   │   │   │   │   │   ├── detailed.tsx
+    │   │   │   │   │   │   ├── index.tsx
+    │   │   │   │   │   │   └── styles.css
+    │   │   │   │   │   ├── documents.tsx
+    │   │   │   │   │   ├── index.ts
+    │   │   │   │   │   ├── pediment-analysis-n-finish.tsx
+    │   │   │   │   │   ├── saved-n-finish.tsx
+    │   │   │   │   │   └── types.ts
+    │   │   │   │   └── page.tsx
+    │   │   │   ├── not-found.tsx
+    │   │   │   └── page.tsx
+    │   │   ├── components
+    │   │   │   ├── GlossTable
+    │   │   │   │   ├── columns.tsx
+    │   │   │   │   ├── data-table.tsx
+    │   │   │   │   └── index.ts
+    │   │   │   └── index.ts
+    │   │   └── page.tsx
+    │   ├── home
+    │   │   ├── components
+    │   │   │   ├── DailyGlossesGraph
+    │   │   │   │   └── index.tsx
+    │   │   │   ├── GlossHistory
+    │   │   │   │   └── index.tsx
+    │   │   │   ├── Header
+    │   │   │   │   ├── gloss-form.tsx
+    │   │   │   │   └── index.tsx
+    │   │   │   ├── index.ts
+    │   │   │   ├── my-info.tsx
+    │   │   │   └── summary.tsx
+    │   │   └── page.tsx
+    │   ├── layout.tsx
+    │   └── test
+    │   │   ├── A-66151 COVE.pdf
+    │   │   ├── A-66151 FACTURA.pdf
+    │   │   ├── A-66151 PACK.pdf
+    │   │   ├── A-66151 TRAD.pdf
+    │   │   ├── PROFORMA.pdf
+    │   │   └── glosa.test.ts
+    ├── layout.tsx
+    ├── lib
+    │   └── utils.ts
+    ├── not-found.tsx
+    ├── shared
+    │   ├── components
+    │   │   ├── cards
+    │   │   │   ├── generic-card.tsx
+    │   │   │   └── index.ts
+    │   │   ├── index.ts
+    │   │   ├── loading-bar.tsx
+    │   │   ├── modal.tsx
+    │   │   └── providers
+    │   │   │   ├── index.ts
+    │   │   │   ├── query-client-provider.tsx
+    │   │   │   └── theme-component.tsx
+    │   ├── hooks
+    │   │   ├── index.ts
+    │   │   └── use-modal.tsx
+    │   ├── icons
+    │   │   ├── arrow-trending-up.tsx
+    │   │   ├── arrows-up-down.tsx
+    │   │   ├── check.tsx
+    │   │   ├── clipboard-document-list.tsx
+    │   │   ├── clock.tsx
+    │   │   ├── doc-magni-glass.tsx
+    │   │   ├── document.tsx
+    │   │   ├── exclamation-triangle.tsx
+    │   │   ├── funnel.tsx
+    │   │   ├── globe-alt.tsx
+    │   │   ├── index.ts
+    │   │   ├── info.tsx
+    │   │   ├── left-arrow.tsx
+    │   │   ├── left-chevron.tsx
+    │   │   ├── left-double-chevron.tsx
+    │   │   ├── right-arrow.tsx
+    │   │   ├── right-chevron.tsx
+    │   │   ├── right-double-chevron.tsx
+    │   │   ├── search.tsx
+    │   │   ├── square-2x2.tsx
+    │   │   ├── upload.tsx
+    │   │   └── x-mark.tsx
+    │   ├── interfaces
+    │   │   └── index.ts
+    │   ├── services
+    │   │   └── customGloss
+    │   │   │   ├── classification
+    │   │   │       ├── classification.spec.ts
+    │   │   │       ├── classification.ts
+    │   │   │       └── create-expediente-without-data.ts
+    │   │   │   ├── controller.ts
+    │   │   │   ├── extract-and-structure
+    │   │   │       ├── cfdi
+    │   │   │       │   ├── extract-and-structure-cfdi.ts
+    │   │   │       │   ├── xml-parser.ts
+    │   │   │       │   └── xml-to-json.ts
+    │   │   │       ├── cove
+    │   │   │       │   ├── extract-and-structure-cove.spec.ts
+    │   │   │       │   └── extract-and-structure-cove.ts
+    │   │   │       ├── index.ts
+    │   │   │       ├── packing-list
+    │   │   │       │   ├── extract-and-structure-packing-list.spec.ts
+    │   │   │       │   └── extract-and-structure-packing-list.ts
+    │   │   │       ├── pedimento
+    │   │   │       │   ├── extract-and-structure-pedimento.spec.ts
+    │   │   │       │   └── extract-and-structure-pedimento.ts
+    │   │   │       └── schemas
+    │   │   │       │   ├── air-waybill.ts
+    │   │   │       │   ├── bill-of-lading.ts
+    │   │   │       │   ├── carta-regla-318.ts
+    │   │   │       │   ├── cfdi.ts
+    │   │   │       │   ├── cove.ts
+    │   │   │       │   ├── factura.ts
+    │   │   │       │   ├── index.ts
+    │   │   │       │   ├── packing-list.ts
+    │   │   │       │   └── pedimento.ts
+    │   │   │   ├── glosa
+    │   │   │       ├── anexo-22
+    │   │   │       │   ├── apendice-10.ts
+    │   │   │       │   ├── apendice-14.ts
+    │   │   │       │   ├── apendice-15.ts
+    │   │   │       │   ├── apendice-16.ts
+    │   │   │       │   ├── apendice-2.ts
+    │   │   │       │   ├── apendice-3.ts
+    │   │   │       │   └── apendice-7.ts
+    │   │   │       ├── cove
+    │   │   │       │   ├── validation_steps_expo
+    │   │   │       │   │   ├── 1.datos-generales.ts
+    │   │   │       │   │   ├── 2.datos-proveedor-destinatario.ts
+    │   │   │       │   │   ├── 3.validacion-mercancias.ts
+    │   │   │       │   │   └── index.ts
+    │   │   │       │   └── validation_steps_impo
+    │   │   │       │   │   ├── 1.datos-generales.ts
+    │   │   │       │   │   ├── 2.datos-proveedor-destinatario.ts
+    │   │   │       │   │   ├── 3.validacion-mercancias.ts
+    │   │   │       │   │   └── index.ts
+    │   │   │       ├── exchange-rate.ts
+    │   │   │       ├── expo.ts
+    │   │   │       ├── impo.ts
+    │   │   │       ├── pedimento
+    │   │   │       │   ├── validation_steps_expo
+    │   │   │       │   │   ├── 1.numero-de-pedimento.ts
+    │   │   │       │   │   ├── 2.tipo-operacion.ts
+    │   │   │       │   │   ├── 3.origen-destino.ts
+    │   │   │       │   │   ├── 4.operacion-monetaria.ts
+    │   │   │       │   │   ├── 5.peso-neto.ts
+    │   │   │       │   │   ├── 6.datos-de-factura.ts
+    │   │   │       │   │   ├── 7.datos-del-transporte.ts
+    │   │   │       │   │   ├── 9.partidas.ts
+    │   │   │       │   │   └── index.ts
+    │   │   │       │   └── validation_steps_impo
+    │   │   │       │   │   ├── 1.numero-de-pedimento.ts
+    │   │   │       │   │   ├── 2.tipo-operacion.ts
+    │   │   │       │   │   ├── 3.origen-destino.ts
+    │   │   │       │   │   ├── 4.operacion-monetaria.ts
+    │   │   │       │   │   ├── 5.peso-neto.ts
+    │   │   │       │   │   ├── 6.datos-de-factura.ts
+    │   │   │       │   │   ├── 7.datos-del-transporte.ts
+    │   │   │       │   │   ├── 9.partidas.ts
+    │   │   │       │   │   ├── identificadores.ts
+    │   │   │       │   │   ├── index.ts
+    │   │   │       │   │   └── test.html
+    │   │   │       ├── tax-finder.ts
+    │   │   │       └── validation-result.ts
+    │   │   │   └── upload-files.ts
+    │   └── utils
+    │   │   └── today-is.ts
+    └── styles
+    │   └── globals.css
+├── biome.json
+├── components.json
+├── components
+    ├── cove
+    │   ├── cove-viewer.tsx
+    │   ├── first-page.tsx
+    │   ├── index.tsx
+    │   ├── merchandise-page.tsx
+    │   ├── recipient-page.tsx
+    │   └── utils
+    │   │   └── highlight-styles.ts
+    ├── pdf-carousel
+    │   ├── index.ts
+    │   └── pdf-carousel-viewer.tsx
+    └── pedimento
+    │   ├── fechas
+    │       └── fechas-table.tsx
+    │   ├── identificadores
+    │       └── identificadores-table.tsx
+    │   ├── liquidacion
+    │       └── liquidacion-table.tsx
+    │   ├── pedimento-contenedores.tsx
+    │   ├── pedimento-decrementables.tsx
+    │   ├── pedimento-header.tsx
+    │   ├── pedimento-identificadores.tsx
+    │   ├── pedimento-importador.tsx
+    │   ├── pedimento-incrementables.tsx
+    │   ├── pedimento-marcas-bultos.tsx
+    │   ├── pedimento-partidas.tsx
+    │   ├── pedimento-proveedor.tsx
+    │   ├── pedimento-viewer.tsx
+    │   ├── tasas
+    │       └── tasas-table.tsx
+    │   └── utils
+    │       └── highlight-styles.ts
+├── db
+    ├── index.ts
+    ├── reset.ts
+    └── schema.ts
+├── drizzle.config.ts
+├── instrumentation.ts
+├── knip.json
+├── lib
+    ├── env
+    │   ├── client.ts
+    │   └── server.ts
+    ├── globals.d.ts
+    ├── playwright
+    │   ├── fixture.ts
+    │   └── global.setup.ts
+    ├── trpc.ts
+    ├── utils.ts
+    └── vitest
+    │   └── utils.ts
+├── middleware.ts
+├── mock-data
+    └── test-pedimento.html
+├── next.config.ts
+├── package.json
+├── playwright.config.ts
+├── pnpm-lock.yaml
+├── postcss.config.mjs
+├── public
+    ├── ANOTHER_PEDIMENT.PDF
+    ├── ANOTHER_PEDIMENT2.pdf
+    ├── ANOTHER_PEDIMENT3.pdf
+    ├── ANOTHER_PEDIMENT4.pdf
+    ├── ANOTHER_PEDIMENT5.pdf
+    ├── PEDIMENT500.pdf
+    ├── PEDIMENTO.pdf
+    ├── assets
+    │   ├── fonts
+    │   │   ├── NotoEmoji-Bold.ttf
+    │   │   ├── NotoEmoji-Light.ttf
+    │   │   ├── NotoEmoji-Medium.ttf
+    │   │   ├── NotoEmoji-Regular.ttf
+    │   │   └── NotoEmoji-SemiBold.ttf
+    │   ├── images
+    │   │   ├── logo.webp
+    │   │   ├── logo_transparente.png
+    │   │   └── profilepic.webp
+    │   ├── jsons
+    │   │   ├── VICTOR_RESPONSE.json
+    │   │   └── anexo_22
+    │   │   │   ├── 10_identificadores_nivel_pedimento.json
+    │   │   │   ├── 11_cuentas_aduaneras_y_cuentas_aduaneras_de_garantia_nivel_pedimento.json
+    │   │   │   ├── 12_descargos.json
+    │   │   │   ├── 13_compensaciones.json
+    │   │   │   ├── 14_documentos_que_amparan_las_formas_de_pago_distintas_a_efectivo.json
+    │   │   │   ├── 15_observaciones_nivel_pedimento.json
+    │   │   │   ├── 16_partidas.json
+    │   │   │   ├── 17_mercancias.json
+    │   │   │   ├── 18_regulaciones_y_restricciones_no_arancelarias.json
+    │   │   │   ├── 19_identificadores_nivel_partida.json
+    │   │   │   ├── 1_encabezado_principal_de_pedimento.json
+    │   │   │   ├── 20_cuentas_aduaneras_de_garantia_nivel_partida.json
+    │   │   │   ├── 21_determinacion_y_pago_de_contribuciones_por_aplicacion_de_los_artículos_2_5_del_t_mec_14_del_anexo_III_de_la_decision_15_del_anexo_I_del_tlcaelc_o_del_acc_nivel_partida.json
+    │   │   │   ├── 22_observaciones_a_nivel_partida.json
+    │   │   │   ├── 23_rectificaciones.json
+    │   │   │   ├── 24_diferencias_de_contribuciones_nivel_pedimento.json
+    │   │   │   ├── 25_prueba_suficiente.json
+    │   │   │   ├── 26_encabezado_para_determinacion_de_contribuciones_a_nivel_partida_para_pedimentos_complementarios_al_amparo_del_articulo_2_5_del_t_mec.json
+    │   │   │   ├── 27_encabezado_para_determinacion_de_contribuciones_a_nivel_partida_para_pedimentos_complementarios_al_amparo_de_los_articulos_14_del_anexo_III_de_la_decision_15_del_anexo_I_del_tlcaelc_o_del_acc.json
+    │   │   │   ├── 28_distribucion_de_copias.json
+    │   │   │   ├── 29_instructivo_de_llenado_del_pedimento_de_transito_para_el_transbordo.json
+    │   │   │   ├── 2_encabezado_para_paginas_secundarias_del_pedimento.json
+    │   │   │   ├── 30_apendice_1.json
+    │   │   │   ├── 31_apendice_2.json
+    │   │   │   ├── 32_apendice_3.json
+    │   │   │   ├── 33_apendice_4.json
+    │   │   │   ├── 34_apendice_5.json
+    │   │   │   ├── 35_apendice_6.json
+    │   │   │   ├── 36_apendice_7.json
+    │   │   │   ├── 37_apendice_8.json
+    │   │   │   ├── 38_apendice_9.json
+    │   │   │   ├── 39_apendice_10.json
+    │   │   │   ├── 3_agente_aduanal_o_agencia_aduanal_representacion_legal_apoderado_aduanal_o_de_almacen.json
+    │   │   │   ├── 40_apendice_11.json
+    │   │   │   ├── 41_apendice_12.json
+    │   │   │   ├── 42_apendice_13.json
+    │   │   │   ├── 43_apendice_14.json
+    │   │   │   ├── 44_apendice_15.json
+    │   │   │   ├── 45_apendice_16.json
+    │   │   │   ├── 46_apendice_17.json
+    │   │   │   ├── 47_apendice_18.json
+    │   │   │   ├── 48_apendice_19.json
+    │   │   │   ├── 49_apendice_21.json
+    │   │   │   ├── 4_datos_del_proveedor_comprador.json
+    │   │   │   ├── 50_apendice_22.json
+    │   │   │   ├── 51_apendice_23.json
+    │   │   │   ├── 5_datos_del_destinatario.json
+    │   │   │   ├── 6_datos_del_transporte_y_transportista.json
+    │   │   │   ├── 7_candados.json
+    │   │   │   ├── 8_guias_manifiestos_conocimientos_embarque_o_documentos_de_transporte.json
+    │   │   │   └── 9_contenedores_equipo_ferrocarril_numero_economico_vehiculo.json
+    │   └── pdfs
+    │   │   ├── pedimento_format.pdf
+    │   │   └── pedimento_format_modified.pdf
+    └── favicon.ico
+├── reset.d.ts
+├── setupTests.ts
+├── tsconfig.json
+├── ui
+    ├── button.tsx
+    ├── table.tsx
+    └── tabs.tsx
+└── vitest.config.ts

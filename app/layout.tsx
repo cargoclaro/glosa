@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     template: '%s | Cargo Claro',
     default: 'Cargo Claro',
   },
-  description: 'Conectamos a Transfers con Agencias Aduanales.',
+  description: 'Somos el primer glosador con inteligencia artificial.',
 };
 
 export default function RootLayout({

@@ -4,7 +4,6 @@ import { apendice14 } from '../../anexo-22/apendice-14';
 import { getExchangeRate } from '../../exchange-rate';
 import { glosar } from '../../validation-result';
 
-// TODO: Agregar DOF
 
 async function validateTransportDocumentEntryDate(
   traceId: string,
@@ -74,6 +73,10 @@ async function validateTipoCambio(traceId: string, pedimento: Pedimento) {
 
   return await glosar(validation, traceId, 'gpt-4o-mini');
 }
+
+
+// TODO: Quitar las validaciones siguiente y agregarlas en sus respectivos archivos 4.1. 
+
 
 async function validateValSeguros(
   traceId: string,

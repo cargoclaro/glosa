@@ -628,3 +628,9 @@ export async function partidas({
     validations: validationsPromise,
   };
 }
+
+
+
+// TODO: Agregar disclaimer de que utilizamos una bd externa para tomar las tarifas arancelarias. 
+// TODO: Agregar validación con BL de País de Venta. 
+// TODO: Agregar la tabla de identificadores. Que debe de tener ANA. 

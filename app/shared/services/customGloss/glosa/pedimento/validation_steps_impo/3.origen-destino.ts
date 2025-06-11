@@ -128,3 +128,19 @@ export async function claveApendice15({
     validations: validationsPromise,
   };
 }
+
+
+// TODO: Agregar analisis de riesgo, se comparan los número de aduana con el medio de transporte. 
+// Prompt: Tu tarea es revisar que el medio de transporte sea coherente con la clave de la aduana. Los valores dados son del pedimento y del apéndice x donde se lista el nombre de la aduana. Solamente hay una excepción si el tipo de operación es TRA (tránsito), donde si es posible que exista una aduana distinta al medio de transporte. En este caso solamente marca una advertencia, que argumente por que si puede ser válido este caso.
+// Contexto: Número de aduana del pedimento, medio de transporte comparada con el apendice. 
+
+// TODO: Validar que el incoterm sea el mismo entre el pedimento, factura, carta regla 318, COVE y Carta de instrucciones, si hay multiples facturas marcar como correcto. .
+// Contexto: Incoterm del pedimento, incoterm de la factura, incoterm de la carta regla 318, incoterm de la COVE y incoterm de la carta de instrucciones.
+
+// TODO: Agregar análisis de riesgo, se debe revisar si el tipo de transporte declarado en el pedimento es coherente con el incoterm. 
+// Prompt: Usando la tabla de incoterms con sus respectivos tipos de transporte permitidos, valida si el incoterm declarado corresponde con el medio de transporte del pedimento. 
+// Si el tipo de transporte del pedimento no está entre los permitidos por el incoterm, marca un error.
+// Contexto: Incoterm del pedimento, tipo de transporte declarado, tabla de incoterms con tipo de transporte permitido incoterms-logic.json.
+
+// TODO: Agregar analisis de riesgo, se compara la fracción arancelaria con el tipo de aduana. POR REVISAR CON EQUIPO DE EDUARDO. 
+
