@@ -352,4 +352,195 @@ describe('Classification', () => {
         .toStrictEqual(expectedType);
     }
   });
+
+  it('should correctly classify PDFs with multiple invoices and multiple COVEs', async () => {
+    // Casos específicos para probar múltiples facturas y múltiples COVEs
+    const multipleDocumentSpecificCases = [
+      {
+        fileUrl:
+          'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15uwZC0FyES0lPex1mXBWQop7GAjJIMsDCUZk2',
+        expectedClassification: [
+          {
+            classification: 'Factura',
+            startPage: 1,
+            endPage: 1,
+          },
+          {
+            classification: 'Factura',
+            startPage: 2,
+            endPage: 2,
+          },
+          {
+            classification: 'Factura',
+            startPage: 3,
+            endPage: 3,
+          },
+          {
+            classification: 'Factura',
+            startPage: 4,
+            endPage: 4,
+          },
+          {
+            classification: 'Factura',
+            startPage: 5,
+            endPage: 5,
+          },
+          {
+            classification: 'Factura',
+            startPage: 6,
+            endPage: 6,
+          },
+          {
+            classification: 'Factura',
+            startPage: 7,
+            endPage: 7,
+          },
+          {
+            classification: 'Factura',
+            startPage: 8,
+            endPage: 8,
+          },
+          {
+            classification: 'Factura',
+            startPage: 9,
+            endPage: 9,
+          },
+          {
+            classification: 'Factura',
+            startPage: 10,
+            endPage: 10,
+          },
+          {
+            classification: 'Factura',
+            startPage: 11,
+            endPage: 11,
+          },
+          {
+            classification: 'Factura',
+            startPage: 12,
+            endPage: 12,
+          },
+          {
+            classification: 'Factura',
+            startPage: 13,
+            endPage: 13,
+          },
+        ],
+        description: 'PDF con 13 facturas (una factura por página)',
+      },
+      {
+        fileUrl:
+          'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15h8nI3fFivngwCHKuLPbSFNEMV217joIx9qfk',
+        expectedClassification: [
+          {
+            classification: 'Cove',
+            startPage: 1,
+            endPage: 3,
+          },
+          {
+            classification: 'Cove',
+            startPage: 4,
+            endPage: 6,
+          },
+          {
+            classification: 'Cove',
+            startPage: 7,
+            endPage: 8,
+          },
+          {
+            classification: 'Cove',
+            startPage: 9,
+            endPage: 11,
+          },
+          {
+            classification: 'Cove',
+            startPage: 12,
+            endPage: 13,
+          },
+          {
+            classification: 'Cove',
+            startPage: 14,
+            endPage: 15,
+          },
+          {
+            classification: 'Cove',
+            startPage: 16,
+            endPage: 18,
+          },
+          {
+            classification: 'Cove',
+            startPage: 19,
+            endPage: 20,
+          },
+          {
+            classification: 'Cove',
+            startPage: 21,
+            endPage: 22,
+          },
+          {
+            classification: 'Cove',
+            startPage: 23,
+            endPage: 24,
+          },
+          {
+            classification: 'Cove',
+            startPage: 25,
+            endPage: 26,
+          },
+          {
+            classification: 'Cove',
+            startPage: 27,
+            endPage: 28,
+          },
+          {
+            classification: 'Cove',
+            startPage: 29,
+            endPage: 30,
+          },
+        ],
+        description: 'PDF con 13 COVEs (rangos variables de páginas, 30 páginas total)',
+      },
+    ] as const;
+
+    console.log('Iniciando prueba de clasificación de múltiples documentos...');
+
+    // Fetch archivos de prueba
+    const fetchedFiles = await Promise.all(
+      multipleDocumentSpecificCases.map(async ({ fileUrl, description }) => {
+        console.log(`Descargando: ${description}`);
+        const file = await fetchFileFromUrl(fileUrl);
+        return { file, fileUrl, description };
+      })
+    );
+
+    // Clasificar archivos
+    console.log('Clasificando documentos...');
+    const classifiedFiles = await classifyDocuments(
+      fetchedFiles.map(({ file }) => file),
+      trace.id
+    );
+
+    expect(classifiedFiles).toHaveLength(multipleDocumentSpecificCases.length);
+
+    // Validar resultados
+    for (let i = 0; i < classifiedFiles.length; i++) {
+      const classifiedFile = classifiedFiles[i];
+      const expectedCase = multipleDocumentSpecificCases[i];
+      const fetchedFile = fetchedFiles[i];
+
+      console.log(`\nResultado para: ${fetchedFile?.description}`);
+      console.log(`Archivo: ${classifiedFile?.file.name}`);
+      console.log(`Clasificación OBTENIDA:`, JSON.stringify(classifiedFile?.classification, null, 2));
+      console.log(`Clasificación ESPERADA:`, JSON.stringify(expectedCase?.expectedClassification, null, 2));
+
+      expect
+        .soft(
+          classifiedFile?.classification,
+          `Classification for ${fetchedFile?.description}`
+        )
+        .toStrictEqual(expectedCase?.expectedClassification);
+    }
+
+    console.log('\nPrueba de clasificación múltiple completada');
+  });
 });
