@@ -1,7 +1,7 @@
 import { Langfuse } from 'langfuse';
 import { fetchFileFromUrl } from 'lib/utils';
 import { describe, expect, it } from 'vitest';
-import { extractAndStructureCove } from './extract-and-structure-cove';
+import { extractAndStructureCove, extractMultipleCoves } from './extract-and-structure-cove';
 
 describe('Extract and Structure Cove', () => {
   it('should correctly extract and structure cove', async () => {
@@ -744,5 +744,147 @@ describe('Extract and Structure Cove', () => {
         )
         .toEqual(fixture?.expectedOutput);
     }
+  });
+
+  it('should extract and structure multiple COVEs from a single PDF', async () => {
+    // Este PDF contiene 13 COVEs en 30 páginas con rangos variables
+    const multipleCovesTestCase = {
+      fileUrl: 'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15h8nI3fFivngwCHKuLPbSFNEMV217joIx9qfk',
+      // Rangos de páginas según la clasificación correcta
+      expectedCoveRanges: [
+        { startPage: 1, endPage: 3 },   // COVE 1
+        { startPage: 4, endPage: 6 },   // COVE 2  
+        { startPage: 7, endPage: 8 },   // COVE 3
+        { startPage: 9, endPage: 11 },  // COVE 4
+        { startPage: 12, endPage: 13 }, // COVE 5
+        { startPage: 14, endPage: 15 }, // COVE 6
+        { startPage: 16, endPage: 18 }, // COVE 7
+        { startPage: 19, endPage: 20 }, // COVE 8
+        { startPage: 21, endPage: 22 }, // COVE 9
+        { startPage: 23, endPage: 24 }, // COVE 10
+        { startPage: 25, endPage: 26 }, // COVE 11
+        { startPage: 27, endPage: 28 }, // COVE 12
+        { startPage: 29, endPage: 30 }, // COVE 13
+      ],
+      description: 'PDF con 13 COVEs en rangos variables de páginas',
+    };
+
+    console.log('Iniciando prueba de extracción de múltiples COVEs...');
+    console.log(`Descargando: ${multipleCovesTestCase.description}`);
+
+    const langfuse = new Langfuse();
+    const trace = langfuse.trace({
+      name: 'Test Extract Multiple COVEs from Single PDF',
+    });
+
+    // Descargar el archivo
+    const file = await fetchFileFromUrl(multipleCovesTestCase.fileUrl);
+    console.log(`Archivo descargado: ${file.name} (${file.size} bytes)`);
+
+    // Comparación: Extracción del PDF completo vs extracción individual
+    console.log('COMPARACIÓN: Extrayendo PDF completo como un solo COVE...');
+    
+    const resultadoCompleto = await extractAndStructureCove(file, trace.id);
+    
+    console.log('\nRESULTADO DE EXTRACCIÓN COMPLETA:');
+    console.log('   datosDelAcuseDeValor:', JSON.stringify(resultadoCompleto.datosDelAcuseDeValor, null, 2));
+    console.log('   Número de mercancías encontradas:', resultadoCompleto.mercancias.length);
+    console.log('   Primeras 3 mercancías:', JSON.stringify(resultadoCompleto.mercancias.slice(0, 3), null, 2));
+
+    // Validaciones básicas
+    expect(resultadoCompleto.datosDelAcuseDeValor.idCove).toBeDefined();
+    console.log(`   ID COVE extraído: ${resultadoCompleto.datosDelAcuseDeValor.idCove}`);
+    
+    expect(resultadoCompleto.mercancias.length).toBeGreaterThan(0);
+    console.log(`   Mercancías extraídas: ${resultadoCompleto.mercancias.length} (mezcladas de múltiples COVEs)`);
+
+    console.log('\nCOMPARACIÓN VS EXTRACCIÓN INDIVIDUAL:');
+    console.log('   - Extracción completa: 1 COVE con mercancías mezcladas');
+    console.log('   - Extracción individual: 13 COVEs separados con sus propias mercancías');
+    
+    console.log('\nPrueba de comparación completada');
+  });
+
+  it('should extract and structure multiple COVEs from a single PDF using NEW method', async () => {
+    // Usar el mismo archivo pero ahora con la función correcta
+    const multipleCovesTestCase = {
+      fileUrl: 'https://jsht6r4dkc.ufs.sh/f/sP56sMGH6Y15h8nI3fFivngwCHKuLPbSFNEMV217joIx9qfk',
+      coveRanges: [
+        { startPage: 1, endPage: 3 },   // COVE 1
+        { startPage: 4, endPage: 6 },   // COVE 2  
+        { startPage: 7, endPage: 8 },   // COVE 3
+        { startPage: 9, endPage: 11 },  // COVE 4
+        { startPage: 12, endPage: 13 }, // COVE 5
+        { startPage: 14, endPage: 15 }, // COVE 6
+        { startPage: 16, endPage: 18 }, // COVE 7
+        { startPage: 19, endPage: 20 }, // COVE 8
+        { startPage: 21, endPage: 22 }, // COVE 9
+        { startPage: 23, endPage: 24 }, // COVE 10
+        { startPage: 25, endPage: 26 }, // COVE 11
+        { startPage: 27, endPage: 28 }, // COVE 12
+        { startPage: 29, endPage: 30 }, // COVE 13
+      ],
+      description: 'PDF con 13 COVEs usando NUEVA función',
+    };
+
+    console.log('PROBANDO NUEVA FUNCIÓN extractMultipleCoves...');
+    console.log(`Descargando: ${multipleCovesTestCase.description}`);
+
+    const langfuse = new Langfuse();
+    const trace = langfuse.trace({
+      name: 'Test Extract Multiple COVEs with NEW Function',
+    });
+
+    // Descargar el archivo
+    const file = await fetchFileFromUrl(multipleCovesTestCase.fileUrl);
+    console.log(`Archivo descargado: ${file.name} (${file.size} bytes)`);
+
+    // NUEVA FUNCIÓN: Extraer múltiples COVEs por separado
+    console.log('USANDO NUEVA FUNCIÓN extractMultipleCoves:');
+    const startTime = Date.now();
+    
+    const multipleCovesResults = await extractMultipleCoves(
+      file, 
+      multipleCovesTestCase.coveRanges, 
+      trace.id
+    );
+    
+    const endTime = Date.now();
+    console.log(`Tiempo total: ${(endTime - startTime) / 1000}s`);
+
+    console.log('\nRESULTADOS CON NUEVA FUNCIÓN:');
+    console.log(`Número de COVEs extraídos: ${multipleCovesResults.length}`);
+    
+    // Validar que tenemos 13 COVEs separados
+    expect(multipleCovesResults).toHaveLength(13);
+    
+    // Validar cada COVE individualmente
+    for (let i = 0; i < multipleCovesResults.length; i++) {
+      const cove = multipleCovesResults[i];
+      const expectedRange = multipleCovesTestCase.coveRanges[i];
+      
+      console.log(`\n   COVE ${i + 1}:`);
+      console.log(`     ID: ${cove?.datosDelAcuseDeValor.idCove}`);
+      console.log(`     Rango: páginas ${cove?.pageRange.startPage}-${cove?.pageRange.endPage}`);
+      console.log(`     Mercancías: ${cove?.mercancias.length}`);
+      console.log(`     Fecha: ${cove?.datosDelAcuseDeValor.fechaExpedicion}`);
+      
+      // Validaciones
+      expect(cove?.coveIndex).toBe(i + 1);
+      expect(cove?.pageRange).toEqual(expectedRange);
+      expect(cove?.datosDelAcuseDeValor.idCove).toBeDefined();
+      expect(cove?.datosDelAcuseDeValor.idCove).toMatch(/^COVE/); // Debe empezar con "COVE"
+      expect(cove?.mercancias.length).toBeGreaterThan(0);
+    }
+
+    // Validar que todos los IDs son diferentes (no mezclados)
+    const coveIds = multipleCovesResults.map(cove => cove?.datosDelAcuseDeValor.idCove);
+    const uniqueIds = new Set(coveIds);
+    console.log(`\nIDs únicos encontrados: ${uniqueIds.size}/${coveIds.length}`);
+    expect(uniqueIds.size).toBe(coveIds.length); // Todos los IDs deben ser únicos
+
+    // Contar mercancías totales
+    const totalMercancias = multipleCovesResults.reduce((sum, cove) => sum + (cove?.mercancias.length || 0), 0);
+    console.log(`Total de mercancías: ${totalMercancias}`);
   });
 });
