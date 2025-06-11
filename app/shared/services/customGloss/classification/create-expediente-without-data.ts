@@ -48,9 +48,9 @@ async function splitDocumentByClassifications(
 
   // Process each classification
   for (const { classification, startPage, endPage } of classifications) {
-    // Validate page range
-    const start = Math.max(0, startPage);
-    const end = Math.min(pageCount - 1, endPage);
+    // Validate page range (startPage and endPage come 1-indexed, convert to 0-indexed)
+    const start = Math.max(0, startPage - 1);
+    const end = Math.min(pageCount - 1, endPage - 1);
 
     if (start > end || start >= pageCount) {
       continue;
