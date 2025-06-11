@@ -4,6 +4,7 @@ import type { Result } from 'neverthrow';
 import type { createExpedienteWithoutData } from '../classification/create-expediente-without-data';
 import { extractAndStructureCFDI } from './cfdi/extract-and-structure-cfdi';
 import { extractAndStructureCove } from './cove/extract-and-structure-cove';
+import { extractAndStructureFactura } from './factura/extract-and-structure-factura';
 import { extractAndStructurePackingList } from './packing-list/extract-and-structure-packing-list';
 import { extractAndStructurePedimento } from './pedimento/extract-and-structure-pedimento';
 
@@ -68,7 +69,7 @@ export async function extractAndStructure(
 
   const documentoDeTransporteFiles = [...billOfLadingFiles, ...airWaybillFiles];
   const packingFiles = [...packingListFiles, ...packingSlipFiles];
-  console.log("Prueba 1");
+
   // Run all extraction operations in parallel instead of sequentially
   const [
     pedimento,
@@ -87,7 +88,7 @@ export async function extractAndStructure(
     ),
     Promise.all(
       facturaFiles.map((facturaFile) =>
-        extractTextFromImage(facturaFile, traceId)
+        extractAndStructureFactura(facturaFile, traceId)
       )
     ),
     Promise.all(
@@ -103,7 +104,7 @@ export async function extractAndStructure(
     ),
     Promise.all(cfdiFiles.map((cfdiFile) => extractAndStructureCFDI(cfdiFile))),
   ]);
-  console.log("Prueba 2");
+
   return {
     pedimento,
     documentoDeTransporte,
