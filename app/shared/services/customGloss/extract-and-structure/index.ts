@@ -44,6 +44,21 @@ async function extractTextFromImage(file: File, traceId: string) {
   };
 }
 
+// Función auxiliar para extraer facturas con markdown_representation
+async function extractFacturaWithMarkdown(facturaFile: File, traceId: string) {
+  // Extraer ambos: estructura de factura y markdown_representation
+  const [facturaStructured, facturaMarkdown] = await Promise.all([
+    extractAndStructureFactura(facturaFile, traceId),
+    extractTextFromImage(facturaFile, traceId)
+  ]);
+
+  // Combinar ambos objetos manteniendo la compatibilidad con OCR
+  return {
+    ...facturaStructured,
+    ...facturaMarkdown,
+  };
+}
+
 // Extract only the Ok variant from createExpedienteWithoutData's result
 type expedienteWithoutData = Awaited<
   ReturnType<typeof createExpedienteWithoutData>
@@ -88,7 +103,7 @@ export async function extractAndStructure(
     ),
     Promise.all(
       facturaFiles.map((facturaFile) =>
-        extractAndStructureFactura(facturaFile, traceId)
+        extractFacturaWithMarkdown(facturaFile, traceId)
       )
     ),
     Promise.all(
