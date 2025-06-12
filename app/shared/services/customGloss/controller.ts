@@ -171,19 +171,23 @@ export const analysis = api
         gloss.map(async ({ sectionName, validations }) => {
           const data = {
             name: sectionName,
-            isCorrect: validations.every(
-              (validationResult: any) => {
-                if (!validationResult?.validation) {
-                  console.error(`❌ ERROR: validationResult.validation is undefined for section ${sectionName}`, validationResult);
-                  return false; // Default to false if validation is missing
-                }
-                if (validationResult.validation.isValid === undefined) {
-                  console.error(`❌ ERROR: isValid is undefined for section ${sectionName}`, validationResult.validation);
-                  return false; // Default to false if isValid is missing
-                }
-                return validationResult.validation.isValid;
+            isCorrect: validations.every((validationResult: any) => {
+              if (!validationResult?.result) {
+                console.error(
+                  `ERROR: validationResult.result is undefined for section ${sectionName}`,
+                  validationResult
+                );
+                return false;
               }
-            ),
+              if (validationResult.result.isValid === undefined) {
+                console.error(
+                  `ERROR: isValid is undefined for section ${sectionName}`,
+                  validationResult.result
+                );
+                return false;
+              }
+              return validationResult.result.isValid;
+            }),
             fullContext: true,
             isVerified: false,
             customGlossId: newCustomGloss.id,
@@ -197,7 +201,7 @@ export const analysis = api
           }
           await Promise.all(
             validations.map(async (validationResult: any) => {
-              const { contexts, validation } = validationResult;
+              const { name, description, result, contexts } = validationResult;
               // Remove null bytes from objects before inserting into the database
               function removeNullBytes<T>(obj: T): T {
                 if (!obj) return obj;
@@ -206,15 +210,18 @@ export const analysis = api
                 const cleaned = json.replace(/\\u0000/g, '');
                 return JSON.parse(cleaned) as T;
               }
-              const cleanedValidation = removeNullBytes(validation);
+              const cleanedResult = removeNullBytes(result);
+              const cleanedName = removeNullBytes(name);
+              const cleanedDescription = removeNullBytes(description);
               const cleanedTabId = removeNullBytes(insertedTab.id);
+
               const [insertedValidationStep] = await db
                 .insert(CustomGlossTabValidationStep)
                 .values({
-                  name: cleanedValidation.name,
-                  description: cleanedValidation.description,
-                  llmAnalysis: cleanedValidation.llmAnalysis,
-                  isCorrect: cleanedValidation.isValid,
+                  name: cleanedName,
+                  description: cleanedDescription,
+                  llmAnalysis: cleanedResult.description, // Mapped from llmAnalysis in glosar
+                  isCorrect: cleanedResult.isValid,
                   customGlossTabId: cleanedTabId,
                 })
                 .returning();
@@ -222,7 +229,7 @@ export const analysis = api
                 throw new Error('Should never happen');
               }
               await Promise.all([
-                ...cleanedValidation.actionsToTake.map((action: string) =>
+                ...cleanedResult.actionsToTake.map((action: string) =>
                   db.insert(CustomGlossTabValidationStepActionToTake).values({
                     description: action,
                     customGlossTabValidationStepId: insertedValidationStep.id,

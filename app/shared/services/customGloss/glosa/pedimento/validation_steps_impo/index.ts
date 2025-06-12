@@ -10,7 +10,7 @@ import { datosDeFactura } from './6.datos-de-factura';
 import { datosDelTransporte } from './7.datos-del-transporte';
 import { partidas } from './9.partidas';
 
-export function pedimentoValidationStepsImpo({
+export async function pedimentoValidationStepsImpo({
   pedimento,
   cove,
   transportDocument,
@@ -27,7 +27,7 @@ export function pedimentoValidationStepsImpo({
   carta318?: OCR;
   traceId: string;
 }) {
-  return Promise.all([
+  const validationResults = await Promise.all([
     numeroDePedimento({ pedimento, traceId }),
     tipoOperacion({
       pedimento,
@@ -75,4 +75,6 @@ export function pedimentoValidationStepsImpo({
         )
       : []),
   ]);
+
+  return validationResults.flat();
 }
