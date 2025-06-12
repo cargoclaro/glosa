@@ -42,6 +42,7 @@ const GlossIdAnalysis = async (props: {
           customGloss: true,
         },
       },
+      risks: true,
       tabs: {
         with: {
           context: {
@@ -101,6 +102,7 @@ const GlossIdAnalysis = async (props: {
           moneySaved: customGloss.moneySaved,
           coves: customGloss.cove || [], // Pasar todos los COVEs
           pedimento: customGloss.pedimento,
+          risks: customGloss.risks,
         }}
       />
     </article>

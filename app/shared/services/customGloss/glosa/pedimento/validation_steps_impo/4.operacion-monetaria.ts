@@ -85,87 +85,90 @@ async function validateValSeguros(
   transportDocument?: OCR,
   carta318?: OCR
 ) {
-  // --- Teaching Moment: Understanding the Data We Need ---
-  // To validate the 'Val. Seguros' field correctly, we need several pieces of information
-  // from the 'pedimento' (customs declaration) and potentially other documents.
-  // Let's gather them first.
-
-  // Get the Incoterm (International Commercial Term) from the invoice data section of the pedimento.
-  // Incoterms define the responsibilities of buyers and sellers, including insurance obligations.
-  // TODO: We should iterate over the invoices to get the incoterm from the first one.
   const incoterm =
     pedimento.datosDelProveedorOComprador[0]?.facturas[0]?.incoterm;
-
-  // Get the 'Val. Seguros' (Value of Insurance) from the incrementables section.
-  // This is the field we are primarily validating. It represents the total value of goods covered by insurance.
   const valSeguros =
     pedimento.encabezadoPrincipalDelPedimento.incrementables.valorSeguros;
-
-  // Get the 'Precio pagado / valor comercial' (Price paid / commercial value) from the values section.
-  // This is the value of the goods themselves, which helps us check if the insurance amount is reasonable.
   const precioPagadoValorComercial =
     pedimento.encabezadoPrincipalDelPedimento.valores
       .precioPagadoOValorComercial;
-
-  // Get the 'Tipo de cambio' (Exchange Rate) from the header.
-  // This might be needed if insurance details in other documents are in foreign currency.
   const tipoCambio = pedimento.encabezadoPrincipalDelPedimento.tipoDeCambio;
-
-  // Get the 'Clave de Pedimento' (Pedimento Key/Code) from the header.
-  // This code tells us the type of customs operation (e.g., definitive import, temporary, complementary).
-  // It's crucial for knowing if the 'Val. Seguros' field should even be filled out.
   const clavePedimento =
     pedimento.encabezadoPrincipalDelPedimento.claveDePedimento;
-
-  // Get any general observations from the pedimento.
-  // These might contain relevant notes about insurance or the operation type.
   const observaciones = pedimento.observacionesANivelPedimento;
-
-  // Get the markdown representations of related documents, if they exist.
-  // These provide context and supporting evidence for the values declared.
-  // The '?' means "if this document exists, get its markdown, otherwise it's undefined".
   const carta318mkdown = carta318?.markdown_representation;
   const invoicemkdown = invoice?.markdown_representation;
   const transportDocmkdown = transportDocument?.markdown_representation;
 
-  // --- Teaching Moment: Setting up the Validation Task ---
-  // Now we define the validation task for the AI model.
-  // We give it a name, a description of what it needs to do, a detailed prompt (instructions),
-  // and the context (the data it needs to perform the validation).
+  const PROMPT_COMMON = (scenario: string) => `
+  Eres un verificador aduanero experto. Devuelves JSON.
+  Escenario detectado: ${scenario}
+
+  ⚠️  Reglas comunes (siempre):
+  1. Usa Apéndice 14 para validar Incoterm ↔ Seguro.
+  2. Convierte USD→MXN con el TC indicado.
+  3. Devuelve:
+    { "escenario": "...", "facturas":[ ... ] }
+  `;
+
+  const PROMPT_ONE_ONE = `
+- - Caso: una sola factura y un solo Incoterm.
+- Si el Incoterm es CIP o CIF y “Val. Seguros” > 0 ➜ ADVERTENCIA (seguro ya incluido, Apéndice 14).
+- De lo contrario, compara “Val. Seguros” con cualquier monto de seguro en la factura; convierte USD→MXN usando el tipo de cambio y acepta ±3 %.
+- Verifica que “Val. Seguros” sea numérico, ≤12 dígitos y dos decimales.
+- Aplica excepciones de llenado si la clave de pedimento lo permite.
+`;
+
+  const PROMPT_ONE_N = `
+- Realiza la validación documental con base en las siguientes reglas: (1) Confirma que todas las facturas declaren el mismo Incoterm; si se detecta alguna discrepancia, indícalo como error. (2) Si el Incoterm común es CIP o CIF y el valor global de “Val. Seguros” es mayor que cero, emite una advertencia de inconsistencia conforme al Apéndice 14. (3) Examina cada factura individualmente para extraer cualquier monto de seguro declarado, conviértelo a MXN usando el tipo de cambio correspondiente y compáralo con su parte proporcional del valor global declarado en “Val. Seguros”. (4) Asegura que la suma de los seguros individuales coincida con el valor global de “Val. Seguros”, permitiendo una variación máxima de ±3 %. (5) Verifica que el formato de todos los campos “Val. Seguros” sea numérico y correcto.
+`;
+
+  const PROMPT_N_N = `
+- Verifica que todos los Incoterms presentes compartan el mismo modo de transporte o estén marcados como “cualquier”; si se detecta una mezcla incompatible, marca el error. Aplica la regla Incoterm-Seguro por factura: si el Incoterm incluye seguro y el monto seguro es mayor que cero, emite una advertencia; si es cero, la declaración es correcta. Para Incoterms sin seguro, si se declara un seguro, valida que su proporción respecto al valor comercial esté entre 0.1 % y 5 %; si está fuera de ese rango, marca el error. Evalúa la coherencia global sumando todos los montos de seguro a nivel factura y compara contra el total declarado en “Val. Seguros”; si la diferencia excede ±5 %, señala la discrepancia. Considera las responsabilidades asociadas al validar seguros y compatibilidades.
+`;
+
+  const facturas = pedimento.datosDelProveedorOComprador?.[0]?.facturas || [];
+  const numberOfFacturas = facturas.length;
+
+  let allIncotermsAreSame = true;
+  if (numberOfFacturas > 1) {
+    const firstIncoterm = facturas[0]?.incoterm;
+    if (firstIncoterm !== undefined) {
+      allIncotermsAreSame = facturas
+        .slice(1)
+        .every((factura) => factura?.incoterm === firstIncoterm);
+    } else {
+      allIncotermsAreSame = false;
+    }
+  }
+
+  let scenario = '';
+  let specificPrompt = '';
+
+  if (numberOfFacturas === 1) {
+    scenario = 'solo hay 1 factura';
+    specificPrompt = PROMPT_ONE_ONE;
+  } else if (numberOfFacturas > 1 && allIncotermsAreSame) {
+    scenario = 'varias facturas con el mismo Incoterm';
+    specificPrompt = PROMPT_ONE_N;
+  } else if (numberOfFacturas > 1 && !allIncotermsAreSame) {
+    scenario = 'varias facturas con distintos Incoterms';
+    specificPrompt = PROMPT_N_N;
+  } else {
+    scenario = 'no se encontraron facturas o el escenario es desconocido';
+    specificPrompt = 'No se puede aplicar una validación específica sin información de facturas.';
+  }
+
+  const fullPrompt = `${PROMPT_COMMON(scenario)}
+${specificPrompt}`;
 
   const validation = {
-    // A short name for this specific validation check.
     name: 'Val. Seguros',
-    // A more detailed explanation of the validation's goal.
     description:
-      "Verifica que el campo 'Val. Seguros' (valor total de las mercancías aseguradas en MXN) cumpla con los lineamientos de llenado: valor correcto, formato adecuado, y reglas de llenado/omisión según el tipo de operación (ej. pedimentos complementarios, Anexo 22).",
-    // The core instructions for the AI model. We break down the validation steps clearly.
-    prompt: `El campo 'Val. Seguros' declara el valor total de las mercancías cubiertas por el seguro, en moneda nacional (MXN). Tu tarea es verificar este campo siguiendo estos puntos:
-
-1.  **Compatibilidad Incoterm y Seguro (Ref. Apéndice 14):**
-    *   Identifica el Incoterm declarado: '${incoterm}'.
-    *   **Advertencia con CIP/CIF:** Si el Incoterm es CIP o CIF y el campo 'Val. Seguros' (${valSeguros}) tiene un valor numérico mayor que cero (o no está vacío y no es cero), esto generalmente indica una inconsistencia. Según el Apéndice 14, en los Incoterms CIP y CIF, el vendedor contrata y paga el seguro hasta el lugar de destino convenido. Por lo tanto, el costo del seguro ya estaría incluido en el precio de la mercancía y no debería desglosarse por separado en 'Val. Seguros' a menos que existan acuerdos específicos o regulaciones que lo requieran (revisa observaciones). Emite una **advertencia** si este es el caso, justificando con el Apéndice 14.
-    *   Si el Incoterm NO es CIP o CIF, o si es CIP/CIF pero 'Val. Seguros' es cero o está vacío (lo cual es correcto para estos Incoterms), procede con las siguientes validaciones.
-
-2.  **Verificación de Coherencia del Valor del Seguro (si aplica según punto 1):**
-    *   Si el Incoterm permite un valor de seguro declarado (es decir, no es CIP/CIF o siendo CIP/CIF se justifica una declaración separada), o si no es CIP/CIF, verifica que el valor del seguro en 'Val. Seguros' (${valSeguros}) sea **aproximadamente correcto**.
-    *   Compara el valor declarado en 'Val. Seguros' con cualquier monto de seguro indicado en la documentación adjunta (Factura, Carta 3.1.8, Documento de Transporte).
-    *   **Conversión de Moneda:** Si encuentras valores de seguro en moneda extranjera (ej. USD) en los documentos, conviértelos a Pesos Mexicanos (MXN) utilizando el 'Tipo de cambio' del pedimento (${tipoCambio}). El valor convertido debe tener sentido.
-        *   **Ejemplo de coherencia:** Si un documento indica "Insurance: 25 USD" y el tipo de cambio es 22 MXN/USD, el equivalente sería 550 MXN. Si 'Val. Seguros' en el pedimento es cercano a 550 MXN (ej. 549 a 551 MXN), esto es aceptable.
-    *   El valor asegurado debería cubrir, al menos, el 'Precio pagado / valor comercial' (${precioPagadoValorComercial}), a menos que el Incoterm (ej. EXW, FCA donde el comprador asegura) o las condiciones particulares indiquen lo contrario.
-
-3.  **Formato:** Verifica que el valor '${valSeguros}' sea numérico. Para importaciones, el formato esperado suele ser de 12 caracteres numéricos, sin espacios ni otros caracteres. Señala cualquier desviación de este formato.
-
-4.  **Condiciones de Llenado/Omisión (Ref. Anexo 22):**
-    *   El valor en 'Val. Seguros' no debe ser CERO si el costo del seguro *no* está incluido en el valor en aduana (por ejemplo, con Incoterms como EXW, FCA, FAS, FOB donde el seguro es responsabilidad del comprador y se contrata por separado) y el seguro es aplicable y efectivamente contratado.
-    *   Verifica si el campo debe llenarse o puede omitirse. Según el Anexo 22 de las RGCE, en ciertos casos como pedimentos complementarios (Clave de Pedimento: '${clavePedimento}') o tránsitos específicos, este campo es opcional o no debe llenarse. Revisa la 'Clave de Pedimento' y las 'Observaciones' para determinar si aplica alguna de estas excepciones.
-
-Analiza toda la información proporcionada (Pedimento, Factura, Carta 3.1.8, Documento de Transporte, y el Apéndice 14 sobre Incoterms) para realizar esta validación y explica tu razonamiento paso a paso, indicando claramente si encuentras errores, advertencias o si la información es correcta.`,
-    // Providing the data (context) the AI needs. We categorize it into PROVIDED (from user documents)
-    // and EXTERNAL (like regulations or standard definitions).
+      "Verifica que el campo 'Val. Seguros' (valor total de las mercancías aseguradas en MXN) cumpla con los lineamientos de llenado.",
+    prompt: fullPrompt,
     contexts: {
       PROVIDED: {
-        // Data directly from the main document being analyzed (Pedimento).
         Pedimento: {
           data: [
             { name: 'Val. Seguros', value: valSeguros },
@@ -174,12 +177,11 @@ Analiza toda la información proporcionada (Pedimento, Factura, Carta 3.1.8, Doc
               name: 'Precio pagado / valor comercial',
               value: precioPagadoValorComercial,
             },
-            { name: 'Clave de Pedimento', value: clavePedimento }, // Added Clave Pedimento
+            { name: 'Clave de Pedimento', value: clavePedimento },
             { name: 'Observaciones', value: observaciones },
             { name: 'Incoterm', value: incoterm },
           ],
         },
-        // Data from supporting documents.
         'Carta 318': {
           data: [{ name: 'Carta 318', value: carta318mkdown }],
         },
@@ -193,29 +195,16 @@ Analiza toda la información proporcionada (Pedimento, Factura, Carta 3.1.8, Doc
         },
       },
       EXTERNAL: {
-        // External information like appendices or regulations.
         'Apendice 14 (Incoterms)': {
-          // Renamed for clarity
           data: [
             { name: 'Definiciones Incoterm (Apendice 14)', value: apendice14 },
-          ], // Value description updated
+          ],
         },
-        // --- Teaching Moment: Adding Regulatory Context ---
-        // We should ideally include relevant parts of Annex 22 here regarding the non-filling rules.
-        // For now, we've included the instruction in the prompt, but adding the actual text
-        // from Annex 22 would make the AI's validation even more robust.
-        // 'Anexo 22 (Reglas de Llenado)': {
-        //   data: [{ name: 'Extracto Anexo 22 sobre Val. Seguros', value: '...' }], // Placeholder
-        // },
       },
     },
-  } as const; // 'as const' helps TypeScript understand the exact structure and values.
+  } as const;
 
-  // --- Teaching Moment: Calling the AI ---
-  // Finally, we send the validation task (including the prompt and context)
-  // to our 'glosar' function, which handles the communication with the AI model.
-  // We also pass the 'traceId' for tracking/logging purposes and specify which AI model to use.
-  return await glosar(validation, traceId, 'o3-mini'); // Using 'o3-mini' model
+  return await glosar(validation, traceId, 'o3-mini');
 }
 
 async function validateSeguros(

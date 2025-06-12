@@ -281,6 +281,31 @@ export const CustomGlossTabValidationStepResources = pgTable(
 export type CustomGlossTabValidationStepResourcesTable =
   typeof CustomGlossTabValidationStepResources.$inferSelect;
 
+export const RiskLevel = pgEnum('RiskLevel', ['LOW', 'MEDIUM', 'HIGH']);
+
+export const RiskAnalysis = pgTable(
+  'RiskAnalysis',
+  {
+    id: serial('id').notNull().primaryKey(),
+    riskName: text('riskName').notNull(),
+    level: RiskLevel('level').notNull(),
+    description: text('description'),
+    customGlossId: uuid('customGlossId').notNull(),
+    createdAt: timestamp('createdAt', { precision: 3 }).notNull().defaultNow(),
+  },
+  (RiskAnalysis) => ({
+    RiskAnalysis_customGloss_fkey: foreignKey({
+      name: 'RiskAnalysis_customGloss_fkey',
+      columns: [RiskAnalysis.customGlossId],
+      foreignColumns: [CustomGloss.id],
+    })
+      .onDelete('cascade')
+      .onUpdate('cascade'),
+  })
+);
+
+export type RiskAnalysisTable = typeof RiskAnalysis.$inferSelect;
+
 export const CustomGlossRelations = relations(CustomGloss, ({ many }) => ({
   tabs: many(CustomGlossTab, {
     relationName: 'CustomGlossToCustomGlossTab',
@@ -290,6 +315,9 @@ export const CustomGlossRelations = relations(CustomGloss, ({ many }) => ({
   }),
   alerts: many(CustomGlossAlert, {
     relationName: 'CustomGlossToCustomGlossAlert',
+  }),
+  risks: many(RiskAnalysis, {
+    relationName: 'CustomGlossToRiskAnalysis',
   }),
 }));
 
@@ -411,3 +439,11 @@ export const CustomGlossTabValidationStepResourcesRelations = relations(
     }),
   })
 );
+
+export const RiskAnalysisRelations = relations(RiskAnalysis, ({ one }) => ({
+  customGloss: one(CustomGloss, {
+    relationName: 'CustomGlossToRiskAnalysis',
+    fields: [RiskAnalysis.customGlossId],
+    references: [CustomGloss.id],
+  }),
+}));
