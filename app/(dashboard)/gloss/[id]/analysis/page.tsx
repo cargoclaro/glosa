@@ -99,7 +99,7 @@ const GlossIdAnalysis = async (props: {
           tabs: customGloss.tabs as unknown as Tabs[],
           files: customGloss.files,
           moneySaved: customGloss.moneySaved,
-          cove: customGloss.cove,
+          coves: customGloss.cove || [], // Pasar todos los COVEs
           pedimento: customGloss.pedimento,
         }}
       />
