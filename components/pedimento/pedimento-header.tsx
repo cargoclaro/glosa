@@ -37,7 +37,7 @@ const PedimentoHeader: React.FC<PedimentoHeaderProps> = ({
   return (
     <div className="mb-4 w-full overflow-hidden rounded-md border border-gray-400">
       <div className="grid grid-cols-12 gap-0">
-        <div className="col-span-12 border-gray-400 border-b bg-gray-200 py-0.5 py-1 text-center font-semibold text-[11px] text-xs uppercase">
+        <div className="col-span-12 border-gray-400 border-b bg-gray-200 py-1 text-center font-semibold text-[11px] text-xs uppercase">
           PEDIMENTO
         </div>
       </div>
@@ -53,10 +53,10 @@ const PedimentoHeader: React.FC<PedimentoHeaderProps> = ({
           )}
           onClick={() => onClick('Número de pedimento')}
         >
-          <div className="col-span-3 flex min-h-6 items-center border-gray-400 border-r bg-gray-100 px-2 py-0.5 font-semibold text-[10px] text-xs text-xs uppercase last:border-r-0">
+          <div className="col-span-3 flex min-h-6 items-center border-gray-400 border-r bg-gray-100 px-2 py-0.5 font-semibold text-[10px] text-xs uppercase last:border-r-0">
             NUM. PEDIMENTO:
           </div>
-          <div className="col-span-2 flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 font-normal text-[10px] text-xs text-xs last:border-r-0">
+          <div className="col-span-2 flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 font-normal text-[10px] text-xs last:border-r-0">
             {pedimento.encabezadoPrincipalDelPedimento.numeroDePedimento}
           </div>
         </div>
@@ -71,10 +71,10 @@ const PedimentoHeader: React.FC<PedimentoHeaderProps> = ({
           )}
           onClick={() => onClick('Tipo de operación')}
         >
-          <div className="col-span-1 flex min-h-6 items-center border-gray-400 border-r bg-gray-100 px-2 py-0.5 font-semibold text-[10px] text-xs text-xs uppercase last:border-r-0">
+          <div className="col-span-1 flex min-h-6 items-center border-gray-400 border-r bg-gray-100 px-2 py-0.5 font-semibold text-[10px] text-xs uppercase last:border-r-0">
             T.OPER
           </div>
-          <div className="col-span-1 flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 font-normal text-[10px] text-xs text-xs last:border-r-0">
+          <div className="col-span-1 flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 font-normal text-[10px] text-xs last:border-r-0">
             {pedimento.encabezadoPrincipalDelPedimento.tipoDeOperacion}
           </div>
         </div>
@@ -89,10 +89,10 @@ const PedimentoHeader: React.FC<PedimentoHeaderProps> = ({
           )}
           onClick={() => onClick('Tipo de operación')}
         >
-          <div className="col-span-2 flex min-h-6 items-center border-gray-400 border-r bg-gray-100 px-2 py-0.5 font-semibold text-[10px] text-xs text-xs uppercase last:border-r-0">
+          <div className="col-span-2 flex min-h-6 items-center border-gray-400 border-r bg-gray-100 px-2 py-0.5 font-semibold text-[10px] text-xs uppercase last:border-r-0">
             CVE. PEDIMENTO:
           </div>
-          <div className="col-span-1 flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 font-normal text-[10px] text-xs text-xs last:border-r-0">
+          <div className="col-span-1 flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 font-normal text-[10px] text-xs last:border-r-0">
             {pedimento.encabezadoPrincipalDelPedimento.claveDePedimento}
           </div>
         </div>
@@ -107,10 +107,10 @@ const PedimentoHeader: React.FC<PedimentoHeaderProps> = ({
           )}
           onClick={() => onClick('Tipo de operación')}
         >
-          <div className="col-span-1 flex min-h-6 items-center border-gray-400 border-r bg-gray-100 px-2 py-0.5 font-semibold text-[10px] text-xs text-xs uppercase last:border-r-0">
+          <div className="col-span-1 flex min-h-6 items-center border-gray-400 border-r bg-gray-100 px-2 py-0.5 font-semibold text-[10px] text-xs uppercase last:border-r-0">
             REGIMEN:
           </div>
-          <div className="col-span-1 flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 font-normal text-[10px] text-xs text-xs last:border-r-0">
+          <div className="col-span-1 flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 font-normal text-[10px] text-xs last:border-r-0">
             {pedimento.encabezadoPrincipalDelPedimento.regimen}
           </div>
         </div>
@@ -128,10 +128,10 @@ const PedimentoHeader: React.FC<PedimentoHeaderProps> = ({
           )}
           onClick={() => onClick('Clave de destino/origen')}
         >
-          <div className="col-span-1 flex min-h-6 items-center border-gray-400 border-r bg-gray-100 px-2 py-0.5 font-semibold text-[10px] text-xs text-xs uppercase last:border-r-0">
+          <div className="col-span-1 flex min-h-6 items-center border-gray-400 border-r bg-gray-100 px-2 py-0.5 font-semibold text-[10px] text-xs uppercase last:border-r-0">
             DESTINO:
           </div>
-          <div className="col-span-1 flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 font-normal text-[10px] text-xs text-xs last:border-r-0">
+          <div className="col-span-1 flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 font-normal text-[10px] text-xs last:border-r-0">
             {pedimento.encabezadoPrincipalDelPedimento.destino}
           </div>
         </div>
@@ -146,10 +146,10 @@ const PedimentoHeader: React.FC<PedimentoHeaderProps> = ({
           )}
           onClick={() => onClick('Operación monetaria')}
         >
-          <div className="col-span-1 flex min-h-6 items-center border-gray-400 border-r bg-gray-100 px-2 py-0.5 font-semibold text-[10px] text-xs text-xs uppercase last:border-r-0">
+          <div className="col-span-1 flex min-h-6 items-center border-gray-400 border-r bg-gray-100 px-2 py-0.5 font-semibold text-[10px] text-xs uppercase last:border-r-0">
             TIPO CAMBIO:
           </div>
-          <div className="col-span-1 flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 font-normal text-[10px] text-xs text-xs last:border-r-0">
+          <div className="col-span-1 flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 font-normal text-[10px] text-xs last:border-r-0">
             {pedimento.encabezadoPrincipalDelPedimento.tipoDeCambio.toFixed(
               5
             ) || '-'}
@@ -166,10 +166,10 @@ const PedimentoHeader: React.FC<PedimentoHeaderProps> = ({
           )}
           onClick={() => onClick('Pesos y bultos')}
         >
-          <div className="col-span-1 flex min-h-6 items-center border-gray-400 border-r bg-gray-100 px-2 py-0.5 font-semibold text-[10px] text-xs text-xs uppercase last:border-r-0">
+          <div className="col-span-1 flex min-h-6 items-center border-gray-400 border-r bg-gray-100 px-2 py-0.5 font-semibold text-[10px] text-xs uppercase last:border-r-0">
             PESO BRUTO:
           </div>
-          <div className="col-span-1 flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 font-normal text-[10px] text-xs text-xs last:border-r-0">
+          <div className="col-span-1 flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 font-normal text-[10px] text-xs last:border-r-0">
             {pedimento.encabezadoPrincipalDelPedimento.pesoBruto?.toFixed(3) ||
               '-'}
           </div>
@@ -180,7 +180,7 @@ const PedimentoHeader: React.FC<PedimentoHeaderProps> = ({
           <div className="col-span-1 flex min-h-6 items-center border-gray-400 border-r bg-gray-100 px-1 py-0.5 font-semibold text-[8px] text-xs uppercase last:border-r-0">
             ADUANA E/S:
           </div>
-          <div className="col-span-1 flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 font-normal text-[10px] text-xs text-xs last:border-r-0">
+          <div className="col-span-1 flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 font-normal text-[10px] text-xs last:border-r-0">
             {pedimento.encabezadoPrincipalDelPedimento.aduanaEntradaOSalida}
           </div>
         </div>
@@ -197,7 +197,7 @@ const PedimentoHeader: React.FC<PedimentoHeaderProps> = ({
           )}
           onClick={() => onClick('Datos del transporte')}
         >
-          <div className="border-gray-400 border-b bg-gray-200 py-0.5 py-1 text-center font-semibold text-[11px] text-xs uppercase">
+          <div className="border-gray-400 border-b bg-gray-200 py-1 text-center font-semibold text-[11px] text-xs uppercase">
             MEDIOS DE TRANSPORTE
           </div>
           <div className="grid grid-cols-3 gap-0 border-gray-400 border-b">
@@ -212,15 +212,15 @@ const PedimentoHeader: React.FC<PedimentoHeaderProps> = ({
             </div>
           </div>
           <div className="grid grid-cols-3 gap-0">
-            <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-center font-normal text-[10px] text-xs text-xs last:border-r-0">
+            <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-center font-normal text-[10px] text-xs last:border-r-0">
               {pedimento.encabezadoPrincipalDelPedimento.mediosTransporte
                 .entradaSalida || '-'}
             </div>
-            <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-center font-normal text-[10px] text-xs text-xs last:border-r-0">
+            <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-center font-normal text-[10px] text-xs last:border-r-0">
               {pedimento.encabezadoPrincipalDelPedimento.mediosTransporte
                 .arribo || '-'}
             </div>
-            <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-center font-normal text-[10px] text-xs text-xs last:border-r-0">
+            <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-center font-normal text-[10px] text-xs last:border-r-0">
               {pedimento.encabezadoPrincipalDelPedimento.mediosTransporte
                 .salida || '-'}
             </div>
@@ -238,10 +238,10 @@ const PedimentoHeader: React.FC<PedimentoHeaderProps> = ({
           onClick={() => onClick('Operación monetaria')}
         >
           <div className="grid grid-cols-2 gap-0 border-gray-400 border-b">
-            <div className="flex min-h-6 items-center border-gray-400 border-r bg-gray-100 px-2 py-0.5 font-semibold text-[10px] text-xs text-xs uppercase last:border-r-0">
+            <div className="flex min-h-6 items-center border-gray-400 border-r bg-gray-100 px-2 py-0.5 font-semibold text-[10px] text-xs uppercase last:border-r-0">
               VALOR DOLARES:
             </div>
-            <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-right font-normal text-[10px] text-xs text-xs last:border-r-0">
+            <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-right font-normal text-[10px] text-xs last:border-r-0">
               {formatNumber(
                 pedimento.encabezadoPrincipalDelPedimento.valores
                   .valorDolares || 0
@@ -249,10 +249,10 @@ const PedimentoHeader: React.FC<PedimentoHeaderProps> = ({
             </div>
           </div>
           <div className="grid grid-cols-2 gap-0 border-gray-400 border-b">
-            <div className="flex min-h-6 items-center border-gray-400 border-r bg-gray-100 px-2 py-0.5 font-semibold text-[10px] text-xs text-xs uppercase last:border-r-0">
+            <div className="flex min-h-6 items-center border-gray-400 border-r bg-gray-100 px-2 py-0.5 font-semibold text-[10px] text-xs uppercase last:border-r-0">
               VALOR ADUANA:
             </div>
-            <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-right font-normal text-[10px] text-xs text-xs last:border-r-0">
+            <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-right font-normal text-[10px] text-xs last:border-r-0">
               {formatNumber(
                 pedimento.encabezadoPrincipalDelPedimento.valores.valorAduana ||
                   0
@@ -260,10 +260,10 @@ const PedimentoHeader: React.FC<PedimentoHeaderProps> = ({
             </div>
           </div>
           <div className="grid grid-cols-2 gap-0">
-            <div className="flex min-h-6 items-center border-gray-400 border-r bg-gray-100 px-2 py-0.5 font-semibold text-[10px] text-xs text-xs uppercase last:border-r-0">
+            <div className="flex min-h-6 items-center border-gray-400 border-r bg-gray-100 px-2 py-0.5 font-semibold text-[10px] text-xs uppercase last:border-r-0">
               PRECIO PAGADO/VALOR COMERCIAL:
             </div>
-            <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-right font-normal text-[10px] text-xs text-xs last:border-r-0">
+            <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-right font-normal text-[10px] text-xs last:border-r-0">
               {formatNumber(
                 pedimento.encabezadoPrincipalDelPedimento.valores
                   .precioPagadoOValorComercial || 0
