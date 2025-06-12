@@ -54,7 +54,7 @@ export const CustomGloss = pgTable('CustomGloss', {
     .notNull()
     .default('IN_PROGRESS'),
   userId: text('userId').notNull(),
-  cove: json().$type<Cove>(),
+  cove: json().$type<Cove[]>(),
   pedimento: json().$type<Pedimento>(),
   createdAt: timestamp('createdAt', { precision: 3 }).notNull().defaultNow(),
 });
