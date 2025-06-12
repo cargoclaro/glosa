@@ -18,6 +18,7 @@ import {
   CustomGlossTabContextData,
   CustomGlossTabValidationStep,
   CustomGlossTabValidationStepActionToTake,
+  RiskAnalysis,
 } from '~/db/schema';
 import { classifyDocuments } from './classification/classification';
 import { createExpedienteWithoutData } from './classification/create-expediente-without-data';
@@ -25,6 +26,7 @@ import { extractAndStructure } from './extract-and-structure';
 import { glosaExpo } from './glosa/expo';
 import { glosaImpo } from './glosa/impo';
 import { uploadFiles } from './upload-files';
+import { runRiskAnalysis } from './risk';
 
 config();
 
@@ -138,6 +140,19 @@ export const analysis = api
         .returning();
       if (!newCustomGloss) {
         throw new Error('Should never happen');
+      }
+
+      // Run risk analysis and persist
+      const riskResults = runRiskAnalysis(expediente.pedimento);
+      if (riskResults.length > 0) {
+        await db.insert(RiskAnalysis).values(
+          riskResults.map((r) => ({
+            riskName: r.riskName,
+            level: r.level,
+            description: r.description,
+            customGlossId: newCustomGloss.id,
+          }))
+        );
       }
 
       // Batch insert files
