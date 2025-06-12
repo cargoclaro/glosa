@@ -85,11 +85,8 @@ export async function extractAndStructurePedimento(
 ) {
   const pages = await splitPdfIntoPages(file);
 
-  // 🎯 CORRECCIÓN: Omitir las primeras 2 páginas y clasificar desde la página 3
-  // Las páginas 1-2 típicamente contienen solo datos generales del pedimento/proveedor
-  // Las partidas reales usualmente empiezan en la página 3 o posterior
-  const skipPages = 2; // Omitir páginas 1 y 2
-  const pagesToClassify = pages.slice(skipPages, skipPages + 3); // Clasificar páginas 3-5
+  // Clasificar solo las páginas 2-3 para encontrar dónde empiezan las partidas.
+  const pagesToClassify = pages.slice(1, 3); // páginas 2-3 (índices 1-2)
 
   // Parallelize classification of selected pages to find first 'Partidas' quicker
   const classificationPromises = pagesToClassify.map((pageBase64, index) =>
@@ -97,8 +94,8 @@ export async function extractAndStructurePedimento(
       model: google('gemini-2.5-flash-preview-04-17'),
       experimental_telemetry: {
         isEnabled: true,
-        // +1 because zero-indexed
-        functionId: `Classify page ${index + 1}`,
+        // +2 because we start from index 1 and zero-indexed
+        functionId: `Classify page ${index + 2}`,
         metadata: {
           langfuseTraceId: parentTraceId,
           langfuseUpdateParent: false,
@@ -114,7 +111,7 @@ export async function extractAndStructurePedimento(
           content: [
             {
               type: 'text',
-              text: 'Clasifica esta página como "Datos generales" o "Partidas" según si contiene una sección de partidas. Debe venir información como la fracción, las contribuciones y los identificadores de la partida (no del pedimento general).',
+              text: 'Clasifica esta página como "Datos generales" o "Partidas". La página de "Partidas" debe contener explícitamente una sección de partidas con columnas como "Fracción", y datos de contribuciones a nivel de partida. Si no estás seguro, clasifícala como "Datos generales".',
             },
             {
               type: 'file',
@@ -135,11 +132,13 @@ export async function extractAndStructurePedimento(
   );
   
   if (firstPartidasPageIndex === -1) {
-    throw new Error('Should never happen');
+    throw new Error(
+      'No se pudo encontrar la página de inicio de las partidas en el pedimento.'
+    );
   }
 
-  // Ajustar índice para tener en cuenta las páginas omitidas
-  const actualFirstPartidasPageIndex = skipPages + firstPartidasPageIndex;
+  // Ajustar índice para tener en cuenta que empezamos desde la página 2 (índice 1)
+  const actualFirstPartidasPageIndex = firstPartidasPageIndex + 1;
 
   // Create PDF with all datos generales pages (including the first partidas page)
   const datosGeneralesPages = pages.slice(0, actualFirstPartidasPageIndex + 1);
