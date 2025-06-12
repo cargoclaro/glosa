@@ -127,6 +127,8 @@ export async function extractAndStructurePedimento(
     (result) => result.object
   );
   
+  console.log('[extractPedimento] Clasificación de páginas:', classifications);
+  
   const firstPartidasPageIndex = classifications.findIndex(
     (c) => c === 'Partidas'
   );

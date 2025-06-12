@@ -1,19 +1,26 @@
 'use client';
 
-import { LoadingBar, Modal } from '@/shared/components';
+import { LoadingBar, LoadingBarClassification, Modal } from '@/shared/components';
 import { useModal } from '@/shared/hooks';
 import { Document, Upload, XMark } from '@/shared/icons';
-import { analysis } from '@/shared/services/customGloss/controller';
+import { analysis, previewClassification } from '@/shared/services/customGloss/controller';
 import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 import { cn } from '~/lib/utils';
+import DocumentValidator, { type DocumentItem } from '@/shared/components/document-validator';
+
+type Stage = 'IDLE' | 'CLASSIFYING' | 'CONFIRM_DOCS' | 'PROCESSING';
 
 const GlossForm = () => {
   const [files, setFiles] = useState<FileList | null>(null);
+  const [stage, setStage] = useState<Stage>('IDLE');
+  const [documents, setDocuments] = useState<DocumentItem[]>([]);
   const [errorDisplaying, setErrorDisplaying] = useState(false);
   const { isOpen, openMenu, closeMenu, menuRef } = useModal(false);
+  const [hasConfirmed, setHasConfirmed] = useState(false);
 
-  const mutation = useMutation({
+  // Full analysis (after user proceeds)
+  const analysisMutation = useMutation({
     mutationFn: async (formData: FormData) => {
       return await analysis(formData);
     },
@@ -35,14 +42,49 @@ const GlossForm = () => {
     },
   });
 
+  // Step 1: classification preview
+  const classifyMutation = useMutation({
+    mutationFn: async (formData: FormData) => {
+      return await previewClassification(formData);
+    },
+    onSuccess: (data) => {
+      if (data.success && data.documents) {
+        setDocuments(data.documents as DocumentItem[]);
+        setStage('CONFIRM_DOCS');
+      }
+      closeMenu(); // hide loading bar
+    },
+    onError: () => {
+      closeMenu();
+      setStage('IDLE');
+    },
+  });
+
   const handlerAction = () => {
     if (files) {
       const formData = new FormData();
       for (const file of Array.from(files)) {
         formData.append('files', file);
       }
-      mutation.mutate(formData);
+      console.log('[GlossForm] handlerAction -> CLASSIFYING');
+      setStage('CLASSIFYING');
+      openMenu();
+      classifyMutation.mutate(formData);
     }
+  };
+
+  const proceedAfterValidation = () => {
+    if (!files || hasConfirmed) return;
+    console.log('[GlossForm] proceedAfterValidation -> PROCESSING');
+    const formData = new FormData();
+    for (const file of Array.from(files)) {
+      formData.append('files', file);
+    }
+
+    setStage('PROCESSING');
+    setHasConfirmed(true);
+    openMenu();
+    analysisMutation.mutate(formData);
   };
 
   const handleRemoveFile = (index: number) => {
@@ -65,7 +107,7 @@ const GlossForm = () => {
 
   let labelColor: string;
   if (files) {
-    if (mutation.error || (mutation.data && !mutation.data.success)) {
+    if (analysisMutation.error || (analysisMutation.data && !analysisMutation.data.success)) {
       labelColor = 'border-red-500 bg-red-50';
     } else {
       labelColor = 'border-green-500 bg-green-50';
@@ -76,7 +118,7 @@ const GlossForm = () => {
 
   let filePickerTextColor: string;
   if (files) {
-    if (mutation.error || (mutation.data && !mutation.data.success)) {
+    if (analysisMutation.error || (analysisMutation.data && !analysisMutation.data.success)) {
       filePickerTextColor = 'text-red-500';
     } else {
       filePickerTextColor = 'text-green-500';
@@ -84,6 +126,13 @@ const GlossForm = () => {
   } else {
     filePickerTextColor = 'text-gray-500';
   }
+
+  const resetToIdle = () => {
+    setStage('IDLE');
+    setFiles(null);
+    setDocuments([]);
+    setHasConfirmed(false);
+  };
 
   return (
     <>
@@ -94,11 +143,11 @@ const GlossForm = () => {
         Recuerda incluir todos los documentos relevantes a la operación <br />{' '}
         <span>(BL, Carta 3.1.8, etc.).</span>
       </p>
-      {mutation.error && (
-        <p className="text-red-500">{(mutation.error as Error).message}</p>
+      {analysisMutation.error && (
+        <p className="text-red-500">{(analysisMutation.error as Error).message}</p>
       )}
-      {mutation.data && !mutation.data.success && (
-        <p className="text-red-500">{mutation.data.message}</p>
+      {analysisMutation.data && !analysisMutation.data.success && (
+        <p className="text-red-500">{analysisMutation.data.message}</p>
       )}
       <div className="mt-4">
         <label
@@ -113,7 +162,7 @@ const GlossForm = () => {
               size="size-10"
               color={
                 files
-                  ? mutation.error || (mutation.data && !mutation.data.success)
+                  ? analysisMutation.error || (analysisMutation.data && !analysisMutation.data.success)
                     ? 'red'
                     : 'green'
                   : ''
@@ -146,7 +195,7 @@ const GlossForm = () => {
             <button
               type="button"
               disabled={!files}
-              onClick={() => openMenu()}
+              onClick={() => handlerAction()}
               className={cn(
                 'rounded-md border border-white px-12 py-2 text-sm shadow-black/50 shadow-md transition-colors duration-300',
                 files
@@ -161,14 +210,14 @@ const GlossForm = () => {
       </div>
       <Modal
         isOpen={isOpen}
-        menuRef={mutation.isPending ? null : menuRef}
+        menuRef={analysisMutation.isPending || classifyMutation.isPending ? null : menuRef}
         onClose={closeMenu}
       >
         <div className="flex h-[430px] flex-col items-center justify-center gap-2">
-          {mutation.isPending ? (
-            <>
-              <LoadingBar />
-            </>
+          {stage === 'CLASSIFYING' ? (
+            <LoadingBarClassification />
+          ) : stage === 'PROCESSING' ? (
+            <LoadingBar omitClassification />
           ) : (
             <>
               <h2 className="text-center font-bold text-xl">
@@ -228,6 +277,16 @@ const GlossForm = () => {
           )}
         </div>
       </Modal>
+
+      {/* Document validation dialog */}
+      <DocumentValidator
+        open={stage === 'CONFIRM_DOCS'}
+        documents={documents}
+        onOpenChange={(open) => { if (!open) resetToIdle(); }}
+        onProceed={proceedAfterValidation}
+        onBack={resetToIdle}
+        files={files}
+      />
     </>
   );
 };

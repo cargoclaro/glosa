@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 
 interface LoadingBarProps {
   duration?: number;
+  omitClassification?: boolean;
 }
 
 interface Step {
@@ -17,7 +18,7 @@ interface Step {
   speed: number; // How fast the percentage counter increments (1-10)
 }
 
-const steps: Step[] = [
+const defaultSteps: Step[] = [
   {
     id: 1,
     name: 'Clasificación',
@@ -115,11 +116,15 @@ const STEP_MESSAGES = {
   ],
 };
 
-const LoadingBar: React.FC<LoadingBarProps> = ({ duration = 120000 }) => {
-  const [currentStep, setCurrentStep] = useState(1);
+const LoadingBar: React.FC<LoadingBarProps> = ({ duration = 120000, omitClassification = false }) => {
+  const steps = omitClassification ? defaultSteps.filter((s) => s.id !== 1) : defaultSteps;
+  if (!steps.length) throw new Error('No steps defined for LoadingBar');
+  const [currentStep, setCurrentStep] = useState(steps[0]!.id);
   const [progress, setProgress] = useState(0);
   const [isComplete, setIsComplete] = useState(false);
-  const [currentMessage, setCurrentMessage] = useState(STEP_MESSAGES[1][0]);
+  const [currentMessage, setCurrentMessage] = useState(
+    STEP_MESSAGES[steps[0]!.id as keyof typeof STEP_MESSAGES][0]
+  );
   const [stepProgress, setStepProgress] = useState(0);
 
   // Select two random facts once when component mounts
@@ -136,7 +141,7 @@ const LoadingBar: React.FC<LoadingBarProps> = ({ duration = 120000 }) => {
 
   useEffect(() => {
     // Reset state when component mounts
-    setCurrentStep(1);
+    setCurrentStep(steps[0]!.id);
     setProgress(0);
     setStepProgress(0);
     setIsComplete(false);
@@ -166,7 +171,7 @@ const LoadingBar: React.FC<LoadingBarProps> = ({ duration = 120000 }) => {
         // When we reach the end, set full progress and clear interval
         setProgress(100);
         setStepProgress(100);
-        setCurrentStep(steps.length);
+        setCurrentStep(steps[steps.length - 1]!.id);
         setIsComplete(true);
         clearInterval(timer);
         return;
@@ -193,9 +198,9 @@ const LoadingBar: React.FC<LoadingBarProps> = ({ duration = 120000 }) => {
         lastStepIndex = currentStepIndex;
 
         // Reset message rotation for new step
-        const stepNum = currentStepIndex + 1;
+        const stepId = steps[currentStepIndex]!.id;
         const messagesForStep =
-          STEP_MESSAGES[stepNum as keyof typeof STEP_MESSAGES] || [];
+          STEP_MESSAGES[stepId as keyof typeof STEP_MESSAGES] || [];
 
         if (messagesForStep.length > 0) {
           setCurrentMessage(messagesForStep[0]);
@@ -223,9 +228,9 @@ const LoadingBar: React.FC<LoadingBarProps> = ({ duration = 120000 }) => {
             factDisplayed = true;
           } else {
             // For other steps, show the second message if available
-            const stepNum = currentStepIndex + 1;
+            const stepId2 = steps[currentStepIndex]!.id;
             const messagesForStep =
-              STEP_MESSAGES[stepNum as keyof typeof STEP_MESSAGES] || [];
+              STEP_MESSAGES[stepId2 as keyof typeof STEP_MESSAGES] || [];
             if (messagesForStep.length > 1) {
               setCurrentMessage(messagesForStep[1]);
             }
@@ -241,11 +246,11 @@ const LoadingBar: React.FC<LoadingBarProps> = ({ duration = 120000 }) => {
         setStepProgress(Math.min(Math.round(stepVisualProgress), 99)); // Cap at 99% until complete
       }
 
-      setCurrentStep(currentStepIndex + 1);
+      setCurrentStep(steps[currentStepIndex]!.id);
     }, updateInterval);
 
     return () => clearInterval(timer);
-  }, [duration, selectedFacts]);
+  }, [duration, selectedFacts, omitClassification]);
 
   return (
     <div className="mx-auto w-full max-w-2xl">

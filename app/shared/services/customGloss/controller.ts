@@ -67,6 +67,7 @@ export const analysis = api
       name: 'Glosa de Pedimento',
     });
     try {
+      console.log('[analysis] INICIO');
       langfuse.event({
         traceId: trace.id,
         name: 'Classification',
@@ -82,6 +83,8 @@ export const analysis = api
         };
       }
       const { value: expedienteWithoutData } = expedienteWithoutDataResult;
+      console.log('[analysis] Clasificación terminada');
+      console.log('[analysis] Expediente sin datos:', expedienteWithoutData);
 
       langfuse.event({
         traceId: trace.id,
@@ -91,6 +94,7 @@ export const analysis = api
         expedienteWithoutData,
         trace.id
       );
+      console.log('[analysis] Expediente estructurado:', expediente);
       const operationType =
         expediente.pedimento.encabezadoPrincipalDelPedimento.tipoDeOperacion;
       if (operationType === 'TRA') {
@@ -122,6 +126,7 @@ export const analysis = api
         };
       }
       const uploadedFiles = uploadedFilesResult.value;
+      console.log('[analysis] Archivos subidos:', uploadedFiles);
 
       const importerName =
         expediente.pedimento.encabezadoPrincipalDelPedimento.datosImportador
@@ -141,9 +146,11 @@ export const analysis = api
       if (!newCustomGloss) {
         throw new Error('Should never happen');
       }
+      console.log('[analysis] CustomGloss insertado:', newCustomGloss?.id);
 
       // Run risk analysis and persist
       const riskResults = runRiskAnalysis(expediente.pedimento);
+      console.log('[analysis] Riesgos analizados:', riskResults);
       if (riskResults.length > 0) {
         await db.insert(RiskAnalysis).values(
           riskResults.map((r) => ({
@@ -166,6 +173,7 @@ export const analysis = api
           };
         })
       );
+      console.log('[analysis] Archivos guardados en DB');
 
       await Promise.all(
         gloss.map(async ({ sectionName, validations }) => {
@@ -270,13 +278,14 @@ export const analysis = api
           );
         })
       );
+      console.log('[analysis] Tabs y validaciones insertadas');
 
       return {
         success: true,
         glossId: newCustomGloss.id,
       };
     } catch (error) {
-      console.error(error);
+      console.error('[analysis] ERROR:', error);
       return {
         success: false,
         message: 'Ocurrió un error interno',
@@ -331,4 +340,94 @@ export const markTabAsVerifiedByTabIdNCustomGlossID = api
     // We keep these outside the try-catch to maintain original behavior
     revalidatePath(`/gloss/${customGlossId}/analysis`);
     redirect(`/gloss/${customGlossId}/analysis`);
+  });
+
+export const previewClassification = api
+  .input(
+    zfd.formData({
+      files: z.array(z.instanceof(File)),
+    })
+  )
+  .mutation(async ({ input: { files } }) => {
+    const trace = langfuse.trace({
+      name: 'Glosa – Preview Classification',
+    });
+
+    try {
+      console.log('[previewClassification] INICIO');
+      const classificationResults = await classifyDocuments(files, trace.id);
+
+      // Helper: flatten all classification strings
+      const present = new Set<string>();
+      for (const result of classificationResults) {
+        if (typeof result.classification === 'string') {
+          present.add(result.classification);
+        } else if (Array.isArray(result.classification)) {
+          result.classification.forEach((c) => present.add(c.classification));
+        }
+      }
+      console.log('[previewClassification] Clasificación terminada:', Array.from(present));
+
+      type DocStatus = 'present' | 'missing';
+      const getStatus = (name: string): DocStatus =>
+        present.has(name) ? 'present' : 'missing';
+
+      const documents = [
+        {
+          name: 'Pedimento',
+          status: getStatus('Pedimento'),
+          required: true,
+        },
+        {
+          name: 'Factura',
+          status: getStatus('Factura'),
+          required: true,
+        },
+        {
+          name: 'Cove',
+          status: getStatus('Cove'),
+          required: true,
+        },
+        {
+          name: 'Bill of Lading / Air Waybill',
+          status:
+            present.has('Bill of Lading') || present.has('Air Waybill')
+              ? 'present'
+              : 'missing',
+          required: true,
+        },
+        {
+          name: 'Carta Regla 3.1.8',
+          status: getStatus('Carta Regla 3.1.8'),
+          required: false,
+        },
+        {
+          name: 'Acuse de Transporte',
+          status: getStatus('Acuse de Transporte'),
+          required: false,
+        },
+        {
+          name: 'Delivery Ticket',
+          status: getStatus('Delivery Ticket'),
+          required: false,
+        },
+        {
+          name: 'Shipper',
+          status: getStatus('Shipper'),
+          required: false,
+        },
+      ];
+      console.log('[previewClassification] Retornando documentos:', documents);
+
+      return {
+        success: true,
+        documents,
+      };
+    } catch (error) {
+      console.error('[previewClassification] ERROR:', error);
+      return {
+        success: false,
+        message: 'Error al clasificar los documentos',
+      };
+    }
   });
