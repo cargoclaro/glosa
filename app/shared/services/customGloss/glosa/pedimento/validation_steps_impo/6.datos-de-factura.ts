@@ -8,6 +8,7 @@ async function validateRfcFormat(
   traceId: string,
   pedimento: Pedimento,
   cove: Cove,
+  facturaIndex: number,
   carta318?: OCR
 ) {
   const rfcPedimento =
@@ -15,6 +16,9 @@ async function validateRfcFormat(
   const rfcCove = cove?.datosGeneralesDelDestinatario?.taxIdSinTaxIdRfcCurp;
   const carta318mkdown = carta318?.markdown_representation;
   const observaciones = pedimento.observacionesANivelPedimento;
+
+  const factura = pedimento.datosDelProveedorOComprador[0]?.facturas[facturaIndex];
+  const numeroFactura = factura?.numeroDeCFDIODocumentoEquivalente;
 
   const validation = {
     name: 'RFC',
@@ -28,6 +32,7 @@ async function validateRfcFormat(
           data: [
             { name: 'RFC', value: rfcPedimento },
             { name: 'Observaciones', value: observaciones },
+            { name: 'Número de factura', value: numeroFactura },
           ],
         },
         COVE: {
@@ -46,6 +51,7 @@ async function validateRfcFormat(
 async function validateCesionDerechos(
   traceId: string,
   pedimento: Pedimento,
+  facturaIndex: number,
   cartaSesion?: OCR,
   carta318?: OCR
 ) {
@@ -54,6 +60,9 @@ async function validateCesionDerechos(
   const cartaSesionmkdown = cartaSesion?.markdown_representation;
   const carta318mkdown = carta318?.markdown_representation;
   const observaciones = pedimento.observacionesANivelPedimento;
+
+  const factura = pedimento.datosDelProveedorOComprador[0]?.facturas[facturaIndex];
+  const numeroFactura = factura?.numeroDeCFDIODocumentoEquivalente;
 
   const validation = {
     name: 'Cesión de derechos',
@@ -67,6 +76,7 @@ async function validateCesionDerechos(
           data: [
             { name: 'Fecha de entrada', value: fechaEntradaPedimento },
             { name: 'Observaciones', value: observaciones },
+            { name: 'Número de factura', value: numeroFactura },
           ],
         },
         'Carta sesión': {
@@ -89,6 +99,7 @@ async function validateDatosImportador(
   traceId: string,
   pedimento: Pedimento,
   cove: Cove,
+  facturaIndex: number,
   carta318?: OCR
 ) {
   const rfcPedimento =
@@ -104,6 +115,9 @@ async function validateDatosImportador(
 
   const carta318mkdown = carta318?.markdown_representation;
   const observaciones = pedimento.observacionesANivelPedimento;
+
+  const factura = pedimento.datosDelProveedorOComprador[0]?.facturas[facturaIndex];
+  const numeroFactura = factura?.numeroDeCFDIODocumentoEquivalente;
 
   const domicilioCoveCompleto = domicilioCove
     ? [
@@ -135,6 +149,7 @@ async function validateDatosImportador(
             { name: 'Domicilio', value: domicilioPedimento },
             { name: 'Razón social', value: razonSocialPedimento },
             { name: 'Observaciones', value: observaciones },
+            { name: 'Número de factura', value: numeroFactura },
           ],
         },
         COVE: {
@@ -161,6 +176,7 @@ async function validateDatosProveedor(
   traceId: string,
   pedimento: Pedimento,
   cove: Cove,
+  facturaIndex: number,
   carta318?: OCR
 ) {
   const nombreProveedorPedimento =
@@ -175,6 +191,9 @@ async function validateDatosProveedor(
 
   const carta318mkdown = carta318?.markdown_representation;
   const observaciones = pedimento.observacionesANivelPedimento;
+
+  const factura = pedimento.datosDelProveedorOComprador[0]?.facturas[facturaIndex];
+  const numeroFactura = factura?.numeroDeCFDIODocumentoEquivalente;
 
   const domicilioProveedorCoveCompleto = domicilioProveedorCove
     ? [
@@ -205,6 +224,7 @@ async function validateDatosProveedor(
               value: pedimento.datosDelProveedorOComprador[0]?.idFiscal,
             },
             { name: 'Observaciones', value: observaciones },
+            { name: 'Número de factura', value: numeroFactura },
           ],
         },
         COVE: {
@@ -228,6 +248,7 @@ async function validateFechasYFolios(
   traceId: string,
   pedimento: Pedimento,
   cove: Cove,
+  facturaIndex: number,
   invoice?: OCR,
   carta318?: OCR
 ) {
@@ -238,6 +259,10 @@ async function validateFechasYFolios(
   const invoicemkdown = invoice?.markdown_representation;
   const carta318mkdown = carta318?.markdown_representation;
   const observaciones = pedimento.observacionesANivelPedimento;
+
+  const factura = pedimento.datosDelProveedorOComprador[0]?.facturas[facturaIndex];
+  const numeroFactura = factura?.numeroDeCFDIODocumentoEquivalente;
+  const fechaFactura = factura?.fecha;
 
   const validation = {
     name: 'Fechas de emisión',
@@ -251,6 +276,8 @@ async function validateFechasYFolios(
           data: [
             { name: 'Fecha de entrada', value: fechaEntradaPedimento },
             { name: 'Observaciones', value: observaciones },
+            { name: 'Número de factura', value: numeroFactura },
+            { name: 'Fecha factura pedimento', value: fechaFactura },
           ],
         },
         COVE: {
@@ -273,32 +300,29 @@ async function validateMonedaYEquivalencia(
   traceId: string,
   pedimento: Pedimento,
   cove: Cove,
+  facturaIndex: number,
+  tipoCambioDOF: number,
   carta318?: OCR,
   invoice?: OCR
 ) {
-  const monedaPedimento =
-    pedimento.datosDelProveedorOComprador[0]?.facturas[0]?.moneda;
+  const factura = pedimento.datosDelProveedorOComprador[0]?.facturas[facturaIndex];
+  const monedaPedimento = factura?.moneda;
+  const valorDolaresPedimento = factura?.valorDolares;
+  const valorFactura = factura?.valorMoneda;
+  const factorMonedaFactura = factura?.factorMoneda;
+  const numeroFactura = factura?.numeroDeCFDIODocumentoEquivalente;
+
   // TODO: Do this in a loop, instead of just checking the first mercancia
   const monedaCove = cove?.mercancias[0]?.datosDeLaMercancia?.tipoMoneda;
-  const valorDolaresPedimento =
-    pedimento.datosDelProveedorOComprador[0]?.facturas[0]?.valorDolares;
   const valorDolaresCoveTotal = cove?.mercancias?.reduce(
     (sum, item) => sum + (item?.datosDeLaMercancia?.valorTotalEnDolares || 0),
     0
   );
-  const valorFactura =
-    pedimento.datosDelProveedorOComprador[0]?.facturas[0]?.valorMoneda;
-  const factorMonedaFactura =
-    pedimento.datosDelProveedorOComprador[0]?.facturas[0]?.factorMoneda;
-  const fechaEntrada = pedimento.encabezadoPrincipalDelPedimento.fechas.entrada;
 
   const carta318mkdown = carta318?.markdown_representation;
   const invoicemkdown = invoice?.markdown_representation;
 
   const factorDof = 1;
-  const tipoCambioDOF = await getExchangeRate(
-    new Date(fechaEntrada ?? new Date())
-  );
 
   const observaciones = pedimento.observacionesANivelPedimento;
 
@@ -317,6 +341,7 @@ async function validateMonedaYEquivalencia(
             { name: 'Valor factura', value: valorFactura },
             { name: 'Factor moneda factura', value: factorMonedaFactura },
             { name: 'Observaciones', value: observaciones },
+            { name: 'Número de factura', value: numeroFactura },
           ],
         },
         COVE: {
@@ -361,19 +386,50 @@ export async function datosDeFactura({
   cartaSesion?: OCR;
   traceId: string;
 }) {
-  const validationsPromise = await Promise.all([
-    validateRfcFormat(traceId, pedimento, cove, carta318),
-    validateCesionDerechos(traceId, pedimento, cartaSesion, carta318),
-    validateDatosImportador(traceId, pedimento, cove, carta318),
-    validateDatosProveedor(traceId, pedimento, cove, carta318),
-    validateFechasYFolios(traceId, pedimento, cove, invoice, carta318),
-    validateMonedaYEquivalencia(traceId, pedimento, cove, carta318, invoice),
-  ]);
+  // Obtener todas las facturas del pedimento
+  const facturas = pedimento.datosDelProveedorOComprador[0]?.facturas || [];
+  
+  if (facturas.length === 0) {
+    return {
+      sectionName: 'Datos de factura',
+      validations: [],
+    };
+  }
 
-  return {
-    sectionName: 'Datos de factura',
-    validations: validationsPromise,
-  };
+  // Obtener el tipo de cambio UNA SOLA VEZ para todas las facturas
+  const fechaEntrada = pedimento.encabezadoPrincipalDelPedimento.fechas.entrada;
+  const exchangeRateResult = await getExchangeRate(
+    new Date(fechaEntrada ?? new Date())
+  );
+  
+  // Si hay error obteniendo el tipo de cambio, usar un valor por defecto y continuar
+  const tipoCambioDOF = exchangeRateResult.isOk() 
+    ? parseFloat(exchangeRateResult.value) 
+    : 20.0; // Valor por defecto en caso de error
+
+  // Procesar cada factura individualmente
+  const facturaValidationsPromises = facturas.map(async (_, facturaIndex) => {
+    const validationsPromise = await Promise.all([
+      validateRfcFormat(traceId, pedimento, cove, facturaIndex, carta318),
+      validateCesionDerechos(traceId, pedimento, facturaIndex, cartaSesion, carta318),
+      validateDatosImportador(traceId, pedimento, cove, facturaIndex, carta318),
+      validateDatosProveedor(traceId, pedimento, cove, facturaIndex, carta318),
+      validateFechasYFolios(traceId, pedimento, cove, facturaIndex, invoice, carta318),
+      validateMonedaYEquivalencia(traceId, pedimento, cove, facturaIndex, tipoCambioDOF, carta318, invoice),
+    ]);
+
+    const numeroFactura = facturas[facturaIndex]?.numeroDeCFDIODocumentoEquivalente || `${facturaIndex + 1}`;
+    
+    return {
+      sectionName: `Datos de factura ${numeroFactura}`,
+      validations: validationsPromise,
+    };
+  });
+
+  // Paralelizar el procesamiento de todas las facturas
+  const allFacturaValidations = await Promise.all(facturaValidationsPromises);
+  
+  return allFacturaValidations;
 }
 
 

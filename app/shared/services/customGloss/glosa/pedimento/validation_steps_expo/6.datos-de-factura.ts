@@ -10,6 +10,7 @@ async function validateRfcFormat(
   traceId: string,
   pedimento: Pedimento,
   cove: Cove,
+  facturaIndex: number,
   cfdi?: CFDI
 ) {
   // Extract RFC values from documents
@@ -17,6 +18,9 @@ async function validateRfcFormat(
     pedimento.encabezadoPrincipalDelPedimento.datosImportador.rfc;
   // Se supone que este valor siempre es el RFC en la exportación
   const rfcCove = cove?.datosGeneralesDelDestinatario?.taxIdSinTaxIdRfcCurp;
+
+  const factura = pedimento.datosDelProveedorOComprador[0]?.facturas[facturaIndex];
+  const numeroFactura = factura?.numeroDeCFDIODocumentoEquivalente;
 
   const validation = {
     name: 'Validación de los RFC',
@@ -27,7 +31,10 @@ async function validateRfcFormat(
     contexts: {
       PROVIDED: {
         pedimento: {
-          data: [{ name: 'RFC', value: rfcPedimento }],
+          data: [
+            { name: 'RFC', value: rfcPedimento },
+            { name: 'Número de factura', value: numeroFactura },
+          ],
         },
         cove: {
           data: [{ name: 'RFC destinatario', value: rfcCove }],
@@ -45,6 +52,7 @@ async function validateRfcFormat(
 async function validateCesionDerechos(
   traceId: string,
   pedimento: Pedimento,
+  facturaIndex: number,
   cartaSesion?: OCR,
   cfdi?: CFDI
 ) {
@@ -52,6 +60,9 @@ async function validateCesionDerechos(
   const fechaEntradaPedimento =
     pedimento.encabezadoPrincipalDelPedimento.fechas.entrada;
   const cartaSesionMkdown = cartaSesion?.markdown_representation;
+
+  const factura = pedimento.datosDelProveedorOComprador[0]?.facturas[facturaIndex];
+  const numeroFactura = factura?.numeroDeCFDIODocumentoEquivalente;
 
   const validation = {
     name: 'Validación de cesión de derechos y carta 3.1.8',
@@ -62,7 +73,10 @@ async function validateCesionDerechos(
     contexts: {
       PROVIDED: {
         pedimento: {
-          data: [{ name: 'Fecha de entrada', value: fechaEntradaPedimento }],
+          data: [
+            { name: 'Fecha de entrada', value: fechaEntradaPedimento },
+            { name: 'Número de factura', value: numeroFactura },
+          ],
         },
         cesionDeDerechos: {
           data: [{ name: 'Cesión de derechos', value: cartaSesionMkdown }],
@@ -81,6 +95,7 @@ async function validateDatosImportador(
   traceId: string,
   pedimento: Pedimento,
   cove: Cove,
+  facturaIndex: number,
   cfdi?: CFDI
 ) {
   // Extract values from documents
@@ -109,6 +124,9 @@ async function validateDatosImportador(
   const razonSocialCove =
     cove.datosGeneralesDelDestinatario.nombresORazonSocial;
 
+  const factura = pedimento.datosDelProveedorOComprador[0]?.facturas[facturaIndex];
+  const numeroFactura = factura?.numeroDeCFDIODocumentoEquivalente;
+
   const validation = {
     name: 'Validación de datos del exportador',
     description:
@@ -122,6 +140,7 @@ async function validateDatosImportador(
             { name: 'RFC', value: rfcPedimento },
             { name: 'Domicilio', value: domicilioPedimento },
             { name: 'Razón social', value: razonSocialPedimento },
+            { name: 'Número de factura', value: numeroFactura },
           ],
         },
         cove: {
@@ -145,6 +164,7 @@ async function validateDatosProveedor(
   traceId: string,
   pedimento: Pedimento,
   cove: Cove,
+  facturaIndex: number,
   cfdi?: CFDI
 ) {
   // Extract values from documents
@@ -174,6 +194,9 @@ async function validateDatosProveedor(
   const idProveedorCove =
     cove?.datosGeneralesDelProveedor?.taxIdSinTaxIdRfcCurp;
 
+  const factura = pedimento.datosDelProveedorOComprador[0]?.facturas[facturaIndex];
+  const numeroFactura = factura?.numeroDeCFDIODocumentoEquivalente;
+
   const validation = {
     name: 'Validación de datos comerciales del comprador',
     description:
@@ -187,6 +210,7 @@ async function validateDatosProveedor(
             { name: 'Nombre/Razón social', value: nombreProveedorPedimento },
             { name: 'Domicilio', value: domicilioProveedorPedimento },
             { name: 'ID Fiscal', value: idProveedorPedimento },
+            { name: 'Número de factura', value: numeroFactura },
           ],
         },
         cove: {
@@ -210,6 +234,7 @@ async function validateFechasYFolios(
   traceId: string,
   pedimento: Pedimento,
   cove: Cove,
+  facturaIndex: number,
   cfdi?: CFDI
 ) {
   // Extract values from documents
@@ -217,9 +242,9 @@ async function validateFechasYFolios(
     pedimento.encabezadoPrincipalDelPedimento.fechas.entrada;
   const fechaExpedicionCove = cove?.datosDelAcuseDeValor.fechaExpedicion;
 
-  const numeroCovePedimento =
-    pedimento.datosDelProveedorOComprador[0]?.facturas[0]
-      ?.numeroDeCFDIODocumentoEquivalente;
+  const factura = pedimento.datosDelProveedorOComprador[0]?.facturas[facturaIndex];
+  const numeroCovePedimento = factura?.numeroDeCFDIODocumentoEquivalente;
+  const fechaFactura = factura?.fecha;
   const numeroCove = cove?.datosDelAcuseDeValor.numeroDeFactura;
 
   const validation = {
@@ -234,6 +259,7 @@ async function validateFechasYFolios(
           data: [
             { name: 'Fecha de entrada', value: fechaEntradaPedimento },
             { name: 'Número de COVE', value: numeroCovePedimento },
+            { name: 'Fecha factura pedimento', value: fechaFactura },
           ],
         },
         cove: {
@@ -256,30 +282,25 @@ async function validateMonedaYEquivalencia(
   traceId: string,
   pedimento: Pedimento,
   cove: Cove,
+  facturaIndex: number,
+  tipoCambioDOF: number,
   cfdi?: CFDI
 ) {
+  const factura = pedimento.datosDelProveedorOComprador[0]?.facturas[facturaIndex];
   // Moneda
-  const monedaPedimento =
-    pedimento.datosDelProveedorOComprador[0]?.facturas[0]?.moneda;
+  const monedaPedimento = factura?.moneda;
+  const valorDolaresPedimento = factura?.valorDolares;
+  const valorFactura = factura?.valorMoneda;
+  const factorMonedaFactura = factura?.factorMoneda;
+  const numeroFactura = factura?.numeroDeCFDIODocumentoEquivalente;
+
   // TODO: Do this in a loop, instead of just checking the first mercancia
   const monedaCove = cove.mercancias[0]?.datosDeLaMercancia?.tipoMoneda;
-
-  // Valores DOF
-  const factorDof = 1.5;
-  const tipoCambioDOF = 17.1234;
-
-  // Extract values from documents
-  const valorDolaresPedimento =
-    pedimento.datosDelProveedorOComprador[0]?.facturas[0]?.valorDolares;
-  // TODO: Do this in a loop, instead of just checking the first mercancia
   const valorDolaresCove =
     cove.mercancias[0]?.datosDeLaMercancia?.valorTotalEnDolares;
 
-  // Valor factura from pedimento:
-  const valorFactura =
-    pedimento.datosDelProveedorOComprador[0]?.facturas[0]?.valorMoneda;
-  const factorMonedaFactura =
-    pedimento.datosDelProveedorOComprador[0]?.facturas[0]?.factorMoneda;
+  // Valores DOF
+  const factorDof = 1.5;
 
   const validation = {
     name: 'Validación de moneda y factor de equivalencia',
@@ -295,6 +316,7 @@ async function validateMonedaYEquivalencia(
             { name: 'Valor en dólares', value: valorDolaresPedimento },
             { name: 'Valor factura', value: valorFactura },
             { name: 'Factor moneda factura', value: factorMonedaFactura },
+            { name: 'Número de factura', value: numeroFactura },
           ],
         },
         cove: {
@@ -334,17 +356,37 @@ export async function datosDeFactura({
   cartaSesion?: OCR;
   traceId: string;
 }) {
-  const validationsPromise = await Promise.all([
-    validateRfcFormat(traceId, pedimento, cove, cfdi),
-    validateCesionDerechos(traceId, pedimento, cartaSesion, cfdi),
-    validateDatosImportador(traceId, pedimento, cove, cfdi),
-    validateDatosProveedor(traceId, pedimento, cove, cfdi),
-    validateFechasYFolios(traceId, pedimento, cove, cfdi),
-    validateMonedaYEquivalencia(traceId, pedimento, cove, cfdi),
-  ]);
+  // Obtener todas las facturas del pedimento
+  const facturas = pedimento.datosDelProveedorOComprador[0]?.facturas || [];
+  
+  if (facturas.length === 0) {
+    return {
+      sectionName: 'Datos de factura',
+      validations: [],
+    };
+  }
 
-  return {
-    sectionName: 'Datos de factura',
-    validations: validationsPromise,
-  };
+  // Procesar cada factura individualmente
+  const facturaValidationsPromises = facturas.map(async (_, facturaIndex) => {
+    const validationsPromise = await Promise.all([
+      validateRfcFormat(traceId, pedimento, cove, facturaIndex, cfdi),
+      validateCesionDerechos(traceId, pedimento, facturaIndex, cartaSesion, cfdi),
+      validateDatosImportador(traceId, pedimento, cove, facturaIndex, cfdi),
+      validateDatosProveedor(traceId, pedimento, cove, facturaIndex, cfdi),
+      validateFechasYFolios(traceId, pedimento, cove, facturaIndex, cfdi),
+      validateMonedaYEquivalencia(traceId, pedimento, cove, facturaIndex, 17.1234, cfdi), // Usando valor estático para expo
+    ]);
+
+    const numeroFactura = facturas[facturaIndex]?.numeroDeCFDIODocumentoEquivalente || `${facturaIndex + 1}`;
+    
+    return {
+      sectionName: `Datos de factura ${numeroFactura}`,
+      validations: validationsPromise,
+    };
+  });
+
+  // Paralelizar el procesamiento de todas las facturas
+  const allFacturaValidations = await Promise.all(facturaValidationsPromises);
+  
+  return allFacturaValidations;
 }
