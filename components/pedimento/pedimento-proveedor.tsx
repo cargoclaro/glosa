@@ -45,14 +45,17 @@ const PedimentoProveedor: React.FC<PedimentoProveedorProps> = ({
           </div>
 
           {datosDelProveedorOComprador.map(
-            ({
-              idFiscal,
-              nombreRazonSocial,
-              domicilio,
-              vinculacion,
-              facturas,
-            }) => (
-              <>
+            (
+              {
+                idFiscal,
+                nombreRazonSocial,
+                domicilio,
+                vinculacion,
+                facturas,
+              },
+              proveedorIndex
+            ) => (
+              <div key={`proveedor-${proveedorIndex}`}>
                 {/* Header row */}
                 <div className="grid grid-cols-12 gap-0 border-gray-400 border-b bg-white">
                   <div className="col-span-2 flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 font-semibold text-[10px] text-xs uppercase last:border-r-0">
@@ -86,16 +89,19 @@ const PedimentoProveedor: React.FC<PedimentoProveedorProps> = ({
                 </div>
 
                 {facturas.map(
-                  ({
-                    numeroDeCFDIODocumentoEquivalente,
-                    fecha,
-                    incoterm,
-                    moneda,
-                    valorMoneda,
-                    factorMoneda,
-                    valorDolares,
-                  }) => (
-                    <>
+                  (
+                    {
+                      numeroDeCFDIODocumentoEquivalente,
+                      fecha,
+                      incoterm,
+                      moneda,
+                      valorMoneda,
+                      factorMoneda,
+                      valorDolares,
+                    },
+                    facturaIndex
+                  ) => (
+                    <div key={`factura-${proveedorIndex}-${facturaIndex}`}>
                       {/* Facturas section - column headers */}
                       <div className="grid grid-cols-7 gap-0 border-gray-400 border-b bg-white">
                         <div className="flex min-h-6 items-center border-gray-400 border-r px-2 py-0.5 text-center font-semibold text-[10px] text-xs uppercase last:border-r-0">
@@ -145,10 +151,10 @@ const PedimentoProveedor: React.FC<PedimentoProveedorProps> = ({
                           {formatNumber(valorDolares)}
                         </div>
                       </div>
-                    </>
+                    </div>
                   )
                 )}
-              </>
+              </div>
             )
           )}
         </div>

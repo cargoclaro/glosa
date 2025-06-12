@@ -75,6 +75,15 @@ const PedimentoViewer = ({
     return pedimento.partidas.slice(startIdx, endIdx);
   }, [pedimento.partidas, currentPage]);
 
+  // Calcular el índice de inicio global para la página actual
+  const currentStartIndex = useMemo(() => {
+    if (currentPage <= 2) {
+      return 0; // Primera página de partidas empieza en índice 0
+    }
+    // Para páginas 3 en adelante
+    return PARTIDAS_PER_PAGE + (currentPage - 3) * PARTIDAS_PER_PAGE;
+  }, [currentPage]);
+
   // Navigation functions
   const goToNextPage = () => {
     if (currentPage < totalPages) {
@@ -104,10 +113,11 @@ const PedimentoViewer = ({
   const liquidacionData = {
     conceptos:
       pedimento.encabezadoPrincipalDelPedimento.cuadroDeLiquidacion.liquidaciones?.map(
-        (item) => ({
+        (item, index) => ({
           concepto: item.concepto || '',
           fp: item.fp?.toString() || '0',
           importe: item.importe || 0,
+          key: `liquidacion-${index}`,
         })
       ) || [],
     totales: {
@@ -229,21 +239,23 @@ const PedimentoViewer = ({
                         .aduanaEntradaOSalida ?? '-',
                   }}
                   identificadoresPedimento={pedimento.identificadoresPedimento.map(
-                    (id) => ({
+                    (id, index) => ({
                       clave: id.clave || '',
                       complemento_1: id.complemento1 || '',
                       complemento_2: id.complemento2 || '',
                       complemento_3: id.complemento3 || '',
+                      key: `identificador-${index}`,
                     })
                   )}
                   fechaEntrada={pedimento.encabezadoPrincipalDelPedimento.fechas.entrada?.toString()}
                   fechaPago={pedimento.encabezadoPrincipalDelPedimento.fechas.presentacion?.toString()}
                   // Generate tasas from partidas contribuciones if available
                   tasas={
-                    pedimento.partidas?.[0]?.contribuciones?.map((c) => ({
+                    pedimento.partidas?.[0]?.contribuciones?.map((c, index) => ({
                       contrib: c.contribucion || '',
                       cve_t_tasa: c.tipoDeTasa || '',
                       tasa: c.tasa?.toString() || '0',
+                      key: `tasa-${index}`,
                     })) || []
                   }
                   liquidacion={liquidacionData}
@@ -314,6 +326,7 @@ const PedimentoViewer = ({
                     tabs={tabs}
                     onClick={onClick}
                     tabInfoSelected={tabInfoSelected}
+                    startIndex={currentStartIndex}
                   />
                 </div>
               )}
@@ -339,6 +352,7 @@ const PedimentoViewer = ({
                   tabs={tabs}
                   onClick={onClick}
                   tabInfoSelected={tabInfoSelected}
+                  startIndex={currentStartIndex}
                 />
               </div>
             </div>

@@ -18,6 +18,7 @@ interface PedimentoPartidasProps {
   onClick: (keyword: string) => void;
   // Use the original tabInfoSelected structure
   tabInfoSelected?: TabInfoSelected;
+  startIndex?: number; // Nuevo: índice de inicio para el cálculo global
 }
 
 interface PartidaItemProps {
@@ -614,6 +615,7 @@ const PedimentoPartidas: React.FC<PedimentoPartidasProps> = ({
   tabs = [],
   onClick,
   tabInfoSelected = defaultTabInfo, // Use the prop as originally defined with a default
+  startIndex = 0, // Valor por defecto
 }) => {
   if (!partidas || partidas.length === 0) {
     return null;
@@ -625,11 +627,11 @@ const PedimentoPartidas: React.FC<PedimentoPartidasProps> = ({
 
       {/* Container */}
       <div>
-        {partidas.map((partida, index) => (
+        {partidas.map((partida, localIndex) => (
           <PartidaItem
-            key={partida.secuencia ?? index}
+            key={`partida-${startIndex + localIndex}`}
             partida={partida}
-            index={index}
+            index={startIndex + localIndex} // Usar índice global
             onClick={onClick}
             tabs={tabs}
             tabInfoSelected={tabInfoSelected} // Pass the object down
