@@ -9,24 +9,25 @@ async function validatePesosYBultos(
   transportDocument?: OCR,
   packingList?: PackingList,
   invoice?: OCR,
-  carta318?: OCR
+  carta318?: OCR,
+  acuseTransporte?: OCR
 ) {
-  // Extract weight values from pedimento
-  const pesoBrutoPedimento =
-    pedimento.encabezadoPrincipalDelPedimento.pesoBruto;
+  const pesoBrutoPedimento = pedimento.encabezadoPrincipalDelPedimento.pesoBruto;
   const observaciones = pedimento.observacionesANivelPedimento;
 
-  // Get markdown representations
   const transportDocmkdown = transportDocument?.markdown_representation;
   const invoicemkdown = invoice?.markdown_representation;
   const carta318mkdown = carta318?.markdown_representation;
+  const acuseTransportemkdown = acuseTransporte?.markdown_representation;
 
   const validation = {
     name: 'Peso bruto',
     description:
-      'Valida que los pesos y bultos declarados en el pedimento coincidan con los documentos anexos',
+      'Valida que los pesos declarados en el pedimento sean consistentes con documentos soporte incluyendo el acuse de transporte.',
     prompt:
-      'Para validar los pesos y bultos, sigue estos pasos detallados:\n\n1. Verifica que el peso bruto declarado en el pedimento sea igual o menor a alguno de los pesos declarados en el documento de transporte, packing list o factura.\n2. Asegúrate de que el peso bruto declarado en el pedimento coincida con el peso declarado en el documento de transporte, carta 318 o packing list. La relación entre estos pesos debe ser lógica y consistente.',
+      'Valida lo siguiente para el peso bruto declarado:\n\n' +
+      '1. Verifica que el peso bruto en el pedimento sea igual o menor al peso declarado en documento de transporte, lista de empaque, factura, certificado de peso del almacén o acuse de transporte (artículo 20, sección 7 LADUANA).\n' +
+      '2. Revisa que exista lógica y consistencia entre los pesos declarados en pedimento, carta 318, lista de empaque, factura y acuse de transporte.',
     contexts: {
       PROVIDED: {
         Pedimento: {
@@ -36,23 +37,30 @@ async function validatePesosYBultos(
           ],
         },
         'Documento de transporte': {
-          data: [
-            { name: 'Documento de transporte', value: transportDocmkdown },
-          ],
+          data: [{ name: 'Documento de transporte', value: transportDocmkdown }],
         },
         'Lista de empaque': {
-          data: [
-            {
-              name: 'Lista de empaque',
-              value: JSON.stringify(packingList, null, 2),
-            },
-          ],
+          data: [{ name: 'Lista de empaque', value: JSON.stringify(packingList, null, 2) }],
         },
         Factura: {
           data: [{ name: 'Factura', value: invoicemkdown }],
         },
         'Carta 318': {
           data: [{ name: 'Carta 318', value: carta318mkdown }],
+        },
+        'Acuse de transporte': {
+          data: [{ name: 'Acuse de transporte', value: acuseTransportemkdown }],
+        },
+      },
+      EXTERNAL: {
+        'Ley Aduanera': {
+          data: [
+            {
+              name: 'Artículo 20, Sección 7',
+              value:
+                'El peso bruto declarado en el pedimento deberá coincidir con el documento de transporte, lista de empaque, factura, certificado de peso del almacén o acuse de transporte.',
+            },
+          ],
         },
       },
     },
@@ -64,23 +72,21 @@ async function validatePesosYBultos(
 async function validateBultos(
   traceId: string,
   pedimento: Pedimento,
-  transportDocument?: OCR
+  transportDocument?: OCR,
+  acuseTransporte?: OCR
 ) {
-  // Extract bultos values from pedimento
-  const bultosPedimento =
-    pedimento.encabezadoPrincipalDelPedimento.marcasNumerosBultos
-      ?.totalDeBultos;
+  const bultosPedimento = pedimento.encabezadoPrincipalDelPedimento.marcasNumerosBultos?.totalDeBultos;
   const observaciones = pedimento.observacionesANivelPedimento;
 
-  // Get markdown representation
   const transportDocmkdown = transportDocument?.markdown_representation;
+  const acuseTransportemkdown = acuseTransporte?.markdown_representation;
 
   const validation = {
     name: 'Marcas, números y total de bultos',
     description:
-      'Valida que el número total de bultos coincida entre el pedimento y el documento de transporte',
+      'Valida que el número total de bultos coincida entre pedimento, documento de transporte y acuse de transporte.',
     prompt:
-      'El número total de bultos debe coincidir entre el pedimento y el documento de transporte. Si no hay documento de transporte, marcar como advertencia.',
+      'Valida que el número total de bultos declarados en el pedimento coincida con el documento de transporte y el acuse de transporte. Si falta documento o acuse, márcalo como advertencia.',
     contexts: {
       PROVIDED: {
         Pedimento: {
@@ -90,9 +96,10 @@ async function validateBultos(
           ],
         },
         'Documento de transporte': {
-          data: [
-            { name: 'Documento de transporte', value: transportDocmkdown },
-          ],
+          data: [{ name: 'Documento de transporte', value: transportDocmkdown }],
+        },
+        'Acuse de transporte': {
+          data: [{ name: 'Acuse de transporte', value: acuseTransportemkdown }],
         },
       },
     },
@@ -106,23 +113,19 @@ export async function pesosYBultos({
   transportDocument,
   packingList,
   invoice,
+  acuseTransporte,
   traceId,
 }: {
   pedimento: Pedimento;
   transportDocument?: OCR;
   packingList?: PackingList;
   invoice?: OCR;
+  acuseTransporte?: OCR;
   traceId: string;
 }) {
   const validationsPromise = await Promise.all([
-    validatePesosYBultos(
-      traceId,
-      pedimento,
-      transportDocument,
-      packingList,
-      invoice
-    ),
-    validateBultos(traceId, pedimento, transportDocument),
+    validatePesosYBultos(traceId, pedimento, transportDocument, packingList, invoice, undefined, acuseTransporte),
+    validateBultos(traceId, pedimento, transportDocument, acuseTransporte),
   ]);
 
   return {
@@ -130,13 +133,3 @@ export async function pesosYBultos({
     validations: validationsPromise,
   };
 }
-
-
-// TODO: Agregar validacion al peso bruto con el acuse de transporte.
-// Prompt:
-// Paso 1: Verifica si el peso bruto declarado en el pedimento es igual o menor que cualquiera de los pesos en el documento de transporte, lista de empaque o factura (si está disponible), certificado de peso del almacén o acuse de transporte (artículo 20, sección 7 de LADUANA).
-// Paso 2: Asegúrate de que haya lógica y consistencia entre los pesos declarados en todos los documentos (pedimento, carta 318, lista de empaque, etc.)
-
-// TODO: Validar el número total de bultos con el acuse de transporte. 
-
-
