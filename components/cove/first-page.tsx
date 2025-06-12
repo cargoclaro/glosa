@@ -8,6 +8,7 @@ interface ICoveHeaderProps {
   tabs?: CustomGlossTabTable[];
   onClick: (keyword: string) => void;
   tabInfoSelected?: { name: string; isCorrect: boolean; isVerified: boolean };
+  selectedCoveSection?: string;
 }
 
 export function CoveHeader({
@@ -15,13 +16,18 @@ export function CoveHeader({
   tabs = [],
   onClick,
   tabInfoSelected = { name: '', isCorrect: false, isVerified: false },
+  selectedCoveSection = '',
 }: ICoveHeaderProps) {
+  // Extraer el número de COVE del ID para usar en el mapeo
+  const coveNumber = cove.datosDelAcuseDeValor.idCove ? 
+    parseInt(cove.datosDelAcuseDeValor.idCove.split('-').pop() || '1') : 1;
+
   return (
     <div className="overflow-x-auto p-3">
       {/* COVE Title Section - Similar to Pedimento */}
       <div className="mb-4 w-full overflow-hidden rounded-md border border-gray-400">
         <div className="grid grid-cols-12 gap-0">
-          <div className="col-span-12 border-gray-400 border-b bg-gray-200 py-0.5 py-1 text-center font-semibold text-[11px] text-xs uppercase">
+          <div className="col-span-12 border-gray-400 border-b bg-gray-200 py-1 text-center font-semibold text-[11px] text-xs uppercase">
             COVE
           </div>
         </div>
@@ -41,20 +47,20 @@ export function CoveHeader({
           <div
             className={cn(
               'mb-1 cursor-pointer overflow-hidden rounded-md border-2',
-              getHighlightBorder('Datos Generales', tabs),
-              getHighlightFill('Datos Generales', tabInfoSelected)
+              getHighlightBorder('Datos Generales', tabs, coveNumber),
+              getHighlightFill('Datos Generales', tabInfoSelected, selectedCoveSection, tabs, coveNumber)
             )}
             onClick={() => onClick('Datos Generales')}
           >
             <div className="grid grid-cols-1 gap-1 border md:grid-cols-3">
-              <div className="border-r border-b bg-gray-100 p-1">
-                <h4 className="font-medium text-xs">Tipo de operación</h4>
+              <div className="border-r border-b bg-gray-100 p-1 font-medium">
+                <h4 className="text-xs">Tipo de operación</h4>
               </div>
-              <div className="border-r border-b bg-gray-100 p-1">
-                <h4 className="font-medium text-xs">Relación de facturas</h4>
+              <div className="border-r border-b bg-gray-100 p-1 font-medium">
+                <h4 className="text-xs">Relación de facturas</h4>
               </div>
-              <div className="border-b bg-gray-100 p-1">
-                <h4 className="font-medium text-xs">No. de factura</h4>
+              <div className="border-b bg-gray-100 p-1 font-medium">
+                <h4 className="text-xs">No. de factura</h4>
               </div>
 
               <div className="border-r p-1">
@@ -75,11 +81,11 @@ export function CoveHeader({
             </div>
 
             <div className="grid grid-cols-1 gap-1 border-x border-b md:grid-cols-2">
-              <div className="border-r bg-gray-100 p-1">
-                <h4 className="font-medium text-xs">Tipo de figura</h4>
+              <div className="border-r bg-gray-100 p-1 font-medium">
+                <h4 className="text-xs">Tipo de figura</h4>
               </div>
-              <div className="bg-gray-100 p-1">
-                <h4 className="font-medium text-xs">Fecha Exp.</h4>
+              <div className="bg-gray-100 p-1 font-medium">
+                <h4 className="text-xs">Fecha Exp.</h4>
               </div>
 
               <div className="border-r p-1">
@@ -98,8 +104,8 @@ export function CoveHeader({
 
           {/* Observations */}
           <div className="mt-1 border">
-            <div className="bg-gray-100 p-1">
-              <h4 className="font-medium text-xs">Observaciones</h4>
+            <div className="bg-gray-100 p-1 font-medium">
+              <h4 className="text-xs">Observaciones</h4>
             </div>
             <div className="min-h-[40px] p-1">
               <p className="text-xs">
@@ -120,17 +126,17 @@ export function CoveHeader({
           <div
             className={cn(
               'mb-1 cursor-pointer overflow-hidden rounded-md border-2',
-              getHighlightBorder('Datos Proveedor Destinatario', tabs),
-              getHighlightFill('Datos Proveedor Destinatario', tabInfoSelected)
+              getHighlightBorder('Datos Proveedor Destinatario', tabs, coveNumber),
+              getHighlightFill('Datos Proveedor Destinatario', tabInfoSelected, selectedCoveSection, tabs, coveNumber)
             )}
             onClick={() => onClick('Datos Proveedor Destinatario')}
           >
             <div className="grid grid-cols-1 gap-1 border-x border-t border-b md:grid-cols-2">
-              <div className="border-r bg-gray-100 p-1">
-                <h4 className="font-medium text-xs">Tipo de identificador</h4>
+              <div className="border-r bg-gray-100 p-1 font-medium">
+                <h4 className="text-xs">Tipo de identificador</h4>
               </div>
-              <div className="bg-gray-100 p-1">
-                <h4 className="font-medium text-xs">
+              <div className="bg-gray-100 p-1 font-medium">
+                <h4 className="text-xs">
                   Tax ID/Sin Tax ID/RFC/CURP
                 </h4>
               </div>
@@ -148,16 +154,16 @@ export function CoveHeader({
             </div>
 
             <div className="mt-1 grid grid-cols-1 gap-1 border-x border-b md:grid-cols-3">
-              <div className="border-r bg-gray-100 p-1 md:col-span-1">
-                <h4 className="font-medium text-xs">
+              <div className="border-r bg-gray-100 p-1 md:col-span-1 font-medium">
+                <h4 className="text-xs">
                   Nombre(s) o Razón Social
                 </h4>
               </div>
-              <div className="border-r bg-gray-100 p-1">
-                <h4 className="font-medium text-xs">Apellido paterno</h4>
+              <div className="border-r bg-gray-100 p-1 font-medium">
+                <h4 className="text-xs">Apellido paterno</h4>
               </div>
-              <div className="bg-gray-100 p-1">
-                <h4 className="font-medium text-xs">Apellido materno</h4>
+              <div className="bg-gray-100 p-1 font-medium">
+                <h4 className="text-xs">Apellido materno</h4>
               </div>
 
               <div className="border-r p-1 md:col-span-1">
@@ -183,29 +189,26 @@ export function CoveHeader({
             <div
               className={cn(
                 'mb-1 cursor-pointer overflow-hidden rounded-md border-2',
-                getHighlightBorder('Datos Proveedor Destinatario', tabs),
-                getHighlightFill(
-                  'Datos Proveedor Destinatario',
-                  tabInfoSelected
-                )
+                getHighlightBorder('Domicilio del proveedor', tabs, coveNumber),
+                getHighlightFill('Domicilio del proveedor', tabInfoSelected, selectedCoveSection, tabs, coveNumber)
               )}
               onClick={() => onClick('Domicilio del proveedor')}
             >
-              <h4 className="mt-1 mb-1 ml-1 font-semibold text-xs">
+              <h4 className="mt-1 mb-1 ml-1 text-xs font-semibold">
                 Domicilio del proveedor
               </h4>
               <div className="grid grid-cols-1 gap-1 border md:grid-cols-4">
-                <div className="border-r bg-gray-100 p-1 md:col-span-1">
-                  <h4 className="font-medium text-xs">Calle</h4>
+                <div className="border-r bg-gray-100 p-1 md:col-span-1 font-medium">
+                  <h4 className="text-xs">Calle</h4>
                 </div>
-                <div className="border-r bg-gray-100 p-1">
-                  <h4 className="font-medium text-xs">No. exterior</h4>
+                <div className="border-r bg-gray-100 p-1 font-medium">
+                  <h4 className="text-xs">No. exterior</h4>
                 </div>
-                <div className="border-r bg-gray-100 p-1">
-                  <h4 className="font-medium text-xs">No. interior</h4>
+                <div className="border-r bg-gray-100 p-1 font-medium">
+                  <h4 className="text-xs">No. interior</h4>
                 </div>
-                <div className="bg-gray-100 p-1">
-                  <h4 className="font-medium text-xs">Código postal</h4>
+                <div className="bg-gray-100 p-1 font-medium">
+                  <h4 className="text-xs">Código postal</h4>
                 </div>
 
                 <div className="border-r p-1 md:col-span-1">
@@ -231,11 +234,11 @@ export function CoveHeader({
               </div>
 
               <div className="mt-1 grid grid-cols-1 gap-1 border-x border-b md:grid-cols-2">
-                <div className="border-r bg-gray-100 p-1">
-                  <h4 className="font-medium text-xs">Colonia</h4>
+                <div className="border-r bg-gray-100 p-1 font-medium">
+                  <h4 className="text-xs">Colonia</h4>
                 </div>
-                <div className="bg-gray-100 p-1">
-                  <h4 className="font-medium text-xs">Localidad</h4>
+                <div className="bg-gray-100 p-1 font-medium">
+                  <h4 className="text-xs">Localidad</h4>
                 </div>
 
                 <div className="border-r p-1">
@@ -251,11 +254,11 @@ export function CoveHeader({
               </div>
 
               <div className="mt-1 grid grid-cols-1 gap-1 border-x border-b md:grid-cols-2">
-                <div className="border-r bg-gray-100 p-1">
-                  <h4 className="font-medium text-xs">Entidad federativa</h4>
+                <div className="border-r bg-gray-100 p-1 font-medium">
+                  <h4 className="text-xs">Entidad federativa</h4>
                 </div>
-                <div className="bg-gray-100 p-1">
-                  <h4 className="font-medium text-xs">Municipio</h4>
+                <div className="bg-gray-100 p-1 font-medium">
+                  <h4 className="text-xs">Municipio</h4>
                 </div>
 
                 <div className="border-r p-1">
@@ -271,8 +274,8 @@ export function CoveHeader({
               </div>
 
               <div className="mt-1 grid grid-cols-1 gap-1 border-x border-b">
-                <div className="bg-gray-100 p-1">
-                  <h4 className="font-medium text-xs">País</h4>
+                <div className="bg-gray-100 p-1 font-medium">
+                  <h4 className="text-xs">País</h4>
                 </div>
 
                 <div className="p-1">

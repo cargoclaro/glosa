@@ -9,6 +9,7 @@ type CoveMerchandiseProps = {
   tabs?: CustomGlossTabTable[];
   onClick: (keyword: string) => void;
   tabInfoSelected?: { name: string; isCorrect: boolean; isVerified: boolean };
+  selectedCoveSection?: string;
 };
 
 export function CoveMerchandise({
@@ -17,7 +18,12 @@ export function CoveMerchandise({
   tabs = [],
   onClick,
   tabInfoSelected = { name: '', isCorrect: false, isVerified: false },
+  selectedCoveSection = '',
 }: CoveMerchandiseProps) {
+  // Extraer el número de COVE del ID para usar en el mapeo
+  const coveNumber = cove.datosDelAcuseDeValor.idCove ? 
+    parseInt(cove.datosDelAcuseDeValor.idCove.split('-').pop() || '1') : 1;
+
   // Get all merchandise items except the first one (which is displayed on the recipient page)
   const allItems = cove.mercancias?.slice(1) || [];
 
@@ -32,7 +38,7 @@ export function CoveMerchandise({
       {/* COVE Title Section - Similar to Pedimento */}
       <div className="mb-4 w-full overflow-hidden rounded-md border border-gray-400">
         <div className="grid grid-cols-12 gap-0">
-          <div className="col-span-12 border-gray-400 border-b bg-gray-200 py-0.5 py-1 text-center font-semibold text-[11px] text-xs uppercase">
+          <div className="col-span-12 border-gray-400 border-b bg-gray-200 py-1 text-center font-semibold text-[11px] text-xs uppercase">
             COVE
           </div>
         </div>
@@ -63,8 +69,8 @@ export function CoveMerchandise({
             <div
               className={cn(
                 'mb-1 cursor-pointer overflow-hidden rounded-md border-2',
-                getHighlightBorder('Validación de mercancías', tabs),
-                getHighlightFill('Validación de mercancías', tabInfoSelected)
+                getHighlightBorder('Datos de la mercancía', tabs, coveNumber),
+                getHighlightFill('Datos de la mercancía', tabInfoSelected, selectedCoveSection, tabs, coveNumber)
               )}
               onClick={() => onClick('Datos de la mercancía')}
             >
@@ -74,11 +80,11 @@ export function CoveMerchandise({
                   <tr>
                     <td
                       colSpan={2}
-                      className="w-2/3 border bg-gray-200 p-1 font-medium text-xs"
+                      className="w-2/3 border bg-gray-200 p-1 text-xs font-medium"
                     >
                       Descripción genérica de la mercancía
                     </td>
-                    <td className="w-1/3 border bg-gray-200 p-1 font-medium text-xs">
+                    <td className="w-1/3 border bg-gray-200 p-1 text-xs font-medium">
                       Cantidad de mercancía
                     </td>
                   </tr>
@@ -103,13 +109,13 @@ export function CoveMerchandise({
 
                   {/* Third row - header for unit */}
                   <tr>
-                    <td className="border bg-gray-200 p-1 font-medium text-xs">
+                    <td className="border bg-gray-200 p-1 text-xs font-medium">
                       Unidad de Medida
                     </td>
-                    <td className="border bg-gray-200 p-1 font-medium text-xs">
+                    <td className="border bg-gray-200 p-1 text-xs font-medium">
                       Tipo moneda
                     </td>
-                    <td className="border bg-gray-200 p-1 font-medium text-xs">
+                    <td className="border bg-gray-200 p-1 text-xs font-medium">
                       Valor unitario
                     </td>
                   </tr>
@@ -139,11 +145,11 @@ export function CoveMerchandise({
                   <tr>
                     <td
                       colSpan={2}
-                      className="border bg-gray-200 p-1 font-medium text-xs"
+                      className="border bg-gray-200 p-1 text-xs font-medium"
                     >
                       Valor total
                     </td>
-                    <td className="border bg-gray-200 p-1 font-medium text-xs">
+                    <td className="border bg-gray-200 p-1 text-xs font-medium">
                       Valor total en dólares
                     </td>
                   </tr>
@@ -179,8 +185,8 @@ export function CoveMerchandise({
               {item.descripcionDeLaMercancia?.numeroDeSerie &&
                 item.descripcionDeLaMercancia?.numeroDeSerie.length > 0 && (
                   <div className="mt-1 grid grid-cols-1 gap-1 border-x border-b">
-                    <div className="bg-gray-100 p-1">
-                      <h4 className="font-medium text-xs">Números de serie</h4>
+                    <div className="bg-gray-100 p-1 font-medium">
+                      <h4 className="text-xs">Números de serie</h4>
                     </div>
 
                     <div className="p-1">

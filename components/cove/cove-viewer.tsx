@@ -17,6 +17,7 @@ interface ICoveViewerProps {
   tabs?: CustomGlossTabTable[];
   onClick: (keyword: string) => void;
   tabInfoSelected?: { name: string; isCorrect: boolean; isVerified: boolean };
+  selectedCoveSection?: string;
 }
 
 export function CoveViewer({
@@ -24,6 +25,7 @@ export function CoveViewer({
   tabs = [],
   onClick,
   tabInfoSelected = { name: '', isCorrect: false, isVerified: false },
+  selectedCoveSection = '',
 }: ICoveViewerProps) {
   const [currentPageType, setCurrentPageType] = useState<PageType>('header');
   const [merchandisePage, setMerchandisePage] = useState<number>(0); // For merchandise subpages
@@ -159,6 +161,7 @@ export function CoveViewer({
       tabs,
       onClick,
       tabInfoSelected,
+      selectedCoveSection,
     };
 
     switch (currentPageType) {
