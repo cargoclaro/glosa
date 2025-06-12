@@ -25,27 +25,42 @@ export async function glosaImpo({
   traceId: string;
 }) {
   // Ensure cove exists since it's required
-  const firstCove = cove[0];
-  if (!firstCove) {
+  if (!cove || cove.length === 0) {
     throw new Error('This should never happen');
   }
 
-  const results = await Promise.all([
-    pedimentoValidationStepsImpo({
-      pedimento,
-      cove: firstCove,
-      transportDocument: documentoDeTransporte?.[0],
-      packingList: packingList?.[0],
-      invoice: factura?.[0],
-      carta318: carta318?.[0],
-      traceId,
-    }),
-    coveValidationStepsImpo({
-      cove: firstCove,
-      invoice: factura?.[0],
-      carta318: carta318?.[0],
-      traceId,
-    }),
-  ]);
-  return results.flat();
+  // Procesar validaciones de pedimento con agregado de COVEs (usando el primero por ahora)
+  const pedimentoValidations = await pedimentoValidationStepsImpo({
+    pedimento,
+    cove: cove[0]!, // Ya verificamos que existe arriba
+    transportDocument: documentoDeTransporte?.[0],
+    packingList: packingList?.[0],
+    invoice: factura?.[0],
+    carta318: carta318?.[0],
+    traceId,
+  });
+
+  // Procesar validaciones para CADA COVE individualmente
+  const allCoveValidations = await Promise.all(
+    cove.map(async (singleCove, index) => {
+      const coveSteps = await coveValidationStepsImpo({
+        cove: singleCove,
+        invoice: factura?.[0],
+        carta318: carta318?.[0],
+        traceId,
+      });
+      
+      // En lugar de aplanar, mantener la estructura por secciones
+      return coveSteps.map(step => ({
+        sectionName: `COVE ${index + 1} - ${step.sectionName}`,
+        validations: step.validations
+      }));
+    })
+  );
+
+  // Aplanar los resultados de COVEs ya que cada COVE devuelve un array de secciones
+  const flattenedCoveValidations = allCoveValidations.flat();
+
+  // Combinar resultados de pedimento + todos los COVEs
+  return [...pedimentoValidations, ...flattenedCoveValidations];
 }
