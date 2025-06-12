@@ -27,7 +27,8 @@ export async function pedimentoValidationStepsImpo({
   carta318?: OCR;
   traceId: string;
 }) {
-  const validationResults = await Promise.all([
+  // Ejecutar validaciones que devuelven un solo resultado
+  const singleValidationResults = await Promise.all([
     numeroDePedimento({ pedimento, traceId }),
     tipoOperacion({
       pedimento,
@@ -49,20 +50,26 @@ export async function pedimentoValidationStepsImpo({
       ...(invoice ? { invoice } : {}),
       traceId,
     }),
-    datosDeFactura({
-      pedimento,
-      cove,
-      ...(carta318 ? { carta318 } : {}),
-      ...(invoice ? { invoice } : {}),
-      traceId,
-    }),
     datosDelTransporte({
       pedimento,
       ...(transportDocument ? { transportDocument } : {}),
       traceId,
     }),
-    ...(pedimento.partidas
-      ? pedimento.partidas.map((partida, index) =>
+  ]);
+
+  // Ejecutar validaciones de facturas que devuelven múltiples resultados
+  const facturaValidations = await datosDeFactura({
+    pedimento,
+    cove,
+    ...(carta318 ? { carta318 } : {}),
+    ...(invoice ? { invoice } : {}),
+    traceId,
+  });
+
+  // Ejecutar validaciones de partidas
+  const partidaValidations = pedimento.partidas
+    ? await Promise.all(
+        pedimento.partidas.map((partida, index) =>
           partidas({
             pedimento,
             invoice,
@@ -73,8 +80,15 @@ export async function pedimentoValidationStepsImpo({
             traceId,
           })
         )
-      : []),
-  ]);
+      )
+    : [];
 
-  return validationResults.flat();
+  // Combinar todos los resultados
+  const allResults = [
+    ...singleValidationResults,
+    ...(Array.isArray(facturaValidations) ? facturaValidations : [facturaValidations]),
+    ...partidaValidations.flat(),
+  ];
+
+  return allResults;
 }

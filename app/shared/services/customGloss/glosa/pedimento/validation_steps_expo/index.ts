@@ -10,7 +10,7 @@ import { datosDeFactura } from './6.datos-de-factura';
 import { tipoTransporte } from './7.datos-del-transporte';
 import { partidas } from './9.partidas';
 
-export function pedimentoValidationStepsExpo({
+export async function pedimentoValidationStepsExpo({
   pedimento,
   cove,
   cfdi,
@@ -27,7 +27,8 @@ export function pedimentoValidationStepsExpo({
   packingList?: PackingList;
   traceId: string;
 }) {
-  return Promise.all([
+  // Ejecutar validaciones que devuelven un solo resultado
+  const singleValidationResults = await Promise.all([
     numeroDePedimento({ pedimento, traceId }),
     tipoOperacion({ pedimento, traceId }),
     claveApendice15({ pedimento, traceId }),
@@ -45,8 +46,24 @@ export function pedimentoValidationStepsExpo({
       cfdi,
       traceId,
     }),
-    datosDeFactura({ pedimento, cove, cfdi, cartaSesion, traceId }),
     tipoTransporte({ pedimento, transportDocument, traceId }),
     partidas({ pedimento, cfdi, traceId }),
   ]);
+
+  // Ejecutar validaciones de facturas que devuelven múltiples resultados
+  const facturaValidations = await datosDeFactura({ 
+    pedimento, 
+    cove, 
+    cfdi, 
+    cartaSesion, 
+    traceId 
+  });
+
+  // Combinar todos los resultados
+  const allResults = [
+    ...singleValidationResults,
+    ...(Array.isArray(facturaValidations) ? facturaValidations : [facturaValidations]),
+  ];
+
+  return allResults;
 }
