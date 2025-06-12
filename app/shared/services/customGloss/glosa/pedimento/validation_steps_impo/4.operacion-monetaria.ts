@@ -2,6 +2,7 @@ import type { OCR } from '~/lib/utils';
 import type { Pedimento } from '../../../extract-and-structure/schemas';
 import { apendice14 } from '../../anexo-22/apendice-14';
 import { getExchangeRate } from '../../exchange-rate';
+import incotermLogic from '../../incoterms-logic.json';
 import { glosar } from '../../validation-result';
 
 
@@ -74,10 +75,6 @@ async function validateTipoCambio(traceId: string, pedimento: Pedimento) {
   return await glosar(validation, traceId, 'gpt-4o-mini');
 }
 
-
-// TODO: Quitar las validaciones siguiente y agregarlas en sus respectivos archivos 4.1. 
-
-
 async function validateValSeguros(
   traceId: string,
   pedimento: Pedimento,
@@ -99,6 +96,7 @@ async function validateValSeguros(
   const carta318mkdown = carta318?.markdown_representation;
   const invoicemkdown = invoice?.markdown_representation;
   const transportDocmkdown = transportDocument?.markdown_representation;
+  const incoterms = incotermLogic;
 
   const PROMPT_COMMON = (scenario: string) => `
   Eres un verificador aduanero experto. Devuelves JSON.
@@ -111,21 +109,35 @@ async function validateValSeguros(
     { "escenario": "...", "facturas":[ ... ] }
   `;
 
-  const PROMPT_ONE_ONE = `
-- - Caso: una sola factura y un solo Incoterm.
-- Si el Incoterm es CIP o CIF y “Val. Seguros” > 0 ➜ ADVERTENCIA (seguro ya incluido, Apéndice 14).
-- De lo contrario, compara “Val. Seguros” con cualquier monto de seguro en la factura; convierte USD→MXN usando el tipo de cambio y acepta ±3 %.
-- Verifica que “Val. Seguros” sea numérico, ≤12 dígitos y dos decimales.
-- Aplica excepciones de llenado si la clave de pedimento lo permite.
-`;
-
-  const PROMPT_ONE_N = `
-- Realiza la validación documental con base en las siguientes reglas: (1) Confirma que todas las facturas declaren el mismo Incoterm; si se detecta alguna discrepancia, indícalo como error. (2) Si el Incoterm común es CIP o CIF y el valor global de “Val. Seguros” es mayor que cero, emite una advertencia de inconsistencia conforme al Apéndice 14. (3) Examina cada factura individualmente para extraer cualquier monto de seguro declarado, conviértelo a MXN usando el tipo de cambio correspondiente y compáralo con su parte proporcional del valor global declarado en “Val. Seguros”. (4) Asegura que la suma de los seguros individuales coincida con el valor global de “Val. Seguros”, permitiendo una variación máxima de ±3 %. (5) Verifica que el formato de todos los campos “Val. Seguros” sea numérico y correcto.
-`;
-
-  const PROMPT_N_N = `
-- Verifica que todos los Incoterms presentes compartan el mismo modo de transporte o estén marcados como “cualquier”; si se detecta una mezcla incompatible, marca el error. Aplica la regla Incoterm-Seguro por factura: si el Incoterm incluye seguro y el monto seguro es mayor que cero, emite una advertencia; si es cero, la declaración es correcta. Para Incoterms sin seguro, si se declara un seguro, valida que su proporción respecto al valor comercial esté entre 0.1 % y 5 %; si está fuera de ese rango, marca el error. Evalúa la coherencia global sumando todos los montos de seguro a nivel factura y compara contra el total declarado en “Val. Seguros”; si la diferencia excede ±5 %, señala la discrepancia. Considera las responsabilidades asociadas al validar seguros y compatibilidades.
-`;
+   const PROMPT_ONE_N = `
+  Caso: una sola factura con un único Incoterm.  
+  “Valor Seguros” es el total de mercancía asegurada.
+  
+  – Si el Incoterm tiene incluye_seguro = true (CIP, CIF), espera que “Valor Seguros” exista y sea coherente con el valor comercial; si falta o es irrisorio ⇒ ERROR (omisión).  
+  – Si el Incoterm tiene incluye_seguro = false, la presencia de “Valor Seguros” es opcional. Cuando exista, compara contra la póliza o certificado; acepta ±5 %.  
+  `;
+  
+  /* ONE_N – varias facturas con el mismo Incoterm */
+   const PROMPT_ONE_ONE = `
+  Escenario: varias facturas, mismo Incoterm.
+  
+  1. Confirma que todas citen exactamente el mismo Incoterm; diferencia ⇒ ERROR.  
+  2. Si incluye_seguro = true (CIP, CIF)  
+     · “Valor Seguros” debe cubrir el valor comercial global; si falta ⇒ ERROR (omisión).  
+  3. Si incluye_seguro = false  
+     · “Valor Seguros” es opcional; cuando exista, la suma de valores asegurados de pólizas o certificados debe coincidir ±5 %.  
+  `;
+  
+  /* N_N – varias facturas con Incoterms distintos */
+   const PROMPT_N_N = `
+  Escenario: varias facturas con Incoterms distintos.
+  
+  • Verifica compatibilidad de modo de transporte; mezcla incompatible ⇒ ERROR.  
+  • Para facturas CIP / CIF (incluye_seguro = true), cada una debe aportar un valor asegurado coherente; ausencia ⇒ ERROR (omisión).  
+  • Para los demás Incoterms, el valor asegurado es opcional:  
+    – Si se declara, contrástalo con el valor comercial y póliza individual ±5 %.  
+  • Compara la suma de valores asegurados individuales con “Valor Seguros” total; diferencia >5 % ⇒ DISCREPANCIA_GLOBAL.
+  `;
 
   const facturas = pedimento.datosDelProveedorOComprador?.[0]?.facturas || [];
   const numberOfFacturas = facturas.length;
@@ -200,6 +212,11 @@ ${specificPrompt}`;
             { name: 'Definiciones Incoterm (Apendice 14)', value: apendice14 },
           ],
         },
+        'Incoterms con Transporte y Seguro': {
+          data: [
+            { name: 'Incoterms', value: incoterms },
+          ],
+        },
       },
     },
   } as const;
@@ -228,8 +245,29 @@ async function validateSeguros(
     name: 'Seguros',
     description:
       'Valida que el valor de seguros declarado en el pedimento coincida con los documentos que lo avalan',
-    prompt:
-      'Los seguros son incrementables que deben coincidir con los documentos que los avalan. Si hay un valor en dólares de seguros en la carta 318, factura o documento de transporte, se debe multiplicar por el tipo de cambio del pedimento para obtener el valor en pesos mexicanos y poder compararlo contra el valor de seguros declarado en el pedimento. Ten en cuenta que los incoterms pueden afectar la inclusión de los seguros en el valor de aduana.',
+    prompt:`Valida el campo “Seguros” (costo de seguro incrementable) y señala riesgo de **omisión** o **duplicidad**.
+
+      • Clasifica el escenario:  
+        – ONE_ONE (1 factura) · ONE_N (múltiples facturas, mismo Incoterm) · N_N (múltiples facturas, Incoterms distintos).
+
+      • Para cada factura extrae cualquier cargo de seguro presente en Carta 318, Factura o Documento de transporte y conviértelo a MXN con el tipo de cambio del pedimento.
+
+      • Incoterm CIP / CIF → el seguro está incluido en el precio:  
+        – Si “Seguros” > 0 o los documentos añaden un cargo, emite advertencia de **duplicidad** (fundamenta en Apéndice 14).  
+        – Si “Seguros” = 0 y no hay cargo documentado, considera correcto.
+
+      • Incoterms distintos de CIP / CIF → el seguro debe declararse aparte:  
+        – Si “Seguros” = 0 o no existe cargo en documentos, marca **omisión de incrementable**.  
+        – Si se declara monto, compara con la suma de cargos documentados (±3 %); si la diferencia supera el margen, marca **discrepancia**.  
+        – Si se declara monto sin respaldo documental, marca **sin respaldo**.
+
+      • ONE_N → confirma que todas las facturas usan el mismo Incoterm; discrepancia = error.  
+      • N_N  → verifica que los Incoterms sean compatibles con el mismo modo de transporte o “cualquier”; mezcla incompatible = error, luego aplica la regla anterior por factura y compara la suma de cargos con “Seguros” total (±3 %).
+
+      • Póliza global anual: si observaciones o documentos la mencionan, acepta que no haya cargos individuales siempre que “Seguros” muestre un prorrateo razonable; de lo contrario, marca omisión o falta de respaldo.
+
+      Cita Apéndice 14 y la documentación que respalde cada conclusión.
+      `,
     contexts: {
       PROVIDED: {
         Pedimento: {
@@ -285,7 +323,37 @@ async function validateFletes(
     description:
       'Valida que el valor de fletes declarado en el pedimento coincida con los documentos que lo avalan',
     prompt:
-      'Los fletes son incrementables que deben coincidir con los documentos que los avalan. Si hay un valor en dólares de fletes en la carta 318, factura o documento de transporte, se debe multiplicar por el tipo de cambio del pedimento para obtener el valor en pesos mexicanos y poder compararlo contra el valor de fletes declarado en el pedimento. Los incoterms pueden afectar la inclusión de los fletes en el valor de aduana.',
+`
+Valida el campo “Fletes” (costo de transporte incrementable) y detecta riesgo de **omisión** o **duplicidad** tomando la lógica de Incoterms provista.
+
+• Clasifica el escenario: ONE_ONE · ONE_N · N_N.
+
+• Extrae en cada factura cualquier cargo de flete documentado (Carta 318, Factura, BL/AWB/CMR) y conviértelo a MXN con el tipo de cambio del pedimento.
+
+• Aplica las reglas según la tabla:
+
+  – Incoterms con **incluye_flete = true**  
+    CIF, CIP, CFR, CPT, DAP, DPU, DDP  
+    · El flete ya forma parte del precio.  
+    · Si “Fletes” > 0 o el documento muestra un cargo extra ⇒ ADVERTENCIA por **duplicidad**.
+
+  – Incoterms con **incluye_flete = false**  
+    EXW, FCA, FAS, FOB  
+    · El flete debe declararse aparte (incrementable_flete = “sí”).  
+    · Si “Fletes” = 0 o no hay cargo documentado ⇒ ERROR por **omisión de incrementable**.  
+    · Si se declara monto, compara con la suma de cargos documentados (±3 %); diferencia mayor ⇒ ERROR por **discrepancia**.  
+    · Si se declara monto sin respaldo documental ⇒ ERROR por **sin respaldo**.
+
+• ONE_N → asegúrate de que todas las facturas citen el mismo Incoterm; cualquier diferencia = ERROR_INCONSISTENTE.
+
+• N_N → verifica compatibilidad del modo de transporte:  
+  · FAS, FOB, CFR y CIF son marítimos; mezclar con FCA (cualquier) es válido, pero mezclar marítimo con EXW terrestre puramente se acepta solo si alguno está marcado “cualquier”.  Si hay mezcla incompatible ⇒ ERROR_TRANSPORTE.  
+  · Después aplica la regla anterior por factura y comprueba que la suma de cargos documentados coincida con “Fletes” total (±3 %).
+
+• Contrato marco/póliza global de flete: si las observaciones lo mencionan, acepta que no existan cargos individuales siempre que “Fletes” muestre un prorrateo razonable; si no, marca omisión o falta de respaldo.
+
+Cita siempre la fila de la tabla de Incoterms o el documento que respalde cada advertencia o error.
+`,
     contexts: {
       PROVIDED: {
         Pedimento: {
@@ -341,7 +409,27 @@ async function validateEmbalajes(
     description:
       'Valida que el valor de embalajes declarado en el pedimento coincida con los documentos que lo avalan',
     prompt:
-      'Los embalajes son incrementables que deben coincidir con los documentos que los avalan. Si hay un valor en dólares de embalajes en la carta 318, factura o documento de transporte, se debe multiplicar por el tipo de cambio del pedimento para obtener el valor en pesos mexicanos y poder compararlo contra el valor de embalajes declarado en el pedimento. Ten en cuenta que los incoterms pueden afectar la inclusión de los embalajes en el valor de aduana.',
+      `
+Valida el campo “Embalajes” (costo de material y mano de obra de empaque) y detecta riesgo de **omisión**, **duplicidad** o **falta de respaldo**.
+
+• Clasifica el escenario: ONE_ONE · ONE_N · N_N.
+
+• Para cada factura, localiza cualquier cargo de embalaje en Carta 318, Factura o Documento de transporte y conviértelo a MXN con el tipo de cambio del pedimento.
+
+• Regla Incoterm-Embalaje (aplica a **todos** los Incoterms; el vendedor debe asumir embalaje básico conforme a las reglas 9 A/9 B):  
+  – Si los documentos **no** desglosan un cargo de embalaje y el pedimento declara un valor > 0 en “Embalajes” ⇒ ADVERTENCIA de **duplicidad** (el costo ya está incluido en el precio).  
+  – Si los documentos **sí** muestran un cargo separado y “Embalajes” = 0 ⇒ ERROR por **omisión de incrementable**.  
+  – Si ambos muestran monto, compara la suma documentada con el valor en el pedimento; tolera ±3 %.  
+     · Diferencia > 3 % ⇒ ERROR por **discrepancia**.  
+     · Si el pedimento declara monto y los documentos no coinciden en absoluto ⇒ ERROR por **sin respaldo**.
+
+• ONE_N → comprueba que todas las facturas usen el mismo Incoterm; discrepancia = ERROR.  
+• N_N  → mezcla de modos de transporte no afecta embalaje; aplica la regla factura por factura y verifica que la suma documentada coincida con “Embalajes” total ±3 %.
+
+• Contrato o póliza global de embalaje especial: si observaciones la mencionan, acepta que los documentos no muestren cargos individuales siempre que “Embalajes” presente un prorrateo razonable; de lo contrario, marca omisión o sin respaldo.
+
+Cita la cláusula 9 A/9 B de los Incoterms 2020 o la documentación correspondiente para justificar cada advertencia o error.
+`,
     contexts: {
       PROVIDED: {
         Pedimento: {
@@ -398,7 +486,32 @@ async function validateOtrosIncrementables(
     description:
       'Valida que el valor de otros incrementables declarado en el pedimento coincida con los documentos que lo avalan',
     prompt:
-      'Otros incrementables son los valores de algun tipo de servicio que no sea fletes, seguros o embalajes. Ten en cuenta que los incoterms pueden afectar la inclusión de los otros incrementables en el valor de aduana.',
+      `
+Valida el campo “Otros incrementables” (cualquier gasto distinto de flete, seguro o embalaje) y detecta riesgo de **omisión**, **duplicidad** o **sin respaldo**.
+
+• Clasifica el escenario: ONE_ONE · ONE_N · N_N.
+
+• Para cada factura identifica cargos tales como: gastos de carga/descarga, maniobras, regalías, licencias, almacenaje previo al despacho, inspecciones especiales, documentos adicionales, etc. Extrae el monto, convierte a MXN con el tipo de cambio del pedimento y etiqueta cada concepto.
+
+• Lógica general — independientemente del Incoterm:  
+  – Si los documentos muestran cargos y el pedimento declara “Otros incrementables” = 0 ⇒ ERROR por **omisión**.  
+  – Si el pedimento declara un monto y los documentos no muestran ningún cargo justificable ⇒ ERROR por **sin respaldo**.  
+  – Si ambos declaran monto, compara la suma documentada con el valor en el pedimento; tolerancia ±3 %.  
+    · Diferencia > 3 % ⇒ ERROR por **discrepancia**.  
+    · Monto exacto o dentro del margen ⇒ OK.
+
+• Ajuste por Incoterm:  
+  – Cuando un Incoterm incluya implícitamente cierto servicio (ej. inspección de exportación bajo FOB, despacho en origen bajo FCA), no debería añadirse como “Otros incrementables”.  
+    · Si se detecta un cargo adicional por un servicio ya cubierto por el vendedor según Incoterm, emite ADVERTENCIA por **duplicidad** y cita Apéndice 14.  
+  – Si el servicio corresponde al comprador según el Incoterm y no se refleja en “Otros incrementables”, marca omisión.
+
+• ONE_N → confirma que todas las facturas usen el mismo Incoterm; discrepancia = ERROR.  
+• N_N  → mezcla de modos transporte no afecta “Otros incrementables”; aplica la regla por factura y verifica que la suma documentada coincida con el total del pedimento ±3 %.
+
+• Contrato marco o tarifa anual: si observaciones indican un acuerdo global para algún servicio (ej. inspección fitosanitaria anual), acepta ausencia de cargos individuales siempre que “Otros incrementables” refleje un prorrateo razonable; de lo contrario, marca omisión o falta de respaldo.
+
+Cita la cláusula pertinente del Incoterm o la línea exacta del documento que justifique cada advertencia o error.
+`,
     contexts: {
       PROVIDED: {
         Pedimento: {
@@ -613,3 +726,6 @@ export async function operacionMonetaria({
     validations: validationsPromise,
   };
 }
+
+
+
