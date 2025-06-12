@@ -25,12 +25,14 @@ interface IAnalysis {
   tabs: Tabs[];
   tabSelectedFromDocument: string;
   setTabInfoSelected: (tab: ITabInfoSelected) => void;
+  tabInfoSelected: ITabInfoSelected;
 }
 
 const Analysis = ({
   tabs,
   setTabInfoSelected,
   tabSelectedFromDocument,
+  tabInfoSelected,
 }: IAnalysis) => {
   const scrollContainerRef = useRef<HTMLUListElement>(null);
   const { isOpen, openMenu, closeMenu, menuRef } = useModal(false);
@@ -133,7 +135,10 @@ const Analysis = ({
   );
 
   useEffect(() => {
+    console.log('useEffect triggered with tabSelectedFromDocument:', tabSelectedFromDocument);
+    
     if (tabSelectedFromDocument !== '') {
+      // Lógica para pedimento y otras secciones (mantenemos la lógica original)
       if (tabSelectedFromDocument === 'NUM. PEDIMENTO:') {
         handleTabClick('Número de pedimento');
       } else if (
@@ -174,21 +179,19 @@ const Analysis = ({
         tabSelectedFromDocument === 'OBSERVACIONES A NIVEL PARTIDA'
       ) {
         handleTabClick('Partidas');
-      } else if (tabSelectedFromDocument === 'Datos generales del proveedor') {
-        handleTabClick('Datos Generales');
-      } else if (
-        tabSelectedFromDocument === 'Domicilio del proveedor' ||
-        tabSelectedFromDocument === 'Datos generales del destinatario' ||
-        tabSelectedFromDocument === 'Domicilio del destinatario'
-      ) {
-        handleTabClick('Datos Proveedor Destinatario');
-      } else if (tabSelectedFromDocument === 'Datos de la mercancía') {
-        handleTabClick('Validación de mercancías');
       } else {
         handleTabClick(tabSelectedFromDocument);
       }
     }
-  }, [tabSelectedFromDocument, handleTabClick]);
+  }, [tabSelectedFromDocument]);
+
+  // Nuevo useEffect para sincronizar tabSelected con tabInfoSelected desde el padre
+  useEffect(() => {
+    if (tabInfoSelected.name !== tabSelected) {
+      console.log('🔄 Syncing tabSelected:', tabSelected, '->', tabInfoSelected.name);
+      setTabSelected(tabInfoSelected.name);
+    }
+  }, [tabInfoSelected.name]);
 
   return (
     <>
@@ -583,6 +586,7 @@ const DataListForSummaryCard = ({
       {data.map((item) => (
         <li
           key={item.id}
+          data-validation-name={item.name}
           className="group relative flex flex-col rounded-lg border bg-white shadow transition-all duration-200 hover:shadow-md"
           style={{
             borderColor: item.isCorrect ? '#10b98180' : '#fbbf2480', // green-500 or yellow-400 colors with alpha
