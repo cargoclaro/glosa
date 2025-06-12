@@ -538,10 +538,59 @@ async function validateIdentificadores(
   traceId: string,
   identificador: Partida['identificadores'][number]
 ) {
+  // Saltear validación para identificadores no especificados durante la extracción
+  // TODO: Preguntas y validar la completitud de identificadores
+  if (identificador.identificador === 'NO ESPECIFICADO') {
+    return {
+      validation: {
+        name: 'Identificadores',
+        description: 'Identificador no especificado - se omite la validación',
+        isValid: false,
+        llmAnalysis: 'El identificador no fue especificado durante la extracción del documento, por lo que no se puede validar.',
+        actionsToTake: ['Verificar manualmente el identificador en el pedimento físico']
+      },
+      contexts: {
+        PROVIDED: {
+          Identificador: {
+            data: [
+              {
+                name: 'Identificador',
+                value: JSON.stringify(identificador, null, 2),
+              },
+            ],
+          },
+        },
+      },
+    };
+  }
+
+  // Manejar identificadores que no estén en la lista de identificadores conocidos
   if (!(identificador.identificador in IDENTIFICADORES)) {
-    throw new Error(
-      `Identificador ${identificador.identificador} no encontrado`
-    );
+    return {
+      validation: {
+        name: 'Identificadores',
+        description: `Identificador "${identificador.identificador}" no reconocido - se omite la validación`,
+        isValid: false,
+        llmAnalysis: `El identificador "${identificador.identificador}" no se encuentra en el catálogo del apéndice 8 de identificadores conocidos.`,
+        actionsToTake: [
+          'Verificar manualmente el identificador en el pedimento físico',
+          'Consultar el apéndice 8 actualizado para validar este identificador',
+          'Contactar a la autoridad aduanera si el identificador es desconocido'
+        ]
+      },
+      contexts: {
+        PROVIDED: {
+          Identificador: {
+            data: [
+              {
+                name: 'Identificador',
+                value: JSON.stringify(identificador, null, 2),
+              },
+            ],
+          },
+        },
+      },
+    };
   }
   // Hack since TS doesn't narrow string types for some reason
   const identificadorFundamentoLegal =
