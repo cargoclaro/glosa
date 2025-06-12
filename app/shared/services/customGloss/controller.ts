@@ -132,7 +132,7 @@ export const analysis = api
           timeSaved: 20,
           moneySaved: 1000,
           importerName,
-          cove: expediente.cove[0],
+          cove: expediente.cove, // Ahora guardamos todos los COVEs
           pedimento: expediente.pedimento,
         })
         .returning();
@@ -157,7 +157,17 @@ export const analysis = api
           const data = {
             name: sectionName,
             isCorrect: validations.every(
-              ({ validation: { isValid } }) => isValid
+              (validationResult: any) => {
+                if (!validationResult?.validation) {
+                  console.error(`❌ ERROR: validationResult.validation is undefined for section ${sectionName}`, validationResult);
+                  return false; // Default to false if validation is missing
+                }
+                if (validationResult.validation.isValid === undefined) {
+                  console.error(`❌ ERROR: isValid is undefined for section ${sectionName}`, validationResult.validation);
+                  return false; // Default to false if isValid is missing
+                }
+                return validationResult.validation.isValid;
+              }
             ),
             fullContext: true,
             isVerified: false,
@@ -171,10 +181,13 @@ export const analysis = api
             throw new Error('Should never happen');
           }
           await Promise.all(
-            validations.map(async ({ contexts, validation }) => {
+            validations.map(async (validationResult: any) => {
+              const { contexts, validation } = validationResult;
               // Remove null bytes from objects before inserting into the database
               function removeNullBytes<T>(obj: T): T {
+                if (!obj) return obj;
                 const json = JSON.stringify(obj);
+                if (!json) return obj;
                 const cleaned = json.replace(/\\u0000/g, '');
                 return JSON.parse(cleaned) as T;
               }
@@ -194,15 +207,15 @@ export const analysis = api
                 throw new Error('Should never happen');
               }
               await Promise.all([
-                ...cleanedValidation.actionsToTake.map((action) =>
+                ...cleanedValidation.actionsToTake.map((action: string) =>
                   db.insert(CustomGlossTabValidationStepActionToTake).values({
                     description: action,
                     customGlossTabValidationStepId: insertedValidationStep.id,
                   })
                 ),
-                ...Object.entries(contexts).flatMap(([contextType, origins]) =>
-                  Object.entries(origins).map(
-                    async ([origin, contextValue]) => {
+                ...Object.entries(contexts as Record<string, any>).flatMap(([contextType, origins]) =>
+                  Object.entries(origins as Record<string, any>).map(
+                    async ([origin, contextValue]: [string, any]) => {
                       const [insertedContext] = await db
                         .insert(CustomGlossTabContext)
                         .values({
@@ -216,7 +229,7 @@ export const analysis = api
                         throw new Error('Should never happen');
                       }
                       await Promise.all(
-                        contextValue.data.map(({ name, value }) =>
+                        contextValue.data.map(({ name, value }: { name: string; value: any }) =>
                           db.insert(CustomGlossTabContextData).values({
                             name,
                             value:

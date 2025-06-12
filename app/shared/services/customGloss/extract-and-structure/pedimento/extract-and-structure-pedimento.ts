@@ -85,10 +85,13 @@ export async function extractAndStructurePedimento(
 ) {
   const pages = await splitPdfIntoPages(file);
 
-  // Classify the first three pages only
-  const pagesToClassify = pages.slice(0, 3);
+  // 🎯 CORRECCIÓN: Omitir las primeras 2 páginas y clasificar desde la página 3
+  // Las páginas 1-2 típicamente contienen solo datos generales del pedimento/proveedor
+  // Las partidas reales usualmente empiezan en la página 3 o posterior
+  const skipPages = 2; // Omitir páginas 1 y 2
+  const pagesToClassify = pages.slice(skipPages, skipPages + 3); // Clasificar páginas 3-5
 
-  // Parallelize classification of all pages to find first 'Partidas' quicker
+  // Parallelize classification of selected pages to find first 'Partidas' quicker
   const classificationPromises = pagesToClassify.map((pageBase64, index) =>
     generateObject({
       model: google('gemini-2.5-flash-preview-04-17'),
@@ -126,15 +129,20 @@ export async function extractAndStructurePedimento(
   const classifications = (await Promise.all(classificationPromises)).map(
     (result) => result.object
   );
+  
   const firstPartidasPageIndex = classifications.findIndex(
     (c) => c === 'Partidas'
   );
+  
   if (firstPartidasPageIndex === -1) {
     throw new Error('Should never happen');
   }
 
+  // Ajustar índice para tener en cuenta las páginas omitidas
+  const actualFirstPartidasPageIndex = skipPages + firstPartidasPageIndex;
+
   // Create PDF with all datos generales pages (including the first partidas page)
-  const datosGeneralesPages = pages.slice(0, firstPartidasPageIndex + 1);
+  const datosGeneralesPages = pages.slice(0, actualFirstPartidasPageIndex + 1);
 
   // Split datosGeneralesPages into first page and remaining pages
   const [firstPageBase64, ...otherPagesBase64] = datosGeneralesPages;
@@ -147,7 +155,7 @@ export async function extractAndStructurePedimento(
       : '';
 
   // Get all partidas pages starting from firstPartidasPageIndexInPages
-  const partidasPages = pages.slice(firstPartidasPageIndex);
+  const partidasPages = pages.slice(actualFirstPartidasPageIndex);
 
   const { encabezadoPrincipalDelPedimento, ...restOfPedimento } =
     datosGeneralesDePedimentoSchema.shape;
@@ -230,7 +238,7 @@ export async function extractAndStructurePedimento(
         schema: z.object({ partidasCount: z.number() }),
         experimental_telemetry: {
           isEnabled: true,
-          functionId: `Count partidas on page ${firstPartidasPageIndex + pageIndex + 1}`,
+          functionId: `Count partidas on page ${actualFirstPartidasPageIndex + pageIndex + 1}`,
           metadata: {
             langfuseTraceId: parentTraceId,
             langfuseUpdateParent: false,
@@ -278,7 +286,7 @@ export async function extractAndStructurePedimento(
             schema: partidaSchema,
             experimental_telemetry: {
               isEnabled: true,
-              functionId: `Extract partida ${i} from page ${firstPartidasPageIndex + pageIndex + 1}`,
+              functionId: `Extract partida ${i} from page ${actualFirstPartidasPageIndex + pageIndex + 1}`,
               metadata: {
                 langfuseTraceId: parentTraceId,
                 langfuseUpdateParent: false,
