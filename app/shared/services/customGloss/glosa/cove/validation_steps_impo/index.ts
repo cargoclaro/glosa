@@ -4,7 +4,7 @@ import { datosGenerales } from './1.datos-generales';
 import { proveedorDestinatario } from './2.datos-proveedor-destinatario';
 import { mercancias } from './3.validacion-mercancias';
 
-export function coveValidationStepsImpo({
+export async function coveValidationStepsImpo({
   cove,
   invoice,
   carta318,
@@ -15,7 +15,7 @@ export function coveValidationStepsImpo({
   carta318?: OCR;
   traceId: string;
 }) {
-  return Promise.all([
+  const validationResults = await Promise.all([
     datosGenerales({
       cove,
       ...(invoice ? { invoice } : {}),
@@ -35,4 +35,6 @@ export function coveValidationStepsImpo({
       traceId,
     }),
   ]);
+
+  return validationResults.flat();
 }

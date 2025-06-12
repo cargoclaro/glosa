@@ -67,14 +67,14 @@ export async function numeroDePedimento({
   pedimento: Pedimento;
   traceId: string;
 }) {
-  const validationsPromise = await Promise.all([
+  const validations = await Promise.all([
     validateLongitud(pedimento, traceId),
     validateAñoPedimento(pedimento, traceId),
   ]);
 
   return {
     sectionName: 'Número de pedimento',
-    validations: validationsPromise,
+    validations,
   };
 }
 
