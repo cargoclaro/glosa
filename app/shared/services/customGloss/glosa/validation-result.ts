@@ -155,10 +155,14 @@ export async function glosar(
   });
 
   return {
-    validation: {
-      name: validation.name,
-      description: validation.description,
-      ...glosaResult,
+    name: validation.name,
+    description: validation.description,
+    result: {
+      isValid: glosaResult.isValid,
+      description: glosaResult.llmAnalysis,
+      summary: glosaResult.summary,
+      contextSummary: glosaResult.contextSummary,
+      actionsToTake: glosaResult.actionsToTake,
     },
     contexts: validation.contexts,
   };
