@@ -17,7 +17,7 @@ interface IPedimentAnalysisNFinish {
   moneySaved: number;
   tabs: GlossTabs[];
   files: CustomGlossFileTable[];
-  cove: Cove | null;
+  coves: Cove[]; // Ahora es un array de COVEs
   pedimento: Pedimento | null;
 }
 
@@ -28,6 +28,9 @@ const PedimentAnalysisNFinish = ({
 }) => {
   const [documentSelected, setDocumentSelected] = useState('PEDIMENTO');
   const [tabSelectedFromDocument, setTabSelectedFromDocument] = useState('');
+  // Nueva variable para rastrear qué sección específica del COVE está seleccionada
+  const [selectedCoveSection, setSelectedCoveSection] = useState<string>('');
+  
   const customGlossTab = customGloss.tabs[0];
   if (!customGlossTab) {
     throw new Error('Should never happen');
@@ -40,7 +43,63 @@ const PedimentAnalysisNFinish = ({
   });
 
   const handleFunction = (tab: string) => {
-    setTabSelectedFromDocument(tab);
+    console.log('handleFunction called with:', tab, 'documentSelected:', documentSelected);
+    
+    // Si estamos viendo un COVE específico, necesitamos navegar al tab del COVE correcto
+    // pero también queremos mostrar la sección específica dentro de ese COVE
+    if (documentSelected.startsWith('COVE-')) {
+      const coveParts = documentSelected.split('-');
+      const coveIndexStr = coveParts[1];
+      if (coveIndexStr && !isNaN(parseInt(coveIndexStr))) {
+        const coveIndex = parseInt(coveIndexStr);
+        const coveTabName = `COVE ${coveIndex + 1}`;
+        
+        console.log('COVE click:', coveTabName, 'Section:', tab);
+        
+        // Guardar la sección específica seleccionada para highlighting
+        setSelectedCoveSection(tab);
+        
+        // Mapear la sección clickeada al nombre de tab específico
+        let targetTabName = '';
+        
+        // Primero intentar con la nueva estructura específica (con guión)
+        if (tab === 'Datos Generales' || tab === 'Datos generales del proveedor') {
+          targetTabName = `COVE ${coveIndex + 1} - Datos Generales`;
+        } else if (tab === 'Datos Proveedor Destinatario' ||
+                   tab === 'Domicilio del proveedor' ||
+                   tab === 'Datos generales del destinatario' ||
+                   tab === 'Domicilio del destinatario') {
+          targetTabName = `COVE ${coveIndex + 1} - Datos Proveedor Destinatario`;
+        } else if (tab === 'Datos de la mercancía' || tab === 'Validación de mercancías') {
+          targetTabName = `COVE ${coveIndex + 1} - Validación de mercancías`;
+        }
+        
+        // Buscar el tab específico
+        const targetTab = customGloss.tabs.find(t => t.name === targetTabName);
+        
+        // Cambiar al tab encontrado
+        if (targetTab) {
+          console.log('Navigating to:', targetTab.name, 'for section:', tab);
+          setTabInfoSelected({
+            name: targetTab.name,
+            isCorrect: targetTab.isCorrect,
+            isVerified: targetTab.isVerified,
+          });
+          
+          // Limpiar tabSelectedFromDocument ya que navegamos directamente al tab correcto
+          setTabSelectedFromDocument('');
+        } else {
+          console.log('No tab found for COVE:', coveIndex + 1, 'section:', tab);
+          setTabSelectedFromDocument(tab);
+        }
+      } else {
+        setTabSelectedFromDocument(tab);
+      }
+    } else {
+      // Si estamos viendo el pedimento, mantener la lógica original
+      setSelectedCoveSection(''); // Limpiar selección de COVE
+      setTabSelectedFromDocument(tab);
+    }
   };
 
   return (
@@ -56,9 +115,21 @@ const PedimentAnalysisNFinish = ({
             <div className="flex justify-center">
               <TabsList>
                 <TabsTrigger value="PEDIMENTO">Pedimento</TabsTrigger>
-                <TabsTrigger value="COVE" disabled={!customGloss.cove}>
-                  COVE
-                </TabsTrigger>
+                {customGloss.coves.length > 0 ? (
+                  customGloss.coves.map((_, index) => (
+                    <TabsTrigger 
+                      key={`cove-${index}`}
+                      value={`COVE-${index}`}
+                      className="relative"
+                    >
+                      COVE {index + 1}
+                    </TabsTrigger>
+                  ))
+                ) : (
+                  <TabsTrigger value="NO-COVE" disabled>
+                    Sin COVEs
+                  </TabsTrigger>
+                )}
               </TabsList>
             </div>
             <TabsContent value="PEDIMENTO">
@@ -71,16 +142,19 @@ const PedimentAnalysisNFinish = ({
                 />
               )}
             </TabsContent>
-            <TabsContent value="COVE">
-              {customGloss.cove && (
+            {customGloss.coves.map((cove, index) => (
+              <TabsContent key={`cove-content-${index}`} value={`COVE-${index}`}>
                 <CoveViewer
-                  cove={customGloss.cove}
-                  tabs={customGloss.tabs}
+                  cove={cove}
+                  tabs={customGloss.tabs.filter(tab => 
+                    tab.name.startsWith(`COVE ${index + 1} -`)
+                  )}
                   onClick={handleFunction}
                   tabInfoSelected={tabInfoSelected}
+                  selectedCoveSection={selectedCoveSection} // Nueva prop para highlighting
                 />
-              )}
-            </TabsContent>
+              </TabsContent>
+            ))}
           </Tabs>
         </div>
       </section>
@@ -89,6 +163,7 @@ const PedimentAnalysisNFinish = ({
           tabs={customGloss.tabs}
           setTabInfoSelected={setTabInfoSelected}
           tabSelectedFromDocument={tabSelectedFromDocument}
+          tabInfoSelected={tabInfoSelected}
         />
         <SavedNFinish
           glossId={customGloss.id}
