@@ -1,14 +1,22 @@
 'use client';
-import todayIs from '@/shared/utils/today-is';
+import React from 'react';
+import todayIs from '../../../shared/utils/today-is';
 import { HelpCircle } from 'lucide-react';
 // import NotificationsMenu from "./NotificationsMenu";
 import { usePathname } from 'next/navigation';
-import { cn } from '~/lib/utils';
+import { useState, useEffect } from 'react';
+import { cn } from '../../../../lib/utils';
 import ProfileMenu from './profile-menu';
 
 const Header = () => {
   const pathname = usePathname();
   const isAnalysisPage = pathname.endsWith('analysis');
+  const [currentDate, setCurrentDate] = useState<string>('');
+
+  // Usar useEffect para evitar problemas de hidratación
+  useEffect(() => {
+    setCurrentDate(todayIs(new Date()));
+  }, []);
 
   const handleWhatsAppHelp = () => {
     window.open('https://wa.me/5215585788967', '_blank');
@@ -26,7 +34,7 @@ const Header = () => {
           <li className="flex flex-col">
             <p className="font-semibold text-gray-800 text-lg">Bienvenido</p>
             <small className="text-gray-500 text-sm">
-              {todayIs(new Date())}
+              {currentDate}
             </small>
           </li>
           <li>

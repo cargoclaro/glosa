@@ -1,5 +1,6 @@
-// "use client";
+'use client';
 
+import React from 'react';
 import { UserButton } from '@clerk/nextjs';
 import { SignedIn } from '@clerk/nextjs';
 
