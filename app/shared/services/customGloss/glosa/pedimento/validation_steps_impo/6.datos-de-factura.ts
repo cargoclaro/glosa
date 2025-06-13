@@ -433,6 +433,3 @@ export async function datosDeFactura({
 }
 
 
-// TODO: Agregar analisis de riesgo, de año de antiguedad del rfc. 
-// Prompt: Si el año del RFC es menor a dos años, marcar como un RFC que puede ser de alto riesgo, si el RFC es entre 2 y 5 años, marcar como un riesgo moderado. Si es mayor a 5 años es riesgo menor. 
-
