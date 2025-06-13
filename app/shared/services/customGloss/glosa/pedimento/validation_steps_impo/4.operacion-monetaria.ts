@@ -105,24 +105,22 @@ async function validateValSeguros(
     description:
       "Verifica que el campo 'Val. Seguros' (valor total de las mercancías aseguradas en MXN) cumpla con los lineamientos de llenado.",
     prompt: `
-Revisa el "Valor Seguros" declarado (total asegurado de la mercancía).
+Verifica el "Valor Seguros" (campo 318) declarado en el pedimento; este campo representa la suma asegurada en MXN.
 
-Existen dos casos según el Incoterm:
+Reglas por Incoterm (según Apéndice 14):
 
-1. Si es CIP o CIF (seguro incluido):
-   - "Valor Seguros" debe existir y cubrir al menos el valor comercial total.
-   - Si falta o es muy bajo, indica omisión o insuficiencia.
+• CIP y CIF  →  El seguro ya está incluido, por lo tanto "Valor Seguros" debe ser 0. Cualquier monto distinto indica duplicidad.
 
-2. Para otros Incoterms:
-   - "Valor Seguros" es opcional.
-   - Si existe, compáralo con pólizas o certificados (±5% permitido).
+• EXW, FCA, FAS, FOB, CFR, CPT, DAP, DPU, DDP  →  El seguro NO está incluido en el precio, así que debe declararse un monto en "Valor Seguros" respaldado por póliza/certificado.
+  – Si el soporte existe y el campo está en 0 ⇒ omisión.
+  – Si el campo tiene monto y no existe soporte ⇒ falta de respaldo.
+  – Diferencias ±5 % entre soporte y declarado ⇒ discrepancia.
 
-Casos especiales con múltiples facturas:
+Múltiples facturas:
+– Mismo Incoterm → Suma los valores asegurados y compara con el global (±5 %).
+– Distintos Incoterms → Valida cada factura con la regla anterior y después la suma global.
 
-- Mismo Incoterm: verifica uniformidad y suma valores asegurados individuales para comparar con el declarado global (±5%).
-- Distintos Incoterms: revisa coherencia individual por factura según reglas anteriores. Luego compara la suma total contra el valor global declarado (±5%).
-
-Siempre convierte montos documentados a MXN con el tipo de cambio indicado.
+Convierte los montos a MXN usando el tipo de cambio del pedimento.
 `,
     contexts: {
       PROVIDED: {
@@ -196,25 +194,22 @@ async function validateSeguros(
     description:
       'Valida que el valor de seguros declarado en el pedimento coincida con los documentos que lo avalan',
     prompt: `
-Revisa que el campo "Seguros" del pedimento coincida con los documentos soporte.
+Verifica el campo "Seguros" (costo del seguro) declarado en el pedimento.
 
-Existen dos casos según el Incoterm:
+Reglas por Incoterm:
 
-1. Si es CIP o CIF (seguro incluido en precio):
-   - "Seguros" debe ser 0. Si se declara monto adicional, indica duplicidad.
+• CIP y CIF  →  El costo del seguro ya va incluido; el campo "Seguros" debe ser 0. Cualquier monto adicional es duplicidad.
 
-2. Para todos los demás Incoterms:
-   - Debe existir un monto declarado.
-   - Si los documentos indican cargos y no aparecen en "Seguros", señala omisión.
-   - Si "Seguros" muestra montos no respaldados por documentos, señala falta de soporte.
-   - Diferencias superiores al 3% indican discrepancia.
+• EXW, FCA, FAS, FOB, CFR, CPT, DAP, DPU, DDP  →  El seguro no está incluido en el precio, por lo que debe declararse un monto.
+  – Si los documentos soporte (póliza, factura, carta 318) muestran un cargo y el campo está en 0 ⇒ omisión.
+  – Si el campo tiene monto sin soporte ⇒ falta de respaldo.
+  – Diferencias >3 % entre soporte y declarado ⇒ discrepancia.
 
-Casos especiales con múltiples facturas:
+Múltiples facturas:
+– Mismo Incoterm → Suma los cargos soportados y compara con el valor global (±3 %).
+– Incoterms diversos → Aplica la regla por factura y luego compara la suma total (±3 %).
 
-- Si todas las facturas tienen el mismo Incoterm, confirma consistencia y suma cargos para comparar con el valor declarado (±3%).
-- Si las facturas tienen Incoterms diferentes, verifica que sean compatibles en términos de transporte y aplica las reglas anteriores factura por factura. Al final, suma los cargos para comparar contra el valor declarado global (±3%).
-
-Siempre convierte montos documentados a MXN con el tipo de cambio indicado.
+Convierte siempre los cargos a MXN con el tipo de cambio del pedimento.
 `,
     contexts: {
       PROVIDED: {
@@ -277,24 +272,21 @@ async function validateFletes(
       'Valida que el valor de fletes declarado en el pedimento coincida con los documentos que lo avalan',
     prompt:
 `
-Revisa que el campo "Fletes" del pedimento coincida con documentos soporte.
+Verifica el campo "Fletes" (costo de transporte internacional) declarado en el pedimento.
 
-Existen dos casos según el Incoterm:
+Reglas por Incoterm:
 
-1. Incoterms con flete incluido (CIF, CIP, CFR, CPT, DAP, DPU, DDP):
-   - "Fletes" debe ser 0; si declara monto adicional indica duplicidad.
+• Incoterms que INCLUYEN flete: CFR, CIF, CPT, CIP, DAP, DPU, DDP → "Fletes" debe ser 0. Cualquier monto adicional es duplicidad.
 
-2. Incoterms sin flete incluido (EXW, FCA, FAS, FOB):
-   - Debe existir un monto en "Fletes".
-   - Si documentos muestran flete y pedimento no, señala omisión.
-   - Diferencias mayores al 3% indican discrepancia.
+• Incoterms SIN flete: EXW, FCA, FAS, FOB →
+  – Debe declararse un monto en "Fletes" respaldado por BL/AWB, factura de naviera, carta 318, etc.
+  – Si el soporte existe y el campo está en 0 ⇒ omisión.
+  – Si el campo tiene monto sin soporte ⇒ falta de respaldo.
+  – Diferencias >3 % entre soporte y declarado ⇒ discrepancia.
 
-Casos especiales con múltiples facturas:
+Múltiples facturas → Suma y tolera ±3 %.
 
-- Si todas las facturas usan el mismo Incoterm, confirma uniformidad y suma cargos documentados para compararlos con el monto declarado global (±3%).
-- Con Incoterms distintos, verifica compatibilidad de transporte, luego aplica reglas factura por factura y compara suma total contra el valor declarado (±3%).
-
-Siempre convierte montos documentados a MXN con el tipo de cambio indicado.
+Convierte siempre los cargos a MXN con el tipo de cambio del pedimento.
 `,
     contexts: {
       PROVIDED: {
@@ -434,21 +426,18 @@ async function validateOtrosIncrementables(
       'Valida que el valor de otros incrementables declarado en el pedimento coincida con los documentos que lo avalan',
     prompt:
       `
-Revisa "Otros Incrementables" (gastos distintos a fletes, seguros, embalajes).
+Revisa "Otros Incrementables" (gastos distintos a fletes, seguros y embalajes).
 
-- Si documentos indican cargos y pedimento no, señala omisión.
-- Si pedimento muestra cargos sin respaldo documental, señala falta de soporte.
-- Diferencias mayores al 3% indican discrepancia.
-- Si algún cargo adicional ya está cubierto por el Incoterm según documentación externa (Apéndice 14), señala duplicidad.
+1. Cada cargo declarado debe tener soporte documental (factura, carta 318, contrato, etc.).
+2. Verifica que no duplique costos ya cubiertos por el Incoterm:
+   – CFR/CIF/CPT/CIP incluyen el transporte principal.
+   – DAP/DPU/DDP incluyen transporte y entrega en destino.
+3. Si documentos muestran cargo no declarado ⇒ omisión. Si el pedimento declara cargo sin soporte ⇒ falta de respaldo.
+4. Diferencias ±3 % entre soporte y declarado.
 
-Casos especiales con múltiples facturas:
+Para múltiples facturas, aplica la regla por factura y valida la suma global (±3 %).
 
-- Mismo Incoterm: confirma uniformidad y suma cargos documentados para comparar contra el monto declarado global (±3%).
-- Distintos Incoterms: revisa individualmente cada factura usando las reglas anteriores, luego compara suma total documentada con monto declarado global (±3%).
-
-Si existe acuerdo global mencionado en observaciones, verifica distribución razonable.
-
-Siempre convierte montos documentados a MXN con el tipo de cambio indicado.
+Convierte montos a MXN con el tipo de cambio del pedimento.
 `,
     contexts: {
       PROVIDED: {
