@@ -402,6 +402,16 @@ export const previewClassification = api
           required: false,
         },
         {
+          name: 'Manifiesto de Valor',
+          status: getStatus('Manifiesto de Valor'),
+          required: false,
+        },
+        {
+          name: 'Carta de Instrucciones',
+          status: getStatus('Carta de Instrucciones'),
+          required: false,
+        },
+        {
           name: 'Acuse de Transporte',
           status: getStatus('Acuse de Transporte'),
           required: false,
