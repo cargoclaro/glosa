@@ -4,11 +4,12 @@ import { GenericCard } from '@/shared/components';
 import { Clock, RightArrow } from '@/shared/icons';
 import Link from 'next/link';
 import type { CustomGlossTable } from '~/db/schema';
+import { cn } from '~/lib/utils';
 
 const GlossHistory = ({ history }: { history: CustomGlossTable[] }) => {
-  // Ensure we always have exactly 6 items to display
-  const displayItems = history && history.length > 0 ? history.slice(0, 6) : [];
-  const placeholdersNeeded = Math.max(0, 6 - displayItems.length);
+  const MAX_ITEMS = 6;
+  const displayItems = history && history.length > 0 ? history.slice(0, MAX_ITEMS) : [];
+  const placeholdersNeeded = Math.max(0, MAX_ITEMS - displayItems.length);
 
   return (
     <GenericCard customClass="h-full flex flex-col">
@@ -22,22 +23,50 @@ const GlossHistory = ({ history }: { history: CustomGlossTable[] }) => {
         <ul className="flex flex-grow flex-col justify-between">
           {displayItems.map((gloss) => (
             <li key={gloss.id} className="py-2">
-              <Link
-                href={`/gloss/${gloss.id}`}
-                className="group flex items-center justify-between rounded-lg p-3 transition-colors duration-200 hover:bg-orange-50"
-              >
-                <div className="flex-grow">
-                  <p className="font-medium text-base text-gray-900">
-                    {gloss.importerName}
-                  </p>
-                  <p className="mt-1 text-gray-500 text-sm">
-                    {`Operación #${gloss.id}`}
-                  </p>
+              {gloss.operationStatus === 'IN_PROGRESS' ? (
+                <div className="flex cursor-not-allowed items-center justify-between rounded-lg p-3 bg-gray-50">
+                  <div className="flex-grow">
+                    <p className="font-medium text-base text-gray-900 flex items-center gap-1">
+                      <span
+                        className={cn(
+                          'inline-block h-2 w-2 rounded-full bg-amber-500 animate-pulse'
+                        )}
+                      />
+                      {gloss.importerName}
+                    </p>
+                    <p className="mt-1 text-gray-500 text-sm">
+                      En progreso • Operación #{gloss.id}
+                    </p>
+                  </div>
+                  <div className="rounded-full bg-gray-300 p-2">
+                    <RightArrow size="size-4" strokeWidth={3} customClass="text-gray-400" />
+                  </div>
                 </div>
-                <div className="flex items-center justify-center rounded-full bg-primary p-2 text-white transition-colors duration-200 group-hover:bg-primary/90">
-                  <RightArrow size="size-4" strokeWidth={3} />
-                </div>
-              </Link>
+              ) : (
+                <Link
+                  href={`/gloss/${gloss.id}`}
+                  className="group flex items-center justify-between rounded-lg p-3 transition-colors duration-200 hover:bg-orange-50"
+                >
+                  <div className="flex-grow">
+                    <p className="font-medium text-base text-gray-900 flex items-center gap-1">
+                      {/* Status dot */}
+                      <span
+                        className={cn(
+                          'inline-block h-2 w-2 rounded-full bg-emerald-500'
+                        )}
+                      />
+                      {gloss.importerName}
+                    </p>
+                    <p className="mt-1 text-gray-500 text-sm">
+                      Completado{' '}
+                      • Operación #{gloss.id}
+                    </p>
+                  </div>
+                  <div className="flex items-center justify-center rounded-full bg-primary p-2 text-white transition-colors duration-200 group-hover:bg-primary/90">
+                    <RightArrow size="size-4" strokeWidth={3} />
+                  </div>
+                </Link>
+              )}
             </li>
           ))}
 
@@ -47,10 +76,10 @@ const GlossHistory = ({ history }: { history: CustomGlossTable[] }) => {
               <li key={`placeholder-${index}`} className="py-2">
                 <div className="flex items-center justify-between rounded-lg bg-gray-50 p-3">
                   <div className="flex-grow">
-                    <div className="h-5 w-24 animate-pulse rounded-md bg-gray-200"></div>
-                    <div className="mt-1 h-4 w-32 animate-pulse rounded-md bg-gray-200"></div>
+                    <div className="h-5 w-24 rounded-md bg-gray-200"></div>
+                    <div className="mt-1 h-4 w-32 rounded-md bg-gray-200"></div>
                   </div>
-                  <div className="animate-pulse rounded-full bg-gray-200 p-2">
+                  <div className="rounded-full bg-gray-200 p-2">
                     <div className="h-4 w-4"></div>
                   </div>
                 </div>

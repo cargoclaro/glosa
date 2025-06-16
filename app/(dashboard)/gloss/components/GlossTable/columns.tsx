@@ -54,7 +54,7 @@ export const GlossDataTableColumns: ColumnDef<IDumpGlosses>[] = [
           <span
             className={cn(
               'mr-1.5 h-2 w-2 rounded-full',
-              isPending ? 'bg-amber-500' : 'bg-emerald-500'
+              isPending ? 'bg-amber-500 animate-pulse' : 'bg-emerald-500'
             )}
           />
           {isPending ? 'Por glosar' : 'Glosado'}
@@ -70,6 +70,30 @@ export const GlossDataTableColumns: ColumnDef<IDumpGlosses>[] = [
     id: 'actions',
     cell: ({ row }) => {
       const id = row.getValue('id');
+      const isPending = row.getValue('operationStatus') === 'IN_PROGRESS';
+      if (isPending) {
+        return (
+          <span className="inline-flex items-center justify-center gap-1.5 rounded-md bg-gray-300 px-3 py-1.5 font-medium text-white text-xs cursor-not-allowed">
+            Ver
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              className="ml-0.5"
+            >
+              <path
+                d="M9 6l6 6-6 6"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </span>
+        );
+      }
       return (
         <Link
           aria-label="View gloss report"

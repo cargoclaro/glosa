@@ -5,8 +5,12 @@ import { Brain, FileCheck, FileSearch, Loader2, Sparkles } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 interface LoadingBarProps {
+  /** Total duration in milliseconds for the whole process (defaults to 240 000 ≈ 4 min). */
   duration?: number;
+  /** When true, skip the first "Clasificación" stage */
   omitClassification?: boolean;
+  /** Optional callback fired when the user clicks the *Cerrar* button so that the parent can hide the modal.  */
+  onClose?: () => void;
 }
 
 interface Step {
@@ -116,7 +120,7 @@ const STEP_MESSAGES = {
   ],
 };
 
-const LoadingBar: React.FC<LoadingBarProps> = ({ duration = 120000, omitClassification = false }) => {
+const LoadingBar: React.FC<LoadingBarProps> = ({ duration = 240000, omitClassification = false, onClose }) => {
   const steps = omitClassification ? defaultSteps.filter((s) => s.id !== 1) : defaultSteps;
   if (!steps.length) throw new Error('No steps defined for LoadingBar');
   const [currentStep, setCurrentStep] = useState(steps[0]!.id);
@@ -138,6 +142,9 @@ const LoadingBar: React.FC<LoadingBarProps> = ({ duration = 120000, omitClassifi
     }
     return indices.map((index) => FUN_FACTS[index]);
   });
+
+  // Remaining time counter (for ETA display)
+  const [remainingMs, setRemainingMs] = useState(duration);
 
   useEffect(() => {
     // Reset state when component mounts
@@ -252,6 +259,13 @@ const LoadingBar: React.FC<LoadingBarProps> = ({ duration = 120000, omitClassifi
     return () => clearInterval(timer);
   }, [duration, selectedFacts, omitClassification]);
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setRemainingMs((prev) => (prev - 1000 >= 0 ? prev - 1000 : 0));
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [duration]);
+
   return (
     <div className="mx-auto w-full max-w-2xl">
       {/* Message display - engages users while waiting */}
@@ -347,6 +361,29 @@ const LoadingBar: React.FC<LoadingBarProps> = ({ duration = 120000, omitClassifi
             </div>
           );
         })}
+      </div>
+
+      {/* Footer with ETA and Close button */}
+      <div className="mt-6 flex flex-col items-center gap-2">
+        {/* ETA */}
+        <span className="text-xs text-gray-500">
+          ETA&nbsp;
+          {new Date(remainingMs).toISOString().substring(14, 19)}
+        </span>
+        {/* Close button */}
+        {onClose && (
+          <button
+            type="button"
+            aria-label="Cerrar barra de carga (continúa en segundo plano)"
+            onClick={onClose}
+            className="inline-flex items-center rounded-md bg-gray-200 px-4 py-1.5 text-xs font-medium text-gray-700 transition-colors hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/20"
+          >
+            Cerrar
+          </button>
+        )}
+        <p className="text-[11px] text-gray-400">
+          Puedes cerrar esta ventana, la glosa seguirá generándose en segundo plano.
+        </p>
       </div>
     </div>
   );

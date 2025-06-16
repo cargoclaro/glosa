@@ -15,10 +15,11 @@ export const metadata: Metadata = {
 
 const HomePage = async () => {
   const { userId } = await auth.protect();
+  const MAX_ITEMS = 6;
   const myLatestGlosses = await db.query.CustomGloss.findMany({
     where: (gloss, { eq }) => eq(gloss.userId, userId),
     orderBy: (gloss, { desc }) => [desc(gloss.createdAt)],
-    limit: 6,
+    limit: MAX_ITEMS,
   });
 
   // Get all glosses for the graph (last 30 days)

@@ -8,16 +8,22 @@ import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 import { cn } from '~/lib/utils';
 import DocumentValidator, { type DocumentItem } from '@/shared/components/document-validator';
+import { useRouter } from 'next/navigation';
 
 type Stage = 'IDLE' | 'CLASSIFYING' | 'CONFIRM_DOCS' | 'PROCESSING';
 
-const GlossForm = () => {
+interface GlossFormProps {
+  onOuterClose: () => void;
+}
+
+const GlossForm: React.FC<GlossFormProps> = ({ onOuterClose }) => {
   const [files, setFiles] = useState<FileList | null>(null);
   const [stage, setStage] = useState<Stage>('IDLE');
   const [documents, setDocuments] = useState<DocumentItem[]>([]);
   const [errorDisplaying, setErrorDisplaying] = useState(false);
   const { isOpen, openMenu, closeMenu, menuRef } = useModal(false);
   const [hasConfirmed, setHasConfirmed] = useState(false);
+  const router = useRouter();
 
   // Full analysis (after user proceeds)
   const analysisMutation = useMutation({
@@ -217,7 +223,14 @@ const GlossForm = () => {
           {stage === 'CLASSIFYING' ? (
             <LoadingBarClassification />
           ) : stage === 'PROCESSING' ? (
-            <LoadingBar omitClassification />
+            <LoadingBar
+              omitClassification
+              onClose={() => {
+                closeMenu();
+                onOuterClose();
+                router.push('/home');
+              }}
+            />
           ) : (
             <>
               <h2 className="text-center font-bold text-xl">

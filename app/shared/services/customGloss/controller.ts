@@ -36,7 +36,7 @@ const langfuse = new Langfuse();
  * Updates a tab with the provided data
  */
 async function updateTabWithCustomGlossId({
-  id,
+  id: tabId,
   data,
   customGlossId,
 }: {
@@ -49,7 +49,7 @@ async function updateTabWithCustomGlossId({
     .set(data)
     .where(
       and(
-        eq(CustomGlossTab.id, id),
+        eq(CustomGlossTab.id, tabId),
         eq(CustomGlossTab.customGlossId, customGlossId)
       )
     )
@@ -72,6 +72,28 @@ export const analysis = api
         traceId: trace.id,
         name: 'Classification',
       });
+
+      // We will store the id of the CustomGloss record throughout the process
+      let glossId: string;
+
+      // Create a placeholder CustomGloss so UI can immediately reflect the job as running
+      const [placeholder] = await db
+        .insert(CustomGloss)
+        .values({
+          userId,
+          summary: '',
+          timeSaved: 0,
+          moneySaved: 0,
+          importerName: 'En proceso',
+        })
+        .returning();
+
+      if (!placeholder) {
+        throw new Error('No se pudo crear el registro inicial de la glosa');
+      }
+
+      glossId = placeholder.id;
+
       const classifications = await classifyDocuments(files, trace.id);
       const expedienteWithoutDataResult =
         await createExpedienteWithoutData(classifications);
@@ -131,22 +153,20 @@ export const analysis = api
       const importerName =
         expediente.pedimento.encabezadoPrincipalDelPedimento.datosImportador
           .razonSocial;
-      const [newCustomGloss] = await db
-        .insert(CustomGloss)
-        .values({
-          userId,
+      // 2) Update the placeholder record with real data and mark it as DONE later
+      await db
+        .update(CustomGloss)
+        .set({
           summary: '',
           timeSaved: 20,
           moneySaved: 1000,
           importerName,
-          cove: expediente.cove, // Ahora guardamos todos los COVEs
+          cove: expediente.cove,
           pedimento: expediente.pedimento,
         })
-        .returning();
-      if (!newCustomGloss) {
-        throw new Error('Should never happen');
-      }
-      console.log('[analysis] CustomGloss insertado:', newCustomGloss?.id);
+        .where(eq(CustomGloss.id, glossId));
+
+      console.log('[analysis] CustomGloss actualizado:', glossId);
 
       // Run risk analysis and persist
       const riskResults = runRiskAnalysis(expediente.pedimento);
@@ -157,7 +177,7 @@ export const analysis = api
             riskName: r.riskName,
             level: r.level,
             description: r.description,
-            customGlossId: newCustomGloss.id,
+            customGlossId: glossId,
           }))
         );
       }
@@ -169,7 +189,7 @@ export const analysis = api
             name: uploadedFile.name,
             url: uploadedFile.ufsUrl,
             documentType: uploadedFile.classification,
-            customGlossId: newCustomGloss.id,
+            customGlossId: glossId,
           };
         })
       );
@@ -198,7 +218,7 @@ export const analysis = api
             }),
             fullContext: true,
             isVerified: false,
-            customGlossId: newCustomGloss.id,
+            customGlossId: glossId,
           };
           const [insertedTab] = await db
             .insert(CustomGlossTab)
@@ -280,9 +300,12 @@ export const analysis = api
       );
       console.log('[analysis] Tabs y validaciones insertadas');
 
+      // 3) Finally, mark the operation as DONE
+      await db.update(CustomGloss).set({ operationStatus: 'DONE' }).where(eq(CustomGloss.id, glossId));
+
       return {
         success: true,
-        glossId: newCustomGloss.id,
+        glossId,
       };
     } catch (error) {
       console.error('[analysis] ERROR:', error);

@@ -57,7 +57,7 @@ const Header = () => {
         </div>
       </div>
       <Modal isOpen={isOpen} onClose={closeMenu} menuRef={menuRef}>
-        <GlossForm />
+        <GlossForm onOuterClose={closeMenu} />
       </Modal>
     </section>
   );
