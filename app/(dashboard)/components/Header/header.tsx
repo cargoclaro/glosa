@@ -1,22 +1,16 @@
 'use client';
 import React from 'react';
-import todayIs from '../../../shared/utils/today-is';
 import { HelpCircle } from 'lucide-react';
 // import NotificationsMenu from "./NotificationsMenu";
 import { usePathname } from 'next/navigation';
-import { useState, useEffect } from 'react';
 import { cn } from '../../../../lib/utils';
-import ProfileMenu from './profile-menu';
+import { useClientDate } from '../../../shared/hooks';
+import ProfileMenuWrapper from './profile-menu-wrapper';
 
 const Header = () => {
   const pathname = usePathname();
   const isAnalysisPage = pathname.endsWith('analysis');
-  const [currentDate, setCurrentDate] = useState<string>('');
-
-  // Usar useEffect para evitar problemas de hidratación
-  useEffect(() => {
-    setCurrentDate(todayIs(new Date()));
-  }, []);
+  const { currentDate, isMounted } = useClientDate();
 
   const handleWhatsAppHelp = () => {
     window.open('https://wa.me/5215585788967', '_blank');
@@ -34,7 +28,7 @@ const Header = () => {
           <li className="flex flex-col">
             <p className="font-semibold text-gray-800 text-lg">Bienvenido</p>
             <small className="text-gray-500 text-sm">
-              {currentDate}
+              {isMounted ? currentDate : ''}
             </small>
           </li>
           <li>
@@ -51,7 +45,7 @@ const Header = () => {
               </li>
               <li className="flex items-center">
                 <div className="border-gray-200 border-l pl-2">
-                  <ProfileMenu />
+                  <ProfileMenuWrapper />
                 </div>
               </li>
             </ul>
