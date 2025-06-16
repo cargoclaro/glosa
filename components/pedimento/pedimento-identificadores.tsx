@@ -3,6 +3,8 @@ import FechasTable from './fechas/fechas-table';
 import IdentificadoresTable from './identificadores/identificadores-table';
 import LiquidacionTable from './liquidacion/liquidacion-table';
 import TasasTable from './tasas/tasas-table';
+import { cn } from '~/lib/utils';
+import { getHighlightBorder, getHighlightFill } from './utils/highlight-styles';
 
 import type { CustomGlossTabTable } from '~/db/schema';
 
@@ -77,7 +79,16 @@ const PedimentoIdentificadores: React.FC<PedimentoIdentificadoresProps> = ({
         <IdentificadoresTable identificadores={identificadoresPedimento} />
       </div>
 
-      <div className="mt-2">
+      <div
+        className={cn(
+          'mt-2',
+          'cursor-pointer border-gray-400',
+          'overflow-hidden rounded-md border-2',
+          getHighlightBorder('Cuadro de liquidación', tabs),
+          getHighlightFill('Cuadro de liquidación', tabInfoSelected)
+        )}
+        onClick={() => onClick('Cuadro de liquidación')}
+      >
         <div className="border-gray-400 border-b bg-gray-200 py-0.5 py-1 text-center font-semibold text-[11px] text-xs uppercase">
           LIQUIDACIÓN
         </div>
