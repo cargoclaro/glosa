@@ -9,6 +9,7 @@ import { pesosYBultos } from './5.peso-neto';
 import { datosDeFactura } from './6.datos-de-factura';
 import { tipoTransporte } from './7.datos-del-transporte';
 import { partidas } from './9.partidas';
+import { cuadroDeLiquidacion } from '../validation_steps_impo/8.cuadro-de-liquidacion';
 
 export async function pedimentoValidationStepsExpo({
   pedimento,
@@ -47,6 +48,7 @@ export async function pedimentoValidationStepsExpo({
       traceId,
     }),
     tipoTransporte({ pedimento, transportDocument, traceId }),
+    cuadroDeLiquidacion({ pedimento, traceId }),
     partidas({ pedimento, cfdi, traceId }),
   ]);
 
