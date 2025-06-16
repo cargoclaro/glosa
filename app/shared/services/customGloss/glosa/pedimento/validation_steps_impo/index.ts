@@ -10,6 +10,7 @@ import { pesosYBultos } from './5.peso-neto';
 import { datosDeFactura } from './6.datos-de-factura';
 import { datosDelTransporte } from './7.datos-del-transporte';
 import { partidas } from './9.partidas';
+import { cuadroDeLiquidacion } from './8.cuadro-de-liquidacion';
 
 export async function pedimentoValidationStepsImpo({
   pedimento,
@@ -63,6 +64,7 @@ export async function pedimentoValidationStepsImpo({
       ...(transportDocument ? { transportDocument } : {}),
       traceId,
     }),
+    cuadroDeLiquidacion({ pedimento, traceId }),
   ]);
 
   const facturaValidations = await datosDeFactura({
