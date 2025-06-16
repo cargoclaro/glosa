@@ -1,10 +1,15 @@
 import type { OCR } from '~/lib/utils';
 import type { Pedimento } from '../../../extract-and-structure/schemas';
+import type { Factura } from '../../../extract-and-structure/schemas/factura';
 import { apendice14 } from '../../anexo-22/apendice-14';
 import { getExchangeRate } from '../../exchange-rate';
 import incotermLogic from '../../incoterms-logic.json';
 import { glosar } from '../../validation-result';
-
+import { 
+  mapFacturasWithCoves,
+  type FacturaCoveMapping 
+} from '../../utils/document-mapping';
+import type { Cove } from '../../../extract-and-structure/schemas';
 
 async function validateTransportDocumentEntryDate(
   traceId: string,
@@ -75,412 +80,1195 @@ async function validateTipoCambio(traceId: string, pedimento: Pedimento) {
   return await glosar(validation, traceId, 'gpt-4o-mini');
 }
 
-async function validateValSeguros(
+function getScenarioType(mappings: FacturaCoveMapping[], incoterms: (string | null)[]): 
+  'single_invoice' | 'multiple_single_incoterm' | 'multiple_different_incoterms' {
+  if (mappings.length === 1) return 'single_invoice';
+  const uniqueIncoterms = new Set(incoterms.filter(Boolean));
+  return uniqueIncoterms.size === 1 ? 'multiple_single_incoterm' : 'multiple_different_incoterms';
+}
+
+function getPromptForValidationType(tipo: string, incoterms: (string | null)[], mappings: FacturaCoveMapping[]): string {
+  const scenarioType = getScenarioType(mappings, incoterms);
+  const mappingsCount = mappings.length;
+  
+  // Prompts específicos para una factura (escenario 1)
+  if (scenarioType === 'single_invoice') {
+    const singleInvoicePrompts = {
+      valSeguros: `
+Revisa la documentación de comercio para verificar los siguientes criterios relacionados con los Incoterms y los valores de seguro:
+
+Validación de Compatibilidad entre Seguro e Incoterm:
+• Confirma si el Incoterm utilizado es CIP o CIF.
+• Si el Incoterm es CIP o CIF pero se incluye un valor de seguro, marca una advertencia.
+• Justifica la advertencia utilizando la guía del Apéndice 14, explicando por qué no debería aparecer un valor de seguro con ese Incoterm.
+
+Verificación de la Coherencia del Valor del Seguro:
+• Si el Incoterm es válido, verifica que el valor del seguro sea aproximadamente correcto.
+• Compara el valor declarado del seguro con el monto indicado en la documentación adjunta.
+• Convierte monedas extranjeras (por ejemplo, USD) a Pesos Mexicanos (MXN) para mantener la coherencia. Usa tasas de cambio aproximadas.
+• Asegúrate de que el valor convertido tenga sentido en el contexto del documento.
+• Ejemplo: Si se indica "Insurance: 25 USD" y en el pedimento aparece "Seguro: 550 MXN", esto es aceptable.`,
+
+      seguros: `
+Revisa la documentación de comercio para verificar los siguientes criterios relacionados con los Incoterms y los valores de seguro:
+
+Validación de Compatibilidad entre Seguro e Incoterm:
+• Confirma si el Incoterm utilizado es CIP o CIF.
+• Si el Incoterm es CIP o CIF pero se incluye un valor de seguro, marca una advertencia.
+• Justifica la advertencia utilizando la guía del Apéndice 14, explicando por qué no debería aparecer un valor de seguro con ese Incoterm.
+
+Verificación de la Coherencia del Valor del Seguro:
+• Si el Incoterm es válido, verifica que el valor del seguro sea aproximadamente correcto.
+• Compara el valor declarado del seguro con el monto indicado en la documentación adjunta.
+• Convierte monedas extranjeras (por ejemplo, USD) a Pesos Mexicanos (MXN) para mantener la coherencia. Usa tasas de cambio aproximadas.
+• Asegúrate de que el valor convertido tenga sentido en el contexto del documento.
+• Ejemplo: Si se indica "Insurance: 25 USD" y en el pedimento aparece "Seguro: 550 MXN", esto es aceptable.`,
+
+      fletes: `
+Revisa la documentación de comercio para verificar los siguientes criterios relacionados con los Incoterms y los valores de flete:
+
+Validación de Compatibilidad entre Flete e Incoterm:
+• Si el Incoterm utilizado es uno de los siguientes:
+  - EXW (Ex Works)
+  - FCA (Free Carrier)
+  - FAS (Free Alongside Ship)
+  - FOB (Free On Board)
+• Y se está declarando un valor de flete, marca como correcto.
+• Justifica explicando que, bajo estos Incoterms, el comprador asume responsabilidad sobre el transporte principal, por lo tanto debería incluirse un valor de flete en la documentación.
+
+Verificación de la Coherencia del Flete:
+• Si el Incoterm es válido, verifica que el valor del flete sea aproximadamente correcto.
+• Compara el valor declarado del flete con el monto indicado en la documentación adjunta.
+• Convierte monedas extranjeras (por ejemplo, USD) a Pesos Mexicanos (MXN) para mantener la coherencia. Usa tasas de cambio aproximadas.
+• Asegúrate de que el valor convertido tenga sentido en el contexto del documento.
+• Ejemplo: Si se indica "Freight: 100 USD" y en el pedimento aparece "Flete: 2200 MXN", esto es aceptable.`,
+
+      embalajes: `
+Valida que el valor de embalajes coincida con lo declarado en factura, Carta 318 o documento de transporte. 
+
+• Aplica tipo de cambio para conversiones de moneda.
+• Si no hay valor de embalajes en los documentos, marcar como correcto.
+• Verifica consistencia entre el valor declarado en el pedimento y los documentos soporte.`,
+
+      otrosIncrementables: `
+Valida otros incrementables (distintos de fletes, seguros y embalajes) en documentos y en relación con el Incoterm.
+
+• Verifica que cada cargo tenga soporte documental.
+• Asegúrate de que no se dupliquen costos ya cubiertos por el Incoterm.
+• Aplica conversiones de moneda cuando sea necesario.`
+    };
+
+    return singleInvoicePrompts[tipo as keyof typeof singleInvoicePrompts] || '';
+  }
+
+  // Prompts para múltiples facturas (escenarios 2 y 3)
+  const multipleInvoicePrompts = {
+    valSeguros: scenarioType === 'multiple_single_incoterm' ? `
+Verifica el "Valor Seguros" (campo 318) con múltiples facturas que tienen el mismo Incoterm.
+
+Con ${mappingsCount} facturas y Incoterm único:
+1. Aplica la regla del Incoterm a todas las facturas
+2. Suma los valores de seguro de todas las facturas
+3. Compara la suma total con el valor global declarado (±5%)
+
+Reglas por Incoterm:
+• CIP y CIF → El seguro está incluido, "Valor Seguros" debe ser 0 para todas
+• EXW, FCA, FAS, FOB, CFR, CPT, DAP, DPU, DDP → Suma todos los valores declarados
+
+Convierte a MXN usando el tipo de cambio del pedimento.` : `
+Verifica el "Valor Seguros" (campo 318) con múltiples facturas que tienen diferentes Incoterms.
+
+Con ${mappingsCount} facturas y múltiples Incoterms:
+1. Aplica reglas por factura según su Incoterm específico
+2. Suma los valores válidos de cada factura
+3. Compara la suma total con el valor global (±5%)
+
+Reglas por Incoterm:
+• CIP y CIF → El seguro está incluido, no sumar
+• EXW, FCA, FAS, FOB, CFR, CPT, DAP, DPU, DDP → Incluir en la suma
+
+Convierte a MXN usando el tipo de cambio del pedimento.`,
+
+    seguros: scenarioType === 'multiple_single_incoterm' ? `
+Verifica "Seguros" con múltiples facturas que comparten el mismo Incoterm.
+
+Con ${mappingsCount} facturas e Incoterm único:
+1. El Incoterm aplica uniformemente a todas las facturas
+2. Suma los cargos de seguro de todas las facturas
+3. Compara con el valor global (±3%)
+
+Reglas por Incoterm:
+• CIP y CIF → Costo incluido, "Seguros" debe ser 0
+• Otros → Suma todos los cargos documentados` : `
+Verifica "Seguros" con múltiples facturas que tienen diferentes Incoterms.
+
+Con ${mappingsCount} facturas y múltiples Incoterms:
+1. Evalúa cada factura según su Incoterm específico
+2. Suma solo los cargos válidos por Incoterm
+3. Compara suma total con valor global (±3%)
+
+Reglas aplicadas individualmente por factura.`,
+
+    fletes: scenarioType === 'multiple_single_incoterm' ? `
+Verifica "Fletes" con múltiples facturas bajo el mismo Incoterm.
+
+Con ${mappingsCount} facturas e Incoterm único:
+1. Aplica regla del Incoterm a todas las facturas
+2. Si Incoterm incluye flete → valor debe ser 0
+3. Si Incoterm no incluye flete → suma todos los valores (±3%)
+
+Reglas por Incoterm:
+• CFR, CIF, CPT, CIP, DAP, DPU, DDP → "Fletes" debe ser 0
+• EXW, FCA, FAS, FOB → Suma todos los fletes` : `
+Verifica "Fletes" con múltiples facturas que tienen diferentes Incoterms.
+
+Con ${mappingsCount} facturas y múltiples Incoterms:
+1. Evalúa cada factura según su Incoterm
+2. Suma solo fletes de facturas que requieren declaración
+3. Compara suma con valor global (±3%)`,
+
+    embalajes: `
+Revisa "Embalajes" considerando ${mappingsCount} facturas.
+
+${scenarioType === 'multiple_single_incoterm' ? 
+'Con mismo Incoterm: suma todos los cargos de embalaje y compara (±3%).' :
+'Con diferentes Incoterms: suma cargos de embalaje de todas las facturas (±3%).'}
+
+Validaciones:
+- Cargos documentados vs valor declarado
+- Consistencia entre facturas y pedimento`,
+
+    otrosIncrementables: `
+Revisa "Otros Incrementables" con ${mappingsCount} facturas.
+
+${scenarioType === 'multiple_single_incoterm' ? 
+'Mismo Incoterm: valida que otros cargos no dupliquen costos incluidos.' :
+'Diferentes Incoterms: valida por factura y suma total.'}
+
+1. Cada cargo debe tener soporte documental
+2. No duplicar costos cubiertos por Incoterms
+3. Suma total debe coincidir (±3%)`
+  };
+
+  return multipleInvoicePrompts[tipo as keyof typeof multipleInvoicePrompts] || '';
+}
+
+// Validaciones específicas para Escenario 2: Múltiples facturas, mismo Incoterm
+async function validateIncotermUnico(
   traceId: string,
   pedimento: Pedimento,
-  invoice?: OCR,
-  transportDocument?: OCR,
-  carta318?: OCR
+  mappings: FacturaCoveMapping[]
 ) {
-  const incoterm =
-    pedimento.datosDelProveedorOComprador[0]?.facturas[0]?.incoterm;
-  const valSeguros =
-    pedimento.encabezadoPrincipalDelPedimento.incrementables.valorSeguros;
-  const precioPagadoValorComercial =
-    pedimento.encabezadoPrincipalDelPedimento.valores
-      .precioPagadoOValorComercial;
-  const tipoCambio = pedimento.encabezadoPrincipalDelPedimento.tipoDeCambio;
-  const clavePedimento =
-    pedimento.encabezadoPrincipalDelPedimento.claveDePedimento;
-  const observaciones = pedimento.observacionesANivelPedimento;
-  const carta318mkdown = carta318?.markdown_representation;
-  const invoicemkdown = invoice?.markdown_representation;
-  const transportDocmkdown = transportDocument?.markdown_representation;
-  const incoterms = incotermLogic;
-  const fechaEntrada = pedimento.encabezadoPrincipalDelPedimento.fechas.entrada;
-  const tipoCambioDOF = await getExchangeRate(new Date(fechaEntrada ?? new Date()));
+  const facturasIncoterms = pedimento.datosDelProveedorOComprador?.[0]?.facturas?.map(f => f.incoterm) || [];
+  const facturaDetails = mappings.map(mapping => ({
+    name: `Factura ${mapping.factura.invoice_number}`,
+    value: {
+      incoterm: mapping.factura.payment_terms,
+      numeroFactura: mapping.factura.invoice_number
+    }
+  }));
 
   const validation = {
-    name: 'Val. Seguros',
-    description:
-      "Verifica que el campo 'Val. Seguros' (valor total de las mercancías aseguradas en MXN) cumpla con los lineamientos de llenado.",
-    prompt: `
-Verifica el "Valor Seguros" (campo 318) declarado en el pedimento; este campo representa la suma asegurada en MXN.
-
-Reglas por Incoterm (según Apéndice 14):
-
-• CIP y CIF  →  El seguro ya está incluido, por lo tanto "Valor Seguros" debe ser 0. Cualquier monto distinto indica duplicidad.
-
-• EXW, FCA, FAS, FOB, CFR, CPT, DAP, DPU, DDP  →  El seguro NO está incluido en el precio, así que debe declararse un monto en "Valor Seguros" respaldado por póliza/certificado.
-  – Si el soporte existe y el campo está en 0 ⇒ omisión.
-  – Si el campo tiene monto y no existe soporte ⇒ falta de respaldo.
-  – Diferencias ±5 % entre soporte y declarado ⇒ discrepancia.
-
-Múltiples facturas:
-– Mismo Incoterm → Suma los valores asegurados y compara con el global (±5 %).
-– Distintos Incoterms → Valida cada factura con la regla anterior y después la suma global.
-
-Convierte los montos a MXN usando el tipo de cambio del pedimento.
-`,
+    name: 'Incoterm único',
+    description: 'Confirma que todas las facturas declaran exactamente el mismo Incoterm',
+    prompt: 'Confirma que todas las facturas declaran exactamente el mismo Incoterm que aparece en el pedimento y la carta 3.1.8. Si cualquier factura usa un Incoterm distinto, marca error y lista las facturas conflictivas. Si coinciden, continúa con las demás validaciones.',
     contexts: {
       PROVIDED: {
         Pedimento: {
           data: [
-            { name: 'Val. Seguros', value: valSeguros },
-            { name: 'Tipo de cambio', value: tipoCambio },
-            {
-              name: 'Precio pagado / valor comercial',
-              value: precioPagadoValorComercial,
-            },
-            { name: 'Clave de Pedimento', value: clavePedimento },
-            { name: 'Observaciones', value: observaciones },
-            { name: 'Incoterm', value: incoterm },
+            { name: 'Incoterm', value: facturasIncoterms[0] },
+            { name: 'Clave de pedimento', value: pedimento.encabezadoPrincipalDelPedimento.claveDePedimento },
           ],
         },
-        'Carta 318': {
-          data: [{ name: 'Carta 318', value: carta318mkdown }],
-        },
-        Factura: {
-          data: [{ name: 'Factura', value: invoicemkdown }],
-        },
-        'Documento de transporte': {
-          data: [
-            { name: 'Documento de transporte', value: transportDocmkdown },
-          ],
+        'Facturas': {
+          data: facturaDetails,
         },
       },
       EXTERNAL: {
-        'Tipo de cambio DOF': {
-          data: [{ name: 'Tipo de cambio DOF', value: tipoCambioDOF }],
-        },
-        'Apendice 14 (Incoterms)': {
-          data: [
-            { name: 'Definiciones Incoterm (Apendice 14)', value: apendice14 },
-          ],
-        },
-        'Incoterms con Transporte y Seguro': {
-          data: [
-            { name: 'Incoterms', value: incoterms },
-          ],
+        'Apéndice 14': {
+          data: [{ name: 'Definiciones Incoterm', value: apendice14 }],
         },
       },
     },
-  } as const;
+  };
 
   return await glosar(validation, traceId, 'o3-mini');
 }
 
-async function validateSeguros(
+async function validateValSegurosPorFactura(
   traceId: string,
   pedimento: Pedimento,
-  invoice?: OCR,
-  transportDocument?: OCR,
+  mappings: FacturaCoveMapping[],
   carta318?: OCR
 ) {
-  const incoterm =
-    pedimento.datosDelProveedorOComprador[0]?.facturas[0]?.incoterm;
-  const seguros =
-    pedimento.encabezadoPrincipalDelPedimento.incrementables.seguros;
+  const facturasIncoterms = pedimento.datosDelProveedorOComprador?.[0]?.facturas?.map(f => f.incoterm) || [];
   const tipoCambio = pedimento.encabezadoPrincipalDelPedimento.tipoDeCambio;
+  const valorSeguros = pedimento.encabezadoPrincipalDelPedimento.incrementables.valorSeguros;
   const observaciones = pedimento.observacionesANivelPedimento;
-  const carta318mkdown = carta318?.markdown_representation;
-  const invoicemkdown = invoice?.markdown_representation;
-  const transportDocmkdown = transportDocument?.markdown_representation;
-  const fechaEntrada = pedimento.encabezadoPrincipalDelPedimento.fechas.entrada;
-  const tipoCambioDOF = await getExchangeRate(new Date(fechaEntrada ?? new Date()));
+
+  const facturaDetails = mappings.map(mapping => ({
+    name: `Val. Seguros - Factura ${mapping.factura.invoice_number}`,
+    value: {
+      valorSeguro: getIncrementablesFromFactura(mapping.factura, 'valSeguros'),
+      moneda: mapping.factura.currency_code
+    }
+  }));
 
   const validation = {
-    name: 'Seguros',
-    description:
-      'Valida que el valor de seguros declarado en el pedimento coincida con los documentos que lo avalan',
-    prompt: `
-Verifica el campo "Seguros" (costo del seguro) declarado en el pedimento.
+    name: 'Val. Seguros por factura',
+    description: 'Valida el valor de seguros declarado en cada factura individual',
+    prompt: `Para cada factura:
+1. Si el Incoterm es CIP o CIF y se declara un valor de seguro, genera advertencia.
+2. Compara el valor de seguro declarado contra lo que aparece en la factura / carta 318.
+3. Convierte la moneda a MXN con el tipo de cambio del pedimento y valida que el monto tenga sentido.`,
+    contexts: {
+      PROVIDED: {
+        Pedimento: {
+          data: [
+            { name: 'Val. Seguros', value: valorSeguros },
+            { name: 'Tipo de cambio', value: tipoCambio },
+            { name: 'Observaciones', value: observaciones },
+            { name: 'Incoterm', value: facturasIncoterms[0] },
+          ],
+        },
+        'Facturas': {
+          data: facturaDetails,
+        },
+        'Carta 318': {
+          data: [{ name: 'Carta 318', value: carta318?.markdown_representation }],
+        },
+      },
+      EXTERNAL: {
+        'Apéndice 14': {
+          data: [{ name: 'Apéndice 14', value: apendice14 }],
+        },
+      },
+    },
+  };
 
-Reglas por Incoterm:
+  return await glosar(validation, traceId, 'o3-mini');
+}
 
-• CIP y CIF  →  El costo del seguro ya va incluido; el campo "Seguros" debe ser 0. Cualquier monto adicional es duplicidad.
+async function validateSegurosPedimentoVsSuma(
+  traceId: string,
+  pedimento: Pedimento,
+  mappings: FacturaCoveMapping[]
+) {
+  const seguros = pedimento.encabezadoPrincipalDelPedimento.incrementables.seguros;
+  const tipoCambio = pedimento.encabezadoPrincipalDelPedimento.tipoDeCambio;
+  const observaciones = pedimento.observacionesANivelPedimento;
 
-• EXW, FCA, FAS, FOB, CFR, CPT, DAP, DPU, DDP  →  El seguro no está incluido en el precio, por lo que debe declararse un monto.
-  – Si los documentos soporte (póliza, factura, carta 318) muestran un cargo y el campo está en 0 ⇒ omisión.
-  – Si el campo tiene monto sin soporte ⇒ falta de respaldo.
-  – Diferencias >3 % entre soporte y declarado ⇒ discrepancia.
+  const facturaDetails = mappings.map(mapping => ({
+    name: `Seguros MXN - Factura ${mapping.factura.invoice_number}`,
+    value: {
+      valorSeguroMXN: getIncrementablesFromFactura(mapping.factura, 'seguros')?.valor || 0,
+    }
+  }));
 
-Múltiples facturas:
-– Mismo Incoterm → Suma los cargos soportados y compara con el valor global (±3 %).
-– Incoterms diversos → Aplica la regla por factura y luego compara la suma total (±3 %).
-
-Convierte siempre los cargos a MXN con el tipo de cambio del pedimento.
-`,
+  const validation = {
+    name: 'Seguros pedimento vs suma facturas',
+    description: 'Compara el valor de seguros del pedimento contra la suma de todas las facturas',
+    prompt: `Suma el valor de seguro de todas las facturas (en MXN).
+El resultado debe ser igual al valor "Seguros" del pedimento (tolerancia ±1%).
+Si difiere, marca error y muestra la diferencia.`,
     contexts: {
       PROVIDED: {
         Pedimento: {
           data: [
             { name: 'Seguros', value: seguros },
             { name: 'Tipo de cambio', value: tipoCambio },
-            { name: 'Observaciones', value: observaciones },
-            { name: 'Incoterm', value: incoterm },
           ],
         },
-        'Carta 318': {
-          data: [{ name: 'Carta 318', value: carta318mkdown }],
+        'Facturas': {
+          data: facturaDetails,
         },
-        Factura: {
-          data: [{ name: 'Factura', value: invoicemkdown }],
-        },
-        'Documento de transporte': {
-          data: [
-            { name: 'Documento de transporte', value: transportDocmkdown },
-          ],
-        },
-      },
-      EXTERNAL: {
-        'Tipo de cambio DOF': {
-          data: [{ name: 'Tipo de cambio DOF', value: tipoCambioDOF }],
-        },
-        'Apendice 14': {
-          data: [{ name: 'Apendice 14', value: apendice14 }],
+        Observaciones: {
+          data: [{ name: 'Observaciones', value: observaciones }],
         },
       },
     },
-  } as const;
+  };
 
   return await glosar(validation, traceId, 'o3-mini');
 }
 
-async function validateFletes(
+async function validateFletesEscenario2(
   traceId: string,
   pedimento: Pedimento,
-  invoice?: OCR,
+  mappings: FacturaCoveMapping[],
   transportDocument?: OCR,
   carta318?: OCR
 ) {
-  const incoterm =
-    pedimento.datosDelProveedorOComprador[0]?.facturas[0]?.incoterm;
-  const fletes =
-    pedimento.encabezadoPrincipalDelPedimento.incrementables.fletes;
+  const facturasIncoterms = pedimento.datosDelProveedorOComprador?.[0]?.facturas?.map(f => f.incoterm) || [];
+  const fletes = pedimento.encabezadoPrincipalDelPedimento.incrementables.fletes;
   const tipoCambio = pedimento.encabezadoPrincipalDelPedimento.tipoDeCambio;
-  const observaciones = pedimento.observacionesANivelPedimento;
-  const carta318mkdown = carta318?.markdown_representation;
-  const invoicemkdown = invoice?.markdown_representation;
-  const transportDocmkdown = transportDocument?.markdown_representation;
-  const fechaEntradaF = pedimento.encabezadoPrincipalDelPedimento.fechas.entrada;
-  const tipoCambioDOF_F = await getExchangeRate(new Date(fechaEntradaF ?? new Date()));
+
+  const facturaDetails = mappings.map(mapping => ({
+    name: `Fletes - Factura ${mapping.factura.invoice_number}`,
+    value: {
+      valorFlete: getIncrementablesFromFactura(mapping.factura, 'fletes'),
+      moneda: mapping.factura.currency_code
+    }
+  }));
 
   const validation = {
     name: 'Fletes',
-    description:
-      'Valida que el valor de fletes declarado en el pedimento coincida con los documentos que lo avalan',
-    prompt:
-`
-Verifica el campo "Fletes" (costo de transporte internacional) declarado en el pedimento.
-
-Reglas por Incoterm:
-
-• Incoterms que INCLUYEN flete: CFR, CIF, CPT, CIP, DAP, DPU, DDP → "Fletes" debe ser 0. Cualquier monto adicional es duplicidad.
-
-• Incoterms SIN flete: EXW, FCA, FAS, FOB →
-  – Debe declararse un monto en "Fletes" respaldado por BL/AWB, factura de naviera, carta 318, etc.
-  – Si el soporte existe y el campo está en 0 ⇒ omisión.
-  – Si el campo tiene monto sin soporte ⇒ falta de respaldo.
-  – Diferencias >3 % entre soporte y declarado ⇒ discrepancia.
-
-Múltiples facturas → Suma y tolera ±3 %.
-
-Convierte siempre los cargos a MXN con el tipo de cambio del pedimento.
-`,
+    description: 'Valida los fletes según el Incoterm y suma de facturas',
+    prompt: `Para Incoterms EXW, FCA, FAS, FOB el flete debe existir.
+Verifica por factura el valor.
+Convierte a MXN y compara con el total de flete en el pedimento.
+Tolerancia ±1%.`,
     contexts: {
       PROVIDED: {
         Pedimento: {
           data: [
             { name: 'Fletes', value: fletes },
             { name: 'Tipo de cambio', value: tipoCambio },
-            { name: 'Observaciones', value: observaciones },
-            { name: 'Incoterm', value: incoterm },
+            { name: 'Incoterm', value: facturasIncoterms[0] },
           ],
         },
-        'Carta 318': {
-          data: [{ name: 'Carta 318', value: carta318mkdown }],
+        'Facturas': {
+          data: facturaDetails,
         },
-        Factura: {
-          data: [{ name: 'Factura', value: invoicemkdown }],
+        'Carta 318': {
+          data: [{ name: 'Carta 318', value: carta318?.markdown_representation }],
+        },
+        'Documento transporte': {
+          data: [{ name: 'Documento transporte', value: transportDocument?.markdown_representation }],
+        },
+      },
+    },
+  };
+
+  return await glosar(validation, traceId, 'o3-mini');
+}
+
+async function validateEmbalajesEscenario2(
+  traceId: string,
+  pedimento: Pedimento,
+  mappings: FacturaCoveMapping[],
+  transportDocument?: OCR,
+  carta318?: OCR
+) {
+  const embalajes = pedimento.encabezadoPrincipalDelPedimento.incrementables.embalajes;
+
+  const facturaDetails = mappings.map(mapping => ({
+    name: `Embalajes - Factura ${mapping.factura.invoice_number}`,
+    value: {
+      embalajes: getIncrementablesFromFactura(mapping.factura, 'embalajes'),
+      moneda: mapping.factura.currency_code
+    }
+  }));
+
+  const validation = {
+    name: 'Embalajes',
+    description: 'Valida la suma de embalajes de todas las facturas',
+    prompt: `Suma valores de embalajes de todas las facturas.
+Debe coincidir con el pedimento.
+Si no hay valor, marcar como correcto.`,
+    contexts: {
+      PROVIDED: {
+        Pedimento: {
+          data: [{ name: 'Embalajes', value: embalajes }],
+        },
+        'Facturas': {
+          data: facturaDetails,
+        },
+        'Carta 318': {
+          data: [{ name: 'Carta 318', value: carta318?.markdown_representation }],
+        },
+        'Documento transporte': {
+          data: [{ name: 'Documento transporte', value: transportDocument?.markdown_representation }],
+        },
+      },
+    },
+  };
+
+  return await glosar(validation, traceId, 'o3-mini');
+}
+
+async function validateOtrosIncrementablesEscenario2(
+  traceId: string,
+  pedimento: Pedimento,
+  mappings: FacturaCoveMapping[]
+) {
+  const otrosIncrementables = pedimento.encabezadoPrincipalDelPedimento.incrementables.otrosIncrementables;
+  const observaciones = pedimento.observacionesANivelPedimento;
+
+  const facturaDetails = mappings.map(mapping => ({
+    name: `Otros incrementables - Factura ${mapping.factura.invoice_number}`,
+    value: {
+      otrosIncrementables: getIncrementablesFromFactura(mapping.factura, 'otrosIncrementables')
+    }
+  }));
+
+  const validation = {
+    name: 'Otros incrementables',
+    description: 'Valida otros incrementables según Incoterm y suma de facturas',
+    prompt: `Valida que los otros incrementables en el pedimento sean la suma de los declarados en cada factura y que correspondan al Incoterm.`,
+    contexts: {
+      PROVIDED: {
+        Pedimento: {
+          data: [{ name: 'Otros incrementables', value: otrosIncrementables }],
+        },
+        'Facturas': {
+          data: facturaDetails,
+        },
+        Observaciones: {
+          data: [{ name: 'Observaciones', value: observaciones }],
+        },
+      },
+    },
+  };
+
+  return await glosar(validation, traceId, 'o3-mini');
+}
+
+async function validateValorDolaresEscenario2(
+  traceId: string,
+  pedimento: Pedimento,
+  mappings: FacturaCoveMapping[]
+) {
+  const valorDolares = pedimento.encabezadoPrincipalDelPedimento.valores.valorDolares;
+  const tipoCambio = pedimento.encabezadoPrincipalDelPedimento.tipoDeCambio;
+  const valorAduana = pedimento.encabezadoPrincipalDelPedimento.valores.valorAduana;
+  const observaciones = pedimento.observacionesANivelPedimento;
+
+  const facturaDetails = mappings.map(mapping => ({
+    name: `Valor comercial USD - Factura ${mapping.factura.invoice_number}`,
+    value: {
+      valorComercialUSD: mapping.factura.currency_code === 'USD' ? mapping.factura.total_amount : null
+    }
+  }));
+
+  const validation = {
+    name: 'Valor dólares',
+    description: 'Valida que el valor dólares sea igual a la suma de facturas en USD',
+    prompt: `Suma valores comerciales de las facturas en USD.
+El resultado debe ser igual a Valor Aduana ÷ Tipo cambio (±2 dec.).`,
+    contexts: {
+      PROVIDED: {
+        Pedimento: {
+          data: [
+            { name: 'Valor en dólares', value: valorDolares },
+            { name: 'Tipo de cambio', value: tipoCambio },
+            { name: 'Valor aduana', value: valorAduana },
+          ],
+        },
+        'Facturas': {
+          data: facturaDetails,
+        },
+        Observaciones: {
+          data: [{ name: 'Observaciones', value: observaciones }],
+        },
+      },
+    },
+  };
+
+  return await glosar(validation, traceId, 'o3-mini');
+}
+
+async function validateValorAduanaEscenario2(
+  traceId: string,
+  pedimento: Pedimento,
+  mappings: FacturaCoveMapping[]
+) {
+  const valorAduana = pedimento.encabezadoPrincipalDelPedimento.valores.valorAduana;
+  const valorComercial = pedimento.encabezadoPrincipalDelPedimento.valores.precioPagadoOValorComercial;
+  const incrementables = pedimento.encabezadoPrincipalDelPedimento.incrementables;
+
+  const facturaDetails = mappings.map(mapping => ({
+    name: `Valores - Factura ${mapping.factura.invoice_number}`,
+    value: {
+      valorComercial: mapping.factura.valor_comercial || mapping.factura.total_amount,
+      incrementables: mapping.factura.incrementables
+    }
+  }));
+
+  const validation = {
+    name: 'Valor aduana',
+    description: 'Valida que valor aduana sea la suma correcta de comercial más incrementables',
+    prompt: `Valor Aduana = suma(Valor comercial facturas) + suma(Incrementables).
+Verifica y reporta diferencias.`,
+    contexts: {
+      PROVIDED: {
+        Pedimento: {
+          data: [
+            { name: 'Valor aduana', value: valorAduana },
+            { name: 'Valor comercial', value: valorComercial },
+            { name: 'Incrementables', value: incrementables },
+          ],
+        },
+        'Facturas': {
+          data: facturaDetails,
+        },
+      },
+    },
+  };
+
+  return await glosar(validation, traceId, 'o3-mini');
+}
+
+// Validaciones específicas para Escenario 3: Múltiples facturas con diferentes Incoterms
+async function validateIncotermVsMedioTransporte(
+  traceId: string,
+  pedimento: Pedimento,
+  mappings: FacturaCoveMapping[],
+  transportDocument?: OCR
+) {
+  const medioTransportePedimento = pedimento.encabezadoPrincipalDelPedimento.mediosTransporte.entradaSalida;
+  
+  const facturaDetails = mappings.map(mapping => ({
+    name: `Factura ${mapping.factura.invoice_number}`,
+    value: {
+      incoterm: mapping.factura.payment_terms,
+      medioTransporte: 'N/A', // Se extraería del parsing de la factura
+      numeroFactura: mapping.factura.invoice_number
+    }
+  }));
+
+  const validation = {
+    name: 'Incoterm vs Medio de transporte',
+    description: 'Verifica que cada Incoterm sea válido con el medio de transporte declarado',
+    prompt: `Para cada factura verifica que su Incoterm sea válido con el medio de transporte declarado.
+Ejemplo: FOB solo aplica a transporte marítimo.
+Marca error si no corresponde.`,
+    contexts: {
+      PROVIDED: {
+        'Facturas': {
+          data: facturaDetails,
         },
         'Documento de transporte': {
           data: [
-            { name: 'Documento de transporte', value: transportDocmkdown },
+            { name: 'Medio de transporte BL/AWB/CMR', value: transportDocument?.markdown_representation },
+          ],
+        },
+        Pedimento: {
+          data: [
+            { name: 'Medio de transporte', value: medioTransportePedimento },
           ],
         },
       },
       EXTERNAL: {
-        'Tipo de cambio DOF': {
-          data: [{ name: 'Tipo de cambio DOF', value: tipoCambioDOF_F }],
-        },
-        'Apendice 14': {
-          data: [{ name: 'Apendice 14', value: apendice14 }],
+        'Apéndice 14': {
+          data: [{ name: 'Definiciones Incoterm', value: apendice14 }],
         },
       },
     },
-  } as const;
+  };
 
   return await glosar(validation, traceId, 'o3-mini');
+}
+
+async function validateIncotermPorFactura(
+  traceId: string,
+  pedimento: Pedimento,
+  mappings: FacturaCoveMapping[],
+  carta318?: OCR
+) {
+  const incotermGlobalPedimento = pedimento.datosDelProveedorOComprador?.[0]?.facturas?.map(f => f.incoterm)[0] || null;
+  
+  const facturaDetails = mappings.map(mapping => ({
+    name: `Incoterm - Factura ${mapping.factura.invoice_number}`,
+    value: {
+      incotermFactura: mapping.factura.payment_terms,
+      numeroFactura: mapping.factura.invoice_number
+    }
+  }));
+
+  const validation = {
+    name: 'Incoterm por factura',
+    description: 'Confirma que el Incoterm de cada factura coincida con su carta 3.1.8',
+    prompt: `Confirma que el Incoterm de cada factura coincida con el de su carta 3.1.8.
+Lista discrepancias.`,
+    contexts: {
+      PROVIDED: {
+        'Facturas': {
+          data: facturaDetails,
+        },
+        'Carta 318': {
+          data: [{ name: 'Incoterms por factura', value: carta318?.markdown_representation }],
+        },
+        Pedimento: {
+          data: [
+            { name: 'Incoterm global', value: incotermGlobalPedimento },
+          ],
+        },
+      },
+    },
+  };
+
+  return await glosar(validation, traceId, 'o3-mini');
+}
+
+async function validateProrrateoIncrementables(
+  traceId: string,
+  pedimento: Pedimento,
+  mappings: FacturaCoveMapping[]
+) {
+  const incrementablesTotales = pedimento.encabezadoPrincipalDelPedimento.incrementables;
+  const partidas = pedimento.partidas || [];
+  
+  const facturaDetails = mappings.map(mapping => ({
+    name: `Valor comercial - Factura ${mapping.factura.invoice_number}`,
+    value: {
+      valorComercial: mapping.factura.valor_comercial || mapping.factura.total_amount,
+      numeroFactura: mapping.factura.invoice_number
+    }
+  }));
+
+  const partidaDetails = partidas.map((partida, index) => ({
+    name: `Partida ${index + 1}`,
+    value: {
+      fraccionArancelaria: partida.fraccion,
+      valorComercialPartida: partida.importeDePrecioPagadoOValorComercial,
+      valorAduanaPartida: partida.valorEnAduanaOValorEnUSD
+    }
+  }));
+
+  const validation = {
+    name: 'Prorrateo de incrementables',
+    description: 'Distribuye incrementables entre facturas según valor comercial y valida en partidas',
+    prompt: `Distribuye (prorratea) los incrementables del pedimento entre las facturas según su valor comercial.
+Luego, por cada partida compara Valor Aduana partida vs Valor Comercial partida.
+Si Valor Aduana > Valor Comercial, indica que el prorrateo se aplicó; marca como correcto.
+Si no, marca error y muestra la partida afectada.`,
+    contexts: {
+      PROVIDED: {
+        Pedimento: {
+          data: [
+            { name: 'Incrementables totales flete', value: incrementablesTotales.fletes },
+            { name: 'Incrementables totales seguro', value: incrementablesTotales.seguros },
+            { name: 'Incrementables totales embalajes', value: incrementablesTotales.embalajes },
+            { name: 'Incrementables totales otros', value: incrementablesTotales.otrosIncrementables },
+          ],
+        },
+        'Facturas': {
+          data: facturaDetails,
+        },
+        'Partidas': {
+          data: partidaDetails,
+        },
+      },
+    },
+  };
+
+  return await glosar(validation, traceId, 'o3-mini');
+}
+
+async function validateValSegurosPorFacturaEscenario3(
+  traceId: string,
+  pedimento: Pedimento,
+  mappings: FacturaCoveMapping[],
+  carta318?: OCR
+) {
+  const tipoCambio = pedimento.encabezadoPrincipalDelPedimento.tipoDeCambio;
+  const valorSeguros = pedimento.encabezadoPrincipalDelPedimento.incrementables.valorSeguros;
+  const observaciones = pedimento.observacionesANivelPedimento;
+
+  const facturaDetails = mappings.map(mapping => ({
+    name: `Val. Seguros individual - Factura ${mapping.factura.invoice_number}`,
+    value: {
+      incotermFactura: mapping.factura.payment_terms,
+      valorSeguro: getIncrementablesFromFactura(mapping.factura, 'valSeguros'),
+      moneda: mapping.factura.currency_code,
+      numeroFactura: mapping.factura.invoice_number
+    }
+  }));
+
+  const validation = {
+    name: 'Val. Seguros por factura',
+    description: 'Valida el valor de seguros por factura según su Incoterm específico',
+    prompt: `Para cada factura evalúa individualmente:
+1. Si su Incoterm es CIP o CIF y declara valor de seguro, genera advertencia.
+2. Compara el valor declarado contra la factura/carta 318.
+3. Convierte moneda a MXN y valida coherencia.
+Aplicado factura por factura según su Incoterm específico.
+
+IMPORTANTE: Evalúa TODAS las facturas (${mappings.length} facturas), no solo la primera.`,
+    contexts: {
+      PROVIDED: {
+        Pedimento: {
+          data: [
+            { name: 'Val. Seguros total', value: valorSeguros },
+            { name: 'Tipo de cambio', value: tipoCambio },
+            { name: 'Observaciones', value: observaciones },
+            { name: 'Total de facturas a evaluar', value: mappings.length },
+          ],
+        },
+        'Facturas individuales': {
+          data: facturaDetails,
+        },
+        'Carta 318': {
+          data: [{ name: 'Carta 318', value: carta318?.markdown_representation }],
+        },
+      },
+      EXTERNAL: {
+        'Apéndice 14': {
+          data: [{ name: 'Apéndice 14', value: apendice14 }],
+        },
+      },
+    },
+  };
+
+  return await glosar(validation, traceId, 'o3-mini');
+}
+
+async function validateFletesPorFacturaEscenario3(
+  traceId: string,
+  pedimento: Pedimento,
+  mappings: FacturaCoveMapping[],
+  transportDocument?: OCR,
+  carta318?: OCR
+) {
+  const fletes = pedimento.encabezadoPrincipalDelPedimento.incrementables.fletes;
+  const tipoCambio = pedimento.encabezadoPrincipalDelPedimento.tipoDeCambio;
+
+  const facturaDetails = mappings.map(mapping => ({
+    name: `Fletes individual - Factura ${mapping.factura.invoice_number}`,
+    value: {
+      incotermFactura: mapping.factura.payment_terms,
+      valorFlete: getIncrementablesFromFactura(mapping.factura, 'fletes'),
+      moneda: mapping.factura.currency_code,
+      numeroFactura: mapping.factura.invoice_number
+    }
+  }));
+
+  const validation = {
+    name: 'Fletes por factura',
+    description: 'Valida fletes por factura según su Incoterm individual',
+    prompt: `Evalúa cada factura según su Incoterm específico:
+• Para EXW, FCA, FAS, FOB → flete debe existir y estar documentado
+• Para CFR, CIF, CPT, CIP, DAP, DPU, DDP → flete incluido, no debe declararse
+Convierte a MXN y valida coherencia factura por factura.
+
+IMPORTANTE: Evalúa TODAS las facturas (${mappings.length} facturas), no solo la primera.`,
+    contexts: {
+      PROVIDED: {
+        Pedimento: {
+          data: [
+            { name: 'Fletes total', value: fletes },
+            { name: 'Tipo de cambio', value: tipoCambio },
+            { name: 'Total de facturas a evaluar', value: mappings.length },
+          ],
+        },
+        'Facturas individuales': {
+          data: facturaDetails,
+        },
+        'Carta 318': {
+          data: [{ name: 'Carta 318', value: carta318?.markdown_representation }],
+        },
+        'Documento transporte': {
+          data: [{ name: 'Documento transporte', value: transportDocument?.markdown_representation }],
+        },
+      },
+    },
+  };
+
+  return await glosar(validation, traceId, 'o3-mini');
+}
+
+async function validateEmbalajesPorFacturaEscenario3(
+  traceId: string,
+  pedimento: Pedimento,
+  mappings: FacturaCoveMapping[],
+  transportDocument?: OCR,
+  carta318?: OCR
+) {
+  const embalajes = pedimento.encabezadoPrincipalDelPedimento.incrementables.embalajes;
+
+  const facturaDetails = mappings.map(mapping => ({
+    name: `Embalajes individual - Factura ${mapping.factura.invoice_number}`,
+    value: {
+      embalajes: getIncrementablesFromFactura(mapping.factura, 'embalajes'),
+      moneda: mapping.factura.currency_code,
+      numeroFactura: mapping.factura.invoice_number
+    }
+  }));
+
+  const validation = {
+    name: 'Embalajes por factura',
+    description: 'Valida embalajes por factura individual',
+    prompt: `Evalúa embalajes factura por factura:
+• Verifica valores documentados vs declarados
+• Suma individual de cada factura
+• Valida consistencia con documentos soporte
+Tolerancia individual por factura.
+
+IMPORTANTE: Evalúa TODAS las facturas (${mappings.length} facturas), no solo la primera.`,
+    contexts: {
+      PROVIDED: {
+        Pedimento: {
+          data: [
+            { name: 'Embalajes total', value: embalajes },
+            { name: 'Total de facturas a evaluar', value: mappings.length },
+          ],
+        },
+        'Facturas individuales': {
+          data: facturaDetails,
+        },
+        'Carta 318': {
+          data: [{ name: 'Carta 318', value: carta318?.markdown_representation }],
+        },
+        'Documento transporte': {
+          data: [{ name: 'Documento transporte', value: transportDocument?.markdown_representation }],
+        },
+      },
+    },
+  };
+
+  return await glosar(validation, traceId, 'o3-mini');
+}
+
+async function validateOtrosIncrementablesPorFacturaEscenario3(
+  traceId: string,
+  pedimento: Pedimento,
+  mappings: FacturaCoveMapping[]
+) {
+  const otrosIncrementables = pedimento.encabezadoPrincipalDelPedimento.incrementables.otrosIncrementables;
+  const observaciones = pedimento.observacionesANivelPedimento;
+
+  const facturaDetails = mappings.map(mapping => ({
+    name: `Otros incrementables individual - Factura ${mapping.factura.invoice_number}`,
+    value: {
+      incotermFactura: mapping.factura.payment_terms,
+      otrosIncrementables: getIncrementablesFromFactura(mapping.factura, 'otrosIncrementables'),
+      numeroFactura: mapping.factura.invoice_number
+    }
+  }));
+
+  const validation = {
+    name: 'Otros incrementables por factura',
+    description: 'Valida otros incrementables por factura según su Incoterm específico',
+    prompt: `Evalúa otros incrementables factura por factura:
+• Cada cargo debe tener soporte documental individual
+• No debe duplicar costos cubiertos por el Incoterm específico de cada factura
+• Valida aplicación correcta según Incoterm individual
+• Suma coherencia total vs individual
+
+IMPORTANTE: Evalúa TODAS las facturas (${mappings.length} facturas), no solo la primera.`,
+    contexts: {
+      PROVIDED: {
+        Pedimento: {
+          data: [
+            { name: 'Otros incrementables total', value: otrosIncrementables },
+            { name: 'Total de facturas a evaluar', value: mappings.length },
+          ],
+        },
+        'Facturas individuales': {
+          data: facturaDetails,
+        },
+        Observaciones: {
+          data: [{ name: 'Observaciones', value: observaciones }],
+        },
+      },
+    },
+  };
+
+  return await glosar(validation, traceId, 'o3-mini');
+}
+
+async function validateValorAduanaGlobalEscenario3(
+  traceId: string,
+  pedimento: Pedimento,
+  mappings: FacturaCoveMapping[]
+) {
+  const valorAduanaTotal = pedimento.encabezadoPrincipalDelPedimento.valores.valorAduana;
+  const partidas = pedimento.partidas || [];
+
+  const facturaDetails = mappings.map(mapping => ({
+    name: `Valor comercial + Incrementables - Factura ${mapping.factura.invoice_number}`,
+    value: {
+      valorComercial: mapping.factura.valor_comercial || mapping.factura.total_amount,
+      incrementablesProrrateados: 'Calculado según prorrateo',
+      numeroFactura: mapping.factura.invoice_number
+    }
+  }));
+
+  const partidaDetails = partidas.map((partida, index) => ({
+    name: `Valor Aduana - Partida ${index + 1}`,
+    value: {
+      valorAduanaPartida: partida.valorEnAduanaOValorEnUSD,
+      fraccionArancelaria: partida.fraccion
+    }
+  }));
+
+  const validation = {
+    name: 'Valor aduana global',
+    description: 'Valida que suma de partidas sea igual al valor aduana total y coherencia con facturas',
+    prompt: `Suma Valor Aduana de todas las partidas.
+Debe ser igual al Valor Aduana total del pedimento (tolerancia ±1%).
+Además, valida que Valor Aduana total = Σ(Valor comercial factura + Incrementables prorrateados).
+
+IMPORTANTE: Considera TODAS las facturas (${mappings.length} facturas) en el cálculo.`,
+    contexts: {
+      PROVIDED: {
+        Pedimento: {
+          data: [
+            { name: 'Valor aduana total', value: valorAduanaTotal },
+            { name: 'Total de facturas a evaluar', value: mappings.length },
+          ],
+        },
+        'Partidas': {
+          data: partidaDetails,
+        },
+        'Facturas con prorrateo': {
+          data: facturaDetails,
+        },
+      },
+    },
+  };
+
+  return await glosar(validation, traceId, 'o3-mini');
+}
+
+// Función original para escenario 1 y 3
+async function validateMultipleFacturasIncoterms(
+  traceId: string,
+  pedimento: Pedimento,
+  mappings: FacturaCoveMapping[],
+  validationType: 'valSeguros' | 'seguros' | 'fletes' | 'embalajes' | 'otrosIncrementables',
+  invoice?: OCR,
+  transportDocument?: OCR,
+  carta318?: OCR
+) {
+  // Detectar escenario y usar validaciones específicas para escenario 2
+  const facturasIncoterms = pedimento.datosDelProveedorOComprador?.[0]?.facturas?.map(f => f.incoterm) || [];
+  const scenarioType = getScenarioType(mappings, facturasIncoterms);
+  
+  if (scenarioType === 'multiple_single_incoterm') {
+    // Para escenario 2, usar las validaciones específicas
+         switch (validationType) {
+       case 'valSeguros':
+         return await validateValSegurosPorFactura(traceId, pedimento, mappings, carta318);
+       case 'seguros':
+         return await validateSegurosPedimentoVsSuma(traceId, pedimento, mappings);
+       case 'fletes':
+         return await validateFletesEscenario2(traceId, pedimento, mappings, transportDocument, carta318);
+       case 'embalajes':
+         return await validateEmbalajesEscenario2(traceId, pedimento, mappings, transportDocument, carta318);
+       case 'otrosIncrementables':
+         return await validateOtrosIncrementablesEscenario2(traceId, pedimento, mappings);
+     }
+  }
+
+  // Para escenarios 1 y 3, mantener lógica original
+  const fechaEntrada = pedimento.encabezadoPrincipalDelPedimento.fechas.entrada;
+  const tipoCambioDOF = await getExchangeRate(new Date(fechaEntrada ?? new Date()));
+  const tipoCambio = pedimento.encabezadoPrincipalDelPedimento.tipoDeCambio;
+  const observaciones = pedimento.observacionesANivelPedimento;
+  
+  // Obtener el valor específico según el tipo de validación
+  const getValorFromPedimento = () => {
+    const incrementables = pedimento.encabezadoPrincipalDelPedimento.incrementables;
+    switch (validationType) {
+      case 'valSeguros': return incrementables.valorSeguros;
+      case 'seguros': return incrementables.seguros;
+      case 'fletes': return incrementables.fletes;
+      case 'embalajes': return incrementables.embalajes;
+      case 'otrosIncrementables': return incrementables.otrosIncrementables;
+    }
+  };
+
+  const valorDeclarado = getValorFromPedimento();
+  
+  // Crear contexto de mappings
+  const mappingDetails = mappings.map((mapping) => ({
+    name: `${validationType} - Factura ${mapping.factura.invoice_number}`,
+    value: {
+      incotermFactura: mapping.factura.payment_terms,
+      valorFactura: mapping.factura.total_amount,
+      monedaFactura: mapping.factura.currency_code,
+      incrementablesFactura: getIncrementablesFromFactura(mapping.factura, validationType),
+      matchType: mapping.matchType,
+      confidence: mapping.confidence
+    }
+  }));
+
+  // Para una factura, usar contextos más específicos
+  const contexts = scenarioType === 'single_invoice' ? {
+    PROVIDED: {
+      Pedimento: {
+        data: [
+          { name: validationType === 'valSeguros' ? 'Val. Seguros' : validationType.charAt(0).toUpperCase() + validationType.slice(1), value: valorDeclarado },
+          { name: 'Tipo de cambio', value: tipoCambio },
+          ...(validationType === 'valSeguros' ? [
+            { name: 'Precio pagado / valor comercial', value: pedimento.encabezadoPrincipalDelPedimento.valores.precioPagadoOValorComercial },
+            { name: 'Clave de pedimento', value: pedimento.encabezadoPrincipalDelPedimento.claveDePedimento }
+          ] : []),
+          { name: 'Observaciones', value: observaciones },
+          { name: 'Incoterm', value: facturasIncoterms[0] },
+        ],
+      },
+      'Carta 318': {
+        data: [{ name: 'Carta 318', value: carta318?.markdown_representation }],
+      },
+      Factura: {
+        data: [{ name: 'Factura', value: invoice?.markdown_representation }],
+      },
+      'Documento de transporte': {
+        data: [{ name: 'Documento de transporte', value: transportDocument?.markdown_representation }],
+      },
+      COVE: {
+        data: [{ name: 'COVE', value: mappings[0]?.cove }],
+      },
+    },
+    EXTERNAL: {
+      'Tipo de cambio DOF': {
+        data: [{ name: 'Tipo de cambio DOF', value: tipoCambioDOF }],
+      },
+      'Apendice 14': {
+        data: [{ name: 'Apendice 14', value: apendice14 }],
+      },
+    },
+  } : {
+    // Contextos para múltiples facturas (escenario 3)
+    PROVIDED: {
+      Pedimento: {
+        data: [
+          { name: `${validationType}`, value: valorDeclarado },
+          { name: 'Tipo de cambio', value: tipoCambio },
+          { name: 'Observaciones', value: observaciones },
+          { name: 'Incoterms de facturas', value: facturasIncoterms },
+        ],
+      },
+      'Mappings de facturas': {
+        data: mappingDetails,
+      },
+      'Carta 318': {
+        data: [{ name: 'Carta 318', value: carta318?.markdown_representation }],
+      },
+      Factura: {
+        data: [{ name: 'Factura', value: invoice?.markdown_representation }],
+      },
+      'Documento de transporte': {
+        data: [{ name: 'Documento de transporte', value: transportDocument?.markdown_representation }],
+      },
+    },
+    EXTERNAL: {
+      'Tipo de cambio DOF': {
+        data: [{ name: 'Tipo de cambio DOF', value: tipoCambioDOF }],
+      },
+      'Apendice 14 (Incoterms)': {
+        data: [{ name: 'Definiciones Incoterm (Apendice 14)', value: apendice14 }],
+      },
+      'Incoterms con Transporte y Seguro': {
+        data: [{ name: 'Incoterms', value: incotermLogic }],
+      },
+    },
+  };
+
+  const validation = {
+    name: scenarioType === 'single_invoice' ? 
+      (validationType === 'valSeguros' ? 'Val. Seguros' : validationType.charAt(0).toUpperCase() + validationType.slice(1)) :
+      `${validationType} (Múltiples facturas)`,
+    description: scenarioType === 'single_invoice' ?
+      `Validación de ${validationType} para una factura con Incoterm específico` :
+      `Valida ${validationType} considerando múltiples facturas y sus incoterms`,
+    prompt: getPromptForValidationType(validationType, facturasIncoterms, mappings),
+    contexts,
+  };
+
+  return await glosar(validation as any, traceId, 'o3-mini');
+}
+
+function getIncrementablesFromFactura(factura: Factura, tipo: string) {
+  if (!factura.incrementables) return null;
+  
+  switch (tipo) {
+    case 'seguros': 
+    case 'valSeguros': 
+      return factura.incrementables.seguros;
+    case 'fletes': 
+      return factura.incrementables.fletes;
+    case 'embalajes': 
+      return factura.incrementables.embalajes;
+    case 'otrosIncrementables': 
+      return factura.incrementables.otros;
+    default: 
+      return null;
+  }
+}
+
+async function validateValSeguros(
+  traceId: string,
+  pedimento: Pedimento,
+  mappings: FacturaCoveMapping[],
+  invoice?: OCR,
+  transportDocument?: OCR,
+  carta318?: OCR
+) {
+  return await validateMultipleFacturasIncoterms(
+    traceId, pedimento, mappings, 'valSeguros', invoice, transportDocument, carta318
+  );
+}
+
+async function validateSeguros(
+  traceId: string,
+  pedimento: Pedimento,
+  mappings: FacturaCoveMapping[],
+  invoice?: OCR,
+  transportDocument?: OCR,
+  carta318?: OCR
+) {
+  return await validateMultipleFacturasIncoterms(
+    traceId, pedimento, mappings, 'seguros', invoice, transportDocument, carta318
+  );
+}
+
+async function validateFletes(
+  traceId: string,
+  pedimento: Pedimento,
+  mappings: FacturaCoveMapping[],
+  invoice?: OCR,
+  transportDocument?: OCR,
+  carta318?: OCR
+) {
+  return await validateMultipleFacturasIncoterms(
+    traceId, pedimento, mappings, 'fletes', invoice, transportDocument, carta318
+  );
 }
 
 async function validateEmbalajes(
   traceId: string,
   pedimento: Pedimento,
+  mappings: FacturaCoveMapping[],
   invoice?: OCR,
   transportDocument?: OCR,
   carta318?: OCR
 ) {
-  const incoterm =
-    pedimento.datosDelProveedorOComprador[0]?.facturas[0]?.incoterm;
-  const embalajes =
-    pedimento.encabezadoPrincipalDelPedimento.incrementables.embalajes;
-  const tipoCambio = pedimento.encabezadoPrincipalDelPedimento.tipoDeCambio;
-  const observaciones = pedimento.observacionesANivelPedimento;
-  const carta318mkdown = carta318?.markdown_representation;
-  const invoicemkdown = invoice?.markdown_representation;
-  const transportDocmkdown = transportDocument?.markdown_representation;
-  const fechaEntradaE = pedimento.encabezadoPrincipalDelPedimento.fechas.entrada;
-  const tipoCambioDOF_E = await getExchangeRate(new Date(fechaEntradaE ?? new Date()));
-
-  const validation = {
-    name: 'Embalajes',
-    description:
-      'Valida que el valor de embalajes declarado en el pedimento coincida con los documentos que lo avalan',
-    prompt:
-      `
-Revisa que "Embalajes" declarado en pedimento coincida con documentos soporte.
-
-- Si documentos muestran cargos de embalaje y pedimento no los declara, señala omisión.
-- Si pedimento declara embalajes sin soporte documental, señala falta de respaldo.
-- Si ambos muestran montos, diferencias mayores al 3% indican discrepancia.
-
-Casos especiales con múltiples facturas:
-
-- Mismo Incoterm: verifica uniformidad y suma cargos individuales para comparar contra el monto declarado global (±3%).
-- Diferentes Incoterms: revisa cada factura por separado con reglas anteriores, luego compara suma total documentada contra el monto declarado global (±3%).
-
-Si existe contrato global mencionado en observaciones, verifica distribución razonable.
-
-Siempre convierte montos documentados a MXN con el tipo de cambio indicado.
-`,
-    contexts: {
-      PROVIDED: {
-        Pedimento: {
-          data: [
-            { name: 'Embalajes', value: embalajes },
-            { name: 'Tipo de cambio', value: tipoCambio },
-            { name: 'Observaciones', value: observaciones },
-            { name: 'Incoterm', value: incoterm },
-          ],
-        },
-        'Carta 318': {
-          data: [{ name: 'Carta 318', value: carta318mkdown }],
-        },
-        Factura: {
-          data: [{ name: 'Factura', value: invoicemkdown }],
-        },
-        'Documento de transporte': {
-          data: [
-            { name: 'Documento de transporte', value: transportDocmkdown },
-          ],
-        },
-      },
-      EXTERNAL: {
-        'Tipo de cambio DOF': {
-          data: [{ name: 'Tipo de cambio DOF', value: tipoCambioDOF_E }],
-        },
-        'Apendice 14': {
-          data: [{ name: 'Apendice 14', value: apendice14 }],
-        },
-      },
-    },
-  } as const;
-
-  return await glosar(validation, traceId, 'o3-mini');
+  return await validateMultipleFacturasIncoterms(
+    traceId, pedimento, mappings, 'embalajes', invoice, transportDocument, carta318
+  );
 }
 
 async function validateOtrosIncrementables(
   traceId: string,
   pedimento: Pedimento,
+  mappings: FacturaCoveMapping[],
   invoice?: OCR,
   transportDocument?: OCR,
   carta318?: OCR
 ) {
-  const incoterm =
-    pedimento.datosDelProveedorOComprador[0]?.facturas[0]?.incoterm;
-  const otrosIncrementables =
-    pedimento.encabezadoPrincipalDelPedimento.incrementables
-      .otrosIncrementables;
-  const tipoCambio = pedimento.encabezadoPrincipalDelPedimento.tipoDeCambio;
-  const observaciones = pedimento.observacionesANivelPedimento;
-  const carta318mkdown = carta318?.markdown_representation;
-  const invoicemkdown = invoice?.markdown_representation;
-  const transportDocmkdown = transportDocument?.markdown_representation;
-  const fechaEntradaO = pedimento.encabezadoPrincipalDelPedimento.fechas.entrada;
-  const tipoCambioDOF_O = await getExchangeRate(new Date(fechaEntradaO ?? new Date()));
-
-  const validation = {
-    name: 'Otros incrementables',
-    description:
-      'Valida que el valor de otros incrementables declarado en el pedimento coincida con los documentos que lo avalan',
-    prompt:
-      `
-Revisa "Otros Incrementables" (gastos distintos a fletes, seguros y embalajes).
-
-1. Cada cargo declarado debe tener soporte documental (factura, carta 318, contrato, etc.).
-2. Verifica que no duplique costos ya cubiertos por el Incoterm:
-   – CFR/CIF/CPT/CIP incluyen el transporte principal.
-   – DAP/DPU/DDP incluyen transporte y entrega en destino.
-3. Si documentos muestran cargo no declarado ⇒ omisión. Si el pedimento declara cargo sin soporte ⇒ falta de respaldo.
-4. Diferencias ±3 % entre soporte y declarado.
-
-Para múltiples facturas, aplica la regla por factura y valida la suma global (±3 %).
-
-Convierte montos a MXN con el tipo de cambio del pedimento.
-`,
-    contexts: {
-      PROVIDED: {
-        Pedimento: {
-          data: [
-            { name: 'Otros incrementables', value: otrosIncrementables },
-            { name: 'Tipo de cambio', value: tipoCambio },
-            { name: 'Observaciones', value: observaciones },
-            { name: 'Incoterm', value: incoterm },
-          ],
-        },
-        'Carta 318': {
-          data: [{ name: 'Carta 318', value: carta318mkdown }],
-        },
-        Factura: {
-          data: [{ name: 'Factura', value: invoicemkdown }],
-        },
-        'Documento de transporte': {
-          data: [
-            { name: 'Documento de transporte', value: transportDocmkdown },
-          ],
-        },
-      },
-      EXTERNAL: {
-        'Tipo de cambio DOF': {
-          data: [{ name: 'Tipo de cambio DOF', value: tipoCambioDOF_O }],
-        },
-        'Apendice 14': {
-          data: [{ name: 'Apendice 14', value: apendice14 }],
-        },
-      },
-    },
-  } as const;
-
-  return await glosar(validation, traceId, 'o3-mini');
+  return await validateMultipleFacturasIncoterms(
+    traceId, pedimento, mappings, 'otrosIncrementables', invoice, transportDocument, carta318
+  );
 }
 
 async function validateValorDolares(
   traceId: string,
   pedimento: Pedimento,
+  mappings: FacturaCoveMapping[],
   invoice?: OCR,
   carta318?: OCR
 ) {
+  const scenarioType = getScenarioType(mappings, pedimento.datosDelProveedorOComprador?.[0]?.facturas?.map(f => f.incoterm) || []);
+  
+  // Para escenario 2, usar validación específica
+  if (scenarioType === 'multiple_single_incoterm') {
+    return await validateValorDolaresEscenario2(traceId, pedimento, mappings);
+  }
+
   const valorDolares =
     pedimento.encabezadoPrincipalDelPedimento.valores.valorDolares;
   const tipoCambio = pedimento.encabezadoPrincipalDelPedimento.tipoDeCambio;
@@ -489,39 +1277,86 @@ async function validateValorDolares(
   const observaciones = pedimento.observacionesANivelPedimento;
   const invoicemkdown = invoice?.markdown_representation;
   const carta318mkdown = carta318?.markdown_representation;
-
-  const validation = {
-    name: 'Valor dólares',
-    description:
-      'Valida que el valor en dólares del pedimento sea igual al valor aduana dividido entre el tipo de cambio',
-    prompt:
-      'El valor en dólares declarado en el pedimento debe ser igual al valor aduana dividido entre el tipo de cambio (Valor USD = Valor Aduana MXN ÷ Tipo de Cambio). Este valor debe coincidir con el valor comercial de la factura más los incrementables convertidos a USD, y estar redondeado a 2 decimales usando el tipo de cambio del pedimento. Solamente valida que el valor dólares este bien, los ya se analizaron. ',
-    contexts: {
-      PROVIDED: {
-        Pedimento: {
-          data: [
-            { name: 'Valor en dólares', value: valorDolares },
-            { name: 'Tipo de cambio', value: tipoCambio },
-            { name: 'Valor aduana', value: valorAduana },
-            { name: 'Observaciones', value: observaciones },
-          ],
-        },
-        Factura: {
-          data: [{ name: 'Factura', value: invoicemkdown }],
-        },
-        'Carta 318': {
-          data: [{ name: 'Carta 318', value: carta318mkdown }],
+  
+  if (scenarioType === 'single_invoice') {
+    const validation = {
+      name: 'Valor dólares',
+      description: 'Valida que el valor en dólares del pedimento sea igual al valor aduana dividido entre el tipo de cambio',
+      prompt: 'El valor en dólares debe ser igual a Valor Aduana ÷ Tipo de cambio y coincidir con el valor comercial más incrementables en USD. Redondeado a 2 decimales.',
+      contexts: {
+        PROVIDED: {
+          Pedimento: {
+            data: [
+              { name: 'Valor en dólares', value: valorDolares },
+              { name: 'Tipo de cambio', value: tipoCambio },
+              { name: 'Valor aduana', value: valorAduana },
+              { name: 'Observaciones', value: observaciones },
+            ],
+          },
+          Factura: {
+            data: [{ name: 'Factura', value: invoicemkdown }],
+          },
+          'Carta 318': {
+            data: [{ name: 'Carta 318', value: carta318mkdown }],
+          },
         },
       },
-    },
-  } as const;
-
-  return await glosar(validation, traceId, 'o3-mini');
+    } as const;
+    return await glosar(validation, traceId, 'o3-mini');
+  } else {
+    // Escenario 3: Múltiples facturas con diferentes incoterms
+    const facturaDetails = mappings.map(mapping => ({
+      name: `Valor USD - Factura ${mapping.factura.invoice_number}`,
+      value: {
+        valorFactura: mapping.factura.total_amount,
+        monedaFactura: mapping.factura.currency_code,
+        valorUSD: mapping.factura.currency_code === 'USD' ? mapping.factura.total_amount : null,
+        matchType: mapping.matchType
+      }
+    }));
+    
+    const validation = {
+      name: 'Valor dólares (Múltiples facturas)',
+      description: 'Valida que el valor en dólares del pedimento sea igual al valor aduana dividido entre el tipo de cambio considerando múltiples facturas',
+      prompt: `El valor en dólares declarado debe ser igual al valor aduana dividido entre el tipo de cambio (Valor USD = Valor Aduana MXN ÷ Tipo de Cambio). 
+      
+      Con múltiples facturas (${mappings.length} mapeadas):
+      1. Si todas las facturas están en USD: suma directa de valores USD
+      2. Si hay facturas en MXN: convierte usando el tipo de cambio del pedimento
+      3. El total debe coincidir con el valor dólares declarado (±2 decimales)
+      
+      Valida únicamente que el cálculo del valor dólares sea correcto.`,
+      contexts: {
+        PROVIDED: {
+          Pedimento: {
+            data: [
+              { name: 'Valor en dólares', value: valorDolares },
+              { name: 'Tipo de cambio', value: tipoCambio },
+              { name: 'Valor aduana', value: valorAduana },
+              { name: 'Observaciones', value: observaciones },
+            ],
+          },
+          'Múltiples facturas': {
+            data: facturaDetails,
+          },
+          Factura: {
+            data: [{ name: 'Factura', value: invoicemkdown }],
+          },
+          'Carta 318': {
+            data: [{ name: 'Carta 318', value: carta318mkdown }],
+          },
+        },
+      },
+    } as const;
+    
+    return await glosar(validation, traceId, 'o3-mini');
+  }
 }
 
 async function validateValorComercial(
   traceId: string,
   pedimento: Pedimento,
+  mappings: FacturaCoveMapping[],
   invoice?: OCR,
   carta318?: OCR
 ) {
@@ -536,41 +1371,109 @@ async function validateValorComercial(
   const invoicemkdown = invoice?.markdown_representation;
   const carta318mkdown = carta318?.markdown_representation;
 
-  const validation = {
-    name: 'Precio pagado',
-    description:
-      'Valida que el valor comercial sea igual al valor aduana menos los incrementables y que coincida con el valor de la factura',
-    prompt:
-      'El valor comercial representa el precio pagado por la mercancía sin incluir incrementables (Valor Comercial = Valor Aduana - Total Incrementables) o el valor de la factura sin los incrementables. debe ser menor o igual al valor aduana. La diferencia entre el valor aduana y el valor comercial debe corresponder exactamente a la suma de los incrementables declarados (fletes, seguros y otros), considerando cualquier decrementables aplicado y debe ser consistente con el valor declarado en la factura comercial. Si existe un redondo hacía arriba en el valor declarado en el pedimento que sea mínimo marcalo como valido, donde hay más peligro es declarar menos. ',
-    contexts: {
-      PROVIDED: {
-        Pedimento: {
-          data: [
-            { name: 'Valor comercial', value: valorComercial },
-            { name: 'Valor aduana', value: valorAduana },
-            { name: 'Incrementables', value: incrementables },
-            { name: 'Observaciones', value: observaciones },
-          ],
-        },
-        Factura: {
-          data: [{ name: 'Factura', value: invoicemkdown }],
-        },
-        'Carta 318': {
-          data: [{ name: 'Carta 318', value: carta318mkdown }],
+  const scenarioType = getScenarioType(mappings, pedimento.datosDelProveedorOComprador?.[0]?.facturas?.map(f => f.incoterm) || []);
+
+  if (scenarioType === 'single_invoice') {
+    const validation = {
+      name: 'Precio pagado',
+      description: 'Valida que el valor comercial sea consistente con factura y cálculo de valor aduana',
+      prompt: 'El valor comercial = Valor Aduana - Total Incrementables. Debe coincidir con el valor comercial de la factura (±2%) y debe ser ≤ valor aduana.',
+      contexts: {
+        PROVIDED: {
+          Pedimento: {
+            data: [
+              { name: 'Valor comercial', value: valorComercial },
+              { name: 'Valor aduana', value: valorAduana },
+              { name: 'Incrementables', value: incrementables },
+              { name: 'Observaciones', value: observaciones },
+            ],
+          },
+          Factura: {
+            data: [{ name: 'Factura', value: invoicemkdown }],
+          },
+          'Carta 318': {
+            data: [{ name: 'Carta 318', value: carta318mkdown }],
+          },
         },
       },
-    },
-  } as const;
+    };
+    return await glosar(validation, traceId, 'o3-mini');
+  } else {
+    // Mantener lógica existente para múltiples facturas
+    const facturaDetails = mappings.map(mapping => ({
+      name: `Valor comercial - Factura ${mapping.factura.invoice_number}`,
+      value: {
+        valorFactura: mapping.factura.total_amount,
+        monedaFactura: mapping.factura.currency_code,
+        valorComercialFactura: mapping.factura.valor_comercial || mapping.factura.total_amount,
+        matchType: mapping.matchType
+      }
+    }));
 
-  return await glosar(validation, traceId, 'o3-mini');
+    const totalFacturas = mappings.reduce((sum, mapping) => 
+      sum + (mapping.factura.valor_comercial || mapping.factura.total_amount), 0);
+
+    const validation = {
+      name: 'Precio pagado (Múltiples facturas)',
+      description:
+        'Valida que el valor comercial sea consistente con múltiples facturas y el cálculo de valor aduana',
+      prompt:
+        `El valor comercial representa el precio pagado por la mercancía sin incluir incrementables.
+        
+        Con múltiples facturas (${mappings.length} mapeadas):
+        1. Valor Comercial = Valor Aduana - Total Incrementables
+        2. Debe ser ≤ valor aduana
+        3. Debe coincidir con la suma de valores comerciales de todas las facturas
+        4. Tolerancia: redondeos mínimos hacia arriba son aceptables
+        
+        Total de facturas: ${totalFacturas}
+        Valor comercial declarado: ${valorComercial || 0}`,
+      contexts: {
+        PROVIDED: {
+          Pedimento: {
+            data: [
+              { name: 'Valor comercial', value: valorComercial },
+              { name: 'Valor aduana', value: valorAduana },
+              { name: 'Incrementables', value: incrementables },
+              { name: 'Observaciones', value: observaciones },
+            ],
+          },
+          'Múltiples facturas': {
+            data: facturaDetails,
+          },
+          'Resumen facturas': {
+            data: [
+              { name: 'Total valor comercial facturas', value: totalFacturas },
+              { name: 'Diferencia vs pedimento', value: Math.abs(totalFacturas - (valorComercial || 0)) },
+            ],
+          },
+          Factura: {
+            data: [{ name: 'Factura', value: invoicemkdown }],
+          },
+          'Carta 318': {
+            data: [{ name: 'Carta 318', value: carta318mkdown }],
+          },
+        },
+      },
+    };
+    return await glosar(validation, traceId, 'o3-mini');
+  }
 }
 
 async function validateValorAduana(
   traceId: string,
   pedimento: Pedimento,
+  mappings: FacturaCoveMapping[],
   invoice?: OCR,
   carta318?: OCR
 ) {
+  const scenarioType = getScenarioType(mappings, pedimento.datosDelProveedorOComprador?.[0]?.facturas?.map(f => f.incoterm) || []);
+  
+  // Para escenario 2, usar validación específica
+  if (scenarioType === 'multiple_single_incoterm') {
+    return await validateValorAduanaEscenario2(traceId, pedimento, mappings);
+  }
+
   const valorAduana =
     pedimento.encabezadoPrincipalDelPedimento.valores.valorAduana;
   const valorComercial =
@@ -584,11 +1487,21 @@ async function validateValorAduana(
   const carta318mkdown = carta318?.markdown_representation;
 
   const validation = {
-    name: 'Valor aduana',
-    description:
-      'Valida que el valor aduana sea igual al valor en dólares más incrementables multiplicado por el tipo de cambio',
-    prompt:
-      'El valor aduana es la base para el cálculo de contribuciones y debe calcularse como el valor dolares más los incrementables multiplicado por el tipo de cambio (Valor Aduana = (Valor Dolares + Total Incrementables) × Tipo de Cambio). Este valor debe ser mayor o igual al valor comercial, y la diferencia debe corresponder exactamente a los incrementables declarados en el pedimento, carta 318 y documentos de transporte, considerando los decrementables aplicados y cualquier ajuste documentado en las observaciones.',
+    name: scenarioType === 'single_invoice' ? 'Valor aduana' : 'Valor aduana (Múltiples facturas)',
+    description: scenarioType === 'single_invoice' ? 
+      'Valida que el valor aduana sea la base correcta para contribuciones' :
+      'Valida que el valor aduana sea la base correcta para contribuciones considerando múltiples facturas',
+    prompt: scenarioType === 'single_invoice' ?
+      'El valor aduana = Valor Comercial + Total Incrementables. Debe ser ≥ valor comercial y la diferencia debe corresponder exactamente a los incrementables.' :
+      `El valor aduana es la base para calcular contribuciones.
+      
+      Fórmula: Valor Aduana = Valor Comercial + Total Incrementables
+      
+      Con múltiples facturas (${mappings.length} mapeadas):
+      1. Debe ser ≥ valor comercial
+      2. La diferencia debe corresponder exactamente a los incrementables declarados
+      3. Considera incrementables documentados en todas las facturas, carta 318 y documentos de transporte
+      4. Ajustes en observaciones deben estar justificados`,
     contexts: {
       PROVIDED: {
         Pedimento: {
@@ -600,6 +1513,19 @@ async function validateValorAduana(
             { name: 'Observaciones', value: observaciones },
           ],
         },
+        ...(scenarioType !== 'single_invoice' && {
+          'Múltiples facturas': {
+            data: mappings.map(mapping => ({
+              name: `Incrementables - Factura ${mapping.factura.invoice_number}`,
+              value: {
+                incrementablesFactura: mapping.factura.incrementables,
+                decrementablesFactura: mapping.factura.decrementables,
+                valorFactura: mapping.factura.total_amount,
+                monedaFactura: mapping.factura.currency_code
+              }
+            })),
+          },
+        }),
         Factura: {
           data: [{ name: 'Factura', value: invoicemkdown }],
         },
@@ -608,53 +1534,111 @@ async function validateValorAduana(
         },
       },
     },
-  } as const;
+  };
 
-  return await glosar(validation, traceId, 'o3-mini');
+  return await glosar(validation as any, traceId, 'o3-mini');
 }
 
 export async function operacionMonetaria({
   pedimento,
+  coves,
+  facturas,
   invoice,
   transportDocument,
   carta318,
   traceId,
 }: {
   pedimento: Pedimento;
+  coves: Cove[];
+  facturas?: Factura[];
   invoice?: OCR;
   transportDocument?: OCR;
   carta318?: OCR;
   traceId: string;
 }) {
-  const validationsPromise = await Promise.all([
+  // Mapear facturas con COVEs si están disponibles
+  const mappingResult = mapFacturasWithCoves(facturas || [], coves);
+  const facturasIncoterms = pedimento.datosDelProveedorOComprador?.[0]?.facturas?.map(f => f.incoterm) || [];
+  const scenarioType = getScenarioType(mappingResult.mappings, facturasIncoterms);
+  
+  // Validaciones base comunes a todos los escenarios
+  const baseValidations = [
     validateTransportDocumentEntryDate(traceId, pedimento, transportDocument),
     validateTipoCambio(traceId, pedimento),
-    validateValSeguros(
-      traceId,
-      pedimento,
-      invoice,
-      transportDocument,
-      carta318
-    ),
-    validateSeguros(traceId, pedimento, invoice, transportDocument, carta318),
-    validateFletes(traceId, pedimento, invoice, transportDocument, carta318),
-    validateEmbalajes(traceId, pedimento, invoice, transportDocument, carta318),
-    validateOtrosIncrementables(
-      traceId,
-      pedimento,
-      invoice,
-      transportDocument,
-      carta318
-    ),
-    validateValorDolares(traceId, pedimento, invoice, carta318),
-    validateValorComercial(traceId, pedimento, invoice, carta318),
-    validateValorAduana(traceId, pedimento, invoice, carta318),
-  ]);
+  ];
 
-  return {
-    sectionName: 'Operación monetaria',
-    validations: validationsPromise,
-  };
+  // Validaciones específicas según escenario
+  if (scenarioType === 'multiple_single_incoterm') {
+    // Escenario 2: Múltiples facturas, mismo Incoterm - 8 validaciones específicas
+    const escenario2Validations = [
+      validateIncotermUnico(traceId, pedimento, mappingResult.mappings),
+      validateValSegurosPorFactura(traceId, pedimento, mappingResult.mappings, carta318),
+      validateSegurosPedimentoVsSuma(traceId, pedimento, mappingResult.mappings),
+      validateFletesEscenario2(traceId, pedimento, mappingResult.mappings, transportDocument, carta318),
+      validateEmbalajesEscenario2(traceId, pedimento, mappingResult.mappings, transportDocument, carta318),
+      validateOtrosIncrementablesEscenario2(traceId, pedimento, mappingResult.mappings),
+      validateValorDolaresEscenario2(traceId, pedimento, mappingResult.mappings),
+      validateValorAduanaEscenario2(traceId, pedimento, mappingResult.mappings),
+    ];
+    
+    const validationsPromise = await Promise.all([...baseValidations, ...escenario2Validations]);
+    
+    return {
+      sectionName: 'Operación monetaria',
+      validations: validationsPromise,
+    };
+  } else if (scenarioType === 'multiple_different_incoterms') {
+    // Escenario 3: Múltiples facturas con diferentes Incoterms - 8 validaciones específicas
+    const escenario3Validations = [
+      validateIncotermVsMedioTransporte(traceId, pedimento, mappingResult.mappings, transportDocument),
+      validateIncotermPorFactura(traceId, pedimento, mappingResult.mappings, carta318),
+      validateProrrateoIncrementables(traceId, pedimento, mappingResult.mappings),
+      validateValSegurosPorFacturaEscenario3(traceId, pedimento, mappingResult.mappings, carta318),
+      validateFletesPorFacturaEscenario3(traceId, pedimento, mappingResult.mappings, transportDocument, carta318),
+      validateEmbalajesPorFacturaEscenario3(traceId, pedimento, mappingResult.mappings, transportDocument, carta318),
+      validateOtrosIncrementablesPorFacturaEscenario3(traceId, pedimento, mappingResult.mappings),
+      validateValorAduanaGlobalEscenario3(traceId, pedimento, mappingResult.mappings),
+    ];
+    
+    const validationsPromise = await Promise.all([...baseValidations, ...escenario3Validations]);
+    
+    return {
+      sectionName: 'Operación monetaria',
+      validations: validationsPromise,
+    };
+  } else {
+    // Escenario 1: Una factura - validaciones originales
+    const validationsPromise = await Promise.all([
+      ...baseValidations,
+      validateValSeguros(
+        traceId,
+        pedimento,
+        mappingResult.mappings,
+        invoice,
+        transportDocument,
+        carta318
+      ),
+      validateSeguros(traceId, pedimento, mappingResult.mappings, invoice, transportDocument, carta318),
+      validateFletes(traceId, pedimento, mappingResult.mappings, invoice, transportDocument, carta318),
+      validateEmbalajes(traceId, pedimento, mappingResult.mappings, invoice, transportDocument, carta318),
+      validateOtrosIncrementables(
+        traceId,
+        pedimento,
+        mappingResult.mappings,
+        invoice,
+        transportDocument,
+        carta318
+      ),
+      validateValorDolares(traceId, pedimento, mappingResult.mappings, invoice, carta318),
+      validateValorComercial(traceId, pedimento, mappingResult.mappings, invoice, carta318),
+      validateValorAduana(traceId, pedimento, mappingResult.mappings, invoice, carta318),
+    ]);
+
+    return {
+      sectionName: 'Operación monetaria',
+      validations: validationsPromise,
+    };
+  }
 }
 
 

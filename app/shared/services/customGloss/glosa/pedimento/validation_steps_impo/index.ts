@@ -1,6 +1,7 @@
 import type { OCR } from '~/lib/utils';
 import type { Pedimento } from '../../../extract-and-structure/schemas';
 import type { Cove, PackingList } from '../../../extract-and-structure/schemas';
+import type { Factura } from '../../../extract-and-structure/schemas/factura';
 import { numeroDePedimento } from './1.numero-de-pedimento';
 import { tipoOperacion } from './2.tipo-operacion';
 import { claveApendice15 } from './3.origen-destino';
@@ -13,6 +14,8 @@ import { partidas } from './9.partidas';
 export async function pedimentoValidationStepsImpo({
   pedimento,
   cove,
+  coves,
+  facturas,
   transportDocument,
   packingList,
   invoice,
@@ -20,14 +23,17 @@ export async function pedimentoValidationStepsImpo({
   traceId,
 }: {
   pedimento: Pedimento;
-  cove: Cove;
+  cove: Cove; // Compatibilidad
+  coves?: Cove[]; // Múltiples COVEs
+  facturas?: Factura[]; // Múltiples facturas
   transportDocument?: OCR;
   packingList?: PackingList;
   invoice?: OCR;
   carta318?: OCR;
   traceId: string;
 }) {
-  // Ejecutar validaciones que devuelven un solo resultado
+  const allCoves = coves && coves.length > 0 ? coves : [cove];
+  
   const singleValidationResults = await Promise.all([
     numeroDePedimento({ pedimento, traceId }),
     tipoOperacion({
@@ -38,6 +44,8 @@ export async function pedimentoValidationStepsImpo({
     claveApendice15({ pedimento, traceId }),
     operacionMonetaria({
       pedimento,
+      coves: allCoves,
+      facturas,
       ...(invoice ? { invoice } : {}),
       ...(transportDocument ? { transportDocument } : {}),
       ...(carta318 ? { carta318 } : {}),
@@ -57,7 +65,6 @@ export async function pedimentoValidationStepsImpo({
     }),
   ]);
 
-  // Ejecutar validaciones de facturas que devuelven múltiples resultados
   const facturaValidations = await datosDeFactura({
     pedimento,
     cove,
@@ -66,7 +73,6 @@ export async function pedimentoValidationStepsImpo({
     traceId,
   });
 
-  // Ejecutar validaciones de partidas
   const partidaValidations = pedimento.partidas
     ? await Promise.all(
         pedimento.partidas.map((partida, index) =>
@@ -83,7 +89,6 @@ export async function pedimentoValidationStepsImpo({
       )
     : [];
 
-  // Combinar todos los resultados
   const allResults = [
     ...singleValidationResults,
     ...(Array.isArray(facturaValidations) ? facturaValidations : [facturaValidations]),
