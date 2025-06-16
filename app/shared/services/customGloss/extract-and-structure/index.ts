@@ -89,7 +89,7 @@ export async function extractAndStructure(
   const [
     pedimento,
     documentoDeTransporte,
-    factura,
+    facturasWithMarkdown,
     carta318,
     cove,
     packingList,
@@ -120,10 +120,24 @@ export async function extractAndStructure(
     Promise.all(cfdiFiles.map((cfdiFile) => extractAndStructureCFDI(cfdiFile))),
   ]);
 
+  // Separar facturas estructuradas de los objetos OCR
+  // facturasWithMarkdown ya contiene las facturas estructuradas con markdown
+  const facturas = facturasWithMarkdown.map(f => {
+    // Crear copia del objeto sin markdown_representation
+    const { markdown_representation, ...facturaStructured } = f;
+    return facturaStructured;
+  });
+  
+  // Para compatibilidad, 'factura' debe ser solo OCR
+  const factura = facturasWithMarkdown.map(f => ({
+    markdown_representation: f.markdown_representation
+  }));
+
   return {
     pedimento,
     documentoDeTransporte,
-    factura,
+    factura, // Array de OCR (compatibilidad)
+    facturas, // Array de facturas estructuradas (nuevo)
     carta318,
     cove,
     packingList,
