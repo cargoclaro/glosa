@@ -4,6 +4,7 @@ import type {
   PackingList,
   Pedimento,
 } from '../extract-and-structure/schemas';
+import type { Factura } from '../extract-and-structure/schemas/factura';
 import { coveValidationStepsImpo } from './cove/validation_steps_impo';
 import { pedimentoValidationStepsImpo } from './pedimento/validation_steps_impo';
 
@@ -12,6 +13,7 @@ export async function glosaImpo({
   documentoDeTransporte,
   packingList,
   cove,
+  facturas,
   factura,
   carta318,
   traceId,
@@ -20,6 +22,7 @@ export async function glosaImpo({
   documentoDeTransporte?: OCR[];
   packingList?: PackingList[];
   cove: Cove[];
+  facturas?: Factura[];
   factura?: OCR[];
   carta318?: OCR[];
   traceId: string;
@@ -29,10 +32,12 @@ export async function glosaImpo({
     throw new Error('This should never happen');
   }
 
-  // Procesar validaciones de pedimento con agregado de COVEs (usando el primero por ahora)
+  // Procesar validaciones de pedimento con múltiples COVEs y facturas
   const pedimentoValidations = await pedimentoValidationStepsImpo({
     pedimento,
-    cove: cove[0]!, // Ya verificamos que existe arriba
+    cove: cove[0]!, // Compatibilidad hacia atrás
+    coves: cove, // Pasar todos los COVEs
+    facturas, // Pasar facturas estructuradas
     transportDocument: documentoDeTransporte?.[0],
     packingList: packingList?.[0],
     invoice: factura?.[0],
