@@ -92,14 +92,14 @@ describe('Extract and Structure - FLUJO COMPLETO REAL', () => {
 
     // Facturas
     console.log('\nFACTURAS:');
-    console.log(`   Total de facturas procesadas: ${result.factura.length}`);
-    expect(result.factura.length).toBeGreaterThan(1);
+    console.log(`   Total de facturas procesadas: ${result.facturas.length}`);
+    expect(result.facturas.length).toBeGreaterThan(1);
     
     let facturasTotales = 0;
     let montoTotalFacturas = 0;
     
-    for (let i = 0; i < result.factura.length; i++) {
-      const factura = result.factura[i];
+    for (let i = 0; i < result.facturas.length; i++) {
+      const factura = result.facturas[i];
       if (factura) {
         facturasTotales++;
         montoTotalFacturas += factura.total_amount || 0;
