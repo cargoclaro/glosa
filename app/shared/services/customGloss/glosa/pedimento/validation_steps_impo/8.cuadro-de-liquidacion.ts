@@ -135,6 +135,42 @@ async function validateCuotasCompensatorias(traceId: string, pedimento: Pediment
   return await glosar(validation, traceId, 'o3-mini');
 }
 
+// New validation: Identificadores pedimento risk analysis
+async function validateIdentificadoresPedimentoRiskAnalysis(traceId: string, pedimento: Pedimento) {
+  const validation = {
+    name: 'Identificadores (análisis de riesgo)',
+    description: 'Analiza los identificadores a nivel pedimento para identificar riesgos y validar requisitos regulatorios.',
+    prompt: `✅ Validaciones a nivel pedimento\n\n(Solo se usa información de los identificadores del pedimento)\n\nSi ves el identificador IM, están declarando una importación temporal de insumos bajo IMMEX. Solo informa.\n\nSi ves MS, están declarando una importación temporal de mercancías bajo la modalidad de servicios. Solo informa.\n\nSi ves PC o RC, el pedimento es consolidado. Solo informa.\n\nSi ves AF, están declarando una importación temporal de activo fijo bajo IMMEX. Solo informa.\n\nSi ves PP, están usando PROSEC. Valida que el RFC del importador esté registrado para el sector correspondiente. Revisa la constancia PROSEC o listado vigente.\n\nSi ves CI, están usando una certificación en IVA/IEPS (CIVA). Valida que el RFC esté en el padrón oficial del SAT.\n\nSi ves IC con complemento A, están declarando una Comercializadora e Importadora certificada. Valida el complemento y la autorización correspondiente.\n\nSi ves IC con complemento O, están declarando que son Operador Económico Autorizado (OEA). Valida que estén en el padrón de OEA.\n\nSi ves SO, están declarando que son Socio Comercial Certificado. Valida que el RFC esté listado en el padrón oficial.\n\nSi ves RO, están aplicando revisión en origen. Verifica que la empresa tenga autorización vigente del SAT.\n\nSi ves A3, están regularizando mercancías. Valida que haya documentos de soporte como actas, inventarios o resoluciones.`,
+    contexts: {
+      PROVIDED: buildBaseContext(pedimento),
+      EXTERNAL: {
+        'Anexo 22, Apéndice 8': {
+          data: [
+            { name: 'Catálogo de identificadores', value: 'IM, MS, PC, RC, AF, PP, CI, IC, SO, RO, A3' },
+          ],
+        },
+        'Listado PROSEC vigente': {
+          data: [
+            { name: 'RFCs inscritos PROSEC', value: 'Catálogo oficial SAT' },
+          ],
+        },
+        'Padrón CIVA vigente': {
+          data: [
+            { name: 'RFCs con certificación IVA/IEPS', value: 'Catálogo oficial SAT' },
+          ],
+        },
+        'Padrón OEA vigente': {
+          data: [
+            { name: 'RFCs con autorización OEA', value: 'Catálogo oficial SAT' },
+          ],
+        },
+      },
+    },
+  } as const;
+
+  return await glosar(validation, traceId, 'o3-mini');
+}
+
 export async function cuadroDeLiquidacion({
   pedimento,
   traceId,
@@ -149,10 +185,11 @@ export async function cuadroDeLiquidacion({
     validateIGI(traceId, pedimento),
     validateIEPS(traceId, pedimento),
     validateCuotasCompensatorias(traceId, pedimento),
+    validateIdentificadoresPedimentoRiskAnalysis(traceId, pedimento),
   ]);
 
   return {
-    sectionName: 'Cuadro de liquidación',
+    sectionName: 'Identificadores y cuadro',
     validations,
   } as const;
 } 

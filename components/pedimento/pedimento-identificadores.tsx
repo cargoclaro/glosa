@@ -72,7 +72,16 @@ const PedimentoIdentificadores: React.FC<PedimentoIdentificadoresProps> = ({
         </div>
       </div>
 
-      <div className="mt-2">
+      <div
+        className={cn(
+          'mt-2',
+          'cursor-pointer border-gray-400',
+          'overflow-hidden rounded-md border-2',
+          getHighlightBorder('Identificadores y cuadro', tabs),
+          getHighlightFill('Identificadores y cuadro', tabInfoSelected)
+        )}
+        onClick={() => onClick('Identificadores y cuadro')}
+      >
         <div className="border-gray-400 border-b bg-gray-200 py-0.5 py-1 text-center font-semibold text-[11px] text-xs uppercase">
           IDENTIFICADORES
         </div>
@@ -84,10 +93,10 @@ const PedimentoIdentificadores: React.FC<PedimentoIdentificadoresProps> = ({
           'mt-2',
           'cursor-pointer border-gray-400',
           'overflow-hidden rounded-md border-2',
-          getHighlightBorder('Cuadro de liquidación', tabs),
-          getHighlightFill('Cuadro de liquidación', tabInfoSelected)
+          getHighlightBorder('Identificadores y cuadro', tabs),
+          getHighlightFill('Identificadores y cuadro', tabInfoSelected)
         )}
-        onClick={() => onClick('Cuadro de liquidación')}
+        onClick={() => onClick('Identificadores y cuadro')}
       >
         <div className="border-gray-400 border-b bg-gray-200 py-0.5 py-1 text-center font-semibold text-[11px] text-xs uppercase">
           LIQUIDACIÓN

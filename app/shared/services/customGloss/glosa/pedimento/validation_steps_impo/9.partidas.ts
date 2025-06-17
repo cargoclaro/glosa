@@ -631,6 +631,100 @@ async function validateIdentificadores(
   return await glosar(validation, traceId, 'o3-mini');
 }
 
+// Añadimos una nueva validación para análisis de riesgo de identificadores
+async function validateIdentificadoresRiksAnalysis(
+  traceId: string,
+  pedimento: Pedimento,
+  partida: Partida,
+  invoice?: OCR
+) {
+  // Identificadores a nivel partida y pedimento
+  const identificadoresPartida = partida.identificadores || [];
+  const identificadoresPedimento = pedimento.identificadoresPedimento || [];
+
+  // Datos relevantes del pedimento
+  const clavePedimento = pedimento.encabezadoPrincipalDelPedimento.claveDePedimento;
+  const destinoPedimento = pedimento.encabezadoPrincipalDelPedimento.destino;
+
+  // Información de factura (markdown para facilitar análisis LLM)
+  const invoiceMarkdown = invoice?.markdown_representation;
+
+  const validation = {
+    name: 'Análisis de Riesgo Identificadores',
+    description:
+      'Validación de identificadores a nivel partida contra reglas de riesgo y consistencia con datos de pedimento y documentos soporte',
+    prompt: `✅ Validaciones a nivel partida
+
+(Aquí se valida la partida y puede usarse información del pedimento como clave o país de destino)
+
+Si la partida tiene el identificador TL, AL u otro de tratado, revisa que también tenga PO y EO. Valida que coincidan con el certificado de origen y el país de origen de la factura.
+
+Si ves DT en una partida, valida que el pedimento tenga el identificador ST, la clave sea RT, y que el país de destino sea EE. UU. o Canadá. El país lo tomas de la factura o el campo de destino en el pedimento.
+
+Si ves DU, valida que el pedimento tenga el identificador SU, la clave sea RT, y que el país destino sea Europa o Reino Unido. Usa la factura o campo destino para validarlo.
+
+Si ves PT, están declarando un retorno de producto terminado. Solo informa. Si quieres validar, revisa que la descripción en la factura coincida con un bien terminado.
+
+Si ves EB, están declarando envases o empaques reutilizables. Solo informa. Puedes validarlo revisando el contrato logístico o la nota en la factura.
+
+Si ves PS, están aplicando PROSEC a la fracción. Valida que la fracción pertenezca al sector autorizado para esa empresa. Usa el listado de fracciones por sector PROSEC.
+
+Si ves NS, están solicitando exención del padrón. Valida que la fracción y el RFC no estén obligados. Usa el Anexo 10 o una resolución oficial.
+
+Si ves EN, están pidiendo exención de NOM. Valida que la fracción esté exenta o que haya resolución de exención. Consulta el Anexo 2.4.1.
+
+Si ves PB, están cumpliendo la NOM en el domicilio del importador. Valida que tengan aviso de cumplimiento diferido registrado ante la autoridad.
+
+Si ves PA, están cumpliendo la NOM en un almacén general de depósito. Valida que el almacén esté autorizado y que haya contrato vigente.
+
+Si ves XP, están pidiendo exención de RRNA. Valida que la fracción esté exenta o exista resolución. Usa el Anexo 2.2.1 o documento oficial.
+
+Si ves EX, están solicitando exención de cuenta aduanera. Valida que el valor unitario declarado sea igual o mayor al precio estimado por SHCP. Compara con el listado del DOF.
+
+Si ves MA, están usando embalaje de madera. Valida que el packing list o carta porte indique uso de madera (tarimas, jaulas, etc.).
+
+Si ves MC, están declarando una fracción con marca registrada. Valida que esté listada en el Anexo 20 de las RGCE.
+
+Si ves MM, están importando muestras o muestrarios. Valida que la factura lo indique claramente y que el valor sea simbólico o bajo.
+
+Si ves PG, es mercancía peligrosa. Valida que esté en el Apéndice 19 del Anexo 22 y que haya hoja de seguridad.
+
+Si la operación es virtual (transferencia entre IMMEX o con extranjero), valida que:\n– IM en partida sea el RFC de la IMMEX receptora.\n– V1 sea el RFC de la IMMEX que transfiere.\nUsa la factura o contrato de transferencia para comparar.
+
+Si la operación es virtual (proveedor nacional a extranjero), valida que:\n– IM en partida sea la IMMEX que recibe.\n– V1 sea el RFC del proveedor nacional.\nUsa la factura comercial para validar ambos RFCs.`,
+    contexts: {
+      PROVIDED: {
+        Partida: {
+          data: [
+            {
+              name: 'Identificadores Partida',
+              value: JSON.stringify(identificadoresPartida, null, 2),
+            },
+            { name: 'Fracción', value: partida.fraccion },
+          ],
+        },
+        Pedimento: {
+          data: [
+            {
+              name: 'Identificadores Pedimento',
+              value: JSON.stringify(identificadoresPedimento, null, 2),
+            },
+            { name: 'Clave Pedimento', value: clavePedimento },
+            { name: 'Destino', value: destinoPedimento },
+          ],
+        },
+        Factura: {
+          data: [
+            { name: 'Invoice', value: invoiceMarkdown || 'No Invoice' },
+          ],
+        },
+      },
+    },
+  } as const;
+
+  return await glosar(validation, traceId, 'gpt-4o-mini');
+}
+
 export async function partidas({
   pedimento,
   invoice,
@@ -670,6 +764,7 @@ export async function partidas({
     ...partida.identificadores.map((identificador) =>
       validateIdentificadores(traceId, identificador)
     ),
+    validateIdentificadoresRiksAnalysis(traceId, pedimento, partida, invoice),
   ]);
 
   return {
