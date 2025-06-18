@@ -5,50 +5,46 @@ import type {
 } from '../../../extract-and-structure/schemas';
 import type { Cove, PackingList } from '../../../extract-and-structure/schemas';
 import { apendice7 } from '../../anexo-22/apendice-7';
-import { getFraccionInfo } from '../../tax-finder';
+import { getSmartcodeInfo } from '../../gsmartcode';
 import { glosar } from '../../validation-result';
 
 // Función para validar preferencia arancelaria y certificado de origen
 async function validateFraccionArancelaria(
   traceId: string,
   partida: Partida,
-  pedimento: Pedimento
+  _pedimento: Pedimento
 ) {
   // Extraer partidas con información de fracción arancelaria
   const fraccion = partida.fraccion;
   const nico = partida.subdivisionONumeroDeIdentificacionComercial;
-  const paisOrigenDestino = partida.paisDeOrigenODestino ?? '';
-  const fechaDeEntrada =
-    pedimento.encabezadoPrincipalDelPedimento.fechas.entrada;
-  const tipoDeOperacion =
-    pedimento.encabezadoPrincipalDelPedimento.tipoDeOperacion;
   let fraccionExiste = false;
-  if (fechaDeEntrada && tipoDeOperacion && tipoDeOperacion !== 'TRA') {
-    await getFraccionInfo({
-      fraccion,
-      fechaDeEntrada,
-      tipoDeOperacion,
-      nico,
-      clavePais: paisOrigenDestino,
-    });
-    fraccionExiste = true;
+  let fraccionInfo = null;
+  if (nico && fraccion) {
+    fraccionInfo = await getSmartcodeInfo({ fraccion, nico });
+    fraccionExiste = !!fraccionInfo;
   }
 
   const validation = {
     name: 'Fracción arancelaria',
     description:
-      'Verificación de que la fracción arancelaria declarada en cada partida exista en el sistema de Tax Finder y sea válida según la información del pedimento',
+      'Verificación de que la fracción arancelaria declarada en cada partida exista en el sistema de GSmartCode y sea válida según la información del pedimento',
     prompt:
-      'Verificar que la fracción arancelaria declarada en cada partida exista en el sistema de Tax Finder y coincida con la información del pedimento.',
+      'Verificar que la fracción arancelaria declarada en cada partida exista en el sistema de GSmartCode y coincida con la información del pedimento.',
     contexts: {
       PROVIDED: {
         Pedimento: {
-          data: [{ name: 'Fracción arancelaria', value: fraccion }],
+          data: [
+            { name: 'Fracción arancelaria', value: fraccion },
+            { name: 'NICO', value: nico },
+          ],
         },
       },
       EXTERNAL: {
-        'Tax Finder': {
-          data: [{ name: 'Existe', value: fraccionExiste ? 'Si' : 'No' }],
+        GSmartCode: {
+          data: [
+            { name: 'Existe', value: fraccionExiste ? 'Si' : 'No' },
+            { name: 'Información completa', value: JSON.stringify(fraccionInfo, null, 2) },
+          ],
         },
       },
     },
@@ -61,39 +57,20 @@ async function validateFraccionArancelaria(
 async function validateCoherenciaUMT(
   traceId: string,
   partida: Partida,
-  pedimento: Pedimento
+  _pedimento: Pedimento
 ) {
   // Extraer partidas con información de UMC
   const partidasUMT = partida.unidadDeMedidaDeTarifa || '';
   const fraccion = partida.fraccion;
   const nico = partida.subdivisionONumeroDeIdentificacionComercial;
-  const paisOrigenDestino = partida.paisDeOrigenODestino ?? '';
-  const fechaDeEntrada =
-    pedimento.encabezadoPrincipalDelPedimento.fechas.entrada;
-  const tipoDeOperacion =
-    pedimento.encabezadoPrincipalDelPedimento.tipoDeOperacion;
-  if (!fechaDeEntrada || !tipoDeOperacion || tipoDeOperacion === 'TRA') {
-    throw new Error(
-      'No se puede validar la unidad de medida de la tarifa, ya que no se tiene fecha de entrada o tipo de operación o es tránsito'
-    );
-  }
-  const {
-    data: {
-      arancel: { unidad_medida },
-    },
-  } = await getFraccionInfo({
-    fraccion,
-    fechaDeEntrada,
-    tipoDeOperacion,
-    nico,
-    clavePais: paisOrigenDestino,
-  });
+  const fraccionInfo = await getSmartcodeInfo({ fraccion, nico });
+  const unidadMedida = fraccionInfo?.unidadMedida;
   const validation = {
     name: 'UMT',
     description:
-      'Verificación de que la unidad de medida de la tarifa declarada en la partida exista en el apéndice 7 y corresponda con la fracción arancelaria en Tax Finder',
+      'Verificación de que la unidad de medida de la tarifa declarada en la partida exista en el apéndice 7 y corresponda con la fracción arancelaria en GSmartCode',
     prompt:
-      'Validar la unidad de medida de la tarifa de la partida, debe de existir en el apendice 7, que la unidad de medida de la tarifa sea la correspondiente para esa fracción arancelara de Tax Finder.',
+      'Validar la unidad de medida de la tarifa de la partida, debe de existir en el apendice 7, que la unidad de medida de la tarifa sea la correspondiente para esa fracción arancelara de GSmartCode.',
     contexts: {
       PROVIDED: {
         Pedimento: {
@@ -104,11 +81,11 @@ async function validateCoherenciaUMT(
         Apéndices: {
           data: [{ name: 'Apéndice 7', value: JSON.stringify(apendice7) }],
         },
-        'Tax Finder': {
+        'GSmartCode': {
           data: [
             {
               name: 'Unidad de medida',
-              value: JSON.stringify(unidad_medida, null, 2),
+              value: JSON.stringify(unidadMedida, null, 2),
             },
           ],
         },
@@ -328,77 +305,50 @@ async function validateDescripcionMercancia(
 async function validateTarifasArancelarias(
   traceId: string,
   partida: Partida,
-  pedimento: Pedimento
+  _pedimento: Pedimento
 ) {
   const fraccion = partida.fraccion;
   const nico = partida.subdivisionONumeroDeIdentificacionComercial;
-  const paisOrigenDestino = partida.paisDeOrigenODestino ?? '';
-  const fechaDeEntrada =
-    pedimento.encabezadoPrincipalDelPedimento.fechas.entrada;
-  const tipoDeOperacion =
-    pedimento.encabezadoPrincipalDelPedimento.tipoDeOperacion;
-  if (!fechaDeEntrada || !tipoDeOperacion || tipoDeOperacion === 'TRA') {
-    throw new Error(
-      'No se puede validar la tarifa arancelaria, ya que no se tiene fecha de entrada o tipo de operación o es tránsito'
-    );
-  }
+  const smartInfo = await getSmartcodeInfo({ fraccion, nico });
   const {
-    data: {
-      iva,
-      extra: { ligie_arancel, ieps_tasas },
-    },
-  } = await getFraccionInfo({
-    fraccion,
-    fechaDeEntrada,
-    tipoDeOperacion,
-    nico,
-    clavePais: paisOrigenDestino,
-  });
+    ivaFranja = 0,
+    ivaInterior = 0,
+    adValoremImportacion = 0,
+    adValoremExportacion = 0,
+    tasaMixta = '',
+  } = smartInfo?.tarifas ?? {} as any;
 
-  const tasasTaxFinder = {
-    iva: iva?.valor_iva || 0,
-    ligie_arancel,
-    ieps_tasas,
-  };
-
-  const tasasPartida = {
-    iva:
-      partida.contribuciones?.find(
-        (contribucion) => contribucion.contribucion === 'IVA'
-      )?.tasa || 0.16,
-    ligie_arancel:
-      partida.contribuciones?.find(
-        (contribucion) => contribucion.contribucion === 'IGI/IGE'
-      )?.tasa || 0,
-    ieps_tasas:
-      partida.contribuciones?.find(
-        (contribucion) => contribucion.contribucion === 'IEPS'
-      )?.tasa || 0,
+  const tasasGSmart = {
+    ivaFranja,
+    ivaInterior,
+    adValoremImportacion,
+    adValoremExportacion,
+    tasaMixta,
   };
 
   const validation = {
     name: 'Tarifas arancelarias',
     description:
-      'Verificación de que las tarifas arancelarias declaradas en la partida coincidan con las tarifas vigentes en el Tax Finder',
+      'Verificación de que las tarifas arancelarias declaradas en la partida coincidan con las tarifas vigentes en GSmartCode',
     prompt:
-      'Validar que las tarifas arancelarias declaradas en la partida coincidan con las tarifas arancelarias declaradas en el Tax Finder.',
+      'Validar que las tarifas arancelarias declaradas en la partida coincidan con las tarifas arancelarias declaradas en GSmartCode.',
     contexts: {
       PROVIDED: {
         Partida: {
           data: [
             {
-              name: 'Tasas Partida',
-              value: JSON.stringify(tasasPartida, null, 2),
+              name: 'Tasas GSmartCode',
+              value: JSON.stringify(tasasGSmart, null, 2),
             },
           ],
         },
       },
       EXTERNAL: {
-        'Tax Finder': {
+        GSmartCode: {
           data: [
             {
-              name: 'Tasas Tax Finder',
-              value: JSON.stringify(tasasTaxFinder, null, 2),
+              name: 'Tasas GSmartCode',
+              value: JSON.stringify(tasasGSmart, null, 2),
             },
           ],
         },
