@@ -16,13 +16,13 @@ export const env = createEnv({
     LANGFUSE_PUBLIC_KEY: z.string(),
     LANGFUSE_SECRET_KEY: z.string(),
     OPENAI_API_KEY: z.string(),
-    TAXFINDER_API_KEY: z.string(),
     UPLOADTHING_TOKEN: z.string(),
     TESTING_EMAIL: z.string().email(),
     TESTING_PASSWORD: z.string(),
     NODE_ENV: z
       .enum(['development', 'test', 'production'])
       .default('development'),
+    GS_SMARTCODE_KEY: z.string().optional(),
   },
   experimental__runtimeEnv: process.env,
   emptyStringAsUndefined: true,
