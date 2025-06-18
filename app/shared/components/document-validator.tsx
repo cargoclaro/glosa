@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import Modal from './modal';
 
 export type DocumentStatus = 'missing' | 'present';
@@ -66,6 +66,28 @@ const DocumentValidator: React.FC<DocumentValidatorProps> = ({
 
   const requiredDocs = documents.filter((d) => d.required);
   const optionalDocs = documents.filter((d) => !d.required);
+
+  // Allow users to press "Enter" to proceed when the modal is open
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Enter' && open) {
+        // Prevent the default form submission behaviour
+        e.preventDefault();
+        // Only proceed if the required documents are present
+        if (!missingRequired) {
+          proceed();
+        }
+      }
+    };
+
+    if (open) {
+      window.addEventListener('keydown', handleKeyDown);
+    }
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [open, proceed, missingRequired]);
 
   return (
     <Modal isOpen={open} onClose={close} menuRef={menuRef}>

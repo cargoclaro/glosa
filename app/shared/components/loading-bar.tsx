@@ -146,6 +146,18 @@ const LoadingBar: React.FC<LoadingBarProps> = ({ duration = 240000, omitClassifi
   // Remaining time counter (for ETA display)
   const [remainingMs, setRemainingMs] = useState(duration);
 
+  // Allow dismissing with Enter
+  useEffect(() => {
+    if (!onClose) return;
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === 'Enter') {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKey);
+    return () => window.removeEventListener('keydown', handleKey);
+  }, [onClose]);
+
   useEffect(() => {
     // Reset state when component mounts
     setCurrentStep(steps[0]!.id);

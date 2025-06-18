@@ -5,7 +5,7 @@ import { useModal } from '@/shared/hooks';
 import { Document, Upload, XMark } from '@/shared/icons';
 import { analysis, previewClassification } from '@/shared/services/customGloss/controller';
 import { useMutation } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { cn } from '~/lib/utils';
 import DocumentValidator, { type DocumentItem } from '@/shared/components/document-validator';
 import { useRouter } from 'next/navigation';
@@ -31,11 +31,11 @@ const GlossForm: React.FC<GlossFormProps> = ({ onOuterClose }) => {
       return await analysis(formData);
     },
     onSuccess: (data) => {
+      // We intentionally avoid automatic redirection.
+      // Instead, we just refresh the data so the new gloss appears in the dashboard.
       if (data?.success) {
-        window.location.href = `/gloss/${data.glossId}/analysis`;
-      }
-      if (!data.success) {
-        closeMenu();
+        router.refresh();
+        resetToIdle();
       }
     },
     onError: (error) => {
@@ -44,7 +44,7 @@ const GlossForm: React.FC<GlossFormProps> = ({ onOuterClose }) => {
         // This is a redirect, allow it to happen normally
         return;
       }
-      closeMenu();
+      resetToIdle();
     },
   });
 
@@ -89,8 +89,9 @@ const GlossForm: React.FC<GlossFormProps> = ({ onOuterClose }) => {
 
     setStage('PROCESSING');
     setHasConfirmed(true);
-    openMenu();
+    openMenu(); // show loading bar while processing
     analysisMutation.mutate(formData);
+    // keep modal; we'll close via LoadingBar onClose
   };
 
   const handleRemoveFile = (index: number) => {
@@ -139,6 +140,29 @@ const GlossForm: React.FC<GlossFormProps> = ({ onOuterClose }) => {
     setDocuments([]);
     setHasConfirmed(false);
   };
+
+  // Callback to invoke handlerAction when allowed
+  const triggerGlosar = useCallback(() => {
+    if (!files || stage !== 'IDLE') return;
+    handlerAction();
+  }, [files, stage]);
+
+  // Listen for Enter key press to continue after files upload
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Enter') {
+        triggerGlosar();
+      }
+    };
+
+    if (files && stage === 'IDLE') {
+      window.addEventListener('keydown', onKeyDown);
+    }
+
+    return () => {
+      window.removeEventListener('keydown', onKeyDown);
+    };
+  }, [files, stage, triggerGlosar]);
 
   return (
     <>
