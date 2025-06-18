@@ -2,6 +2,7 @@ import type { OCR } from '~/lib/utils';
 import type { Pedimento } from '../../../extract-and-structure/schemas';
 import type { Cove } from '../../../extract-and-structure/schemas';
 import { getExchangeRate } from '../../exchange-rate';
+import { getCurrencyEquivalenceFactor } from '../../gsmartcode';
 import { glosar } from '../../validation-result';
 
 async function validateRfcFormat(
@@ -302,6 +303,7 @@ async function validateMonedaYEquivalencia(
   cove: Cove,
   facturaIndex: number,
   tipoCambioDOF: number,
+  factorEquivalenciaMoneda: number | null,
   carta318?: OCR,
   invoice?: OCR
 ) {
@@ -322,8 +324,6 @@ async function validateMonedaYEquivalencia(
   const carta318mkdown = carta318?.markdown_representation;
   const invoicemkdown = invoice?.markdown_representation;
 
-  const factorDof = 1;
-
   const observaciones = pedimento.observacionesANivelPedimento;
 
   const validation = {
@@ -331,7 +331,7 @@ async function validateMonedaYEquivalencia(
     description:
       'Valida que la moneda y los valores declarados coincidan entre los documentos y que el factor de conversión sea correcto',
     prompt:
-      'Validar los siguientes aspectos:\n\nMoneda:\n• La moneda declarada debe coincidir entre:\n  - Factura\n  - COVE\n  - Carta 3.1.8\n\nCálculo en USD:\n• El valor en dólares del pedimento debe ser igual a:\n  - Valor de Factura multiplicado por Factor DOF\n• Se permite una tolerancia máxima de ±0.5%\n\nFactor DOF:\n• Debe corresponder al tipo de cambio publicado el día de la fecha de emisión de la Factura',
+      'Validar los siguientes aspectos:\n\nMoneda:\n• La moneda declarada debe coincidir entre:\n  - Factura\n  - COVE\n  - Carta 3.1.8\n\nCálculo en USD:\n• El valor en dólares del pedimento debe ser igual a:\n  - Valor de Factura multiplicado por Factor de Equivalencia de Moneda (GSmartCode)\n• Se permite una tolerancia máxima de ±0.5%\n\nFactor de Equivalencia:\n• Debe corresponder al factor oficial publicado en el DOF para la moneda, mes y año correspondientes\n• Si no se encuentra factor de equivalencia en GSmartCode, usar el tipo de cambio DOF como respaldo',
     contexts: {
       PROVIDED: {
         Pedimento: {
@@ -358,10 +358,10 @@ async function validateMonedaYEquivalencia(
         },
       },
       EXTERNAL: {
-        'Tipo de cambio DOF': {
+        'Factores de conversión': {
           data: [
-            { name: 'Factor DOF', value: factorDof },
-            { name: 'Tipo de cambio DOF', value: tipoCambioDOF },
+            { name: 'Factor de equivalencia moneda (GSmartCode)', value: factorEquivalenciaMoneda },
+            { name: 'Tipo de cambio DOF (respaldo)', value: tipoCambioDOF },
           ],
         },
       },
@@ -407,15 +407,48 @@ export async function datosDeFactura({
     ? parseFloat(exchangeRateResult.value) 
     : 20.0; // Valor por defecto en caso de error
 
+  // Helper function to get Spanish month name
+  const getSpanishMonth = (date: Date): string => {
+    const months = [
+      'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+      'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+    ];
+    return months[date.getMonth()] ?? 'Enero'; // Fallback to 'Enero' if undefined
+  };
+
   // Procesar cada factura individualmente
   const facturaValidationsPromises = facturas.map(async (_, facturaIndex) => {
+    const factura = facturas[facturaIndex];
+    const facturaDate = factura?.fecha ? new Date(factura.fecha) : new Date(fechaEntrada ?? new Date());
+    const monthSpanish = getSpanishMonth(facturaDate);
+    const year = facturaDate.getFullYear().toString();
+    
+    // Currencies supported by exchange-rate.ts (use Banxico API)
+    const supportedExchangeRateCurrencies = ['USD', 'EUR', 'GBP'];
+    
+    // Obtener el factor de equivalencia de moneda solo para monedas NO soportadas por exchange-rate.ts
+    let factorEquivalencia: number | null = null;
+    if (factura?.moneda && !supportedExchangeRateCurrencies.includes(factura.moneda)) {
+      try {
+        const currencyEquivalence = await getCurrencyEquivalenceFactor({
+          currencyCode: factura.moneda,
+          month: monthSpanish,
+          year: year,
+        });
+        factorEquivalencia = currencyEquivalence?.equivalenceFactor || null;
+      } catch (error) {
+        console.warn(`Error fetching currency equivalence for ${factura.moneda}:`, error);
+        factorEquivalencia = null;
+      }
+    }
+
     const validationsPromise = await Promise.all([
       validateRfcFormat(traceId, pedimento, cove, facturaIndex, carta318),
       validateCesionDerechos(traceId, pedimento, facturaIndex, cartaSesion, carta318),
       validateDatosImportador(traceId, pedimento, cove, facturaIndex, carta318),
       validateDatosProveedor(traceId, pedimento, cove, facturaIndex, carta318),
       validateFechasYFolios(traceId, pedimento, cove, facturaIndex, invoice, carta318),
-      validateMonedaYEquivalencia(traceId, pedimento, cove, facturaIndex, tipoCambioDOF, carta318, invoice),
+      validateMonedaYEquivalencia(traceId, pedimento, cove, facturaIndex, tipoCambioDOF, factorEquivalencia, carta318, invoice),
     ]);
 
     const numeroFactura = facturas[facturaIndex]?.numeroDeCFDIODocumentoEquivalente || `${facturaIndex + 1}`;
