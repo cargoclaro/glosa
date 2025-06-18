@@ -96,4 +96,86 @@ export async function getSmartcodeInfo({
       tasaMixta: row.TASAMIXTA ?? null,
     },
   } as const;
+}
+
+/**
+ * Fetches currency equivalence factors from GSmartCode service.
+ *
+ * This function queries the bEquivalenciasMoneda table to get the 
+ * equivalence factor for a specific currency in a given month and year.
+ * The equivalence factor is used to convert foreign currency amounts 
+ * to Mexican pesos for customs purposes.
+ */
+export async function getCurrencyEquivalenceFactor({
+  currencyCode,
+  month,
+  year,
+}: {
+  currencyCode: string;
+  month: string;
+  year: string;
+}) {
+  const url = new URL('https://hts.gsmartcode.com/api/service');
+  url.searchParams.set('cmd', 'getTable');
+  url.searchParams.set('tableName', 'bEquivalenciasMoneda');
+  
+  // Filter by currency code, month and year
+  const filter = `Clave = '${currencyCode}' AND Mes = '${month}' AND Anio = '${year}'`;
+  url.searchParams.set('filterBy', filter);
+  url.searchParams.set('orderBy', 'SYSID');
+  url.searchParams.set('startIndex', '1');
+  url.searchParams.set('endIndex', '10');
+  url.searchParams.set('formatResult', 'JSON');
+  
+  const apiKey = (env as any).GS_SMARTCODE_KEY ?? 'E5AC590E8D48496FAB4A9DF25AD05308';
+  url.searchParams.set('apiKey', apiKey);
+
+  const response = await fetch(url.toString());
+  const rawText = await response.text();
+  
+  // Check if it's a JSON response or plain text error
+  let raw: unknown;
+  
+  // Handle empty response (no results found)
+  if (!rawText.trim()) {
+    return null;
+  }
+  
+  try {
+    raw = JSON.parse(rawText);
+  } catch {
+    throw new Error(`GSmartCode currency equivalence error: ${rawText}`);
+  }
+
+  // Define the schema for currency equivalence data
+  const currencySchema = z.array(
+    z.object({
+      Sysid: z.string(),
+      Pais: z.string(),
+      Moneda: z.string(),
+      EquivalenciaMonedaExtranjera: z.string(),
+      Mes: z.string(),
+      Anio: z.string(),
+      DOF: z.string(),
+      Clave: z.string(),
+    })
+  );
+
+  const parsed = currencySchema.safeParse(raw);
+  
+  if (!parsed.success || parsed.data.length === 0) {
+    return null; // No equivalence factor found for the specified parameters
+  }
+
+  const row = parsed.data[0]!; // non-null because length > 0
+
+  return {
+    currencyCode: row.Clave,
+    country: row.Pais,
+    currency: row.Moneda,
+    equivalenceFactor: parseFloat(row.EquivalenciaMonedaExtranjera),
+    month: row.Mes,
+    year: row.Anio,
+    dofDate: row.DOF,
+  } as const;
 } 
