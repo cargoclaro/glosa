@@ -1,0 +1,365 @@
+{
+  "total_prompts": 51,
+  "pedimento_prompts": 42,
+  "cove_prompts": 9,
+  "extraction_date": "2025-06-18T18:20:24.776Z",
+  "prompts": [
+    {
+      "name": "Num. Pedimento (15 dígitos)",
+      "category": "pedimento-impo",
+      "function": "validateLongitud",
+      "langfuse_name": "glosa/pedimento-impo/validateLongitud",
+      "source_file": "app/shared/services/customGloss/glosa/pedimento/validation_steps_impo/1.numero-de-pedimento.ts"
+    },
+    {
+      "name": "Num. Pedimento (Año)",
+      "category": "pedimento-impo",
+      "function": "validateLongitud",
+      "langfuse_name": "glosa/pedimento-impo/validateLongitud",
+      "source_file": "app/shared/services/customGloss/glosa/pedimento/validation_steps_impo/1.numero-de-pedimento.ts"
+    },
+    {
+      "name": "Tipo Operación",
+      "category": "pedimento-impo",
+      "function": "validateCoherenciaOrigenDestino",
+      "langfuse_name": "glosa/pedimento-impo/validateCoherenciaOrigenDestino",
+      "source_file": "app/shared/services/customGloss/glosa/pedimento/validation_steps_impo/2.tipo-operacion.ts"
+    },
+    {
+      "name": "Clave de pedimento",
+      "category": "pedimento-impo",
+      "function": "validateClavePedimento",
+      "langfuse_name": "glosa/pedimento-impo/validateClavePedimento",
+      "source_file": "app/shared/services/customGloss/glosa/pedimento/validation_steps_impo/2.tipo-operacion.ts"
+    },
+    {
+      "name": "Régimen",
+      "category": "pedimento-impo",
+      "function": "validateRegimen",
+      "langfuse_name": "glosa/pedimento-impo/validateRegimen",
+      "source_file": "app/shared/services/customGloss/glosa/pedimento/validation_steps_impo/2.tipo-operacion.ts"
+    },
+    {
+      "name": "Destino/Origen",
+      "category": "pedimento-impo",
+      "function": "validateClaveApendice15",
+      "langfuse_name": "glosa/pedimento-impo/validateClaveApendice15",
+      "source_file": "app/shared/services/customGloss/glosa/pedimento/validation_steps_impo/3.origen-destino.ts"
+    },
+    {
+      "name": "Aduana Entrada/Salida",
+      "category": "pedimento-impo",
+      "function": "validateAduanaSeccion",
+      "langfuse_name": "glosa/pedimento-impo/validateAduanaSeccion",
+      "source_file": "app/shared/services/customGloss/glosa/pedimento/validation_steps_impo/3.origen-destino.ts"
+    },
+    {
+      "name": "Incoterms",
+      "category": "pedimento-impo",
+      "function": "validateIncoterms",
+      "langfuse_name": "glosa/pedimento-impo/validateIncoterms",
+      "source_file": "app/shared/services/customGloss/glosa/pedimento/validation_steps_impo/3.origen-destino.ts"
+    },
+    {
+      "name": "Fracción contra aduana",
+      "category": "pedimento-impo",
+      "function": "validateFraccionContraAduana",
+      "langfuse_name": "glosa/pedimento-impo/validateFraccionContraAduana",
+      "source_file": "app/shared/services/customGloss/glosa/pedimento/validation_steps_impo/3.origen-destino.ts"
+    },
+    {
+      "name": "Fecha de entrada",
+      "category": "pedimento-impo",
+      "function": "validateTransportDocumentEntryDate",
+      "langfuse_name": "glosa/pedimento-impo/validateTransportDocumentEntryDate",
+      "source_file": "app/shared/services/customGloss/glosa/pedimento/validation_steps_impo/4.operacion-monetaria.ts"
+    },
+    {
+      "name": "Tipo de cambio",
+      "category": "pedimento-impo",
+      "function": "validateTipoCambio",
+      "langfuse_name": "glosa/pedimento-impo/validateTipoCambio",
+      "source_file": "app/shared/services/customGloss/glosa/pedimento/validation_steps_impo/4.operacion-monetaria.ts"
+    },
+    {
+      "name": "Valor dólares",
+      "category": "pedimento-impo",
+      "function": "validateValorDolares",
+      "langfuse_name": "glosa/pedimento-impo/validateValorDolares",
+      "source_file": "app/shared/services/customGloss/glosa/pedimento/validation_steps_impo/4.operacion-monetaria.ts"
+    },
+    {
+      "name": "Valor dólares (Múltiples facturas)",
+      "category": "pedimento-impo",
+      "function": "validateValorDolares",
+      "langfuse_name": "glosa/pedimento-impo/validateValorDolares",
+      "source_file": "app/shared/services/customGloss/glosa/pedimento/validation_steps_impo/4.operacion-monetaria.ts"
+    },
+    {
+      "name": "Peso bruto",
+      "category": "pedimento-impo",
+      "function": "validatePesosYBultos",
+      "langfuse_name": "glosa/pedimento-impo/validatePesosYBultos",
+      "source_file": "app/shared/services/customGloss/glosa/pedimento/validation_steps_impo/5.peso-neto.ts"
+    },
+    {
+      "name": "Marcas, números y total de bultos",
+      "category": "pedimento-impo",
+      "function": "validateBultos",
+      "langfuse_name": "glosa/pedimento-impo/validateBultos",
+      "source_file": "app/shared/services/customGloss/glosa/pedimento/validation_steps_impo/5.peso-neto.ts"
+    },
+    {
+      "name": "RFC",
+      "category": "pedimento-impo",
+      "function": "validateRfcFormat",
+      "langfuse_name": "glosa/pedimento-impo/validateRfcFormat",
+      "source_file": "app/shared/services/customGloss/glosa/pedimento/validation_steps_impo/6.datos-de-factura.ts"
+    },
+    {
+      "name": "Cesión de derechos",
+      "category": "pedimento-impo",
+      "function": "validateCesionDerechos",
+      "langfuse_name": "glosa/pedimento-impo/validateCesionDerechos",
+      "source_file": "app/shared/services/customGloss/glosa/pedimento/validation_steps_impo/6.datos-de-factura.ts"
+    },
+    {
+      "name": "Datos importador",
+      "category": "pedimento-impo",
+      "function": "validateDatosImportador",
+      "langfuse_name": "glosa/pedimento-impo/validateDatosImportador",
+      "source_file": "app/shared/services/customGloss/glosa/pedimento/validation_steps_impo/6.datos-de-factura.ts"
+    },
+    {
+      "name": "Datos proveedor",
+      "category": "pedimento-impo",
+      "function": "validateDatosProveedor",
+      "langfuse_name": "glosa/pedimento-impo/validateDatosProveedor",
+      "source_file": "app/shared/services/customGloss/glosa/pedimento/validation_steps_impo/6.datos-de-factura.ts"
+    },
+    {
+      "name": "Fechas de emisión",
+      "category": "pedimento-impo",
+      "function": "validateFechasYFolios",
+      "langfuse_name": "glosa/pedimento-impo/validateFechasYFolios",
+      "source_file": "app/shared/services/customGloss/glosa/pedimento/validation_steps_impo/6.datos-de-factura.ts"
+    },
+    {
+      "name": "Moneda y factor de equivalencia",
+      "category": "pedimento-impo",
+      "function": "validateMonedaYEquivalencia",
+      "langfuse_name": "glosa/pedimento-impo/validateMonedaYEquivalencia",
+      "source_file": "app/shared/services/customGloss/glosa/pedimento/validation_steps_impo/6.datos-de-factura.ts"
+    },
+    {
+      "name": "Tipo de transporte",
+      "category": "pedimento-impo",
+      "function": "validateTipoTransporte",
+      "langfuse_name": "glosa/pedimento-impo/validateTipoTransporte",
+      "source_file": "app/shared/services/customGloss/glosa/pedimento/validation_steps_impo/7.datos-del-transporte.ts"
+    },
+    {
+      "name": "Modalidad y medio de transporte",
+      "category": "pedimento-impo",
+      "function": "validateModalidadMedioTransporte",
+      "langfuse_name": "glosa/pedimento-impo/validateModalidadMedioTransporte",
+      "source_file": "app/shared/services/customGloss/glosa/pedimento/validation_steps_impo/7.datos-del-transporte.ts"
+    },
+    {
+      "name": "Número de guía o embarque",
+      "category": "pedimento-impo",
+      "function": "validateNumeroGuiaEmbarque",
+      "langfuse_name": "glosa/pedimento-impo/validateNumeroGuiaEmbarque",
+      "source_file": "app/shared/services/customGloss/glosa/pedimento/validation_steps_impo/7.datos-del-transporte.ts"
+    },
+    {
+      "name": "DTA",
+      "category": "pedimento-impo",
+      "function": "validateDTA",
+      "langfuse_name": "glosa/pedimento-impo/validateDTA",
+      "source_file": "app/shared/services/customGloss/glosa/pedimento/validation_steps_impo/8.cuadro-de-liquidacion.ts"
+    },
+    {
+      "name": "Prevalidación (PRV)",
+      "category": "pedimento-impo",
+      "function": "validatePRV",
+      "langfuse_name": "glosa/pedimento-impo/validatePRV",
+      "source_file": "app/shared/services/customGloss/glosa/pedimento/validation_steps_impo/8.cuadro-de-liquidacion.ts"
+    },
+    {
+      "name": "IVA sobre operación",
+      "category": "pedimento-impo",
+      "function": "validateIVA",
+      "langfuse_name": "glosa/pedimento-impo/validateIVA",
+      "source_file": "app/shared/services/customGloss/glosa/pedimento/validation_steps_impo/8.cuadro-de-liquidacion.ts"
+    },
+    {
+      "name": "IGI",
+      "category": "pedimento-impo",
+      "function": "validateIGI",
+      "langfuse_name": "glosa/pedimento-impo/validateIGI",
+      "source_file": "app/shared/services/customGloss/glosa/pedimento/validation_steps_impo/8.cuadro-de-liquidacion.ts"
+    },
+    {
+      "name": "IEPS",
+      "category": "pedimento-impo",
+      "function": "validateIEPS",
+      "langfuse_name": "glosa/pedimento-impo/validateIEPS",
+      "source_file": "app/shared/services/customGloss/glosa/pedimento/validation_steps_impo/8.cuadro-de-liquidacion.ts"
+    },
+    {
+      "name": "Cuotas compensatorias",
+      "category": "pedimento-impo",
+      "function": "validateCuotasCompensatorias",
+      "langfuse_name": "glosa/pedimento-impo/validateCuotasCompensatorias",
+      "source_file": "app/shared/services/customGloss/glosa/pedimento/validation_steps_impo/8.cuadro-de-liquidacion.ts"
+    },
+    {
+      "name": "Identificadores (análisis de riesgo)",
+      "category": "pedimento-impo",
+      "function": "validateIdentificadoresPedimentoRiskAnalysis",
+      "langfuse_name": "glosa/pedimento-impo/validateIdentificadoresPedimentoRiskAnalysis",
+      "source_file": "app/shared/services/customGloss/glosa/pedimento/validation_steps_impo/8.cuadro-de-liquidacion.ts"
+    },
+    {
+      "name": "Fracción arancelaria",
+      "category": "pedimento-impo",
+      "function": "validateFraccionArancelaria",
+      "langfuse_name": "glosa/pedimento-impo/validateFraccionArancelaria",
+      "source_file": "app/shared/services/customGloss/glosa/pedimento/validation_steps_impo/9.partidas.ts"
+    },
+    {
+      "name": "UMT",
+      "category": "pedimento-impo",
+      "function": "validateCoherenciaUMT",
+      "langfuse_name": "glosa/pedimento-impo/validateCoherenciaUMT",
+      "source_file": "app/shared/services/customGloss/glosa/pedimento/validation_steps_impo/9.partidas.ts"
+    },
+    {
+      "name": "UMC",
+      "category": "pedimento-impo",
+      "function": "validateCoherenciaUMC",
+      "langfuse_name": "glosa/pedimento-impo/validateCoherenciaUMC",
+      "source_file": "app/shared/services/customGloss/glosa/pedimento/validation_steps_impo/9.partidas.ts"
+    },
+    {
+      "name": "País de venta",
+      "category": "pedimento-impo",
+      "function": "validatePaisVenta",
+      "langfuse_name": "glosa/pedimento-impo/validatePaisVenta",
+      "source_file": "app/shared/services/customGloss/glosa/pedimento/validation_steps_impo/9.partidas.ts"
+    },
+    {
+      "name": "País de origen",
+      "category": "pedimento-impo",
+      "function": "validatePaisOrigen",
+      "langfuse_name": "glosa/pedimento-impo/validatePaisOrigen",
+      "source_file": "app/shared/services/customGloss/glosa/pedimento/validation_steps_impo/9.partidas.ts"
+    },
+    {
+      "name": "Descripción de mercancía",
+      "category": "pedimento-impo",
+      "function": "validateDescripcionMercancia",
+      "langfuse_name": "glosa/pedimento-impo/validateDescripcionMercancia",
+      "source_file": "app/shared/services/customGloss/glosa/pedimento/validation_steps_impo/9.partidas.ts"
+    },
+    {
+      "name": "Tarifas arancelarias",
+      "category": "pedimento-impo",
+      "function": "validateTarifasArancelarias",
+      "langfuse_name": "glosa/pedimento-impo/validateTarifasArancelarias",
+      "source_file": "app/shared/services/customGloss/glosa/pedimento/validation_steps_impo/9.partidas.ts"
+    },
+    {
+      "name": "Cálculos de Partidas",
+      "category": "pedimento-impo",
+      "function": "validateCalculosPartidas",
+      "langfuse_name": "glosa/pedimento-impo/validateCalculosPartidas",
+      "source_file": "app/shared/services/customGloss/glosa/pedimento/validation_steps_impo/9.partidas.ts"
+    },
+    {
+      "name": "Números de serie, modelo y parte",
+      "category": "pedimento-impo",
+      "function": "validateNumerosSerie",
+      "langfuse_name": "glosa/pedimento-impo/validateNumerosSerie",
+      "source_file": "app/shared/services/customGloss/glosa/pedimento/validation_steps_impo/9.partidas.ts"
+    },
+    {
+      "name": "Identificadores",
+      "category": "pedimento-impo",
+      "function": "validateIdentificadores",
+      "langfuse_name": "glosa/pedimento-impo/validateIdentificadores",
+      "source_file": "app/shared/services/customGloss/glosa/pedimento/validation_steps_impo/9.partidas.ts"
+    },
+    {
+      "name": "Análisis de Riesgo Identificadores",
+      "category": "pedimento-impo",
+      "function": "validateIdentificadoresRiksAnalysis",
+      "langfuse_name": "glosa/pedimento-impo/validateIdentificadoresRiksAnalysis",
+      "source_file": "app/shared/services/customGloss/glosa/pedimento/validation_steps_impo/9.partidas.ts"
+    },
+    {
+      "name": "Número de Factura (Importación)",
+      "category": "cove-impo",
+      "function": "validateNumeroFactura",
+      "langfuse_name": "glosa/cove-impo/validateNumeroFactura",
+      "source_file": "app/shared/services/customGloss/glosa/cove/validation_steps_impo/1.datos-generales.ts"
+    },
+    {
+      "name": "Fecha de Expedición (Importación)",
+      "category": "cove-impo",
+      "function": "validateFechaExpedicion",
+      "langfuse_name": "glosa/cove-impo/validateFechaExpedicion",
+      "source_file": "app/shared/services/customGloss/glosa/cove/validation_steps_impo/1.datos-generales.ts"
+    },
+    {
+      "name": "Datos generales del proveedor",
+      "category": "cove-impo",
+      "function": "validateDatosGeneralesProveedor",
+      "langfuse_name": "glosa/cove-impo/validateDatosGeneralesProveedor",
+      "source_file": "app/shared/services/customGloss/glosa/cove/validation_steps_impo/2.datos-proveedor-destinatario.ts"
+    },
+    {
+      "name": "Domicilio del proveedor",
+      "category": "cove-impo",
+      "function": "validateDomicilioProveedor",
+      "langfuse_name": "glosa/cove-impo/validateDomicilioProveedor",
+      "source_file": "app/shared/services/customGloss/glosa/cove/validation_steps_impo/2.datos-proveedor-destinatario.ts"
+    },
+    {
+      "name": "Datos generales del destinatario",
+      "category": "cove-impo",
+      "function": "validateDatosGeneralesDestinatario",
+      "langfuse_name": "glosa/cove-impo/validateDatosGeneralesDestinatario",
+      "source_file": "app/shared/services/customGloss/glosa/cove/validation_steps_impo/2.datos-proveedor-destinatario.ts"
+    },
+    {
+      "name": "Domicilio del destinatario",
+      "category": "cove-impo",
+      "function": "validateDomicilioDestinatario",
+      "langfuse_name": "glosa/cove-impo/validateDomicilioDestinatario",
+      "source_file": "app/shared/services/customGloss/glosa/cove/validation_steps_impo/2.datos-proveedor-destinatario.ts"
+    },
+    {
+      "name": "Mercancias",
+      "category": "cove-impo",
+      "function": "validateMercancias",
+      "langfuse_name": "glosa/cove-impo/validateMercancias",
+      "source_file": "app/shared/services/customGloss/glosa/cove/validation_steps_impo/3.validacion-mercancias.ts"
+    },
+    {
+      "name": "Valor total en dolares",
+      "category": "cove-impo",
+      "function": "validateValorTotalDolares",
+      "langfuse_name": "glosa/cove-impo/validateValorTotalDolares",
+      "source_file": "app/shared/services/customGloss/glosa/cove/validation_steps_impo/3.validacion-mercancias.ts"
+    },
+    {
+      "name": "Numero de serie",
+      "category": "cove-impo",
+      "function": "validateNumeroSerie",
+      "langfuse_name": "glosa/cove-impo/validateNumeroSerie",
+      "source_file": "app/shared/services/customGloss/glosa/cove/validation_steps_impo/3.validacion-mercancias.ts"
+    }
+  ]
+}
