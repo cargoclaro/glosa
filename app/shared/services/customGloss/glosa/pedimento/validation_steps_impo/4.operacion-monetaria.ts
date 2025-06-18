@@ -111,7 +111,7 @@ Reglas por Incoterm (según Apéndice 14):
 
 • CIP y CIF  →  El seguro ya está incluido, por lo tanto "Valor Seguros" debe ser 0. Cualquier monto distinto indica duplicidad.
 
-• EXW, FCA, FAS, FOB, CFR, CPT, DAP, DPU, DDP  →  El seguro NO está incluido en el precio, así que debe declararse un monto en "Valor Seguros" respaldado por póliza/certificado.
+• EXW, FCA, FAS, FOB, CFR, CPT, DAP, DPU, DDP  →  El seguro NO está incluido en el precio, así que es opcional declarar un monto en "Valor Seguros" respaldado por póliza/certificado.
   – Si el soporte existe y el campo está en 0 ⇒ omisión.
   – Si el campo tiene monto y no existe soporte ⇒ falta de respaldo.
   – Diferencias ±5 % entre soporte y declarado ⇒ discrepancia.
