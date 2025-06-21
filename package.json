@@ -11,6 +11,7 @@
     "qa:fix": "pnpm biome:fix; pnpm knip:fix; pnpm pnpm:update",
     "qa:check": "pnpm biome:check; pnpm knip:check; pnpm pnpm:check; pnpm nextjs:build",
     "typecheck": "tsc --noEmit",
+    "typecheck:fast": "tsc --noEmit --skipLibCheck",
     "biome:check": "biome check .",
     "biome:fix": "biome check --write .",
     "knip:check": "knip",
