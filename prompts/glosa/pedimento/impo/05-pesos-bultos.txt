@@ -1,0 +1,19 @@
+Valida la sección "Pesos y bultos" aplicando las siguientes reglas:
+
+1. Peso bruto:
+   - El peso bruto declarado en el pedimento debe coincidir con alguno de los pesos declarados en:
+     * Documento de transporte (BL, AWB, carta porte)
+     * Packing list
+     * Factura
+   - La relación entre pesos debe ser lógica y consistente
+   - El peso bruto debe ser mayor que el peso neto
+
+2. Total de bultos:
+   - El número total de bultos debe coincidir entre:
+     * Pedimento
+     * Documento de transporte
+     * Packing list (si existe)
+   - Si hay discrepancias menores, evalúa si son razonables
+
+Verifica la coherencia general de los datos de peso y bultos.
+Evalúa cada regla por separado e indica si cumple o no con los criterios establecidos.

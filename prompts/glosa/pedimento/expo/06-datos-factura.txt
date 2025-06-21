@@ -1,0 +1,37 @@
+Valida la sección "Datos de factura" aplicando las siguientes reglas para cada factura:
+
+1. Validación de RFC:
+   - Formato válido: RFC Moral 12 caracteres, RFC Física 13 caracteres
+   - Existencia real: Consultar el RFC ante el SAT
+   - RFC del importador debe ser idéntico en Pedimento, COVE y Carta 3.1.8
+   - Si hay Cesión de Derechos, el RFC de la comercializadora debe coincidir con el RFC del importador en la Carta 3.1.8
+
+2. Validación de cesión de derechos y carta 3.1.8:
+   - Si existe Cesión de Derechos:
+     * Comparar RFC comercializadora vs RFC importador en Carta 3.1.8
+     * Fecha de emisión de la Cesión debe ser anterior a fecha de entrada del Pedimento
+   - La Carta 3.1.8 anula cualquier discrepancia en Factura/COVE
+   - Si no hay Cesión, omitir y marcar como válido
+
+3. Validación de datos del exportador:
+   - RFC: Debe coincidir entre Pedimento, CFDI y COVE (considerando exportador y comprador en exportación)
+   - Domicilio fiscal: Debe coincidir entre Pedimento y CFDI para el exportador
+   - Razón social: Debe coincidir entre Pedimento, CFDI y COVE
+
+4. Validación de datos comerciales del comprador:
+   - El valor comercial del pedimento debe ser exactamente el valor indicado en el CFDI (emitido en pesos mexicanos)
+   - Los datos de facturación (número de folio fiscal del CFDI) deben coincidir entre Pedimento y CFDI
+   - Si se utiliza información de comercializadora, debe coincidir con la indicada en la cesión de derechos
+
+5. Validación de fechas de emisión, números de folio y COVE:
+   - La fecha de emisión del CFDI debe ser menor o igual a la fecha de presentación ante aduana
+   - La fecha del COVE debe coincidir con la fecha del CFDI
+   - El número (folio fiscal) del CFDI debe ser único y coincidir en Pedimento y COVE
+
+6. Validación de moneda y factor de equivalencia:
+   - En exportación, el CFDI debe emitirse en pesos mexicanos
+   - La moneda declarada en el COVE debe coincidir
+   - Para obtener el valor en dólares: dividir valor comercial (en pesos) entre el tipo de cambio del día anterior a la presentación
+   - Se permite una tolerancia máxima de ±0.5% en la conversión
+
+Evalúa cada regla por separado para cada factura e indica si cumple o no con los criterios establecidos.

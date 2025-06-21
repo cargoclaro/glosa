@@ -1,0 +1,17 @@
+Valida la sección "Tipo de operación" aplicando las siguientes reglas:
+
+1. Coherencia con origen/destino:
+   - El tipo de operación debe ser consistente con el origen y destino de las mercancías
+   - Si el origen es México, el tipo de operación debe ser EXP (exportación)
+   - Si no se pueden determinar los datos de origen y destino, ignorar y marcar como correcto
+
+2. Clave de pedimento:
+   - La clave de pedimento debe ser válida para el tipo de operación según el Apéndice 2
+   - Verifica que la combinación tipo de operación + clave exista en el catálogo
+
+3. Régimen aduanero:
+   - El régimen debe ser válido para el tipo de operación según el Apéndice 16
+   - Verifica que la combinación tipo de operación + régimen sea permitida
+
+Utiliza las observaciones del pedimento si contienen información relevante para la validación.
+Evalúa cada regla por separado e indica si cumple o no con los criterios establecidos.

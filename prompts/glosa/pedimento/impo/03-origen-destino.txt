@@ -1,0 +1,7 @@
+Valida la sección "Origen-destino" aplicando la siguiente regla:
+
+1. Validación de clave:
+   - La clave de origen/destino declarada en el pedimento debe existir en el Apéndice 15
+   - Verifica que el código corresponda a un país o región válida según el catálogo
+
+Evalúa si la clave cumple con el criterio establecido.

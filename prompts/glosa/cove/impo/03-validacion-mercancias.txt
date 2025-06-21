@@ -1,0 +1,28 @@
+Valida la sección "Validación de mercancías" del COVE aplicando las siguientes reglas:
+
+1. Datos de mercancías:
+   - Verificar que coincidan entre COVE y Carta 3.1.8 (si existe) o factura comercial:
+     * Descripción genérica de la mercancía
+     * Cantidad en unidad de medida comercial (UMC)
+     * Clave de unidad de medida comercial
+     * Valor unitario
+     * Valor total
+   - Si existe Carta 3.1.8, los datos declarados en ésta tienen prioridad sobre la factura
+
+2. Valor total en dólares:
+   - El valor total debe coincidir con el declarado en la factura comercial y/o carta 3.1.8
+   - Si la factura está en moneda diferente a dólares:
+     * Verificar conversión correcta usando el factor de equivalencia correspondiente
+     * Revisar que el tipo de cambio utilizado coincida con el declarado en observaciones del COVE
+     * Validar que los cálculos de conversión sean correctos y precisos
+   - En caso de discrepancia, la carta 3.1.8 tiene prioridad
+   - Los valores comerciales del COVE y la 318 no incluyen fletes
+   - Comparar todo con el COVE, verificar valor del COVE contra factura y 318
+
+3. Número de serie:
+   - Revisar primero si está declarado en la carta 3.1.8 en la sección de mercancías
+   - Si no está en la carta 3.1.8, obtener de la factura comercial
+   - El número debe ser capturado exactamente como aparece en el documento
+   - No es obligatorio, si no hay números de serie marcar como válido
+
+Evalúa cada regla por separado e indica si cumple o no con los criterios establecidos.

@@ -1,0 +1,48 @@
+Valida la sección "Operación monetaria" aplicando las siguientes reglas:
+
+1. Fecha de entrada del documento de transporte:
+   - La fecha del documento de transporte debe ser anterior o igual a la fecha de entrada del pedimento
+   - La fecha de entrada se refiere a cuando la mercancía ingresa al territorio nacional, no a la fecha de entrega
+
+2. Tipo de cambio:
+   - El tipo de cambio debe ser exactamente igual al publicado en el DOF para el día hábil anterior a la fecha de entrada
+   - No se permiten diferencias, debe ser idéntico
+
+3. Valor de seguros según Incoterm:
+   - Si el Incoterm es CIF o CIP, el campo de seguros es obligatorio y debe tener un valor mayor a 0
+   - Si el Incoterm es diferente a CIF/CIP, el campo de seguros debe estar en 0 o vacío
+   - Consulta el catálogo de Incoterms para validar
+
+4. Costo del seguro:
+   - Debe coincidir con el valor declarado en la factura
+   - Si no está en la factura, debe coincidir con el documento de seguro
+   - Si no hay documentos, debe ser coherente con el valor de la mercancía (típicamente 0.5-2% del valor)
+
+5. Costo de transporte (fletes):
+   - Verifica que esté declarado según el Incoterm:
+     * Si incluye flete (CFR, CIF, CPT, CIP, DAP, DPU, DDP): puede ser 0 en pedimento
+     * Si no incluye flete (EXW, FCA, FAS, FOB): debe declararse valor > 0
+   - El valor debe coincidir con el documento de transporte o ser razonable
+
+6. Costo de embalajes:
+   - Si existe packing list, verifica que se declare el costo de embalaje si aplica
+   - El valor debe ser coherente con el tipo de mercancía
+
+7. Otros incrementables:
+   - Valida cualquier otro gasto que incremente el valor en aduana
+   - Debe estar documentado y ser razonable
+
+8. Valor en dólares:
+   - Debe ser igual a: Valor aduana ÷ Tipo de cambio
+   - El cálculo debe ser exacto con redondeo a 2 decimales
+
+9. Precio pagado/valor comercial:
+   - Para importación: Valor comercial = Valor factura (sin incrementables)
+   - Debe coincidir exactamente con el valor de la factura
+
+10. Valor en aduana:
+    - Para importación: Valor aduana = Valor comercial + Incrementables (fletes, seguros, embalajes, otros)
+    - Verifica que la suma sea correcta
+
+Utiliza las observaciones del pedimento si contienen información relevante.
+Evalúa cada regla por separado e indica si cumple o no con los criterios establecidos.

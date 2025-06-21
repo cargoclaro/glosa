@@ -1,0 +1,41 @@
+Valida la sección "Cuadro de liquidación" aplicando las siguientes reglas:
+
+1. DTA (Derecho de Trámite Aduanero):
+   - Tasa normal: 0.8% (8 al millar) del valor en aduana
+   - Tasa activo fijo: 0.176% (1.76 al millar) del valor en aduana
+   - Mínimo: Si el cálculo da menos de la cuota mínima vigente, aplicar la cuota mínima
+   - Para pedimentos con múltiples facturas: sumar todos los DTAs parciales
+
+2. PRV (Prevalidación):
+   - Verificar que esté declarado el monto correcto según la tarifa vigente
+   - Es un monto fijo por operación
+
+3. IVA:
+   - Base gravable = Valor aduana + IGI + cuotas compensatorias (si aplican)
+   - Tasa general: 16%
+   - Tasa fronteriza: 8% (si aplica)
+   - Verificar el cálculo: IVA = Base gravable × Tasa
+
+4. IGI (Impuesto General de Importación):
+   - Verificar que la tasa corresponda a la fracción arancelaria
+   - Cálculo: IGI = Valor en aduana × Tasa IGI
+   - Considerar si aplica trato arancelario preferencial
+
+5. IEPS (si aplica):
+   - Solo para mercancías específicas
+   - Verificar tasa según el tipo de mercancía
+   - Base puede ser valor en aduana + IGI o cantidad de mercancía
+
+6. Cuotas compensatorias:
+   - Verificar si la mercancía está sujeta a cuotas
+   - Validar el país de origen
+   - Aplicar la tasa correspondiente
+
+7. Análisis de identificadores de riesgo:
+   - Si hay identificadores como RT, CF, CI, etc., validar su impacto en contribuciones
+   - Verificar exenciones o reducciones aplicables
+
+Total efectivo:
+- La suma de todas las contribuciones debe coincidir con el total a pagar declarado
+
+Evalúa cada regla por separado e indica si cumple o no con los criterios establecidos.

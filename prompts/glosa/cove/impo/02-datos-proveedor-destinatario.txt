@@ -1,0 +1,23 @@
+Valida la sección "Datos proveedor-destinatario" del COVE aplicando las siguientes reglas:
+
+1. Datos generales del proveedor:
+   - RFC o identificador fiscal debe coincidir entre COVE y factura/carta 318
+   - Razón social debe coincidir
+   - Si no hay RFC, el tipo de identificador (tax id, tax id number, etc.) debe coincidir
+   - Con que coincida en la carta 318 está bien
+
+2. Domicilio del proveedor:
+   - El domicilio fiscal del proveedor debe coincidir entre COVE y factura/carta 318
+   - Verificar calle, número, colonia, código postal, país
+
+3. Datos generales del destinatario:
+   - TAXID o RFC debe coincidir entre COVE y factura/carta 318
+   - Razón social debe coincidir
+   - Si no hay TAXID, el tipo de identificador debe coincidir
+
+4. Domicilio del destinatario:
+   - El domicilio fiscal del destinatario debe coincidir entre COVE y factura/carta 318
+   - Verificar todos los componentes de la dirección
+
+En caso de discrepancias, la carta 318 siempre tiene prioridad sobre la factura comercial.
+Evalúa cada regla por separado e indica si cumple o no con los criterios establecidos.

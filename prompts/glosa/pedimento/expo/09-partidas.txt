@@ -1,0 +1,38 @@
+Valida la sección "Partidas" aplicando las siguientes reglas:
+
+1. Preferencia arancelaria y certificado de origen:
+   - Si existe preferencia arancelaria, debe existir certificado de origen
+   - Por tipo de tratado:
+     * T-MEC: Verificar certificado de origen correspondiente
+     * Unión Europea: 
+       - Si valor < 6,000 EUR: Declaración en factura es válida
+       - Si valor > 6,000 EUR: Debe incluir número de exportador autorizado
+       - Certificado de circulación: Válido sin importar el valor
+
+2. Coherencia de UMC y cantidad UMC:
+   - Los campos UMC y cantidad UMC deben coincidir con los valores en el CFDI
+
+3. Coherencia de peso:
+   - El peso de las partidas debe coincidir con el peso bruto del pedimento
+   - El peso debe coincidir con el declarado en el CFDI
+
+4. Cálculo del prorrateo y DTA:
+   - El prorrateo y el DTA calculados deben coincidir con los declarados
+   - En caso de DTA en cuota fija, dividir el DTA entre el número de secuencias
+
+5. Cálculo de contribuciones:
+   - Los valores de precio pagado, precio unitario, valor aduana, IGI y DTA deben coincidir con los calculados
+   - En exportación, verificar que el valor comercial coincida con el total del CFDI
+
+6. Coincidencia de permisos e identificadores:
+   - Los permisos e identificadores en el pedimento deben existir en Taxfinder
+   - Deben ser apropiados para una operación de exportación
+
+7. Regulaciones arancelarias:
+   - Verificar si existen regulaciones arancelarias que apliquen a la mercancía en contexto de exportación
+
+8. Regulaciones no arancelarias:
+   - Verificar si existen regulaciones no arancelarias como permisos de SEMARNAT, COFEPRIS u otras dependencias
+   - Deben ser específicas para productos de exportación
+
+Evalúa cada regla por separado e indica si cumple o no con los criterios establecidos.

@@ -1,0 +1,21 @@
+Valida la sección "Datos proveedor-destinatario" del COVE aplicando las siguientes reglas:
+
+1. Datos generales del proveedor:
+   - RFC debe coincidir entre COVE y CFDI
+   - Razón social debe coincidir
+   - Si no hay RFC, el tipo de identificador (tax id, tax id number, etc.) debe coincidir
+
+2. Domicilio del proveedor:
+   - El domicilio fiscal del proveedor debe coincidir entre COVE y CFDI
+   - Verificar todos los componentes de la dirección
+
+3. Datos generales del destinatario:
+   - RFC debe coincidir entre COVE y CFDI
+   - Razón social debe coincidir
+   - Si no hay RFC, el tipo de identificador debe coincidir
+
+4. Domicilio del destinatario:
+   - El domicilio fiscal del destinatario debe coincidir entre COVE y CFDI
+   - Verificar todos los componentes de la dirección
+
+Evalúa cada regla por separado e indica si cumple o no con los criterios establecidos.

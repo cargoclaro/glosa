@@ -1,0 +1,12 @@
+Valida la sección "Número de pedimento" aplicando las siguientes reglas:
+
+1. Longitud del número de pedimento:
+   - El número de pedimento debe contar con exactamente 15 dígitos
+   - No consideres espacios en blanco para el conteo
+
+2. Año del pedimento:
+   - Los primeros dos dígitos del número de pedimento representan el año
+   - Este año debe corresponder al año actual o tener sentido lógico
+   - Por ejemplo, si estamos en 2024, los primeros dígitos deberían ser "24"
+
+Evalúa cada regla por separado e indica si cumple o no con los criterios establecidos.

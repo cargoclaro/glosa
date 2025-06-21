@@ -1,0 +1,41 @@
+Valida la sección "Operación monetaria" aplicando las siguientes reglas:
+
+1. Fecha de salida:
+   - La fecha de salida del pedimento debe ser la fecha proporcionada por el operador de carga
+
+2. Tipo de cambio:
+   - El tipo de cambio debe ser exactamente igual al publicado en el DOF para el día hábil anterior a la fecha de entrada
+
+3. Mapeo de documentos:
+   - Verificar que las facturas y COVEs estén correctamente correlacionados
+   - Identificar documentos no mapeados y evaluar si es problemático
+   - Los números de factura deben coincidir entre documentos
+
+Para escenario de una sola factura:
+
+4. Valor comercial:
+   - El valor comercial debe ser igual al valor de la factura
+   - Debe coincidir entre factura, CFDI y COVE
+   - Aplicar tipo de cambio para conversiones si es necesario
+
+5. Valor en dólares:
+   - Debe ser igual a: Valor Comercial ÷ Tipo de cambio
+   - Redondeado a 2 decimales
+
+Para escenario de múltiples facturas con diferentes Incoterms:
+
+6. Incoterm vs Medio de transporte:
+   - Verificar que cada Incoterm sea válido con el medio de transporte declarado
+   - Ejemplo: FOB solo aplica a transporte marítimo
+   - Evaluar TODAS las facturas, no solo la primera
+
+7. Incoterm por factura:
+   - Confirmar que el Incoterm de cada factura sea consistente con la documentación
+   - Listar discrepancias
+
+8. Prorrateo de incrementables:
+   - Distribuir los incrementables entre las facturas según su valor comercial
+   - Por cada partida comparar: Valor Aduana partida vs Valor Comercial partida
+   - Si Valor Aduana > Valor Comercial, el prorrateo se aplicó correctamente
+
+Evalúa cada regla por separado e indica si cumple o no con los criterios establecidos.

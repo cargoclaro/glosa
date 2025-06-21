@@ -1,0 +1,39 @@
+Valida la sección "Datos de factura" aplicando las siguientes reglas:
+
+1. Formato y consistencia del RFC:
+   - RFC Moral: 12 caracteres (ej: ABC850101AAA)
+   - RFC Física: 13 caracteres (ej: ABCD850101AAA)
+   - El RFC del importador debe ser idéntico en Pedimento, COVE y Carta 3.1.8 (si existe)
+   - Si hay Cesión de Derechos, el RFC de la comercializadora debe coincidir con el RFC del importador en la Carta 3.1.8
+
+2. Validación de cesión de derechos:
+   - Si existe Cesión de Derechos:
+     * RFC comercializadora debe coincidir con RFC importador en Carta 3.1.8
+     * Fecha de emisión de la Cesión debe ser anterior a fecha de entrada del Pedimento
+   - La Carta 3.1.8 anula cualquier discrepancia en Factura/COVE
+   - Si no hay Cesión, omitir esta validación
+
+3. Datos del importador:
+   - RFC: Debe coincidir entre Pedimento, COVE y Carta 3.1.8
+   - Domicilio fiscal: Debe coincidir entre todos los documentos
+   - Razón social: Debe coincidir literalmente
+
+4. Datos del proveedor:
+   - Nombre/Razón social: Debe coincidir entre Pedimento, factura, COVE y Carta 3.1.8
+   - Domicilio: Debe ser consistente entre documentos
+   - ID Fiscal/Tax ID: Debe coincidir
+
+5. Secuencia de fechas:
+   - Fecha factura ≤ Fecha COVE ≤ Fecha entrada pedimento
+   - La secuencia temporal debe ser lógica
+   - Fecha cesión de derechos < Fecha entrada (si aplica)
+
+6. Moneda y factor de equivalencia:
+   - La moneda declarada debe coincidir con la factura
+   - Si la factura no está en USD, verificar:
+     * Factor de equivalencia correcto según DOF
+     * Cálculo: Valor USD = Valor moneda ÷ Factor
+     * Tolerancia máxima: ±0.5%
+
+Prioridad de documentos: Carta 3.1.8 > COVE > Factura comercial
+Evalúa cada regla por separado e indica si cumple o no con los criterios establecidos.

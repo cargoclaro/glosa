@@ -1,0 +1,69 @@
+Valida la sección "Partidas" aplicando las siguientes reglas para cada partida:
+
+1. Fracción arancelaria:
+   - Verificar que la fracción arancelaria + NICO exista en GSmartCode
+   - La fracción debe ser válida y vigente
+
+2. UMT (Unidad de Medida de Tarifa):
+   - Debe existir en el Apéndice 7
+   - Debe corresponder con la unidad especificada en GSmartCode para esa fracción
+
+3. UMC (Unidad de Medida Comercial):
+   - Debe coincidir con la unidad declarada en factura y COVE
+   - Debe existir en el Apéndice 7
+   - Debe ser coherente con la descripción de la mercancía
+
+4. País de venta:
+   - Debe coincidir con el país del proveedor en la factura/carta 318
+   - Verificar en packing list si está disponible
+
+5. País de origen:
+   - Debe coincidir con la leyenda "hecho en..." o "made in..." en:
+     * Carta 3.1.8 (prioridad)
+     * Factura
+     * Packing list
+   - Si no se encuentra, advertir que se verifique en la mercancía física
+
+6. Descripción de mercancía:
+   - Debe coincidir con la descripción en COVE, factura o carta 318
+   - Debe ser coherente con la fracción arancelaria
+
+7. Tarifas arancelarias:
+   - Las tasas de IGI, IVA deben coincidir con las vigentes en GSmartCode
+   - Verificar si aplican tasas preferenciales
+
+8. Cálculos de valores por partida:
+   - Valor aduana partida = Valor comercial partida × (Valor aduana total / Valor comercial total)
+   - Precio unitario = Valor comercial partida / Cantidad UMC
+   - IGI partida = Valor aduana partida × Tasa IGI
+   - IVA partida = (Valor aduana partida + IGI partida + DTA prorrateado) × Tasa IVA
+
+9. Números de serie, modelo y parte:
+   - Si se declaran, deben coincidir con COVE
+   - Pueden estar en observaciones de partida o pedimento
+   - No son obligatorios, si no existen es válido
+
+10. Validación de identificadores (Apéndice 8):
+    - Verificar que los complementos del identificador sean válidos
+    - Solo validar tipos de datos, no reglas complejas
+
+11. Análisis de riesgo de identificadores a nivel partida:
+    - TL, AL u otro tratado: debe tener PO y EO, coincidir con certificado de origen
+    - DT: pedimento debe tener ST, clave RT, destino EE.UU. o Canadá
+    - DU: pedimento debe tener SU, clave RT, destino Europa o UK
+    - PT: retorno de producto terminado (solo informar)
+    - EB: envases/empaques reutilizables (solo informar)
+    - PS: PROSEC - validar que fracción pertenezca al sector autorizado
+    - NS: exención del padrón - validar que no sea obligatorio
+    - EN: exención de NOM - verificar en Anexo 2.4.1
+    - PB: cumplimiento NOM en domicilio importador
+    - PA: cumplimiento NOM en almacén general
+    - XP: exención RRNA - verificar en Anexo 2.2.1
+    - EX: exención cuenta aduanera - valor unitario ≥ precio estimado SHCP
+    - MA: embalaje de madera - verificar en packing list
+    - MC: marca registrada - verificar en Anexo 20 RGCE
+    - MM: muestras/muestrarios - valor debe ser simbólico
+    - PG: mercancía peligrosa - verificar en Apéndice 19
+    - Operaciones virtuales: validar RFCs en IM y V1
+
+Evalúa cada regla por separado para cada partida e indica si cumple o no con los criterios establecidos.

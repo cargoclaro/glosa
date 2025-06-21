@@ -1,0 +1,15 @@
+Valida la sección "Datos generales" del COVE aplicando las siguientes reglas:
+
+1. Número de factura:
+   - El número de factura del COVE debe coincidir con el número en la factura comercial
+   - Puede aparecer como Invoice Number, Invoice No, Invoice # en la factura
+   - También debe coincidir con la carta 318 si existe
+   - En caso de discrepancia, prevalece el número indicado en la carta 318
+
+2. Fecha de expedición:
+   - La fecha de expedición del COVE debe coincidir con la fecha de la factura y/o Carta 318
+   - En caso de discrepancia o que falte un documento, prevalece la fecha indicada en la carta 318
+   - Las fechas pueden tener diferentes formatos, valida que sea lógicamente la misma fecha
+   - Por ejemplo, 2025-08-01 y 08-01-2025 probablemente son la misma fecha en diferentes formatos
+
+Evalúa cada regla por separado e indica si cumple o no con los criterios establecidos.

@@ -1,0 +1,15 @@
+Valida la sección "Datos generales" del COVE aplicando las siguientes reglas:
+
+1. Número de factura:
+   - El número de factura del COVE debe coincidir con el folio fiscal del CFDI
+   - En exportación, el CFDI es el documento de facturación oficial emitido por el exportador mexicano
+
+2. Fecha de expedición:
+   - La fecha de expedición del COVE debe coincidir con la fecha de emisión del CFDI
+   - En exportación, el CFDI es el documento de facturación oficial
+
+3. RFC:
+   - El RFC del destinatario en el COVE debe coincidir con el RFC del emisor en el CFDI
+   - En exportación, el emisor del CFDI es la empresa mexicana que realiza la exportación
+
+Evalúa cada regla por separado e indica si cumple o no con los criterios establecidos.

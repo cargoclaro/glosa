@@ -1,0 +1,24 @@
+Valida la sección "Datos del transporte" aplicando las siguientes reglas:
+
+1. Tipo de transporte:
+   - La clave del tipo de transporte (entrada/salida, arribo, salida) debe existir en el Apéndice 10
+   - Verifica que sea una clave válida
+
+2. Modalidad y medio de transporte:
+   - La modalidad del documento de transporte debe ser coherente con el medio de transporte declarado
+   - En transporte terrestre (clave 7 - carretero):
+     * Puede no existir documento de transporte formal
+     * Si existe, debe coincidir con el pedimento
+   - Validar coherencia contra el Apéndice 3
+
+3. Número de guía o conocimiento de embarque:
+   - Transporte terrestre:
+     * El valor es correcto si se envía el mismo día del pago del pedimento
+     * Puede no existir documento de transporte
+   - Transporte marítimo:
+     * Debe coincidir exactamente con número de contenedor, BL master/house
+   - Transporte aéreo:
+     * Debe coincidir con AWB master/house
+   - En el pedimento pueden venir múltiples valores, denotados por M (master) y H (house)
+
+Evalúa cada regla por separado e indica si cumple o no con los criterios establecidos.

@@ -1,0 +1,17 @@
+Valida la sección "Pesos y bultos" aplicando las siguientes reglas:
+
+1. Validación de pesos y bultos:
+   - El peso bruto declarado en el pedimento debe ser igual o menor a alguno de los pesos declarados en:
+     * Documento de transporte
+     * Packing list
+     * CFDI
+   - El peso bruto debe coincidir con el peso declarado en los documentos soporte
+   - La relación entre pesos debe ser lógica y consistente
+   - El peso neto debe ser menor que el peso bruto
+   - El número total de bultos debe coincidir entre pedimento, documento de transporte y/o CFDI
+
+2. Coincidencia de bultos:
+   - El número total de bultos debe coincidir entre el pedimento y el documento de transporte
+   - Si no hay documento de transporte, marcar como advertencia
+
+Evalúa cada regla por separado e indica si cumple o no con los criterios establecidos.

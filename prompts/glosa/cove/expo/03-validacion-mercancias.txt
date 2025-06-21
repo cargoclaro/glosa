@@ -1,0 +1,24 @@
+Valida la sección "Validación de mercancías" del COVE aplicando las siguientes reglas:
+
+1. Datos de mercancías:
+   - Verificar que coincidan entre COVE y CFDI:
+     * Descripción genérica de la mercancía
+     * Cantidad en unidad de medida comercial (UMC)
+     * Clave de unidad de medida comercial
+     * Valor unitario
+     * Valor total
+
+2. Valor total en dólares:
+   - El valor total debe coincidir con el declarado en el CFDI
+   - Si el CFDI está en moneda diferente a dólares:
+     * Verificar conversión correcta usando el factor de equivalencia correspondiente
+     * Revisar que el tipo de cambio utilizado coincida con el declarado en observaciones del COVE
+     * Validar que los cálculos de conversión sean correctos y precisos
+
+3. Número de serie:
+   - Revisar primero si está declarado en el CFDI en la sección de mercancías
+   - Si no está en el CFDI, obtener de la factura comercial
+   - El número debe ser capturado exactamente como aparece en el documento
+   - No es obligatorio, si no hay números de serie marcar como válido
+
+Evalúa cada regla por separado e indica si cumple o no con los criterios establecidos.
